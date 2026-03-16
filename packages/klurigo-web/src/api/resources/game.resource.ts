@@ -1,10 +1,12 @@
 import {
   type CreateGameResponseDto,
+  type CreateQuizRatingDto,
   type GameParticipantPlayerDto,
   type GameResultDto,
   type GameSettingsDto,
   type PaginatedGameHistoryDto,
   type QuestionCorrectAnswerDto,
+  type QuizRatingDto,
   type SubmitQuestionAnswerRequestDto,
   TokenScope,
 } from '@klurigo/common'
@@ -292,6 +294,30 @@ export const createGameResource = (
         throw error
       })
 
+  /**
+   * Creates or updates the authenticated player’s rating for a specific game’s quiz.
+   *
+   * Sends a PUT request to `/games/:gameId/ratings` using the Game token scope,
+   * allowing both anonymous and authenticated players to rate the quiz they just played.
+   *
+   * @param gameId - The unique identifier of the game being rated.
+   * @param rating - The rating payload containing the star value and optional comment.
+   *
+   * @returns A promise that resolves to the created or updated quiz rating.
+   */
+  const createOrUpdateGameRating = (
+    gameId: string,
+    rating: CreateQuizRatingDto,
+  ): Promise<QuizRatingDto> =>
+    api
+      .apiPut<QuizRatingDto>(`/games/${gameId}/ratings`, rating, {
+        scope: TokenScope.Game,
+      })
+      .catch((error) => {
+        deps.notifyError('We couldn’t save your rating. Please try again.')
+        throw error
+      })
+
   return {
     createGame,
     joinGame,
@@ -305,5 +331,6 @@ export const createGameResource = (
     quitGame,
     getGameResults,
     getProfileGames,
+    createOrUpdateGameRating,
   }
 }

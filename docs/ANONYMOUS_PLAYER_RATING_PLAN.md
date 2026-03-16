@@ -821,7 +821,7 @@ pattern.
 
 ## Frontend Changes
 
-### 1. Add Rating Write API Function
+### 1. Add Rating Write API Function [DONE]
 
 **File:** `packages/klurigo-web/src/api/resources/game.resource.ts`
 
