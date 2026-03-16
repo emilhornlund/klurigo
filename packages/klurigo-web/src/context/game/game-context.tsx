@@ -1,7 +1,9 @@
 import type {
+  CreateQuizRatingDto,
   GameParticipantPlayerDto,
   GameSettingsDto,
   QuestionCorrectAnswerDto,
+  QuizRatingDto,
   SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import { createContext } from 'react'
@@ -31,6 +33,9 @@ export type GameContextType = {
   getPlayers?: () => Promise<GameParticipantPlayerDto[]>
   updateGameSettings?: (settings: GameSettingsDto) => Promise<GameSettingsDto>
   quitGame?: () => Promise<void>
+  createOrUpdateGameRating?: (
+    rating: CreateQuizRatingDto,
+  ) => Promise<QuizRatingDto>
 }
 
 /**

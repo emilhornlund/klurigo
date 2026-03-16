@@ -2,7 +2,7 @@ import type { CSSProperties, FC } from 'react'
 import { useMemo } from 'react'
 
 import { classNames } from '../../utils/helpers'
-import Confetti, { type ConfettiIntensity } from '../Confetti'
+import Confetti, { getCelebrationLevel } from '../Confetti'
 import NicknameChip from '../NicknameChip'
 
 import styles from './Podium.module.scss'
@@ -27,21 +27,6 @@ const getPositionClassNames = (position: number): string | undefined => {
     additional = styles[`position-${position}`]
   }
   return classNames(styles.position, additional)
-}
-
-type CelebrationLevel = 'none' | ConfettiIntensity
-
-const getCelebrationLevel = (position: number): CelebrationLevel => {
-  switch (position) {
-    case 1:
-      return 'epic' // 1st place gets epic celebration
-    case 2:
-      return 'major' // 2nd place gets major celebration
-    case 3:
-      return 'normal' // 3rd place gets normal celebration
-    default:
-      return 'none'
-  }
 }
 
 const Stack: FC<StackProps> = ({

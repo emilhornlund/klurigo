@@ -4,10 +4,10 @@ import { useState } from 'react'
 
 import { useKlurigoServiceClient } from '../../../../api'
 import { Page, SegmentedControl, Typography } from '../../../../components'
+import { useQuizRatingDraft } from '../../../../hooks'
 
 import styles from './GameResultsPageUI.module.scss'
 import { PlayerSection, QuestionSection, SummarySection } from './sections'
-import { useQuizRatingDraft } from './sections/SummarySection/useQuizRatingDraft'
 
 export type GameResultsPageUIProps = {
   results: GameResultDto
@@ -59,7 +59,8 @@ const GameResultsPageUI: FC<GameResultsPageUIProps> = ({
       canRateQuiz: results.quiz.canRateQuiz,
       initialStars: results.rating?.stars,
       initialComment: results.rating?.comment,
-      createOrUpdateQuizRating,
+      persist: (stars, comment) =>
+        createOrUpdateQuizRating(results.quiz.id, stars, comment),
       debounceMs: 600,
     },
   )

@@ -668,4 +668,21 @@ describe('GameResultsPageUI', () => {
       expect(createOrUpdateQuizRatingMock).not.toHaveBeenCalled()
     })
   })
+
+  describe('host nickname fallback', () => {
+    it('shows N/A as host nickname when host.nickname is an empty string', () => {
+      const results: GameResultDto = {
+        ...classicMinimal(),
+        host: { id: uuidv4(), nickname: '' },
+      }
+
+      render(
+        <MemoryRouter>
+          <GameResultsPageUI results={results} currentParticipantId="p-1" />
+        </MemoryRouter>,
+      )
+
+      expect(screen.getByText('N/A')).toBeInTheDocument()
+    })
+  })
 })

@@ -14,7 +14,7 @@ describe('useQuizRatingDraft', () => {
   })
 
   it('does not write on initial hydration', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     renderHook(() =>
       useQuizRatingDraft({
@@ -22,18 +22,18 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: 4,
         initialComment: 'Nice',
-        createOrUpdateQuizRating,
+        persist,
       }),
     )
 
     vi.advanceTimersByTime(0)
-    expect(createOrUpdateQuizRating).not.toHaveBeenCalled()
+    expect(persist).not.toHaveBeenCalled()
   })
 
   it('writes immediately when selecting stars', () => {
     vi.useFakeTimers()
     try {
-      const createOrUpdateQuizRating = vi.fn()
+      const persist = vi.fn()
 
       const { result } = renderHook(() =>
         useQuizRatingDraft({
@@ -41,7 +41,7 @@ describe('useQuizRatingDraft', () => {
           canRateQuiz: true,
           initialStars: undefined,
           initialComment: '',
-          createOrUpdateQuizRating,
+          persist,
         }),
       )
 
@@ -53,12 +53,8 @@ describe('useQuizRatingDraft', () => {
         vi.advanceTimersByTime(0)
       })
 
-      expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
-      expect(createOrUpdateQuizRating).toHaveBeenCalledWith(
-        'quiz-1',
-        3,
-        undefined,
-      )
+      expect(persist).toHaveBeenCalledTimes(1)
+      expect(persist).toHaveBeenCalledWith(3, undefined)
     } finally {
       vi.clearAllTimers()
       vi.useRealTimers()
@@ -66,7 +62,7 @@ describe('useQuizRatingDraft', () => {
   })
 
   it('debounces comment saves once stars are set', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -74,7 +70,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
         debounceMs: 600,
       }),
     )
@@ -87,12 +83,8 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      5,
-      undefined,
-    )
+    expect(persist).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenLastCalledWith(5, undefined)
 
     act(() => {
       result.current.setCommentDraft('a')
@@ -100,27 +92,23 @@ describe('useQuizRatingDraft', () => {
       result.current.setCommentDraft('abc')
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     act(() => {
       vi.advanceTimersByTime(599)
     })
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     act(() => {
       vi.advanceTimersByTime(1)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(2)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      5,
-      'abc',
-    )
+    expect(persist).toHaveBeenCalledTimes(2)
+    expect(persist).toHaveBeenLastCalledWith(5, 'abc')
   })
 
   it('does not write again when selecting the same stars value', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -128,7 +116,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
       }),
     )
 
@@ -139,7 +127,7 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     act(() => {
       result.current.setStars(4)
@@ -148,11 +136,11 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
   })
 
   it('does not save comment when stars are not set', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -160,7 +148,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
       }),
     )
 
@@ -172,11 +160,11 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).not.toHaveBeenCalled()
+    expect(persist).not.toHaveBeenCalled()
   })
 
   it('sends undefined when an existing comment is cleared to whitespace', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -184,7 +172,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
         debounceMs: 200,
       }),
     )
@@ -203,12 +191,8 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(200)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(2)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      5,
-      'abc',
-    )
+    expect(persist).toHaveBeenCalledTimes(2)
+    expect(persist).toHaveBeenLastCalledWith(5, 'abc')
 
     act(() => {
       result.current.setCommentDraft('   ')
@@ -217,16 +201,12 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(200)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(3)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      5,
-      undefined,
-    )
+    expect(persist).toHaveBeenCalledTimes(3)
+    expect(persist).toHaveBeenLastCalledWith(5, undefined)
   })
 
   it('does not write when canRateQuiz is false', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -234,7 +214,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: false,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
       }),
     )
 
@@ -250,11 +230,11 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).not.toHaveBeenCalled()
+    expect(persist).not.toHaveBeenCalled()
   })
 
   it('deduplicates identical payloads', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result } = renderHook(() =>
       useQuizRatingDraft({
@@ -262,7 +242,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
         debounceMs: 200,
       }),
     )
@@ -275,12 +255,8 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      4,
-      undefined,
-    )
+    expect(persist).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenLastCalledWith(4, undefined)
 
     act(() => {
       result.current.setCommentDraft('same')
@@ -290,12 +266,8 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(200)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(2)
-    expect(createOrUpdateQuizRating).toHaveBeenLastCalledWith(
-      'quiz-1',
-      4,
-      'same',
-    )
+    expect(persist).toHaveBeenCalledTimes(2)
+    expect(persist).toHaveBeenLastCalledWith(4, 'same')
 
     act(() => {
       result.current.setCommentDraft('same')
@@ -305,11 +277,11 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(200)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(2)
+    expect(persist).toHaveBeenCalledTimes(2)
   })
 
   it('cancels pending debounced save when quizId/initial values change', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result, rerender } = renderHook(
       (props: {
@@ -322,7 +294,7 @@ describe('useQuizRatingDraft', () => {
           canRateQuiz: true,
           initialStars: props.initialStars,
           initialComment: props.initialComment,
-          createOrUpdateQuizRating,
+          persist,
           debounceMs: 300,
         }),
       {
@@ -346,7 +318,7 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     act(() => {
       result.current.setCommentDraft('pending')
@@ -358,13 +330,13 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
     expect(result.current.stars).toBe(2)
     expect(result.current.commentDraft).toBe('new')
   })
 
   it('does not fire a pending debounced save after unmount', () => {
-    const createOrUpdateQuizRating = vi.fn()
+    const persist = vi.fn()
 
     const { result, unmount } = renderHook(() =>
       useQuizRatingDraft({
@@ -372,7 +344,7 @@ describe('useQuizRatingDraft', () => {
         canRateQuiz: true,
         initialStars: undefined,
         initialComment: '',
-        createOrUpdateQuizRating,
+        persist,
         debounceMs: 500,
       }),
     )
@@ -385,7 +357,7 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     act(() => {
       result.current.setCommentDraft('will-cancel')
@@ -397,6 +369,6 @@ describe('useQuizRatingDraft', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(createOrUpdateQuizRating).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
   })
 })

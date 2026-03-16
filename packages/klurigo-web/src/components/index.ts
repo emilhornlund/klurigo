@@ -5,7 +5,12 @@ export {
   default as CallToActionCard,
 } from './CallToActionCard'
 export type { CircularProgressBarProps } from './CircularProgressBar'
-export type { ConfettiProps, ConfettiIntensity } from './Confetti'
+export {
+  type CelebrationLevel,
+  type ConfettiIntensity,
+  type ConfettiProps,
+  getCelebrationLevel,
+} from './Confetti'
 export type { ConfirmDialogProps } from './ConfirmDialog'
 export type { DropzoneProps } from './Dropzone'
 export type { IconTooltipProps } from './IconTooltip'

@@ -391,13 +391,12 @@ describe('PlayerResultState', () => {
         </MemoryRouter>,
       )
 
-      // Should have epic celebration (position 2 always epic)
       expect(screen.getByText('Correct')).toBeInTheDocument()
       expect(
-        container.querySelector('.badge.celebrationEpic'),
+        container.querySelector('.badge.celebrationMajor'),
       ).toBeInTheDocument()
       expect(container.querySelector('.confettiContainer')).toBeInTheDocument()
-      expect(container.querySelectorAll('.confettiParticle')).toHaveLength(70)
+      expect(container.querySelectorAll('.confettiParticle')).toHaveLength(45)
       expect(container).toMatchSnapshot()
     })
 

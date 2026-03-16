@@ -835,7 +835,7 @@ style exactly.
 
 ---
 
-### 2. Add `PlayerGameOverState` Component
+### 2. Add `PlayerGameOverState` Component [DONE]
 
 **Depends on:** Task 1 (rating API function).
 

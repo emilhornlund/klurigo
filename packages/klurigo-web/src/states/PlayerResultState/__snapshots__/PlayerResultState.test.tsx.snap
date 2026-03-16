@@ -482,7 +482,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
                 Correct
               </h1>
               <div
-                class="badge large celebrationEpic border"
+                class="badge large celebrationMajor border"
                 style="outline-color: white; color: white;"
               >
                 <svg
@@ -523,7 +523,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </p>
           <div
             class="confettiContainer"
-            data-intensity="epic"
+            data-intensity="major"
             data-testid="confetti"
             data-trigger="true"
           >
@@ -541,11 +541,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -561,11 +565,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -581,11 +589,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -601,11 +613,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -621,11 +637,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -641,11 +661,15 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
+            />
+            <div
+              class="confettiParticle"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -661,14 +685,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
               style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
@@ -681,14 +697,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
               style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
             />
             <div
@@ -698,114 +706,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             <div
               class="confettiParticle"
               style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $green-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $pink-2; --particle-size: 4.8px;"
-            />
-            <div
-              class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $turquoise-2; --particle-size: 4.8px;"
             />
           </div>
         </div>
