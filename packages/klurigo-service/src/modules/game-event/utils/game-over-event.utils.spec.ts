@@ -123,6 +123,36 @@ describe('buildGameOverPlayerEvent', () => {
     })
   })
 
+  it('should include absolute behind points when player scores are negative', () => {
+    const firstPlace = createMockGamePlayerParticipantDocument({
+      participantId: 'player-1',
+      nickname: 'TopPlayer',
+      rank: 1,
+      worstRank: 1,
+      totalScore: -20,
+      currentStreak: 5,
+    })
+    const secondPlace = createMockGamePlayerParticipantDocument({
+      participantId: 'player-2',
+      nickname: 'SecondPlayer',
+      rank: 2,
+      worstRank: 3,
+      totalScore: -10,
+      currentStreak: 2,
+    })
+    const game = createMockGameDocument({
+      currentTask: createMockPodiumTaskDocument({ status: 'active' }),
+      participants: [firstPlace, secondPlace],
+    })
+
+    const result = buildGameOverPlayerEvent(game as never, secondPlace)
+
+    expect(result.player.behind).toEqual({
+      points: 10,
+      nickname: 'TopPlayer',
+    })
+  })
+
   it('should return null for behind when no participant at rank - 1 exists', () => {
     const lonePlayer = createMockGamePlayerParticipantDocument({
       rank: 3,

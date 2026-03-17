@@ -89,7 +89,7 @@ function buildBehind(
   }
 
   return {
-    points: aheadParticipant.totalScore - player.totalScore,
+    points: Math.abs(aheadParticipant.totalScore - player.totalScore),
     nickname: aheadParticipant.nickname,
   }
 }
