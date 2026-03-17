@@ -12,12 +12,12 @@ import { firstValueFrom, take, toArray } from 'rxjs'
 import { PlayerNotFoundException } from '../../game-core/exceptions'
 import { GameAnswerRepository } from '../../game-core/repositories'
 import { TaskType } from '../../game-core/repositories/models/schemas'
-import { QuizRating } from '../../quiz-core/repositories/models/schemas/quiz-rating.schema'
-import { Quiz } from '../../quiz-core/repositories/models/schemas/quiz.schema'
-import { QuizRatingRepository } from '../../quiz-core/repositories/quiz-rating.repository'
-import { QuizRepository } from '../../quiz-core/repositories/quiz.repository'
-import { UserRepository } from '../../user/repositories'
-import { User } from '../../user/repositories/models/schemas/user.schema'
+import {
+  QuizRatingRepository,
+  QuizRepository,
+} from '../../quiz-core/repositories'
+import { Quiz, QuizRating } from '../../quiz-core/repositories/models/schemas'
+import { User, UserRepository } from '../../user/repositories'
 import {
   buildHostGameEvent,
   buildPlayerGameEvent,
@@ -26,6 +26,7 @@ import {
 } from '../utils'
 
 import { GameEventSubscriber } from './game-event.subscriber'
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 
 // ---- Mocks ----
 jest.mock('../utils', () => ({
@@ -43,6 +44,7 @@ describe('GameEventSubscriber', () => {
   let quizRepository: jest.Mocked<QuizRepository>
   let quizRatingRepository: jest.Mocked<QuizRatingRepository>
   let userRepository: jest.Mocked<UserRepository>
+  let gameParticipantEventBuilder: GameParticipantEventBuilder
   let eventEmitter: EventEmitter2
   let service: GameEventSubscriber
   let logger: { log: jest.Mock; warn: jest.Mock; error: jest.Mock }
@@ -103,13 +105,17 @@ describe('GameEventSubscriber', () => {
       .mockReset()
       .mockReturnValue({ pmeta: true })
 
-    service = new GameEventSubscriber(
-      redis as unknown as Redis,
-      gameRepository,
+    gameParticipantEventBuilder = new GameParticipantEventBuilder(
       gameAnswerRepository,
       quizRepository,
       quizRatingRepository,
       userRepository,
+    )
+
+    service = new GameEventSubscriber(
+      redis as unknown as Redis,
+      gameRepository,
+      gameParticipantEventBuilder,
       eventEmitter,
     )
 

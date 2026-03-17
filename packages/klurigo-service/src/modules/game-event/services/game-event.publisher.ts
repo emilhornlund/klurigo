@@ -1,21 +1,14 @@
-import { GameEvent, GameParticipantType } from '@klurigo/common'
+import { GameEvent } from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
-import { GameAnswerRepository } from '../../game-core/repositories'
 import {
   GameDocument,
   Participant,
-  TaskType,
 } from '../../game-core/repositories/models/schemas'
-import {
-  buildHostGameEvent,
-  buildPlayerGameEvent,
-  toGameEventMetaData,
-  toPlayerQuestionPlayerEventMetaData,
-} from '../utils'
 
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 import { DistributedEvent } from './models/event'
 
 const REDIS_PUBSUB_CHANNEL = 'events'
@@ -32,11 +25,11 @@ export class GameEventPublisher {
    * Constructs an instance of GameEventPublisher.
    *
    * @param redis - Redis instance for Pub/Sub operations.
-   * @param gameAnswerRepository - Repository used to retrieve current-question answers when building game event metadata.
+   * @param gameParticipantEventBuilder - Shared builder used to construct participant-specific game events.
    */
   constructor(
     @InjectRedis() private readonly redis: Redis,
-    private readonly gameAnswerRepository: GameAnswerRepository,
+    private readonly gameParticipantEventBuilder: GameParticipantEventBuilder,
   ) {}
 
   /**
@@ -54,24 +47,18 @@ export class GameEventPublisher {
    * @returns A promise that resolves once events for all participants have been published.
    */
   public async publish(document: GameDocument): Promise<void> {
-    const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
-      document._id,
-    )
-
-    const metaData = toGameEventMetaData(answers, {}, document.participants)
+    const context =
+      await this.gameParticipantEventBuilder.createContext(document)
 
     await Promise.all(
       document.participants.map(async (participant) => {
         try {
           const event =
-            participant.type === GameParticipantType.HOST
-              ? buildHostGameEvent(document, metaData)
-              : buildPlayerGameEvent(document, participant, {
-                  ...metaData,
-                  ...(document.currentTask.type === TaskType.Question
-                    ? toPlayerQuestionPlayerEventMetaData(answers, participant)
-                    : {}),
-                })
+            await this.gameParticipantEventBuilder.buildParticipantEvent(
+              document,
+              participant,
+              context,
+            )
 
           await this.publishParticipantEvent(participant, event)
         } catch (error) {

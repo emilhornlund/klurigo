@@ -1,6 +1,5 @@
 import {
   GameEventType,
-  GameParticipantType,
   GameStatus,
   HEARTBEAT_INTERVAL,
   isDefined,
@@ -19,27 +18,9 @@ import { concat, finalize, fromEvent, Observable, of } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 
 import { PlayerNotFoundException } from '../../game-core/exceptions'
-import {
-  GameAnswerRepository,
-  GameRepository,
-} from '../../game-core/repositories'
-import {
-  GameDocument,
-  TaskType,
-} from '../../game-core/repositories/models/schemas'
-import {
-  QuizRatingRepository,
-  QuizRepository,
-} from '../../quiz-core/repositories'
-import { UserRepository } from '../../user/repositories'
-import { GameEventMetaData } from '../models'
-import {
-  buildHostGameEvent,
-  buildPlayerGameEvent,
-  toGameEventMetaData,
-  toPlayerQuestionPlayerEventMetaData,
-} from '../utils'
+import { GameRepository } from '../../game-core/repositories'
 
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 import { DistributedEvent } from './models/event'
 
 const REDIS_PUBSUB_CHANNEL = 'events'
@@ -75,19 +56,13 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    *
    * @param redis - The primary Redis client used for queries and for duplicating a dedicated Pub/Sub subscriber connection.
    * @param gameRepository - Repository used to validate games and participants before opening an SSE stream.
-   * @param gameAnswerRepository - Repository used to retrieve current-question answers for building initial snapshot events.
-   * @param quizRepository - Repository used to load quiz documents for podium enrichment (ownership check).
-   * @param quizRatingRepository - Repository used to look up existing ratings for podium enrichment.
-   * @param userRepository - Repository used to resolve a participant to a User (determines anonymous vs logged-in).
+   * @param gameParticipantEventBuilder - Shared builder used to construct initial participant-specific events.
    * @param eventEmitter - Local event emitter used to broadcast distributed events to all SSE subscriptions within this instance.
    */
   constructor(
     @InjectRedis() private readonly redis: Redis,
     private readonly gameRepository: GameRepository,
-    private readonly gameAnswerRepository: GameAnswerRepository,
-    private readonly quizRepository: QuizRepository,
-    private readonly quizRatingRepository: QuizRatingRepository,
-    private readonly userRepository: UserRepository,
+    private readonly gameParticipantEventBuilder: GameParticipantEventBuilder,
     private readonly eventEmitter: EventEmitter2,
   ) {
     this.redisSubscriber = redis.duplicate()
@@ -269,67 +244,6 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Enriches metadata with podium-specific rating fields for a player participant.
-   *
-   * Determines whether the participant is a logged-in user by attempting a User lookup
-   * using their `participantId` (for logged-in players `participantId === userId`).
-   * Anonymous players always have `podiumCanRateQuiz = true`. Logged-in players are
-   * blocked from rating their own quiz (`podiumCanRateQuiz = false` when they own it).
-   *
-   * Also looks up any existing rating so the game-over screen can pre-populate the
-   * rating UI with the participant's current stars and comment.
-   *
-   * @param document - The game document whose current task is Podium.
-   * @param participantId - The participant ID of the player requesting the snapshot.
-   * @returns A partial metadata object with `podiumCanRateQuiz` always set, and
-   *          `podiumRatingStars` / `podiumRatingComment` set when a prior rating exists.
-   *
-   * @private
-   */
-  private async enrichPodiumPlayerMetaData(
-    document: GameDocument,
-    participantId: string,
-  ): Promise<
-    Pick<
-      GameEventMetaData,
-      'podiumCanRateQuiz' | 'podiumRatingStars' | 'podiumRatingComment'
-    >
-  > {
-    const quizId = document.quiz._id
-
-    const [quiz, user] = await Promise.all([
-      this.quizRepository.findQuizByIdOrThrow(quizId),
-      this.userRepository.findUserById(participantId),
-    ])
-
-    const isLoggedIn = user !== null
-
-    const podiumCanRateQuiz = isLoggedIn
-      ? String(quiz.owner._id) !== participantId
-      : true
-
-    const existingRating = isLoggedIn
-      ? await this.quizRatingRepository.findQuizRatingByUserAuthor(
-          quizId,
-          participantId,
-        )
-      : await this.quizRatingRepository.findQuizRatingByAnonymousAuthor(
-          quizId,
-          participantId,
-        )
-
-    return {
-      podiumCanRateQuiz,
-      ...(existingRating
-        ? {
-            podiumRatingStars: existingRating.stars,
-            podiumRatingComment: existingRating.comment,
-          }
-        : {}),
-    }
-  }
-
-  /**
    * Creates an SSE-compatible observable stream for a specific game and participant.
    *
    * Behavior:
@@ -376,32 +290,12 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     // so clients know the stream is alive.
     const initialEvent = await (async (): Promise<DistributedEvent> => {
       try {
-        const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
-          document._id,
-        )
-
-        const metaData = toGameEventMetaData(answers, {}, document.participants)
-
-        const isPodiumPlayer =
-          participant.type === GameParticipantType.PLAYER &&
-          document.currentTask.type === TaskType.Podium
-
-        const podiumMetaData = isPodiumPlayer
-          ? await this.enrichPodiumPlayerMetaData(document, participantId)
-          : {}
-
         return {
           playerId: participantId,
-          event:
-            participant.type === GameParticipantType.PLAYER
-              ? buildPlayerGameEvent(document, participant, {
-                  ...metaData,
-                  ...podiumMetaData,
-                  ...(document.currentTask.type === TaskType.Question
-                    ? toPlayerQuestionPlayerEventMetaData(answers, participant)
-                    : {}),
-                })
-              : buildHostGameEvent(document, metaData),
+          event: await this.gameParticipantEventBuilder.buildParticipantEvent(
+            document,
+            participant,
+          ),
         }
       } catch (error) {
         const { message, stack } = error as Error
