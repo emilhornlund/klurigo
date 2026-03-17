@@ -25,6 +25,7 @@ import {
   HostQuestionState,
   HostResultState,
   PlayerGameBeginState,
+  PlayerGameOverState,
   PlayerLobbyState,
   PlayerQuestionPreviewState,
   PlayerQuestionState,
@@ -158,9 +159,11 @@ const GamePage: FC = () => {
   const shouldBlock = useCallback<BlockerFunction>(() => {
     const isAllowedEventType =
       event?.type &&
-      [GameEventType.GamePodiumHost, GameEventType.GameQuitEvent].includes(
-        event.type,
-      )
+      [
+        GameEventType.GamePodiumHost,
+        GameEventType.GameOverPlayer,
+        GameEventType.GameQuitEvent,
+      ].includes(event.type)
 
     const hasGameId = !!gameID
 
@@ -237,6 +240,8 @@ const GamePage: FC = () => {
         return <PlayerResultState event={eventToRender} />
       case GameEventType.GamePodiumHost:
         return <HostPodiumState event={eventToRender} />
+      case GameEventType.GameOverPlayer:
+        return <PlayerGameOverState event={eventToRender} />
       default:
         return null
     }

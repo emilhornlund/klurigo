@@ -952,7 +952,7 @@ buttons.
 
 ---
 
-### 3. Integrate `PlayerGameOverState` into `GamePage`
+### 3. Integrate `PlayerGameOverState` into `GamePage` [DONE]
 
 **Depends on:** Task 2 (`PlayerGameOverState` component).
 

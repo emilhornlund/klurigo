@@ -766,6 +766,33 @@ describe('GamePage', () => {
     expect(container).toBeTruthy()
   })
 
+  it('renders PlayerGameOverState for GameOverPlayer event', () => {
+    h.control.event = {
+      type: GameEventType.GameOverPlayer,
+      game: { id: 'game-123', mode: GameMode.Classic },
+      quiz: { id: 'quiz-1', title: 'Science Quiz' },
+      player: {
+        nickname: 'Player One',
+        rank: 2,
+        totalPlayers: 10,
+        score: 4200,
+        currentStreak: 3,
+        comebackRankGain: 1,
+        behind: { points: 150, nickname: 'Winner' },
+      },
+      rating: {
+        canRateQuiz: true,
+        stars: 4,
+        comment: 'Great quiz!',
+      },
+    }
+
+    renderWithRouter()
+
+    expect(screen.getByText('Science Quiz')).toBeInTheDocument()
+    expect(screen.getByText('Rate this quiz')).toBeInTheDocument()
+  })
+
   it('does not block navigation when on GamePodiumHost', async () => {
     h.control.event = {
       type: GameEventType.GamePodiumHost,
@@ -775,6 +802,35 @@ describe('GamePage', () => {
     const { router } = renderWithRouter()
 
     // Should allow navigation without blocking
+    await act(async () => {
+      await router.navigate('/other')
+    })
+
+    expect(router.state.location.pathname).toBe('/other')
+  })
+
+  it('does not block navigation when on GameOverPlayer', async () => {
+    h.control.event = {
+      type: GameEventType.GameOverPlayer,
+      game: { id: 'game-123', mode: GameMode.Classic },
+      quiz: { id: 'quiz-1', title: 'Science Quiz' },
+      player: {
+        nickname: 'Player One',
+        rank: 2,
+        totalPlayers: 10,
+        score: 4200,
+        currentStreak: 3,
+        comebackRankGain: 1,
+        behind: { points: 150, nickname: 'Winner' },
+      },
+      rating: {
+        canRateQuiz: true,
+        stars: 4,
+        comment: 'Great quiz!',
+      },
+    }
+    const { router } = renderWithRouter()
+
     await act(async () => {
       await router.navigate('/other')
     })
