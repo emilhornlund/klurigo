@@ -15,6 +15,6 @@ import { QuizRatingService } from './services'
   imports: [EventEmitterModule, GameCoreModule, QuizCoreModule],
   controllers: [QuizRatingController, ProfileQuizRatingController],
   providers: [Logger, QuizRatingService],
-  exports: [],
+  exports: [QuizRatingService],
 })
 export class QuizRatingApiModule {}

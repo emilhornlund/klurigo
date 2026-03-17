@@ -212,9 +212,9 @@ export class GameResultService {
       return undefined
     }
 
-    const rating = await this.quizRatingRepository.findQuizRatingByAuthor(
+    const rating = await this.quizRatingRepository.findQuizRatingByUserAuthor(
       quizId,
-      author,
+      author._id,
     )
 
     if (!rating) {

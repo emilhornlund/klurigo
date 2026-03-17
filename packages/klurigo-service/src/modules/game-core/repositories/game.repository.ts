@@ -85,6 +85,50 @@ export class GameRepository extends BaseRepository<Game> {
   }
 
   /**
+   * Finds a game by its ID constrained to the provided statuses.
+   *
+   * @param gameID - The ID of the game to find.
+   * @param statuses - Allowed statuses for the query.
+   *
+   * @returns The found game document or `null` when no matching game exists.
+   */
+  public async findGameByIDWithStatuses(
+    gameID: string,
+    statuses: GameStatus[],
+  ): Promise<GameDocument | null> {
+    return this.gameModel
+      .findOne({
+        _id: { $eq: gameID },
+        status: { $in: statuses },
+      })
+      .populate('quiz') as Promise<GameDocument | null>
+  }
+
+  /**
+   * Finds a game by its ID constrained to the provided statuses or throws when
+   * no matching game exists.
+   *
+   * @param gameID - The ID of the game to find.
+   * @param statuses - Allowed statuses for the query.
+   *
+   * @returns The found game document.
+   *
+   * @throws GameNotFoundException If no game exists with the requested ID and allowed statuses.
+   */
+  public async findGameByIDWithStatusesOrThrow(
+    gameID: string,
+    statuses: GameStatus[],
+  ): Promise<GameDocument> {
+    const gameDocument = await this.findGameByIDWithStatuses(gameID, statuses)
+
+    if (!gameDocument) {
+      throw new GameNotFoundException(gameID)
+    }
+
+    return gameDocument
+  }
+
+  /**
    * Finds a game by its PIN.
    *
    * @param {string} gamePIN - The unique 6-digit game PIN of the game to find.
@@ -130,21 +174,24 @@ export class GameRepository extends BaseRepository<Game> {
   }
 
   /**
-   * Finds a game by its ID, updates it using the provided callback, and saves the changes.
+   * Finds a game by its ID (active or completed), updates it using the provided callback, and saves the changes.
    *
    * @param {string} gameID - The ID of the game to find and update.
    * @param {Function} callback - A callback function to modify the game document.
    *
    * @returns {Promise<GameDocument>} A promise that resolves to the updated `GameDocument`.
    *
-   * @throws {ActiveGameNotFoundByIDException} If no active game is found.
+   * @throws {GameNotFoundException} If no active or completed game is found with the given ID.
    */
   @MurLock(5000, 'game', 'gameID')
   public async findAndSaveWithLock(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument>,
   ): Promise<GameDocument> {
-    const gameDocument = await this.findGameByIDOrThrow(gameID)
+    const gameDocument = await this.findGameByIDWithStatusesOrThrow(gameID, [
+      GameStatus.Active,
+      GameStatus.Completed,
+    ])
 
     const updatedGameDocument = await callback(gameDocument)
     updatedGameDocument.updated = new Date()

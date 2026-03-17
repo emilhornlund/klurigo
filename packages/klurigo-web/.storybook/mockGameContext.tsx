@@ -69,3 +69,27 @@ export const withMockGameHost: Decorator = (Story, context) => (
     <Story {...context.args} />
   </GameContext.Provider>
 )
+
+const mockGamePlayerContext: GameContextType = {
+  gameID: '',
+  gameToken: '',
+  participantId: '',
+  participantType: GameParticipantType.PLAYER,
+  isFullscreenActive: false,
+  completeTask: () => Promise.reject(),
+  submitQuestionAnswer: () => Promise.reject(),
+  leaveGame: () => Promise.reject(),
+  addCorrectAnswer: () => Promise.reject(),
+  deleteCorrectAnswer: () => Promise.reject(),
+  getPlayers: () => Promise.reject(),
+  createOrUpdateGameRating: () => Promise.reject(),
+  updateGameSettings: () => Promise.reject(),
+  toggleFullscreen: () => Promise.reject(),
+  quitGame: () => Promise.reject(),
+}
+
+export const withMockGamePlayer: Decorator = (Story, context) => (
+  <GameContext.Provider value={mockGamePlayerContext}>
+    <Story {...context.args} />
+  </GameContext.Provider>
+)

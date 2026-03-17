@@ -6,8 +6,14 @@ import {
   GameDocument,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import {
+  QuizRatingRepository,
+  QuizRepository,
+} from '../../quiz-core/repositories'
+import { UserRepository } from '../../user/repositories'
 
 import { GameEventPublisher } from './game-event.publisher'
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 
 // ---- Mocks ----
 jest.mock('../utils', () => ({
@@ -28,6 +34,10 @@ import {
 describe('GameEventPublisher', () => {
   let redis: jest.Mocked<Redis>
   let gameAnswerRepository: jest.Mocked<GameAnswerRepository>
+  let quizRepository: jest.Mocked<QuizRepository>
+  let quizRatingRepository: jest.Mocked<QuizRatingRepository>
+  let userRepository: jest.Mocked<UserRepository>
+  let gameParticipantEventBuilder: GameParticipantEventBuilder
   let service: GameEventPublisher
   let logger: {
     debug: jest.Mock
@@ -53,6 +63,19 @@ describe('GameEventPublisher', () => {
       clear: jest.fn(),
     } as any
 
+    quizRepository = {
+      findQuizByIdOrThrow: jest.fn(),
+    } as any
+
+    quizRatingRepository = {
+      findQuizRatingByUserAuthor: jest.fn().mockResolvedValue(null),
+      findQuizRatingByAnonymousAuthor: jest.fn().mockResolvedValue(null),
+    } as any
+
+    userRepository = {
+      findUserById: jest.fn().mockResolvedValue(null),
+    } as any
+
     // Reset util mocks
     ;(buildHostGameEvent as jest.Mock).mockReset()
     ;(buildPlayerGameEvent as jest.Mock).mockReset()
@@ -63,9 +86,16 @@ describe('GameEventPublisher', () => {
       .mockReset()
       .mockReturnValue({ pmeta: true })
 
+    gameParticipantEventBuilder = new GameParticipantEventBuilder(
+      gameAnswerRepository,
+      quizRepository,
+      quizRatingRepository,
+      userRepository,
+    )
+
     service = new GameEventPublisher(
       redis as unknown as Redis,
-      gameAnswerRepository,
+      gameParticipantEventBuilder,
     )
     // Override internal logger for assertions (same trick as previous tests)
     ;(service as any).logger = logger
@@ -75,11 +105,15 @@ describe('GameEventPublisher', () => {
     jest.clearAllMocks()
     // Reset repository mocks after clearAllMocks
     gameAnswerRepository.findAllAnswersByGameId.mockResolvedValue([])
+    quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
+    quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue(null)
+    userRepository.findUserById.mockResolvedValue(null)
   })
 
   const buildGameDoc = (overrides: Partial<any> = {}) => ({
     _id: 'game-1',
     currentTask: { type: TaskType.Lobby },
+    quiz: { _id: 'quiz-1' },
     participants: [
       {
         participantId: 'p1',
@@ -94,6 +128,12 @@ describe('GameEventPublisher', () => {
     ],
     ...overrides,
   })
+
+  const buildQuizDoc = (ownerId = 'owner-user-1') =>
+    ({
+      _id: 'quiz-1',
+      owner: { _id: ownerId },
+    }) as any
 
   it('publish sends events for host and player with base metadata (non-question)', async () => {
     const doc = buildGameDoc()
@@ -171,6 +211,35 @@ describe('GameEventPublisher', () => {
     expect(buildHostGameEvent).toHaveBeenCalledWith(
       doc,
       expect.objectContaining({ meta: true }),
+    )
+  })
+
+  it('publish enriches podium player events with rating metadata', async () => {
+    const doc = buildGameDoc({ currentTask: { type: TaskType.Podium } })
+    quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+    quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue({
+      stars: 4,
+      comment: 'Great quiz!',
+    } as any)
+    ;(buildHostGameEvent as jest.Mock).mockReturnValue({ hostPodium: true })
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ playerPodium: true })
+
+    await service.publish(doc as GameDocument)
+
+    expect(quizRepository.findQuizByIdOrThrow).toHaveBeenCalledWith('quiz-1')
+    expect(userRepository.findUserById).toHaveBeenCalledWith('p1')
+    expect(
+      quizRatingRepository.findQuizRatingByAnonymousAuthor,
+    ).toHaveBeenCalledWith('quiz-1', 'p1')
+    expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+      doc,
+      doc.participants[0],
+      expect.objectContaining({
+        meta: true,
+        podiumCanRateQuiz: true,
+        podiumRatingStars: 4,
+        podiumRatingComment: 'Great quiz!',
+      }),
     )
   })
 

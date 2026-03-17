@@ -1,6 +1,7 @@
 import {
   GameEventType,
   GameParticipantType,
+  GameStatus,
   HEARTBEAT_INTERVAL,
 } from '@klurigo/common'
 import { MessageEvent } from '@nestjs/common'
@@ -12,6 +13,12 @@ import { PlayerNotFoundException } from '../../game-core/exceptions'
 import { GameAnswerRepository } from '../../game-core/repositories'
 import { TaskType } from '../../game-core/repositories/models/schemas'
 import {
+  QuizRatingRepository,
+  QuizRepository,
+} from '../../quiz-core/repositories'
+import { Quiz, QuizRating } from '../../quiz-core/repositories/models/schemas'
+import { User, UserRepository } from '../../user/repositories'
+import {
   buildHostGameEvent,
   buildPlayerGameEvent,
   toGameEventMetaData,
@@ -19,6 +26,7 @@ import {
 } from '../utils'
 
 import { GameEventSubscriber } from './game-event.subscriber'
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 
 // ---- Mocks ----
 jest.mock('../utils', () => ({
@@ -33,6 +41,10 @@ describe('GameEventSubscriber', () => {
   let redisSubscriber: jest.Mocked<Redis>
   let gameRepository: any
   let gameAnswerRepository: jest.Mocked<GameAnswerRepository>
+  let quizRepository: jest.Mocked<QuizRepository>
+  let quizRatingRepository: jest.Mocked<QuizRatingRepository>
+  let userRepository: jest.Mocked<UserRepository>
+  let gameParticipantEventBuilder: GameParticipantEventBuilder
   let eventEmitter: EventEmitter2
   let service: GameEventSubscriber
   let logger: { log: jest.Mock; warn: jest.Mock; error: jest.Mock }
@@ -59,13 +71,26 @@ describe('GameEventSubscriber', () => {
 
     // Minimal gameRepository mock
     gameRepository = {
-      findGameByIDOrThrow: jest.fn(),
+      findGameByIDWithStatusesOrThrow: jest.fn(),
     }
 
     gameAnswerRepository = {
       findAllAnswersByGameId: jest.fn().mockResolvedValue([]),
       submitOnce: jest.fn(),
       clear: jest.fn(),
+    } as any
+
+    quizRepository = {
+      findQuizByIdOrThrow: jest.fn(),
+    } as any
+
+    quizRatingRepository = {
+      findQuizRatingByUserAuthor: jest.fn().mockResolvedValue(null),
+      findQuizRatingByAnonymousAuthor: jest.fn().mockResolvedValue(null),
+    } as any
+
+    userRepository = {
+      findUserById: jest.fn().mockResolvedValue(null),
     } as any
 
     eventEmitter = new EventEmitter2()
@@ -80,10 +105,17 @@ describe('GameEventSubscriber', () => {
       .mockReset()
       .mockReturnValue({ pmeta: true })
 
+    gameParticipantEventBuilder = new GameParticipantEventBuilder(
+      gameAnswerRepository,
+      quizRepository,
+      quizRatingRepository,
+      userRepository,
+    )
+
     service = new GameEventSubscriber(
       redis as unknown as Redis,
       gameRepository,
-      gameAnswerRepository,
+      gameParticipantEventBuilder,
       eventEmitter,
     )
 
@@ -100,6 +132,7 @@ describe('GameEventSubscriber', () => {
   const buildGameDoc = (overrides: Partial<any> = {}) => ({
     _id: 'game-1',
     currentTask: { type: TaskType.Lobby },
+    quiz: { _id: 'quiz-1' },
     participants: [
       {
         participantId: 'p1',
@@ -192,7 +225,7 @@ describe('GameEventSubscriber', () => {
 
   it('emits heartbeats while a subscription is active and stops after unsubscribe', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: true })
 
     const emitSpy = jest.spyOn(eventEmitter, 'emit')
@@ -214,7 +247,7 @@ describe('GameEventSubscriber', () => {
 
   it('keeps heartbeat running until the last concurrent connection unsubscribes', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: true })
 
     const emitSpy = jest.spyOn(eventEmitter, 'emit')
@@ -286,9 +319,15 @@ describe('GameEventSubscriber', () => {
   })
 
   it('subscribe throws when participant not found', async () => {
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(buildGameDoc())
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
+      buildGameDoc(),
+    )
     await expect(service.subscribe('game-1', 'missing')).rejects.toBeInstanceOf(
       PlayerNotFoundException,
+    )
+    expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
+      'game-1',
+      [GameStatus.Active, GameStatus.Completed],
     )
   })
 
@@ -296,7 +335,7 @@ describe('GameEventSubscriber', () => {
     const doc = buildGameDoc({
       currentTask: { type: TaskType.Question }, // so player metadata is merged
     })
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
       initial: 'player',
     })
@@ -336,6 +375,10 @@ describe('GameEventSubscriber', () => {
     expect(gameAnswerRepository.findAllAnswersByGameId).toHaveBeenCalledWith(
       'game-1',
     )
+    expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
+      'game-1',
+      [GameStatus.Active, GameStatus.Completed],
+    )
     expect(toGameEventMetaData).toHaveBeenCalled()
     expect(toPlayerQuestionPlayerEventMetaData).toHaveBeenCalled()
     expect(buildPlayerGameEvent).toHaveBeenCalledWith(
@@ -347,7 +390,7 @@ describe('GameEventSubscriber', () => {
 
   it('subscribe filters out undefined events emitted on the local channel', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
 
     const stream$ = await service.subscribe('game-1', 'p1')
@@ -365,7 +408,7 @@ describe('GameEventSubscriber', () => {
 
   it('subscribe (HOST) uses buildHostGameEvent and still filters by playerId', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildHostGameEvent as jest.Mock).mockReturnValue({
       initial: 'host',
     })
@@ -379,12 +422,60 @@ describe('GameEventSubscriber', () => {
       doc,
       expect.objectContaining({ meta: true }),
     )
+    expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
+      'game-1',
+      [GameStatus.Active, GameStatus.Completed],
+    )
     expect(buildPlayerGameEvent).not.toHaveBeenCalled()
+  })
+
+  it('subscribe allows completed games to open an initial SSE snapshot', async () => {
+    const doc = buildGameDoc({
+      status: GameStatus.Completed,
+      currentTask: { type: TaskType.Podium, status: 'active' },
+    })
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    quizRepository.findQuizByIdOrThrow.mockResolvedValue({
+      _id: 'quiz-1',
+      owner: { _id: 'owner-1' } as User,
+    } as Quiz)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+      initial: 'completed-game-player',
+    })
+
+    const stream$ = await service.subscribe('game-1', 'p1')
+    const first = await firstValueFrom(stream$.pipe(take(1)))
+
+    expect(JSON.parse(first.data as string)).toEqual({
+      initial: 'completed-game-player',
+    })
+    expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
+      'game-1',
+      [GameStatus.Active, GameStatus.Completed],
+    )
+    expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+      doc,
+      doc.participants[0],
+      expect.objectContaining({ meta: true }),
+    )
+  })
+
+  it('subscribe rejects games outside active and completed statuses', async () => {
+    gameRepository.findGameByIDWithStatusesOrThrow.mockRejectedValue(
+      new Error('not found'),
+    )
+
+    await expect(service.subscribe('game-1', 'p1')).rejects.toThrow('not found')
+
+    expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
+      'game-1',
+      [GameStatus.Active, GameStatus.Completed],
+    )
   })
 
   it('subscribe tolerates build* error and still relays future events', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildHostGameEvent as jest.Mock).mockImplementation(() => {
       throw new Error('boom in builder')
     })
@@ -408,7 +499,7 @@ describe('GameEventSubscriber', () => {
 
   it('subscribe falls back to heartbeat when gameAnswerRepository.findAllAnswersByGameId fails during initial snapshot', async () => {
     const doc = buildGameDoc()
-    gameRepository.findGameByIDOrThrow.mockResolvedValue(doc)
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     gameAnswerRepository.findAllAnswersByGameId.mockRejectedValue(
       new Error('Repository failed'),
     )
@@ -428,5 +519,202 @@ describe('GameEventSubscriber', () => {
       expect.stringContaining('Error building initial event for participant'),
       expect.any(String),
     )
+  })
+
+  describe('podium enrichment', () => {
+    const buildPodiumGameDoc = (overrides: Partial<any> = {}) =>
+      buildGameDoc({
+        currentTask: { type: TaskType.Podium },
+        quiz: { _id: 'quiz-1' },
+        ...overrides,
+      })
+
+    const buildQuizDoc = (ownerOverride: Partial<User> = {}) =>
+      ({
+        _id: 'quiz-1',
+        owner: { _id: 'owner-user-1', ...ownerOverride } as User,
+      }) as Quiz
+
+    it('passes podiumCanRateQuiz=true for an anonymous player with no prior rating', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+      userRepository.findUserById.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue(
+        null,
+      )
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(quizRepository.findQuizByIdOrThrow).toHaveBeenCalledWith('quiz-1')
+      expect(userRepository.findUserById).toHaveBeenCalledWith('p1')
+      expect(
+        quizRatingRepository.findQuizRatingByAnonymousAuthor,
+      ).toHaveBeenCalledWith('quiz-1', 'p1')
+      expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+        doc,
+        doc.participants[0],
+        expect.objectContaining({ podiumCanRateQuiz: true }),
+      )
+    })
+
+    it('passes podiumCanRateQuiz=true for a logged-in player who is not the quiz owner', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+      userRepository.findUserById.mockResolvedValue({
+        _id: 'p1',
+        defaultNickname: 'Alice',
+      } as User)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).toHaveBeenCalledWith('quiz-1', 'p1')
+      expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+        doc,
+        doc.participants[0],
+        expect.objectContaining({ podiumCanRateQuiz: true }),
+      )
+    })
+
+    it('passes podiumCanRateQuiz=false for a logged-in player who is the quiz owner', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(
+        buildQuizDoc({ _id: 'p1' }),
+      )
+      userRepository.findUserById.mockResolvedValue({
+        _id: 'p1',
+        defaultNickname: 'Alice',
+      } as User)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+        doc,
+        doc.participants[0],
+        expect.objectContaining({ podiumCanRateQuiz: false }),
+      )
+    })
+
+    it('includes podiumRatingStars and podiumRatingComment when an existing rating is found for an anonymous player', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+      userRepository.findUserById.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue({
+        stars: 4,
+        comment: 'Great quiz!',
+      } as QuizRating)
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+        doc,
+        doc.participants[0],
+        expect.objectContaining({
+          podiumCanRateQuiz: true,
+          podiumRatingStars: 4,
+          podiumRatingComment: 'Great quiz!',
+        }),
+      )
+    })
+
+    it('includes podiumRatingStars and podiumRatingComment when an existing rating is found for a logged-in player', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+      userRepository.findUserById.mockResolvedValue({
+        _id: 'p1',
+        defaultNickname: 'Alice',
+      } as User)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue({
+        stars: 5,
+        comment: 'Amazing!',
+      } as QuizRating)
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(buildPlayerGameEvent).toHaveBeenCalledWith(
+        doc,
+        doc.participants[0],
+        expect.objectContaining({
+          podiumCanRateQuiz: true,
+          podiumRatingStars: 5,
+          podiumRatingComment: 'Amazing!',
+        }),
+      )
+    })
+
+    it('omits rating fields when no prior rating exists', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(buildQuizDoc())
+      userRepository.findUserById.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue(
+        null,
+      )
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_OVER_PLAYER',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      const callArg = (buildPlayerGameEvent as jest.Mock).mock
+        .calls[0][2] as any
+      expect(callArg).not.toHaveProperty('podiumRatingStars')
+      expect(callArg).not.toHaveProperty('podiumRatingComment')
+    })
+
+    it('does not call enrichment repositories when task is not Podium', async () => {
+      const doc = buildGameDoc({ currentTask: { type: TaskType.Lobby } })
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_LOBBY',
+      })
+
+      await service.subscribe('game-1', 'p1')
+
+      expect(quizRepository.findQuizByIdOrThrow).not.toHaveBeenCalled()
+      expect(userRepository.findUserById).not.toHaveBeenCalled()
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).not.toHaveBeenCalled()
+      expect(
+        quizRatingRepository.findQuizRatingByAnonymousAuthor,
+      ).not.toHaveBeenCalled()
+    })
+
+    it('does not call enrichment repositories when participant is the HOST', async () => {
+      const doc = buildPodiumGameDoc()
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+      ;(buildHostGameEvent as jest.Mock).mockReturnValue({
+        type: 'GAME_PODIUM_HOST',
+      })
+
+      await service.subscribe('game-1', 'host')
+
+      expect(quizRepository.findQuizByIdOrThrow).not.toHaveBeenCalled()
+      expect(userRepository.findUserById).not.toHaveBeenCalled()
+    })
   })
 })

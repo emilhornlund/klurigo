@@ -998,7 +998,7 @@ describe('GameController (e2e)', () => {
 
       const actual = await gameModel.findById(gameId)
       expect(actual).toBeDefined()
-      expect(actual!.currentTask.type).toEqual(TaskType.Quit)
+      expect(actual!.currentTask.type).toEqual(TaskType.Podium)
       expect(actual!.status).toEqual(GameStatus.Completed)
     })
 
@@ -1033,7 +1033,7 @@ describe('GameController (e2e)', () => {
 
       const actual = await gameModel.findById(gameId)
       expect(actual).toBeDefined()
-      expect(actual!.currentTask.type).toEqual(TaskType.Quit)
+      expect(actual!.currentTask.type).toEqual(TaskType.Podium)
       expect(actual!.status).toEqual(GameStatus.Completed)
     })
 

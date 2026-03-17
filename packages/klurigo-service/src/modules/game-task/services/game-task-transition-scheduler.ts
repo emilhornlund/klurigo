@@ -1,4 +1,4 @@
-import { isDefined } from '@klurigo/common'
+import { GameStatus, isDefined } from '@klurigo/common'
 import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq'
 import { Injectable, Logger } from '@nestjs/common'
 import { Job, Queue } from 'bullmq'
@@ -256,6 +256,13 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       `Performing post-transition actions for task ${type} with status ${status} for Game ID: ${_id}`,
     )
 
+    if (gameDocument.status === GameStatus.Completed) {
+      this.logger.debug(
+        `Skipping post-transition actions since game is completed for Game ID: ${_id}`,
+      )
+      return
+    }
+
     const delay =
       this.gameTaskTransitionService.getTaskTransitionDelay(gameDocument)
 
@@ -304,7 +311,10 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         )
 
         const latestGameDocument =
-          await this.gameRepository.findGameByIDOrThrow(gameDocument._id)
+          await this.gameRepository.findGameByIDWithStatusesOrThrow(
+            gameDocument._id,
+            [GameStatus.Active, GameStatus.Completed],
+          )
 
         if (
           latestGameDocument.currentTask.type === type &&

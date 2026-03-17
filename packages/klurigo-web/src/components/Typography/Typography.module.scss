@@ -25,17 +25,17 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: 5rem;
+      line-height: 4rem;
       @include helpers.fontSize(variables.$mobile-hero-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 7rem;
+      line-height: 6rem;
       @include helpers.fontSize(variables.$tablet-hero-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 9rem;
+      line-height: 8rem;
       @include helpers.fontSize(variables.$desktop-hero-font-size);
     }
   }
@@ -45,7 +45,7 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: 2rem;
+      line-height: 3rem;
 
       @include helpers.fontSize(variables.$mobile-title-font-size);
     }

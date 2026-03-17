@@ -46,6 +46,7 @@ const GameContextProvider: FC<GameContextProviderProps> = ({ children }) => {
     getPlayers,
     updateGameSettings,
     quitGame,
+    createOrUpdateGameRating,
   } = useKlurigoServiceClient()
 
   const fullScreenHandle = useFullScreenHandle()
@@ -102,6 +103,8 @@ const GameContextProvider: FC<GameContextProviderProps> = ({ children }) => {
         ? fullScreenHandle.exit
         : fullScreenHandle.enter,
       quitGame: () => (gameID ? quitGame(gameID) : Promise.reject()),
+      createOrUpdateGameRating: (rating) =>
+        gameID ? createOrUpdateGameRating(gameID, rating) : Promise.reject(),
     }),
     [
       gameID,
@@ -117,6 +120,7 @@ const GameContextProvider: FC<GameContextProviderProps> = ({ children }) => {
       getPlayers,
       updateGameSettings,
       quitGame,
+      createOrUpdateGameRating,
     ],
   )
 

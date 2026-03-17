@@ -350,6 +350,39 @@ export type GameQuitEvent = {
   status: GameStatus
 }
 
+export type GameOverPlayerEventBehind = {
+  readonly points: number
+  readonly nickname: string
+}
+
+export type GameOverPlayerEventRating = {
+  readonly canRateQuiz: boolean
+  readonly stars?: number
+  readonly comment?: string
+}
+
+export type GameOverPlayerEvent = {
+  type: GameEventType.GameOverPlayer
+  game: {
+    id: string
+    mode: GameMode
+  }
+  quiz: {
+    id: string
+    title: string
+  }
+  player: {
+    nickname: string
+    rank: number
+    totalPlayers: number
+    score: number
+    currentStreak: number
+    comebackRankGain: number
+    behind: GameOverPlayerEventBehind | null
+  }
+  rating: GameOverPlayerEventRating
+}
+
 export type GameEvent =
   | GameHeartbeatEvent
   | GameLoadingEvent
@@ -365,4 +398,5 @@ export type GameEvent =
   | GameResultPlayerEvent
   | GameLeaderboardHostEvent
   | GamePodiumHostEvent
+  | GameOverPlayerEvent
   | GameQuitEvent

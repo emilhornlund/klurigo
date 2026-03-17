@@ -378,6 +378,56 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         })
     })
 
+    it('reflects updated user nickname in rating responses', async () => {
+      const newNickname = 'RenamedUser'
+
+      // Update the first author's nickname after ratings have been seeded
+      const authorId = expectedPublicRatings[0].author.id
+      await userModel.findByIdAndUpdate(authorId, {
+        defaultNickname: newNickname,
+      })
+
+      return supertest(app.getHttpServer())
+        .get(
+          `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=created&order=asc`,
+        )
+        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .expect(200)
+        .expect((res) => {
+          const rating = res.body.results.find(
+            (r: { author: { id: string } }) => r.author.id === authorId,
+          )
+          expect(rating).toBeDefined()
+          expect(rating.author.nickname).toBe(newNickname)
+        })
+    })
+
+    it('returns fully populated author for every rating in paginated results', async () => {
+      return supertest(app.getHttpServer())
+        .get(
+          `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=created&order=asc`,
+        )
+        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .expect(200)
+        .expect((res) => {
+          const results: Array<{
+            author: { id: string; nickname: string }
+          }> = res.body.results
+
+          expect(results.length).toBe(expectedPublicRatings.length)
+
+          for (const rating of results) {
+            // author.id must be a non-empty string (resolved user _id)
+            expect(typeof rating.author.id).toBe('string')
+            expect(rating.author.id.length).toBeGreaterThan(0)
+
+            // author.nickname must be a non-empty string (resolved defaultNickname)
+            expect(typeof rating.author.nickname).toBe('string')
+            expect(rating.author.nickname.length).toBeGreaterThan(0)
+          }
+        })
+    })
+
     async function seedQuizRatings(params: {
       quizId: string
       authors: User[]

@@ -5,7 +5,12 @@ export {
   default as CallToActionCard,
 } from './CallToActionCard'
 export type { CircularProgressBarProps } from './CircularProgressBar'
-export type { ConfettiProps, ConfettiIntensity } from './Confetti'
+export {
+  type CelebrationLevel,
+  type ConfettiIntensity,
+  type ConfettiProps,
+  getCelebrationLevel,
+} from './Confetti'
 export type { ConfirmDialogProps } from './ConfirmDialog'
 export type { DropzoneProps } from './Dropzone'
 export type { IconTooltipProps } from './IconTooltip'
@@ -36,6 +41,7 @@ export type { QuizTableFilterProps } from './QuizTableFilter'
 export type { ResponsiveImageProps } from './ResponsiveImage'
 export type { ResponsivePlayerProps } from './ResponsivePlayer'
 export type { RotatingMessageProps } from './RotatingMessage'
+export { default, type ScoreChipProps } from './ScoreChip'
 export type { SegmentedControlProps } from './SegmentedControl'
 export type { SelectProps } from './Select'
 export type { SortableTableProps, SortableTableValue } from './SortableTable'

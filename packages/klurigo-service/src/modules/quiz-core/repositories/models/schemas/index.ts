@@ -1,5 +1,6 @@
 export * from './question.schema'
 export * from './quiz.schema'
 export * from './quiz-gameplay-summary.schema'
+export * from './quiz-rating-author.schema'
 export * from './quiz-rating.schema'
 export * from './quiz-rating-summary.schema'

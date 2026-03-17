@@ -1,13 +1,22 @@
+import { QuizRatingAuthorType } from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { Model, Schema as MongooseSchema } from 'mongoose'
 
-import { User } from '../../../../user/repositories'
+import {
+  QuizRatingAnonymousAuthorSchema,
+  type QuizRatingAuthor,
+  QuizRatingAuthorBaseSchema,
+  QuizRatingUserAuthorSchema,
+} from './quiz-rating-author.schema'
 
 /**
  * Mongoose schema for quiz ratings and feedback comments.
  *
- * Each document represents a single user's rating for a specific quiz.
- * A unique compound index on `(quizId, author)` ensures a user can only submit one rating per quiz.
+ * Each document represents a single rating for a specific quiz. The author
+ * is stored as a discriminated subdocument — either a logged-in user
+ * ({@link QuizRatingUserAuthor}) or an anonymous game participant
+ * ({@link QuizRatingAnonymousAuthor}). Partial unique indexes enforce one
+ * rating per author per quiz for each author type independently.
  */
 @Schema({ _id: true, collection: 'quiz_ratings' })
 export class QuizRating {
@@ -28,12 +37,14 @@ export class QuizRating {
   quizId: string
 
   /**
-   * The user who left the rating.
+   * The author of the rating, stored as a discriminated subdocument.
    *
-   * Stores a reference to a User document and is used to enforce one rating per user per quiz.
+   * The subtype is determined by the author.type discriminator field.
+   * Use the QuizRatingAuthorType enum values to distinguish between
+   * authenticated users and anonymous participants.
    */
-  @Prop({ type: String, ref: 'User', required: true, index: true })
-  author: User
+  @Prop({ type: QuizRatingAuthorBaseSchema, required: true })
+  author: QuizRatingAuthor
 
   /**
    * Star rating for the quiz.
@@ -76,10 +87,38 @@ export type QuizRatingModel = Model<QuizRating>
  */
 export const QuizRatingSchema = SchemaFactory.createForClass(QuizRating)
 
+const authorSchema =
+  QuizRatingSchema.path<MongooseSchema.Types.Subdocument>('author')
+authorSchema.discriminator(
+  QuizRatingAuthorType.User,
+  QuizRatingUserAuthorSchema,
+)
+authorSchema.discriminator(
+  QuizRatingAuthorType.Anonymous,
+  QuizRatingAnonymousAuthorSchema,
+)
+
 /**
- * Ensures a user can only submit one rating per quiz.
+ * Ensures a logged-in user can only submit one rating per quiz.
  */
-QuizRatingSchema.index({ quizId: 1, author: 1 }, { unique: true })
+QuizRatingSchema.index(
+  { quizId: 1, 'author.user': 1 },
+  {
+    unique: true,
+    partialFilterExpression: { 'author.type': QuizRatingAuthorType.User },
+  },
+)
+
+/**
+ * Ensures an anonymous participant can only submit one rating per quiz.
+ */
+QuizRatingSchema.index(
+  { quizId: 1, 'author.participantId': 1 },
+  {
+    unique: true,
+    partialFilterExpression: { 'author.type': QuizRatingAuthorType.Anonymous },
+  },
+)
 
 /**
  * Supports efficient retrieval of the latest ratings and feedback for a quiz.
@@ -89,4 +128,4 @@ QuizRatingSchema.index({ quizId: 1, created: -1 })
 /**
  * Supports efficient retrieval of a user's rating history.
  */
-QuizRatingSchema.index({ author: 1, created: -1 })
+QuizRatingSchema.index({ 'author.user': 1, created: -1 })

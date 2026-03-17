@@ -5,6 +5,98 @@ import { GameRepository } from './game.repository'
 import type { Game } from './models/schemas'
 import { GameSchema } from './models/schemas'
 
+describe('GameRepository.findGameByIDWithStatuses', () => {
+  let repository: GameRepository
+  let populateMock: jest.MockedFunction<(path: string) => Promise<unknown>>
+  let findOneMock: jest.MockedFunction<
+    (filter: QueryFilter<Game>) => { populate: typeof populateMock }
+  >
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+
+    repository = Object.create(GameRepository.prototype) as GameRepository
+
+    populateMock = jest.fn().mockResolvedValue(null)
+    findOneMock = jest.fn().mockReturnValue({
+      populate: populateMock,
+    })
+    ;(
+      repository as unknown as {
+        gameModel: { findOne: typeof findOneMock }
+      }
+    ).gameModel = {
+      findOne: findOneMock,
+    } as never
+  })
+
+  it('queries only active and completed games', async () => {
+    await repository.findGameByIDWithStatuses('game-1', [
+      GameStatus.Active,
+      GameStatus.Completed,
+    ])
+
+    expect(findOneMock).toHaveBeenCalledWith({
+      _id: { $eq: 'game-1' },
+      status: { $in: [GameStatus.Active, GameStatus.Completed] },
+    })
+    expect(populateMock).toHaveBeenCalledWith('quiz')
+  })
+})
+
+describe('GameRepository.findGameByIDWithStatusesOrThrow', () => {
+  let repository: GameRepository
+  let findGameByIDWithStatusesMock: jest.MockedFunction<
+    (gameId: string, statuses: GameStatus[]) => Promise<Game | null>
+  >
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+
+    repository = Object.create(GameRepository.prototype) as GameRepository
+
+    findGameByIDWithStatusesMock = jest.fn()
+    ;(
+      repository as unknown as {
+        findGameByIDWithStatuses: typeof findGameByIDWithStatusesMock
+      }
+    ).findGameByIDWithStatuses = findGameByIDWithStatusesMock
+  })
+
+  it('returns the matching game when one is found', async () => {
+    const gameDocument = { _id: 'game-1' } as Game
+    findGameByIDWithStatusesMock.mockResolvedValueOnce(gameDocument)
+
+    await expect(
+      repository.findGameByIDWithStatusesOrThrow('game-1', [
+        GameStatus.Active,
+        GameStatus.Completed,
+      ]),
+    ).resolves.toBe(gameDocument)
+
+    expect(findGameByIDWithStatusesMock).toHaveBeenCalledWith('game-1', [
+      GameStatus.Active,
+      GameStatus.Completed,
+    ])
+  })
+
+  it('throws when no game matches the requested statuses', async () => {
+    findGameByIDWithStatusesMock.mockResolvedValueOnce(null)
+
+    await expect(
+      repository.findGameByIDWithStatusesOrThrow('game-1', [
+        GameStatus.Active,
+        GameStatus.Completed,
+      ]),
+    ).rejects.toThrow("Game not found by id 'game-1'")
+
+    expect(findGameByIDWithStatusesMock).toHaveBeenCalledWith('game-1', [
+      GameStatus.Active,
+      GameStatus.Completed,
+    ])
+  })
+})
+
 describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
   let repository: GameRepository
   let existsMock: jest.MockedFunction<

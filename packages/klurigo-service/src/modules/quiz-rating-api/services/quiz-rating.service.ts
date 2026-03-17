@@ -4,7 +4,16 @@ import { MurLock } from 'murlock'
 
 import { QuizRepository } from '../../quiz-core/repositories'
 import { QuizRatingRepository } from '../../quiz-core/repositories'
-import { QuizRating } from '../../quiz-core/repositories/models/schemas'
+import {
+  QuizRating,
+  QuizRatingAnonymousAuthorWithBase,
+  type QuizRatingAuthor,
+  QuizRatingUserAuthorWithBase,
+} from '../../quiz-core/repositories/models/schemas'
+import {
+  isQuizRatingAnonymousAuthor,
+  isQuizRatingUserAuthor,
+} from '../../quiz-core/utils'
 import { User } from '../../user/repositories'
 import { QuizRatingByQuizAndAuthorNotFoundException } from '../exceptions'
 import { updateQuizRatingSummary } from '../utils'
@@ -34,7 +43,7 @@ export class QuizRatingService {
   ) {}
 
   /**
-   * Retrieves the rating left by a specific author for a specific quiz.
+   * Retrieves the rating left by a specific authenticated user for a specific quiz.
    *
    * @param quizId - The quiz identifier.
    * @param author - The user (author) whose rating should be retrieved.
@@ -45,9 +54,9 @@ export class QuizRatingService {
     quizId: string,
     author: User,
   ): Promise<QuizRatingDto> {
-    const result = await this.quizRatingRepository.findQuizRatingByAuthor(
+    const result = await this.quizRatingRepository.findQuizRatingByUserAuthor(
       quizId,
-      author,
+      author._id,
     )
 
     if (!result) {
@@ -95,15 +104,19 @@ export class QuizRatingService {
   }
 
   /**
-   * Creates or updates a user's rating for a quiz.
+   * Creates or updates an author's rating for a quiz.
    *
    * If a rating already exists for `(quizId, author)`, it will be updated.
    * Otherwise, a new rating document is created.
    *
    * The quiz's `ratingSummary` is updated accordingly.
    *
+   * Supports both authenticated users ({@link QuizRatingAuthorType.User}) and
+   * anonymous game participants ({@link QuizRatingAuthorType.Anonymous}). The
+   * correct repository lookup is selected based on the author type.
+   *
    * @param quizId - The quiz identifier.
-   * @param author - The user creating or updating the rating.
+   * @param author - The rating author subdocument (user or anonymous participant).
    * @param stars - Star rating value (1–5).
    * @param comment - Optional feedback comment.
    * @returns The resulting rating DTO.
@@ -111,14 +124,34 @@ export class QuizRatingService {
   @MurLock(5000, 'quiz_rating', 'quizId')
   public async createOrUpdateQuizRating(
     quizId: string,
-    author: User,
+    author: QuizRatingAuthor,
     stars: number,
     comment?: string,
   ): Promise<QuizRatingDto> {
     const existingQuiz = await this.quizRepository.findQuizByIdOrThrow(quizId)
 
-    const existingQuizRating =
-      await this.quizRatingRepository.findQuizRatingByAuthor(quizId, author)
+    let existingQuizRating: QuizRating | null
+    let authorId: string
+
+    if (isQuizRatingUserAuthor(author)) {
+      const userAuthor = author as QuizRatingUserAuthorWithBase
+      existingQuizRating =
+        await this.quizRatingRepository.findQuizRatingByUserAuthor(
+          quizId,
+          userAuthor.user._id,
+        )
+      authorId = userAuthor.user._id
+    } else if (isQuizRatingAnonymousAuthor(author)) {
+      const anonAuthor = author as QuizRatingAnonymousAuthorWithBase
+      existingQuizRating =
+        await this.quizRatingRepository.findQuizRatingByAnonymousAuthor(
+          quizId,
+          anonAuthor.participantId,
+        )
+      authorId = anonAuthor.participantId
+    } else {
+      throw new Error('Unknown author type')
+    }
 
     const previousStars = existingQuizRating?.stars
     const previousComment = existingQuizRating?.comment
@@ -141,7 +174,7 @@ export class QuizRatingService {
         )
 
     if (!result) {
-      throw new QuizRatingByQuizAndAuthorNotFoundException(quizId, author._id)
+      throw new QuizRatingByQuizAndAuthorNotFoundException(quizId, authorId)
     }
 
     const ratingSummary = updateQuizRatingSummary({
@@ -164,6 +197,10 @@ export class QuizRatingService {
   /**
    * Maps a rating persistence model to a public DTO.
    *
+   * Resolves the author identity from the discriminated author subdocument.
+   * For user-authored ratings, the author nickname is resolved from the
+   * populated User document. For anonymous ratings, the stored nickname is used.
+   *
    * @param quizRating - The rating document.
    * @returns The mapped DTO.
    */
@@ -173,12 +210,34 @@ export class QuizRatingService {
       quizId: quizRating.quizId,
       stars: quizRating.stars,
       comment: quizRating.comment,
-      author: {
-        id: quizRating.author._id,
-        nickname: quizRating.author.defaultNickname,
-      },
+      author: QuizRatingService.toQuizRatingAuthorDto(quizRating.author),
       createdAt: quizRating.created,
       updatedAt: quizRating.updated,
+    }
+  }
+
+  /**
+   * Maps a discriminated author subdocument to the public author DTO shape.
+   *
+   * The external shape `{ id, nickname }` is the same for both user and
+   * anonymous authors — consumers do not need to know the author type.
+   *
+   * For user authors, the nickname is resolved from the populated User document.
+   * For anonymous authors, the nickname stored at rating time is used directly.
+   *
+   * @param author - The discriminated author subdocument.
+   * @returns The mapped author DTO.
+   */
+  private static toQuizRatingAuthorDto(author: QuizRatingAuthor): {
+    id: string
+    nickname: string
+  } {
+    if (isQuizRatingUserAuthor(author)) {
+      return { id: author.user._id, nickname: author.user.defaultNickname }
+    } else if (isQuizRatingAnonymousAuthor(author)) {
+      return { id: author.participantId, nickname: author.nickname }
+    } else {
+      throw new Error('Unknown author')
     }
   }
 }

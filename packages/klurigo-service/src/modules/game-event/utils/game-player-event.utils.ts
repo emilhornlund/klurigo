@@ -1,4 +1,4 @@
-import { GameEvent } from '@klurigo/common'
+import { GameEvent, GameStatus } from '@klurigo/common'
 
 import {
   GameDocument,
@@ -10,7 +10,6 @@ import {
   isPodiumTask,
   isQuestionResultTask,
   isQuestionTask,
-  isQuitTask,
 } from '../../game-task/utils/task-type-guards'
 import { GameEventMetaData } from '../models'
 
@@ -19,6 +18,7 @@ import {
   buildGameBeginPlayerEvent,
   buildGameLobbyPlayerEvent,
 } from './game-lobby-event.utils'
+import { buildGameOverPlayerEvent } from './game-over-event.utils'
 import {
   buildGameQuestionPlayerEvent,
   buildGameQuestionPreviewPlayerEvent,
@@ -42,6 +42,13 @@ export function buildPlayerGameEvent(
   player: ParticipantPlayerWithBase,
   metadata: Partial<GameEventMetaData> = {},
 ): GameEvent {
+  if (
+    GameStatus.Expired === game.status ||
+    GameStatus.Terminated === game.status
+  ) {
+    return buildGameQuitEvent(game.status)
+  }
+
   if (isLobbyTask(game)) {
     switch (game.currentTask.status) {
       case 'pending':
@@ -67,11 +74,7 @@ export function buildPlayerGameEvent(
     }
   }
 
-  if (
-    isQuestionResultTask(game) ||
-    isLeaderboardTask(game) ||
-    isPodiumTask(game)
-  ) {
+  if (isQuestionResultTask(game) || isLeaderboardTask(game)) {
     switch (game.currentTask.status) {
       case 'pending':
         return buildGameLoadingEvent()
@@ -82,8 +85,14 @@ export function buildPlayerGameEvent(
     }
   }
 
-  if (isQuitTask(game)) {
-    return buildGameQuitEvent(game.status)
+  if (isPodiumTask(game)) {
+    switch (game.currentTask.status) {
+      case 'pending':
+        return buildGameLoadingEvent()
+      case 'active':
+      case 'completed':
+        return buildGameOverPlayerEvent(game, player, metadata)
+    }
   }
 
   throw new Error('Unknown task')

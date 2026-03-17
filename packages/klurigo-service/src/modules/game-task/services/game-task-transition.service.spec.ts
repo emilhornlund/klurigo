@@ -10,7 +10,6 @@ import {
   createMockPodiumTaskDocument,
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
-  createMockQuitTaskDocument,
   createMockRangeQuestionDocument,
   createMockTrueFalseQuestionDocument,
 } from '../../../../test-utils/data'
@@ -33,7 +32,6 @@ jest.mock('../utils', () => ({
   buildQuestionResultTask: jest.fn(),
   buildLeaderboardTask: jest.fn(),
   buildPodiumTask: jest.fn(),
-  buildQuitTask: jest.fn(),
   updateParticipantsAndBuildLeaderboard: jest.fn(),
 }))
 
@@ -43,7 +41,6 @@ import {
   buildPodiumTask,
   buildQuestionResultTask,
   buildQuestionTask,
-  buildQuitTask,
   updateParticipantsAndBuildLeaderboard,
 } from '../utils'
 
@@ -646,7 +643,7 @@ describe('GameTaskTransitionService', () => {
       expect(buildQuestionTask).toHaveBeenCalledWith(gameDoc as never)
     })
 
-    it('podium completed transitions to quit and sets status Completed when players exist', async () => {
+    it('podium completed keeps podium as current task and sets status Completed when players exist', async () => {
       const podium = createMockPodiumTaskDocument({ status: 'completed' })
       const host = createMockGameHostParticipantDocument()
       const player = createMockGamePlayerParticipantDocument()
@@ -656,11 +653,6 @@ describe('GameTaskTransitionService', () => {
         participants: [host, player],
       })
 
-      const quitTask = createMockQuitTaskDocument()
-      ;(buildQuitTask as jest.Mock)
-        .mockReset()
-        .mockReturnValue(quitTask as never)
-
       mockIsParticipantPlayer.mockImplementation((p: any) => p !== host)
 
       const callback = service.getTaskTransitionCallback(gameDoc as never)
@@ -668,14 +660,13 @@ describe('GameTaskTransitionService', () => {
 
       await callback!(gameDoc as never)
 
-      expect(gameDoc.previousTasks).toContain(podium)
-      expect(buildQuitTask).toHaveBeenCalled()
-      expect(gameDoc.currentTask).toBe(quitTask)
+      expect(gameDoc.previousTasks).not.toContain(podium)
+      expect(gameDoc.currentTask).toBe(podium)
       expect(gameDoc.status).toBe(GameStatus.Completed)
       expect(gameDoc.completedAt).toBeInstanceOf(Date)
     })
 
-    it('podium completed transitions to quit and sets status Completed when no players exist', async () => {
+    it('podium completed keeps podium as current task and sets status Completed when no players exist', async () => {
       const podium = createMockPodiumTaskDocument({ status: 'completed' })
       const host = createMockGameHostParticipantDocument()
 
@@ -684,11 +675,6 @@ describe('GameTaskTransitionService', () => {
         participants: [host],
       })
 
-      const quitTask = createMockQuitTaskDocument()
-      ;(buildQuitTask as jest.Mock)
-        .mockReset()
-        .mockReturnValue(quitTask as never)
-
       mockIsParticipantPlayer.mockReturnValue(false)
 
       const callback = service.getTaskTransitionCallback(gameDoc as never)
@@ -696,9 +682,8 @@ describe('GameTaskTransitionService', () => {
 
       await callback!(gameDoc as never)
 
-      expect(gameDoc.previousTasks).toContain(podium)
-      expect(buildQuitTask).toHaveBeenCalled()
-      expect(gameDoc.currentTask).toBe(quitTask)
+      expect(gameDoc.previousTasks).not.toContain(podium)
+      expect(gameDoc.currentTask).toBe(podium)
       expect(gameDoc.status).toBe(GameStatus.Completed)
       expect(gameDoc.completedAt).toBeInstanceOf(Date)
     })

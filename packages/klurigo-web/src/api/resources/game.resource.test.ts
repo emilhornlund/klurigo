@@ -358,4 +358,39 @@ describe('createGameResource', () => {
 
     expect(parseQueryParams).toHaveBeenCalledWith({ limit: 10, offset: 20 })
   })
+
+  it('createOrUpdateGameRating puts to /games/:gameId/ratings with game scope; notifies and rethrows on failure', async () => {
+    const { api, apiPut } = makeApi()
+    const { deps, notifyError } = makeDeps()
+
+    const game = createGameResource(api, deps)
+
+    const rating = { stars: 4, comment: 'Great quiz!' }
+    const responseRating = {
+      id: 'r1',
+      quizId: 'q1',
+      stars: 4,
+      comment: 'Great quiz!',
+      author: { id: 'p1', nickname: 'Emil' },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+
+    apiPut.mockResolvedValue(responseRating)
+    await expect(game.createOrUpdateGameRating('g1', rating)).resolves.toEqual(
+      responseRating,
+    )
+
+    expect(apiPut).toHaveBeenCalledWith('/games/g1/ratings', rating, {
+      scope: TokenScope.Game,
+    })
+
+    const err = new Error('fail')
+    apiPut.mockRejectedValueOnce(err)
+
+    await expect(game.createOrUpdateGameRating('g1', rating)).rejects.toBe(err)
+    expect(notifyError).toHaveBeenCalledWith(
+      'We couldn’t save your rating. Please try again.',
+    )
+  })
 })

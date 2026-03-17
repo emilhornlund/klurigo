@@ -1,3 +1,4 @@
+import { QuizRatingAuthorType } from '@klurigo/common'
 import { getModelToken } from '@nestjs/mongoose'
 import { Test } from '@nestjs/testing'
 import type { Model } from 'mongoose'
@@ -43,7 +44,13 @@ jest.mock('../../../app/shared/repository', () => {
 
 describe(QuizRatingRepository.name, () => {
   let repository: QuizRatingRepository
-  let quizRatingModel: Partial<Model<QuizRating>>
+  let quizRatingModel: Partial<Model<QuizRating>> & {
+    findOne: jest.Mock
+    find: jest.Mock
+    countDocuments: jest.Mock
+    findById: jest.Mock
+    db: { model: jest.Mock }
+  }
 
   const fixedNow = new Date('2026-01-10T12:00:00.000Z')
 
@@ -51,7 +58,19 @@ describe(QuizRatingRepository.name, () => {
     jest.useFakeTimers()
     jest.setSystemTime(fixedNow)
 
-    quizRatingModel = {}
+    quizRatingModel = {
+      findOne: jest.fn(),
+      find: jest.fn(),
+      countDocuments: jest.fn(),
+      findById: jest.fn(),
+      db: { model: jest.fn() },
+    } as Partial<Model<QuizRating>> & {
+      findOne: jest.Mock
+      find: jest.Mock
+      countDocuments: jest.Mock
+      findById: jest.Mock
+      db: { model: jest.Mock }
+    }
 
     const moduleRef = await Test.createTestingModule({
       providers: [
@@ -72,49 +91,167 @@ describe(QuizRatingRepository.name, () => {
     jest.useRealTimers()
   })
 
-  describe('findQuizRatingByAuthor', () => {
-    it('calls BaseRepository.findOne with quizId and author and returns the document', async () => {
+  describe('findQuizRatingByUserAuthor', () => {
+    /**
+     * Helper that mocks the `findOne().lean().exec()` chain used by
+     * `findQuizRatingByUserAuthor`.
+     */
+    function setupFindOneChain(doc: QuizRating | null): void {
+      const execMock = jest.fn().mockResolvedValue(doc)
+      const leanMock = jest.fn().mockReturnValue({ exec: execMock })
+      quizRatingModel.findOne.mockReturnValue({ lean: leanMock })
+    }
+
+    /**
+     * Helper that mocks the `db.model('User')` chain used by
+     * `resolveUserAuthors` for looking up User documents.
+     */
+    function setupUserModelMock(users: Array<{ _id: string }>): void {
+      const execMock = jest.fn().mockResolvedValue(users)
+      const leanMock = jest.fn().mockReturnValue({ exec: execMock })
+      const findMock = jest.fn().mockReturnValue({ lean: leanMock })
+      quizRatingModel.db.model.mockReturnValue({ find: findMock })
+    }
+
+    it('queries by quizId and userId, resolves the User ref, and returns the document', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser()
-      const expected = {
+      const userId = author._id
+
+      // findOne returns a lean doc with an unresolved string user ref
+      const leanDoc = {
         _id: 'rating-1',
         quizId,
-        author,
+        author: {
+          type: QuizRatingAuthorType.User,
+          user: userId,
+        },
         stars: 5,
         created: fixedNow,
         updated: fixedNow,
       } as unknown as QuizRating
 
-      ;(repository.findOne as jest.Mock).mockResolvedValue(expected)
+      setupFindOneChain(leanDoc)
+      setupUserModelMock([author as unknown as { _id: string }])
 
-      const result = await repository.findQuizRatingByAuthor(
+      const result = await repository.findQuizRatingByUserAuthor(quizId, userId)
+
+      expect(quizRatingModel.findOne).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.findOne).toHaveBeenCalledWith({
         quizId,
-        author as unknown as any,
-      )
-
-      expect(repository.findOne).toHaveBeenCalledTimes(1)
-      expect(repository.findOne).toHaveBeenCalledWith({ quizId, author })
-      expect(result).toBe(expected)
+        'author.type': QuizRatingAuthorType.User,
+        'author.user': userId,
+      })
+      expect(result).not.toBeNull()
+      expect(result!._id).toBe('rating-1')
     })
 
-    it('returns null when BaseRepository.findOne returns null', async () => {
+    it('returns null when no rating matches', async () => {
       const quizId = 'quiz-1'
-      const author = buildMockPrimaryUser()
+      const userId = 'user-123'
 
-      ;(repository.findOne as jest.Mock).mockResolvedValue(null)
+      setupFindOneChain(null)
 
-      const result = await repository.findQuizRatingByAuthor(
+      const result = await repository.findQuizRatingByUserAuthor(quizId, userId)
+
+      expect(quizRatingModel.findOne).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.findOne).toHaveBeenCalledWith({
         quizId,
-        author as unknown as any,
+        'author.type': QuizRatingAuthorType.User,
+        'author.user': userId,
+      })
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('findQuizRatingByAnonymousAuthor', () => {
+    /**
+     * Helper that mocks the `findOne().lean().exec()` chain used by
+     * `findQuizRatingByAnonymousAuthor`.
+     */
+    function setupFindOneChain(doc: QuizRating | null): void {
+      const execMock = jest.fn().mockResolvedValue(doc)
+      const leanMock = jest.fn().mockReturnValue({ exec: execMock })
+      quizRatingModel.findOne.mockReturnValue({ lean: leanMock })
+    }
+
+    it('queries by quizId and participantId and returns the document', async () => {
+      const quizId = 'quiz-1'
+      const participantId = 'participant-abc'
+
+      const leanDoc = {
+        _id: 'rating-2',
+        quizId,
+        author: {
+          type: QuizRatingAuthorType.Anonymous,
+          participantId,
+          nickname: 'AnonPlayer',
+        },
+        stars: 3,
+        created: fixedNow,
+        updated: fixedNow,
+      } as unknown as QuizRating
+
+      setupFindOneChain(leanDoc)
+
+      const result = await repository.findQuizRatingByAnonymousAuthor(
+        quizId,
+        participantId,
       )
 
-      expect(repository.findOne).toHaveBeenCalledTimes(1)
-      expect(repository.findOne).toHaveBeenCalledWith({ quizId, author })
+      expect(quizRatingModel.findOne).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.findOne).toHaveBeenCalledWith({
+        quizId,
+        'author.type': QuizRatingAuthorType.Anonymous,
+        'author.participantId': participantId,
+      })
+      expect(result).not.toBeNull()
+      expect(result!._id).toBe('rating-2')
+    })
+
+    it('returns null when no anonymous rating matches', async () => {
+      const quizId = 'quiz-1'
+      const participantId = 'participant-missing'
+
+      setupFindOneChain(null)
+
+      const result = await repository.findQuizRatingByAnonymousAuthor(
+        quizId,
+        participantId,
+      )
+
+      expect(quizRatingModel.findOne).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.findOne).toHaveBeenCalledWith({
+        quizId,
+        'author.type': QuizRatingAuthorType.Anonymous,
+        'author.participantId': participantId,
+      })
       expect(result).toBeNull()
     })
   })
 
   describe('findQuizRatingsWithPagination', () => {
+    /**
+     * Sets up the model mocks for a `find().skip().limit().sort().lean().exec()`
+     * query chain and `countDocuments()` used by `findQuizRatingsWithPagination`.
+     */
+    function setupFindChain(documents: QuizRating[], total: number): void {
+      const execMock = jest.fn().mockResolvedValue(documents)
+      const leanMock = jest.fn().mockReturnValue({ exec: execMock })
+      const sortMock = jest.fn().mockReturnValue({ lean: leanMock })
+      const limitMock = jest.fn().mockReturnValue({ sort: sortMock })
+      const skipMock = jest.fn().mockReturnValue({ limit: limitMock })
+      quizRatingModel.find.mockReturnValue({ skip: skipMock })
+      quizRatingModel.countDocuments.mockResolvedValue(total)
+
+      // resolveUserAuthors uses db.model('User') — provide a no-op mock
+      // that returns no users (test documents already have resolved authors).
+      const userExecMock = jest.fn().mockResolvedValue([])
+      const userLeanMock = jest.fn().mockReturnValue({ exec: userExecMock })
+      const userFindMock = jest.fn().mockReturnValue({ lean: userLeanMock })
+      quizRatingModel.db.model.mockReturnValue({ find: userFindMock })
+    }
+
     it('builds filter without comment constraint when commentsOnly is false/undefined', async () => {
       const quizId = 'quiz-1'
 
@@ -125,10 +262,7 @@ describe(QuizRatingRepository.name, () => {
         { _id: 'r2' },
       ] as unknown as QuizRating[]
 
-      ;(repository.findWithPagination as jest.Mock).mockResolvedValue({
-        documents,
-        total: 2,
-      })
+      setupFindChain(documents, 2)
 
       const result = await repository.findQuizRatingsWithPagination(quizId, {})
 
@@ -138,16 +272,8 @@ describe(QuizRatingRepository.name, () => {
         direction: 1,
       })
 
-      expect(repository.findWithPagination).toHaveBeenCalledTimes(1)
-      expect(repository.findWithPagination).toHaveBeenCalledWith(
-        { quizId },
-        {
-          skip: 0,
-          limit: 5,
-          sort: { updated: -1 },
-          populate: 'author',
-        },
-      )
+      expect(quizRatingModel.find).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.find).toHaveBeenCalledWith({ quizId })
 
       expect(result).toEqual({
         results: documents,
@@ -161,37 +287,26 @@ describe(QuizRatingRepository.name, () => {
       const quizId = 'quiz-1'
 
       ;(buildSortObject as jest.Mock).mockReturnValue({ updated: -1 })
-      ;(repository.findWithPagination as jest.Mock).mockResolvedValue({
-        documents: [],
-        total: 0,
-      })
+
+      setupFindChain([], 0)
 
       await repository.findQuizRatingsWithPagination(quizId, {
         commentsOnly: true,
       })
 
-      expect(repository.findWithPagination).toHaveBeenCalledTimes(1)
-      expect(repository.findWithPagination).toHaveBeenCalledWith(
-        {
-          quizId,
-          comment: { $exists: true, $ne: '' },
-        },
-        expect.objectContaining({
-          skip: 0,
-          limit: 5,
-          populate: 'author',
-        }),
-      )
+      expect(quizRatingModel.find).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.find).toHaveBeenCalledWith({
+        quizId,
+        comment: { $exists: true, $ne: '' },
+      })
     })
 
     it('respects offset and limit options', async () => {
       const quizId = 'quiz-1'
 
       ;(buildSortObject as jest.Mock).mockReturnValue({ created: 1 })
-      ;(repository.findWithPagination as jest.Mock).mockResolvedValue({
-        documents: [],
-        total: 0,
-      })
+
+      setupFindChain([], 0)
 
       const result = await repository.findQuizRatingsWithPagination(quizId, {
         offset: 10,
@@ -205,16 +320,8 @@ describe(QuizRatingRepository.name, () => {
         direction: 1,
       })
 
-      expect(repository.findWithPagination).toHaveBeenCalledTimes(1)
-      expect(repository.findWithPagination).toHaveBeenCalledWith(
-        { quizId },
-        {
-          skip: 10,
-          limit: 25,
-          sort: { created: 1 },
-          populate: 'author',
-        },
-      )
+      expect(quizRatingModel.find).toHaveBeenCalledTimes(1)
+      expect(quizRatingModel.find).toHaveBeenCalledWith({ quizId })
 
       expect(result).toEqual({
         results: [],
@@ -228,10 +335,8 @@ describe(QuizRatingRepository.name, () => {
       const quizId = 'quiz-1'
 
       ;(buildSortObject as jest.Mock).mockReturnValue({ updated: -1 })
-      ;(repository.findWithPagination as jest.Mock).mockResolvedValue({
-        documents: [],
-        total: 0,
-      })
+
+      setupFindChain([], 0)
 
       await repository.findQuizRatingsWithPagination(quizId, {
         sort: {},
@@ -244,17 +349,14 @@ describe(QuizRatingRepository.name, () => {
       })
     })
 
-    it('maps BaseRepository.findWithPagination response to {results,total,limit,offset}', async () => {
+    it('maps model query response to {results,total,limit,offset}', async () => {
       const quizId = 'quiz-1'
 
       ;(buildSortObject as jest.Mock).mockReturnValue({ updated: -1 })
 
       const documents = [{ _id: 'r1' }] as unknown as QuizRating[]
 
-      ;(repository.findWithPagination as jest.Mock).mockResolvedValue({
-        documents,
-        total: 123,
-      })
+      setupFindChain(documents, 123)
 
       const result = await repository.findQuizRatingsWithPagination(quizId, {
         offset: 7,
@@ -282,7 +384,7 @@ describe(QuizRatingRepository.name, () => {
 
       const author = buildMockPrimaryUser()
 
-      const created = {
+      const populatedDoc = {
         _id: 'rating-uuid-1',
         quizId,
         author,
@@ -290,9 +392,12 @@ describe(QuizRatingRepository.name, () => {
         comment,
         created: fixedNow,
         updated: fixedNow,
-      } as unknown as QuizRating
+      }
 
-      ;(repository.create as jest.Mock).mockResolvedValue(created)
+      ;(repository.create as jest.Mock).mockResolvedValue(undefined)
+      ;(quizRatingModel.findById as jest.Mock).mockReturnValue({
+        populate: jest.fn().mockResolvedValue({ toObject: () => populatedDoc }),
+      })
 
       const result = await repository.createQuizRating(
         quizId,
@@ -312,7 +417,8 @@ describe(QuizRatingRepository.name, () => {
         created: fixedNow,
         updated: fixedNow,
       })
-      expect(result).toBe(created)
+      expect(quizRatingModel.findById).toHaveBeenCalledWith('rating-uuid-1')
+      expect(result).toEqual(populatedDoc)
     })
 
     it('creates a rating without comment when comment is undefined', async () => {
@@ -322,16 +428,19 @@ describe(QuizRatingRepository.name, () => {
 
       ;(uuidv4 as unknown as jest.Mock).mockReturnValue('uuid-2')
 
-      const created = {
+      const populatedDoc = {
         _id: 'uuid-2',
         quizId,
         author,
         stars,
         created: fixedNow,
         updated: fixedNow,
-      } as unknown as QuizRating
+      }
 
-      ;(repository.create as jest.Mock).mockResolvedValue(created)
+      ;(repository.create as jest.Mock).mockResolvedValue(undefined)
+      ;(quizRatingModel.findById as jest.Mock).mockReturnValue({
+        populate: jest.fn().mockResolvedValue({ toObject: () => populatedDoc }),
+      })
 
       await repository.createQuizRating(
         quizId,
@@ -350,6 +459,7 @@ describe(QuizRatingRepository.name, () => {
         created: fixedNow,
         updated: fixedNow,
       })
+      expect(quizRatingModel.findById).toHaveBeenCalledWith('uuid-2')
     })
   })
 
@@ -379,7 +489,7 @@ describe(QuizRatingRepository.name, () => {
       expect(repository.update).toHaveBeenCalledWith(
         ratingId,
         { stars, comment, updated: fixedNow },
-        { populate: { path: 'author' } },
+        { populate: { path: 'author.user', model: 'User' } },
       )
       expect(result).toBe(updated)
     })
@@ -398,7 +508,7 @@ describe(QuizRatingRepository.name, () => {
       expect(repository.update).toHaveBeenCalledWith(
         ratingId,
         { stars, comment: undefined, updated: fixedNow },
-        { populate: { path: 'author' } },
+        { populate: { path: 'author.user', model: 'User' } },
       )
     })
 
@@ -416,7 +526,7 @@ describe(QuizRatingRepository.name, () => {
       expect(repository.update).toHaveBeenCalledWith(
         ratingId,
         { stars: 1, comment: 'x', updated: now2 },
-        { populate: { path: 'author' } },
+        { populate: { path: 'author.user', model: 'User' } },
       )
     })
   })

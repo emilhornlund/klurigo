@@ -1,4 +1,5 @@
 export * from './game.controller'
+export * from './game-rating.controller'
 export * from './game-settings.controller'
 export * from './profile-game.controller'
 export * from './quiz-game.controller'

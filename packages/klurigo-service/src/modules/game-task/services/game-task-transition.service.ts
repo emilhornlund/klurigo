@@ -15,7 +15,6 @@ import {
   buildPodiumTask,
   buildQuestionResultTask,
   buildQuestionTask,
-  buildQuitTask,
   updateParticipantsAndBuildLeaderboard,
 } from '../utils'
 
@@ -246,7 +245,11 @@ export class GameTaskTransitionService {
   }
 
   /**
-   * Handles the completion of the podium task by transitioning it to the quit task.
+   * Handles the completion of the podium task by marking the game as completed.
+   *
+   * The podium task intentionally remains as `currentTask` so that reconnecting
+   * players continue to receive the game-over event and the host receives the
+   * quit event based on game status rather than task type.
    *
    * @param {GameDocument} gameDocument - The game document containing the current task.
    *
@@ -263,8 +266,6 @@ export class GameTaskTransitionService {
       )
     }
 
-    gameDocument.previousTasks.push(gameDocument.currentTask)
-    gameDocument.currentTask = buildQuitTask()
     gameDocument.status = GameStatus.Completed
     gameDocument.completedAt = new Date()
   }

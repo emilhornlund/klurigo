@@ -1,6 +1,6 @@
 import {
   GameEventType,
-  GameParticipantType,
+  GameStatus,
   HEARTBEAT_INTERVAL,
   isDefined,
 } from '@klurigo/common'
@@ -18,18 +18,9 @@ import { concat, finalize, fromEvent, Observable, of } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 
 import { PlayerNotFoundException } from '../../game-core/exceptions'
-import {
-  GameAnswerRepository,
-  GameRepository,
-} from '../../game-core/repositories'
-import { TaskType } from '../../game-core/repositories/models/schemas'
-import {
-  buildHostGameEvent,
-  buildPlayerGameEvent,
-  toGameEventMetaData,
-  toPlayerQuestionPlayerEventMetaData,
-} from '../utils'
+import { GameRepository } from '../../game-core/repositories'
 
+import { GameParticipantEventBuilder } from './game-participant-event.builder'
 import { DistributedEvent } from './models/event'
 
 const REDIS_PUBSUB_CHANNEL = 'events'
@@ -65,13 +56,13 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    *
    * @param redis - The primary Redis client used for queries and for duplicating a dedicated Pub/Sub subscriber connection.
    * @param gameRepository - Repository used to validate games and participants before opening an SSE stream.
-   * @param gameAnswerRepository - Repository used to retrieve current-question answers for building initial snapshot events.
+   * @param gameParticipantEventBuilder - Shared builder used to construct initial participant-specific events.
    * @param eventEmitter - Local event emitter used to broadcast distributed events to all SSE subscriptions within this instance.
    */
   constructor(
     @InjectRedis() private readonly redis: Redis,
     private readonly gameRepository: GameRepository,
-    private readonly gameAnswerRepository: GameAnswerRepository,
+    private readonly gameParticipantEventBuilder: GameParticipantEventBuilder,
     private readonly eventEmitter: EventEmitter2,
   ) {
     this.redisSubscriber = redis.duplicate()
@@ -268,13 +259,16 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * @returns An observable of {@link MessageEvent} where `data` is a JSON-encoded game event payload.
    *
    * @throws {PlayerNotFoundException} If the participant does not exist in the game.
-   * @throws {ActiveGameNotFoundByIDException} If the game does not exist or cannot be loaded.
+   * @throws {GameNotFoundException} If the game does not exist or is not active/completed.
    */
   public async subscribe(
     gameId: string,
     participantId: string,
   ): Promise<Observable<MessageEvent>> {
-    const document = await this.gameRepository.findGameByIDOrThrow(gameId)
+    const document = await this.gameRepository.findGameByIDWithStatusesOrThrow(
+      gameId,
+      [GameStatus.Active, GameStatus.Completed],
+    )
 
     const participant = document.participants.find(
       (p) => p.participantId === participantId,
@@ -296,23 +290,12 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     // so clients know the stream is alive.
     const initialEvent = await (async (): Promise<DistributedEvent> => {
       try {
-        const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
-          document._id,
-        )
-
-        const metaData = toGameEventMetaData(answers, {}, document.participants)
-
         return {
           playerId: participantId,
-          event:
-            participant.type === GameParticipantType.PLAYER
-              ? buildPlayerGameEvent(document, participant, {
-                  ...metaData,
-                  ...(document.currentTask.type === TaskType.Question
-                    ? toPlayerQuestionPlayerEventMetaData(answers, participant)
-                    : {}),
-                })
-              : buildHostGameEvent(document, metaData),
+          event: await this.gameParticipantEventBuilder.buildParticipantEvent(
+            document,
+            participant,
+          ),
         }
       } catch (error) {
         const { message, stack } = error as Error

@@ -1,3 +1,4 @@
+import { GameStatus } from '@klurigo/common'
 import { Job, Queue } from 'bullmq'
 
 import { GameRepository } from '../../game-core/repositories'
@@ -22,7 +23,10 @@ describe('GameTaskTransitionScheduler', () => {
     Pick<Queue<GameDocument, void, string>, 'getJob' | 'remove' | 'add'>
   >
   let gameRepository: jest.Mocked<
-    Pick<GameRepository, 'findAndSaveWithLock' | 'findGameByIDOrThrow'>
+    Pick<
+      GameRepository,
+      'findAndSaveWithLock' | 'findGameByIDWithStatusesOrThrow'
+    >
   >
   let gameTaskTransitionService: jest.Mocked<
     Pick<
@@ -78,7 +82,7 @@ describe('GameTaskTransitionScheduler', () => {
 
     gameRepository = {
       findAndSaveWithLock: jest.fn(),
-      findGameByIDOrThrow: jest.fn(),
+      findGameByIDWithStatusesOrThrow: jest.fn(),
     }
 
     gameTaskTransitionService = {
@@ -914,6 +918,26 @@ describe('GameTaskTransitionScheduler', () => {
       ).rejects.toThrow('schedule-fail')
       expect(logger.error).toHaveBeenCalledTimes(1)
     })
+
+    it('does not schedule next transition when game status is Completed', async () => {
+      const game = buildGameDocument(
+        { status: GameStatus.Completed },
+        { status: 'completed' },
+      )
+
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(0)
+
+      const scheduleSpy = jest
+        .spyOn(scheduler, 'scheduleTaskTransition')
+        .mockResolvedValue(undefined)
+
+      await (scheduler as any).performPostTransition(game)
+
+      expect(scheduleSpy).not.toHaveBeenCalled()
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.stringContaining('game is completed'),
+      )
+    })
   })
 
   describe('shouldSchedulePostTaskTransition', () => {
@@ -1140,7 +1164,7 @@ describe('GameTaskTransitionScheduler', () => {
         callback,
       )
 
-      gameRepository.findGameByIDOrThrow.mockResolvedValue(
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
         buildGameDocument(
           { _id: game._id },
           { type: game.currentTask.type, status: 'pending' },
@@ -1155,7 +1179,9 @@ describe('GameTaskTransitionScheduler', () => {
 
       await expect(scheduler.process(job)).resolves.toBeUndefined()
 
-      expect(gameRepository.findGameByIDOrThrow).toHaveBeenCalledTimes(1)
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).toHaveBeenCalledTimes(1)
       expect(taskQueue.remove).toHaveBeenCalledTimes(1)
       expect(taskQueue.remove).toHaveBeenCalledWith(job.id)
 
@@ -1176,7 +1202,7 @@ describe('GameTaskTransitionScheduler', () => {
         jest.fn().mockResolvedValue(undefined),
       )
 
-      gameRepository.findGameByIDOrThrow.mockResolvedValue(
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
         buildGameDocument(
           { _id: game._id },
           { type: 'Other' as any as TaskType, status: 'active' },
@@ -1230,7 +1256,9 @@ describe('GameTaskTransitionScheduler', () => {
         'Method not implemented.',
       )
 
-      expect(gameRepository.findGameByIDOrThrow).not.toHaveBeenCalled()
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
       expect(taskQueue.remove).not.toHaveBeenCalled()
     })
   })

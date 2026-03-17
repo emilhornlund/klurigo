@@ -8,11 +8,6 @@ import { useEffect, useRef, useState } from 'react'
  */
 type SavedPayload = {
   /**
-   * The quiz identifier the rating belongs to.
-   */
-  quizId: string
-
-  /**
    * The star rating value for the quiz (1–5).
    */
   stars: number
@@ -29,6 +24,8 @@ type SavedPayload = {
 export type UseQuizRatingDraftArgs = {
   /**
    * The quiz identifier the rating belongs to.
+   *
+   * Used to detect quiz changes and reset draft state on hydration.
    */
   quizId: string
 
@@ -52,13 +49,11 @@ export type UseQuizRatingDraftArgs = {
   /**
    * Persists the rating update to the backend.
    *
-   * Implementations are expected to upsert the rating for the authenticated user.
+   * Called with the current star rating and optional comment. The implementation
+   * is responsible for knowing which resource to update (e.g. by closing over
+   * the quiz or game ID).
    */
-  createOrUpdateQuizRating: (
-    quizId: string,
-    stars: number,
-    comment?: string,
-  ) => Promise<QuizRatingDto>
+  persist: (stars: number, comment?: string) => Promise<QuizRatingDto>
 
   /**
    * Debounce duration (in milliseconds) for comment updates.
@@ -117,7 +112,7 @@ export type UseQuizRatingDraftResult = {
  * @param canRateQuiz - Whether the current user is allowed to rate this quiz.
  * @param initialStars - Initial star rating value, if a rating already exists.
  * @param initialComment - Initial comment value, if a rating already exists.
- * @param createOrUpdateQuizRating - Callback that persists/upserts the rating to the backend.
+ * @param persist - Callback that persists the rating to the backend.
  * @param debounceMs - Debounce duration (in milliseconds) for comment updates.
  * @returns The current draft state and setters for stars and comment.
  */
@@ -126,7 +121,7 @@ export function useQuizRatingDraft({
   canRateQuiz,
   initialStars,
   initialComment,
-  createOrUpdateQuizRating,
+  persist,
   debounceMs = 600,
 }: UseQuizRatingDraftArgs): UseQuizRatingDraftResult {
   const [stars, setStarsState] = useState<number | undefined>(initialStars)
@@ -138,10 +133,10 @@ export function useQuizRatingDraft({
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastSentRef = useRef<SavedPayload | null>(null)
 
-  const createOrUpdateRef = useRef(createOrUpdateQuizRating)
+  const persistRef = useRef(persist)
   useEffect(() => {
-    createOrUpdateRef.current = createOrUpdateQuizRating
-  }, [createOrUpdateQuizRating])
+    persistRef.current = persist
+  }, [persist])
 
   // Hydrate when quiz/rating changes, without triggering saves.
   useEffect(() => {
@@ -174,7 +169,6 @@ export function useQuizRatingDraft({
 
     saveTimerRef.current = setTimeout(() => {
       const payload: SavedPayload = {
-        quizId,
         stars: nextStars,
         comment: commentToSend,
       }
@@ -182,7 +176,6 @@ export function useQuizRatingDraft({
       const last = lastSentRef.current
       if (
         last &&
-        last.quizId === payload.quizId &&
         last.stars === payload.stars &&
         last.comment === payload.comment
       ) {
@@ -190,7 +183,7 @@ export function useQuizRatingDraft({
       }
 
       lastSentRef.current = payload
-      createOrUpdateRef.current(payload.quizId, payload.stars, payload.comment)
+      persistRef.current(payload.stars, payload.comment)
     }, delay)
   }
 

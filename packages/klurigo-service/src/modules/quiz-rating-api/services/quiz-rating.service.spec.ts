@@ -1,3 +1,4 @@
+import { QuizRatingAuthorType } from '@klurigo/common'
 import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 
@@ -7,7 +8,12 @@ import {
 } from '../../../../test-utils/data'
 import { QuizRepository } from '../../quiz-core/repositories'
 import { QuizRatingRepository } from '../../quiz-core/repositories'
-import { QuizRating } from '../../quiz-core/repositories/models/schemas'
+import {
+  QuizRating,
+  QuizRatingAnonymousAuthorWithBase,
+  QuizRatingUserAuthorWithBase,
+} from '../../quiz-core/repositories/models/schemas'
+import { LocalUser } from '../../user/repositories'
 import { QuizRatingByQuizAndAuthorNotFoundException } from '../exceptions'
 import { updateQuizRatingSummary } from '../utils'
 
@@ -31,7 +37,8 @@ describe(QuizRatingService.name, () => {
   }
 
   let quizRatingRepository: {
-    findQuizRatingByAuthor: jest.Mock
+    findQuizRatingByUserAuthor: jest.Mock
+    findQuizRatingByAnonymousAuthor: jest.Mock
     findQuizRatingsWithPagination: jest.Mock
     createQuizRating: jest.Mock
     updateQuizRating: jest.Mock
@@ -53,7 +60,8 @@ describe(QuizRatingService.name, () => {
     }
 
     quizRatingRepository = {
-      findQuizRatingByAuthor: jest.fn(),
+      findQuizRatingByUserAuthor: jest.fn(),
+      findQuizRatingByAnonymousAuthor: jest.fn(),
       findQuizRatingsWithPagination: jest.fn(),
       createQuizRating: jest.fn(),
       updateQuizRating: jest.fn(),
@@ -81,17 +89,30 @@ describe(QuizRatingService.name, () => {
     jest.useRealTimers()
   })
 
-  const createRating = (args?: Partial<QuizRating>): QuizRating =>
-    ({
+  const createRating = (
+    args?: Partial<Omit<QuizRating, 'author'>> & {
+      author?: LocalUser | QuizRatingUserAuthorWithBase
+    },
+  ): QuizRating => {
+    const rawAuthor = args?.author ?? buildMockPrimaryUser()
+    const author: QuizRatingUserAuthorWithBase =
+      'type' in rawAuthor
+        ? (rawAuthor as QuizRatingUserAuthorWithBase)
+        : ({
+            type: QuizRatingAuthorType.User,
+            user: rawAuthor,
+          } as QuizRatingUserAuthorWithBase)
+    return {
       _id: 'rating-1',
       quizId: 'quiz-1',
       stars: 5,
       comment: 'Great quiz',
-      author: buildMockPrimaryUser(),
       created: new Date('2026-01-10T10:00:00.000Z'),
       updated: new Date('2026-01-10T11:00:00.000Z'),
-      ...(args ?? {}),
-    }) as unknown as QuizRating
+      ...args,
+      author,
+    } as unknown as QuizRating
+  }
 
   describe('findQuizRatingByQuizIdAndAuthor', () => {
     it('returns mapped DTO when rating exists', async () => {
@@ -107,20 +128,19 @@ describe(QuizRatingService.name, () => {
         updated: new Date('2026-01-10T09:30:00.000Z'),
       })
 
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(rating)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(rating)
 
       const result = await service.findQuizRatingByQuizIdAndAuthor(
         quizId,
         author as unknown as any,
       )
 
-      expect(quizRatingRepository.findQuizRatingByAuthor).toHaveBeenCalledTimes(
-        1,
-      )
-      expect(quizRatingRepository.findQuizRatingByAuthor).toHaveBeenCalledWith(
-        quizId,
-        author,
-      )
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).toHaveBeenCalledWith(quizId, author._id)
 
       expect(result).toEqual({
         id: rating._id,
@@ -140,7 +160,7 @@ describe(QuizRatingService.name, () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser({ _id: 'user-404' })
 
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
 
       await expect(
         service.findQuizRatingByQuizIdAndAuthor(
@@ -248,12 +268,16 @@ describe(QuizRatingService.name, () => {
   })
 
   describe('createOrUpdateQuizRating', () => {
-    it('creates rating when no existing rating exists, updates rating summary, and persists quiz update', async () => {
+    it('creates user-authored rating when no existing rating exists, updates rating summary, and persists quiz update', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser({
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
       const stars = 4
       const comment = 'Nice'
 
@@ -268,7 +292,7 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
 
       const createdRating = createRating({
         _id: 'rating-new',
@@ -284,7 +308,7 @@ describe(QuizRatingService.name, () => {
 
       const result = await service.createOrUpdateQuizRating(
         quizId,
-        author as unknown as any,
+        userAuthor,
         stars,
         comment,
       )
@@ -292,18 +316,17 @@ describe(QuizRatingService.name, () => {
       expect(quizRepository.findQuizByIdOrThrow).toHaveBeenCalledTimes(1)
       expect(quizRepository.findQuizByIdOrThrow).toHaveBeenCalledWith(quizId)
 
-      expect(quizRatingRepository.findQuizRatingByAuthor).toHaveBeenCalledTimes(
-        1,
-      )
-      expect(quizRatingRepository.findQuizRatingByAuthor).toHaveBeenCalledWith(
-        quizId,
-        author,
-      )
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        quizRatingRepository.findQuizRatingByUserAuthor,
+      ).toHaveBeenCalledWith(quizId, author._id)
 
       expect(quizRatingRepository.createQuizRating).toHaveBeenCalledTimes(1)
       expect(quizRatingRepository.createQuizRating).toHaveBeenCalledWith(
         quizId,
-        author,
+        userAuthor,
         fixedNow,
         stars,
         comment,
@@ -337,12 +360,90 @@ describe(QuizRatingService.name, () => {
       })
     })
 
-    it('updates rating when existing rating exists, includes previousStars in summary update, and persists quiz update', async () => {
+    it('creates anonymous-authored rating when no existing rating exists, updates rating summary', async () => {
+      const quizId = 'quiz-1'
+      const participantId = 'participant-abc'
+      const nickname = 'AnonPlayer'
+      const anonAuthor: QuizRatingAnonymousAuthorWithBase = {
+        type: QuizRatingAuthorType.Anonymous,
+        participantId,
+        nickname,
+      } as QuizRatingAnonymousAuthorWithBase
+      const stars = 3
+      const comment = 'Fun game'
+
+      const existingQuiz = createMockClassicQuiz({
+        _id: quizId,
+        ratingSummary: {
+          count: 0,
+          avg: 0,
+          stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
+          commentCount: 0,
+        },
+      })
+
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
+      quizRatingRepository.findQuizRatingByAnonymousAuthor.mockResolvedValue(
+        null,
+      )
+
+      const createdRating = {
+        _id: 'rating-anon',
+        quizId,
+        author: anonAuthor,
+        stars,
+        comment,
+        created: fixedNow,
+        updated: fixedNow,
+      } as unknown as QuizRating
+
+      quizRatingRepository.createQuizRating.mockResolvedValue(createdRating)
+
+      const result = await service.createOrUpdateQuizRating(
+        quizId,
+        anonAuthor,
+        stars,
+        comment,
+      )
+
+      expect(
+        quizRatingRepository.findQuizRatingByAnonymousAuthor,
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        quizRatingRepository.findQuizRatingByAnonymousAuthor,
+      ).toHaveBeenCalledWith(quizId, participantId)
+
+      expect(quizRatingRepository.createQuizRating).toHaveBeenCalledTimes(1)
+      expect(quizRatingRepository.createQuizRating).toHaveBeenCalledWith(
+        quizId,
+        anonAuthor,
+        fixedNow,
+        stars,
+        comment,
+      )
+      expect(quizRatingRepository.updateQuizRating).not.toHaveBeenCalled()
+
+      expect(result).toEqual({
+        id: 'rating-anon',
+        quizId,
+        stars,
+        comment,
+        author: { id: participantId, nickname },
+        createdAt: createdRating.created,
+        updatedAt: createdRating.updated,
+      })
+    })
+
+    it('updates user-authored rating when existing rating exists, includes previousStars in summary update, and persists quiz update', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser({
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
       const stars = 2
       const comment = 'Changed my mind'
 
@@ -375,14 +476,14 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(
         existingRating,
       )
       quizRatingRepository.updateQuizRating.mockResolvedValue(updatedRating)
 
       const result = await service.createOrUpdateQuizRating(
         quizId,
-        author as unknown as any,
+        userAuthor,
         stars,
         comment,
       )
@@ -429,6 +530,10 @@ describe(QuizRatingService.name, () => {
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({
         _id: quizId,
@@ -459,17 +564,12 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(
         existingRating,
       )
       quizRatingRepository.updateQuizRating.mockResolvedValue(updatedRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        2,
-        'Hard',
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, 2, 'Hard')
 
       expect(quizRepository.replaceQuiz).toHaveBeenCalledTimes(1)
 
@@ -493,6 +593,10 @@ describe(QuizRatingService.name, () => {
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({
         _id: quizId,
@@ -523,17 +627,12 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(
         existingRating,
       )
       quizRatingRepository.updateQuizRating.mockResolvedValue(updatedRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        5,
-        undefined,
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, 5, undefined)
 
       expect(quizRepository.replaceQuiz).toHaveBeenCalledTimes(1)
 
@@ -557,6 +656,10 @@ describe(QuizRatingService.name, () => {
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({
         _id: quizId,
@@ -587,17 +690,12 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(
         existingRating,
       )
       quizRatingRepository.updateQuizRating.mockResolvedValue(updatedRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        2,
-        'Nice',
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, 2, 'Nice')
 
       expect(quizRepository.replaceQuiz).toHaveBeenCalledTimes(1)
 
@@ -621,6 +719,10 @@ describe(QuizRatingService.name, () => {
         _id: 'user-1',
         defaultNickname: 'Emil',
       })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({
         _id: quizId,
@@ -634,7 +736,7 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
 
       const createdRating = createRating({
         _id: 'rating-new',
@@ -648,12 +750,7 @@ describe(QuizRatingService.name, () => {
 
       quizRatingRepository.createQuizRating.mockResolvedValue(createdRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        4,
-        '   ',
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, 4, '   ')
 
       expect(quizRepository.findQuizByIdOrThrow).toHaveBeenCalledWith(quizId)
 
@@ -676,6 +773,10 @@ describe(QuizRatingService.name, () => {
     it('uses the same `now` timestamp for rating write and summary.updated', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser()
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({
         _id: quizId,
@@ -688,7 +789,7 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
 
       const createdRating = createRating({
         _id: 'rating-new',
@@ -702,15 +803,11 @@ describe(QuizRatingService.name, () => {
 
       quizRatingRepository.createQuizRating.mockResolvedValue(createdRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        1,
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, 1)
 
       expect(quizRatingRepository.createQuizRating).toHaveBeenCalledWith(
         quizId,
-        author,
+        userAuthor,
         fixedNow,
         1,
         undefined,
@@ -735,20 +832,19 @@ describe(QuizRatingService.name, () => {
     it('throws when the repository returns null (and does not update quiz)', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser({ _id: 'user-1' })
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
 
       const existingQuiz = createMockClassicQuiz({ _id: quizId })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
       quizRatingRepository.createQuizRating.mockResolvedValue(null)
 
       await expect(
-        service.createOrUpdateQuizRating(
-          quizId,
-          author as unknown as any,
-          5,
-          'Nice',
-        ),
+        service.createOrUpdateQuizRating(quizId, userAuthor, 5, 'Nice'),
       ).rejects.toBeInstanceOf(QuizRatingByQuizAndAuthorNotFoundException)
 
       expect(quizRepository.replaceQuiz).not.toHaveBeenCalled()
@@ -757,6 +853,10 @@ describe(QuizRatingService.name, () => {
     it('uses system time (`now`) consistently for repository write and summary.updated', async () => {
       const quizId = 'quiz-1'
       const author = buildMockPrimaryUser()
+      const userAuthor: QuizRatingUserAuthorWithBase = {
+        type: QuizRatingAuthorType.User,
+        user: author,
+      } as QuizRatingUserAuthorWithBase
       const stars = 1
 
       const existingQuiz = createMockClassicQuiz({
@@ -770,7 +870,7 @@ describe(QuizRatingService.name, () => {
       })
 
       quizRepository.findQuizByIdOrThrow.mockResolvedValue(existingQuiz)
-      quizRatingRepository.findQuizRatingByAuthor.mockResolvedValue(null)
+      quizRatingRepository.findQuizRatingByUserAuthor.mockResolvedValue(null)
 
       const createdRating = createRating({
         _id: 'rating-new',
@@ -784,15 +884,11 @@ describe(QuizRatingService.name, () => {
 
       quizRatingRepository.createQuizRating.mockResolvedValue(createdRating)
 
-      await service.createOrUpdateQuizRating(
-        quizId,
-        author as unknown as any,
-        stars,
-      )
+      await service.createOrUpdateQuizRating(quizId, userAuthor, stars)
 
       expect(quizRatingRepository.createQuizRating).toHaveBeenCalledWith(
         quizId,
-        author,
+        userAuthor,
         fixedNow,
         stars,
         undefined,

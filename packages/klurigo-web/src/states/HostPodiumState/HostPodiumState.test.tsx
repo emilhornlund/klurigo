@@ -4,13 +4,19 @@ import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const h = vi.hoisted(() => ({
-  completeTask: vi.fn().mockResolvedValue(undefined),
-  hasCompleteTask: true,
+  gameID: 'game-123',
+  revokeGame: vi.fn().mockResolvedValue(undefined),
 }))
 
 vi.mock('../../context/game', () => ({
   useGameContext: () => ({
-    completeTask: h.hasCompleteTask ? h.completeTask : undefined,
+    gameID: h.gameID,
+  }),
+}))
+
+vi.mock('../../context/auth', () => ({
+  useAuthContext: () => ({
+    revokeGame: h.revokeGame,
   }),
 }))
 
@@ -18,14 +24,14 @@ import HostPodiumState from './HostPodiumState'
 
 describe('HostPodiumState', () => {
   beforeEach(() => {
-    h.hasCompleteTask = true
-    h.completeTask.mockReset()
-    h.completeTask.mockResolvedValue(undefined)
+    h.gameID = 'game-123'
+    h.revokeGame.mockReset()
+    h.revokeGame.mockResolvedValue(undefined)
 
     vi.spyOn(Math, 'random').mockReturnValue(0.5)
   })
 
-  it('should render HostPodiumState', async () => {
+  it('should render HostPodiumState', () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState
@@ -51,10 +57,16 @@ describe('HostPodiumState', () => {
       </MemoryRouter>,
     )
 
+    expect(
+      screen.getByRole('button', { name: 'Back to Home' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'View Full Results' }),
+    ).toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
 
-  it('should render HostPodiumState without a full leaderboard', async () => {
+  it('should render HostPodiumState without a full leaderboard', () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState
@@ -76,7 +88,7 @@ describe('HostPodiumState', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('renders subtitle and leaderboard entries', () => {
+  it('renders title and leaderboard entries', () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState
@@ -102,12 +114,7 @@ describe('HostPodiumState', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('clicks Game Results and calls completeTask', async () => {
-    let resolve!: () => void
-    h.completeTask.mockImplementation(
-      () => new Promise<void>((r) => (resolve = r)),
-    )
-
+  it('clicks Back to Home and calls revokeGame with home redirect', async () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState
@@ -126,27 +133,20 @@ describe('HostPodiumState', () => {
       </MemoryRouter>,
     )
 
-    const gameResultsBtn = container.querySelector(
-      '#game-results-button',
+    const homeButton = container.querySelector(
+      '#home-button',
     ) as HTMLButtonElement
-
-    act(() => {
-      fireEvent.click(gameResultsBtn)
-    })
-
-    expect(h.completeTask).toHaveBeenCalledTimes(1)
 
     await act(async () => {
-      resolve()
-      await Promise.resolve()
+      fireEvent.click(homeButton)
     })
 
+    expect(h.revokeGame).toHaveBeenCalledTimes(1)
+    expect(h.revokeGame).toHaveBeenCalledWith({ redirectTo: '/' })
     expect(container).toMatchSnapshot()
   })
 
-  it('clicks Game Results when completeTask is undefined', () => {
-    h.hasCompleteTask = false
-
+  it('clicks View Full Results and calls revokeGame with results redirect', async () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState
@@ -169,14 +169,48 @@ describe('HostPodiumState', () => {
       '#game-results-button',
     ) as HTMLButtonElement
 
-    act(() => {
+    await act(async () => {
       fireEvent.click(gameResultsBtn)
     })
 
+    expect(h.revokeGame).toHaveBeenCalledTimes(1)
+    expect(h.revokeGame).toHaveBeenCalledWith({
+      redirectTo: '/game/results/game-123',
+    })
     expect(container).toMatchSnapshot()
   })
 
-  it('should render HostPodiumState with only one player', async () => {
+  it('should use the current gameID when building the full results redirect', async () => {
+    h.gameID = 'game-999'
+
+    render(
+      <MemoryRouter>
+        <HostPodiumState
+          event={{
+            type: GameEventType.GamePodiumHost,
+            game: {
+              name: 'Trivia Battle',
+            },
+            leaderboard: [
+              { position: 1, nickname: 'Alpha', score: 100 },
+              { position: 2, nickname: 'Beta', score: 90 },
+              { position: 3, nickname: 'Gamma', score: 80 },
+            ],
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'View Full Results' }))
+    })
+
+    expect(h.revokeGame).toHaveBeenCalledWith({
+      redirectTo: '/game/results/game-999',
+    })
+  })
+
+  it('should render HostPodiumState with only one player', () => {
     const { container } = render(
       <MemoryRouter>
         <HostPodiumState

@@ -1,4 +1,4 @@
-import { Authority, TokenScope } from '@klurigo/common'
+import { Authority, QuizRatingAuthorType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
   ApiBearerAuth,
@@ -18,6 +18,7 @@ import {
   ApiQuizIdParam,
   RouteQuizIdParam,
 } from '../../quiz-core/decorators/params'
+import { QuizRatingUserAuthorWithBase } from '../../quiz-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
 import { QuizRatingService } from '../services'
 
@@ -77,9 +78,13 @@ export class ProfileQuizRatingController {
     @Body() request: CreateQuizRatingRequest,
     @Principal() user: User,
   ): Promise<QuizRatingResponse> {
+    const author: QuizRatingUserAuthorWithBase = {
+      type: QuizRatingAuthorType.User,
+      user,
+    } as QuizRatingUserAuthorWithBase
     return this.quizRatingService.createOrUpdateQuizRating(
       quizId,
-      user,
+      author,
       request.stars,
       request.comment,
     )

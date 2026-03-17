@@ -314,14 +314,25 @@ function getCollectionMetadataObject(
           },
           {
             v: { $numberInt: '2' },
-            key: { author: { $numberInt: '1' } },
-            name: 'author_1',
+            key: {
+              quizId: { $numberInt: '1' },
+              'author.user': { $numberInt: '1' },
+            },
+            name: 'quizId_1_author.user_1',
+            unique: true,
+            partialFilterExpression: {
+              'author.type': 'USER',
+            },
           },
           {
             v: { $numberInt: '2' },
-            key: { quizId: { $numberInt: '1' }, author: { $numberInt: '1' } },
-            name: 'quizId_1_author_1',
+            key: {
+              quizId: { $numberInt: '1' },
+              'author.participantId': { $numberInt: '1' },
+            },
+            name: 'quizId_1_author.participantId_1',
             unique: true,
+            partialFilterExpression: { 'author.type': 'ANONYMOUS' },
           },
           {
             v: { $numberInt: '2' },
@@ -330,8 +341,11 @@ function getCollectionMetadataObject(
           },
           {
             v: { $numberInt: '2' },
-            key: { author: { $numberInt: '1' }, created: { $numberInt: '-1' } },
-            name: 'author_1_created_-1',
+            key: {
+              'author.user': { $numberInt: '1' },
+              created: { $numberInt: '-1' },
+            },
+            name: 'author.user_1_created_-1',
           },
         ],
         uuid: '118d5d9cc37a440b9607abfc543c79ab',

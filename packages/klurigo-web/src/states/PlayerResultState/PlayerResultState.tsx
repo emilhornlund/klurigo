@@ -4,10 +4,11 @@ import { GameMode, type GameResultPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import {
+import ScoreChip, {
   Badge,
   Confetti,
   getBadgePositionBackgroundColor,
+  getCelebrationLevel,
   StreakBadge,
   Typography,
 } from '../../components'
@@ -17,28 +18,6 @@ import { GamePage, PlayerGameFooter, PointsBehindIndicator } from '../common'
 
 import { getPositionMessage } from './message.utils'
 import styles from './PlayerResultState.module.scss'
-
-type CelebrationLevel = 'none' | 'normal' | 'major' | 'epic'
-
-const getCelebrationLevel = (
-  correct: boolean,
-  streak: number,
-  position: number,
-): CelebrationLevel => {
-  if (!correct) return 'none'
-
-  // Epic celebrations (major milestones)
-  if (streak >= 10 || position === 1) return 'epic'
-  if (streak >= 7 || position === 2) return 'epic'
-
-  // Major celebrations (good achievements)
-  if (streak >= 5 || position === 3) return 'major'
-
-  // Normal celebrations (building momentum)
-  if (streak >= 3 || position <= 10) return 'normal'
-
-  return 'none' // No celebration for simple correct answers
-}
 
 export interface PlayerResultStateProps {
   event: GameResultPlayerEvent
@@ -74,7 +53,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
   )
 
   const celebrationLevel = useMemo(
-    () => getCelebrationLevel(correct, streak, position),
+    () => getCelebrationLevel(position, streak, correct),
     [correct, streak, position],
   )
 
@@ -128,7 +107,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
 
       <StreakBadge streak={streak}>Streak</StreakBadge>
 
-      <div className={styles.score}>{lastScore}</div>
+      <ScoreChip value={lastScore} />
 
       <Typography variant="text" size="small">
         {message}
