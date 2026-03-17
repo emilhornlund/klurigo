@@ -15,6 +15,7 @@ import {
   createMockGameDocument,
   createMockGameHostParticipantDocument,
   createMockGamePlayerParticipantDocument,
+  createMockLobbyTaskDocument,
   createMockPodiumTaskDocument,
 } from '../../../../test-utils/data'
 import {
@@ -306,6 +307,40 @@ describe(`${GameRatingController.name} (e2e)`, () => {
         .set({ Authorization: `Bearer ${playerToken}` })
         .send({ stars, comment })
         .expect(403)
+    })
+
+    it('should return 403 when the current task is not podium', async () => {
+      const playerToken = await authenticateGame(
+        app,
+        completedGame._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await gameModel
+        .findByIdAndUpdate(completedGame._id, {
+          currentTask: createMockLobbyTaskDocument(),
+        })
+        .exec()
+
+      await supertest(app.getHttpServer())
+        .put(`/api/games/${completedGame._id}/ratings`)
+        .set({ Authorization: `Bearer ${playerToken}` })
+        .send({ stars, comment })
+        .expect(403)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message:
+              'Ratings can only be created or updated during the podium task.',
+            status: 403,
+            timestamp: expect.anything(),
+          })
+        })
+
+      const ratingCount = await quizRatingModel.countDocuments({
+        quizId: quiz._id,
+      })
+      expect(ratingCount).toBe(0)
     })
 
     it('should return 400 when payload validation fails', async () => {

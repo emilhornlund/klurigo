@@ -3,6 +3,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common'
 
 import { GameRepository } from '../../game-core/repositories'
 import { isParticipantPlayer } from '../../game-core/utils'
+import { isPodiumTask } from '../../game-task/utils/task-type-guards'
 import { QuizRepository } from '../../quiz-core/repositories'
 import {
   QuizRatingAnonymousAuthorWithBase,
@@ -62,6 +63,13 @@ export class GameRatingService {
     comment?: string,
   ): Promise<QuizRatingDto> {
     const game = await this.gameRepository.findGameByIDOrThrow(gameId, false)
+
+    if (!isPodiumTask(game)) {
+      throw new ForbiddenException(
+        'Ratings can only be created or updated during the podium task.',
+      )
+    }
+
     const quiz = await this.quizRepository.findQuizByIdOrThrow(
       String(game.quiz._id),
     )

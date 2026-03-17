@@ -8,6 +8,7 @@ import {
   createMockClassicQuiz,
   createMockGameDocument,
   createMockGamePlayerParticipantDocument,
+  createMockPodiumTaskDocument,
   MOCK_DEFAULT_PLAYER_ID,
 } from '../../../../test-utils/data'
 import { GameRepository } from '../../game-core/repositories'
@@ -91,6 +92,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [
           createMockGamePlayerParticipantDocument({
             participantId: mockUser._id,
@@ -139,6 +141,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [
           createMockGamePlayerParticipantDocument({
             participantId: mockAnonymousParticipantId,
@@ -190,6 +193,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [],
       }) as unknown as GameDocument
 
@@ -224,6 +228,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [
           createMockGamePlayerParticipantDocument({
             participantId: mockOwnerId,
@@ -242,6 +247,24 @@ describe(GameRatingService.name, () => {
       expect(quizRatingService.createOrUpdateQuizRating).not.toHaveBeenCalled()
     })
 
+    it('should throw ForbiddenException when current task is not podium', async () => {
+      const gameId = uuidv4()
+      const mockGame = createMockGameDocument({
+        _id: gameId,
+        quiz: mockQuiz,
+      }) as unknown as GameDocument
+
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(mockGame)
+
+      await expect(
+        service.createOrUpdateRating(gameId, MOCK_DEFAULT_PLAYER_ID, 4),
+      ).rejects.toThrow(ForbiddenException)
+
+      expect(quizRepository.findQuizByIdOrThrow).not.toHaveBeenCalled()
+      expect(userRepository.findUserById).not.toHaveBeenCalled()
+      expect(quizRatingService.createOrUpdateQuizRating).not.toHaveBeenCalled()
+    })
+
     it('should propagate errors thrown by findGameByIDOrThrow', async () => {
       const gameId = uuidv4()
       const error = new Error('Game not found')
@@ -257,6 +280,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
       }) as unknown as GameDocument
 
       gameRepository.findGameByIDOrThrow.mockResolvedValue(mockGame)
@@ -274,6 +298,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [
           createMockGamePlayerParticipantDocument({
             participantId: mockAnonymousParticipantId,
@@ -304,6 +329,7 @@ describe(GameRatingService.name, () => {
       const mockGame = createMockGameDocument({
         _id: gameId,
         quiz: mockQuiz,
+        currentTask: createMockPodiumTaskDocument(),
         participants: [
           createMockGamePlayerParticipantDocument({
             participantId: mockUser._id,
