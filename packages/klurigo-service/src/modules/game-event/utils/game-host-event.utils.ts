@@ -7,7 +7,6 @@ import {
   isPodiumTask,
   isQuestionResultTask,
   isQuestionTask,
-  isQuitTask,
 } from '../../game-task/utils/task-type-guards'
 import { GameEventMetaData } from '../models'
 
@@ -39,6 +38,13 @@ export function buildHostGameEvent(
   game: GameDocument,
   metadata: Partial<GameEventMetaData> = {},
 ): GameEvent {
+  if (
+    GameStatus.Expired === game.status ||
+    GameStatus.Terminated === game.status
+  ) {
+    return buildGameQuitEvent(game.status)
+  }
+
   if (isLobbyTask(game)) {
     switch (game.currentTask.status) {
       case 'pending':
@@ -99,10 +105,6 @@ export function buildHostGameEvent(
       case 'completed':
         return buildGameLoadingEvent()
     }
-  }
-
-  if (isQuitTask(game)) {
-    return buildGameQuitEvent(game.status)
   }
 
   throw new Error('Unknown task')

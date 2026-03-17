@@ -1,4 +1,4 @@
-import { GameEvent } from '@klurigo/common'
+import { GameEvent, GameStatus } from '@klurigo/common'
 
 import {
   GameDocument,
@@ -10,7 +10,6 @@ import {
   isPodiumTask,
   isQuestionResultTask,
   isQuestionTask,
-  isQuitTask,
 } from '../../game-task/utils/task-type-guards'
 import { GameEventMetaData } from '../models'
 
@@ -43,6 +42,13 @@ export function buildPlayerGameEvent(
   player: ParticipantPlayerWithBase,
   metadata: Partial<GameEventMetaData> = {},
 ): GameEvent {
+  if (
+    GameStatus.Expired === game.status ||
+    GameStatus.Terminated === game.status
+  ) {
+    return buildGameQuitEvent(game.status)
+  }
+
   if (isLobbyTask(game)) {
     switch (game.currentTask.status) {
       case 'pending':
@@ -87,10 +93,6 @@ export function buildPlayerGameEvent(
       case 'completed':
         return buildGameOverPlayerEvent(game, player, metadata)
     }
-  }
-
-  if (isQuitTask(game)) {
-    return buildGameQuitEvent(game.status)
   }
 
   throw new Error('Unknown task')

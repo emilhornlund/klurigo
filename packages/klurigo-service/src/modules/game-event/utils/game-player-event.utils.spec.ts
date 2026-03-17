@@ -215,33 +215,44 @@ describe('buildPlayerGameEvent', () => {
     })
   })
 
-  describe('Quit Task', () => {
-    it('should return quit event when task is quit task with active status', () => {
+  describe('Quit Status', () => {
+    it('should return quit event when game status is expired', () => {
+      const game = createMockGameDocument({
+        status: GameStatus.Expired,
+        currentTask: createMockLobbyTaskDocument({ status: 'active' }),
+      })
+
+      const result = buildPlayerGameEvent(game as never, mockPlayer)
+
+      expect(result.type).toBe(GameEventType.GameQuitEvent)
+      if (result.type === GameEventType.GameQuitEvent) {
+        expect(result.status).toBe(GameStatus.Expired)
+      }
+    })
+
+    it('should return quit event when game status is terminated', () => {
+      const game = createMockGameDocument({
+        status: GameStatus.Terminated,
+        currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+      })
+
+      const result = buildPlayerGameEvent(game as never, mockPlayer)
+
+      expect(result.type).toBe(GameEventType.GameQuitEvent)
+      if (result.type === GameEventType.GameQuitEvent) {
+        expect(result.status).toBe(GameStatus.Terminated)
+      }
+    })
+
+    it('should throw error when task is quit task but game status is still active', () => {
       const game = createMockGameDocument({
         status: GameStatus.Active,
         currentTask: createMockQuitTaskDocument(),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
-
-      expect(result.type).toBe(GameEventType.GameQuitEvent)
-      if (result.type === GameEventType.GameQuitEvent) {
-        expect(result.status).toBe(GameStatus.Active)
-      }
-    })
-
-    it('should return quit event when task is quit task with completed status', () => {
-      const game = createMockGameDocument({
-        status: GameStatus.Completed,
-        currentTask: createMockQuitTaskDocument(),
-      })
-
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
-
-      expect(result.type).toBe(GameEventType.GameQuitEvent)
-      if (result.type === GameEventType.GameQuitEvent) {
-        expect(result.status).toBe(GameStatus.Completed)
-      }
+      expect(() => buildPlayerGameEvent(game as never, mockPlayer)).toThrow(
+        'Unknown task',
+      )
     })
   })
 
