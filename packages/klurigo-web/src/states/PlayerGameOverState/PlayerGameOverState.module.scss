@@ -2,6 +2,20 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
+.spacing {
+  @include helpers.mobile {
+    height: 25px;
+  }
+
+  @include helpers.tablet {
+    height: 30px;
+  }
+
+  @include helpers.desktop {
+    height: 35px;
+  }
+}
+
 .rankContainer {
   display: flex;
   flex-direction: column;

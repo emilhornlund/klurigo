@@ -19,6 +19,7 @@ import { useQuizRatingDraft } from '../../hooks'
 import { GamePage, PointsBehindIndicator } from '../common'
 
 import { RatingCard } from './components'
+import { getGameOverMessage } from './game-over-message.utils'
 import styles from './PlayerGameOverState.module.scss'
 
 export type PlayerGameOverStateProps = {
@@ -68,6 +69,8 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
     [rank, currentStreak],
   )
 
+  const message = useMemo(() => getGameOverMessage(rank), [rank])
+
   const handleBackToHome = useCallback(() => {
     void revokeGame({ redirectTo: '/' })
   }, [revokeGame])
@@ -96,6 +99,12 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
       )}
 
       <Typography variant="title">{quiz.title}</Typography>
+
+      <Typography variant="text" size="medium">
+        {message}
+      </Typography>
+
+      <div className={styles.spacing} />
 
       <div className={styles.rankContainer}>
         <Badge
