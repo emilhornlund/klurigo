@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ScoreChip > should match snapshot 1`] = `
+<div
+  class="score"
+  data-testid="score-chip"
+>
+  1337
+</div>
+`;

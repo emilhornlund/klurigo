@@ -4,7 +4,7 @@ import { GameMode, type GameResultPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import {
+import ScoreChip, {
   Badge,
   Confetti,
   getBadgePositionBackgroundColor,
@@ -107,7 +107,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
 
       <StreakBadge streak={streak}>Streak</StreakBadge>
 
-      <div className={styles.score}>{lastScore}</div>
+      <ScoreChip value={lastScore} />
 
       <Typography variant="text" size="small">
         {message}

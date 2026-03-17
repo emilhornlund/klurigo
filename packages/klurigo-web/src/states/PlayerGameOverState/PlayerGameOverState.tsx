@@ -2,7 +2,7 @@ import { type GameOverPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import {
+import ScoreChip, {
   Badge,
   Confetti,
   getBadgePositionBackgroundColor,
@@ -110,7 +110,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
         </Typography>
       </div>
 
-      <div className={styles.score}>{score}</div>
+      <ScoreChip value={score} />
 
       <StreakBadge streak={currentStreak}>Streak</StreakBadge>
 

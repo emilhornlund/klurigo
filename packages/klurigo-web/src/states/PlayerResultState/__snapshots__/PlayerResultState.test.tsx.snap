@@ -89,6 +89,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             1000
           </div>
@@ -513,6 +514,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             900
           </div>
@@ -848,6 +850,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             600
           </div>
@@ -1283,6 +1286,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             500
           </div>
@@ -1707,6 +1711,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             800
           </div>
@@ -2042,6 +2047,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             400
           </div>
@@ -2366,6 +2372,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             0
           </div>
@@ -2503,6 +2510,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             100
           </div>
@@ -2640,6 +2648,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             200
           </div>
@@ -2895,6 +2904,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             300
           </div>
@@ -3150,6 +3160,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             634
           </div>
@@ -3585,6 +3596,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
           </div>
           <div
             class="score"
+            data-testid="score-chip"
           >
             50
           </div>
