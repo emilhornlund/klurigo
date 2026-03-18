@@ -9,10 +9,10 @@ import { useUserContext } from '../../context/user'
 import { trimToUndefined } from '../../utils/helpers'
 
 import type { UpdateUserDetailsFormFields } from './components'
-import { ProfileUserPageUI } from './components'
-import type { UpdateUserPasswordFormFields } from './components/ProfileUserPageUI/components'
+import { ProfileSettingsPageUI } from './components'
+import type { UpdateUserPasswordFormFields } from './components/ProfileSettingsPageUI/components'
 
-const ProfileUserPage: FC = () => {
+const ProfileSettingsPage: FC = () => {
   const {
     getUserProfile,
     updateUserProfile,
@@ -88,7 +88,7 @@ const ProfileUserPage: FC = () => {
   }
 
   return (
-    <ProfileUserPageUI
+    <ProfileSettingsPageUI
       authProvider={data.authProvider}
       values={{
         email: data.unverifiedEmail ?? data.email,
@@ -106,4 +106,4 @@ const ProfileUserPage: FC = () => {
   )
 }
 
-export default ProfileUserPage
+export default ProfileSettingsPage

@@ -4,16 +4,16 @@ import { withRouter } from 'storybook-addon-remix-react-router'
 
 import { withMockAuth } from '../../../../../.storybook/mockAuthContext'
 
-import ProfileUserPageUI from './ProfileUserPageUI'
+import ProfileSettingsPageUI from './ProfileSettingsPageUI'
 
 const meta = {
-  title: 'Pages/ProfileUserPage',
-  component: ProfileUserPageUI,
+  title: 'Pages/ProfileSettingsPage',
+  component: ProfileSettingsPageUI,
   decorators: [withRouter, withMockAuth],
   parameters: {
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof ProfileUserPageUI>
+} satisfies Meta<typeof ProfileSettingsPageUI>
 
 export default meta
 type Story = StoryObj<typeof meta>

@@ -29,7 +29,7 @@ import {
   HomePage,
   ProfileGamesPage,
   ProfileQuizzesPage,
-  ProfileUserPage,
+  ProfileSettingsPage,
   QuizCreatorPage,
   QuizDetailsPage,
 } from './pages'
@@ -148,10 +148,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/profile/user',
+        path: '/profile/settings',
         element: (
           <ProtectedRoute>
-            <ProfileUserPage />
+            <ProfileSettingsPage />
           </ProtectedRoute>
         ),
       },

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ProfileUserPageUI > should render ProfileUserPageUI 1`] = `
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI 1`] = `
 <div>
   <div
     class="main"

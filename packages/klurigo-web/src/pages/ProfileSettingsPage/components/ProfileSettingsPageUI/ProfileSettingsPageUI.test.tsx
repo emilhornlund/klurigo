@@ -3,13 +3,13 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 
-import ProfileUserPageUI from './ProfileUserPageUI'
+import ProfileSettingsPageUI from './ProfileSettingsPageUI'
 
-describe('ProfileUserPageUI', () => {
-  it('should render ProfileUserPageUI for Local auth provider', async () => {
+describe('ProfileSettingsPageUI', () => {
+  it('should render ProfileSettingsPageUI for Local auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
           values={{
             email: '',
@@ -30,10 +30,10 @@ describe('ProfileUserPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render ProfileUserPageUI for Google auth provider', async () => {
+  it('should render ProfileSettingsPageUI for Google auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
           values={{
             email: '',
@@ -54,10 +54,10 @@ describe('ProfileUserPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render ProfileUserPageUI with prepopulated values for Local auth provider', async () => {
+  it('should render ProfileSettingsPageUI with prepopulated values for Local auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
           values={{
             email: 'user@example.com',
@@ -78,10 +78,10 @@ describe('ProfileUserPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render ProfileUserPageUI with prepopulated values for Google auth provider', async () => {
+  it('should render ProfileSettingsPageUI with prepopulated values for Google auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
           values={{
             email: 'user@example.com',
@@ -102,10 +102,10 @@ describe('ProfileUserPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render ProfileUserPageUI with unverified email for Local auth provider', async () => {
+  it('should render ProfileSettingsPageUI with unverified email for Local auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
           values={{
             email: 'user@example.com',
@@ -126,10 +126,10 @@ describe('ProfileUserPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render ProfileUserPageUI with unverified email for Google auth provider', async () => {
+  it('should render ProfileSettingsPageUI with unverified email for Google auth provider', async () => {
     const { container } = render(
       <MemoryRouter>
-        <ProfileUserPageUI
+        <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
           values={{
             email: 'user@example.com',

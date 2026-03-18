@@ -1,9 +1,9 @@
 import {
   faBinoculars,
   faGamepad,
+  faGear,
   faLightbulb,
   faRightFromBracket,
-  faUser,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   type FC,
@@ -80,14 +80,14 @@ const Page: FC<PageProps> = ({
     }
     return (
       <>
-        <MenuItem icon={faUser} link="/profile/user">
-          Profile
-        </MenuItem>
         <MenuItem icon={faLightbulb} link="/profile/quizzes">
           Quizzes
         </MenuItem>
         <MenuItem icon={faGamepad} link="/profile/games">
           Games
+        </MenuItem>
+        <MenuItem icon={faGear} link="/profile/settings">
+          Settings
         </MenuItem>
         <MenuSeparator />
         <MenuItem icon={faRightFromBracket} onClick={handleRevokeUser}>
