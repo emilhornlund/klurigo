@@ -9,7 +9,7 @@ import type {
 } from './components'
 import { UserDetailsForm, UserPasswordForm } from './components'
 
-export interface ProfileUserPageUIProps {
+export interface ProfileSettingsPageUIProps {
   authProvider: AuthProvider
   values: UpdateUserDetailsFormFields
   loading: boolean
@@ -19,7 +19,7 @@ export interface ProfileUserPageUIProps {
   onClickResendVerificationEmail: () => void
 }
 
-const ProfileUserPageUI: FC<ProfileUserPageUIProps> = ({
+const ProfileSettingsPageUI: FC<ProfileSettingsPageUIProps> = ({
   authProvider,
   values,
   loading,
@@ -48,4 +48,4 @@ const ProfileUserPageUI: FC<ProfileUserPageUIProps> = ({
   </Page>
 )
 
-export default ProfileUserPageUI
+export default ProfileSettingsPageUI

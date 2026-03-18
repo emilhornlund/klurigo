@@ -1,0 +1,1546 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    disabled=""
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  disabled=""
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  disabled=""
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                disabled=""
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                disabled=""
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+          <div
+            class="pageDivider"
+          />
+          <h2
+            class="typography subtitle full"
+          >
+            Upgrade Your Password
+          </h2>
+          <p
+            class="typography text medium"
+          >
+            Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-oldPassword-textfield"
+                  id="oldPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="oldPassword"
+                  placeholder="Old Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-newPassword-textfield"
+                  id="newPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="newPassword"
+                  placeholder="New Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-confirmPassword-textfield"
+                  id="confirmPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-password-button-button"
+                disabled=""
+                id="update-password-button"
+                name="update-password-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-lock"
+                  data-icon="lock"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 384 512"
+                >
+                  <path
+                    d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Lock It Down!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepopulated values for Google auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    disabled=""
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value="user@example.com"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  disabled=""
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value="John"
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  disabled=""
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value="Appleseed"
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value="FrostyBear"
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepopulated values for Local auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value="user@example.com"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value="John"
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value="Appleseed"
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value="FrostyBear"
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+          <div
+            class="pageDivider"
+          />
+          <h2
+            class="typography subtitle full"
+          >
+            Upgrade Your Password
+          </h2>
+          <p
+            class="typography text medium"
+          >
+            Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-oldPassword-textfield"
+                  id="oldPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="oldPassword"
+                  placeholder="Old Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-newPassword-textfield"
+                  id="newPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="newPassword"
+                  placeholder="New Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-confirmPassword-textfield"
+                  id="confirmPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-password-button-button"
+                disabled=""
+                id="update-password-button"
+                name="update-password-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-lock"
+                  data-icon="lock"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 384 512"
+                >
+                  <path
+                    d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Lock It Down!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unverified email for Google auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    disabled=""
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value="user@example.com"
+                  />
+                </div>
+              </div>
+              <span
+                class="hint"
+              >
+                Whoops, your email
+                 
+                <i>
+                  <b>
+                    user@example.com
+                  </b>
+                </i>
+                 
+                hasn’t RSVP’d to verification yet!
+                 
+                <button
+                  class="buttonLink"
+                  type="button"
+                >
+                  Zap me a fresh verification link!
+                </button>
+              </span>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  disabled=""
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value="John"
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  disabled=""
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value="Appleseed"
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value="FrostyBear"
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unverified email for Local auth provider 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content startAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title full"
+          >
+            Shape your quiz identity
+          </h1>
+          <p
+            class="typography text medium"
+          >
+            Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="formField"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-email-textfield"
+                    id="email"
+                    maxlength="128"
+                    minlength="6"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    value="user@example.com"
+                  />
+                </div>
+              </div>
+              <span
+                class="hint"
+              >
+                Whoops, your email
+                 
+                <i>
+                  <b>
+                    user@example.com
+                  </b>
+                </i>
+                 
+                hasn’t RSVP’d to verification yet!
+                 
+                <button
+                  class="buttonLink"
+                  type="button"
+                >
+                  Zap me a fresh verification link!
+                </button>
+              </span>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-givenName-textfield"
+                  id="givenName"
+                  maxlength="64"
+                  minlength="1"
+                  name="givenName"
+                  placeholder="Given Name"
+                  type="text"
+                  value="John"
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-familyName-textfield"
+                  id="familyName"
+                  maxlength="64"
+                  minlength="1"
+                  name="familyName"
+                  placeholder="Family Name"
+                  type="text"
+                  value="Appleseed"
+                />
+              </div>
+            </div>
+            <div
+              class="nicknameTextFieldContainer"
+            >
+              <div
+                class="inputContainer"
+              >
+                <div
+                  class="textFieldInputContainer textFieldInputKindPrimary"
+                >
+                  <input
+                    class="textfield"
+                    data-testid="test-default-nickname-textfield-textfield"
+                    id="default-nickname-textfield"
+                    maxlength="20"
+                    minlength="2"
+                    name="default-nickname-textfield"
+                    placeholder="Default Nickname"
+                    type="text"
+                    value="FrostyBear"
+                  />
+                </div>
+              </div>
+              <div
+                class="buttonInputContainer buttonInputKindPrimary"
+              >
+                <button
+                  data-testid="test-shuffle-nickname-button-button"
+                  id="shuffle-nickname-button"
+                  name="shuffle-nickname-button"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-arrows-rotate"
+                    data-icon="arrows-rotate"
+                    data-prefix="fas"
+                    role="img"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-user-button-button"
+                id="update-user-button"
+                name="update-user-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-floppy-disk"
+                  data-icon="floppy-disk"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
+                >
+                  <path
+                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Save!
+                </span>
+              </button>
+            </div>
+          </form>
+          <div
+            class="pageDivider"
+          />
+          <h2
+            class="typography subtitle full"
+          >
+            Upgrade Your Password
+          </h2>
+          <p
+            class="typography text medium"
+          >
+            Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
+          </p>
+          <form
+            class="form"
+          >
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-oldPassword-textfield"
+                  id="oldPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="oldPassword"
+                  placeholder="Old Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-newPassword-textfield"
+                  id="newPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="newPassword"
+                  placeholder="New Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputContainer"
+            >
+              <div
+                class="textFieldInputContainer textFieldInputKindPrimary"
+              >
+                <input
+                  class="textfield"
+                  data-testid="test-confirmPassword-textfield"
+                  id="confirmPassword"
+                  maxlength="128"
+                  minlength="8"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="buttonInputContainer buttonInputKindCallToAction"
+            >
+              <button
+                data-testid="test-update-password-button-button"
+                disabled=""
+                id="update-password-button"
+                name="update-password-button"
+                type="submit"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-lock"
+                  data-icon="lock"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 384 512"
+                >
+                  <path
+                    d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Lock It Down!
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

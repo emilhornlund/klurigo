@@ -61,7 +61,7 @@ const QuizDetailsPage: FC = () => {
     if (quizId) {
       setIsDeleteQuizLoading(true)
       deleteQuiz(quizId)
-        .then(() => navigate('/profile/user'))
+        .then(() => navigate('/profile/quizzes'))
         .finally(() => setIsDeleteQuizLoading(false))
     }
   }
