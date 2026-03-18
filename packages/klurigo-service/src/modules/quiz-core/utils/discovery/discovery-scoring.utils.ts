@@ -1,4 +1,8 @@
-import { QuestionType } from '@klurigo/common'
+import {
+  QuestionType,
+  QUIZ_DESCRIPTION_MAX_LENGTH,
+  QUIZ_QUESTION_MAX,
+} from '@klurigo/common'
 
 import { Quiz } from '../../repositories/models/schemas'
 
@@ -233,6 +237,106 @@ export type RecentActivityStats = {
 }
 
 // ---------------------------------------------------------------------------
+// Threshold-based quality scoring constants
+// ---------------------------------------------------------------------------
+
+/**
+ * Represents a minimum input value and the score awarded when that threshold
+ * is met or exceeded.
+ */
+type ScoreThreshold = {
+  /**
+   * Minimum value required for this threshold to apply.
+   */
+  readonly min: number
+
+  /**
+   * Score awarded when the input value is greater than or equal to `min`.
+   */
+  readonly score: number
+}
+
+/**
+ * Description-length thresholds for the description-quality sub-score.
+ *
+ * Thresholds are derived from `QUIZ_DESCRIPTION_MAX_LENGTH` so discovery
+ * scoring stays aligned with the quiz validation limits used elsewhere in
+ * the platform.
+ *
+ * With the current max length of 500, the thresholds become:
+ * - 20 chars  -> 4
+ * - 50 chars  -> 8
+ * - 100 chars -> 12
+ * - 200 chars -> 15
+ */
+export const DESCRIPTION_SCORE_THRESHOLDS: readonly ScoreThreshold[] = [
+  {
+    min: Math.floor(QUIZ_DESCRIPTION_MAX_LENGTH * 0.4),
+    score: QUALITY_WEIGHT_DESCRIPTION,
+  },
+  {
+    min: Math.floor(QUIZ_DESCRIPTION_MAX_LENGTH * 0.2),
+    score: 12,
+  },
+  {
+    min: Math.floor(QUIZ_DESCRIPTION_MAX_LENGTH * 0.1),
+    score: 8,
+  },
+  {
+    min: Math.floor(QUIZ_DESCRIPTION_MAX_LENGTH * 0.04),
+    score: 4,
+  },
+]
+
+/**
+ * Question-count thresholds for the question-count sub-score.
+ *
+ * Thresholds are derived from `QUIZ_QUESTION_MAX` so discovery scoring stays
+ * aligned with the quiz validation limits used elsewhere in the platform.
+ *
+ * With the current max question count of 50, the thresholds become:
+ * - 10 questions -> 4
+ * - 15 questions -> 6
+ * - 20 questions -> 8
+ * - 30 questions -> 10
+ */
+export const QUESTION_COUNT_SCORE_THRESHOLDS: readonly ScoreThreshold[] = [
+  {
+    min: Math.floor(QUIZ_QUESTION_MAX * 0.6),
+    score: QUALITY_WEIGHT_QUESTIONS,
+  },
+  {
+    min: Math.floor(QUIZ_QUESTION_MAX * 0.4),
+    score: 8,
+  },
+  {
+    min: Math.floor(QUIZ_QUESTION_MAX * 0.3),
+    score: 6,
+  },
+  {
+    min: Math.floor(QUIZ_QUESTION_MAX * 0.2),
+    score: 4,
+  },
+]
+
+/**
+ * Returns the score for the first threshold whose `min` value is met or
+ * exceeded.
+ *
+ * Thresholds must be ordered from highest `min` to lowest `min`.
+ *
+ * @param value - Input value to evaluate.
+ * @param thresholds - Threshold definitions ordered from highest to lowest.
+ * @returns The matching score, or `0` if no threshold is reached.
+ */
+function getThresholdScore(
+  value: number,
+  thresholds: readonly ScoreThreshold[],
+): number {
+  return thresholds.find((threshold) => value >= threshold.min)?.score ?? 0
+}
+
+// ---------------------------------------------------------------------------
 // Scoring functions
 // ---------------------------------------------------------------------------
 
@@ -326,31 +430,16 @@ export function computeQualityScore(
   // Sub-score 1: cover image (trim-aware)
   const coverScore = quiz.imageCoverURL?.trim() ? QUALITY_WEIGHT_COVER : 0
 
-  // Sub-score 2: description length buckets (trimmed)
+  // Sub-score 2: description quality from threshold-based length scoring
   const descLen = quiz.description?.trim().length ?? 0
-  let descScore = 0
-  if (descLen >= 200) {
-    descScore = 15
-  } else if (descLen >= 100) {
-    descScore = 12
-  } else if (descLen >= 50) {
-    descScore = 8
-  } else if (descLen >= 20) {
-    descScore = 4
-  }
+  const descScore = getThresholdScore(descLen, DESCRIPTION_SCORE_THRESHOLDS)
 
-  // Sub-score 3: question count buckets (defensive: missing questions → [])
+  // Sub-score 3: question count from threshold-based scoring
   const qCount = (quiz.questions ?? []).length
-  let questionScore = 0
-  if (qCount >= 30) {
-    questionScore = 10
-  } else if (qCount >= 20) {
-    questionScore = 8
-  } else if (qCount >= 15) {
-    questionScore = 6
-  } else if (qCount >= 10) {
-    questionScore = 4
-  }
+  const questionScore = getThresholdScore(
+    qCount,
+    QUESTION_COUNT_SCORE_THRESHOLDS,
+  )
 
   // Sub-score 4: play engagement (log-scaled, defensive defaults)
   const playCount = quiz.gameplaySummary?.count ?? 0
