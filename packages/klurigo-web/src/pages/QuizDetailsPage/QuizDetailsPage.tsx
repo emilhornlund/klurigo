@@ -15,25 +15,47 @@ const QuizDetailsPage: FC = () => {
 
   const { user } = useAuthContext()
 
-  const { getQuiz, deleteQuiz, createGame, authenticateGame } =
+  const { getQuiz, getQuizRatings, deleteQuiz, createGame, authenticateGame } =
     useKlurigoServiceClient()
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: quiz,
+    isLoading: isLoadingQuiz,
+    isError: isErrorQuiz,
+  } = useQuery({
     queryKey: ['quiz', quizId],
     queryFn: () => getQuiz(quizId as string),
     enabled: !!quizId,
     retry: false,
   })
 
+  const {
+    data: ratings,
+    isLoading: isLoadingRatings,
+    isError: isErrorRatings,
+  } = useQuery({
+    queryKey: ['quiz-ratings', quizId],
+    queryFn: () =>
+      getQuizRatings(quizId as string, {
+        sort: 'updated',
+        order: 'asc',
+        offset: 0,
+        limit: 10,
+        commentsOnly: true,
+      }),
+    enabled: !!quizId,
+    retry: false,
+  })
+
   useEffect(() => {
-    if (isError) {
+    if (isErrorQuiz) {
       navigate(-1)
     }
-  }, [isError, navigate])
+  }, [isErrorQuiz, navigate])
 
   const isOwner = useMemo(
-    () => data?.author.id === user?.ACCESS.sub,
-    [data, user],
+    () => quiz?.author.id === user?.ACCESS.sub,
+    [quiz, user],
   )
 
   const [isHostGameLoading, setIsHostGameLoading] = useState(false)
@@ -68,9 +90,11 @@ const QuizDetailsPage: FC = () => {
 
   return (
     <QuizDetailsPageUI
-      quiz={data}
+      quiz={quiz}
+      ratings={isErrorRatings ? [] : ratings?.results}
       isOwner={isOwner}
-      isLoadingQuiz={isLoading}
+      isLoadingQuiz={isLoadingQuiz}
+      isLoadingRatings={isLoadingRatings}
       isHostGameLoading={isHostGameLoading}
       isDeleteQuizLoading={isDeleteQuizLoading}
       onHostGame={handleCreateGame}

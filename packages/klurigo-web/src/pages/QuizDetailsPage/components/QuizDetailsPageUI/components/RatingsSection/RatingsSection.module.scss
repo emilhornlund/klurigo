@@ -1,0 +1,434 @@
+@use '../../../../../../styles/colors';
+@use '../../../../../../styles/helpers';
+@use '../../../../../../styles/variables';
+
+.section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 variables.$desktop-layout-gutter;
+
+  @include helpers.mobile {
+    gap: variables.$mobile-narrow-layout-gutter;
+  }
+
+  @include helpers.tablet {
+    gap: variables.$tablet-narrow-layout-gutter;
+  }
+
+  @include helpers.desktop {
+    gap: variables.$desktop-narrow-layout-gutter;
+  }
+
+  .title {
+    color: colors.$white;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+
+    @include helpers.mobile {
+      @include helpers.fontSize(20px);
+    }
+
+    @include helpers.tablet {
+      @include helpers.fontSize(24px);
+    }
+
+    @include helpers.desktop {
+      @include helpers.fontSize(28px);
+    }
+  }
+
+  .summary {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+
+    @include helpers.mobile {
+      gap: variables.$mobile-layout-gutter * 1.5;
+    }
+
+    @include helpers.tablet {
+      gap: variables.$tablet-layout-gutter * 1.5;
+    }
+
+    @include helpers.desktop {
+      gap: variables.$desktop-layout-gutter * 1.5;
+    }
+
+    .score {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+
+      .average {
+        color: colors.$white;
+        font-weight: 700;
+        line-height: 1;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(48px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(56px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(64px);
+        }
+      }
+
+      .outOf {
+        color: colors.$white;
+        opacity: 0.6;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(12px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(14px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(16px);
+        }
+      }
+    }
+
+    .summaryRight {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      @include helpers.mobile {
+        gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+      }
+
+      @include helpers.tablet {
+        gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+      }
+
+      @include helpers.desktop {
+        gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+      }
+
+      .starRow {
+        display: flex;
+        flex-direction: row;
+        color: colors.$white;
+
+        @include helpers.mobile {
+          gap: 0.2rem;
+
+          @include helpers.fontSize(16px);
+        }
+
+        @include helpers.tablet {
+          gap: 0.25rem;
+
+          @include helpers.fontSize(18px);
+        }
+
+        @include helpers.desktop {
+          gap: 0.3rem;
+
+          @include helpers.fontSize(20px);
+        }
+      }
+
+      .count {
+        color: colors.$white;
+        font-weight: 500;
+        opacity: 0.6;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(13px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(14px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(15px);
+        }
+      }
+    }
+  }
+}
+
+.railWrapper {
+  position: relative;
+
+  @include helpers.mobile {
+    margin-top: variables.$mobile-layout-gutter;
+
+    .arrowButton {
+      display: none;
+    }
+  }
+
+  @include helpers.tablet {
+    margin-top: variables.$tablet-layout-gutter;
+  }
+
+  @include helpers.desktop {
+    margin-top: variables.$desktop-layout-gutter;
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include helpers.mobile {
+      gap: variables.$mobile-narrow-layout-gutter;
+    }
+
+    @include helpers.tablet {
+      gap: variables.$tablet-narrow-layout-gutter;
+    }
+
+    @include helpers.desktop {
+      gap: variables.$desktop-narrow-layout-gutter;
+    }
+
+    .card {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      background-color: colors.$white;
+      overflow: hidden;
+
+      @include helpers.mobile {
+        width: 80%;
+        gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+        border-radius: variables.$mobile-border-radius;
+        padding: variables.$mobile-narrow-layout-gutter;
+      }
+
+      @include helpers.tablet {
+        width: 60%;
+        gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+        border-radius: variables.$tablet-border-radius;
+        padding: variables.$tablet-narrow-layout-gutter;
+      }
+
+      @include helpers.desktop {
+        width: 40%;
+        gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+        border-radius: variables.$desktop-border-radius;
+        padding: variables.$desktop-narrow-layout-gutter;
+      }
+
+      .cardHeader {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .timeAgo {
+          color: colors.$gray-2;
+
+          @include helpers.mobile {
+            @include helpers.fontSize(12px);
+          }
+
+          @include helpers.tablet {
+            @include helpers.fontSize(13px);
+          }
+
+          @include helpers.desktop {
+            @include helpers.fontSize(14px);
+          }
+        }
+      }
+
+      .author {
+        color: colors.$gray-4;
+        font-weight: 600;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(14px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(15px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(16px);
+        }
+      }
+
+      .comment {
+        color: colors.$gray-3;
+        margin: 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(13px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(14px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(15px);
+        }
+      }
+    }
+  }
+}
+
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: colors.$gray-3;
+  border: none;
+  border-radius: 50%;
+  color: colors.$white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+
+  @include helpers.tablet {
+    width: 2rem;
+    height: 2rem;
+
+    @include helpers.fontSize(14px);
+  }
+
+  @include helpers.desktop {
+    width: 2.25rem;
+    height: 2.25rem;
+
+    @include helpers.fontSize(16px);
+  }
+
+  .railWrapper:hover & {
+    opacity: 0.9;
+    pointer-events: auto;
+  }
+}
+
+.arrowPrev {
+  left: 0.5rem;
+}
+
+.arrowNext {
+  right: 0.5rem;
+}
+
+
+.emptyState {
+  color: colors.$white;
+  opacity: 0.5;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+
+  @include helpers.mobile {
+    margin-top: variables.$mobile-layout-gutter;
+
+    @include helpers.fontSize(16px);
+  }
+
+  @include helpers.tablet {
+    margin-top: variables.$tablet-layout-gutter;
+
+    @include helpers.fontSize(18px);
+  }
+
+  @include helpers.desktop {
+    margin-top: variables.$desktop-layout-gutter;
+
+    @include helpers.fontSize(20px);
+  }
+}
+
+.skeleton {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  background-color: colors.$white;
+  overflow: hidden;
+
+  @include helpers.mobile {
+    width: 75vw;
+    gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$mobile-border-radius;
+    padding: variables.$mobile-narrow-layout-gutter;
+  }
+
+  @include helpers.tablet {
+    width: 40vw;
+    gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$tablet-border-radius;
+    padding: variables.$tablet-narrow-layout-gutter;
+  }
+
+  @include helpers.desktop {
+    width: 30vw;
+    gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$desktop-border-radius;
+    padding: variables.$desktop-narrow-layout-gutter;
+  }
+}
+
+.skeletonLine {
+  height: 0.75rem;
+  border-radius: 0.25rem;
+  background: colors.$gray-1;
+  animation: shimmer 1.5s ease-in-out infinite;
+
+  &:first-child {
+    width: 40%;
+    height: 0.875rem;
+  }
+
+  &:nth-child(2) {
+    width: 65%;
+  }
+
+  &:last-child {
+    width: 90%;
+    height: 2.5rem;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
