@@ -1,5 +1,4 @@
-import type { QuestionMediaDto } from '@klurigo/common'
-import { MediaType, URL_REGEX } from '@klurigo/common'
+import { MediaType, type QuestionMediaDto, URL_REGEX } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 
@@ -7,6 +6,8 @@ import { MediaTypeLabels } from '../../models'
 import { classNames } from '../../utils/helpers'
 import Button from '../Button'
 import Modal from '../Modal'
+import ResponsiveImage from '../ResponsiveImage'
+import ResponsivePlayer from '../ResponsivePlayer'
 import SegmentedControl from '../SegmentedControl'
 import Select from '../Select'
 import TextField from '../TextField'
@@ -74,80 +75,94 @@ const MediaModal: FC<MediaModalProps> = ({
   return (
     <Modal title={title || 'Add Media'} size="normal" onClose={onClose} open>
       <div className={styles.mediaModal}>
-        {!imageOnly && (
-          <div className={classNames(styles.column, styles.half)}>
-            <Select
-              id="media-type-select"
-              kind="secondary"
-              value={internalType}
-              values={Object.values(MediaType).map((type) => ({
-                key: type,
-                value: type,
-                valueLabel: MediaTypeLabels[type],
-              }))}
-              customErrorMessage={customErrorMessages?.type}
-              onChange={(value) => handleChangeType(value as MediaType)}
-              onValid={(valid) =>
-                setInternalValid({ ...internalValid, type: valid })
-              }
-              required
-            />
-          </div>
-        )}
-        <div className={classNames(styles.column, styles.inline)}>
-          <div className={styles.textFieldWrapper}>
-            <TextField
-              id="media-url-textfield"
-              type="text"
-              kind="secondary"
-              placeholder="URL"
-              value={internalURL}
-              regex={{ value: URL_REGEX, message: 'Is not a valid URL' }}
-              customErrorMessage={customErrorMessages?.url}
-              onChange={(value) => setInternalURL(value as string)}
-              onValid={(valid) =>
-                setInternalValid({ ...internalValid, url: valid })
-              }
-              required
-            />
-          </div>
-        </div>
-
-        {internalType === MediaType.Image && (
-          <>
-            <div className={classNames(styles.column, styles.divider)} />
-            <div className={styles.column}>
-              <SegmentedControl
-                id="selected-provider-segmented-control"
+        <div className={styles.content}>
+          {!imageOnly && (
+            <div className={classNames(styles.column, styles.half)}>
+              <Select
+                id="media-type-select"
                 kind="secondary"
-                size="small"
-                value={selectedImageProvider}
-                values={[
-                  {
-                    key: IMAGE_PROVIDER_PEXELS_VALUE,
-                    value: IMAGE_PROVIDER_PEXELS_VALUE,
-                    valueLabel: 'Pexels',
-                  },
-                  {
-                    key: IMAGE_PROVIDER_UPLOAD_VALUE,
-                    value: IMAGE_PROVIDER_UPLOAD_VALUE,
-                    valueLabel: 'Upload',
-                  },
-                ]}
-                onChange={setSelectedImageProvider}
+                value={internalType}
+                values={Object.values(MediaType).map((type) => ({
+                  key: type,
+                  value: type,
+                  valueLabel: MediaTypeLabels[type],
+                }))}
+                customErrorMessage={customErrorMessages?.type}
+                onChange={(value) => handleChangeType(value as MediaType)}
+                onValid={(valid) =>
+                  setInternalValid({ ...internalValid, type: valid })
+                }
+                required
               />
             </div>
+          )}
+          <div className={classNames(styles.column, styles.inline)}>
+            <div className={styles.textFieldWrapper}>
+              <TextField
+                id="media-url-textfield"
+                type="text"
+                kind="secondary"
+                placeholder="URL"
+                value={internalURL}
+                regex={{ value: URL_REGEX, message: 'Is not a valid URL' }}
+                customErrorMessage={customErrorMessages?.url}
+                onChange={(value) => setInternalURL(value as string)}
+                onValid={(valid) =>
+                  setInternalValid({ ...internalValid, url: valid })
+                }
+                required
+              />
+            </div>
+          </div>
 
-            {selectedImageProvider === IMAGE_PROVIDER_PEXELS_VALUE && (
-              <PexelsImageProvider onChange={setInternalURL} />
-            )}
-            {selectedImageProvider === IMAGE_PROVIDER_UPLOAD_VALUE && (
-              <UploadImageProvider onChange={setInternalURL} />
-            )}
-          </>
-        )}
+          {internalURL && (
+            <div className={styles.column}>
+              {internalType === MediaType.Image && (
+                <ResponsiveImage imageURL={internalURL} noBorder />
+              )}
+              {(internalType === MediaType.Video ||
+                internalType === MediaType.Audio) && (
+                <ResponsivePlayer url={internalURL} playing={false} />
+              )}
+            </div>
+          )}
 
-        <div className={classNames(styles.column, styles.divider)} />
+          {internalType === MediaType.Image && (
+            <>
+              <div className={classNames(styles.column, styles.divider)} />
+              <div className={styles.column}>
+                <SegmentedControl
+                  id="selected-provider-segmented-control"
+                  kind="secondary"
+                  size="small"
+                  value={selectedImageProvider}
+                  values={[
+                    {
+                      key: IMAGE_PROVIDER_PEXELS_VALUE,
+                      value: IMAGE_PROVIDER_PEXELS_VALUE,
+                      valueLabel: 'Pexels',
+                    },
+                    {
+                      key: IMAGE_PROVIDER_UPLOAD_VALUE,
+                      value: IMAGE_PROVIDER_UPLOAD_VALUE,
+                      valueLabel: 'Upload',
+                    },
+                  ]}
+                  onChange={setSelectedImageProvider}
+                />
+              </div>
+
+              {selectedImageProvider === IMAGE_PROVIDER_PEXELS_VALUE && (
+                <PexelsImageProvider onChange={setInternalURL} />
+              )}
+              {selectedImageProvider === IMAGE_PROVIDER_UPLOAD_VALUE && (
+                <UploadImageProvider onChange={setInternalURL} />
+              )}
+            </>
+          )}
+
+          <div className={classNames(styles.column, styles.divider)} />
+        </div>
 
         <div className={classNames(styles.column, styles.actions)}>
           <Button

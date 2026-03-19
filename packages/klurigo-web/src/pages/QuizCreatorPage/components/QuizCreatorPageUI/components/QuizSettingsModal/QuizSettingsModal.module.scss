@@ -54,30 +54,30 @@ $outline-offset: helpers.pxToRem(2px);
       }
     }
   }
+}
 
-  .actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    width: 100%;
-    max-width: variables.$mobile-width;
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  max-width: variables.$mobile-width;
 
-    @include helpers.mobile {
-      column-gap: variables.$mobile-narrow-layout-gutter;
-    }
+  @include helpers.mobile {
+    column-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+  }
 
-    @include helpers.tablet {
-      column-gap: variables.$tablet-narrow-layout-gutter;
-    }
+  @include helpers.tablet {
+    column-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+  }
 
-    @include helpers.desktop {
-      column-gap: variables.$desktop-narrow-layout-gutter;
-    }
+  @include helpers.desktop {
+    column-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+  }
 
-    div[class*='buttonInputContainer'] {
-      flex: 1;
-    }
+  div[class*='buttonInputContainer'] {
+    flex: 1;
   }
 }

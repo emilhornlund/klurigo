@@ -91,26 +91,28 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
         <div className={styles.quizSettingsRow}>
           <div className={styles.label}>Image Cover</div>
           {imageCoverURL && <ResponsiveImage imageURL={imageCoverURL} />}
-          <Button
-            id="add-image-cover-button"
-            type="button"
-            kind="call-to-action"
-            size="small"
-            value={imageCoverURL ? 'Replace' : 'Add'}
-            icon={imageCoverURL ? faRetweet : faPlus}
-            onClick={() => setShowMediaModal(true)}
-          />
-          {imageCoverURL && (
+          <div className={styles.actions}>
             <Button
-              id="delete-image-cover-button"
+              id="add-image-cover-button"
               type="button"
-              kind="destructive"
+              kind="call-to-action"
               size="small"
-              value="Delete"
-              icon={faTrash}
-              onClick={handleDeleteImageCover}
+              value={imageCoverURL ? 'Replace' : 'Add'}
+              icon={imageCoverURL ? faRetweet : faPlus}
+              onClick={() => setShowMediaModal(true)}
             />
-          )}
+            {imageCoverURL && (
+              <Button
+                id="delete-image-cover-button"
+                type="button"
+                kind="destructive"
+                size="small"
+                value="Delete"
+                icon={faTrash}
+                onClick={handleDeleteImageCover}
+              />
+            )}
+          </div>
         </div>
         <div className={styles.quizSettingsRow}>
           <div className={styles.label}>Category</div>
