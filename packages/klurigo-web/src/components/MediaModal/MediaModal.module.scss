@@ -19,154 +19,165 @@
     gap: variables.$desktop-control-normal-layout-gutter;
   }
 
-  .column {
+  .content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 100%;
+    overflow: scroll;
+    flex: 1;
 
-    &.half {
-      @include helpers.mobile {
-        width: calc(50% - #{variables.$mobile-control-normal-layout-gutter} * 0.5);
-      }
-
-      @include helpers.tablet {
-        width: calc(50% - #{variables.$tablet-control-normal-layout-gutter} * 0.5);
-      }
-
-      @include helpers.desktop {
-        width: calc(50% - #{variables.$desktop-control-normal-layout-gutter} * 0.5);
-      }
+    @include helpers.mobile {
+      gap: variables.$mobile-control-normal-layout-gutter;
     }
 
-    &.preview {
+    @include helpers.tablet {
+      gap: variables.$tablet-control-normal-layout-gutter;
+    }
+
+    @include helpers.desktop {
+      gap: variables.$desktop-control-normal-layout-gutter;
+    }
+
+    .column {
       display: flex;
       flex-direction: column;
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: hidden;
-    }
+      justify-content: center;
+      width: 100%;
 
-    &.inline, &.search {
-      flex-direction: row;
-      justify-content: space-between;
-
-      @include helpers.mobile {
-        column-gap: variables.$mobile-control-normal-layout-gutter;
-      }
-
-      @include helpers.tablet {
-        column-gap: variables.$tablet-control-normal-layout-gutter;
-      }
-
-      @include helpers.desktop {
-        column-gap: variables.$desktop-control-normal-layout-gutter;
-      }
-
-      .textFieldWrapper {
-        flex: 1;
-      }
-    }
-
-    &.divider {
-      border-top-style: dashed;
-      border-top-color: colors.$gray-1;
-
-      @include helpers.mobile {
-        border-top-width: helpers.pxToRem(1px);
-        margin: variables.$mobile-control-normal-layout-gutter 0;
-      }
-
-      @include helpers.tablet {
-        border-top-width: helpers.pxToRem(2px);
-        margin: variables.$tablet-control-normal-layout-gutter 0;
-      }
-
-      @include helpers.desktop {
-        border-top-width: helpers.pxToRem(3px);
-        margin: variables.$desktop-control-normal-layout-gutter 0;
-      }
-    }
-
-    &.resultsColumn {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: hidden;
-
-      .resultsGrid {
-        display: grid;
-        flex: 1 1 auto;
-        overflow-y: auto;
-        overflow-x: hidden;
-        min-height: 0;
-
+      &.half {
         @include helpers.mobile {
-          gap: variables.$mobile-control-normal-layout-gutter;
-          grid-template-columns: 1fr 1fr;
+          width: calc(50% - #{variables.$mobile-control-normal-layout-gutter} * 0.5);
         }
 
         @include helpers.tablet {
-          gap: variables.$tablet-control-normal-layout-gutter;
-          grid-template-columns: 1fr 1fr 1fr;
+          width: calc(50% - #{variables.$tablet-control-normal-layout-gutter} * 0.5);
         }
 
         @include helpers.desktop {
-          gap: variables.$desktop-control-normal-layout-gutter;
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .itemButton {
-          display: flex;
-          flex-direction: column;
-          -moz-appearance: none;
-          -o-appearance: none;
-          -webkit-appearance: none;
-          appearance: none;
-          background-color: transparent;
-          border: none;
-          font-family: inherit;
-          outline: none;
-          margin: 0;
-          padding: 0;
-          cursor: pointer;
+          width: calc(50% - #{variables.$desktop-control-normal-layout-gutter} * 0.5);
         }
       }
+
+      &.inline, &.search {
+        flex-direction: row;
+        justify-content: space-between;
+
+        @include helpers.mobile {
+          column-gap: variables.$mobile-control-normal-layout-gutter;
+        }
+
+        @include helpers.tablet {
+          column-gap: variables.$tablet-control-normal-layout-gutter;
+        }
+
+        @include helpers.desktop {
+          column-gap: variables.$desktop-control-normal-layout-gutter;
+        }
+
+        .textFieldWrapper {
+          flex: 1;
+        }
+      }
+
+      &.divider {
+        border-top-style: dashed;
+        border-top-color: colors.$gray-1;
+
+        @include helpers.mobile {
+          border-top-width: helpers.pxToRem(1px);
+          margin: variables.$mobile-control-normal-layout-gutter 0;
+        }
+
+        @include helpers.tablet {
+          border-top-width: helpers.pxToRem(2px);
+          margin: variables.$tablet-control-normal-layout-gutter 0;
+        }
+
+        @include helpers.desktop {
+          border-top-width: helpers.pxToRem(3px);
+          margin: variables.$desktop-control-normal-layout-gutter 0;
+        }
+      }
+
+      &.resultsColumn {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+
+        .resultsGrid {
+          display: grid;
+          flex: 1 1 auto;
+          overflow-y: auto;
+          overflow-x: hidden;
+          min-height: 0;
+
+          @include helpers.mobile {
+            gap: variables.$mobile-control-normal-layout-gutter;
+            grid-template-columns: 1fr 1fr;
+          }
+
+          @include helpers.tablet {
+            gap: variables.$tablet-control-normal-layout-gutter;
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+
+          @include helpers.desktop {
+            gap: variables.$desktop-control-normal-layout-gutter;
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+
+          .itemButton {
+            display: flex;
+            flex-direction: column;
+            -moz-appearance: none;
+            -o-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            border: none;
+            font-family: inherit;
+            outline: none;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+          }
+        }
+      }
+
+      &.upload {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 100%;
+    max-width: variables.$mobile-width;
+
+    @include helpers.mobile {
+      column-gap: variables.$mobile-control-normal-layout-gutter;
     }
 
-    &.upload {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    @include helpers.tablet {
+      column-gap: variables.$tablet-control-normal-layout-gutter;
     }
 
-    &.actions {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      align-self: center;
-      width: 100%;
-      max-width: variables.$mobile-width;
+    @include helpers.desktop {
+      column-gap: variables.$desktop-control-normal-layout-gutter;
+    }
 
-      @include helpers.mobile {
-        column-gap: variables.$mobile-control-normal-layout-gutter;
-      }
-
-      @include helpers.tablet {
-        column-gap: variables.$tablet-control-normal-layout-gutter;
-      }
-
-      @include helpers.desktop {
-        column-gap: variables.$desktop-control-normal-layout-gutter;
-      }
-
-      div[class*="buttonInputContainer"] {
-        flex: 1;
-      }
+    div[class*="buttonInputContainer"] {
+      flex: 1;
     }
   }
 }
