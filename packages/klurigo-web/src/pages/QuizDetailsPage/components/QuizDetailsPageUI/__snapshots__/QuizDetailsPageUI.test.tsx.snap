@@ -242,7 +242,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
             <span
               class="value"
             >
-              2025-02-14 15:31
+              1 year ago
             </span>
           </div>
           <div
@@ -357,7 +357,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
             <span
               class="value"
             >
-              2025-02-09 15:31
+              1 year ago
             </span>
           </div>
         </div>

@@ -2,6 +2,8 @@ import {
   GameMode,
   LanguageCode,
   QuizCategory,
+  type QuizRatingDto,
+  type QuizRatingSummaryDto,
   QuizVisibility,
 } from '@klurigo/common'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -10,6 +12,24 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
 import QuizDetailsPageUI from './QuizDetailsPageUI'
+
+vi.mock('./components/RatingsSection', () => ({
+  default: ({
+    summary,
+    ratings,
+    isLoading,
+  }: {
+    summary: QuizRatingSummaryDto
+    ratings: QuizRatingDto[]
+    isLoading?: boolean
+  }) => (
+    <div data-testid="ratings-section">
+      <span data-testid="ratings-summary-stars">{summary.stars}</span>
+      <span data-testid="ratings-count">{ratings.length}</span>
+      {isLoading && <span data-testid="ratings-loading" />}
+    </div>
+  ),
+}))
 
 vi.mock('../../../../components', async () => {
   const Button = ({
@@ -44,6 +64,8 @@ vi.mock('../../../../components', async () => {
   )
 
   const LoadingSpinner = () => <div data-testid="loading-spinner" />
+
+  const PageDivider = () => <hr data-testid="page-divider" />
 
   const ResponsiveImage = ({ imageURL }: { imageURL: string }) => (
     <img data-testid="responsive-image" alt="cover" src={imageURL} />
@@ -90,6 +112,7 @@ vi.mock('../../../../components', async () => {
     ConfirmDialog,
     LoadingSpinner,
     Page,
+    PageDivider,
     ResponsiveImage,
     Typography,
   }
@@ -124,6 +147,17 @@ const makeQuiz = (overrides: Partial<any> = {}) => ({
   ratingSummary: { stars: 0, comments: 0 },
   created,
   updated,
+  ...overrides,
+})
+
+const makeRating = (overrides: Partial<QuizRatingDto> = {}): QuizRatingDto => ({
+  id: 'rating-1',
+  quizId: 'quiz-1',
+  stars: 4,
+  comment: 'Great quiz!',
+  author: { id: 'user-1', nickname: 'Alice' },
+  createdAt: new Date('2025-01-01T00:00:00.000Z'),
+  updatedAt: new Date('2025-01-01T00:00:00.000Z'),
   ...overrides,
 })
 
@@ -423,7 +457,8 @@ describe('QuizDetailsPageUI', () => {
         'title',
         'Last played 2025-01-15 10:30:00',
       )
-      expect(lastPlayedItem).toHaveTextContent('2025-01-15 10:30')
+      // value is displayed as relative time via formatTimeAgo
+      expect(lastPlayedItem).not.toHaveTextContent('N/A')
     })
 
     it('renders N/A for last played when date is missing', () => {
@@ -748,6 +783,58 @@ describe('QuizDetailsPageUI', () => {
       expect(playersItem.getAttribute('title')).toBe('Total players')
       expect(difficultyItem.getAttribute('title')).toBe('Estimated difficulty')
       expect(ratingItem.getAttribute('title')).toBe('Average rating')
+    })
+  })
+
+  describe('Ratings Section', () => {
+    it('renders RatingsSection and PageDivider when ratingSummary.stars > 0', () => {
+      renderUI({
+        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+      })
+
+      expect(screen.getByTestId('ratings-section')).toBeInTheDocument()
+      expect(screen.getByTestId('page-divider')).toBeInTheDocument()
+      expect(screen.getByTestId('ratings-summary-stars')).toHaveTextContent(
+        '4.5',
+      )
+    })
+
+    it('hides RatingsSection and PageDivider when ratingSummary.stars is 0', () => {
+      renderUI({ quiz: makeQuiz({ ratingSummary: { stars: 0, comments: 0 } }) })
+
+      expect(screen.queryByTestId('ratings-section')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('page-divider')).not.toBeInTheDocument()
+    })
+
+    it('passes empty array to RatingsSection when ratings prop is undefined', () => {
+      renderUI({
+        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        ratings: undefined,
+      })
+
+      expect(screen.getByTestId('ratings-count')).toHaveTextContent('0')
+    })
+
+    it('passes ratings array to RatingsSection when provided', () => {
+      renderUI({
+        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        ratings: [
+          makeRating(),
+          makeRating({ id: 'r2' }),
+          makeRating({ id: 'r3' }),
+        ],
+      })
+
+      expect(screen.getByTestId('ratings-count')).toHaveTextContent('3')
+    })
+
+    it('passes isLoadingRatings to RatingsSection', () => {
+      renderUI({
+        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        isLoadingRatings: true,
+      })
+
+      expect(screen.getByTestId('ratings-loading')).toBeInTheDocument()
     })
   })
 })

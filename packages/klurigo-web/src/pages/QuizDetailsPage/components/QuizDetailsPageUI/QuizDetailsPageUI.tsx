@@ -17,7 +17,7 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { QuizResponseDto } from '@klurigo/common'
+import type { QuizRatingDto, QuizResponseDto } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
@@ -26,6 +26,7 @@ import {
   ConfirmDialog,
   LoadingSpinner,
   Page,
+  PageDivider,
   ResponsiveImage,
   Typography,
 } from '../../../../components'
@@ -35,9 +36,14 @@ import {
   QuizCategoryLabels,
   QuizVisibilityLabels,
 } from '../../../../models'
-import { DATE_FORMATS, formatLocalDate } from '../../../../utils/date.utils'
+import {
+  DATE_FORMATS,
+  formatLocalDate,
+  formatTimeAgo,
+} from '../../../../utils/date.utils'
 import { toDifficultyLabel } from '../../../../utils/quiz.utils'
 
+import RatingsSection from './components/RatingsSection'
 import styles from './QuizDetailsPageUI.module.scss'
 
 const DetailItem: FC<{
@@ -53,8 +59,10 @@ const DetailItem: FC<{
 
 export interface QuizDetailsPageUIProps {
   quiz?: QuizResponseDto
+  ratings?: QuizRatingDto[]
   isOwner?: boolean
   isLoadingQuiz?: boolean
+  isLoadingRatings?: boolean
   isHostGameLoading?: boolean
   isDeleteQuizLoading?: boolean
   onHostGame: () => void
@@ -64,8 +72,10 @@ export interface QuizDetailsPageUIProps {
 
 const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
   quiz,
+  ratings,
   isOwner = false,
   isLoadingQuiz,
+  isLoadingRatings,
   isHostGameLoading,
   isDeleteQuizLoading,
   onHostGame,
@@ -162,7 +172,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
           <DetailItem icon={faUser} value={quiz.author.name || 'N/A'} />
           <DetailItem
             icon={faCalendarPlus}
-            value={formatLocalDate(quiz.created, DATE_FORMATS.DATE_TIME)}
+            value={formatTimeAgo(quiz.created)}
             title={`Created ${formatLocalDate(quiz.created, DATE_FORMATS.DATE_TIME_SECONDS)}`}
           />
           <DetailItem
@@ -200,10 +210,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
             icon={faClock}
             value={
               quiz.gameplaySummary?.lastPlayed
-                ? formatLocalDate(
-                    quiz.gameplaySummary.lastPlayed,
-                    DATE_FORMATS.DATE_TIME,
-                  )
+                ? formatTimeAgo(quiz.gameplaySummary.lastPlayed)
                 : 'N/A'
             }
             title={
@@ -213,6 +220,17 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
             }
           />
         </div>
+
+        {quiz.ratingSummary.stars > 0 && (
+          <>
+            <PageDivider />
+            <RatingsSection
+              summary={quiz.ratingSummary}
+              ratings={ratings ?? []}
+              isLoading={isLoadingRatings}
+            />
+          </>
+        )}
       </div>
 
       <ConfirmDialog
