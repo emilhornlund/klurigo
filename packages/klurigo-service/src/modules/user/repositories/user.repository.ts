@@ -151,7 +151,7 @@ export class UserRepository extends BaseRepository<User> {
     ) {
       const updatedUser = await this.userModel
         .findByIdAndUpdate(id, details, {
-          new: true,
+          returnDocument: 'after',
           overwriteDiscriminatorKey: true,
           runValidators: true,
           context: 'query',
