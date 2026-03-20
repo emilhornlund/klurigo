@@ -161,7 +161,7 @@ const RatingsSection: FC<RatingsSectionProps> = ({
         <div className={styles.summaryRight}>
           <StarRow stars={summary.stars} />
           <span className={styles.count} data-testid="ratings-count">
-            {summary.comments.toLocaleString()} Comments
+            {summary.total} {summary.total > 1 ? 'Ratings' : 'Rating'}
           </span>
         </div>
       </div>

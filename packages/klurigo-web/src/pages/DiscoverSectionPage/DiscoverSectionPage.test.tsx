@@ -54,7 +54,7 @@ const makeQuiz = (id: string, title: string) => ({
   numberOfQuestions: 10,
   author: { id: 'a1', name: 'Author' },
   gameplaySummary: { count: 5, totalPlayerCount: 10 },
-  ratingSummary: { stars: 4.0, comments: 2 },
+  ratingSummary: { stars: 4.0, comments: 2, total: 5 },
   created: new Date(),
 })
 

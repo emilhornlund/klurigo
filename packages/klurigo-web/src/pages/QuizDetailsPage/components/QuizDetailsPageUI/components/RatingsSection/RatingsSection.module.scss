@@ -6,7 +6,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 variables.$desktop-layout-gutter;
 
   @include helpers.mobile {
     gap: variables.$mobile-narrow-layout-gutter;
@@ -87,15 +86,15 @@
         opacity: 0.6;
 
         @include helpers.mobile {
-          @include helpers.fontSize(12px);
+          @include helpers.fontSize(16px);
         }
 
         @include helpers.tablet {
-          @include helpers.fontSize(14px);
+          @include helpers.fontSize(17px);
         }
 
         @include helpers.desktop {
-          @include helpers.fontSize(16px);
+          @include helpers.fontSize(18px);
         }
       }
     }
@@ -148,15 +147,15 @@
         opacity: 0.6;
 
         @include helpers.mobile {
-          @include helpers.fontSize(13px);
+          @include helpers.fontSize(16px);
         }
 
         @include helpers.tablet {
-          @include helpers.fontSize(14px);
+          @include helpers.fontSize(17px);
         }
 
         @include helpers.desktop {
-          @include helpers.fontSize(15px);
+          @include helpers.fontSize(18px);
         }
       }
     }
@@ -355,19 +354,19 @@
   @include helpers.mobile {
     margin-top: variables.$mobile-layout-gutter;
 
-    @include helpers.fontSize(16px);
+    @include helpers.fontSize(18px);
   }
 
   @include helpers.tablet {
     margin-top: variables.$tablet-layout-gutter;
 
-    @include helpers.fontSize(18px);
+    @include helpers.fontSize(20px);
   }
 
   @include helpers.desktop {
     margin-top: variables.$desktop-layout-gutter;
 
-    @include helpers.fontSize(20px);
+    @include helpers.fontSize(22px);
   }
 }
 

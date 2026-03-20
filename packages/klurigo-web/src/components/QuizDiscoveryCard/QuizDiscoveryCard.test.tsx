@@ -41,7 +41,7 @@ const makeQuiz = (
     count: 42,
     totalPlayerCount: 100,
   },
-  ratingSummary: { stars: 4.5, comments: 10 },
+  ratingSummary: { stars: 4.5, comments: 10, total: 15 },
   created: new Date(),
   ...overrides,
 })
@@ -94,7 +94,7 @@ describe('QuizDiscoveryCard', () => {
       <MemoryRouter>
         <QuizDiscoveryCard
           quiz={makeQuiz({
-            ratingSummary: { stars: 0, comments: 0 },
+            ratingSummary: { stars: 0, comments: 0, total: 0 },
           })}
         />
       </MemoryRouter>,

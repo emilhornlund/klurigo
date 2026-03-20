@@ -608,6 +608,7 @@ export class QuizService {
       ratingSummary: {
         stars: ratingSummary.avg,
         comments: ratingSummary.commentCount,
+        total: ratingSummary.count,
       },
       created,
       updated,
