@@ -151,7 +151,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
    *
    * Applies the repository's update operator normalization via `buildUpdateOps`,
    * and uses `findByIdAndUpdate` with:
-   * - `new: true` to return the updated document
+   * - `returnDocument: 'after'` to return the updated document
    * - `runValidators: true` to validate the update against the schema
    *
    * @param id - The id of the document to update.
@@ -169,7 +169,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
       const updateOps = this.buildUpdateOps(data)
 
       const query = this.model.findByIdAndUpdate(id, updateOps, {
-        new: true,
+        returnDocument: 'after',
         runValidators: true,
       })
 
@@ -286,7 +286,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
       const replacement = casted.toObject(this.getRepositoryObjectOptions())
 
       const query = this.model.findOneAndReplace({ _id: id }, replacement, {
-        new: true,
+        returnDocument: 'after',
         runValidators: true,
         overwriteDiscriminatorKey: true,
       })

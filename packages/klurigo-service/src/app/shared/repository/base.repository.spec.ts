@@ -352,7 +352,7 @@ describe('BaseRepository', () => {
       expect(mockModel.findByIdAndUpdate).toHaveBeenCalledWith(
         id,
         { $set: { name: 'updated' } },
-        { new: true, runValidators: true },
+        { returnDocument: 'after', runValidators: true },
       )
       expect(mockLoggerLog).toHaveBeenCalledWith(
         `Updated Test document with id '1'`,
@@ -377,7 +377,7 @@ describe('BaseRepository', () => {
       expect(mockModel.findByIdAndUpdate).toHaveBeenCalledWith(
         id,
         { $set: { name: 'updated' }, $unset: { age: '' } },
-        { new: true, runValidators: true },
+        { returnDocument: 'after', runValidators: true },
       )
     })
 
@@ -594,7 +594,7 @@ describe('BaseRepository', () => {
 
       expect(filterArg).toEqual({ _id: id })
       expect(optionsArg).toEqual({
-        new: true,
+        returnDocument: 'after',
         runValidators: true,
         overwriteDiscriminatorKey: true,
       })
