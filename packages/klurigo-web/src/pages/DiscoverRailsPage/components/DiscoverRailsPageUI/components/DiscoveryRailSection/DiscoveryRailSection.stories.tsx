@@ -25,7 +25,7 @@ const makeSampleQuizzes = (count: number): DiscoveryQuizCardDto[] =>
       count: 100 * (i + 1),
       totalPlayerCount: 50 * (i + 1),
     },
-    ratingSummary: { stars: 3.5 + (i % 3) * 0.5, comments: i * 3 },
+    ratingSummary: { stars: 3.5 + (i % 3) * 0.5, comments: i * 3, total: 10 },
     created: new Date(),
   }))
 

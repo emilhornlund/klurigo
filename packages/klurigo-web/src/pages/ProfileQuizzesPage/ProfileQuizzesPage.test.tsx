@@ -60,7 +60,7 @@ const makeQuiz = (id: string, title: string) => ({
     difficultyPercentage: 0.5,
     lastPlayed: new Date(),
   },
-  ratingSummary: { stars: 4.0, comments: 2 },
+  ratingSummary: { stars: 4.0, comments: 2, total: 5 },
   created: new Date(),
   updated: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
 })

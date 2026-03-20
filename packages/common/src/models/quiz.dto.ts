@@ -188,6 +188,15 @@ export type QuizRatingSummaryDto = {
    * @example 12
    */
   readonly comments: number
+
+  /**
+   * The total number of submitted ratings for the quiz.
+   *
+   * Includes both ratings with and without comments.
+   *
+   * @example 42
+   */
+  readonly total: number
 }
 
 /**

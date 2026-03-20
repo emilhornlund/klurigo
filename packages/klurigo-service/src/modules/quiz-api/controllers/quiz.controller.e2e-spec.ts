@@ -443,6 +443,7 @@ describe('QuizController (e2e)', () => {
             ratingSummary: {
               comments: 0,
               stars: 0,
+              total: 0,
             },
             created: created.toISOString(),
             updated: updated.toISOString(),
@@ -539,6 +540,7 @@ describe('QuizController (e2e)', () => {
             ratingSummary: {
               stars: 5,
               comments: 1,
+              total: 1,
             },
             created: now.toISOString(),
             updated: expect.any(String),

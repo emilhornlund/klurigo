@@ -59,7 +59,7 @@ const makeSections = (count: number): DiscoverySectionDto[] =>
           count: 5,
           totalPlayerCount: 10,
         },
-        ratingSummary: { stars: 4.0, comments: 2 },
+        ratingSummary: { stars: 4.0, comments: 2, total: 5 },
         created: new Date(),
       },
     ],
@@ -78,7 +78,7 @@ const makeQuizResults = (count: number): QuizResponseDto[] =>
     numberOfQuestions: 5,
     author: { id: 'a1', name: 'Author' },
     gameplaySummary: { count: 2, totalPlayerCount: 4 },
-    ratingSummary: { stars: 3.5, comments: 1 },
+    ratingSummary: { stars: 3.5, comments: 1, total: 5 },
     created: new Date(),
     updated: new Date(),
   }))

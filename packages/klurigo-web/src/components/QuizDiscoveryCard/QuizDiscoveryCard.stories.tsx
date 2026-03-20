@@ -23,7 +23,7 @@ const sampleQuiz: DiscoveryQuizCardDto = {
     count: 1234,
     totalPlayerCount: 500,
   },
-  ratingSummary: { stars: 4.7, comments: 42 },
+  ratingSummary: { stars: 4.7, comments: 42, total: 70 },
   created: new Date(),
 }
 
@@ -58,7 +58,7 @@ export const NoRating = {
   args: {
     quiz: {
       ...sampleQuiz,
-      ratingSummary: { stars: 0, comments: 0 },
+      ratingSummary: { stars: 0, comments: 0, total: 0 },
     },
   },
 } satisfies Story

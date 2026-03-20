@@ -62,7 +62,7 @@ const mockResponse: DiscoveryResponseDto = {
             count: 5,
             totalPlayerCount: 10,
           },
-          ratingSummary: { stars: 4.0, comments: 2 },
+          ratingSummary: { stars: 4.0, comments: 2, total: 10 },
           created: new Date(),
         },
       ],
@@ -136,7 +136,7 @@ describe('DiscoverRailsPage', () => {
       numberOfQuestions: 10,
       author: { id: 'a1', name: 'Author' },
       gameplaySummary: { count: 2, totalPlayerCount: 4 },
-      ratingSummary: { stars: 4.0, comments: 1 },
+      ratingSummary: { stars: 4.0, comments: 1, total: 10 },
       created: new Date(),
       updated: new Date(),
     }
@@ -222,7 +222,7 @@ describe('DiscoverRailsPage', () => {
         numberOfQuestions: 10,
         author: { id: 'a1', name: 'Author' },
         gameplaySummary: { count: 1, totalPlayerCount: 2 },
-        ratingSummary: { stars: 4, comments: 0 },
+        ratingSummary: { stars: 4, comments: 0, total: 10 },
         created: new Date(),
         updated: new Date(),
       }))
