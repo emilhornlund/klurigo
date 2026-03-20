@@ -35,7 +35,7 @@ const makeQuiz = (id: string): DiscoveryQuizCardDto => ({
     count: 5,
     totalPlayerCount: 10,
   },
-  ratingSummary: { stars: 4.0, comments: 2 },
+  ratingSummary: { stars: 4.0, comments: 2, total: 5 },
   created: new Date(),
 })
 

@@ -62,7 +62,7 @@ export const Default = {
         difficultyPercentage: 0.48,
         lastPlayed: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
       },
-      ratingSummary: { stars: 4.6, comments: 13 },
+      ratingSummary: { stars: 4.6, comments: 13, total: 15 },
       created: new Date(),
       updated: new Date(),
     },
@@ -82,7 +82,7 @@ export const NoRatings = {
     ...Default.args,
     quiz: {
       ...Default.args.quiz!,
-      ratingSummary: { stars: 0, comments: 0 },
+      ratingSummary: { stars: 0, comments: 0, total: 0 },
     },
     ratings: [],
   },

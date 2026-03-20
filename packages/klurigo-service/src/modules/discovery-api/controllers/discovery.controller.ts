@@ -299,6 +299,7 @@ export class DiscoveryController {
       ratingSummary: {
         stars: quiz.ratingSummary.avg,
         comments: quiz.ratingSummary.commentCount,
+        total: quiz.ratingSummary.count,
       },
       created: quiz.created,
     }

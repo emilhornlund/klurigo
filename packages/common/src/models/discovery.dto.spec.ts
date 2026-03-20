@@ -49,7 +49,7 @@ describe('DiscoveryQuizCardDto shape', () => {
     numberOfQuestions: 10,
     author: { id: 'author-1', name: 'Alice' },
     gameplaySummary: { count: 42, totalPlayerCount: 150 },
-    ratingSummary: { stars: 4.5, comments: 8 },
+    ratingSummary: { stars: 4.5, comments: 8, total: 10 },
     created: new Date('2024-01-15T12:00:00Z'),
   }
 

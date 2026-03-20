@@ -20,6 +20,7 @@ const makeRatings = (count: number): QuizRatingDto[] =>
 const defaultSummary: QuizRatingSummaryDto = {
   stars: 4.6,
   comments: 13,
+  total: 15,
 }
 
 const meta = {
@@ -42,21 +43,21 @@ export const WithRatings = {
 
 export const FewRatings = {
   args: {
-    summary: { stars: 3.2, comments: 3 },
+    summary: { stars: 3.2, comments: 3, total: 5 },
     ratings: makeRatings(3),
   },
 } satisfies Story
 
 export const NoRatings = {
   args: {
-    summary: { stars: 0, comments: 0 },
+    summary: { stars: 0, comments: 0, total: 0 },
     ratings: [],
   },
 } satisfies Story
 
 export const NoWrittenReviews = {
   args: {
-    summary: { stars: 3.5, comments: 0 },
+    summary: { stars: 3.5, comments: 0, total: 5 },
     ratings: [],
   },
 } satisfies Story
@@ -71,7 +72,7 @@ export const Loading = {
 
 export const AllComments = {
   args: {
-    summary: { stars: 5.0, comments: 5 },
+    summary: { stars: 5.0, comments: 5, total: 10 },
     ratings: Array.from({ length: 5 }, (_, i) => ({
       id: `rating-${i}`,
       quizId: 'quiz-1',
@@ -86,7 +87,7 @@ export const AllComments = {
 
 export const NoComments = {
   args: {
-    summary: { stars: 2.8, comments: 0 },
+    summary: { stars: 2.8, comments: 0, total: 10 },
     ratings: Array.from({ length: 6 }, (_, i) => ({
       id: `rating-${i}`,
       quizId: 'quiz-1',

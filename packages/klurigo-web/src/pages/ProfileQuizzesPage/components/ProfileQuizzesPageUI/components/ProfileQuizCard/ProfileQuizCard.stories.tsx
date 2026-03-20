@@ -2,9 +2,9 @@ import {
   GameMode,
   LanguageCode,
   QuizCategory,
+  type QuizResponseDto,
   QuizVisibility,
 } from '@klurigo/common'
-import type { QuizResponseDto } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -30,7 +30,7 @@ const makeQuiz = (overrides?: Partial<QuizResponseDto>): QuizResponseDto => ({
     difficultyPercentage: 0.45,
     lastPlayed: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
   },
-  ratingSummary: { stars: 4.3, comments: 25 },
+  ratingSummary: { stars: 4.3, comments: 25, total: 35 },
   created: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
   updated: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
   ...overrides,

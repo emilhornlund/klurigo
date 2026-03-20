@@ -36,7 +36,7 @@ const mockQuiz = {
     difficultyPercentage: 0.5,
     lastPlayed: new Date(),
   },
-  ratingSummary: { stars: 4.5, comments: 10 },
+  ratingSummary: { stars: 4.5, comments: 10, total: 15 },
   created: new Date(),
   updated: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
 }

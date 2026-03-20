@@ -39,4 +39,17 @@ export class QuizRatingSummaryResponse implements QuizRatingSummaryDto {
     minimum: 0,
   })
   readonly comments: number
+
+  /**
+   * The total number of ratings submitted for the quiz.
+   */
+  @ApiProperty({
+    title: 'Total',
+    description: 'The total number of ratings submitted for the quiz.',
+    required: true,
+    type: Number,
+    example: 42,
+    minimum: 0,
+  })
+  readonly total: number
 }

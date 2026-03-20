@@ -144,7 +144,7 @@ const makeQuiz = (overrides: Partial<any> = {}) => ({
     difficultyPercentage: 0.48,
     lastPlayed: new Date(created.getTime() - 1000 * 60 * 60 * 24 * 5),
   },
-  ratingSummary: { stars: 0, comments: 0 },
+  ratingSummary: { stars: 0, comments: 0, total: 0 },
   created,
   updated,
   ...overrides,
@@ -789,7 +789,9 @@ describe('QuizDetailsPageUI', () => {
   describe('Ratings Section', () => {
     it('renders RatingsSection and PageDivider when ratingSummary.stars > 0', () => {
       renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        quiz: makeQuiz({
+          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
+        }),
       })
 
       expect(screen.getByTestId('ratings-section')).toBeInTheDocument()
@@ -800,7 +802,9 @@ describe('QuizDetailsPageUI', () => {
     })
 
     it('hides RatingsSection and PageDivider when ratingSummary.stars is 0', () => {
-      renderUI({ quiz: makeQuiz({ ratingSummary: { stars: 0, comments: 0 } }) })
+      renderUI({
+        quiz: makeQuiz({ ratingSummary: { stars: 0, comments: 0, total: 0 } }),
+      })
 
       expect(screen.queryByTestId('ratings-section')).not.toBeInTheDocument()
       expect(screen.queryByTestId('page-divider')).not.toBeInTheDocument()
@@ -808,7 +812,9 @@ describe('QuizDetailsPageUI', () => {
 
     it('passes empty array to RatingsSection when ratings prop is undefined', () => {
       renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        quiz: makeQuiz({
+          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
+        }),
         ratings: undefined,
       })
 
@@ -817,7 +823,9 @@ describe('QuizDetailsPageUI', () => {
 
     it('passes ratings array to RatingsSection when provided', () => {
       renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        quiz: makeQuiz({
+          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
+        }),
         ratings: [
           makeRating(),
           makeRating({ id: 'r2' }),
@@ -830,7 +838,9 @@ describe('QuizDetailsPageUI', () => {
 
     it('passes isLoadingRatings to RatingsSection', () => {
       renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
+        quiz: makeQuiz({
+          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
+        }),
         isLoadingRatings: true,
       })
 

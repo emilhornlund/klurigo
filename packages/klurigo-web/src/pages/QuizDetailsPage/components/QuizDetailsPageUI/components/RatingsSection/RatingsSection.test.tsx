@@ -28,7 +28,11 @@ const makeRating = (overrides: Partial<QuizRatingDto> = {}): QuizRatingDto => ({
   ...overrides,
 })
 
-const defaultSummary: QuizRatingSummaryDto = { stars: 4.6, comments: 13 }
+const defaultSummary: QuizRatingSummaryDto = {
+  stars: 4.6,
+  comments: 13,
+  total: 15,
+}
 
 describe('RatingsSection', () => {
   describe('Section header', () => {
@@ -45,7 +49,10 @@ describe('RatingsSection', () => {
   describe('Summary panel', () => {
     it('renders the average star score formatted to one decimal place', () => {
       render(
-        <RatingsSection summary={{ stars: 4.6, comments: 13 }} ratings={[]} />,
+        <RatingsSection
+          summary={{ stars: 4.6, comments: 13, total: 15 }}
+          ratings={[]}
+        />,
       )
       expect(screen.getByTestId('ratings-summary')).toBeInTheDocument()
       expect(screen.getByLabelText('Average rating: 4.6')).toBeInTheDocument()
@@ -53,17 +60,23 @@ describe('RatingsSection', () => {
 
     it('renders zero average as "0.0"', () => {
       render(
-        <RatingsSection summary={{ stars: 0, comments: 0 }} ratings={[]} />,
+        <RatingsSection
+          summary={{ stars: 0, comments: 0, total: 0 }}
+          ratings={[]}
+        />,
       )
       expect(screen.getByLabelText('Average rating: 0.0')).toBeInTheDocument()
     })
 
     it('renders the total rating count', () => {
       render(
-        <RatingsSection summary={{ stars: 4.6, comments: 13 }} ratings={[]} />,
+        <RatingsSection
+          summary={{ stars: 4.6, comments: 13, total: 15 }}
+          ratings={[]}
+        />,
       )
       expect(screen.getByTestId('ratings-count')).toHaveTextContent(
-        '13 Comments',
+        '15 Ratings',
       )
     })
 
@@ -74,7 +87,10 @@ describe('RatingsSection', () => {
 
     it('renders summary star row with correct aria-label', () => {
       render(
-        <RatingsSection summary={{ stars: 3, comments: 5 }} ratings={[]} />,
+        <RatingsSection
+          summary={{ stars: 3, comments: 5, total: 7 }}
+          ratings={[]}
+        />,
       )
       const starRows = screen.getAllByTestId('star-row')
       expect(starRows[0]).toHaveAttribute('aria-label', '3 out of 5 stars')
