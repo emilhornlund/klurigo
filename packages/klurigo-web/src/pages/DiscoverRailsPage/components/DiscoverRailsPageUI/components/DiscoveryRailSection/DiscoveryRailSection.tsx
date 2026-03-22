@@ -4,7 +4,11 @@ import type { DiscoveryQuizCardDto, DiscoverySectionKey } from '@klurigo/common'
 import { type FC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { HorizontalRail, QuizDiscoveryCard } from '../../../../../../components'
+import {
+  HorizontalRail,
+  QuizDiscoveryCard,
+  RailHeader,
+} from '../../../../../../components'
 
 import styles from './DiscoveryRailSection.module.scss'
 
@@ -47,15 +51,15 @@ const DiscoveryRailSection: FC<DiscoveryRailSectionProps> = ({
   isLoading,
 }) => (
   <section className={styles.section} data-testid="discovery-rail-section">
-    <div className={styles.header}>
-      <div className={styles.headerText}>
-        <h2 className={styles.title}>{title}</h2>
-        {description && <p className={styles.description}>{description}</p>}
-      </div>
-      <Link to={`/discover/section/${sectionKey}`} className={styles.seeAll}>
-        See all <FontAwesomeIcon icon={faArrowRight} />
-      </Link>
-    </div>
+    <RailHeader
+      title={title}
+      description={description}
+      action={
+        <Link to={`/discover/section/${sectionKey}`} className={styles.seeAll}>
+          See all <FontAwesomeIcon icon={faArrowRight} />
+        </Link>
+      }
+    />
     <HorizontalRail>
       {isLoading
         ? Array.from({ length: DISCOVERY_RAIL_SKELETON_COUNT }).map((_, i) => (

@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RailHeader > matches snapshot with all props 1`] = `
+<div>
+  <div
+    class="header"
+  >
+    <div
+      class="headerText"
+    >
+      <h2
+        class="title"
+      >
+        Top Rated
+      </h2>
+      <p
+        class="description"
+      >
+        Hand-picked quizzes
+      </p>
+    </div>
+    <a
+      href="/see-all"
+    >
+      See all
+    </a>
+  </div>
+</div>
+`;
+
+exports[`RailHeader > matches snapshot with title only 1`] = `
+<div>
+  <div
+    class="header"
+  >
+    <div
+      class="headerText"
+    >
+      <h2
+        class="title"
+      >
+        Featured
+      </h2>
+    </div>
+  </div>
+</div>
+`;
