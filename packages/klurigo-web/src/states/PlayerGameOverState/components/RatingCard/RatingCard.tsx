@@ -1,10 +1,6 @@
-import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 
-import { Textarea } from '../../../../components'
-import { classNames } from '../../../../utils/helpers'
+import { StarRating, Textarea } from '../../../../components'
 
 import styles from './RatingCard.module.scss'
 
@@ -53,27 +49,7 @@ const RatingCard: FC<RatingCardProps> = ({
 }) => (
   <div className={styles.ratingCard}>
     <div className={styles.ratingTitle}>Rate this quiz</div>
-    <div className={styles.stars}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <button
-          key={star}
-          type="button"
-          className={classNames(
-            styles.starButton,
-            stars && star <= stars ? styles.active : undefined,
-          )}
-          onClick={() => {
-            if (star !== stars) {
-              onRatingChange(star)
-            }
-          }}
-          aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}>
-          <FontAwesomeIcon
-            icon={stars && star <= stars ? faStar : faStarRegular}
-          />
-        </button>
-      ))}
-    </div>
+    <StarRating value={stars} size="large" onChange={onRatingChange} />
     {stars && (
       <div className={styles.comment}>
         <Textarea

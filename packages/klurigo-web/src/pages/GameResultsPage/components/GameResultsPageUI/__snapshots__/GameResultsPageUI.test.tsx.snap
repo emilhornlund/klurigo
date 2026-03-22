@@ -590,8 +590,9 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -693,7 +694,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -1631,8 +1632,9 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -1734,7 +1736,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -2652,8 +2654,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -2755,7 +2758,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -4807,8 +4810,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -4910,7 +4914,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -5844,8 +5848,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -5947,7 +5952,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -7743,8 +7748,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -7846,7 +7852,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
