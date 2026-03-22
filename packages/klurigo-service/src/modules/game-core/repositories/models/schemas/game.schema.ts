@@ -39,8 +39,6 @@ import {
   QuestionResultTaskSchema,
   QuestionTask,
   QuestionTaskSchema,
-  QuitTask,
-  QuitTaskSchema,
   TaskType,
 } from './task.schema'
 
@@ -95,7 +93,6 @@ export class Game {
       | QuestionResultTask
       | LeaderboardTask
       | PodiumTask
-      | QuitTask
     )
 
   @Prop({ type: [BaseTaskSchema], required: true })
@@ -169,7 +166,6 @@ currentTaskSchema.discriminator(
 )
 currentTaskSchema.discriminator(TaskType.Leaderboard, LeaderboardTaskSchema)
 currentTaskSchema.discriminator(TaskType.Podium, PodiumTaskSchema)
-currentTaskSchema.discriminator(TaskType.Quit, QuitTaskSchema)
 
 const previousTasksSchema =
   GameSchema.path<MongooseSchema.Types.Array>('previousTasks')

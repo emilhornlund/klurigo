@@ -495,7 +495,7 @@ describe('GameTaskTransitionScheduler', () => {
       expect(logger.warn).toHaveBeenCalledTimes(1)
     })
 
-    it('does not run post-transition when updated task type is Quit', async () => {
+    it('does not run post-transition when game has ended', async () => {
       const game = buildGameDocument(undefined, { status: 'active' })
 
       gameRepository.findAndSaveWithLock.mockImplementation(
@@ -505,7 +505,7 @@ describe('GameTaskTransitionScheduler', () => {
             { ...game.currentTask },
           )
           const mutated = await mutator(doc as any)
-          mutated.currentTask.type = TaskType.Quit
+          mutated.status = GameStatus.Terminated
           mutated.currentTask.status = 'completed'
           return mutated as any
         },

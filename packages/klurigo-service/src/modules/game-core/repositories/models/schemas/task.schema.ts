@@ -8,7 +8,6 @@ export enum TaskType {
   QuestionResult = 'QUESTION_RESULT',
   Leaderboard = 'LEADERBOARD',
   Podium = 'PODIUM',
-  Quit = 'QUIT',
 }
 
 /**
@@ -31,7 +30,6 @@ export class BaseTask {
     | TaskType.QuestionResult
     | TaskType.Leaderboard
     | TaskType.Podium
-    | TaskType.Quit
 
   @Prop({ type: String, default: 'pending' })
   status: 'pending' | 'active' | 'completed'
@@ -830,21 +828,3 @@ export const PodiumTaskSchema = SchemaFactory.createForClass(PodiumTask)
  * Combines the common BaseTask properties with PodiumTask-specific fields.
  */
 export type PodiumTaskWithBase = BaseTask & PodiumTask
-
-/**
- * QuitTask
- */
-
-@Schema({ _id: false })
-export class QuitTask {
-  type!: TaskType.Quit
-}
-
-export const QuitTaskSchema = SchemaFactory.createForClass(QuitTask)
-
-/**
- * Narrowed type representing a Quit task with base task fields.
- *
- * Combines the common BaseTask properties with QuitTask-specific fields.
- */
-export type QuitTaskWithBase = BaseTask & QuitTask

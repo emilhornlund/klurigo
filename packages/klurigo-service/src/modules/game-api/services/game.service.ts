@@ -41,7 +41,7 @@ import {
   toQuestionTaskAnswer,
 } from '../../game-event/utils'
 import { GameTaskTransitionScheduler } from '../../game-task/services'
-import { buildQuitTask, rebuildQuestionResultTask } from '../../game-task/utils'
+import { rebuildQuestionResultTask } from '../../game-task/utils'
 import {
   isMultiChoiceCorrectAnswer,
   isPinCorrectAnswer,
@@ -630,12 +630,9 @@ export class GameService {
   }
 
   /**
-   * Ends the active game by transitioning it into the Quit task.
+   * Ends the active game by setting its status to TERMINATED.
    *
-   * The current task is archived, the Quit task is activated, and the game
-   * status is set to TERMINATED. If the game is already in the Quit task,
-   * the operation is a no-op.
-   *
+   * If the game is already terminated, the operation is a no-op.
    * The updated game state is then published to connected clients.
    *
    * @param gameId - The game ID to terminate.
@@ -644,9 +641,7 @@ export class GameService {
     const savedGame = await this.gameRepository.findAndSaveWithLock(
       gameId,
       async (game) => {
-        if (game.currentTask.type !== TaskType.Quit) {
-          game.previousTasks.push(game.currentTask)
-          game.currentTask = buildQuitTask()
+        if (game.status !== GameStatus.Terminated) {
           game.status = GameStatus.Terminated
         }
         return game

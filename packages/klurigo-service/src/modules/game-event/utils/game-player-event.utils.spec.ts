@@ -10,7 +10,6 @@ import {
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
   createMockQuestionTaskMultiChoiceAnswer,
-  createMockQuitTaskDocument,
 } from '../../../../test-utils/data'
 
 import { buildPlayerGameEvent } from './game-player-event.utils'
@@ -242,17 +241,6 @@ describe('buildPlayerGameEvent', () => {
       if (result.type === GameEventType.GameQuitEvent) {
         expect(result.status).toBe(GameStatus.Terminated)
       }
-    })
-
-    it('should throw error when task is quit task but game status is still active', () => {
-      const game = createMockGameDocument({
-        status: GameStatus.Active,
-        currentTask: createMockQuitTaskDocument(),
-      })
-
-      expect(() => buildPlayerGameEvent(game as never, mockPlayer)).toThrow(
-        'Unknown task',
-      )
     })
   })
 

@@ -16,7 +16,6 @@ import {
   PodiumTask,
   QuestionResultTask,
   QuestionTask,
-  QuitTask,
   TaskType,
 } from './models/schemas'
 
@@ -64,10 +63,7 @@ describe('GameRepository (e2e)', () => {
       const expected = await gameModel.findById(gameID)
       expect(expected).toBeDefined()
       expect(expected!.status).toEqual(GameStatus.Completed)
-      expect(
-        expected!.previousTasks[expected!.previousTasks.length - 1].type,
-      ).toEqual(TaskType.Podium)
-      expect(expected!.currentTask.type).toEqual(TaskType.Quit)
+      expect(expected!.currentTask.type).toEqual(TaskType.Podium)
     })
 
     it('should not mark active podium games not older than 1 hour as completed', async () => {
@@ -127,10 +123,7 @@ describe('GameRepository (e2e)', () => {
       const expected = await gameModel.findById(gameID)
       expect(expected).toBeDefined()
       expect(expected!.status).toEqual(GameStatus.Expired)
-      expect(
-        expected!.previousTasks[expected!.previousTasks.length - 1].type,
-      ).toEqual(TaskType.Leaderboard)
-      expect(expected!.currentTask.type).toEqual(TaskType.Quit)
+      expect(expected!.currentTask.type).toEqual(TaskType.Leaderboard)
     })
 
     it('should not update active games not older than 1 hour', async () => {
@@ -180,7 +173,6 @@ const buildMockGame = (
       | QuestionResultTask
       | LeaderboardTask
       | PodiumTask
-      | QuitTask
     ),
   date: Date,
 ): Game => ({

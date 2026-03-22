@@ -5,7 +5,7 @@ import { Model, QueryFilter } from 'mongoose'
 import { MurLock } from 'murlock'
 
 import { BaseRepository } from '../../../app/shared/repository'
-import { buildLobbyTask, buildQuitTask } from '../../game-task/utils'
+import { buildLobbyTask } from '../../game-task/utils'
 import { Quiz } from '../../quiz-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
 import {
@@ -357,15 +357,9 @@ export class GameRepository extends BaseRepository<Game> {
       updated: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
     }
 
-    const quitTask = buildQuitTask()
-
     return this.updateMany(filter, [
       {
         $set: {
-          previousTasks: {
-            $concatArrays: ['$previousTasks', ['$currentTask']],
-          },
-          currentTask: quitTask,
           status: GameStatus.Completed,
           completedAt: '$$NOW',
         },
@@ -376,7 +370,7 @@ export class GameRepository extends BaseRepository<Game> {
   /**
    * Marks stale games as 'Expired' if they:
    * - Are still marked as 'Active'
-   * - Are currently not in the 'Podium' or 'Quit' task
+   * - Are currently not in the 'Podium' task
    * - Have not been updated in over 1 hour
    *
    * @returns Number of games successfully updated to 'Expired'
@@ -384,19 +378,13 @@ export class GameRepository extends BaseRepository<Game> {
   public async updateExpiredGames(): Promise<number> {
     const filter = {
       status: GameStatus.Active,
-      'currentTask.type': { $nin: [TaskType.Podium, TaskType.Quit] },
+      'currentTask.type': { $nin: [TaskType.Podium] },
       updated: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
     }
-
-    const quitTask = buildQuitTask()
 
     return this.updateMany(filter, [
       {
         $set: {
-          previousTasks: {
-            $concatArrays: ['$previousTasks', ['$currentTask']],
-          },
-          currentTask: quitTask,
           status: GameStatus.Expired,
         },
       },

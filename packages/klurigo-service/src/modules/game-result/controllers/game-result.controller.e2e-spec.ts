@@ -874,9 +874,19 @@ function buildMockClassicModeGame(hostUser: User, playerUser: User): Game {
     ],
     currentTask: {
       _id: uuidv4(),
-      type: TaskType.Quit,
+      type: TaskType.Podium,
       status: 'completed',
-      created: offset(56.52),
+      currentTransitionInitiated: offset(56.514),
+      created: offset(53.346),
+      leaderboard: [
+        {
+          playerId: playerUser._id,
+          position: 1,
+          nickname: 'EchoRaptor',
+          score: 3846,
+          streaks: 4,
+        },
+      ],
     },
     previousTasks: [
       {
@@ -1133,22 +1143,6 @@ function buildMockClassicModeGame(hostUser: User, playerUser: User): Game {
           },
         ],
       },
-      {
-        _id: uuidv4(),
-        type: TaskType.Podium,
-        status: 'completed',
-        currentTransitionInitiated: offset(56.514),
-        created: offset(53.346),
-        leaderboard: [
-          {
-            playerId: playerUser._id,
-            position: 1,
-            nickname: 'EchoRaptor',
-            score: 3846,
-            streaks: 4,
-          },
-        ],
-      },
     ],
     questions: [
       {
@@ -1267,9 +1261,19 @@ function buildMockZeroToOneHundredModeGame(
     ],
     currentTask: {
       _id: uuidv4(),
-      type: TaskType.Quit,
+      type: TaskType.Podium,
       status: 'completed',
-      created: offset(98.788),
+      currentTransitionInitiated: offset(98.774),
+      created: offset(72.289),
+      leaderboard: [
+        {
+          playerId: playerUser._id,
+          position: 1,
+          nickname: 'ElectricJackal',
+          score: 26,
+          streaks: 0,
+        },
+      ],
     },
     previousTasks: [
       {
@@ -1523,22 +1527,6 @@ function buildMockZeroToOneHundredModeGame(
           },
         ],
       },
-      {
-        _id: uuidv4(),
-        type: TaskType.Podium,
-        status: 'completed',
-        currentTransitionInitiated: offset(98.774),
-        created: offset(72.289),
-        leaderboard: [
-          {
-            playerId: playerUser._id,
-            position: 1,
-            nickname: 'ElectricJackal',
-            score: 26,
-            streaks: 0,
-          },
-        ],
-      },
     ],
     questions: [
       {
@@ -1774,7 +1762,7 @@ function buildMockClassicModeGameResult(
       },
     ],
     hosted: game.previousTasks[1].created,
-    completed: game.previousTasks[game.previousTasks.length - 1].created,
+    completed: game.currentTask.created,
   }
 }
 
@@ -1931,6 +1919,6 @@ function buildMockZeroToOneHundredModeGameResult(
       },
     ],
     hosted: game.previousTasks[1].created,
-    completed: game.previousTasks[game.previousTasks.length - 1].created,
+    completed: game.currentTask.created,
   }
 }

@@ -73,16 +73,3 @@ export function isPodiumTask(
 } {
   return document.currentTask.type === TaskType.Podium
 }
-
-/**
- * Checks if the current task of the game document is a quit task.
- *
- * @param {GameDocument & { currentTask: { type: TaskType.Quit } }} document - The game document with a quit task type.
- *
- * @returns {boolean} Returns `true` if the current task type is `Quit`, otherwise `false`.
- */
-export function isQuitTask(
-  document: GameDocument,
-): document is GameDocument & { currentTask: { type: TaskType.Quit } } {
-  return document.currentTask.type === TaskType.Quit
-}
