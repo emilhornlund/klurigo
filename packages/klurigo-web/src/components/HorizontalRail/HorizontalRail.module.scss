@@ -1,0 +1,89 @@
+@use '../../styles/colors';
+@use '../../styles/helpers';
+
+.railWrapper {
+  position: relative;
+
+  &.hasScrollLeft:hover {
+    > .arrowPrev {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &.hasScrollRight:hover {
+    > .arrowNext {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.arrowButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid colors.$white-1-25;
+  background: rgba(0, 0, 0, 0.35);
+  color: colors.$white;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    background 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  @include helpers.mobile {
+    display: none;
+  }
+}
+
+.arrowPrev {
+  left: 0.5rem;
+}
+
+.arrowNext {
+  right: 0.5rem;
+}
+
+.rail {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-top: helpers.pxToRem(2px);
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: colors.$white-1-25;
+    border-radius: 3px;
+  }
+}
+
+.hideScrollbar {
+  .rail {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

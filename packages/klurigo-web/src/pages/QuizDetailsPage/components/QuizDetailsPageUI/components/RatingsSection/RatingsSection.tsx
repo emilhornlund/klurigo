@@ -1,16 +1,12 @@
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
-import {
-  faChevronLeft,
-  faChevronRight,
-  faStar,
-} from '@fortawesome/free-solid-svg-icons'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { QuizRatingDto, QuizRatingSummaryDto } from '@klurigo/common'
-import { type FC, useCallback, useRef } from 'react'
+import { type FC } from 'react'
 
+import { HorizontalRail } from '../../../../../../components'
 import colors from '../../../../../../styles/colors.module.scss'
 import { formatTimeAgo } from '../../../../../../utils/date.utils'
-import { classNames } from '../../../../../../utils/helpers'
 
 import styles from './RatingsSection.module.scss'
 
@@ -60,34 +56,21 @@ const RatingsSection: FC<RatingsSectionProps> = ({
   ratings,
   isLoading = false,
 }) => {
-  const railRef = useRef<HTMLDivElement>(null)
-
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    const el = railRef.current
-    if (!el) return
-    el.scrollBy({
-      left: direction === 'left' ? -el.clientWidth : el.clientWidth,
-      behavior: 'smooth',
-    })
-  }, [])
-
   const renderRail = () => {
     if (isLoading) {
       return (
-        <div className={styles.railWrapper} data-testid="ratings-rail-wrapper">
-          <div className={styles.rail} data-testid="ratings-rail-scroll">
-            {Array.from({ length: RATINGS_SKELETON_COUNT }, (_, i) => (
-              <div
-                key={i}
-                className={styles.skeleton}
-                data-testid="ratings-skeleton-card">
-                <div className={styles.skeletonLine} />
-                <div className={styles.skeletonLine} />
-                <div className={styles.skeletonLine} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <HorizontalRail className={styles.railMargin}>
+          {Array.from({ length: RATINGS_SKELETON_COUNT }, (_, i) => (
+            <div
+              key={i}
+              className={styles.skeleton}
+              data-testid="ratings-skeleton-card">
+              <div className={styles.skeletonLine} />
+              <div className={styles.skeletonLine} />
+              <div className={styles.skeletonLine} />
+            </div>
+          ))}
+        </HorizontalRail>
       )
     }
 
@@ -100,48 +83,25 @@ const RatingsSection: FC<RatingsSectionProps> = ({
     }
 
     return (
-      <div className={styles.railWrapper} data-testid="ratings-rail-wrapper">
-        <button
-          className={classNames(styles.arrowButton, styles.arrowPrev)}
-          onClick={() => scroll('left')}
-          aria-label="Scroll left"
-          tabIndex={-1}
-          data-testid="ratings-arrow-prev">
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-
-        <div
-          className={styles.rail}
-          ref={railRef}
-          data-testid="ratings-rail-scroll">
-          {ratings.map((rating) => (
-            <div
-              key={rating.id}
-              className={styles.card}
-              data-testid="rating-card">
-              <div className={styles.cardHeader}>
-                <StarRow stars={rating.stars} />
-                <span className={styles.timeAgo}>
-                  {formatTimeAgo(rating.updatedAt)}
-                </span>
-              </div>
-              <span className={styles.author}>{rating.author.nickname}</span>
-              {rating.comment && (
-                <p className={styles.comment}>{rating.comment}</p>
-              )}
+      <HorizontalRail className={styles.railMargin}>
+        {ratings.map((rating) => (
+          <div
+            key={rating.id}
+            className={styles.card}
+            data-testid="rating-card">
+            <div className={styles.cardHeader}>
+              <StarRow stars={rating.stars} />
+              <span className={styles.timeAgo}>
+                {formatTimeAgo(rating.updatedAt)}
+              </span>
             </div>
-          ))}
-        </div>
-
-        <button
-          className={classNames(styles.arrowButton, styles.arrowNext)}
-          onClick={() => scroll('right')}
-          aria-label="Scroll right"
-          tabIndex={-1}
-          data-testid="ratings-arrow-next">
-          <FontAwesomeIcon icon={faChevronRight} />
-        </button>
-      </div>
+            <span className={styles.author}>{rating.author.nickname}</span>
+            {rating.comment && (
+              <p className={styles.comment}>{rating.comment}</p>
+            )}
+          </div>
+        ))}
+      </HorizontalRail>
     )
   }
 
