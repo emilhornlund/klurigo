@@ -1,37 +1,13 @@
-import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { QuizRatingDto, QuizRatingSummaryDto } from '@klurigo/common'
 import { type FC } from 'react'
 
-import { HorizontalRail } from '../../../../../../components'
-import colors from '../../../../../../styles/colors.module.scss'
+import { HorizontalRail, StarRating } from '../../../../../../components'
 import { formatTimeAgo } from '../../../../../../utils/date.utils'
 
 import styles from './RatingsSection.module.scss'
 
 /** Number of skeleton placeholder cards shown while ratings are loading. */
 export const RATINGS_SKELETON_COUNT = 3
-
-type StarRowProps = {
-  readonly stars: number
-  readonly max?: number
-}
-
-const StarRow: FC<StarRowProps> = ({ stars, max = 5 }) => (
-  <span
-    className={styles.starRow}
-    aria-label={`${stars} out of ${max} stars`}
-    data-testid="star-row">
-    {Array.from({ length: max }, (_, i) => (
-      <FontAwesomeIcon
-        key={i}
-        icon={i < Math.round(stars) ? faStar : faStarRegular}
-        color={i < Math.round(stars) ? colors.yellow2 : undefined}
-      />
-    ))}
-  </span>
-)
 
 export type RatingsSectionProps = {
   /** Summary stats (average stars + comment count) for the quiz. */
@@ -90,7 +66,7 @@ const RatingsSection: FC<RatingsSectionProps> = ({
             className={styles.card}
             data-testid="rating-card">
             <div className={styles.cardHeader}>
-              <StarRow stars={rating.stars} />
+              <StarRating value={rating.stars} size="small" />
               <span className={styles.timeAgo}>
                 {formatTimeAgo(rating.updatedAt)}
               </span>
@@ -119,7 +95,7 @@ const RatingsSection: FC<RatingsSectionProps> = ({
           <span className={styles.outOf}>out of 5</span>
         </div>
         <div className={styles.summaryRight}>
-          <StarRow stars={summary.stars} />
+          <StarRating value={summary.stars} size="small" />
           <span className={styles.count} data-testid="ratings-count">
             {summary.total} {summary.total > 1 ? 'Ratings' : 'Rating'}
           </span>

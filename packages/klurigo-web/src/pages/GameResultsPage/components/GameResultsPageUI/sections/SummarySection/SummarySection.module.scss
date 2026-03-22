@@ -592,68 +592,6 @@ $contrast-opacity: 0.8;
           }
         }
 
-        .stars {
-          display: flex;
-          justify-content: center;
-          gap: calc(#{variables.$mobile-layout-gutter} * 0.5);
-
-          @include helpers.tablet {
-            gap: calc(#{variables.$tablet-layout-gutter} * 0.5);
-          }
-
-          @include helpers.desktop {
-            gap: calc(#{variables.$desktop-layout-gutter} * 0.5);
-          }
-
-          .starButton {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            color: colors.$white;
-
-            @include helpers.mobile {
-              @include helpers.fontSize(24px);
-            }
-
-            @include helpers.tablet {
-              @include helpers.fontSize(28px);
-            }
-
-            @include helpers.desktop {
-              @include helpers.fontSize(32px);
-            }
-
-            &:disabled {
-              color: colors.$white-1-25;
-              cursor: default;
-            }
-
-            &.active {
-              color: colors.$yellow-2;
-
-              &:hover {
-                color: colors.$yellow-1;
-              }
-            }
-
-            &:hover {
-              &:not(:disabled) {
-                &:not(.active) {
-                  color: colors.$white-1-70;
-                }
-              }
-            }
-
-            &:focus-visible {
-              &:not(:disabled) {
-                outline: 2px solid colors.$yellow-2;
-                outline-offset: 2px;
-              }
-            }
-          }
-        }
-
         .comment {
           display: flex;
           flex-direction: column;

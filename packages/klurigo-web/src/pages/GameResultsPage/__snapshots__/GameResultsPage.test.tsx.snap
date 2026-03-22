@@ -643,8 +643,9 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -746,7 +747,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"
@@ -1742,8 +1743,9 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     >
                       Rate this quiz
                     </div>
-                    <div
-                      class="stars"
+                    <span
+                      class="starRow large"
+                      data-testid="star-row"
                     >
                       <button
                         aria-label="Rate 1 star"
@@ -1845,7 +1847,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                           />
                         </svg>
                       </button>
-                    </div>
+                    </span>
                   </div>
                   <div
                     class="disabledMessage"

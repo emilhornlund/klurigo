@@ -117,30 +117,6 @@
         gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
       }
 
-      .starRow {
-        display: flex;
-        flex-direction: row;
-        color: colors.$white;
-
-        @include helpers.mobile {
-          gap: 0.2rem;
-
-          @include helpers.fontSize(16px);
-        }
-
-        @include helpers.tablet {
-          gap: 0.25rem;
-
-          @include helpers.fontSize(18px);
-        }
-
-        @include helpers.desktop {
-          gap: 0.3rem;
-
-          @include helpers.fontSize(20px);
-        }
-      }
-
       .count {
         color: colors.$white;
         font-weight: 500;
