@@ -162,15 +162,9 @@
   }
 }
 
-.railWrapper {
-  position: relative;
-
+.railMargin {
   @include helpers.mobile {
     margin-top: variables.$mobile-layout-gutter;
-
-    .arrowButton {
-      display: none;
-    }
   }
 
   @include helpers.tablet {
@@ -180,169 +174,98 @@
   @include helpers.desktop {
     margin-top: variables.$desktop-layout-gutter;
   }
-
-  .rail {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    @include helpers.mobile {
-      gap: variables.$mobile-narrow-layout-gutter;
-    }
-
-    @include helpers.tablet {
-      gap: variables.$tablet-narrow-layout-gutter;
-    }
-
-    @include helpers.desktop {
-      gap: variables.$desktop-narrow-layout-gutter;
-    }
-
-    .card {
-      flex-shrink: 0;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-      background-color: colors.$white;
-      overflow: hidden;
-
-      @include helpers.mobile {
-        width: 80%;
-        gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
-        border-radius: variables.$mobile-border-radius;
-        padding: variables.$mobile-narrow-layout-gutter;
-      }
-
-      @include helpers.tablet {
-        width: 60%;
-        gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
-        border-radius: variables.$tablet-border-radius;
-        padding: variables.$tablet-narrow-layout-gutter;
-      }
-
-      @include helpers.desktop {
-        width: 40%;
-        gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
-        border-radius: variables.$desktop-border-radius;
-        padding: variables.$desktop-narrow-layout-gutter;
-      }
-
-      .cardHeader {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-
-        .timeAgo {
-          color: colors.$gray-2;
-
-          @include helpers.mobile {
-            @include helpers.fontSize(12px);
-          }
-
-          @include helpers.tablet {
-            @include helpers.fontSize(13px);
-          }
-
-          @include helpers.desktop {
-            @include helpers.fontSize(14px);
-          }
-        }
-      }
-
-      .author {
-        color: colors.$gray-4;
-        font-weight: 600;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(14px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(15px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(16px);
-        }
-      }
-
-      .comment {
-        color: colors.$gray-3;
-        margin: 0;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(13px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(14px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(15px);
-        }
-      }
-    }
-  }
 }
 
-.arrowButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
+.card {
+  flex-shrink: 0;
+  scroll-snap-align: start;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: colors.$gray-3;
-  border: none;
-  border-radius: 50%;
-  color: colors.$white;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
+  flex-direction: column;
+  background-color: colors.$white;
+  overflow: hidden;
+
+  @include helpers.mobile {
+    width: 80%;
+    gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$mobile-border-radius;
+    padding: variables.$mobile-narrow-layout-gutter;
+  }
 
   @include helpers.tablet {
-    width: 2rem;
-    height: 2rem;
-
-    @include helpers.fontSize(14px);
+    width: 60%;
+    gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$tablet-border-radius;
+    padding: variables.$tablet-narrow-layout-gutter;
   }
 
   @include helpers.desktop {
-    width: 2.25rem;
-    height: 2.25rem;
-
-    @include helpers.fontSize(16px);
+    width: 40%;
+    gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+    border-radius: variables.$desktop-border-radius;
+    padding: variables.$desktop-narrow-layout-gutter;
   }
 
-  .railWrapper:hover & {
-    opacity: 0.9;
-    pointer-events: auto;
+  .cardHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .timeAgo {
+      color: colors.$gray-2;
+
+      @include helpers.mobile {
+        @include helpers.fontSize(12px);
+      }
+
+      @include helpers.tablet {
+        @include helpers.fontSize(13px);
+      }
+
+      @include helpers.desktop {
+        @include helpers.fontSize(14px);
+      }
+    }
+  }
+
+  .author {
+    color: colors.$gray-4;
+    font-weight: 600;
+
+    @include helpers.mobile {
+      @include helpers.fontSize(14px);
+    }
+
+    @include helpers.tablet {
+      @include helpers.fontSize(15px);
+    }
+
+    @include helpers.desktop {
+      @include helpers.fontSize(16px);
+    }
+  }
+
+  .comment {
+    color: colors.$gray-3;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    @include helpers.mobile {
+      @include helpers.fontSize(13px);
+    }
+
+    @include helpers.tablet {
+      @include helpers.fontSize(14px);
+    }
+
+    @include helpers.desktop {
+      @include helpers.fontSize(15px);
+    }
   }
 }
-
-.arrowPrev {
-  left: 0.5rem;
-}
-
-.arrowNext {
-  right: 0.5rem;
-}
-
 
 .emptyState {
   color: colors.$white;
@@ -379,21 +302,21 @@
   overflow: hidden;
 
   @include helpers.mobile {
-    width: 75vw;
+    width: 80%;
     gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
     border-radius: variables.$mobile-border-radius;
     padding: variables.$mobile-narrow-layout-gutter;
   }
 
   @include helpers.tablet {
-    width: 40vw;
+    width: 60%;
     gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
     border-radius: variables.$tablet-border-radius;
     padding: variables.$tablet-narrow-layout-gutter;
   }
 
   @include helpers.desktop {
-    width: 30vw;
+    width: 40%;
     gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
     border-radius: variables.$desktop-border-radius;
     padding: variables.$desktop-narrow-layout-gutter;

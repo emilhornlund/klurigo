@@ -5,7 +5,6 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { RATINGS_SKELETON_COUNT } from './RatingsSection'
 import RatingsSection from './RatingsSection'
-import styles from './RatingsSection.module.scss'
 
 vi.mock('../../../../../../utils/date.utils', async () => {
   const actual = await vi.importActual<
@@ -105,15 +104,13 @@ describe('RatingsSection', () => {
           ratings={[makeRating(), makeRating({ id: 'rating-2' })]}
         />,
       )
-      expect(screen.getByTestId('ratings-rail-wrapper')).toBeInTheDocument()
+      expect(screen.getByTestId('horizontal-rail')).toBeInTheDocument()
       expect(screen.getAllByTestId('rating-card')).toHaveLength(2)
     })
 
     it('does not render the rail when ratings list is empty', () => {
       render(<RatingsSection summary={defaultSummary} ratings={[]} />)
-      expect(
-        screen.queryByTestId('ratings-rail-wrapper'),
-      ).not.toBeInTheDocument()
+      expect(screen.queryByTestId('horizontal-rail')).not.toBeInTheDocument()
     })
 
     it('shows empty state message when ratings list is empty', () => {
@@ -126,7 +123,7 @@ describe('RatingsSection', () => {
 
     it('shows skeleton cards when isLoading is true', () => {
       render(<RatingsSection summary={defaultSummary} ratings={[]} isLoading />)
-      expect(screen.getByTestId('ratings-rail-wrapper')).toBeInTheDocument()
+      expect(screen.getByTestId('horizontal-rail')).toBeInTheDocument()
       expect(screen.getAllByTestId('ratings-skeleton-card')).toHaveLength(
         RATINGS_SKELETON_COUNT,
       )
@@ -222,7 +219,7 @@ describe('RatingsSection', () => {
         <RatingsSection summary={defaultSummary} ratings={[makeRating()]} />,
       )
 
-      const rail = screen.getByTestId('ratings-rail-scroll')
+      const rail = screen.getByTestId('horizontal-rail-scroll')
       const scrollBySpy = vi.fn()
       Object.defineProperty(rail, 'scrollBy', { value: scrollBySpy })
       Object.defineProperty(rail, 'clientWidth', {
@@ -244,7 +241,7 @@ describe('RatingsSection', () => {
         <RatingsSection summary={defaultSummary} ratings={[makeRating()]} />,
       )
 
-      const rail = screen.getByTestId('ratings-rail-scroll')
+      const rail = screen.getByTestId('horizontal-rail-scroll')
       const scrollBySpy = vi.fn()
       Object.defineProperty(rail, 'scrollBy', { value: scrollBySpy })
       Object.defineProperty(rail, 'clientWidth', {
@@ -258,21 +255,6 @@ describe('RatingsSection', () => {
         expect.objectContaining({ behavior: 'smooth' }),
       )
       expect(scrollBySpy.mock.calls[0][0].left).toBeGreaterThan(0)
-    })
-
-    it('applies correct CSS classes to arrow buttons', () => {
-      render(
-        <RatingsSection summary={defaultSummary} ratings={[makeRating()]} />,
-      )
-
-      expect(screen.getByTestId('ratings-arrow-prev')).toHaveClass(
-        styles.arrowButton,
-        styles.arrowPrev,
-      )
-      expect(screen.getByTestId('ratings-arrow-next')).toHaveClass(
-        styles.arrowButton,
-        styles.arrowNext,
-      )
     })
   })
 })

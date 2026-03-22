@@ -5,7 +5,7 @@ import {
   LanguageCode,
   QuizCategory,
 } from '@klurigo/common'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
@@ -13,7 +13,6 @@ import { describe, expect, it, vi } from 'vitest'
 import DiscoveryRailSection, {
   DISCOVERY_RAIL_SKELETON_COUNT,
 } from './DiscoveryRailSection'
-import styles from './DiscoveryRailSection.module.scss'
 
 vi.mock('react-router-dom', async () => {
   const actual =
@@ -38,34 +37,6 @@ const makeQuiz = (id: string): DiscoveryQuizCardDto => ({
   ratingSummary: { stars: 4.0, comments: 2, total: 5 },
   created: new Date(),
 })
-
-const setRailScrollState = (
-  rail: HTMLElement,
-  {
-    scrollLeft,
-    clientWidth,
-    scrollWidth,
-  }: {
-    readonly scrollLeft: number
-    readonly clientWidth: number
-    readonly scrollWidth: number
-  },
-): void => {
-  Object.defineProperties(rail, {
-    scrollLeft: {
-      value: scrollLeft,
-      configurable: true,
-    },
-    clientWidth: {
-      value: clientWidth,
-      configurable: true,
-    },
-    scrollWidth: {
-      value: scrollWidth,
-      configurable: true,
-    },
-  })
-}
 
 describe('DiscoveryRailSection', () => {
   it('renders skeleton cards when isLoading is true', () => {
@@ -204,7 +175,7 @@ describe('DiscoveryRailSection', () => {
       </MemoryRouter>,
     )
 
-    const rail = screen.getByTestId('discovery-rail-scroll')
+    const rail = screen.getByTestId('horizontal-rail-scroll')
     const scrollBySpy = vi.fn()
     Object.defineProperty(rail, 'scrollBy', { value: scrollBySpy })
     Object.defineProperty(rail, 'clientWidth', {
@@ -233,7 +204,7 @@ describe('DiscoveryRailSection', () => {
       </MemoryRouter>,
     )
 
-    const rail = screen.getByTestId('discovery-rail-scroll')
+    const rail = screen.getByTestId('horizontal-rail-scroll')
     const scrollBySpy = vi.fn()
     Object.defineProperty(rail, 'scrollBy', { value: scrollBySpy })
     Object.defineProperty(rail, 'clientWidth', {
@@ -247,97 +218,5 @@ describe('DiscoveryRailSection', () => {
       expect.objectContaining({ behavior: 'smooth' }),
     )
     expect(scrollBySpy.mock.calls[0][0].left).toBeGreaterThan(0)
-  })
-
-  it('applies shared and directional classes to each arrow button', () => {
-    render(
-      <MemoryRouter>
-        <DiscoveryRailSection
-          sectionKey={DiscoverySectionKey.TRENDING}
-          title="Trending"
-          quizzes={[makeQuiz('q1')]}
-          isLoading={false}
-        />
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByRole('button', { name: 'Scroll left' })).toHaveClass(
-      styles.arrowButton,
-      styles.arrowPrev,
-    )
-    expect(screen.getByRole('button', { name: 'Scroll right' })).toHaveClass(
-      styles.arrowButton,
-      styles.arrowNext,
-    )
-  })
-
-  it('updates wrapper scroll state classes as the rail moves', async () => {
-    render(
-      <MemoryRouter>
-        <DiscoveryRailSection
-          sectionKey={DiscoverySectionKey.TRENDING}
-          title="Trending"
-          quizzes={[makeQuiz('q1'), makeQuiz('q2'), makeQuiz('q3')]}
-          isLoading={false}
-        />
-      </MemoryRouter>,
-    )
-
-    const wrapper = screen.getByTestId('discovery-rail-wrapper')
-    const rail = screen.getByTestId('discovery-rail-scroll')
-
-    setRailScrollState(rail, {
-      scrollLeft: 0,
-      clientWidth: 300,
-      scrollWidth: 900,
-    })
-    fireEvent.scroll(rail)
-
-    await waitFor(() => {
-      expect(wrapper).toHaveClass(styles.railWrapper)
-      expect(wrapper).not.toHaveClass(styles.hasScrollLeft)
-      expect(wrapper).toHaveClass(styles.hasScrollRight)
-    })
-
-    setRailScrollState(rail, {
-      scrollLeft: 300,
-      clientWidth: 300,
-      scrollWidth: 900,
-    })
-    fireEvent.scroll(rail)
-
-    await waitFor(() => {
-      expect(wrapper).toHaveClass(styles.hasScrollLeft)
-      expect(wrapper).toHaveClass(styles.hasScrollRight)
-    })
-
-    setRailScrollState(rail, {
-      scrollLeft: 0,
-      clientWidth: 300,
-      scrollWidth: 900,
-    })
-    fireEvent.scroll(rail)
-
-    await waitFor(() => {
-      expect(wrapper).not.toHaveClass(styles.hasScrollLeft)
-      expect(wrapper).toHaveClass(styles.hasScrollRight)
-    })
-  })
-
-  it('rail wrapper does not have scroll classes when rail cannot scroll', () => {
-    render(
-      <MemoryRouter>
-        <DiscoveryRailSection
-          sectionKey={DiscoverySectionKey.TRENDING}
-          title="Trending"
-          quizzes={[]}
-          isLoading={false}
-        />
-      </MemoryRouter>,
-    )
-
-    const wrapper = screen.getByTestId('discovery-rail-wrapper')
-    expect(wrapper.className).not.toContain('hasScrollLeft')
-    expect(wrapper.className).not.toContain('hasScrollRight')
   })
 })
