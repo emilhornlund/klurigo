@@ -10,7 +10,6 @@ import {
   createMockGamePlayerParticipantDocument,
   createMockPodiumTaskDocument,
   createMockQuestionTaskDocument,
-  createMockQuitTaskDocument,
   offsetSeconds,
 } from '../../../../test-utils/data'
 import {
@@ -113,7 +112,7 @@ describe('ProfileGameController (e2e)', () => {
               totalScore: 499,
             }),
           ],
-          currentTask: createMockQuitTaskDocument(),
+          currentTask: createMockPodiumTaskDocument(),
           created: offsetSeconds(0),
         }),
       ])
@@ -188,13 +187,13 @@ function buildFirstPageGameDocuments(user: User): Game[] {
     createMockGameDocument({
       status: GameStatus.Completed,
       participants: [createMockGameHostParticipantDocument({ participantId })],
-      currentTask: createMockQuitTaskDocument(),
+      currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(1),
     }),
     createMockGameDocument({
       status: GameStatus.Completed,
       participants: [createMockGameHostParticipantDocument({ participantId })],
-      currentTask: createMockQuitTaskDocument(),
+      currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(2),
     }),
     createMockGameDocument({

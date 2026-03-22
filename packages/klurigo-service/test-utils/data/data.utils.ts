@@ -38,7 +38,6 @@ import {
   QuestionTaskRangeAnswer,
   QuestionTaskTrueFalseAnswer,
   QuestionTaskTypeAnswerAnswer,
-  QuitTask,
   TaskType,
 } from '../../src/modules/game-core/repositories/models/schemas'
 import {
@@ -490,18 +489,6 @@ export function createMockPodiumTaskDocument(
     type: TaskType.Podium,
     status: 'pending',
     leaderboard: [],
-    created: offsetSeconds(0),
-    ...(task ?? {}),
-  }
-}
-
-export function createMockQuitTaskDocument(
-  task?: Partial<BaseTask & QuitTask>,
-): BaseTask & QuitTask {
-  return {
-    _id: uuidv4(),
-    type: TaskType.Quit,
-    status: 'completed',
     created: offsetSeconds(0),
     ...(task ?? {}),
   }

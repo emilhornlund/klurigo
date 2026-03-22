@@ -9,6 +9,7 @@ import {
   GameSettings,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import { isGameEnded } from '../../game-core/utils'
 import { GameEventPublisher } from '../../game-event/services'
 
 import { GameTaskTransitionService } from './game-task-transition.service'
@@ -228,9 +229,9 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         )
         return
       }
-      if (updatedGameDocument.currentTask.type === TaskType.Quit) {
+      if (isGameEnded(updatedGameDocument)) {
         this.logger.warn(
-          `Skipping post-transition actions since current type ${TaskType.Quit} for Game ID: ${_id}`,
+          `Skipping post-transition actions since game has ended with status ${updatedGameDocument.status} for Game ID: ${_id}`,
         )
         return
       }

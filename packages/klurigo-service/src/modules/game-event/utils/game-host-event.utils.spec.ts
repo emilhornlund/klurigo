@@ -10,7 +10,6 @@ import {
   createMockPodiumTaskDocument,
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
-  createMockQuitTaskDocument,
 } from '../../../../test-utils/data'
 
 import { buildHostGameEvent } from './game-host-event.utils'
@@ -288,15 +287,6 @@ describe('buildHostGameEvent', () => {
       if (result.type === GameEventType.GameQuitEvent) {
         expect(result.status).toBe(GameStatus.Terminated)
       }
-    })
-
-    it('should throw error when task is quit task but game status is still active', () => {
-      const game = createMockGameDocument({
-        status: GameStatus.Active,
-        currentTask: createMockQuitTaskDocument(),
-      })
-
-      expect(() => buildHostGameEvent(game as never)).toThrow('Unknown task')
     })
   })
 

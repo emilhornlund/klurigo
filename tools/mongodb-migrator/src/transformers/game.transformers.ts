@@ -15,6 +15,43 @@ import { buildQuizQuestions } from './quiz.transformers'
  */
 export function transformGameDocument(document: BSONDocument): BSONDocument {
   const questions: BSONDocument[] = buildQuizQuestions(document)
+
+  const rawPreviousTasks = extractValueOrThrow<BSONDocument[]>(
+    document,
+    {},
+    'previousTasks',
+  )
+
+  const rawCurrentTask = extractValueOrThrow<BSONDocument>(
+    document,
+    {},
+    'currentTask',
+  )
+
+  // Migrate legacy QUIT tasks: replace with the last previousTask so that
+  // game state is solely represented by the GameStatus field.
+  let normalizedCurrentTask: BSONDocument
+  let normalizedPreviousTasks: BSONDocument[]
+
+  if (extractValueOrThrow<string>(rawCurrentTask, {}, 'type') === 'QUIT') {
+    if (rawPreviousTasks.length === 0) {
+      throw new Error(
+        `Game ${extractValueOrThrow<string>(document, {}, '_id')} has a QUIT currentTask but no previousTasks to fall back to`,
+      )
+    }
+    normalizedCurrentTask = buildGameTask(
+      rawPreviousTasks[rawPreviousTasks.length - 1],
+    )
+    normalizedPreviousTasks = rawPreviousTasks
+      .slice(0, rawPreviousTasks.length - 1)
+      .map((task) => buildGameTask(task))
+  } else {
+    normalizedCurrentTask = buildGameTask(rawCurrentTask)
+    normalizedPreviousTasks = rawPreviousTasks.map((task) =>
+      buildGameTask(task),
+    )
+  }
+
   return {
     _id: extractValueOrThrow<string>(document, {}, '_id'),
     __v: 0,
@@ -55,14 +92,8 @@ export function transformGameDocument(document: BSONDocument): BSONDocument {
     questions,
     nextQuestion: extractValueOrThrow<number>(document, {}, 'nextQuestion'),
     participants: buildGameParticipants(document),
-    currentTask: buildGameTask(
-      extractValueOrThrow<BSONDocument>(document, {}, 'currentTask'),
-    ),
-    previousTasks: extractValueOrThrow<BSONDocument[]>(
-      document,
-      {},
-      'previousTasks',
-    ).map((task) => buildGameTask(task)),
+    currentTask: normalizedCurrentTask,
+    previousTasks: normalizedPreviousTasks,
     updated: toDate(extractValueOrThrow<string>(document, {}, 'updated')),
     created: toDate(extractValueOrThrow<string>(document, {}, 'created')),
     completedAt:
@@ -134,7 +165,11 @@ function buildGameParticipants(document: BSONDocument): Array<BSONDocument> {
 
 /**
  * Converts each raw task document into a normalized task, handling
- * LOBBY, QUESTION, QUESTION_RESULT, LEADERBOARD, PODIUM, QUIT.
+ * LOBBY, QUESTION, QUESTION_RESULT, LEADERBOARD, PODIUM.
+ *
+ * Legacy QUIT tasks are no longer produced; callers should replace a
+ * QUIT currentTask with the last entry in previousTasks before invoking
+ * this function.
  *
  * @param task - Original task sub-document.
  * @returns A fully-typed task object for the output schema.
@@ -214,8 +249,6 @@ function buildGameTask(task: BSONDocument): BSONDocument {
     additional = {
       leaderboard: buildGameLeaderboard(task),
     }
-  } else if (type === 'QUIT') {
-    additional = {}
   }
   return {
     _id: extractValueOrThrow<string>(task, {}, '_id'),
