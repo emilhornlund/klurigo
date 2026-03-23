@@ -300,3 +300,32 @@ export interface PaginatedQuizResponseDto {
    */
   offset: number
 }
+
+/**
+ * Represents the pagination and sorting filters for a user's public quizzes page.
+ */
+export interface UserQuizzesPageFilterDto {
+  /**
+   * The field by which to sort the results.
+   *
+   * @default 'title'
+   */
+  readonly sort?: 'title' | 'created' | 'updated'
+
+  /**
+   * The sort order for the results.
+   *
+   * @default 'asc'
+   */
+  readonly order?: 'asc' | 'desc'
+
+  /**
+   * The maximum number of quizzes returned per page.
+   */
+  readonly limit: number
+
+  /**
+   * The number of quizzes skipped before the current page.
+   */
+  readonly offset: number
+}

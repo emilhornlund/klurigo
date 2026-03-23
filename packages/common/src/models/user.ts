@@ -126,6 +126,41 @@ export interface UserProfileResponseDto {
 }
 
 /**
+ * DTO for retrieving a user's public profile summary.
+ */
+export interface PublicUserProfileResponseDto {
+  /**
+   * The user's unique identifier (UUID).
+   */
+  readonly id: string
+
+  /**
+   * The public nickname displayed for the user.
+   */
+  readonly nickname: string
+
+  /**
+   * The total number of public quizzes authored by the user.
+   */
+  readonly quizzesCount: number
+
+  /**
+   * The total number of games hosted by the user.
+   */
+  readonly hostedGamesCount: number
+
+  /**
+   * The total number of games played by the user.
+   */
+  readonly playedGamesCount: number
+
+  /**
+   * The timestamp when the user account was created.
+   */
+  readonly createdAt: Date
+}
+
+/**
  * DTO for updating an existing local user.
  */
 export interface UpdateLocalUserProfileRequestDto {

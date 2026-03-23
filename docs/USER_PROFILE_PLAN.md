@@ -95,7 +95,7 @@ Tasks are ordered linearly so each task can be completed once the previous one i
 
 ---
 
-### Task 1 — Add shared DTOs to `@klurigo/common`
+### Task 1 — Add shared DTOs to `@klurigo/common` [DONE]
 
 **Package:** `@klurigo/common`
 
