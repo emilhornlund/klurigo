@@ -7,7 +7,7 @@ This plan describes the v1 implementation of a public user profile feature acros
 The feature touches three packages:
 
 - **`@klurigo/common`** — shared DTO definitions used by backend transport classes
-- **`@klurigo/klurigo-service`** — two new REST endpoints, repository/service updates, backend DTO classes, and Swagger documentation
+- **`@klurigo/klurigo-service`** — two new REST endpoints implemented in a dedicated `UserProfileApiModule`
 - **`@klurigo/klurigo-web`** — two new pages, a new menu item, nickname-to-profile link updates, and quiz-response-to-card mapping
 
 ---
@@ -142,25 +142,27 @@ For this feature, the user `_id` is the participant id in game results.
 
 ---
 
-### Task 3 — Add public profile aggregation to `UserService`
+### Task 3 — Add public profile aggregation service
 
 **Package:** `@klurigo/klurigo-service`
 
-Add `findPublicUserProfile(userId: string): Promise<PublicUserProfileResponseDto>` to `UserService`.
+Create a dedicated `UserProfileService` inside a new `UserProfileApiModule`.
+
+Add:
+- `findPublicUserProfile(userId: string): Promise<PublicUserProfileResponseDto>`
 
 Implementation should:
-- load the user with `UserRepository.findUserByIdOrThrow`
-- count the user's public quizzes
-- count hosted games
-- count played games
-- map the result to `PublicUserProfileResponseDto`
+- load user via `UserService`
+- fetch quiz counts via `QuizRepository`
+- fetch game counts via `GameResultRepository`
+- map the profile result to `PublicUserProfileResponseDto`
 
-Wire any required module imports/exports so `UserService` can access the needed repositories without introducing circular dependencies.
+The `UserProfileApiModule` should import:
+- `UserModule`
+- `QuizCoreModule`
+- `GameResultModule`
 
-**Affected files:**
-- `packages/klurigo-service/src/modules/user/services/user.service.ts`
-- `packages/klurigo-service/src/modules/user/user.module.ts`
-- Related module files if repository exports/imports need updates
+This module is responsible for cross-domain aggregation and avoids circular dependencies in `UserModule`.
 
 ---
 
@@ -168,7 +170,13 @@ Wire any required module imports/exports so `UserService` can access the needed 
 
 **Package:** `@klurigo/klurigo-service`
 
-Add `findPublicQuizzesByUserId` to `QuizService` as a thin wrapper around the existing quiz paging logic.
+Add `findPublicQuizzesByUserId` to `UserProfileService` as a thin wrapper around the existing quiz paging/query logic.
+
+Implementation should:
+- query public quizzes for the requested user via quiz-core repository/query layer
+- reuse existing pagination and sorting behavior already used by quiz API
+- return the existing paginated quiz response contract used by quiz API
+- avoid depending on `QuizApiModule` or `QuizService`
 
 Requirements:
 - restrict results to the requested user's quizzes
@@ -184,7 +192,7 @@ Requirements:
 - default `order` is `asc`
 
 **Affected files:**
-- `packages/klurigo-service/src/modules/quiz-api/services/quiz.service.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/services/user-profile.service.ts`
 
 ---
 
@@ -210,8 +218,8 @@ Requirements:
   - `order: 'asc'`
 
 **Affected files:**
-- `packages/klurigo-service/src/modules/user/controllers/responses/public-user-profile.response.ts`
-- `packages/klurigo-service/src/modules/user/controllers/filters/user-quizzes-page.filter.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/controllers/responses/public-user-profile.response.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/controllers/filters/user-quizzes-page.filter.ts`
 - Relevant barrel files
 
 ---
@@ -223,18 +231,18 @@ Requirements:
 Create and register the controller for both endpoints.
 
 Controller requirements:
-- create `PublicUserController`
-- register it in `UserModule`
+- create `PublicUserController` inside `UserProfileApiModule`
+- register it in `UserProfileApiModule`
 - apply `@RequiresScopes(TokenScope.User)`
 - apply `@RequiredAuthorities(Authority.User)`
-- `GET /api/users/:userId/profile` delegates to `userService.findPublicUserProfile`
-- `GET /api/users/:userId/quizzes` delegates to `quizService.findPublicQuizzesByUserId`
+- `GET /api/users/:userId/profile` delegates to `userProfileService.findPublicUserProfile`
+- `GET /api/users/:userId/quizzes` delegates to `userProfileService.findPublicQuizzesByUserId`
 - add Swagger operation, param, query, success-response, and error-response documentation following existing controller patterns
 - document the quizzes endpoint with the existing paginated quiz response classes from `paginated-quiz.response.ts`
 
 **Affected files:**
-- `packages/klurigo-service/src/modules/user/controllers/public-user.controller.ts`
-- `packages/klurigo-service/src/modules/user/user.module.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/controllers/public-user.controller.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/user-profile-api.module.ts`
 - Relevant barrel files
 
 ---
@@ -255,7 +263,7 @@ Coverage should include:
 - presence of the expected Swagger-wired DTO/controller behavior where covered by existing test patterns
 
 **Affected files:**
-- `packages/klurigo-service/src/modules/user/controllers/public-user.controller.e2e-spec.ts`
+- `packages/klurigo-service/src/modules/user-profile-api/controllers/public-user.controller.e2e-spec.ts`
 
 ---
 
@@ -468,8 +476,9 @@ yarn check-types
 
 ## Risks / Notes
 
-### Cross-module injection in `UserService`
-`UserService` needs access to quiz and game result counts. This may require exporting repositories from `quiz-core` and `game-result` and importing those modules into `UserModule`. Check the dependency graph carefully and validate with the existing circular-dependency tooling if module boundaries change.
+### Module boundaries and aggregation
+Cross-domain aggregation is handled in `UserProfileApiModule` to avoid circular dependencies between `UserModule`, `QuizModule`, and `GameResultModule`.
+This module composes data from multiple domains and should remain the only place where such aggregation occurs.
 
 ### Profile endpoint query cost
 The profile endpoint performs one user lookup plus three aggregate counts. That is acceptable for v1. If this becomes hot-path traffic later, the counts can be parallelised or cached without changing the API contract.
