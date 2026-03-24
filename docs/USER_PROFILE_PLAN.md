@@ -196,7 +196,7 @@ Requirements:
 
 ---
 
-### Task 5 — Create backend DTO classes for profile and quiz filters
+### Task 5 — Create backend DTO classes for profile and quiz filters [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 
