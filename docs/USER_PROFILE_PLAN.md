@@ -247,7 +247,7 @@ Controller requirements:
 
 ---
 
-### Task 7 — Add backend e2e coverage for the new endpoints
+### Task 7 — Add backend e2e coverage for the new endpoints [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 
