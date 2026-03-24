@@ -76,6 +76,8 @@ export class UserProfileService {
     limit: number = 10,
     offset: number = 0,
   ): Promise<PaginatedQuizResponseDto> {
+    await this.userService.findUserProfileOrThrow(userId)
+
     const filter: QueryFilter<Quiz> = {
       owner: { _id: userId },
       visibility: QuizVisibility.Public,

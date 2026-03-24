@@ -145,6 +145,9 @@ describe('UserProfileService', () => {
         },
       ]
 
+      userService.findUserProfileOrThrow.mockResolvedValue({
+        id: userId,
+      })
       quizRepository.countQuizzes.mockResolvedValue(1)
       quizRepository.findQuizzes.mockResolvedValue(quizzes)
 
@@ -188,6 +191,7 @@ describe('UserProfileService', () => {
         owner: { _id: userId },
         visibility: QuizVisibility.Public,
       })
+      expect(userService.findUserProfileOrThrow).toHaveBeenCalledWith(userId)
       expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
         {
           owner: { _id: userId },
@@ -201,6 +205,9 @@ describe('UserProfileService', () => {
     })
 
     it('should pass through explicit paging and sort values', async () => {
+      userService.findUserProfileOrThrow.mockResolvedValue({
+        id: userId,
+      })
       quizRepository.countQuizzes.mockResolvedValue(24)
       quizRepository.findQuizzes.mockResolvedValue([])
 
@@ -217,6 +224,7 @@ describe('UserProfileService', () => {
         owner: { _id: userId },
         visibility: QuizVisibility.Public,
       })
+      expect(userService.findUserProfileOrThrow).toHaveBeenCalledWith(userId)
       expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
         {
           owner: { _id: userId },
@@ -227,6 +235,19 @@ describe('UserProfileService', () => {
         25,
         50,
       )
+    })
+
+    it('should propagate user not found before loading public quizzes', async () => {
+      const error = new UserNotFoundException(userId)
+
+      userService.findUserProfileOrThrow.mockRejectedValue(error)
+
+      await expect(service.findPublicQuizzesByUserId(userId)).rejects.toBe(
+        error,
+      )
+
+      expect(quizRepository.countQuizzes).not.toHaveBeenCalled()
+      expect(quizRepository.findQuizzes).not.toHaveBeenCalled()
     })
   })
 })

@@ -224,7 +224,7 @@ Requirements:
 
 ---
 
-### Task 6 — Create `PublicUserController` with full Swagger documentation
+### Task 6 — Create `PublicUserController` with full Swagger documentation [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 
