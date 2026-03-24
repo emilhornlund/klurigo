@@ -267,7 +267,7 @@ Coverage should include:
 
 ---
 
-### Task 8 — Add frontend API resource methods
+### Task 8 — Add frontend API resource methods [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 

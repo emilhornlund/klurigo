@@ -11,6 +11,7 @@ import {
   createGameResource,
   createMediaResource,
   createQuizResource,
+  createUserResource,
 } from './resources'
 
 /**
@@ -20,7 +21,7 @@ import {
  * - token access from `useAuthContext`
  * - current-user hydration from `useUserContext`
  * - request execution via `createApiClientCore`
- * - domain-specific resources (auth/quiz/game/media)
+ * - domain-specific resources (auth/quiz/game/media/user)
  *
  * The returned functions are stable wrappers around the underlying resources.
  *
@@ -83,10 +84,16 @@ export const useKlurigoServiceClient = () => {
     notifyError,
   })
 
+  const user = createUserResource(api, {
+    notifySuccess,
+    notifyError,
+  })
+
   return {
     ...auth,
     ...quiz,
     ...game,
     ...media,
+    ...user,
   }
 }

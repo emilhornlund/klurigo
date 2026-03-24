@@ -26,6 +26,7 @@ vi.mock('./resources', () => ({
   createQuizResource: vi.fn(),
   createGameResource: vi.fn(),
   createMediaResource: vi.fn(),
+  createUserResource: vi.fn(),
 }))
 
 const { useAuthContext } = await import('../context/auth')
@@ -37,6 +38,7 @@ const {
   createGameResource,
   createMediaResource,
   createQuizResource,
+  createUserResource,
 } = await import('./resources')
 
 type TokenShape = { token: string }
@@ -97,6 +99,12 @@ describe('useKlurigoServiceClient', () => {
     ).mockReturnValue({
       uploadImage: vi.fn(),
     })
+    ;(
+      createUserResource as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue({
+      getUserPublicProfile: vi.fn(),
+      getUserPublicQuizzes: vi.fn(),
+    })
   })
 
   it('wires core + resources and returns a merged surface', () => {
@@ -107,6 +115,7 @@ describe('useKlurigoServiceClient', () => {
     expect(createQuizResource).toHaveBeenCalledTimes(1)
     expect(createGameResource).toHaveBeenCalledTimes(1)
     expect(createMediaResource).toHaveBeenCalledTimes(1)
+    expect(createUserResource).toHaveBeenCalledTimes(1)
 
     expect(result.current).toEqual(
       expect.objectContaining({
@@ -115,6 +124,8 @@ describe('useKlurigoServiceClient', () => {
         getQuiz: expect.any(Function),
         joinGame: expect.any(Function),
         uploadImage: expect.any(Function),
+        getUserPublicProfile: expect.any(Function),
+        getUserPublicQuizzes: expect.any(Function),
       }),
     )
   })
@@ -148,7 +159,7 @@ describe('useKlurigoServiceClient', () => {
     })
   })
 
-  it('creates quiz/game resources with notification callbacks', () => {
+  it('creates quiz/game/user resources with notification callbacks', () => {
     renderHook(() => useKlurigoServiceClient())
 
     expect(createQuizResource).toHaveBeenCalledWith(apiCore, {
@@ -157,6 +168,11 @@ describe('useKlurigoServiceClient', () => {
     })
 
     expect(createGameResource).toHaveBeenCalledWith(apiCore, {
+      notifySuccess,
+      notifyError,
+    })
+
+    expect(createUserResource).toHaveBeenCalledWith(apiCore, {
       notifySuccess,
       notifyError,
     })
@@ -259,6 +275,8 @@ describe('useKlurigoServiceClient', () => {
     const getQuiz = vi.fn().mockResolvedValue({ id: 'q1' })
     const joinGame = vi.fn().mockResolvedValue(undefined)
     const uploadImage = vi.fn().mockResolvedValue({ id: 'photo1' })
+    const getUserPublicProfile = vi.fn().mockResolvedValue({ id: 'user-1' })
+    const getUserPublicQuizzes = vi.fn().mockResolvedValue({ results: [] })
 
     ;(
       createAuthResource as unknown as ReturnType<typeof vi.fn>
@@ -272,6 +290,12 @@ describe('useKlurigoServiceClient', () => {
     ;(
       createMediaResource as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValue({ uploadImage })
+    ;(
+      createUserResource as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue({
+      getUserPublicProfile,
+      getUserPublicQuizzes,
+    })
 
     const { result } = renderHook(() => useKlurigoServiceClient())
 
@@ -310,6 +334,24 @@ describe('useKlurigoServiceClient', () => {
       result.current.uploadImage(file as never, onProgress as never),
     ).resolves.toEqual({ id: 'photo1' })
     expect(uploadImage).toHaveBeenCalledWith(file, onProgress)
+
+    await expect(
+      result.current.getUserPublicProfile('user-1'),
+    ).resolves.toEqual({
+      id: 'user-1',
+    })
+    expect(getUserPublicProfile).toHaveBeenCalledWith('user-1')
+
+    await expect(
+      result.current.getUserPublicQuizzes('user-1', {
+        limit: 10,
+        offset: 20,
+      }),
+    ).resolves.toEqual({ results: [] })
+    expect(getUserPublicQuizzes).toHaveBeenCalledWith('user-1', {
+      limit: 10,
+      offset: 20,
+    })
   })
 
   it('passes the same api core instance to all resource factories', () => {
@@ -322,6 +364,7 @@ describe('useKlurigoServiceClient', () => {
       apiCore,
       expect.any(Object),
     )
+    expect(createUserResource).toHaveBeenCalledWith(apiCore, expect.any(Object))
   })
 
   it('getToken returns undefined when requested token type is missing in the auth state', () => {
@@ -365,6 +408,7 @@ describe('useKlurigoServiceClient', () => {
     const sharedFnB = vi.fn()
     const sharedFnC = vi.fn()
     const sharedFnD = vi.fn()
+    const sharedFnE = vi.fn()
 
     ;(
       createAuthResource as unknown as ReturnType<typeof vi.fn>
@@ -386,12 +430,17 @@ describe('useKlurigoServiceClient', () => {
     ).mockReturnValue({
       shared: sharedFnD,
     })
+    ;(
+      createUserResource as unknown as ReturnType<typeof vi.fn>
+    ).mockReturnValue({
+      shared: sharedFnE,
+    })
 
     const { result } = renderHook(() => useKlurigoServiceClient())
 
-    // media is spread last: ...auth, ...quiz, ...game, ...media
+    // user is spread last: ...auth, ...quiz, ...game, ...media, ...user
     expect((result.current as Record<string, unknown>)['shared']).toBe(
-      sharedFnD,
+      sharedFnE,
     )
   })
 
@@ -431,6 +480,14 @@ describe('useKlurigoServiceClient', () => {
 
     expect(mediaDeps.notifySuccess).toBe(notifySuccess)
     expect(mediaDeps.notifyError).toBe(notifyError)
+
+    expect(createUserResource).toHaveBeenCalledWith(
+      apiCore,
+      expect.objectContaining({
+        notifySuccess,
+        notifyError,
+      }),
+    )
   })
 
   it('getToken function identity is stable across rerenders when auth context object references are stable', () => {
