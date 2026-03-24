@@ -304,29 +304,15 @@ Requirements:
 
 ---
 
-### Task 10 — Add frontend routes for user profile pages
+### Task 10 — Implement `UserProfilePage` and register its protected route
 
 **Package:** `@klurigo/klurigo-web`
 
-Add protected routes for:
-
-- `/users/:userId/profile`
-- `/users/:userId/quizzes`
-
-Place them alongside the existing authenticated routes.
-
-**Affected files:**
-- `packages/klurigo-web/src/main.tsx`
-
----
-
-### Task 11 — Implement `UserProfilePage`
-
-**Package:** `@klurigo/klurigo-web`
-
-Create the profile page and supporting UI.
+Create the profile page and register the protected route for it.
 
 Requirements:
+- create `UserProfilePage`
+- register the protected route `/users/:userId/profile` alongside the existing authenticated routes in `packages/klurigo-web/src/main.tsx`
 - fetch the public profile by `userId`
 - fetch the first page of public quizzes for the rail
 - display `nickname`, `createdAt`, `quizzesCount`, `hostedGamesCount`, and `playedGamesCount`
@@ -334,19 +320,27 @@ Requirements:
 - render a public quizzes rail with a "See all" link to `/users/:userId/quizzes`
 - include loading, empty, and not-found/error states consistent with existing pages
 
+Tests:
+- loading, populated, empty, and not-found/error states
+- rendering of `hostedGamesCount` and `playedGamesCount`
+- correct mapping of backend quiz data to `QuizDiscoveryCard`
+
 **Affected files:**
+- `packages/klurigo-web/src/main.tsx`
 - `packages/klurigo-web/src/pages/UserProfilePage/`
 - `packages/klurigo-web/src/pages/index.ts`
 
 ---
 
-### Task 12 — Implement `UserQuizzesPage`
+### Task 11 — Implement `UserQuizzesPage` and register its protected route
 
 **Package:** `@klurigo/klurigo-web`
 
-Create the paginated quizzes page for a user.
+Create the paginated quizzes page for a user and register the protected route for it.
 
 Requirements:
+- create `UserQuizzesPage`
+- register the protected route `/users/:userId/quizzes` alongside the existing authenticated routes in `packages/klurigo-web/src/main.tsx`
 - read `userId` from the route
 - load public quizzes with the supported v1 query parameters
 - use the existing paginated quiz response contract from the backend
@@ -354,13 +348,18 @@ Requirements:
 - use the existing responsive pagination/infinite-offset patterns where appropriate
 - render loading, empty, error, and load-more states consistent with discovery pages
 
+Tests:
+- pagination behavior using `sort`, `order`, `limit`, and `offset`
+- loading, empty, error, and load-more states
+
 **Affected files:**
+- `packages/klurigo-web/src/main.tsx`
 - `packages/klurigo-web/src/pages/UserQuizzesPage/`
 - `packages/klurigo-web/src/pages/index.ts`
 
 ---
 
-### Task 13 — Add "My Profile" to the profile menu
+### Task 12 — Add "My Profile" to the profile menu
 
 **Package:** `@klurigo/klurigo-web`
 
@@ -373,7 +372,7 @@ Add the item before the existing profile-related entries and use the current aut
 
 ---
 
-### Task 14 — Link supported nickname surfaces to profile pages
+### Task 13 — Link supported nickname surfaces to profile pages
 
 **Package:** `@klurigo/klurigo-web`
 
@@ -385,30 +384,12 @@ Initial scope:
 
 Do not add links in editable forms or active gameplay contexts.
 
+Tests:
+- verify nickname renders as a link to `/users/:userId/profile` in `QuizDiscoveryCard`
+
 **Affected files:**
 - `packages/klurigo-web/src/components/QuizDiscoveryCard/QuizDiscoveryCard.tsx`
 - relevant files under `packages/klurigo-web/src/pages/GameResultsPage/`
-
----
-
-### Task 15 — Add frontend tests and run validation
-
-**Package:** `@klurigo/klurigo-web` and repository root
-
-Add focused frontend tests for the new pages/components, then run the standard validation commands for the touched packages and the repository.
-
-Coverage should include:
-- `UserProfilePage` loading, populated, empty, and not-found/error states
-- display of `hostedGamesCount` and `playedGamesCount`
-- successful mapping of backend quiz data to `QuizDiscoveryCard`
-- `UserQuizzesPage` pagination behavior using `sort`, `order`, `limit`, and `offset`
-- nickname link rendering in `QuizDiscoveryCard`
-
-Validation commands:
-- `yarn workspace @klurigo/klurigo-service test`
-- `yarn workspace @klurigo/klurigo-web test`
-- `yarn check-types`
-- `yarn lint`
 
 ---
 
