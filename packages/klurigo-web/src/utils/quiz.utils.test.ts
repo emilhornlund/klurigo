@@ -1,6 +1,48 @@
+import {
+  type DiscoveryQuizCardDto,
+  GameMode,
+  LanguageCode,
+  QuizCategory,
+  type QuizResponseDto,
+  QuizVisibility,
+} from '@klurigo/common'
 import { describe, expect, it } from 'vitest'
 
-import { toDifficultyLabel } from './quiz.utils'
+import {
+  toDifficultyLabel,
+  toDiscoveryQuizCard,
+  toDiscoveryQuizCards,
+} from './quiz.utils'
+
+const makeQuizResponse = (
+  overrides?: Partial<QuizResponseDto>,
+): QuizResponseDto => ({
+  id: 'quiz-1',
+  title: 'World capitals',
+  description: 'Name the capital cities.',
+  mode: GameMode.Classic,
+  visibility: QuizVisibility.Public,
+  category: QuizCategory.Geography,
+  imageCoverURL: 'https://example.com/quiz-cover.jpg',
+  languageCode: LanguageCode.English,
+  numberOfQuestions: 12,
+  author: {
+    id: 'author-1',
+    name: 'Jane Doe',
+  },
+  gameplaySummary: {
+    count: 42,
+    totalPlayerCount: 120,
+  },
+  ratingSummary: {
+    stars: 4.6,
+    comments: 8,
+    total: 14,
+  },
+  created: new Date('2025-01-01T00:00:00.000Z'),
+  updated: new Date('2025-01-02T00:00:00.000Z'),
+  ...overrides,
+})
 
 describe('quiz.utils', () => {
   describe('toDifficultyLabel', () => {
@@ -48,6 +90,73 @@ describe('quiz.utils', () => {
       expect(toDifficultyLabel(0.75)).toBe('Extreme')
       expect(toDifficultyLabel(0.9)).toBe('Extreme')
       expect(toDifficultyLabel(1)).toBe('Extreme')
+    })
+  })
+
+  describe('toDiscoveryQuizCard', () => {
+    it('maps a backend quiz response to QuizDiscoveryCard-compatible data', () => {
+      const quizResponse = makeQuizResponse()
+
+      const result = toDiscoveryQuizCard(quizResponse)
+
+      const expected: DiscoveryQuizCardDto = {
+        id: 'quiz-1',
+        title: 'World capitals',
+        description: 'Name the capital cities.',
+        imageCoverURL: 'https://example.com/quiz-cover.jpg',
+        category: QuizCategory.Geography,
+        languageCode: LanguageCode.English,
+        mode: GameMode.Classic,
+        numberOfQuestions: 12,
+        author: {
+          id: 'author-1',
+          name: 'Jane Doe',
+        },
+        gameplaySummary: {
+          count: 42,
+          totalPlayerCount: 120,
+        },
+        ratingSummary: {
+          stars: 4.6,
+          comments: 8,
+          total: 14,
+        },
+        created: new Date('2025-01-01T00:00:00.000Z'),
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('preserves optional fields when they are missing from the backend response', () => {
+      const quizResponse = makeQuizResponse({
+        description: undefined,
+        imageCoverURL: undefined,
+      })
+
+      expect(toDiscoveryQuizCard(quizResponse)).toMatchObject({
+        id: 'quiz-1',
+        description: undefined,
+        imageCoverURL: undefined,
+      })
+    })
+  })
+
+  describe('toDiscoveryQuizCards', () => {
+    it('maps a list of backend quiz responses for discovery card rendering', () => {
+      const firstQuiz = makeQuizResponse()
+      const secondQuiz = makeQuizResponse({
+        id: 'quiz-2',
+        title: 'Historic battles',
+        author: {
+          id: 'author-2',
+          name: 'John Smith',
+        },
+      })
+
+      expect(toDiscoveryQuizCards([firstQuiz, secondQuiz])).toEqual([
+        toDiscoveryQuizCard(firstQuiz),
+        toDiscoveryQuizCard(secondQuiz),
+      ])
     })
   })
 })

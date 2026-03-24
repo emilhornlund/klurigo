@@ -287,7 +287,7 @@ Requirements:
 
 ---
 
-### Task 9 — Implement the frontend quiz-response mapper
+### Task 9 — Implement the frontend quiz-response mapper [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 
@@ -299,7 +299,8 @@ Requirements:
 - do not change backend response contracts to fit the card component
 
 **Affected files:**
-- frontend page/component support files near the user profile/quizzes pages or existing quiz mapping utilities
+- `packages/klurigo-web/src/utils/quiz.utils.ts`
+- `packages/klurigo-web/src/utils/quiz.utils.test.ts`
 
 ---
 
