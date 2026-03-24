@@ -332,7 +332,7 @@ Tests:
 
 ---
 
-### Task 11 — Implement `UserQuizzesPage` and register its protected route
+### Task 11 — Implement `UserQuizzesPage` and register its protected route [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 

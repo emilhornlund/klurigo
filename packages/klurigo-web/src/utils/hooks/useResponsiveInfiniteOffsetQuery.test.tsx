@@ -44,11 +44,13 @@ const renderResponsiveInfiniteOffsetQuery = (
     readonly offset: number
   }) => Promise<TestPage>,
   enabled = true,
+  initialOffset = 0,
 ) =>
   renderHook(
     () =>
       useResponsiveInfiniteOffsetQuery({
         queryKey: ['test-query'],
+        initialOffset,
         queryFn,
         getResults: (page) => page.results,
         getTotal: (page) => page.total,
@@ -245,5 +247,20 @@ describe('useResponsiveInfiniteOffsetQuery', () => {
 
     expect(result.current.isLoading).toBe(false)
     expect(queryFn).not.toHaveBeenCalled()
+  })
+
+  it('uses the provided initial offset for the first page', async () => {
+    const queryFn = vi.fn<
+      (params: {
+        readonly limit: number
+        readonly offset: number
+      }) => Promise<TestPage>
+    >(() => Promise.resolve({ results: ['c', 'd'], total: 6 }))
+
+    renderResponsiveInfiniteOffsetQuery(queryFn, true, 2)
+
+    await waitFor(() => {
+      expect(queryFn).toHaveBeenCalledWith({ limit: 20, offset: 2 })
+    })
   })
 })

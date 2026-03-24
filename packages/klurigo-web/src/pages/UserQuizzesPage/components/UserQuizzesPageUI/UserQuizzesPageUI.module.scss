@@ -1,0 +1,54 @@
+@use '../../../../styles/colors';
+@use '../../../../styles/helpers';
+@use '../../../../styles/variables';
+
+.grid {
+  display: grid;
+  width: 100%;
+
+  @include helpers.mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: variables.$mobile-narrow-layout-gutter;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: repeat(3, 1fr);
+    gap: variables.$tablet-narrow-layout-gutter;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: repeat(4, 1fr);
+    gap: variables.$desktop-narrow-layout-gutter;
+  }
+
+  :global([data-testid='quiz-discovery-card']) {
+    width: 100%;
+  }
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.emptyState {
+  margin: 0;
+  text-align: center;
+  color: colors.$white-1-50;
+
+  @include helpers.mobile {
+    padding: 1rem 0;
+    @include helpers.fontSize(16px);
+  }
+
+  @include helpers.tablet {
+    padding: 1.5rem 0;
+    @include helpers.fontSize(20px);
+  }
+
+  @include helpers.desktop {
+    padding: 2rem 0;
+    @include helpers.fontSize(24px);
+  }
+}

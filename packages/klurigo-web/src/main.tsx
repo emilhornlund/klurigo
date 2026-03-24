@@ -33,6 +33,7 @@ import {
   QuizCreatorPage,
   QuizDetailsPage,
   UserProfilePage,
+  UserQuizzesPage,
 } from './pages'
 
 import './styles/fonts.scss'
@@ -177,6 +178,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <UserProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/users/:userId/quizzes',
+        element: (
+          <ProtectedRoute>
+            <UserQuizzesPage />
           </ProtectedRoute>
         ),
       },
