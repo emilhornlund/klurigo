@@ -37,7 +37,7 @@ import {
 } from '../../quiz-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
 
-import { toQuizGameplaySummaryDifficultyPercentage } from './utils'
+import { toQuizResponseDto } from './utils'
 
 /**
  * Service for managing quiz-related operations.
@@ -75,7 +75,7 @@ export class QuizService {
 
     this.logger.log(`Created quiz with id '${document._id}.'`)
 
-    return QuizService.buildQuizResponseDto(document)
+    return toQuizResponseDto(document)
   }
 
   /**
@@ -89,7 +89,7 @@ export class QuizService {
    */
   public async findQuizById(quizId: string): Promise<QuizResponseDto> {
     const quiz = await this.quizRepository.findQuizByIdOrThrow(quizId)
-    return QuizService.buildQuizResponseDto(quiz)
+    return toQuizResponseDto(quiz)
   }
 
   /**
@@ -226,7 +226,7 @@ export class QuizService {
     )
 
     return {
-      results: quizzes.map(QuizService.buildQuizResponseDto),
+      results: quizzes.map(toQuizResponseDto),
       offset,
       limit,
       total,
@@ -252,7 +252,7 @@ export class QuizService {
       QuizService.buildUpdatedQuiz(quizRequest),
     )
 
-    return QuizService.buildQuizResponseDto(updatedQuiz)
+    return toQuizResponseDto(updatedQuiz)
   }
 
   /**
@@ -557,61 +557,5 @@ export class QuizService {
     }
 
     throw new Error(`Unsupported game mode '${mode}'`)
-  }
-
-  /**
-   * Builds a QuizResponseDto from a Quiz document.
-   *
-   * @param quiz - The quiz document.
-   *
-   * @returns The constructed response DTO.
-   * @private
-   */
-  private static buildQuizResponseDto(quiz: Quiz): QuizResponseDto {
-    const {
-      _id: id,
-      title,
-      description,
-      mode,
-      visibility,
-      category,
-      imageCoverURL,
-      languageCode,
-      questions,
-      owner,
-      gameplaySummary,
-      ratingSummary,
-      created,
-      updated,
-    } = quiz
-    return {
-      id,
-      title,
-      description,
-      mode,
-      visibility,
-      category,
-      imageCoverURL,
-      languageCode,
-      numberOfQuestions: questions.length,
-      author: {
-        id: owner._id,
-        name: owner.defaultNickname,
-      },
-      gameplaySummary: {
-        count: gameplaySummary.count,
-        totalPlayerCount: gameplaySummary.totalPlayerCount,
-        lastPlayed: gameplaySummary.lastPlayedAt,
-        difficultyPercentage:
-          toQuizGameplaySummaryDifficultyPercentage(gameplaySummary),
-      },
-      ratingSummary: {
-        stars: ratingSummary.avg,
-        comments: ratingSummary.commentCount,
-        total: ratingSummary.count,
-      },
-      created,
-      updated,
-    }
   }
 }

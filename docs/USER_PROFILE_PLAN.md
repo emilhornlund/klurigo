@@ -166,7 +166,7 @@ This module is responsible for cross-domain aggregation and avoids circular depe
 
 ---
 
-### Task 4 — Add public user quizzes service method
+### Task 4 — Add public user quizzes service method [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 

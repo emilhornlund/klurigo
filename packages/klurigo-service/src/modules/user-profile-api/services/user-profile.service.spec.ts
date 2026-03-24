@@ -1,4 +1,8 @@
-import { AuthProvider, UserProfileResponseDto } from '@klurigo/common'
+import {
+  AuthProvider,
+  QuizVisibility,
+  UserProfileResponseDto,
+} from '@klurigo/common'
 
 import { UserNotFoundException } from '../../user/exceptions'
 
@@ -12,6 +16,8 @@ describe('UserProfileService', () => {
   }
   let quizRepository: {
     countPublicQuizzesByOwnerId: jest.Mock
+    countQuizzes: jest.Mock
+    findQuizzes: jest.Mock
   }
   let gameResultRepository: {
     countHostedGamesByUserId: jest.Mock
@@ -24,6 +30,8 @@ describe('UserProfileService', () => {
     }
     quizRepository = {
       countPublicQuizzesByOwnerId: jest.fn(),
+      countQuizzes: jest.fn(),
+      findQuizzes: jest.fn(),
     }
     gameResultRepository = {
       countHostedGamesByUserId: jest.fn(),
@@ -91,6 +99,134 @@ describe('UserProfileService', () => {
       expect(
         gameResultRepository.countPlayedGamesByUserId,
       ).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('findPublicQuizzesByUserId', () => {
+    const userId = 'user-123'
+    const baseQuiz = {
+      description: 'A fun quiz',
+      mode: 'classic',
+      category: 'general-knowledge',
+      imageCoverURL: 'https://example.com/quiz.jpg',
+      languageCode: 'en',
+      owner: {
+        _id: userId,
+        defaultNickname: 'FrostyBear',
+      },
+      gameplaySummary: {
+        count: 4,
+        totalPlayerCount: 16,
+        lastPlayedAt: new Date('2025-02-01T12:00:00.000Z'),
+        totalClassicCorrectCount: 30,
+        totalClassicIncorrectCount: 10,
+        totalClassicUnansweredCount: 5,
+        totalZeroToOneHundredPrecisionSum: 0,
+        totalZeroToOneHundredAnsweredCount: 0,
+        totalZeroToOneHundredUnansweredCount: 0,
+      },
+      ratingSummary: {
+        avg: 4.5,
+        count: 6,
+        commentCount: 2,
+      },
+      created: new Date('2025-01-01T12:00:00.000Z'),
+      updated: new Date('2025-01-02T12:00:00.000Z'),
+    }
+
+    it('should return paginated public quizzes with default sorting', async () => {
+      const quizzes = [
+        {
+          ...baseQuiz,
+          _id: 'quiz-1',
+          title: 'Astronomy Basics',
+          questions: [{ id: 'q1' }, { id: 'q2' }],
+          visibility: QuizVisibility.Public,
+        },
+      ]
+
+      quizRepository.countQuizzes.mockResolvedValue(1)
+      quizRepository.findQuizzes.mockResolvedValue(quizzes)
+
+      await expect(service.findPublicQuizzesByUserId(userId)).resolves.toEqual({
+        results: [
+          {
+            id: 'quiz-1',
+            title: 'Astronomy Basics',
+            description: 'A fun quiz',
+            mode: 'classic',
+            visibility: QuizVisibility.Public,
+            category: 'general-knowledge',
+            imageCoverURL: 'https://example.com/quiz.jpg',
+            languageCode: 'en',
+            numberOfQuestions: 2,
+            author: {
+              id: userId,
+              name: 'FrostyBear',
+            },
+            gameplaySummary: {
+              count: 4,
+              totalPlayerCount: 16,
+              lastPlayed: new Date('2025-02-01T12:00:00.000Z'),
+              difficultyPercentage: 0.24444444444444444,
+            },
+            ratingSummary: {
+              stars: 4.5,
+              comments: 2,
+              total: 6,
+            },
+            created: new Date('2025-01-01T12:00:00.000Z'),
+            updated: new Date('2025-01-02T12:00:00.000Z'),
+          },
+        ],
+        total: 1,
+        limit: 10,
+        offset: 0,
+      })
+
+      expect(quizRepository.countQuizzes).toHaveBeenCalledWith({
+        owner: { _id: userId },
+        visibility: QuizVisibility.Public,
+      })
+      expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
+        {
+          owner: { _id: userId },
+          visibility: QuizVisibility.Public,
+        },
+        'title',
+        'asc',
+        10,
+        0,
+      )
+    })
+
+    it('should pass through explicit paging and sort values', async () => {
+      quizRepository.countQuizzes.mockResolvedValue(24)
+      quizRepository.findQuizzes.mockResolvedValue([])
+
+      await expect(
+        service.findPublicQuizzesByUserId(userId, 'updated', 'desc', 25, 50),
+      ).resolves.toEqual({
+        results: [],
+        total: 24,
+        limit: 25,
+        offset: 50,
+      })
+
+      expect(quizRepository.countQuizzes).toHaveBeenCalledWith({
+        owner: { _id: userId },
+        visibility: QuizVisibility.Public,
+      })
+      expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
+        {
+          owner: { _id: userId },
+          visibility: QuizVisibility.Public,
+        },
+        'updated',
+        'desc',
+        25,
+        50,
+      )
     })
   })
 })
