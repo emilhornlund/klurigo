@@ -1,3 +1,5 @@
+import { QuizVisibility } from '@klurigo/common'
+
 import { QuizNotFoundException } from '../exceptions'
 
 import { QuizRepository } from './quiz.repository'
@@ -110,6 +112,21 @@ describe('QuizRepository', () => {
       expect(
         (repo as unknown as { count: jest.Mock }).count,
       ).toHaveBeenCalledWith(filter)
+    })
+  })
+
+  describe('countPublicQuizzesByOwnerId', () => {
+    it('counts only public quizzes for the given owner', async () => {
+      const countMock = (repo as unknown as { count: jest.Mock }).count
+      countMock.mockResolvedValue(7)
+
+      await expect(repo.countPublicQuizzesByOwnerId('owner-1')).resolves.toBe(7)
+
+      expect(countMock).toHaveBeenCalledTimes(1)
+      expect(countMock).toHaveBeenCalledWith({
+        owner: { _id: 'owner-1' },
+        visibility: QuizVisibility.Public,
+      })
     })
   })
 

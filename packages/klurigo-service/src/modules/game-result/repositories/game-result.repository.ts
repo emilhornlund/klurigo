@@ -52,6 +52,32 @@ export class GameResultRepository extends BaseRepository<GameResult> {
   }
 
   /**
+   * Counts completed game result documents hosted by the given user.
+   *
+   * @param userId - The user identifier stored as the host participant id.
+   *
+   * @returns The number of hosted games associated with the user.
+   */
+  public async countHostedGamesByUserId(userId: string): Promise<number> {
+    return this.count({
+      hostParticipantId: userId,
+    })
+  }
+
+  /**
+   * Counts completed game result documents where the given user participated.
+   *
+   * @param userId - The user identifier stored in player participant ids.
+   *
+   * @returns The number of played games associated with the user.
+   */
+  public async countPlayedGamesByUserId(userId: string): Promise<number> {
+    return this.count({
+      'players.participantId': userId,
+    })
+  }
+
+  /**
    * Persists a game result document.
    *
    * @param gameResult - The game result to persist.

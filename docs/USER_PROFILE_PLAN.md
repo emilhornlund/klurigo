@@ -117,7 +117,7 @@ Requirements:
 
 ---
 
-### Task 2 — Add public quiz and game count repository methods
+### Task 2 — Add public quiz and game count repository methods [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 
