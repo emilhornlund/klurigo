@@ -22,7 +22,7 @@ import { GameAuthenticationModule } from '../modules/game-authentication'
 import { GameCleanupModule } from '../modules/game-cleanup/game-cleanup.module'
 import { GameCoreModule } from '../modules/game-core'
 import { GameEventModule } from '../modules/game-event/game-event.module'
-import { GameResultModule } from '../modules/game-result/game-result.module'
+import { GameResultModule } from '../modules/game-result'
 import { GameTaskModule } from '../modules/game-task'
 import { HealthModule } from '../modules/health'
 import { MediaModule } from '../modules/media'
@@ -31,6 +31,7 @@ import { QuizCoreModule } from '../modules/quiz-core'
 import { QuizRatingApiModule } from '../modules/quiz-rating-api'
 import { TokenModule } from '../modules/token'
 import { UserModule } from '../modules/user'
+import { UserProfileApiModule } from '../modules/user-profile-api'
 
 import { EnvironmentVariables } from './config'
 import { AppController } from './controllers'
@@ -212,6 +213,7 @@ const isTestEnv = process.env.NODE_ENV === 'test'
     QuizCoreModule,
     QuizRatingApiModule,
     TokenModule,
+    UserProfileApiModule,
     UserModule,
   ],
   controllers: [AppController],

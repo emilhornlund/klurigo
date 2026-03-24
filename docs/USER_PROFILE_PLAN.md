@@ -142,7 +142,7 @@ For this feature, the user `_id` is the participant id in game results.
 
 ---
 
-### Task 3 — Add public profile aggregation service
+### Task 3 — Add public profile aggregation service [DONE]
 
 **Package:** `@klurigo/klurigo-service`
 
