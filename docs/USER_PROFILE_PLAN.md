@@ -304,7 +304,7 @@ Requirements:
 
 ---
 
-### Task 10 — Implement `UserProfilePage` and register its protected route
+### Task 10 — Implement `UserProfilePage` and register its protected route [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 

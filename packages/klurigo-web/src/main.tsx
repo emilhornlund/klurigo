@@ -32,6 +32,7 @@ import {
   ProfileSettingsPage,
   QuizCreatorPage,
   QuizDetailsPage,
+  UserProfilePage,
 } from './pages'
 
 import './styles/fonts.scss'
@@ -168,6 +169,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ProfileGamesPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/users/:userId/profile',
+        element: (
+          <ProtectedRoute>
+            <UserProfilePage />
           </ProtectedRoute>
         ),
       },
