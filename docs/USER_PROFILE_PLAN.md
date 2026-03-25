@@ -359,7 +359,7 @@ Tests:
 
 ---
 
-### Task 12 — Add "My Profile" to the profile menu
+### Task 12 — Add "My Profile" to the profile menu [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 

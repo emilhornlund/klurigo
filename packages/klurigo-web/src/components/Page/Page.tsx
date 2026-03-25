@@ -2,6 +2,7 @@ import {
   faBinoculars,
   faGamepad,
   faGear,
+  faIdCard,
   faLightbulb,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons'
@@ -53,7 +54,7 @@ const Page: FC<PageProps> = ({
   footer,
   children,
 }) => {
-  const { isUserAuthenticated, revokeUser } = useAuthContext()
+  const { user, isUserAuthenticated, revokeUser } = useAuthContext()
 
   const navigate = useNavigate()
 
@@ -80,6 +81,9 @@ const Page: FC<PageProps> = ({
     }
     return (
       <>
+        <MenuItem icon={faIdCard} link={`/users/${user?.ACCESS.sub}/profile`}>
+          My Profile
+        </MenuItem>
         <MenuItem icon={faLightbulb} link="/profile/quizzes">
           Quizzes
         </MenuItem>
@@ -95,7 +99,7 @@ const Page: FC<PageProps> = ({
         </MenuItem>
       </>
     )
-  }, [profile, isUserAuthenticated, handleRevokeUser])
+  }, [profile, isUserAuthenticated, user, handleRevokeUser])
 
   return (
     <div className={styles.main}>
