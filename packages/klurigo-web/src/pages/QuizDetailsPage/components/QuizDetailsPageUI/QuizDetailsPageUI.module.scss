@@ -108,7 +108,7 @@
       align-items: center;
       overflow: hidden;
 
-      .icon, .value {
+      .icon, .value, .value > a {
         color: colors.$white;
         width: 100%;
       }
@@ -117,12 +117,16 @@
         opacity: 0.95;
       }
 
-      .value {
+      .value, .value > a {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
         opacity: 0.68;
+
+        a {
+          opacity: 1;
+        }
       }
 
       @include helpers.mobile {

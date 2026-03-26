@@ -926,7 +926,12 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/host-1/profile"
+                        >
+                          Hosty
+                        </a>
                       </div>
                     </div>
                     <div
@@ -2010,7 +2015,12 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/host-1/profile"
+                        >
+                          Hosty
+                        </a>
                       </div>
                     </div>
                     <div

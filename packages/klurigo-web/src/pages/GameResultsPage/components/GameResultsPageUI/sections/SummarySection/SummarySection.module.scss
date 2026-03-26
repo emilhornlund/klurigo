@@ -377,7 +377,7 @@ $contrast-opacity: 0.8;
             }
           }
 
-          .value {
+          .value, .value > a {
             font-weight: bold;
             white-space: nowrap;
             text-align: right;

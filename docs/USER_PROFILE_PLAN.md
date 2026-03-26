@@ -372,7 +372,7 @@ Add the item before the existing profile-related entries and use the current aut
 
 ---
 
-### Task 13 — Link supported nickname surfaces to profile pages
+### Task 13 — Link supported nickname surfaces to profile pages [DONE]
 
 **Package:** `@klurigo/klurigo-web`
 

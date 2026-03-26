@@ -18,8 +18,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { QuizRatingDto, QuizResponseDto } from '@klurigo/common'
-import type { FC } from 'react'
+import type { FC, ReactElement } from 'react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   Button,
@@ -47,13 +48,14 @@ import RatingsSection from './components/RatingsSection'
 import styles from './QuizDetailsPageUI.module.scss'
 
 const DetailItem: FC<{
-  icon: IconDefinition
-  value: string
   title?: string
-}> = ({ value, icon, title }) => (
+  icon: IconDefinition
+  value?: string
+  children?: ReactElement | string | number
+}> = ({ value, icon, title, children }) => (
   <div className={styles.item} title={title ?? value}>
     <FontAwesomeIcon icon={icon} className={styles.icon} />
-    <span className={styles.value}>{value}</span>
+    <span className={styles.value}>{value || children}</span>
   </div>
 )
 
@@ -169,7 +171,11 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
             icon={faCircleQuestion}
             value={`${quiz.numberOfQuestions} ${quiz.numberOfQuestions === 1 ? 'Question' : 'Questions'}`}
           />
-          <DetailItem icon={faUser} value={quiz.author.name || 'N/A'} />
+          <DetailItem icon={faUser} title={quiz.author.name || 'N/A'}>
+            <Link to={`/users/${quiz.author.id}/profile`}>
+              {quiz.author.name || 'N/A'}
+            </Link>
+          </DetailItem>
           <DetailItem
             icon={faCalendarPlus}
             value={formatTimeAgo(quiz.created)}

@@ -219,7 +219,12 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
             <span
               class="value"
             >
-              FrostyBear
+              <a
+                data-discover="true"
+                href="/users/db8d4c90-bfc2-4c2e-93cc-8f1c7eda34ec/profile"
+              >
+                FrostyBear
+              </a>
             </span>
           </div>
           <div
