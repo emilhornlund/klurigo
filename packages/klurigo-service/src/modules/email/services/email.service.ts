@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { MailerService } from '@nestjs-modules/mailer'
-import { ISendMailOptions } from '@nestjs-modules/mailer/dist/interfaces/send-mail-options.interface'
+import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer'
 
 import { EnvironmentVariables } from '../../../app/config'
 
@@ -75,13 +74,13 @@ ${verificationLink}
 
 This link will expire in 3 days. If you didn’t create this account, simply ignore this email.
 
-Cheers,  
+Cheers,
 The Klurigo Team`
       : `Hi,
 
 Thank you for signing up for Klurigo. We’re thrilled to have you on board!
 
-Cheers,  
+Cheers,
 The Klurigo Team`
 
     const html = verificationLink
@@ -131,7 +130,7 @@ This link will expire in 3 days. If you did not request an email change, you can
 
 Thanks for helping us keep your account secure!
 
-Cheers,  
+Cheers,
 The Klurigo Team`
 
     const html = `<p>Hi,</p>
