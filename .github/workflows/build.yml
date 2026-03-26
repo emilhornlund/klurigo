@@ -93,7 +93,7 @@ jobs:
           path: packages/klurigo-service/dist/**/*.map
 
       - name: Upload coverage (common)
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./packages/common/coverage/lcov.info
           flags: common
@@ -103,7 +103,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage (klurigo-web)
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./packages/klurigo-web/coverage/lcov.info
           flags: klurigo-web
@@ -113,7 +113,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage (klurigo-service)
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./packages/klurigo-service/coverage/lcov.info
           flags: klurigo-service
