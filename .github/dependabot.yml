@@ -5,25 +5,29 @@ updates:
       - "/"
     schedule:
       interval: "weekly"
+
     groups:
-      all-dependencies:
+      non-major-dependencies:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
     ignore:
       - dependency-name: "@klurigo/common"
-      - dependency-name: "@types/node"
-        update-types: [ "version-update:semver-major" ]
-      - dependency-name: "@eslint/js"
-        update-types: [ "version-update:semver-major" ]
-      - dependency-name: "eslint"
-        update-types: [ "version-update:semver-major" ]
+
     versioning-strategy: "increase"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+
     groups:
-      all-actions:
+      non-major-actions:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
