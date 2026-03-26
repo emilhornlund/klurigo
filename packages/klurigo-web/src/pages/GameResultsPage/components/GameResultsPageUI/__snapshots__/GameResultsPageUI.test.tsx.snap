@@ -873,7 +873,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                       <div
                         class="value"
                       >
-                        FrostyBear
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div
@@ -1899,7 +1904,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                       <div
                         class="value"
                       >
-                        FrostyBear
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div
@@ -2937,7 +2947,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div
@@ -5093,7 +5108,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div
@@ -6115,7 +6135,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div
@@ -8015,7 +8040,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       <div
                         class="value"
                       >
-                        Hosty
+                        <a
+                          data-discover="true"
+                          href="/users/fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a/profile"
+                        >
+                          FrostyBear
+                        </a>
                       </div>
                     </div>
                     <div

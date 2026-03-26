@@ -36,6 +36,6 @@ import { GameResultService } from './services'
     GameResultService,
     Logger,
   ],
-  exports: [GameResultService],
+  exports: [GameResultRepository, GameResultService],
 })
 export class GameResultModule {}

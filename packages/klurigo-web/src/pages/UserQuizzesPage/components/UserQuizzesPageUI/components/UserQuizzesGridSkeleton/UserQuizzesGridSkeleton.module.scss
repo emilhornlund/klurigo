@@ -1,0 +1,95 @@
+@use '../../../../../../styles/colors';
+@use '../../../../../../styles/helpers';
+@use '../../../../../../styles/variables';
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: colors.$white-1-15;
+  cursor: default;
+
+  @include helpers.mobile {
+    width: 100%;
+    border-radius: variables.$mobile-control-normal-border-radius;
+  }
+
+  @include helpers.tablet {
+    width: 220px;
+    border-radius: variables.$tablet-control-normal-border-radius;
+  }
+
+  @include helpers.desktop {
+    width: 240px;
+    border-radius: variables.$desktop-control-normal-border-radius;
+  }
+}
+
+.skeletonCover {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  background-color: colors.$white-1-70;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonBody {
+  display: flex;
+  flex-direction: column;
+
+  @include helpers.mobile {
+    gap: 0.3rem;
+    padding: variables.$mobile-layout-gutter;
+  }
+  @include helpers.tablet {
+    gap: 0.4rem;
+    padding: variables.$tablet-layout-gutter;
+  }
+  @include helpers.desktop {
+    gap: 0.5rem;
+    padding: variables.$desktop-layout-gutter;
+  }
+}
+
+.skeletonLine {
+  background-color: colors.$white-1-70;
+  animation: shimmer 1.5s ease-in-out infinite;
+
+  @include helpers.mobile {
+    height: helpers.pxToRem(12px);
+    border-radius: helpers.pxToRem(2px);
+  }
+  @include helpers.tablet {
+    height: helpers.pxToRem(13px);
+    border-radius: helpers.pxToRem(3px);
+  }
+  @include helpers.desktop {
+    height: helpers.pxToRem(14px);
+    border-radius: helpers.pxToRem(4px);
+  }
+
+  &:first-child {
+    width: 80%;
+  }
+
+  &:nth-child(2) {
+    width: 50%;
+    height: 0.75rem;
+  }
+
+  &:nth-child(3) {
+    width: 60%;
+    height: 0.75rem;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}

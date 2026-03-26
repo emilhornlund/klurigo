@@ -59,6 +59,20 @@ export class QuizRepository extends BaseRepository<Quiz> {
   }
 
   /**
+   * Counts public quizzes owned by the given user.
+   *
+   * @param ownerId - The user identifier stored in the quiz owner field.
+   *
+   * @returns The number of public quizzes authored by the user.
+   */
+  public async countPublicQuizzesByOwnerId(ownerId: string): Promise<number> {
+    return this.count({
+      owner: { _id: ownerId },
+      visibility: QuizVisibility.Public,
+    })
+  }
+
+  /**
    * Finds quizzes using filter, sorting, pagination.
    *
    * @param filter - Filter criteria for matching quizzes.

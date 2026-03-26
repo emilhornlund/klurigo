@@ -1,3 +1,5 @@
+import type { DiscoveryQuizCardDto, QuizResponseDto } from '@klurigo/common'
+
 export type DifficultyLabel = 'Easy' | 'Medium' | 'Hard' | 'Extreme'
 
 /**
@@ -27,4 +29,45 @@ export function toDifficultyLabel(
   if (d < 0.5) return 'Medium'
   if (d < 0.75) return 'Hard'
   return 'Extreme'
+}
+
+/**
+ * Maps a backend quiz response into the discovery card shape used by
+ * `QuizDiscoveryCard`.
+ *
+ * This keeps page-level code independent from backend response details while
+ * preserving the existing API contract unchanged.
+ *
+ * @param quiz - Backend quiz response item to adapt.
+ * @returns The quiz data in discovery card format.
+ */
+export function toDiscoveryQuizCard(
+  quiz: QuizResponseDto,
+): DiscoveryQuizCardDto {
+  return {
+    id: quiz.id,
+    title: quiz.title,
+    description: quiz.description,
+    imageCoverURL: quiz.imageCoverURL,
+    category: quiz.category,
+    languageCode: quiz.languageCode,
+    mode: quiz.mode,
+    numberOfQuestions: quiz.numberOfQuestions,
+    author: quiz.author,
+    gameplaySummary: quiz.gameplaySummary,
+    ratingSummary: quiz.ratingSummary,
+    created: quiz.created,
+  }
+}
+
+/**
+ * Maps backend quiz response items into discovery card data for list rendering.
+ *
+ * @param quizzes - Backend quiz response items to adapt.
+ * @returns Discovery card data ready for `QuizDiscoveryCard`.
+ */
+export function toDiscoveryQuizCards(
+  quizzes: readonly QuizResponseDto[],
+): DiscoveryQuizCardDto[] {
+  return quizzes.map(toDiscoveryQuizCard)
 }

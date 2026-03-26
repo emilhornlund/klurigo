@@ -2,13 +2,18 @@ import { GameMode, type GameResultDto, QuestionType } from '@klurigo/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import GameResultsPageUI from './GameResultsPageUI'
 
 const CREATED_DATE = new Date('2025-01-01T12:00:00.000Z')
 
 const createOrUpdateQuizRatingMock = vi.fn()
+
+const host = {
+  id: 'fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a',
+  nickname: 'FrostyBear',
+}
 
 vi.mock('../../../../api', () => ({
   useKlurigoServiceClient: () => ({
@@ -39,7 +44,7 @@ describe('GameResultsPageUI', () => {
             mode: GameMode.Classic,
             name: 'Classic Quiz Debug',
             quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
-            host: { id: uuidv4(), nickname: 'FrostyBear' },
+            host,
             numberOfPlayers: 3,
             numberOfQuestions: 4,
             playerMetrics: [
@@ -131,7 +136,7 @@ describe('GameResultsPageUI', () => {
             mode: GameMode.ZeroToOneHundred,
             name: '0-100 Quiz Debug',
             quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: false },
-            host: { id: uuidv4(), nickname: 'FrostyBear' },
+            host,
             numberOfPlayers: 3,
             numberOfQuestions: 4,
             playerMetrics: [
@@ -212,7 +217,7 @@ describe('GameResultsPageUI', () => {
     mode: GameMode.Classic,
     name: 'Classic Minimal',
     quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
-    host: { id: uuidv4(), nickname: 'Hosty' },
+    host,
     numberOfPlayers: 2,
     numberOfQuestions: 2,
     playerMetrics: [
@@ -266,7 +271,7 @@ describe('GameResultsPageUI', () => {
     mode: GameMode.ZeroToOneHundred,
     name: '0-100 Minimal',
     quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: false },
-    host: { id: uuidv4(), nickname: 'Hosty' },
+    host,
     numberOfPlayers: 2,
     numberOfQuestions: 2,
     playerMetrics: [

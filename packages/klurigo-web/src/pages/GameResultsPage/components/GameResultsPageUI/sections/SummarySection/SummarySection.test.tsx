@@ -1,7 +1,8 @@
 import { GameMode, type GameResultDto } from '@klurigo/common'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import SummarySection from './SummarySection'
 
@@ -156,6 +157,7 @@ afterEach(() => {
 })
 
 const CREATED_DATE = new Date('2025-01-01T12:00:00.000Z')
+const HOST = { id: 'host-1', nickname: 'FrostyBear' }
 
 describe('SummarySection', () => {
   it('renders Classic summary, uses getCorrectPercentage, shows fastest and longest streak', () => {
@@ -184,21 +186,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     const { container } = render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
-        numberOfPlayers={2}
-        numberOfQuestions={2}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={123}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          numberOfPlayers={2}
+          numberOfQuestions={2}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={123}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     expect(h.getCorrectPercentage).toHaveBeenCalledTimes(2)
@@ -256,21 +260,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     const { container } = render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.ZeroToOneHundred}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
-        numberOfPlayers={2}
-        numberOfQuestions={2}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={45}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.ZeroToOneHundred}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          numberOfPlayers={2}
+          numberOfQuestions={2}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={45}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     expect(h.getAveragePrecision).toHaveBeenCalledTimes(2)
@@ -304,21 +310,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     const { container } = render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
-        numberOfPlayers={2}
-        numberOfQuestions={2}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={0}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          numberOfPlayers={2}
+          numberOfQuestions={2}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={0}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     expect(screen.queryByText('Fastest Overall Player')).toBeNull()
@@ -347,21 +355,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
@@ -397,21 +407,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
@@ -467,21 +479,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     // Button is disabled, but we can still directly validate the guarded handler
@@ -521,21 +535,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
@@ -579,21 +595,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={undefined}
-        comment=""
-        onRatingChange={vi.fn()}
-        onCommentChange={vi.fn()}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={undefined}
+          comment=""
+          onRatingChange={vi.fn()}
+          onCommentChange={vi.fn()}
+        />
+      </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
@@ -628,21 +646,23 @@ describe('SummarySection', () => {
     ] as unknown as GameResultDto['questionMetrics']
 
     render(
-      <SummarySection
-        hostNickname="FrostyBear"
-        mode={GameMode.Classic}
-        quiz={{ id: 'quizId', canRateQuiz: true, canHostLiveGame: false }}
-        numberOfPlayers={1}
-        numberOfQuestions={1}
-        playerMetrics={playerMetrics}
-        questionMetrics={questionMetrics}
-        duration={10}
-        created={CREATED_DATE}
-        stars={4}
-        comment="Nice quiz"
-        onRatingChange={onRatingChange}
-        onCommentChange={onCommentChange}
-      />,
+      <MemoryRouter>
+        <SummarySection
+          host={HOST}
+          mode={GameMode.Classic}
+          quiz={{ id: 'quizId', canRateQuiz: true, canHostLiveGame: false }}
+          numberOfPlayers={1}
+          numberOfQuestions={1}
+          playerMetrics={playerMetrics}
+          questionMetrics={questionMetrics}
+          duration={10}
+          created={CREATED_DATE}
+          stars={4}
+          comment="Nice quiz"
+          onRatingChange={onRatingChange}
+          onCommentChange={onCommentChange}
+        />
+      </MemoryRouter>,
     )
 
     expect(screen.getByTestId('rating-card')).toBeInTheDocument()

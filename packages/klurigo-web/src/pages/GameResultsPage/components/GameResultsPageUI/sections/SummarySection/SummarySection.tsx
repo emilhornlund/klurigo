@@ -13,11 +13,12 @@ import {
   GameMode,
   type GameResultClassicModeQuestionMetricDto,
   type GameResultDto,
+  type GameResultParticipantDto,
   type GameResultQuizDto,
   type GameResultZeroToOneHundredModeQuestionMetricDto,
 } from '@klurigo/common'
 import { type FC, type ReactElement, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../../../../../api'
 import {
@@ -88,7 +89,7 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
 export type SummarySectionProps = {
   mode: GameMode
   quiz: GameResultQuizDto
-  hostNickname: string
+  host: GameResultParticipantDto
   numberOfPlayers: number
   numberOfQuestions: number
   playerMetrics: GameResultDto['playerMetrics']
@@ -100,7 +101,7 @@ export type SummarySectionProps = {
 const SummarySection: FC<SummarySectionProps> = ({
   mode,
   quiz,
-  hostNickname,
+  host,
   numberOfPlayers,
   numberOfQuestions,
   playerMetrics,
@@ -277,7 +278,11 @@ const SummarySection: FC<SummarySectionProps> = ({
 
           <div className={styles.column}>
             <DetailsItem title="Host" icon={faUserTie}>
-              {hostNickname}
+              {host.nickname ? (
+                <Link to={`/users/${host.id}/profile`}>{host.nickname}</Link>
+              ) : (
+                'N/A'
+              )}
             </DetailsItem>
 
             <DetailsItem title="Date" icon={faCalendar}>

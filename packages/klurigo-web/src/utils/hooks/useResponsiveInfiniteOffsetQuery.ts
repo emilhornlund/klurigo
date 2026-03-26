@@ -12,6 +12,8 @@ import {
 export type UseResponsiveInfiniteOffsetQueryOptions<TItem, TPage> = {
   /** The React Query cache key for the paginated query. */
   readonly queryKey: QueryKey
+  /** The offset to use for the first page request. */
+  readonly initialOffset?: number
   /** Fetches a single page using limit and offset pagination. */
   readonly queryFn: (params: {
     /** The maximum number of items to fetch. */
@@ -56,6 +58,7 @@ export type UseResponsiveInfiniteOffsetQueryResult<TItem, TPage> = {
  */
 export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
   queryKey,
+  initialOffset = 0,
   queryFn,
   pageSize,
   getResults,
@@ -81,8 +84,8 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [...queryKey, itemsPerPage],
-    initialPageParam: 0,
+    queryKey: [...queryKey, itemsPerPage, initialOffset],
+    initialPageParam: initialOffset,
     enabled: enabled && itemsPerPage !== undefined,
     staleTime: 60_000,
     refetchOnMount: false,
@@ -93,7 +96,8 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
         offset: pageParam,
       }),
     getNextPageParam: (lastPage, allPages) => {
-      const loadedCount = allPages.flatMap((page) => getResults(page)).length
+      const loadedCount =
+        initialOffset + allPages.flatMap((page) => getResults(page)).length
       return loadedCount < getTotal(lastPage) ? loadedCount : undefined
     },
   })
