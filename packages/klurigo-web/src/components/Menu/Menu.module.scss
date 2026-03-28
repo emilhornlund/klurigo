@@ -35,6 +35,7 @@
       background-color: colors.$white;
       column-gap: helpers.pxToRem(16px);
       padding: helpers.pxToRem(8px) helpers.pxToRem(16px);
+      white-space: nowrap;
 
       @include helpers.fontSize(22px);
 
