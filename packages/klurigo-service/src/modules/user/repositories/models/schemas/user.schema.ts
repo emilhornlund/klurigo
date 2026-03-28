@@ -42,13 +42,24 @@ export class User implements SharedUserBase {
   /**
    * The user’s unique email address.
    */
-  @Prop({ type: String, unique: true, required: true })
+  @Prop({
+    type: String,
+    unique: true,
+    required: true,
+    lowercase: true,
+    trim: true,
+  })
   email: string
 
   /**
    * The user’s unverified email address (optional).
    */
-  @Prop({ type: String, required: false })
+  @Prop({
+    type: String,
+    required: false,
+    lowercase: true,
+    trim: true,
+  })
   unverifiedEmail?: string
 
   /**

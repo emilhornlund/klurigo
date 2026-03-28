@@ -188,6 +188,64 @@ describe('UserProfileController (e2e)', () => {
         })
     })
 
+    it('should not set the local user’s unverified email when the new email only differs by casing', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+
+      return supertest(app.getHttpServer())
+        .put('/api/profile/user')
+        .set({ Authorization: `Bearer ${accessToken}` })
+        .send({
+          authProvider: AuthProvider.Local,
+          email: MOCK_PRIMARY_USER_EMAIL.toUpperCase(),
+          givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+          familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+          defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            id: user._id,
+            email: MOCK_PRIMARY_USER_EMAIL,
+            unverifiedEmail: undefined,
+            givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+            familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+            defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+            authProvider: AuthProvider.Local,
+            created: expect.any(String),
+            updated: expect.any(String),
+          })
+        })
+    })
+
+    it('should normalize the local user’s unverified email when the new email changes', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+
+      return supertest(app.getHttpServer())
+        .put('/api/profile/user')
+        .set({ Authorization: `Bearer ${accessToken}` })
+        .send({
+          authProvider: AuthProvider.Local,
+          email: MOCK_SECONDARY_USER_EMAIL.toUpperCase(),
+          givenName: MOCK_SECONDARY_USER_GIVEN_NAME,
+          familyName: MOCK_SECONDARY_USER_FAMILY_NAME,
+          defaultNickname: MOCK_SECONDARY_USER_DEFAULT_NICKNAME,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            id: user._id,
+            email: MOCK_PRIMARY_USER_EMAIL,
+            unverifiedEmail: MOCK_SECONDARY_USER_EMAIL,
+            givenName: MOCK_SECONDARY_USER_GIVEN_NAME,
+            familyName: MOCK_SECONDARY_USER_FAMILY_NAME,
+            defaultNickname: MOCK_SECONDARY_USER_DEFAULT_NICKNAME,
+            authProvider: AuthProvider.Local,
+            created: expect.any(String),
+            updated: expect.any(String),
+          })
+        })
+    })
+
     it('should unset the local user’s unverified email when the new email equals the old already verified email', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(
         app,

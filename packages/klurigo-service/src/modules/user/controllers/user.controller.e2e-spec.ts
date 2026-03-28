@@ -142,5 +142,58 @@ describe('UserController (e2e)', () => {
           })
         })
     })
+
+    it('should return 409 conflict when the email already exists with different casing', async () => {
+      await userRepository.createLocalUser({
+        email: MOCK_PRIMARY_USER_EMAIL,
+        hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
+        givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+        familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+        defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+      })
+
+      return supertest(app.getHttpServer())
+        .post(`/api/users`)
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL.toUpperCase(),
+          password: MOCK_PRIMARY_PASSWORD,
+          givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+          familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+          defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+        })
+        .expect(409)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message: `Email '${MOCK_PRIMARY_USER_EMAIL.toUpperCase()}' is not unique`,
+            status: 409,
+            timestamp: expect.any(String),
+          })
+        })
+    })
+
+    it('should normalize the email when creating a new user', async () => {
+      return supertest(app.getHttpServer())
+        .post(`/api/users`)
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL.toUpperCase(),
+          password: MOCK_PRIMARY_PASSWORD,
+          givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+          familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+          defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+        })
+        .expect(201)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            id: expect.any(String),
+            email: MOCK_PRIMARY_USER_EMAIL,
+            unverifiedEmail: MOCK_PRIMARY_USER_EMAIL,
+            givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+            familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+            defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+            created: expect.any(String),
+            updated: expect.any(String),
+          })
+        })
+    })
   })
 })

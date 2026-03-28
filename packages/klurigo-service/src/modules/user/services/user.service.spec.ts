@@ -169,10 +169,11 @@ describe('UserService', () => {
     }
 
     it('should create user, send welcome email, and return response DTO', async () => {
+      const expectedEmail = createUserRequest.email
       const createdUser: any = {
         _id: 'user-new',
-        email: createUserRequest.email,
-        unverifiedEmail: createUserRequest.email,
+        email: expectedEmail,
+        unverifiedEmail: expectedEmail,
         givenName: createUserRequest.givenName,
         familyName: createUserRequest.familyName,
         defaultNickname: createUserRequest.defaultNickname,
@@ -191,13 +192,18 @@ describe('UserService', () => {
       expect(userRepository.verifyUniqueEmail).toHaveBeenCalledWith(
         createUserRequest.email,
       )
-      expect(userRepository.createLocalUser).toHaveBeenCalled()
+      expect(userRepository.createLocalUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: expectedEmail,
+          unverifiedEmail: expectedEmail,
+        }),
+      )
       expect(tokenService.signVerifyEmailToken).toHaveBeenCalledWith(
         'user-new',
-        createUserRequest.email,
+        expectedEmail,
       )
       expect(emailService.sendWelcomeEmail).toHaveBeenCalledWith(
-        createUserRequest.email,
+        expectedEmail,
         'https://app.example.com/auth/verify?token=verification-token',
       )
       expect(result).toEqual({
@@ -212,6 +218,41 @@ describe('UserService', () => {
       })
       expect(logger.log).toHaveBeenCalledWith(
         expect.stringContaining('Created a new user'),
+      )
+    })
+
+    it('should normalize the email before creating a user', async () => {
+      const mixedCaseRequest: CreateUserRequestDto = {
+        ...createUserRequest,
+        email: '  NewUser@Example.COM  ',
+      }
+
+      userRepository.verifyUniqueEmail.mockResolvedValue(undefined)
+      userRepository.createLocalUser.mockResolvedValue({
+        _id: 'user-new',
+        email: 'newuser@example.com',
+        unverifiedEmail: 'newuser@example.com',
+        givenName: mixedCaseRequest.givenName,
+        familyName: mixedCaseRequest.familyName,
+        defaultNickname: mixedCaseRequest.defaultNickname,
+        createdAt: new Date('2024-01-01'),
+        updatedAt: new Date('2024-01-01'),
+      })
+      tokenService.signVerifyEmailToken.mockResolvedValue('verification-token')
+      configService.get.mockReturnValue('https://app.example.com')
+      emailService.sendWelcomeEmail.mockResolvedValue(undefined)
+
+      await service.createUser(mixedCaseRequest)
+
+      expect(userRepository.createLocalUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: 'newuser@example.com',
+          unverifiedEmail: 'newuser@example.com',
+        }),
+      )
+      expect(tokenService.signVerifyEmailToken).toHaveBeenCalledWith(
+        'user-new',
+        'newuser@example.com',
       )
     })
 
@@ -287,7 +328,13 @@ describe('UserService', () => {
 
       expect(
         userRepository.findAndUpdateGoogleUserByGoogleId,
-      ).toHaveBeenCalled()
+      ).toHaveBeenCalledWith(
+        googleProfile.id,
+        expect.objectContaining({
+          email: googleProfile.email,
+          unverifiedEmail: undefined,
+        }),
+      )
       expect(result).toEqual(existingGoogleUser)
       expect(emailService.sendWelcomeEmail).not.toHaveBeenCalled()
     })
@@ -319,6 +366,48 @@ describe('UserService', () => {
         googleProfile.email,
       )
       expect(result).toEqual(newGoogleUser)
+    })
+
+    it('should normalize Google profile emails before persisting them', async () => {
+      const mixedCaseProfile: GoogleProfileDto = {
+        ...googleProfile,
+        email: '  GoogleUser@Example.COM  ',
+        verified_email: false,
+      }
+
+      userRepository.findAndUpdateGoogleUserByGoogleId.mockResolvedValue(null)
+      userRepository.findUserByEmail.mockResolvedValue(null)
+      userRepository.createGoogleUser.mockResolvedValue({
+        _id: 'user-new-google',
+        authProvider: AuthProvider.Google,
+        googleUserId: mixedCaseProfile.id,
+        email: 'googleuser@example.com',
+        unverifiedEmail: 'googleuser@example.com',
+        givenName: mixedCaseProfile.given_name,
+        familyName: mixedCaseProfile.family_name,
+        defaultNickname: 'generated_nickname',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      emailService.sendWelcomeEmail.mockResolvedValue(undefined)
+
+      await service.verifyOrCreateGoogleUser(mixedCaseProfile)
+
+      expect(
+        userRepository.findAndUpdateGoogleUserByGoogleId,
+      ).toHaveBeenCalledWith(
+        mixedCaseProfile.id,
+        expect.objectContaining({
+          email: 'googleuser@example.com',
+          unverifiedEmail: 'googleuser@example.com',
+        }),
+      )
+      expect(userRepository.createGoogleUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: 'googleuser@example.com',
+          unverifiedEmail: 'googleuser@example.com',
+        }),
+      )
     })
 
     it('should throw ConflictException when email exists on different user', async () => {
@@ -416,6 +505,7 @@ describe('UserService', () => {
         familyName: 'Name',
         defaultNickname: 'oldnick',
         authProvider: AuthProvider.Local,
+        hashedPassword: 'some-hash',
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -427,6 +517,7 @@ describe('UserService', () => {
         givenName: 'New',
         familyName: 'Name',
         defaultNickname: 'newnick',
+        hashedPassword: 'some-hash',
       }
 
       const updateRequest: UpdateLocalUserProfileRequestDto = {
@@ -450,7 +541,7 @@ describe('UserService', () => {
           givenName: 'New',
           familyName: 'Name',
           defaultNickname: 'newnick',
-          email: 'new@example.com',
+          unverifiedEmail: 'new@example.com',
         }),
       )
       expect(result.email).toBe('new@example.com')
@@ -532,6 +623,39 @@ describe('UserService', () => {
         'https://app.example.com/auth/verify?token=verify-token',
       )
     })
+
+    it('should treat casing-only email updates as unchanged', async () => {
+      const originalUser: any = {
+        _id: 'user-123',
+        email: 'user@example.com',
+        unverifiedEmail: undefined,
+        givenName: 'John',
+        familyName: 'Doe',
+        defaultNickname: 'johndoe',
+        authProvider: AuthProvider.Local,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        hashedPassword: 'some-hash',
+      }
+
+      userRepository.findUserByIdOrThrow.mockResolvedValue(originalUser)
+      userRepository.findUserByIdAndUpdateOrThrow.mockResolvedValue(
+        originalUser,
+      )
+
+      await service.updateUser('user-123', {
+        authProvider: AuthProvider.Local,
+        email: '  USER@EXAMPLE.COM  ',
+      })
+
+      expect(userRepository.findUserByIdAndUpdateOrThrow).toHaveBeenCalledWith(
+        'user-123',
+        expect.not.objectContaining({
+          unverifiedEmail: expect.anything(),
+        }),
+      )
+      expect(emailService.sendVerificationEmail).not.toHaveBeenCalled()
+    })
   })
 
   describe('verifyEmail', () => {
@@ -539,7 +663,7 @@ describe('UserService', () => {
       const mockUser: any = {
         _id: 'user-123',
         email: 'verified@example.com',
-        unverifiedEmail: 'verify@example.com',
+        unverifiedEmail: 'Verify@Example.com',
         authProvider: AuthProvider.Local,
         hashedPassword: 'some-hash',
       }
@@ -550,7 +674,7 @@ describe('UserService', () => {
         unverifiedEmail: undefined,
       })
 
-      await service.verifyEmail('user-123', 'verify@example.com')
+      await service.verifyEmail('user-123', '  VERIFY@EXAMPLE.COM  ')
 
       expect(userRepository.findUserByIdAndUpdateOrThrow).toHaveBeenCalledWith(
         'user-123',
