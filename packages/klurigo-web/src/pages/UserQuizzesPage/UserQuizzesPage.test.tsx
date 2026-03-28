@@ -101,8 +101,8 @@ describe('UserQuizzesPage', () => {
     expect(screen.getByTestId('profile-quiz-grid')).toBeInTheDocument()
 
     expect(h.getUserPublicQuizzesMock).toHaveBeenCalledWith('user-1', {
-      sort: 'title',
-      order: 'asc',
+      sort: 'updated',
+      order: 'desc',
       limit: 10,
       offset: 0,
     })
@@ -135,8 +135,8 @@ describe('UserQuizzesPage', () => {
     })
 
     expect(h.getUserPublicQuizzesMock).toHaveBeenLastCalledWith('user-1', {
-      sort: 'title',
-      order: 'asc',
+      sort: 'updated',
+      order: 'desc',
       limit: 10,
       offset: 2,
     })
@@ -228,8 +228,8 @@ describe('UserQuizzesPage', () => {
     })
 
     expect(h.getUserPublicQuizzesMock).toHaveBeenCalledWith('user-1', {
-      sort: 'title',
-      order: 'asc',
+      sort: 'updated',
+      order: 'desc',
       limit: 20,
       offset: 0,
     })
