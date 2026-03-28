@@ -7,7 +7,6 @@
     "tools/*"
   ],
   "scripts": {
-    "prepare": "husky",
     "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\"",
     "build": "concurrently \"yarn workspace @klurigo/klurigo-service build\" \"yarn workspace @klurigo/klurigo-web build\"",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
@@ -31,7 +30,6 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.4.0",
-    "husky": "^9.1.7",
     "prettier": "^3.8.1",
     "rimraf": "^6.1.3",
     "typescript": "^5.9.3",

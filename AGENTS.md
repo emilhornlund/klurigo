@@ -229,7 +229,6 @@ Naming must reflect **domain intent**, not implementation details.
 - **Commits**: Each logical change should be separate, focused, and reversible
 - **Branching**: Feature branches from main, squash merges
 - **CI**: Assumes root-level scripts work correctly
-- **Pre-commit**: Husky hooks run linting and tests
 - **Security**: Never commit secrets, API keys, or sensitive configuration
 
 Breaking any of the rules above may result in rejected changes or failing CI.

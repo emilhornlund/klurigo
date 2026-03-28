@@ -18,13 +18,13 @@ Before you get started, make sure you have the following installed on your machi
 - **Node.js** v24 (Active LTS) or higher
   We recommend using [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) to manage your Node versions.
 
-- **Yarn** v1.22.22 or higher  
+- **Yarn** v1.22.22 or higher
   Install via `npm install --global yarn` if you don’t already have it.
 
-- **Git**  
+- **Git**
   To clone and manage the repository.
 
-- **Docker & Docker Compose** (optional)  
+- **Docker & Docker Compose** (optional)
   If you prefer to run your database and cache in containers.
 
 ## Monorepo Structure
@@ -51,7 +51,6 @@ The root `package.json` contains orchestration scripts for development, building
 - `yarn clean` – Clean all packages.
 - `yarn lint` / `yarn lint:fix` – Run linting across all packages.
 - `yarn test` – Run all tests concurrently.
-- `yarn prepare` – Initialize `husky` (if configured).
 
 ## Packages
 
