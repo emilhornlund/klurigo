@@ -17,6 +17,28 @@ import { GoogleUser, LocalUser, User } from './models'
  */
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
+  private static normalizeEmail(email: string): string {
+    return email.trim().toLowerCase()
+  }
+
+  private static normalizeEmailFields<T extends Partial<User>>(details: T): T {
+    const normalizedDetails = { ...details }
+
+    if (typeof normalizedDetails.email === 'string') {
+      normalizedDetails.email = UserRepository.normalizeEmail(
+        normalizedDetails.email,
+      ) as T['email']
+    }
+
+    if (typeof normalizedDetails.unverifiedEmail === 'string') {
+      normalizedDetails.unverifiedEmail = UserRepository.normalizeEmail(
+        normalizedDetails.unverifiedEmail,
+      ) as T['unverifiedEmail']
+    }
+
+    return normalizedDetails
+  }
+
   /**
    * Constructs the UserRepository.
    *
@@ -61,7 +83,7 @@ export class UserRepository extends BaseRepository<User> {
    * @returns The matching User document, or null if none exists.
    */
   public async findUserByEmail(email: string): Promise<User | null> {
-    return this.findOne({ email })
+    return this.findOne({ email: UserRepository.normalizeEmail(email) })
   }
 
   /**
@@ -86,7 +108,9 @@ export class UserRepository extends BaseRepository<User> {
    * @returns The newly created User document.
    */
   public async createUser<T extends User>(details: Partial<T>): Promise<T> {
-    const createdUser = await this.create(details)
+    const createdUser = await this.create(
+      UserRepository.normalizeEmailFields(details),
+    )
     return createdUser as T
   }
 
@@ -139,6 +163,8 @@ export class UserRepository extends BaseRepository<User> {
     id: string,
     details: Partial<T>,
   ): Promise<T> {
+    const normalizedDetails = UserRepository.normalizeEmailFields(details)
+
     // Check if user exists first
     const existingUser = await this.findById(id)
     if (!existingUser) {
@@ -146,11 +172,11 @@ export class UserRepository extends BaseRepository<User> {
     }
 
     if (
-      details.authProvider &&
-      details.authProvider !== existingUser.authProvider
+      normalizedDetails.authProvider &&
+      normalizedDetails.authProvider !== existingUser.authProvider
     ) {
       const updatedUser = await this.userModel
-        .findByIdAndUpdate(id, details, {
+        .findByIdAndUpdate(id, normalizedDetails, {
           returnDocument: 'after',
           overwriteDiscriminatorKey: true,
           runValidators: true,
@@ -160,7 +186,7 @@ export class UserRepository extends BaseRepository<User> {
       return updatedUser as T
     }
 
-    const updatedUser = await this.update(id, details)
+    const updatedUser = await this.update(id, normalizedDetails)
     if (!updatedUser) {
       throw new UserNotFoundException(id)
     }
@@ -187,7 +213,9 @@ export class UserRepository extends BaseRepository<User> {
       return null
     }
 
-    const updatedUser = await user.set(details).save()
+    const updatedUser = await user
+      .set(UserRepository.normalizeEmailFields(details))
+      .save()
     if (isGoogleUser(updatedUser)) {
       return updatedUser
     }

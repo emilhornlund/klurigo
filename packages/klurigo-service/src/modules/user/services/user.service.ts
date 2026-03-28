@@ -33,6 +33,10 @@ export class UserService {
   // Logger instance for recording service operations.
   private readonly logger: Logger = new Logger(UserService.name)
 
+  private static normalizeEmail(email: string): string {
+    return email.trim().toLowerCase()
+  }
+
   /**
    * Initializes the UserService.
    *
@@ -100,6 +104,7 @@ export class UserService {
   ): Promise<CreateUserResponseDto> {
     const { email, password, givenName, familyName, defaultNickname } =
       requestDto
+    const normalizedEmail = UserService.normalizeEmail(email)
 
     this.logger.debug(`Creating new user with email: '${email}'.`)
 
@@ -113,8 +118,8 @@ export class UserService {
       'email' | 'givenName' | 'familyName' | 'defaultNickname'
     > &
       Pick<LocalUser, 'unverifiedEmail' | 'hashedPassword'> = {
-      email,
-      unverifiedEmail: email,
+      email: normalizedEmail,
+      unverifiedEmail: normalizedEmail,
       hashedPassword,
       givenName,
       familyName,
@@ -129,9 +134,12 @@ export class UserService {
     try {
       const verificationLink = await this.generateVerifyEmailLink(
         createdUser._id,
-        email,
+        normalizedEmail,
       )
-      await this.emailService.sendWelcomeEmail(email, verificationLink)
+      await this.emailService.sendWelcomeEmail(
+        normalizedEmail,
+        verificationLink,
+      )
     } catch (error) {
       const { message, stack } = error as Error
       this.logger.error(`Failed to send welcome email: '${message}'.`, stack)
@@ -149,17 +157,21 @@ export class UserService {
   public async verifyOrCreateGoogleUser(
     profile: GoogleProfileDto,
   ): Promise<GoogleUser> {
+    const normalizedEmail = UserService.normalizeEmail(profile.email)
+    const normalizedUnverifiedEmail = profile.verified_email
+      ? undefined
+      : normalizedEmail
+
     const existingUser =
       await this.userRepository.findAndUpdateGoogleUserByGoogleId(profile.id, {
-        email: profile.email,
-        unverifiedEmail: profile.verified_email ? undefined : profile.email,
+        email: normalizedEmail,
+        unverifiedEmail: normalizedUnverifiedEmail,
         givenName: profile.given_name,
         familyName: profile.family_name,
       })
 
-    const conflictingUser = await this.userRepository.findUserByEmail(
-      profile.email,
-    )
+    const conflictingUser =
+      await this.userRepository.findUserByEmail(normalizedEmail)
 
     if (
       conflictingUser &&
@@ -177,8 +189,8 @@ export class UserService {
       '_id' | 'authProvider' | 'createdAt' | 'updatedAt'
     > = {
       googleUserId: profile.id,
-      email: profile.email,
-      unverifiedEmail: profile.verified_email ? undefined : profile.email,
+      email: normalizedEmail,
+      unverifiedEmail: normalizedUnverifiedEmail,
       givenName: profile.given_name,
       familyName: profile.family_name,
       defaultNickname: generateNickname(),
@@ -274,9 +286,14 @@ export class UserService {
   public async verifyEmail(userId: string, email: string): Promise<void> {
     this.logger.log(`Verifying email '${email}' for user '${userId}'.`)
 
+    const normalizedEmail = UserService.normalizeEmail(email)
     const user = await this.userRepository.findUserByIdOrThrow(userId)
     if (isLocalUser(user)) {
-      if (user.unverifiedEmail === email) {
+      const normalizedUnverifiedEmail = user.unverifiedEmail
+        ? UserService.normalizeEmail(user.unverifiedEmail)
+        : undefined
+
+      if (normalizedUnverifiedEmail === normalizedEmail) {
         await this.userRepository.findUserByIdAndUpdateOrThrow(userId, {
           unverifiedEmail: undefined,
         } as LocalUser)
@@ -319,22 +336,29 @@ export class UserService {
    * @returns void once the email has been sent or deemed unnecessary.
    */
   private async sendVerificationEmail(user: User): Promise<void> {
+    const normalizedEmail = user.email
+      ? UserService.normalizeEmail(user.email)
+      : undefined
+    const normalizedUnverifiedEmail = user.unverifiedEmail
+      ? UserService.normalizeEmail(user.unverifiedEmail)
+      : undefined
+
     if (
       isLocalUser(user) &&
-      user.email &&
-      user.unverifiedEmail &&
-      user.email !== user.unverifiedEmail
+      normalizedEmail &&
+      normalizedUnverifiedEmail &&
+      normalizedEmail !== normalizedUnverifiedEmail
     ) {
       try {
         const verificationLink = await this.generateVerifyEmailLink(
           user._id,
-          user.unverifiedEmail,
+          normalizedUnverifiedEmail,
         )
 
         this.logger.log(`Sending verification email for user '${user._id}'.`)
 
         await this.emailService.sendVerificationEmail(
-          user.unverifiedEmail,
+          normalizedUnverifiedEmail,
           verificationLink,
         )
       } catch (error) {
@@ -489,21 +513,29 @@ export class UserService {
       return {}
     }
 
+    const normalizedEmail = UserService.normalizeEmail(newEmail)
+    const normalizedOriginalEmail = UserService.normalizeEmail(
+      originalUser.email,
+    )
+    const normalizedOriginalUnverifiedEmail = originalUser.unverifiedEmail
+      ? UserService.normalizeEmail(originalUser.unverifiedEmail)
+      : undefined
+
     if (isLocalUser(originalUser)) {
-      if (newEmail !== originalUser.email) {
-        return { unverifiedEmail: newEmail }
+      if (normalizedEmail !== normalizedOriginalEmail) {
+        return { unverifiedEmail: normalizedEmail }
       }
-      if (originalUser.email === originalUser.unverifiedEmail) {
+      if (normalizedOriginalEmail === normalizedOriginalUnverifiedEmail) {
         return {}
       }
       return {
-        email: newEmail,
+        email: normalizedEmail,
         unverifiedEmail: undefined,
       }
     }
 
     return {
-      email: newEmail,
+      email: normalizedEmail,
     }
   }
 
