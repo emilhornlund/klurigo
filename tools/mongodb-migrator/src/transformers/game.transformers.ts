@@ -16,41 +16,14 @@ import { buildQuizQuestions } from './quiz.transformers'
 export function transformGameDocument(document: BSONDocument): BSONDocument {
   const questions: BSONDocument[] = buildQuizQuestions(document)
 
-  const rawPreviousTasks = extractValueOrThrow<BSONDocument[]>(
+  const currentTask = buildGameTask(
+    extractValueOrThrow<BSONDocument>(document, {}, 'currentTask'),
+  )
+  const previousTasks = extractValueOrThrow<BSONDocument[]>(
     document,
     {},
     'previousTasks',
-  )
-
-  const rawCurrentTask = extractValueOrThrow<BSONDocument>(
-    document,
-    {},
-    'currentTask',
-  )
-
-  // Migrate legacy QUIT tasks: replace with the last previousTask so that
-  // game state is solely represented by the GameStatus field.
-  let normalizedCurrentTask: BSONDocument
-  let normalizedPreviousTasks: BSONDocument[]
-
-  if (extractValueOrThrow<string>(rawCurrentTask, {}, 'type') === 'QUIT') {
-    if (rawPreviousTasks.length === 0) {
-      throw new Error(
-        `Game ${extractValueOrThrow<string>(document, {}, '_id')} has a QUIT currentTask but no previousTasks to fall back to`,
-      )
-    }
-    normalizedCurrentTask = buildGameTask(
-      rawPreviousTasks[rawPreviousTasks.length - 1],
-    )
-    normalizedPreviousTasks = rawPreviousTasks
-      .slice(0, rawPreviousTasks.length - 1)
-      .map((task) => buildGameTask(task))
-  } else {
-    normalizedCurrentTask = buildGameTask(rawCurrentTask)
-    normalizedPreviousTasks = rawPreviousTasks.map((task) =>
-      buildGameTask(task),
-    )
-  }
+  ).map((task) => buildGameTask(task))
 
   return {
     _id: extractValueOrThrow<string>(document, {}, '_id'),
@@ -92,8 +65,8 @@ export function transformGameDocument(document: BSONDocument): BSONDocument {
     questions,
     nextQuestion: extractValueOrThrow<number>(document, {}, 'nextQuestion'),
     participants: buildGameParticipants(document),
-    currentTask: normalizedCurrentTask,
-    previousTasks: normalizedPreviousTasks,
+    currentTask,
+    previousTasks,
     updated: toDate(extractValueOrThrow<string>(document, {}, 'updated')),
     created: toDate(extractValueOrThrow<string>(document, {}, 'created')),
     completedAt:
