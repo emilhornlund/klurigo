@@ -57,8 +57,8 @@ const UserQuizzesPage: FC = () => {
       Number.isInteger(limitValue) && limitValue > 0 ? limitValue : undefined
 
     return {
-      sort: isUserQuizzesSort(sortParam) ? sortParam : 'title',
-      order: isUserQuizzesOrder(orderParam) ? orderParam : 'asc',
+      sort: isUserQuizzesSort(sortParam) ? sortParam : 'updated',
+      order: isUserQuizzesOrder(orderParam) ? orderParam : 'desc',
       limit: parsedLimit,
       offset: Math.max(0, parseNumber(searchParams.get('offset'), 0)),
     }

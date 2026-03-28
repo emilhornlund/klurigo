@@ -16,7 +16,11 @@ import {
   RailHeader,
   Typography,
 } from '../../../../components'
-import { formatTimeAgo } from '../../../../utils/date.utils'
+import {
+  DATE_FORMATS,
+  formatLocalDate,
+  formatTimeAgo,
+} from '../../../../utils/date.utils'
 
 import styles from './UserProfilePageUI.module.scss'
 
@@ -37,10 +41,13 @@ export interface UserProfilePageUIProps {
 const Card: FC<{
   title: string
   value: string | number
-}> = ({ title, value }) => (
+  alt?: string
+}> = ({ title, value, alt }) => (
   <div className={styles.card}>
     <div className={styles.title}>{title}</div>
-    <div className={styles.value}>{value}</div>
+    <div className={styles.value} title={alt}>
+      {value}
+    </div>
   </div>
 )
 
@@ -85,7 +92,11 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
         <Card title="Quizzes" value={profile.quizzesCount} />
         <Card title="Hosted games" value={profile.hostedGamesCount} />
         <Card title="Played games" value={profile.playedGamesCount} />
-        <Card title="Joined" value={formatTimeAgo(profile.createdAt)} />
+        <Card
+          title="Joined"
+          value={formatTimeAgo(profile.createdAt)}
+          alt={`Joined ${formatLocalDate(profile.createdAt, DATE_FORMATS.DATE_TIME_SECONDS)}`}
+        />
       </div>
 
       <PageDivider />
