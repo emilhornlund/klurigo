@@ -16,6 +16,9 @@ updates:
 
     ignore:
       - dependency-name: "@klurigo/common"
+      - dependency-name: "@types/node"
+        update-types:
+          - "version-update:semver-major"
 
     versioning-strategy: "increase"
 
