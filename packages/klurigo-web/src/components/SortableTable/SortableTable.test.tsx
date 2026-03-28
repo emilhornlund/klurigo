@@ -39,10 +39,6 @@ vi.mock('@fortawesome/react-fontawesome', () => ({
 const lastDndHandlers: { onDragEnd?: (evt: any) => void } = {}
 
 vi.mock('@dnd-kit/core', () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const React = require('react')
   return {
     // Render children and expose a test button to trigger onDragEnd
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
