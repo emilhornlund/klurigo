@@ -29,7 +29,7 @@ export function transformQuizRatingDocument(
 }
 
 function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
-  const type = extractValue<string>(document, {}, 'author.type')
+  const type = extractValueOrThrow<string>(document, {}, 'author.type')
 
   if (type === QuizRatingAuthorType.User) {
     return {
@@ -47,9 +47,6 @@ function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
       nickname: extractValueOrThrow<string>(document, {}, 'author.nickname'),
     }
   } else {
-    return {
-      type: QuizRatingAuthorType.User,
-      user: extractValueOrThrow<string>(document, {}, 'author'),
-    }
+    throw new Error('Unknown author type')
   }
 }
