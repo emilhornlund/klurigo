@@ -48,7 +48,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               </h1>
               <div
                 class="badge large celebrationEpic border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -70,7 +69,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             >
               <div
                 class="badge large number-1 border"
-                style="background-color: gold; outline-color: white; color: white;"
               >
                 1
               </div>
@@ -82,7 +80,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             Streak
             <div
               class="badge small number-2 border"
-              style="color: white;"
             >
               2
             </div>
@@ -114,7 +111,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -134,7 +131,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -154,7 +151,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -174,7 +171,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -194,7 +191,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -214,7 +211,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -234,7 +231,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -254,7 +251,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -274,7 +271,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -294,7 +291,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -314,7 +311,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -334,7 +331,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -354,7 +351,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -374,7 +371,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -484,7 +481,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               </h1>
               <div
                 class="badge large celebrationMajor border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -506,7 +502,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             >
               <div
                 class="badge large number-2 border"
-                style="background-color: silver; outline-color: white; color: white;"
               >
                 2
               </div>
@@ -539,7 +534,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -551,7 +546,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -563,7 +558,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -575,7 +570,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -587,7 +582,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -599,7 +594,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -611,7 +606,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -623,7 +618,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -635,7 +630,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -647,7 +642,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -659,7 +654,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -671,7 +666,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -683,7 +678,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -695,7 +690,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -707,7 +702,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
           </div>
         </div>
@@ -809,7 +804,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               </h1>
               <div
                 class="badge large celebrationEpic border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -831,7 +825,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             >
               <div
                 class="badge large number-8 border"
-                style="background-color: white; outline-color: white;"
               >
                 8
               </div>
@@ -843,7 +836,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             Streak
             <div
               class="badge small number-7 border"
-              style="color: white;"
             >
               7
             </div>
@@ -875,7 +867,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -895,7 +887,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -915,7 +907,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -935,7 +927,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -955,7 +947,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -975,7 +967,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -995,7 +987,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1015,7 +1007,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1035,7 +1027,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1055,7 +1047,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1075,7 +1067,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1095,7 +1087,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1115,7 +1107,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1135,7 +1127,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1245,7 +1237,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               </h1>
               <div
                 class="badge large celebrationEpic border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -1267,7 +1258,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             >
               <div
                 class="badge large multiDigit border"
-                style="background-color: white; outline-color: white;"
               >
                 15
               </div>
@@ -1279,7 +1269,6 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             Streak
             <div
               class="badge small multiDigit border"
-              style="color: white;"
             >
               10
             </div>
@@ -1311,7 +1300,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1331,7 +1320,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1351,7 +1340,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1371,7 +1360,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1391,7 +1380,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1411,7 +1400,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1431,7 +1420,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1451,7 +1440,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1471,7 +1460,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1491,7 +1480,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1511,7 +1500,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1531,7 +1520,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1551,7 +1540,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1571,7 +1560,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1681,7 +1670,6 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
               </h1>
               <div
                 class="badge large celebrationMajor border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -1703,7 +1691,6 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             >
               <div
                 class="badge large number-3 border"
-                style="outline-color: white; color: white;"
               >
                 3
               </div>
@@ -1736,7 +1723,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1748,7 +1735,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1760,7 +1747,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1772,7 +1759,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1784,7 +1771,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1796,7 +1783,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1808,7 +1795,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1820,7 +1807,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1832,7 +1819,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1844,7 +1831,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1856,7 +1843,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1868,7 +1855,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1880,7 +1867,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1892,7 +1879,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -1904,7 +1891,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
           </div>
         </div>
@@ -2006,7 +1993,6 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
               </h1>
               <div
                 class="badge large celebrationMajor border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -2028,7 +2014,6 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             >
               <div
                 class="badge large multiDigit border"
-                style="background-color: white; outline-color: white;"
               >
                 12
               </div>
@@ -2040,7 +2025,6 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             Streak
             <div
               class="badge small number-5 border"
-              style="color: white;"
             >
               5
             </div>
@@ -2072,7 +2056,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2084,7 +2068,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2096,7 +2080,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2108,7 +2092,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2120,7 +2104,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2132,7 +2116,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2144,7 +2128,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2156,7 +2140,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2168,7 +2152,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2180,7 +2164,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2192,7 +2176,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2204,7 +2188,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2216,7 +2200,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2228,7 +2212,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -2240,7 +2224,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
           </div>
         </div>
@@ -2342,7 +2326,6 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
               </h1>
               <div
                 class="badge large border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -2364,7 +2347,6 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
             >
               <div
                 class="badge large multiDigit border"
-                style="background-color: white; outline-color: white;"
               >
                 20
               </div>
@@ -2480,7 +2462,6 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
               </h1>
               <div
                 class="badge large border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -2502,7 +2483,6 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
             >
               <div
                 class="badge large multiDigit border"
-                style="background-color: white; outline-color: white;"
               >
                 15
               </div>
@@ -2618,7 +2598,6 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               </h1>
               <div
                 class="badge large celebrationNormal border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -2640,7 +2619,6 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             >
               <div
                 class="badge large multiDigit border"
-                style="background-color: white; outline-color: white;"
               >
                 10
               </div>
@@ -2863,7 +2841,6 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               </h1>
               <div
                 class="badge large celebrationNormal border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -2885,7 +2862,6 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             >
               <div
                 class="badge large number-8 border"
-                style="background-color: white; outline-color: white;"
               >
                 8
               </div>
@@ -2897,7 +2873,6 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             Streak
             <div
               class="badge small number-3 border"
-              style="color: white;"
             >
               3
             </div>
@@ -3119,7 +3094,6 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
               </h1>
               <div
                 class="badge large celebrationEpic border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -3141,7 +3115,6 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             >
               <div
                 class="badge large number-1 border"
-                style="background-color: gold; outline-color: white; color: white;"
               >
                 1
               </div>
@@ -3153,7 +3126,6 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             Streak
             <div
               class="badge small number-3 border"
-              style="color: white;"
             >
               3
             </div>
@@ -3196,7 +3168,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3216,7 +3188,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3236,7 +3208,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3256,7 +3228,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3276,7 +3248,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3296,7 +3268,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3316,7 +3288,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3336,7 +3308,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3356,7 +3328,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3376,7 +3348,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3396,7 +3368,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3416,7 +3388,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3436,7 +3408,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3456,7 +3428,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             />
             <div
               class="confettiParticle"
-              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $gold; --particle-size: 4.8px;"
+              style="--random-x: 0.1; --random-delay: 0.1; --random-duration: 0.1; --particle-color: $yellow-2; --particle-size: 4.8px;"
             />
             <div
               class="confettiParticle"
@@ -3566,7 +3538,6 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
               </h1>
               <div
                 class="badge large border"
-                style="outline-color: white; color: white;"
               >
                 <svg
                   aria-hidden="true"
@@ -3588,7 +3559,6 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             >
               <div
                 class="badge large number-7 border"
-                style="background-color: white; outline-color: white;"
               >
                 7
               </div>

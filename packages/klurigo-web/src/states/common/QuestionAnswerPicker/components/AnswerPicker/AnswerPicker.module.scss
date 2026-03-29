@@ -34,7 +34,7 @@
       align-items: center;
       border: none;
       outline: none;
-      background-color: colors.$white;
+      background-color: colors.$white-1;
       color: colors.$gray-4;
       overflow: hidden;
       cursor: pointer;
@@ -119,7 +119,7 @@
         align-items: center;
         border-radius: 50%;
         font-weight: bold;
-        color: colors.$white;
+        color: colors.$white-1;
         position: relative;
 
         &:after {
@@ -204,7 +204,7 @@
       }
       &:nth-child(6) {
         div {
-          background-color: colors.$pink-2;
+          background-color: colors.$purple-2;
 
           &:after {
             content: 'F';

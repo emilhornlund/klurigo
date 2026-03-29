@@ -106,7 +106,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        color: colors.$white;
+        color: colors.$white-1;
 
         @include helpers.mobile {
           height: helpers.pxToRem(30px);
@@ -170,7 +170,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--mobile-loading-spinner-size,
-              colors.$white,
+              colors.$white-1,
               button-mobile-normal
             );
           }
@@ -181,7 +181,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--tablet-loading-spinner-size,
-              colors.$white,
+              colors.$white-1,
               button-tablet-normal
             );
           }
@@ -192,7 +192,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--desktop-loading-spinner-size,
-              colors.$white,
+              colors.$white-1,
               button-desktop-normal
             );
           }

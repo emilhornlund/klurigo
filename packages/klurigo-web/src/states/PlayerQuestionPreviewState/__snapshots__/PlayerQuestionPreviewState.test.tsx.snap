@@ -44,7 +44,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-circle-question"
-                color="white"
+                color="white1"
                 data-icon="circle-question"
                 data-prefix="fas"
                 role="img"

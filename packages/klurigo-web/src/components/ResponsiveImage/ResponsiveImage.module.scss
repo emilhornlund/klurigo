@@ -24,24 +24,28 @@
   }
 
   .box {
-    border: variables.$control-outside-border-width solid colors.$white;
-    background-color: colors.$white-1-50;
+    border-style: solid;
+    border-color: colors.$white-1;
+    background-color: colors.$gray-1;
     overflow: hidden;
 
     @include helpers.mobile {
+      border-width: helpers.pxToRem(2px);
       border-radius: variables.$mobile-narrow-layout-gutter;
     }
     @include helpers.tablet {
+      border-width: helpers.pxToRem(3px);
       border-radius: variables.$tablet-narrow-layout-gutter;
     }
     @include helpers.desktop {
+      border-width: helpers.pxToRem(4px);
       border-radius: variables.$desktop-narrow-layout-gutter;
     }
   }
 
   .boxNoBorder {
     border: none;
-    background-color: colors.$white-1-50;
+    background-color: colors.$gray-1;
     overflow: hidden;
 
     @include helpers.mobile {
@@ -82,10 +86,10 @@
     inset: 0;
     display: grid;
     place-items: center;
-    background: colors.$gray-2;
+    background: colors.$gray-1;
 
     .icon {
-      color: colors.$white-1-50;
+      color: colors.$white-1-70;
     }
   }
 }

@@ -8,7 +8,7 @@
   align-items: center;
   background-color: colors.$white-1-15;
   border: variables.$control-outside-border-width solid colors.$white-1-25;
-  color: colors.$white;
+  color: colors.$white-1;
   width: 100%;
 
   @include helpers.mobile {

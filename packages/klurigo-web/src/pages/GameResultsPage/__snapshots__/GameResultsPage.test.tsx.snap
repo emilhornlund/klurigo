@@ -316,7 +316,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -336,7 +336,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -356,7 +356,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -376,7 +376,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -396,7 +396,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -416,7 +416,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -436,7 +436,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -456,7 +456,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -476,7 +476,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -496,7 +496,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -516,7 +516,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -536,7 +536,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -556,7 +556,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -576,7 +576,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1421,7 +1421,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1441,7 +1441,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1461,7 +1461,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1481,7 +1481,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1501,7 +1501,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1521,7 +1521,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1541,7 +1541,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1561,7 +1561,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1581,7 +1581,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1601,7 +1601,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1621,7 +1621,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1641,7 +1641,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1661,7 +1661,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"
@@ -1681,7 +1681,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                       <div
                         class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
                       />
                       <div
                         class="confettiParticle"

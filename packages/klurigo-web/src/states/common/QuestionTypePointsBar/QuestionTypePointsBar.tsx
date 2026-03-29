@@ -22,7 +22,7 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
   mode === GameMode.Classic ? (
     <div className={styles.chip}>
       <div className={styles.item}>
-        <FontAwesomeIcon icon={faQuestionCircle} color={colors.white} />
+        <FontAwesomeIcon icon={faQuestionCircle} color={colors.white1} />
         {QuestionTypeLabels[questionType]}
       </div>
       <div className={styles.item}>

@@ -25,7 +25,7 @@
     width: 100%;
     min-width: 0;
     overflow: hidden;
-    background-color: colors.$white;
+    background-color: colors.$white-1;
     border-radius: 0;
     color: colors.$black-1-70;
 
@@ -54,13 +54,13 @@
     }
 
     &.gold {
-      background-color: colors.$gold;
+      background-color: colors.$yellow-2;
     }
     &.silver {
-      background-color: colors.$silver;
+      background-color: colors.$white-4;
     }
     &.bronze {
-      background-color: colors.$bronze;
+      background-color: colors.$orange-2;
     }
 
     .column {

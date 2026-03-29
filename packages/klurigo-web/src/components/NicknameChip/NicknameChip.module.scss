@@ -62,12 +62,12 @@
   &.subtle {
     background-color: colors.$white-1-15;
     border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white;
+    color: colors.$white-1;
   }
 
   &.accent {
     background-color: colors.$blue-1;
-    color: colors.$white;
+    color: colors.$white-1;
   }
 
   .delete {
@@ -75,7 +75,7 @@
     -webkit-appearance: none;
     align-items: center;
     appearance: none;
-    background-color: colors.$black-1-50;
+    background-color: colors.$black-1-70;
     border: none;
     box-shadow: none;
     cursor: pointer;
@@ -106,7 +106,7 @@
 
     &:hover {
       @media (prefers-reduced-motion: no-preference) {
-        background-color: colors.$black-1-75;
+        background-color: colors.$black-1-70;
       }
     }
   }

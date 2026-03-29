@@ -29,7 +29,7 @@
     text-align: center;
     background-color: colors.$white-1-15;
     border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white;
+    color: colors.$white-1;
 
     @include helpers.mobile {
       padding: variables.$mobile-layout-gutter variables.$mobile-narrow-layout-gutter;
@@ -106,7 +106,7 @@
     gap: 0.375rem;
     flex-shrink: 0;
     font-weight: 600;
-    color: colors.$white;
+    color: colors.$white-1;
     text-decoration: none;
     white-space: nowrap;
 

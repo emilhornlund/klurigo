@@ -9,7 +9,6 @@ exports[`StreakBadge > should render a StreakBadge 1`] = `
   >
     <div
       class="badge small number-3 border"
-      style="color: white;"
     >
       3
     </div>
@@ -25,7 +24,6 @@ exports[`StreakBadge > should render a StreakBadge with label 1`] = `
     Label
     <div
       class="badge small number-3 border"
-      style="color: white;"
     >
       3
     </div>

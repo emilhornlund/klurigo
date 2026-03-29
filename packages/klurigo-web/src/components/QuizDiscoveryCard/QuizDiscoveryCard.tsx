@@ -47,7 +47,7 @@ const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
       {quiz.ratingSummary.stars > 0 && (
         <CardMetaItem
           icon={faStar}
-          textColor={colors.gold}
+          textColor={colors.yellow2}
           data-testid="meta-rating">
           {quiz.ratingSummary.stars.toFixed(1)}
         </CardMetaItem>

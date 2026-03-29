@@ -141,19 +141,19 @@
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-normal-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-normal-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(colors.$white-1, colors.$control-text-normal-color, 30%);
     }
   }
 
@@ -181,19 +181,19 @@
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-secondary-normal-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-secondary-normal-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(colors.$white-1, colors.$control-text-normal-color, 30%);
     }
   }
 
@@ -234,19 +234,19 @@
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-call-to-action-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-call-to-action-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(colors.$white-1, colors.$control-text-normal-color, 30%);
     }
   }
 }
@@ -267,19 +267,19 @@
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-success-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-success-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-contrast-color, 30%);
+      color: color.mix(colors.$white-1, colors.$control-text-contrast-color, 30%);
     }
   }
 }
@@ -300,19 +300,19 @@
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-danger-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
+      colors.$white-1,
       colors.$control-primary-danger-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-contrast-color, 30%);
+      color: color.mix(colors.$white-1, colors.$control-text-contrast-color, 30%);
     }
   }
 }
@@ -330,7 +330,7 @@
   button {
     background-color: transparent;
     outline-color: transparent;
-    color: colors.$white;
+    color: colors.$white-1;
   }
 
   &:has(> button:hover, button:disabled) {
@@ -338,7 +338,7 @@
     outline-color: transparent;
 
     button {
-      color: color.mix(colors.$white, colors.$gray-1, 30%);
+      color: color.mix(colors.$white-1, colors.$gray-1, 30%);
     }
   }
 }

@@ -11,8 +11,8 @@
   height: 100%;
   overflow: hidden;
   border-style: solid;
-  border-color: colors.$white-1-50;
-  background-color: colors.$white-1-50;
+  border-color: colors.$white-1;
+  background-color: colors.$gray-1;
 
   @include helpers.mobile {
     border-width: helpers.pxToRem(2px);

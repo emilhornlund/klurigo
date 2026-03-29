@@ -97,7 +97,6 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         >
           <div
             class="badge small number-5 border"
-            style="background-color: white; outline-color: white;"
           >
             5
           </div>
@@ -137,7 +136,6 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         >
           <div
             class="badge small number-3 border"
-            style="color: white;"
           >
             3
           </div>
@@ -177,7 +175,6 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         >
           <div
             class="badge small number-2 border"
-            style="background-color: white; outline-color: white;"
           >
             2
           </div>

@@ -23,7 +23,7 @@
     font-weight: bold;
 
     &.white {
-      fill: colors.$white;
+      fill: colors.$white-1;
     }
     &.black {
       fill: colors.$gray-4;
@@ -32,7 +32,7 @@
 
   &.default {
     .circleBackground {
-      stroke: colors.$white;
+      stroke: colors.$white-1;
     }
     .circleProgress {
       stroke: colors.$orange-2;
@@ -50,7 +50,7 @@
 
   &.secondary {
     .circleBackground {
-      stroke: colors.$white;
+      stroke: colors.$white-1;
     }
     .circleProgress {
       stroke: colors.$blue-1;

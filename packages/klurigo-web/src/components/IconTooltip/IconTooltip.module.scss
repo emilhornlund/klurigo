@@ -11,7 +11,7 @@
   border: none;
   font-family: inherit;
   outline: none;
-  color: colors.$white;
+  color: colors.$white-1;
 
   @include helpers.mobile {
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);

@@ -29,10 +29,10 @@ const BadgeColorClassName: { [key in BadgeColor]: string } = {
   red: colors.red2,
   blue: colors.blue2,
   orange: colors.orange2,
-  gold: colors.gold,
-  silver: colors.silver,
-  bronze: colors.bronze,
-  white: colors.white,
+  gold: colors.yellow2,
+  silver: colors.gray1,
+  bronze: colors.orange2,
+  white: colors.white1,
   black: colors.gray4,
 }
 

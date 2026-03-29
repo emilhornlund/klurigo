@@ -85,7 +85,7 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
 
     span {
       margin: 0;
-      background-color: colors.$white;
+      background-color: colors.$white-1;
       color: colors.$gray-4;
 
       @include helpers.mobile {

@@ -28,8 +28,8 @@ const particleCounts = {
 
 const colorPalettes = {
   normal: ['$green-2', '$yellow-2'],
-  major: ['$green-2', '$yellow-2', '$gold'],
-  epic: ['$green-2', '$yellow-2', '$gold', '$pink-2', '$turquoise-2'],
+  major: ['$green-2', '$yellow-2', '$yellow-2'],
+  epic: ['$green-2', '$yellow-2', '$yellow-2', '$pink-2', '$turquoise-2'],
 }
 
 const generateParticles = (

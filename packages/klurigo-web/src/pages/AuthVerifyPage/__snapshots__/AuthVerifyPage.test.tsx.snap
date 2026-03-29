@@ -104,7 +104,6 @@ exports[`AuthVerifyPage > renders verified state (logged in) with home link 1`] 
         >
           <div
             class="badge large border"
-            style="outline-color: white; color: white;"
           >
             <svg
               aria-hidden="true"
@@ -188,7 +187,6 @@ exports[`AuthVerifyPage > renders verified state (logged out) with login link 1`
         >
           <div
             class="badge large border"
-            style="outline-color: white; color: white;"
           >
             <svg
               aria-hidden="true"
@@ -272,7 +270,6 @@ exports[`AuthVerifyPage > shows error state when verification fails 1`] = `
         >
           <div
             class="badge large border"
-            style="outline-color: white; color: white;"
           >
             <svg
               aria-hidden="true"

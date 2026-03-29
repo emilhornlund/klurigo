@@ -29,8 +29,8 @@ $outline-offset: helpers.pxToRem(2px);
     overflow-x: auto;
     overflow-y: hidden;
     position: relative;
-    background-color: colors.$white;
-    outline: colors.$white solid $outline-offset;
+    background-color: colors.$white-1;
+    outline: colors.$white-1 solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
@@ -88,8 +88,8 @@ $outline-offset: helpers.pxToRem(2px);
       }
 
       &:hover {
-        color: color.mix(colors.$white, colors.$yellow-2, 30%);
-        outline-color: color.mix(colors.$white, colors.$yellow-2, 30%);
+        color: color.mix(colors.$white-1, colors.$yellow-2, 30%);
+        outline-color: color.mix(colors.$white-1, colors.$yellow-2, 30%);
       }
     }
   }

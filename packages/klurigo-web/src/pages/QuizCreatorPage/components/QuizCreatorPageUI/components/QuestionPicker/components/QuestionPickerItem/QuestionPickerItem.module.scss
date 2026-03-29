@@ -50,7 +50,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     border-style: solid;
     border-color: colors.$gray-2;
     cursor: pointer;
-    background-color: colors.$white;
+    background-color: colors.$white-1;
     appearance: none;
     width: 100%;
     max-height: 100%;
@@ -79,7 +79,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
 
     &.questionPickerItemActive, &:hover {
       border-color: colors.$blue-2;
-      background-color: color.mix(colors.$white, colors.$blue-2, 85%);
+      background-color: color.mix(colors.$white-1, colors.$blue-2, 85%);
       color: colors.$gray-4;
     }
 
@@ -194,7 +194,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     .questionPickerItemOverlayTop {
       .questionPickerItemOverlayNumber {
         background-color: colors.$gray-2;
-        color: colors.$white;
+        color: colors.$white-1;
         font-weight: bold;
 
         @include helpers.mobile {
@@ -222,7 +222,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
         appearance: none;
         pointer-events: auto;
         cursor: pointer;
-        color: colors.$white;
+        color: colors.$white-1;
         background-color: colors.$gray-2;
 
         @include helpers.mobile {
@@ -240,7 +240,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
 
       .questionPickerItemOverlayError {
         color: colors.$orange-2;
-        background-color: colors.$white;
+        background-color: colors.$white-1;
         pointer-events: auto;
 
         @include helpers.mobile {

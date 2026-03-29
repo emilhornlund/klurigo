@@ -140,7 +140,7 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       &:before {
         position: absolute;
         content: "";
-        background-color: colors.$white;
+        background-color: colors.$white-1;
         border-radius: 50%;
         -webkit-transition: .4s;
         transition: .4s;

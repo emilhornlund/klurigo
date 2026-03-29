@@ -19,7 +19,7 @@
 .title {
   margin: 0;
   font-weight: 700;
-  color: colors.$white;
+  color: colors.$white-1;
 
   @include helpers.mobile {
     @include helpers.fontSize(20px);

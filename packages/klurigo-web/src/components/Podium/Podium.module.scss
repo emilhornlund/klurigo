@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   column-gap: 0;
-  border-bottom: helpers.pxToRem(4px) solid colors.$white;
+  border-bottom: helpers.pxToRem(4px) solid colors.$white-1;
   width: 100%;
 
   @include helpers.mobile {
@@ -185,22 +185,18 @@
           }
 
           &.position-1 {
-            background: linear-gradient(
-              135deg,
-              colors.$gold 0%,
-              colors.$yellow-2 100%
-            );
-            box-shadow: 0 0 20px rgba(255, 199, 39, 0.5);
+            background: linear-gradient(135deg, colors.$yellow-1 0%, colors.$yellow-2 100%);
+            box-shadow: 0 0 15px rgba(255, 199, 39, 0.5);
             animation: positionGlow 2s ease-in-out infinite alternate;
           }
 
           &.position-2 {
-            background: linear-gradient(135deg, colors.$silver 0%, colors.$gray-1 100%);
+            background: linear-gradient(135deg, colors.$white-2 0%, colors.$white-4 100%);
             box-shadow: 0 0 15px rgba(223, 223, 223, 0.4);
           }
 
           &.position-3 {
-            background: linear-gradient(135deg, colors.$bronze 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, colors.$orange-1 0%, colors.$orange-2 100%);
             box-shadow: 0 0 15px rgba(255, 167, 80, 0.4);
           }
         }
@@ -241,7 +237,7 @@
             position: absolute;
             width: $sparkle-size;
             height: $sparkle-size;
-            background: colors.$white;
+            background: colors.$white-1;
             border-radius: 50%;
             animation: sparkle 1.5s ease-in-out infinite;
             animation-delay: var(--sparkle-delay);
@@ -268,7 +264,7 @@
     &:nth-child(1) {
       .stack {
         border-radius: helpers.pxToRem(12px) 0 0 0;
-        background-color: colors.$silver;
+        background-color: colors.$white-4;
 
         box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
           colors.$black-1-15 inset;
@@ -282,14 +278,14 @@
     &:nth-child(2) {
       .stack {
         border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
-        background-color: colors.$gold;
+        background-color: colors.$yellow-2;
       }
     }
 
     &:nth-child(3) {
       .stack {
         border-radius: 0 helpers.pxToRem(12px) 0 0;
-        background-color: colors.$bronze;
+        background-color: colors.$orange-2;
 
         box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
           colors.$black-1-15 inset;

@@ -20,7 +20,7 @@
   }
 
   .title {
-    color: colors.$white;
+    color: colors.$white-1;
     font-weight: 700;
     text-align: center;
     margin: 0;
@@ -64,7 +64,7 @@
       flex-shrink: 0;
 
       .average {
-        color: colors.$white;
+        color: colors.$white-1;
         font-weight: 700;
         line-height: 1;
 
@@ -82,7 +82,7 @@
       }
 
       .outOf {
-        color: colors.$white;
+        color: colors.$white-1;
         opacity: 0.6;
 
         @include helpers.mobile {
@@ -118,7 +118,7 @@
       }
 
       .count {
-        color: colors.$white;
+        color: colors.$white-1;
         font-weight: 500;
         opacity: 0.6;
 
@@ -157,7 +157,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: colors.$white;
+  background-color: colors.$white-1;
   overflow: hidden;
 
   @include helpers.mobile {
@@ -244,7 +244,7 @@
 }
 
 .emptyState {
-  color: colors.$white;
+  color: colors.$white-1;
   opacity: 0.5;
   margin: 0;
   font-style: italic;
@@ -274,7 +274,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: colors.$white;
+  background-color: colors.$white-1;
   overflow: hidden;
 
   @include helpers.mobile {

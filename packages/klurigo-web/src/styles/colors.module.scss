@@ -1,34 +1,32 @@
 @use 'colors';
 
 :export {
-  blue1: colors.$blue-1;
-  blue2: colors.$blue-2;
-
   yellow1: colors.$yellow-1;
   yellow2: colors.$yellow-2;
 
-  pink1: colors.$pink-1;
-  pink2: colors.$pink-2;
+  orange1: colors.$orange-1;
+  orange2: colors.$orange-2;
 
   red1: colors.$red-1;
   red2: colors.$red-2;
 
-  orange1: colors.$orange-1;
-  orange2: colors.$orange-2;
+  pink1: colors.$pink-1;
+  pink2: colors.$pink-2;
+
+  purple1: colors.$purple-1;
+  purple2: colors.$purple-2;
+
+  blue1: colors.$blue-1;
+  blue2: colors.$blue-2;
+
+  turquoise1: colors.$turquoise-1;
+  turquoise2: colors.$turquoise-2;
 
   green1: colors.$green-1;
   green2: colors.$green-2;
   green2_25: colors.$green-2-25;
 
-  turquoise1: colors.$turquoise-1;
-  turquoise2: colors.$turquoise-2;
-
-  gray1: colors.$gray-1;
-  gray2: colors.$gray-2;
-  gray3: colors.$gray-3;
-  gray4: colors.$gray-4;
-
-  white: colors.$white;
+  white1: colors.$white-1;
   white1_15: colors.$white-1-15;
   white1_20: colors.$white-1-20;
   white1_25: colors.$white-1-25;
@@ -37,6 +35,14 @@
   white1_50: colors.$white-1-50;
   white1_70: colors.$white-1-70;
   white1_80: colors.$white-1-80;
+  white2: colors.$white-2;
+  white3: colors.$white-3;
+  white4: colors.$white-4;
+
+  gray1: colors.$gray-1;
+  gray2: colors.$gray-2;
+  gray3: colors.$gray-3;
+  gray4: colors.$gray-4;
 
   black1: colors.$black-1;
   black1_10: colors.$black-1-10;
@@ -45,10 +51,6 @@
   black1_70: colors.$black-1-70;
   black1_75: colors.$black-1-75;
   black1_80: colors.$black-1-80;
-
-  gold: colors.$gold;
-  silver: colors.$silver;
-  bronze: colors.$bronze;
 
   controlPrimaryNormalColor: colors.$control-primary-normal-color;
   controlPrimarySuccessColor: colors.$control-primary-success-color;

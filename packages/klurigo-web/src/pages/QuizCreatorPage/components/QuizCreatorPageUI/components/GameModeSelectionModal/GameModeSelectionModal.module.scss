@@ -26,8 +26,8 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
     flex: 1;
     appearance: none;
-    background-color: color.mix(colors.$white, colors.$blue-2, 75%);
-    outline: color.mix(colors.$white, colors.$blue-2, 75%) solid $outline-offset;
+    background-color: color.mix(colors.$white-1, colors.$blue-2, 75%);
+    outline: color.mix(colors.$white-1, colors.$blue-2, 75%) solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
@@ -63,9 +63,9 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     &:hover {
-      background-color: color.mix(colors.$white, colors.$blue-2, 85%);
-      outline-color: color.mix(colors.$white, colors.$blue-2, 85%);
-      color: color.mix(colors.$white, colors.$gray-4, 30%);
+      background-color: color.mix(colors.$white-1, colors.$blue-2, 85%);
+      outline-color: color.mix(colors.$white-1, colors.$blue-2, 85%);
+      color: color.mix(colors.$white-1, colors.$gray-4, 30%);
     }
 
     .description {
