@@ -7,15 +7,32 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: colors.$white-1;
-  border: none;
-  color: black;
   z-index: variables.$menu-z-index;
   transform: translateX(-100%);
-  row-gap: helpers.pxToRem(8px);
-  padding: helpers.pxToRem(8px) 0;
-  border-radius: helpers.pxToRem(8px);
-  box-shadow: 0 helpers.pxToRem(4px) helpers.pxToRem(4px) rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid colors.$white-4;
+  box-shadow:
+    0 helpers.pxToRem(20px) helpers.pxToRem(40px) colors.$black-1-20,
+    0 helpers.pxToRem(6px) helpers.pxToRem(16px) colors.$black-1-10,
+    inset 0 1px 0 colors.$white-1-50;
+
+  @include helpers.mobile {
+    row-gap: variables.$mobile-narrow-layout-gutter * 0.3;
+    padding: variables.$mobile-narrow-layout-gutter * 0.5;
+    border-radius: variables.$mobile-control-normal-border-radius;
+  }
+
+  @include helpers.tablet {
+    row-gap: variables.$tablet-narrow-layout-gutter * 0.3;
+    padding: variables.$tablet-narrow-layout-gutter * 0.5;
+    border-radius: variables.$tablet-control-normal-border-radius;
+  }
+
+  @include helpers.desktop {
+    row-gap: variables.$desktop-narrow-layout-gutter * 0.3;
+    padding: variables.$desktop-narrow-layout-gutter * 0.5;
+    border-radius: variables.$desktop-control-normal-border-radius;
+  }
 
   .menuItem {
     @include button.button-reset;
@@ -23,7 +40,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: colors.$gray-4;
+    color: inherit;
 
     .content {
       display: flex;
@@ -31,40 +48,122 @@
       flex-wrap: nowrap;
       align-items: center;
       width: 100%;
-      background-color: colors.$white-1;
-      column-gap: helpers.pxToRem(16px);
-      padding: helpers.pxToRem(8px) helpers.pxToRem(16px);
       white-space: nowrap;
-
-      @include helpers.fontSize(22px);
+      color: colors.$gray-4;
+      font-weight: 400;
+      background-color: transparent;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
 
       .icon {
-        width: helpers.pxToRem(22px);
+        flex-shrink: 0;
+        color: colors.$gray-3;
+        transition: color 0.15s ease;
       }
     }
 
-    &:hover {
-      &:not(:disabled) {
-        cursor: pointer;
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      cursor: pointer;
 
-        .content {
-          background-color: colors.$gray-1;
-        }
+      .content {
+        background-color: colors.$white-3;
+      }
+
+      .icon {
+        color: colors.$blue-1;
       }
     }
 
-    &:disabled {
-      color: colors.$gray-2;
-      cursor: default;
+    &:active:not(:disabled) {
+      .content {
+        background-color: colors.$white-4;
+      }
+
+      .icon {
+        color: colors.$blue-2;
+      }
     }
   }
 
   .menuSeparator {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - (#{variables.$desktop-narrow-layout-gutter} * 2));
-    margin: 0 variables.$desktop-narrow-layout-gutter;
     border: none;
-    border-bottom: 1px dashed colors.$gray-2;
+    border-bottom: 1px solid colors.$white-4;
+  }
+}
+
+@include helpers.mobile {
+  .menu {
+    .menuItem {
+      border-radius: variables.$mobile-control-normal-border-radius * 0.8;
+
+      .content {
+        column-gap: helpers.pxToRem(12px);
+        padding: variables.$mobile-narrow-layout-gutter * 0.5 variables.$mobile-narrow-layout-gutter;
+        border-radius: inherit;
+
+        @include helpers.fontSize(18px);
+
+        .icon {
+          width: helpers.pxToRem(16px);
+        }
+      }
+    }
+
+    .menuSeparator {
+      width: calc(100% - (#{variables.$mobile-narrow-layout-gutter} * 2));
+      margin: 0 variables.$mobile-narrow-layout-gutter;
+    }
+  }
+}
+
+@include helpers.tablet {
+  .menu {
+    .menuItem {
+      border-radius: variables.$tablet-control-normal-border-radius * 0.8;
+
+      .content {
+        column-gap: helpers.pxToRem(13px);
+        padding: variables.$tablet-narrow-layout-gutter * 0.5 variables.$tablet-narrow-layout-gutter;
+        border-radius: inherit;
+
+        @include helpers.fontSize(20px);
+
+        .icon {
+          width: helpers.pxToRem(18px);
+        }
+      }
+    }
+
+    .menuSeparator {
+      width: calc(100% - (#{variables.$tablet-narrow-layout-gutter} * 2));
+      margin: 0 variables.$tablet-narrow-layout-gutter;
+    }
+  }
+}
+
+@include helpers.desktop {
+  .menu {
+    .menuItem {
+      border-radius: variables.$desktop-control-normal-border-radius * 0.8;
+
+      .content {
+        column-gap: variables.$desktop-narrow-layout-gutter * 0.8;
+        padding: variables.$desktop-narrow-layout-gutter * 0.5 variables.$desktop-narrow-layout-gutter;
+        border-radius: inherit;
+
+        @include helpers.fontSize(22px);
+
+        .icon {
+          width: helpers.pxToRem(20px);
+        }
+      }
+    }
+
+    .menuSeparator {
+      width: calc(100% - (#{variables.$desktop-narrow-layout-gutter} * 2));
+      margin: 0 variables.$desktop-narrow-layout-gutter;
+    }
   }
 }

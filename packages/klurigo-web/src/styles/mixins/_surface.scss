@@ -1,30 +1,139 @@
+@use 'sass:color';
 @use '../colors';
 @use '../variables';
 
-@mixin surface-base {
-  background-color: colors.$white-1-15;
+/**
+ * Default base color used for all surface components.
+ */
+$surface-base-color: colors.$blue-1;
+
+/**
+ * Mixin for applying the base surface appearance.
+ *
+ * Applies:
+ * - Layered background with subtle white gradient overlay.
+ * - Base color for the surface.
+ * - Primary text color.
+ */
+@mixin surface-base($base-color: $surface-base-color) {
+  background:
+    linear-gradient(
+        180deg,
+        colors.$white-1-10 0%,
+        colors.$white-1-5 100%
+    ),
+    $base-color;
   color: colors.$white-1;
 }
 
-@mixin surface-border {
-  border: variables.$control-outside-border-width solid colors.$white-1-25;
+/**
+ * Mixin for applying the default surface border.
+ *
+ * Applies:
+ * - Border width from control variables.
+ * - Semi-transparent white border color.
+ */
+@mixin surface-border($border-color: colors.$white-1-15) {
+  border: variables.$control-outside-border-width solid $border-color;
 }
 
-@mixin surface-box($interactive: false) {
-  @include surface-base;
+/**
+ * Mixin for applying elevation and surface depth.
+ *
+ * Applies:
+ * - Outer shadow for elevation.
+ * - Inner highlight for subtle top lighting.
+ */
+@mixin surface-shadow(
+  $shadow-color: colors.$black-1-20,
+  $inset-color: colors.$white-1-10
+) {
+  box-shadow:
+    0 8px 24px $shadow-color,
+    inset 0 1px 0 $inset-color;
+}
+
+/**
+ * Mixin for hover and focus-visible interactive state.
+ *
+ * Applies:
+ * - Slightly brighter surface color.
+ * - Increased border contrast.
+ * - Stronger elevation shadow.
+ * - Upward movement for hover feedback.
+ */
+@mixin surface-interactive-hover($base-color: $surface-base-color) {
+  background:
+    linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.06) 100%
+    ),
+    color.scale($base-color, $lightness: 6%);
+  border-color: colors.$white-1-25;
+  box-shadow:
+    0 12px 28px colors.$black-1-25,
+    inset 0 1px 0 colors.$white-1-15;
+  transform: translateY(-1px);
+}
+
+/**
+ * Mixin for active (pressed) interactive state.
+ *
+ * Applies:
+ * - Slightly darker surface color.
+ * - Reduced elevation.
+ * - Reset position to simulate press.
+ */
+@mixin surface-interactive-active($base-color: $surface-base-color) {
+  background:
+    linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.04) 100%
+    ),
+    color.scale($base-color, $lightness: -4%);
+  border-color: colors.$white-1-20;
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(0);
+}
+
+/**
+ * Mixin for composing a complete surface component.
+ *
+ * Applies:
+ * - Base surface styling.
+ * - Border and shadow for structure and depth.
+ * - Optional interactive states (hover, focus-visible, active).
+ *
+ * @param $interactive Enables interactive states when true.
+ * @param $base-color Custom base color for the surface.
+ */
+@mixin surface-box($interactive: false, $base-color: $surface-base-color) {
+  @include surface-base($base-color);
   @include surface-border;
+  @include surface-shadow;
 
   @if $interactive {
-    &:hover,
-    &:focus-visible {
-      background-color: colors.$white-1-20;
-      border-color: colors.$white-1-30;
-    }
-
     @media (prefers-reduced-motion: no-preference) {
       transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease;
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      &:not(:disabled) {
+        @include surface-interactive-hover($base-color);
+      }
+    }
+
+    &:active {
+      @include surface-interactive-active($base-color);
     }
   }
 }

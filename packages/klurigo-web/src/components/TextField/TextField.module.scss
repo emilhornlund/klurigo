@@ -67,8 +67,8 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
       }
 
       &:has(> input:disabled) {
-        background-color: colors.$gray-2;
-        border-color: colors.$gray-3;
+        background-color: colors.$gray-1;
+        border-color: colors.$gray-2;
       }
 
       @include helpers.mobile {

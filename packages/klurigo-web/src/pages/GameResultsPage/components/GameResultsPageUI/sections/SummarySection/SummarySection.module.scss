@@ -194,7 +194,7 @@ $contrast-opacity: 0.8;
       }
 
       .icon {
-        @include surface.surface-box;
+        @include surface.surface-box(true);
 
         display: flex;
         flex-direction: column;
@@ -233,7 +233,9 @@ $contrast-opacity: 0.8;
       @media (prefers-reduced-motion: no-preference) {
         transition:
           background-color 0.15s ease,
+          background 0.15s ease,
           border-color 0.15s ease,
+          box-shadow 0.15s ease,
           transform 0.15s ease;
       }
 
@@ -257,8 +259,7 @@ $contrast-opacity: 0.8;
           }
 
           .icon {
-            background-color: colors.$white-1-25;
-            border-color: colors.$white-1-40;
+            @include surface.surface-interactive-hover;
 
             svg {
               opacity: 1;

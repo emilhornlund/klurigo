@@ -1,4 +1,3 @@
-@use 'sass:color';
 @use '../../../../../../styles/colors';
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
@@ -26,8 +25,8 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
     flex: 1;
     appearance: none;
-    background-color: color.mix(colors.$white-1, colors.$blue-2, 75%);
-    outline: color.mix(colors.$white-1, colors.$blue-2, 75%) solid $outline-offset;
+    background-color: colors.$white-4;
+    outline: colors.$white-4 solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
@@ -63,9 +62,9 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     &:hover {
-      background-color: color.mix(colors.$white-1, colors.$blue-2, 85%);
-      outline-color: color.mix(colors.$white-1, colors.$blue-2, 85%);
-      color: color.mix(colors.$white-1, colors.$gray-4, 30%);
+      background-color: colors.$white-3;
+      outline-color: colors.$white-3;
+      color: colors.$gray-4;
     }
 
     .description {
