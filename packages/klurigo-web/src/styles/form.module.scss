@@ -1,5 +1,6 @@
 @use './colors';
 @use './helpers';
+@use './mixins/button';
 @use './variables';
 
 .form {
@@ -53,17 +54,10 @@
       }
 
       .buttonLink {
+        @include button.button-reset;
+
         display: inline-flex;
-        -moz-appearance: none;
-        -o-appearance: none;
-        -webkit-appearance: none;
-        appearance: none;
-        background-color: transparent;
-        border: none;
-        font-family: inherit;
-        outline: none;
         text-decoration: underline;
-        cursor: pointer;
         color: colors.$white-1;
         text-underline-offset: helpers.pxToRem(2px);
 

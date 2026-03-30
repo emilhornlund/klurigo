@@ -1,5 +1,6 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
 @use '../../styles/variables';
 
 .starRow {
@@ -63,10 +64,9 @@
 // ─── Interactive star buttons ─────────────────────────────────────────────────
 
 .starButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  @include button.button-reset;
+  @include button.focus-ring(colors.$yellow-2);
+
   line-height: 1;
   display: flex;
   align-items: center;
@@ -92,13 +92,6 @@
       &:not(.active) {
         color: colors.$white-1-70;
       }
-    }
-  }
-
-  &:focus-visible {
-    &:not(:disabled) {
-      outline: 2px solid colors.$yellow-2;
-      outline-offset: 2px;
     }
   }
 }

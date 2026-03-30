@@ -1,6 +1,8 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/mixins/spacing';
+@use '../../styles/mixins/surface';
 
 .header {
   display: flex;
@@ -128,7 +130,7 @@
     }
 
     div:nth-child(2) {
-      font-weight: bold;
+      font-weight: 700;
 
       @include helpers.mobile {
         @include helpers.fontSize(28px);
@@ -178,14 +180,13 @@
   }
 
   .playerCounter {
+    @include surface.surface-box(true);
+
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white-1;
-    font-weight: bold;
+    font-weight: 700;
 
     @mixin info-dimensions($size) {
       column-gap: $size * 0.4;

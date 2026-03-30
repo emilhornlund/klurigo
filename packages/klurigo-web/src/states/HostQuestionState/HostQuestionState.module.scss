@@ -46,7 +46,7 @@
       align-items: center;
       justify-content: center;
       background-color: colors.$white-1-50;
-      font-weight: bold;
+      font-weight: 700;
 
       @mixin info-dimensions($size) {
         column-gap: $size * 0.4;
@@ -83,7 +83,7 @@
       justify-content: center;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
-      font-weight: bold;
+      font-weight: 700;
       background-color: colors.$white-1-50;
 
       @include helpers.mobile {

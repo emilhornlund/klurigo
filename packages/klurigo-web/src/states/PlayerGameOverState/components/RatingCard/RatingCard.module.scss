@@ -1,40 +1,36 @@
 @use '../../../../styles/colors';
 @use '../../../../styles/helpers';
+@use '../../../../styles/mixins/spacing';
+@use '../../../../styles/mixins/surface';
 @use '../../../../styles/variables';
 
 .ratingCard {
+  @include spacing.container-spacing;
+  @include surface.surface-box;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: colors.$white-1-15;
-  border: variables.$control-outside-border-width solid colors.$white-1-25;
-  color: colors.$white-1;
   width: 100%;
 
   @include helpers.mobile {
-    gap: variables.$mobile-layout-gutter;
-    padding: variables.$mobile-narrow-layout-gutter;
-    border-radius: variables.$mobile-border-radius;
-    max-width: 100%;
+    gap: variables.$mobile-narrow-layout-gutter;
+    max-width: 300px;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-layout-gutter;
-    padding: variables.$tablet-narrow-layout-gutter;
-    border-radius: variables.$tablet-border-radius;
+    gap: variables.$tablet-narrow-layout-gutter;
     max-width: 350px;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-layout-gutter;
-    padding: variables.$desktop-narrow-layout-gutter;
-    border-radius: variables.$desktop-border-radius;
+    gap: variables.$desktop-narrow-layout-gutter;
     max-width: 400px;
   }
 }
 
 .ratingTitle {
-  font-weight: bold;
+  font-weight: 700;
   opacity: 0.95;
 
   @include helpers.mobile {
@@ -52,6 +48,8 @@
 
 .comment {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 }

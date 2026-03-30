@@ -110,7 +110,7 @@
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          font-weight: bold;
+          font-weight: 700;
 
           @include helpers.mobile {
             column-gap: variables.$mobile-narrow-layout-gutter;

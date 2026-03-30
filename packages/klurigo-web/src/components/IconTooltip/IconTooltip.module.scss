@@ -1,16 +1,11 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
 @use '../../styles/variables';
 
 .iconTooltipButton {
-  -moz-appearance: none;
-  -o-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  border: none;
-  font-family: inherit;
-  outline: none;
+  @include button.button-reset;
+
   color: colors.$white-1;
 
   @include helpers.mobile {
@@ -26,7 +21,6 @@
   }
 
   &:hover {
-    cursor: pointer;
     color: colors.$gray-1;
   }
 }

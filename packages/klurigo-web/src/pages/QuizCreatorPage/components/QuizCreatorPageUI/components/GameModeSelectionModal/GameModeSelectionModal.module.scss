@@ -32,7 +32,7 @@ $outline-offset: helpers.pxToRem(2px);
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
     color: colors.$gray-4;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
 
     @include helpers.mobile {

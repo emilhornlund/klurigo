@@ -1,5 +1,6 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
 @use '../../styles/variables';
 
 .mediaModal {
@@ -128,19 +129,10 @@
           }
 
           .itemButton {
+            @include button.button-reset;
+
             display: flex;
             flex-direction: column;
-            -moz-appearance: none;
-            -o-appearance: none;
-            -webkit-appearance: none;
-            appearance: none;
-            background-color: transparent;
-            border: none;
-            font-family: inherit;
-            outline: none;
-            margin: 0;
-            padding: 0;
-            cursor: pointer;
           }
         }
       }

@@ -1,5 +1,7 @@
 @use '../../../../styles/colors';
 @use '../../../../styles/helpers';
+@use '../../../../styles/mixins/spacing';
+@use '../../../../styles/mixins/surface';
 @use '../../../../styles/variables';
 
 .layout {
@@ -74,31 +76,26 @@
   }
 
   .details {
+    @include surface.surface-box;
+    @include spacing.container-spacing;
+
     display: grid;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
     margin-top: auto;
     width: 100%;
 
     @include helpers.mobile {
       grid-template-columns: 1fr 1fr;
       gap: variables.$mobile-narrow-layout-gutter;
-      border-radius: variables.$mobile-border-radius;
-      padding: variables.$mobile-narrow-layout-gutter;
     }
 
     @include helpers.tablet {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: variables.$tablet-narrow-layout-gutter;
-      border-radius: variables.$tablet-border-radius;
-      padding: variables.$tablet-narrow-layout-gutter;
     }
 
     @include helpers.desktop {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: variables.$desktop-narrow-layout-gutter;
-      border-radius: variables.$desktop-border-radius;
-      padding: variables.$desktop-narrow-layout-gutter;
     }
 
     .item {

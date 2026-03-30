@@ -1,0 +1,30 @@
+@use '../colors';
+@use '../variables';
+
+@mixin surface-base {
+  background-color: colors.$white-1-15;
+  color: colors.$white-1;
+}
+
+@mixin surface-border {
+  border: variables.$control-outside-border-width solid colors.$white-1-25;
+}
+
+@mixin surface-box($interactive: false) {
+  @include surface-base;
+  @include surface-border;
+
+  @if $interactive {
+    &:hover,
+    &:focus-visible {
+      background-color: colors.$white-1-20;
+      border-color: colors.$white-1-30;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+  }
+}

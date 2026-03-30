@@ -1,0 +1,32 @@
+@mixin button-reset {
+  -moz-appearance: none;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+}
+
+@mixin focus-ring(
+  $color: currentColor,
+  $width: 2px,
+  $offset: 2px
+) {
+  &:focus-visible {
+    &:not(:disabled) {
+      outline: $width solid $color;
+      outline-offset: $offset;
+    }
+  }
+}

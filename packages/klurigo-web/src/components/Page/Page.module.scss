@@ -1,6 +1,7 @@
 @use '../../styles/animations';
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
 @use '../../styles/variables';
 
 @mixin iconSize() {
@@ -58,16 +59,12 @@
     }
 
     .logo {
+      @include button.button-reset;
+
       position: relative;
       display: flex;
       flex-direction: row;
       align-items: center;
-      appearance: none;
-      border: none;
-      outline: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
       transform-origin: center;
 
       .icon {
@@ -85,9 +82,10 @@
       }
 
       .text {
-        position: relative;
         @include helpers.fontSize(20px);
-        font-weight: bolder;
+
+        position: relative;
+        font-weight: 700;
         color: colors.$white-1;
         top: helpers.pxToRem(-1px);
       }
@@ -157,7 +155,7 @@
       }
 
       a {
-        font-weight: bold;
+        font-weight: 700;
         color: colors.$white-1;
 
         @include helpers.mobile {
@@ -179,14 +177,10 @@
         @include iconSize();
 
         button {
+          @include button.button-reset;
+
           display: flex;
           flex-direction: column;
-          appearance: none;
-          border: none;
-          outline: none;
-          background: none;
-          cursor: pointer;
-          padding: 0;
 
           img {
             filter: brightness(0) saturate(100%) invert(100%) sepia(4%)
@@ -400,12 +394,12 @@
 
 @keyframes gradientShift {
   0% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
   50% {
     background-position: 100% 50%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
 }

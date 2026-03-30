@@ -156,7 +156,7 @@
           border-radius: 50%;
           background-color: colors.$white-1-50;
           color: colors.$black-1-50;
-          font-weight: bolder;
+          font-weight: 700;
           position: relative;
           line-height: 0;
 
@@ -206,7 +206,7 @@
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          font-weight: bold;
+          font-weight: 700;
           color: colors.$black-1-50;
 
           @include helpers.mobile {

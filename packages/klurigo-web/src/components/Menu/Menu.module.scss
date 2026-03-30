@@ -1,5 +1,6 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
 @use '../../styles/variables';
 
 .menu {
@@ -17,14 +18,12 @@
   box-shadow: 0 helpers.pxToRem(4px) helpers.pxToRem(4px) rgba(0, 0, 0, 0.1);
 
   .menuItem {
+    @include button.button-reset;
+
     display: flex;
     flex-direction: column;
     width: 100%;
     color: colors.$gray-4;
-    appearance: none;
-    padding: 0;
-    border: none;
-    outline: none;
 
     .content {
       display: flex;
@@ -56,6 +55,7 @@
 
     &:disabled {
       color: colors.$gray-2;
+      cursor: default;
     }
   }
 
@@ -63,10 +63,8 @@
     display: flex;
     flex-direction: column;
     width: calc(100% - (#{variables.$desktop-narrow-layout-gutter} * 2));
-    appearance: none;
     margin: 0 variables.$desktop-narrow-layout-gutter;
     border: none;
     border-bottom: 1px dashed colors.$gray-2;
-    outline: none;
   }
 }

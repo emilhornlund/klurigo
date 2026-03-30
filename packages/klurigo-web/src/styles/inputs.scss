@@ -86,7 +86,7 @@
   /* begin button overrides */
   button {
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
   }
   /* end button overrides */
 
@@ -397,7 +397,7 @@
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  font-weight: bold;
+  font-weight: 700;
   justify-content: flex-start;
 
   @include helpers.mobile {

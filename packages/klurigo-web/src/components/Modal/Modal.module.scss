@@ -92,7 +92,7 @@
       .title {
         display: flex;
         flex-direction: column;
-        font-weight: bold;
+        font-weight: 700;
         flex: 1;
 
         @include helpers.mobile {

@@ -156,7 +156,7 @@
 .infoItem {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: 700;
   color: colors.$gray-4;
 
   @include helpers.mobile {
@@ -214,7 +214,7 @@
 .metaItem {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: 700;
   color: colors.$gray-3;
 
   @include helpers.mobile {

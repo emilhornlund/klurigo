@@ -1,17 +1,17 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/surface';
 @use '../../styles/variables';
 
 .score {
+  @include surface.surface-box;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  background-color: colors.$white-1-15;
-  border: variables.$control-outside-border-width solid colors.$white-1-25;
-  color: colors.$white-1;
-  font-weight: bold;
+  font-weight: 700;
 
   @mixin score-dimensions($size, $layout-gutter) {
     padding: calc(#{$layout-gutter} * 0.5) calc(#{$layout-gutter} * 2);

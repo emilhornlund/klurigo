@@ -1,5 +1,8 @@
 @use '../../styles/colors';
 @use '../../styles/helpers';
+@use '../../styles/mixins/button';
+@use '../../styles/mixins/spacing';
+@use '../../styles/mixins/surface';
 @use '../../styles/variables';
 
 .callToActionCard {
@@ -26,44 +29,29 @@
   }
 
   .button {
+    @include button.button-reset;
+    @include button.focus-ring;
+    @include surface.surface-box(true);
+    @include spacing.container-spacing;
+
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: colors.$white-1-15;
-    cursor: pointer;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
     flex: 1;
-    font-family: inherit;
     height: 100%;
-    outline: none;
-
-    transition: background-color 120ms ease,
-    border-color 120ms ease;
-
-    &:hover,
-    &:focus-visible {
-      background: colors.$white-1-20;
-      border-color: colors.$white-1-30;
-    }
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
 
     @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter variables.$mobile-layout-gutter;
       column-gap: variables.$mobile-narrow-layout-gutter;
-      border-radius: variables.$mobile-border-radius;
     }
     @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter variables.$tablet-layout-gutter;
       column-gap: variables.$tablet-narrow-layout-gutter;
-      border-radius: variables.$tablet-border-radius;
     }
     @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter variables.$desktop-layout-gutter;
       column-gap: variables.$desktop-narrow-layout-gutter;
-      border-radius: variables.$desktop-border-radius;
     }
 
     .content {
@@ -88,7 +76,7 @@
       .title {
         display: flex;
         flex-direction: row;
-        font-weight: bold;
+        font-weight: 700;
         opacity: 0.95;
         color: colors.$white-1;
 
@@ -142,13 +130,12 @@
     }
 
     .icon {
+      @include surface.surface-box;
+
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: colors.$white-1-15;
-      border: variables.$control-outside-border-width solid colors.$white-1-25;
-      color: colors.$white-1;
 
       @include helpers.mobile {
         width: 2rem;

@@ -1,5 +1,7 @@
 @use '../../../../../../styles/colors';
 @use '../../../../../../styles/helpers';
+@use '../../../../../../styles/mixins/spacing';
+@use '../../../../../../styles/mixins/surface';
 @use '../../../../../../styles/variables';
 
 $contrast-opacity: 0.8;
@@ -42,29 +44,14 @@ $contrast-opacity: 0.8;
   }
 
   .card {
+    @include surface.surface-box;
+    @include spacing.container-spacing;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex: 1;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white-1;
-
-    @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter;
-      border-radius: variables.$mobile-border-radius;
-    }
-
-    @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter;
-      border-radius: variables.$tablet-border-radius;
-    }
-
-    @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter;
-      border-radius: variables.$desktop-border-radius;
-    }
 
     &.full {
       grid-column: span 2;
@@ -170,7 +157,7 @@ $contrast-opacity: 0.8;
         }
 
         .title {
-          font-weight: bold;
+          font-weight: 700;
           opacity: 0.95;
 
           @include helpers.mobile {
@@ -207,12 +194,12 @@ $contrast-opacity: 0.8;
       }
 
       .icon {
+        @include surface.surface-box;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: colors.$white-1-15;
-        border: variables.$control-outside-border-width solid colors.$white-1-25;
 
         @include helpers.mobile {
           width: 2.1rem;
@@ -378,7 +365,7 @@ $contrast-opacity: 0.8;
           }
 
           .value, .value > a {
-            font-weight: bold;
+            font-weight: 700;
             white-space: nowrap;
             text-align: right;
 
@@ -440,7 +427,7 @@ $contrast-opacity: 0.8;
       }
 
       .value {
-        font-weight: bold;
+        font-weight: 700;
         text-align: center;
 
         @include helpers.mobile {
@@ -474,11 +461,9 @@ $contrast-opacity: 0.8;
         }
 
         .nickname {
+          @include surface.surface-box(true);
+
           display: flex;
-          background-color: colors.$white-1-15;
-          border: variables.$control-outside-border-width solid
-            colors.$white-1-25;
-          color: colors.$white-1;
           justify-content: center;
           align-items: center;
 
@@ -514,8 +499,6 @@ $contrast-opacity: 0.8;
           }
 
           &:hover {
-            background-color: colors.$white-1-20;
-            border-color: colors.$white-1-40;
             opacity: 0.9;
 
             @media (prefers-reduced-motion: no-preference) {
@@ -566,6 +549,7 @@ $contrast-opacity: 0.8;
         align-items: center;
         gap: variables.$mobile-layout-gutter;
         position: relative;
+        width: 100%;
 
         @include helpers.tablet {
           gap: variables.$tablet-layout-gutter;
@@ -576,7 +560,7 @@ $contrast-opacity: 0.8;
         }
 
         .title {
-          font-weight: bold;
+          font-weight: 700;
           opacity: 0.95;
 
           @include helpers.mobile {
@@ -594,7 +578,9 @@ $contrast-opacity: 0.8;
 
         .comment {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
           width: 100%;
         }
       }

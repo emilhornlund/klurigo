@@ -1,5 +1,7 @@
 @use '../../../../styles/colors';
 @use '../../../../styles/helpers';
+@use '../../../../styles/mixins/spacing';
+@use '../../../../styles/mixins/surface';
 @use '../../../../styles/variables';
 
 .stats {
@@ -22,35 +24,32 @@
   }
 
   .card {
+    @include surface.surface-box;
+    @include spacing.container-spacing;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white-1;
 
     @include helpers.mobile {
       padding: variables.$mobile-layout-gutter variables.$mobile-narrow-layout-gutter;
       gap: variables.$mobile-narrow-layout-gutter * 0.35;
-      border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
       padding: variables.$tablet-layout-gutter variables.$tablet-narrow-layout-gutter;
       gap: variables.$tablet-narrow-layout-gutter * 0.35;
-      border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
       padding: variables.$desktop-layout-gutter variables.$desktop-narrow-layout-gutter;
       gap: variables.$desktop-narrow-layout-gutter * 0.35;
-      border-radius: variables.$desktop-border-radius;
     }
 
     .title {
-      font-weight: bold;
+      font-weight: 700;
       opacity: 0.78;
 
       @include helpers.mobile {

@@ -1,11 +1,12 @@
 @use '../../../../../../../styles/colors';
 @use '../../../../../../../styles/helpers';
 @use '../../../../../../../styles/variables';
+@use '../../../../../../../styles/mixins/spacing';
+@use '../../../../../../../styles/mixins/surface';
 
 .table {
   display: flex;
   flex-direction: column;
-  color: colors.$gray-4;
 
   @include helpers.mobile {
     row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
@@ -23,27 +24,12 @@
   }
 
   .tableRow {
+    @include surface.surface-box(true);
+    @include spacing.container-spacing;
+
     display: flex;
     flex-direction: column;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white-1;
     cursor: pointer;
-
-    @include helpers.mobile {
-      padding: calc(#{variables.$mobile-layout-gutter} * 0.35) variables.$mobile-layout-gutter;
-      border-radius: variables.$mobile-border-radius;
-    }
-
-    @include helpers.tablet {
-      padding: calc(#{variables.$tablet-layout-gutter} * 0.35) variables.$tablet-layout-gutter;
-      border-radius: variables.$tablet-border-radius;
-    }
-
-    @include helpers.desktop {
-      padding: calc(#{variables.$desktop-layout-gutter} * 0.35) variables.$desktop-layout-gutter;
-      border-radius: variables.$desktop-border-radius;
-    }
 
     .main {
       display: flex;
@@ -63,14 +49,13 @@
       }
 
       .badge {
+        @include surface.surface-box(true);
+
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
-        background-color: colors.$white-1-15;
-        border: variables.$control-outside-border-width solid colors.$white-1-25;
-        color: colors.$white-1;
-        font-weight: bold;
+        font-weight: 700;
 
         @include helpers.mobile {
           width: helpers.pxToRem(30px);
@@ -94,8 +79,7 @@
         justify-content: start;
         align-items: center;
         flex-wrap: wrap;
-        flex: 1;
-        font-weight: bold;
+        font-weight: 700;
         opacity: 0.88;
 
         @include helpers.mobile {
@@ -111,7 +95,7 @@
         }
 
         .label {
-          font-weight: bold;
+          font-weight: 900;
           text-transform: uppercase;
           background-color: colors.$orange-2;
           color: colors.$white-1;
@@ -230,7 +214,7 @@
         }
 
         .value {
-          font-weight: bold;
+          font-weight: 700;
           opacity: 0.95;
         }
       }
@@ -244,9 +228,6 @@
     }
 
     &:hover {
-      background-color: colors.$white-1-20;
-      border-color: colors.$white-1-40;
-
       .main {
         .badge {
           background-color: colors.$white-1-25;

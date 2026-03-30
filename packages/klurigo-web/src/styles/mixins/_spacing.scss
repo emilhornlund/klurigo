@@ -1,0 +1,19 @@
+@use '../variables';
+@use '../helpers';
+
+@mixin container-spacing {
+  @include helpers.mobile {
+    padding: variables.$mobile-narrow-layout-gutter;
+    border-radius: variables.$mobile-border-radius;
+  }
+
+  @include helpers.tablet {
+    padding: variables.$tablet-narrow-layout-gutter;
+    border-radius: variables.$tablet-border-radius;
+  }
+
+  @include helpers.desktop {
+    padding: variables.$desktop-narrow-layout-gutter;
+    border-radius: variables.$desktop-border-radius;
+  }
+}

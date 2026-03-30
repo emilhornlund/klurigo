@@ -1,6 +1,8 @@
+@use '../../styles/animations';
 @use '../../styles/colors';
 @use '../../styles/helpers';
-@use '../../styles/animations';
+@use '../../styles/mixins/button';
+@use '../../styles/mixins/surface';
 @use '../../styles/variables';
 
 .main {
@@ -8,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
+  font-weight: 700;
   position: relative;
   overflow: hidden;
 
@@ -60,9 +62,7 @@
   }
 
   &.subtle {
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white-1;
+    @include surface.surface-box;
   }
 
   &.accent {
@@ -71,23 +71,15 @@
   }
 
   .delete {
-    -o-appearance: none;
-    -webkit-appearance: none;
-    align-items: center;
-    appearance: none;
+    @include button.button-reset;
+    @include button.focus-ring;
+
     background-color: colors.$black-1-70;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
     display: none;
     flex-direction: row;
     flex: 1;
-    font-family: inherit;
     height: 100%;
     justify-content: center;
-    margin: 0;
-    outline: none;
-    padding: 0;
     position: absolute;
     width: 100%;
     transition: background-color 0.2s ease;
