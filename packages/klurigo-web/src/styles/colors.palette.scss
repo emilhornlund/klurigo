@@ -1,0 +1,124 @@
+/*
+ * Primitive color palette
+ *
+ * This file only contains raw palette tokens and shared color utilities.
+ * Components should not rely on these tokens directly unless they are defining
+ * semantic tokens in a higher-level file.
+ */
+
+/* ==========================================================================
+   Shared utility functions
+   ========================================================================== */
+
+@function alpha($base-color, $opacity) {
+  @return rgba($base-color, $opacity);
+}
+
+/* ==========================================================================
+   Primitive palette
+   ========================================================================== */
+
+/* Brand and accent colors */
+$yellow-50: #fff8db;
+$yellow-100: #fff1b8;
+$yellow-200: #ffe98f;
+$yellow-300: #ffe066;
+$yellow-400: #ffd84a;
+$yellow-500: #ffd32a;
+$yellow-600: #f4c41a;
+$yellow-700: #dfae0d;
+$yellow-800: #b88d0a;
+$yellow-900: #8a6906;
+
+$orange-50: #fff4df;
+$orange-100: #ffe5b5;
+$orange-200: #ffd48a;
+$orange-300: #ffc35d;
+$orange-400: #ffb231;
+$orange-500: #ffa502;
+$orange-600: #f08f00;
+$orange-700: #d87b00;
+$orange-800: #b66500;
+$orange-900: #8e4d00;
+
+$red-50: #ffe3e2;
+$red-100: #ffc9c7;
+$red-200: #ffa8a4;
+$red-300: #ff8782;
+$red-400: #ff6b65;
+$red-500: #ff5e57;
+$red-600: #ff3f34;
+$red-700: #ef2d24;
+$red-800: #c9221c;
+$red-900: #981915;
+
+$pink-50: #ffe2e8;
+$pink-100: #ffc9d4;
+$pink-200: #ffa9bc;
+$pink-300: #ff8aa4;
+$pink-400: #ff6b8d;
+$pink-500: #ff6b81;
+$pink-600: #ff4757;
+$pink-700: #eb3347;
+$pink-800: #c7263b;
+$pink-900: #971b2d;
+
+$purple-50: #f9e4ff;
+$purple-100: #efc8ff;
+$purple-200: #e4a8ff;
+$purple-300: #d980fa;
+$purple-400: #c96df1;
+$purple-500: #b85fe3;
+$purple-600: #9d49c7;
+$purple-700: #8238a4;
+$purple-800: #682d82;
+$purple-900: #4d2260;
+
+$blue-50: #e5e7ff;
+$blue-100: #cdd1ff;
+$blue-200: #acb3ff;
+$blue-300: #8790ff;
+$blue-400: #6267f5;
+$blue-500: #5352ed;
+$blue-600: #3742fa;
+$blue-700: #2d35d7;
+$blue-800: #252bad;
+$blue-900: #1c2183;
+
+$turquoise-50: #e8fffc;
+$turquoise-100: #c5fff9;
+$turquoise-200: #9ffaf1;
+$turquoise-300: #7efff5;
+$turquoise-400: #67e6dc;
+$turquoise-500: #4fc9c0;
+$turquoise-600: #38aaa2;
+$turquoise-700: #2b8680;
+$turquoise-800: #216661;
+$turquoise-900: #174845;
+
+$green-50: #e4ffef;
+$green-100: #c2f9d8;
+$green-200: #97f5bc;
+$green-300: #67ee9e;
+$green-400: #3ae374;
+$green-500: #32ff7e;
+$green-600: #18d968;
+$green-700: #10b454;
+$green-800: #0d8c42;
+$green-900: #086431;
+
+/* Neutral colors */
+$white: #ffffff;
+
+$gray-50: #f8f9fb;
+$gray-100: #f1f2f6;
+$gray-200: #dfe4ea;
+$gray-300: #ced6e0;
+$gray-400: #a4b0be;
+$gray-500: #747d8c;
+$gray-600: #57606f;
+$gray-700: #46505d;
+$gray-800: #2f3542;
+$gray-900: #1f2430;
+
+$black: #000000;
