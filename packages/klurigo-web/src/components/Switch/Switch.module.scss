@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -83,18 +83,18 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       cursor: pointer;
 
       &:checked + .slider {
-        background-color: colors.$green-2;
+        background-color: legacy.$green-2;
       }
 
       &:focus-visible + .slider {
         @include helpers.mobile {
-          box-shadow: 0 0 0 $mobile-switch-visible-border-width colors.$green-2;
+          box-shadow: 0 0 0 $mobile-switch-visible-border-width legacy.$green-2;
         }
         @include helpers.tablet {
-          box-shadow: 0 0 0 $tablet-switch-visible-border-width colors.$green-2;
+          box-shadow: 0 0 0 $tablet-switch-visible-border-width legacy.$green-2;
         }
         @include helpers.desktop {
-          box-shadow: 0 0 0 $desktop-switch-visible-border-width colors.$green-2;
+          box-shadow: 0 0 0 $desktop-switch-visible-border-width legacy.$green-2;
         }
       }
 
@@ -123,7 +123,7 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: colors.$gray-1;
+      background-color: legacy.$gray-1;
       -webkit-transition: .4s;
       transition: .4s;
 
@@ -140,7 +140,7 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       &:before {
         position: absolute;
         content: "";
-        background-color: colors.$white;
+        background-color: legacy.$white;
         border-radius: 50%;
         -webkit-transition: .4s;
         transition: .4s;

@@ -1,4 +1,4 @@
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -7,7 +7,7 @@
   flex-direction: column;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: colors.$white-1-15;
+  background-color: legacy.$white-1-15;
   cursor: default;
 
   @include helpers.mobile {
@@ -29,7 +29,7 @@
 .skeletonCover {
   aspect-ratio: 16 / 10;
   width: 100%;
-  background-color: colors.$white-1-70;
+  background-color: legacy.$white-1-70;
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .skeletonLine {
-  background-color: colors.$white-1-70;
+  background-color: legacy.$white-1-70;
   animation: shimmer 1.5s ease-in-out infinite;
 
   @include helpers.mobile {

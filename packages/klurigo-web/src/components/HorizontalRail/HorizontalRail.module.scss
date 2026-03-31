@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 
 .railWrapper {
@@ -30,9 +30,9 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  border: 1px solid colors.$white-1-25;
+  border: 1px solid legacy.$white-1-25;
   background: rgba(0, 0, 0, 0.35);
-  color: colors.$white;
+  color: legacy.$white;
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
@@ -72,7 +72,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: colors.$white-1-25;
+    background: legacy.$white-1-25;
     border-radius: 3px;
   }
 }

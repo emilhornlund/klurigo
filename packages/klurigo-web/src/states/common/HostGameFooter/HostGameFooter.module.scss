@@ -1,4 +1,4 @@
-@use '../../../styles/colors';
+@use '../../../styles/colors' as legacy;
 @use '../../../styles/helpers';
 @use '../../../styles/variables';
 
@@ -16,7 +16,7 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: colors.$white-1-50;
+  background-color: legacy.$white-1-50;
 
   @include helpers.mobile {
     border-radius: variables.$mobile-narrow-layout-gutter;

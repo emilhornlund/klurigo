@@ -1,4 +1,4 @@
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -47,9 +47,9 @@ $contrast-opacity: 0.8;
     align-items: center;
     justify-content: center;
     flex: 1;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white;
+    background-color: legacy.$white-1-15;
+    border: variables.$control-outside-border-width solid legacy.$white-1-25;
+    color: legacy.$white;
 
     @include helpers.mobile {
       padding: variables.$mobile-narrow-layout-gutter;
@@ -211,8 +211,8 @@ $contrast-opacity: 0.8;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: colors.$white-1-15;
-        border: variables.$control-outside-border-width solid colors.$white-1-25;
+        background-color: legacy.$white-1-15;
+        border: variables.$control-outside-border-width solid legacy.$white-1-25;
 
         @include helpers.mobile {
           width: 2.1rem;
@@ -253,7 +253,7 @@ $contrast-opacity: 0.8;
       &:hover,
       &:focus-visible {
         &:not(:disabled) {
-          background-color: colors.$white-1-20;
+          background-color: legacy.$white-1-20;
 
           @media (prefers-reduced-motion: no-preference) {
             transform: scale(1.05);
@@ -270,8 +270,8 @@ $contrast-opacity: 0.8;
           }
 
           .icon {
-            background-color: colors.$white-1-25;
-            border-color: colors.$white-1-40;
+            background-color: legacy.$white-1-25;
+            border-color: legacy.$white-1-40;
 
             svg {
               opacity: 1;
@@ -475,10 +475,10 @@ $contrast-opacity: 0.8;
 
         .nickname {
           display: flex;
-          background-color: colors.$white-1-15;
+          background-color: legacy.$white-1-15;
           border: variables.$control-outside-border-width solid
-            colors.$white-1-25;
-          color: colors.$white;
+            legacy.$white-1-25;
+          color: legacy.$white;
           justify-content: center;
           align-items: center;
 
@@ -514,8 +514,8 @@ $contrast-opacity: 0.8;
           }
 
           &:hover {
-            background-color: colors.$white-1-20;
-            border-color: colors.$white-1-40;
+            background-color: legacy.$white-1-20;
+            border-color: legacy.$white-1-40;
             opacity: 0.9;
 
             @media (prefers-reduced-motion: no-preference) {

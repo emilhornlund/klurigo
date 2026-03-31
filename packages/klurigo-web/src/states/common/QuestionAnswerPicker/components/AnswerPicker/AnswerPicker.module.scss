@@ -1,4 +1,4 @@
-@use '../../../../../styles/colors';
+@use '../../../../../styles/colors' as legacy;
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/variables';
 
@@ -34,8 +34,8 @@
       align-items: center;
       border: none;
       outline: none;
-      background-color: colors.$white;
-      color: colors.$gray-4;
+      background-color: legacy.$white;
+      color: legacy.$gray-4;
       overflow: hidden;
       cursor: pointer;
       transition:
@@ -80,8 +80,8 @@
           &:not(:disabled) {
             border: none;
             outline: none;
-            background-color: colors.$gray-1;
-            color: colors.$gray-4;
+            background-color: legacy.$gray-1;
+            color: legacy.$gray-4;
             transform: scale(1.02) translateZ(0);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           }
@@ -90,7 +90,7 @@
         &:active {
           &:not(:disabled) {
             transform: scale(0.96) translateZ(0);
-            background-color: colors.$gray-2;
+            background-color: legacy.$gray-2;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition:
               transform 0.1s ease,
@@ -104,8 +104,8 @@
           &:not(:disabled) {
             border: none;
             outline: none;
-            background-color: colors.$gray-2;
-            color: colors.$gray-4;
+            background-color: legacy.$gray-2;
+            color: legacy.$gray-4;
             transform: scale(0.96) translateZ(0);
             transition: transform 0.1s ease;
           }
@@ -119,7 +119,7 @@
         align-items: center;
         border-radius: 50%;
         font-weight: bold;
-        color: colors.$white;
+        color: legacy.$white;
         position: relative;
 
         &:after {
@@ -159,7 +159,7 @@
 
       &:nth-child(1) {
         div {
-          background-color: colors.$red-2;
+          background-color: legacy.$red-2;
 
           &:after {
             content: 'A';
@@ -168,7 +168,7 @@
       }
       &:nth-child(2) {
         div {
-          background-color: colors.$blue-2;
+          background-color: legacy.$blue-2;
 
           &:after {
             content: 'B';
@@ -177,7 +177,7 @@
       }
       &:nth-child(3) {
         div {
-          background-color: colors.$yellow-2;
+          background-color: legacy.$yellow-2;
 
           &:after {
             content: 'C';
@@ -186,7 +186,7 @@
       }
       &:nth-child(4) {
         div {
-          background-color: colors.$green-2;
+          background-color: legacy.$green-2;
 
           &:after {
             content: 'D';
@@ -195,7 +195,7 @@
       }
       &:nth-child(5) {
         div {
-          background-color: colors.$turquoise-2;
+          background-color: legacy.$turquoise-2;
 
           &:after {
             content: 'E';
@@ -204,7 +204,7 @@
       }
       &:nth-child(6) {
         div {
-          background-color: colors.$pink-2;
+          background-color: legacy.$pink-2;
 
           &:after {
             content: 'F';

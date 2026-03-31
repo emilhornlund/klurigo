@@ -1,4 +1,4 @@
-@use '../../../../styles/colors';
+@use '../../../../styles/colors' as legacy;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
 
@@ -75,8 +75,8 @@
 
   .details {
     display: grid;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
+    background-color: legacy.$white-1-15;
+    border: variables.$control-outside-border-width solid legacy.$white-1-25;
     margin-top: auto;
     width: 100%;
 
@@ -109,7 +109,7 @@
       overflow: hidden;
 
       .icon, .value, .value > a {
-        color: colors.$white;
+        color: legacy.$white;
         width: 100%;
       }
 

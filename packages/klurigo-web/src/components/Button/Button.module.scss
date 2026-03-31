@@ -1,6 +1,6 @@
 @use '../../styles/inputs';
 @use '../../styles/loading';
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -13,17 +13,17 @@
 
       @include helpers.mobile {
         $--mobile-loading-spinner-size: calc(#{variables.$mobile-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, colors.$gray-4, button-mobile-normal);
+        @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, legacy.$gray-4, button-mobile-normal);
       }
 
       @include helpers.tablet {
         $--tablet-loading-spinner-size: calc(#{variables.$tablet-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, colors.$gray-4, button-tablet-normal);
+        @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, legacy.$gray-4, button-tablet-normal);
       }
 
       @include helpers.desktop {
         $--desktop-loading-spinner-size: calc(#{variables.$desktop-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, colors.$gray-4, button-desktop-normal);
+        @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, legacy.$gray-4, button-desktop-normal);
       }
     }
   }
@@ -59,17 +59,17 @@
       .loadingSpinner {
         @include helpers.mobile {
           $--mobile-loading-spinner-size: calc(#{variables.$mobile-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, colors.$gray-4, button-mobile-small);
+          @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, legacy.$gray-4, button-mobile-small);
         }
 
         @include helpers.tablet {
           $--tablet-loading-spinner-size: calc(#{variables.$tablet-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, colors.$gray-4, button-tablet-small);
+          @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, legacy.$gray-4, button-tablet-small);
         }
 
         @include helpers.desktop {
           $--desktop-loading-spinner-size: calc(#{variables.$desktop-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, colors.$gray-4, button-desktop-small);
+          @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, legacy.$gray-4, button-desktop-small);
         }
       }
     }

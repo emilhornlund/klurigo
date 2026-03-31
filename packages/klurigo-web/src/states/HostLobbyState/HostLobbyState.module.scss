@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -25,13 +25,13 @@
 
   .box {
     outline-style: solid;
-    outline-color: colors.$white;
+    outline-color: legacy.$white;
 
     border-style: solid;
     border-color: transparent;
 
-    background-color: colors.$white;
-    color: colors.$gray-4;
+    background-color: legacy.$white;
+    color: legacy.$gray-4;
 
     @include helpers.mobile {
       height: 98px;
@@ -182,7 +182,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: colors.$white-1-50;
+    background-color: legacy.$white-1-50;
     font-weight: bold;
 
     @mixin info-dimensions($size) {

@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 
 .header {
@@ -19,7 +19,7 @@
 .title {
   margin: 0;
   font-weight: 700;
-  color: colors.$white;
+  color: legacy.$white;
 
   @include helpers.mobile {
     @include helpers.fontSize(20px);
@@ -34,7 +34,7 @@
 
 .description {
   margin: 0;
-  color: colors.$white-1-70;
+  color: legacy.$white-1-70;
 
   @include helpers.mobile {
     @include helpers.fontSize(14px);

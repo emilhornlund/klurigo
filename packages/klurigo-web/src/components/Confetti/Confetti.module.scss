@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -59,22 +59,22 @@
 // Color mappings for CSS custom properties
 .confettiParticle {
   &[style*='--particle-color: $green-2'] {
-    background-color: colors.$green-2;
+    background-color: legacy.$green-2;
   }
 
   &[style*='--particle-color: $yellow-2'] {
-    background-color: colors.$yellow-2;
+    background-color: legacy.$yellow-2;
   }
 
   &[style*='--particle-color: $gold'] {
-    background-color: colors.$gold;
+    background-color: legacy.$gold;
   }
 
   &[style*='--particle-color: $pink-2'] {
-    background-color: colors.$pink-2;
+    background-color: legacy.$pink-2;
   }
 
   &[style*='--particle-color: $turquoise-2'] {
-    background-color: colors.$turquoise-2;
+    background-color: legacy.$turquoise-2;
   }
 }

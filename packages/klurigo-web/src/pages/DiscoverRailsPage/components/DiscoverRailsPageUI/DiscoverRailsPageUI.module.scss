@@ -1,4 +1,4 @@
-@use '../../../../styles/colors';
+@use '../../../../styles/colors' as legacy;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
 
@@ -52,7 +52,7 @@
 .emptyState {
   margin: 0;
   text-align: center;
-  color: colors.$white-1-50;
+  color: legacy.$white-1-50;
 
   @include helpers.mobile {
     padding: 1rem 0;

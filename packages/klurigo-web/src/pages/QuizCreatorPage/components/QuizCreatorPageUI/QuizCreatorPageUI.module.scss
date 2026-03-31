@@ -1,4 +1,4 @@
-@use '../../../../styles/colors';
+@use '../../../../styles/colors' as legacy;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
 
@@ -60,7 +60,7 @@
     .divider {
       display: flex;
       flex-direction: column;
-      border: 1px solid colors.$white;
+      border: 1px solid legacy.$white;
     }
 
     .toggleButtonWrapper {

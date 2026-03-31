@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -45,7 +45,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      background-color: colors.$white-1-50;
+      background-color: legacy.$white-1-50;
       font-weight: bold;
 
       @mixin info-dimensions($size) {
@@ -84,7 +84,7 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       font-weight: bold;
-      background-color: colors.$white-1-50;
+      background-color: legacy.$white-1-50;
 
       @include helpers.mobile {
         padding: 0;

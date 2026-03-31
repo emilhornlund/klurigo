@@ -1,5 +1,5 @@
 @use '../../styles/animations';
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -27,8 +27,8 @@
   height: 100vh;
   max-height: 100dvh;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
-  background: colors.$blue-1;
-  background: linear-gradient(180deg, colors.$blue-1 25%, 75%, colors.$blue-2);
+  background: legacy.$blue-1;
+  background: linear-gradient(180deg, legacy.$blue-1 25%, 75%, legacy.$blue-2);
   background-size: 400% 400%;
   overflow: hidden;
 
@@ -88,7 +88,7 @@
         position: relative;
         @include helpers.fontSize(20px);
         font-weight: bolder;
-        color: colors.$white;
+        color: legacy.$white;
         top: helpers.pxToRem(-1px);
       }
 
@@ -158,7 +158,7 @@
 
       a {
         font-weight: bold;
-        color: colors.$white;
+        color: legacy.$white;
 
         @include helpers.mobile {
           @include helpers.fontSize(16px);
@@ -350,7 +350,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    color: colors.$white;
+    color: legacy.$white;
 
     @include helpers.mobile() {
       padding: 0 variables.$mobile-narrow-layout-gutter
@@ -383,7 +383,7 @@
 
     a {
       font-weight: normal;
-      color: colors.$white;
+      color: legacy.$white;
 
       @include helpers.mobile {
         @include helpers.fontSize(14px);

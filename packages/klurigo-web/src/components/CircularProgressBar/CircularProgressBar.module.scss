@@ -1,13 +1,13 @@
 @use 'sass:math';
 
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 
 .circularProgressBar {
   display: block;
 
   .circleBackground {
-    stroke: colors.$red-2;
+    stroke: legacy.$red-2;
   }
 
   .circleProgress {
@@ -15,7 +15,7 @@
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.35s;
 
-    stroke: colors.$green-2;
+    stroke: legacy.$green-2;
   }
 
   .progressText {
@@ -23,37 +23,37 @@
     font-weight: bold;
 
     &.white {
-      fill: colors.$white;
+      fill: legacy.$white;
     }
     &.black {
-      fill: colors.$gray-4;
+      fill: legacy.$gray-4;
     }
   }
 
   &.default {
     .circleBackground {
-      stroke: colors.$white;
+      stroke: legacy.$white;
     }
     .circleProgress {
-      stroke: colors.$orange-2;
+      stroke: legacy.$orange-2;
     }
   }
 
   &.correct {
     .circleBackground {
-      stroke: colors.$red-2;
+      stroke: legacy.$red-2;
     }
     .circleProgress {
-      stroke: colors.$green-2;
+      stroke: legacy.$green-2;
     }
   }
 
   &.secondary {
     .circleBackground {
-      stroke: colors.$white;
+      stroke: legacy.$white;
     }
     .circleProgress {
-      stroke: colors.$blue-1;
+      stroke: legacy.$blue-1;
     }
   }
 

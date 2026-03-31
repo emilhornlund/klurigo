@@ -1,4 +1,4 @@
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -14,7 +14,7 @@
   gap: 0.375rem;
   flex-shrink: 0;
   font-weight: 600;
-  color: colors.$white;
+  color: legacy.$white;
   text-decoration: none;
   white-space: nowrap;
 
@@ -37,7 +37,7 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  background-color: colors.$white-1-15;
+  background-color: legacy.$white-1-15;
   overflow: hidden;
   scroll-snap-align: start;
 
@@ -60,7 +60,7 @@
 .skeletonCover {
   width: 100%;
   aspect-ratio: 16 / 10;
-  background: colors.$white-1-70;
+  background: legacy.$white-1-70;
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -74,7 +74,7 @@
 .skeletonLine {
   height: 0.75rem;
   border-radius: 0.25rem;
-  background: colors.$white-1-70;
+  background: legacy.$white-1-70;
   animation: shimmer 1.5s ease-in-out infinite;
 
   &:first-child {

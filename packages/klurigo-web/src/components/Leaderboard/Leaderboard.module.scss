@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -25,9 +25,9 @@
     width: 100%;
     min-width: 0;
     overflow: hidden;
-    background-color: colors.$white;
+    background-color: legacy.$white;
     border-radius: 0;
-    color: colors.$black-1-70;
+    color: legacy.$black-1-70;
 
     animation: dramaticReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation-delay: calc(var(--row-index) * 0.2s);
@@ -54,13 +54,13 @@
     }
 
     &.gold {
-      background-color: colors.$gold;
+      background-color: legacy.$gold;
     }
     &.silver {
-      background-color: colors.$silver;
+      background-color: legacy.$silver;
     }
     &.bronze {
-      background-color: colors.$bronze;
+      background-color: legacy.$bronze;
     }
 
     .column {
@@ -88,8 +88,8 @@
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          background-color: colors.$black-1-10;
-          color: colors.$black-1-70;
+          background-color: legacy.$black-1-10;
+          color: legacy.$black-1-70;
           font-weight: bold;
 
           @include helpers.mobile {
@@ -175,11 +175,11 @@
         }
 
         &.rankUp {
-          color: colors.$green-2;
+          color: legacy.$green-2;
         }
 
         &.rankDown {
-          color: colors.$red-2;
+          color: legacy.$red-2;
         }
 
         .rankChangeArrow {
@@ -192,8 +192,8 @@
       }
 
       &.score {
-        background-color: colors.$black-1-10;
-        color: colors.$black-1-80;
+        background-color: legacy.$black-1-10;
+        color: legacy.$black-1-80;
         font-weight: bold;
 
         @include helpers.mobile {

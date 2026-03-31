@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/loading';
 
@@ -10,7 +10,7 @@
     $--mobile-loading-spinner-size: helpers.pxToRem(80px);
     @include loading.loading-spinner-dimensions(
       $--mobile-loading-spinner-size,
-      colors.$white,
+      legacy.$white,
       default-mobile
     );
   }
@@ -19,7 +19,7 @@
     $--tablet-loading-spinner-size: helpers.pxToRem(100px);
     @include loading.loading-spinner-dimensions(
       $--tablet-loading-spinner-size,
-      colors.$white,
+      legacy.$white,
       default-tablet
     );
   }
@@ -28,7 +28,7 @@
     $--desktop-loading-spinner-size: helpers.pxToRem(120px);
     @include loading.loading-spinner-dimensions(
       $--desktop-loading-spinner-size,
-      colors.$white,
+      legacy.$white,
       default-desktop
     );
   }

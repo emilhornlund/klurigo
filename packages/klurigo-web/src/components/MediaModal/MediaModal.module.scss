@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -80,7 +80,7 @@
 
       &.divider {
         border-top-style: dashed;
-        border-top-color: colors.$gray-1;
+        border-top-color: legacy.$gray-1;
 
         @include helpers.mobile {
           border-top-width: helpers.pxToRem(1px);

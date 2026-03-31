@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   column-gap: 0;
-  border-bottom: helpers.pxToRem(4px) solid colors.$white;
+  border-bottom: helpers.pxToRem(4px) solid legacy.$white;
   width: 100%;
 
   @include helpers.mobile {
@@ -145,7 +145,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: colors.$black-1-50;
+          background-color: legacy.$black-1-50;
         }
 
         .position {
@@ -154,14 +154,14 @@
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: colors.$white-1-50;
-          color: colors.$black-1-50;
+          background-color: legacy.$white-1-50;
+          color: legacy.$black-1-50;
           font-weight: bolder;
           position: relative;
           line-height: 0;
 
           @include helpers.mobile {
-            filter: drop-shadow(3px 3px 3px colors.$black-1-15);
+            filter: drop-shadow(3px 3px 3px legacy.$black-1-15);
             width: helpers.pxToRem(50px);
             height: helpers.pxToRem(50px);
             padding: 0.1rem;
@@ -169,7 +169,7 @@
           }
 
           @include helpers.tablet {
-            filter: drop-shadow(4px 4px 4px colors.$black-1-15);
+            filter: drop-shadow(4px 4px 4px legacy.$black-1-15);
             width: helpers.pxToRem(65px);
             height: helpers.pxToRem(65px);
             padding: 0.2rem;
@@ -177,7 +177,7 @@
           }
 
           @include helpers.desktop {
-            filter: drop-shadow(5px 5px 5px colors.$black-1-15);
+            filter: drop-shadow(5px 5px 5px legacy.$black-1-15);
             width: helpers.pxToRem(80px);
             height: helpers.pxToRem(80px);
             padding: 0.3rem;
@@ -187,20 +187,20 @@
           &.position-1 {
             background: linear-gradient(
               135deg,
-              colors.$gold 0%,
-              colors.$yellow-2 100%
+              legacy.$gold 0%,
+              legacy.$yellow-2 100%
             );
             box-shadow: 0 0 20px rgba(255, 199, 39, 0.5);
             animation: positionGlow 2s ease-in-out infinite alternate;
           }
 
           &.position-2 {
-            background: linear-gradient(135deg, colors.$silver 0%, colors.$gray-1 100%);
+            background: linear-gradient(135deg, legacy.$silver 0%, legacy.$gray-1 100%);
             box-shadow: 0 0 15px rgba(223, 223, 223, 0.4);
           }
 
           &.position-3 {
-            background: linear-gradient(135deg, colors.$bronze 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, legacy.$bronze 0%, #ff8c42 100%);
             box-shadow: 0 0 15px rgba(255, 167, 80, 0.4);
           }
         }
@@ -211,7 +211,7 @@
           justify-content: center;
           align-items: center;
           font-weight: bold;
-          color: colors.$black-1-50;
+          color: legacy.$black-1-50;
 
           @include helpers.mobile {
             @include helpers.fontSize(16px);
@@ -241,7 +241,7 @@
             position: absolute;
             width: $sparkle-size;
             height: $sparkle-size;
-            background: colors.$white;
+            background: legacy.$white;
             border-radius: 50%;
             animation: sparkle 1.5s ease-in-out infinite;
             animation-delay: var(--sparkle-delay);
@@ -268,35 +268,35 @@
     &:nth-child(1) {
       .stack {
         border-radius: helpers.pxToRem(12px) 0 0 0;
-        background-color: colors.$silver;
+        background-color: legacy.$silver;
 
         box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
         -webkit-box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
         -moz-box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
       }
     }
 
     &:nth-child(2) {
       .stack {
         border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
-        background-color: colors.$gold;
+        background-color: legacy.$gold;
       }
     }
 
     &:nth-child(3) {
       .stack {
         border-radius: 0 helpers.pxToRem(12px) 0 0;
-        background-color: colors.$bronze;
+        background-color: legacy.$bronze;
 
         box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
         -webkit-box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
         -moz-box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+          legacy.$black-1-15 inset;
       }
     }
 

@@ -1,33 +1,33 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 
 .progressBar {
   display: flex;
   flex-direction: column;
-  background-color: colors.$white-1-50;
+  background-color: legacy.$white-1-50;
   width: 100%;
 
   .track {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: colors.$white;
+    background-color: legacy.$white;
     transition: background-color 0.3s ease;
 
     &.safe {
-      background-color: colors.$white;
+      background-color: legacy.$white;
     }
 
     &.caution {
-      background-color: colors.$yellow-2;
+      background-color: legacy.$yellow-2;
     }
 
     &.urgent {
-      background-color: colors.$orange-2;
+      background-color: legacy.$orange-2;
     }
 
     &.critical {
-      background-color: colors.$red-2;
+      background-color: legacy.$red-2;
     }
   }
 

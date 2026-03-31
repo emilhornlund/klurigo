@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -15,10 +15,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-color: colors.$gray-1;
+    border-color: legacy.$gray-1;
     border-style: dashed;
-    background-color: color.mix(colors.$white, colors.$gray-1, 75%);
-    color: colors.$gray-2;
+    background-color: color.mix(legacy.$white, legacy.$gray-1, 75%);
+    color: legacy.$gray-2;
     text-align: center;
     outline: none;
     transition: border .24s ease-in-out;
@@ -47,14 +47,14 @@
   }
 
   .focused {
-    border-color: colors.$blue-1;
+    border-color: legacy.$blue-1;
   }
 
   .accept {
-    border-color: colors.$green-1;
+    border-color: legacy.$green-1;
   }
 
   .reject {
-    border-color: colors.$red-1;
+    border-color: legacy.$red-1;
   }
 }

@@ -1,5 +1,5 @@
 @use '../../styles/inputs';
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -49,7 +49,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
       justify-content: center;
       align-items: center;
       background-color: transparent;
-      border: variables.$control-outside-border-width solid colors.$control-primary-success-color;
+      border: variables.$control-outside-border-width solid legacy.$control-primary-success-color;
       border-radius: 50%;
       transition: background-color 0.3s ease, border-color 0.3s ease;
       cursor: pointer;
@@ -59,16 +59,16 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
       }
 
       .checkboxIcon {
-        color: colors.$control-primary-normal-color;
+        color: legacy.$control-primary-normal-color;
       }
 
       &:has(> input:checked) {
-        background-color: colors.$control-secondary-success-color;
+        background-color: legacy.$control-secondary-success-color;
       }
 
       &:has(> input:disabled) {
-        background-color: colors.$gray-2;
-        border-color: colors.$gray-3;
+        background-color: legacy.$gray-2;
+        border-color: legacy.$gray-3;
       }
 
       @include helpers.mobile {

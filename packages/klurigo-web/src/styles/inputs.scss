@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use './colors';
+@use './colors' as legacy;
 @use './helpers';
 @use './variables';
 
@@ -122,197 +122,197 @@
 }
 
 .input-kind-primary {
-  outline-color: colors.$control-primary-normal-color;
-  background-color: colors.$control-primary-normal-color;
+  outline-color: legacy.$control-primary-normal-color;
+  background-color: legacy.$control-primary-normal-color;
   transition:
     background-color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:has(> button) {
-    background-color: colors.$control-primary-normal-color;
+    background-color: legacy.$control-primary-normal-color;
   }
   input,
   select,
   textarea,
   button {
-    color: colors.$control-text-normal-color;
+    color: legacy.$control-text-normal-color;
   }
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
-      colors.$control-primary-normal-color,
+      legacy.$white,
+      legacy.$control-primary-normal-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
-      colors.$control-primary-normal-color,
+      legacy.$white,
+      legacy.$control-primary-normal-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(legacy.$white, legacy.$control-text-normal-color, 30%);
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
     &:has(> input:focus, > select:focus, > textarea:focus) {
-      outline-color: colors.$control-primary-focus-color;
-      box-shadow: 0 0 0 3px rgba(colors.$control-primary-focus-color, 0.4);
+      outline-color: legacy.$control-primary-focus-color;
+      box-shadow: 0 0 0 3px rgba(legacy.$control-primary-focus-color, 0.4);
     }
   }
 }
 
 .input-kind-secondary {
-  outline-color: colors.$control-secondary-normal-color;
+  outline-color: legacy.$control-secondary-normal-color;
   transition:
     background-color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:has(> button) {
-    background-color: colors.$control-secondary-normal-color;
+    background-color: legacy.$control-secondary-normal-color;
   }
   button {
-    color: colors.$control-text-normal-color;
+    color: legacy.$control-text-normal-color;
   }
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
-      colors.$control-secondary-normal-color,
+      legacy.$white,
+      legacy.$control-secondary-normal-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
-      colors.$control-secondary-normal-color,
+      legacy.$white,
+      legacy.$control-secondary-normal-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(legacy.$white, legacy.$control-text-normal-color, 30%);
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
     &:has(> input:focus, > select:focus, > textarea:focus) {
-      outline-color: colors.$control-secondary-focus-color;
-      box-shadow: 0 0 0 3px rgba(colors.$control-secondary-focus-color, 0.4);
+      outline-color: legacy.$control-secondary-focus-color;
+      box-shadow: 0 0 0 3px rgba(legacy.$control-secondary-focus-color, 0.4);
     }
   }
 }
 
 .inout-kind-disabled {
-  background-color: colors.$control-primary-disabled-color;
-  outline-color: colors.$control-primary-disabled-color;
+  background-color: legacy.$control-primary-disabled-color;
+  outline-color: legacy.$control-primary-disabled-color;
 
   input,
   select,
   textarea,
   button {
-    color: colors.$control-text-disabled-color;
+    color: legacy.$control-text-disabled-color;
     cursor: default;
   }
 }
 
 .input-kind-call-to-action {
-  outline-color: colors.$control-primary-call-to-action-color;
+  outline-color: legacy.$control-primary-call-to-action-color;
   transition:
     background-color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:has(> button) {
-    background-color: colors.$control-primary-call-to-action-color;
+    background-color: legacy.$control-primary-call-to-action-color;
   }
   button {
-    color: colors.$control-text-normal-color;
+    color: legacy.$control-text-normal-color;
   }
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
-      colors.$control-primary-call-to-action-color,
+      legacy.$white,
+      legacy.$control-primary-call-to-action-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
-      colors.$control-primary-call-to-action-color,
+      legacy.$white,
+      legacy.$control-primary-call-to-action-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-normal-color, 30%);
+      color: color.mix(legacy.$white, legacy.$control-text-normal-color, 30%);
     }
   }
 }
 
 .input-kind-success {
-  outline-color: colors.$control-primary-success-color;
+  outline-color: legacy.$control-primary-success-color;
   transition:
     background-color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:has(> button) {
-    background-color: colors.$control-primary-success-color;
+    background-color: legacy.$control-primary-success-color;
   }
   button {
-    color: colors.$control-text-contrast-color;
+    color: legacy.$control-text-contrast-color;
   }
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
-      colors.$control-primary-success-color,
+      legacy.$white,
+      legacy.$control-primary-success-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
-      colors.$control-primary-success-color,
+      legacy.$white,
+      legacy.$control-primary-success-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-contrast-color, 30%);
+      color: color.mix(legacy.$white, legacy.$control-text-contrast-color, 30%);
     }
   }
 }
 
 .input-kind-destructive {
-  outline-color: colors.$control-primary-danger-color;
+  outline-color: legacy.$control-primary-danger-color;
   transition:
     background-color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:has(> button) {
-    background-color: colors.$control-primary-danger-color;
+    background-color: legacy.$control-primary-danger-color;
   }
   button {
-    color: colors.$control-text-contrast-color;
+    color: legacy.$control-text-contrast-color;
   }
 
   &:has(> button:hover, button:disabled) {
     background-color: color.mix(
-      colors.$white,
-      colors.$control-primary-danger-color,
+      legacy.$white,
+      legacy.$control-primary-danger-color,
       30%
     );
     outline-color: color.mix(
-      colors.$white,
-      colors.$control-primary-danger-color,
+      legacy.$white,
+      legacy.$control-primary-danger-color,
       30%
     );
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     button {
-      color: color.mix(colors.$white, colors.$control-text-contrast-color, 30%);
+      color: color.mix(legacy.$white, legacy.$control-text-contrast-color, 30%);
     }
   }
 }
@@ -330,7 +330,7 @@
   button {
     background-color: transparent;
     outline-color: transparent;
-    color: colors.$white;
+    color: legacy.$white;
   }
 
   &:has(> button:hover, button:disabled) {
@@ -338,7 +338,7 @@
     outline-color: transparent;
 
     button {
-      color: color.mix(colors.$white, colors.$gray-1, 30%);
+      color: color.mix(legacy.$white, legacy.$gray-1, 30%);
     }
   }
 }
@@ -392,8 +392,8 @@
 
 .input-error {
   align-items: center;
-  background-color: colors.$yellow-2;
-  color: colors.$gray-4;
+  background-color: legacy.$yellow-2;
+  color: legacy.$gray-4;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;

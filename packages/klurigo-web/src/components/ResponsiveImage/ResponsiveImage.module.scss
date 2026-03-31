@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -24,8 +24,8 @@
   }
 
   .box {
-    border: variables.$control-outside-border-width solid colors.$white;
-    background-color: colors.$white-1-50;
+    border: variables.$control-outside-border-width solid legacy.$white;
+    background-color: legacy.$white-1-50;
     overflow: hidden;
 
     @include helpers.mobile {
@@ -41,7 +41,7 @@
 
   .boxNoBorder {
     border: none;
-    background-color: colors.$white-1-50;
+    background-color: legacy.$white-1-50;
     overflow: hidden;
 
     @include helpers.mobile {
@@ -82,10 +82,10 @@
     inset: 0;
     display: grid;
     place-items: center;
-    background: colors.$gray-2;
+    background: legacy.$gray-2;
 
     .icon {
-      color: colors.$white-1-50;
+      color: legacy.$white-1-50;
     }
   }
 }

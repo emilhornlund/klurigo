@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -30,12 +30,12 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: colors.$white-1-15;
+    background-color: legacy.$white-1-15;
     cursor: pointer;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
+    border: variables.$control-outside-border-width solid legacy.$white-1-25;
     flex: 1;
     font-family: inherit;
     height: 100%;
@@ -46,8 +46,8 @@
 
     &:hover,
     &:focus-visible {
-      background: colors.$white-1-20;
-      border-color: colors.$white-1-30;
+      background: legacy.$white-1-20;
+      border-color: legacy.$white-1-30;
     }
 
     @include helpers.mobile {
@@ -90,7 +90,7 @@
         flex-direction: row;
         font-weight: bold;
         opacity: 0.95;
-        color: colors.$white;
+        color: legacy.$white;
 
         @include helpers.mobile {
           line-height: calc(24px * 1.45);
@@ -122,7 +122,7 @@
 
       .text {
         opacity: 0.78;
-        color: colors.$white;
+        color: legacy.$white;
 
         @include helpers.mobile {
           line-height: calc(20px * 1.45);
@@ -146,9 +146,9 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: colors.$white-1-15;
-      border: variables.$control-outside-border-width solid colors.$white-1-25;
-      color: colors.$white;
+      background-color: legacy.$white-1-15;
+      border: variables.$control-outside-border-width solid legacy.$white-1-25;
+      color: legacy.$white;
 
       @include helpers.mobile {
         width: 2rem;
