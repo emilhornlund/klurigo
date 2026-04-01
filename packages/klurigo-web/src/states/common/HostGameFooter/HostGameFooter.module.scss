@@ -1,5 +1,6 @@
 @use '../../../styles/colors' as legacy;
 @use '../../../styles/helpers';
+@use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/variables';
 
 $--mobile-font-size: 16px;
@@ -12,11 +13,12 @@ $--desktop-font-size: 24px;
 $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
 
 .main {
+  @include surface.surface-box;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: legacy.$white-1-50;
 
   @include helpers.mobile {
     border-radius: variables.$mobile-narrow-layout-gutter;

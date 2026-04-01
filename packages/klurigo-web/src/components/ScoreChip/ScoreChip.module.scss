@@ -1,14 +1,16 @@
 @use '../../styles/colors' as legacy;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/variables';
 
 .score {
+  @include surface.surface-box;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  background-color: legacy.$white-1-50;
   font-weight: bold;
 
   @mixin score-dimensions($size, $layout-gutter) {

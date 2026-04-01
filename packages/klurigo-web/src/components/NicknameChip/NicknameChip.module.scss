@@ -2,6 +2,7 @@
 @use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/variables';
 
 .main {
@@ -61,9 +62,7 @@
   }
 
   &.subtle {
-    background-color: legacy.$white-1-15;
-    border: variables.$control-outside-border-width solid legacy.$white-1-25;
-    color: colors.$color-text-inverse;
+    @include surface.surface-box(true);
   }
 
   &.accent {

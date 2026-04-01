@@ -1,6 +1,7 @@
 @use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/variables';
 
 .header {
@@ -179,11 +180,12 @@
   }
 
   .playerCounter {
+    @include surface.surface-box;
+
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: legacy.$white-1-50;
     font-weight: bold;
 
     @mixin info-dimensions($size) {

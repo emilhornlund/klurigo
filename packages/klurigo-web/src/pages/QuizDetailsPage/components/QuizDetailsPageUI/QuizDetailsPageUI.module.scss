@@ -1,6 +1,7 @@
 @use '../../../../styles/colors' as legacy;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
+@use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/variables';
 
 .layout {
@@ -75,9 +76,9 @@
   }
 
   .details {
+    @include surface.surface-box;
+
     display: grid;
-    background-color: legacy.$white-1-15;
-    border: variables.$control-outside-border-width solid legacy.$white-1-25;
     margin-top: auto;
     width: 100%;
 
@@ -123,7 +124,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
-        opacity: 0.68;
+        opacity: 0.85;
 
         a {
           opacity: 1;

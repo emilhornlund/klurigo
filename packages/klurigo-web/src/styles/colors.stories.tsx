@@ -369,6 +369,32 @@ const semanticSections: Array<{
     tokens: [
       { name: 'colorSurfacePageStart', value: colors.colorSurfacePageStart },
       { name: 'colorSurfacePageEnd', value: colors.colorSurfacePageEnd },
+      { name: 'colorSurfaceGlassStart', value: colors.colorSurfaceGlassStart },
+      { name: 'colorSurfaceGlassEnd', value: colors.colorSurfaceGlassEnd },
+      {
+        name: 'colorSurfaceGlassHoverStart',
+        value: colors.colorSurfaceGlassHoverStart,
+      },
+      {
+        name: 'colorSurfaceGlassHoverEnd',
+        value: colors.colorSurfaceGlassHoverEnd,
+      },
+      {
+        name: 'colorSurfaceGlassActiveStart',
+        value: colors.colorSurfaceGlassActiveStart,
+      },
+      {
+        name: 'colorSurfaceGlassActiveEnd',
+        value: colors.colorSurfaceGlassActiveEnd,
+      },
+    ],
+  },
+  {
+    title: 'Borders',
+    tokens: [
+      { name: 'colorBorderGlass', value: colors.colorBorderGlass },
+      { name: 'colorBorderGlassHover', value: colors.colorBorderGlassHover },
+      { name: 'colorBorderGlassActive', value: colors.colorBorderGlassActive },
     ],
   },
   {

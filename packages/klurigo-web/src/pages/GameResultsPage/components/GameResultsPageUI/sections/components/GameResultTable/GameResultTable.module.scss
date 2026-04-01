@@ -1,6 +1,7 @@
 @use '../../../../../../../styles/colors' as legacy;
 @use '../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../styles/helpers';
+@use '../../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../../styles/variables';
 
 .table {
@@ -23,11 +24,10 @@
   }
 
   .tableRow {
+    @include surface.surface-box(true);
+
     display: flex;
     flex-direction: column;
-    background-color: legacy.$white-1-15;
-    border: variables.$control-outside-border-width solid legacy.$white-1-25;
-    color: colors.$color-text-inverse;
     cursor: pointer;
 
     @include helpers.mobile {
@@ -63,13 +63,12 @@
       }
 
       .badge {
+        @include surface.surface-box;
+
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
-        background-color: legacy.$white-1-15;
-        border: variables.$control-outside-border-width solid legacy.$white-1-25;
-        color: colors.$color-text-inverse;
         font-weight: bold;
 
         @include helpers.mobile {

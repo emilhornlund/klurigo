@@ -30,9 +30,30 @@ $color-text-danger: $color-danger;
 /* Surfaces */
 $color-surface-page-start: palette.$blue-500;
 $color-surface-page-end: palette.$blue-600;
+$color-surface-glass-start: palette.alpha(palette.$white, 0.1);
+$color-surface-glass-end: palette.alpha(palette.$white, 0.05);
+$color-surface-glass-hover-start: palette.alpha(palette.$white, 0.12);
+$color-surface-glass-hover-end: palette.alpha(palette.$white, 0.06);
+$color-surface-glass-active-start: palette.alpha(palette.$white, 0.08);
+$color-surface-glass-active-end: palette.alpha(palette.$white, 0.04);
+
+/* Borders */
+$color-border-glass: palette.alpha(palette.$white, 0.15);
+$color-border-glass-hover: palette.alpha(palette.$white, 0.2);
+$color-border-glass-active: palette.alpha(palette.$white, 0.2);
 
 /* Focus */
 $color-focus-ring: palette.$yellow-500;
+
+/* Shadows */
+$color-shadow: palette.alpha(palette.$black, 0.2);
+$color-shadow-hover: palette.alpha(palette.$black, 0.25);
+$color-shadow-active: palette.alpha(palette.$black, 0.18);
+
+/* Insets */
+$color-inset: palette.alpha(palette.$white, 0.1);
+$color-inset-hover: palette.alpha(palette.$white, 0.15);
+$color-inset-active: palette.alpha(palette.$white, 0.08);
 
 /* Rating */
 $color-rating: palette.$yellow-500;

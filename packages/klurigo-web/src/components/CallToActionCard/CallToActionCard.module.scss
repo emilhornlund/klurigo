@@ -1,6 +1,7 @@
 @use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/variables';
 
 .callToActionCard {
@@ -27,29 +28,20 @@
   }
 
   .button {
+    @include surface.surface-box(true);
+
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: legacy.$white-1-15;
     cursor: pointer;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    border: variables.$control-outside-border-width solid legacy.$white-1-25;
     flex: 1;
     font-family: inherit;
     height: 100%;
     outline: none;
-
-    transition: background-color 120ms ease,
-    border-color 120ms ease;
-
-    &:hover,
-    &:focus-visible {
-      background: legacy.$white-1-20;
-      border-color: legacy.$white-1-30;
-    }
 
     @include helpers.mobile {
       padding: variables.$mobile-narrow-layout-gutter variables.$mobile-layout-gutter;
@@ -143,13 +135,12 @@
     }
 
     .icon {
+      @include surface.surface-box(true);
+
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: legacy.$white-1-15;
-      border: variables.$control-outside-border-width solid legacy.$white-1-25;
-      color: colors.$color-text-inverse;
 
       @include helpers.mobile {
         width: 2rem;

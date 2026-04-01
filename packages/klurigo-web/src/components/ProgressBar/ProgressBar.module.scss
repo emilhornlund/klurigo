@@ -1,10 +1,13 @@
 @use '../../styles/colors' as legacy;
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/helpers';
 
 .progressBar {
+  @include surface.surface-base;
+  @include surface.surface-shadow;
+
   display: flex;
   flex-direction: column;
-  background-color: legacy.$white-1-50;
   width: 100%;
 
   .track {
