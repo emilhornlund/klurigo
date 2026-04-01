@@ -1,4 +1,4 @@
-@use '../../../../styles/colors' as legacy;
+@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
 
@@ -35,7 +35,7 @@
 .emptyState {
   margin: 0;
   text-align: center;
-  color: legacy.$white-1-50;
+  color: colors.$color-text-inverse;
 
   @include helpers.mobile {
     padding: 1rem 0;

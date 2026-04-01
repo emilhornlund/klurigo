@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../../../../../styles/colors' as legacy;
+@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -31,7 +32,7 @@ $outline-offset: helpers.pxToRem(2px);
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
-    color: legacy.$gray-4;
+    color: colors.$color-text-primary;
     font-weight: bold;
     cursor: pointer;
 

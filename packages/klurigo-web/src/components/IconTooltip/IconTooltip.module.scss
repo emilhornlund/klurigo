@@ -1,4 +1,5 @@
 @use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -11,7 +12,7 @@
   border: none;
   font-family: inherit;
   outline: none;
-  color: legacy.$white;
+  color: colors.$color-text-inverse;
 
   @include helpers.mobile {
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);
@@ -27,14 +28,14 @@
 
   &:hover {
     cursor: pointer;
-    color: legacy.$gray-1;
+    color: colors.$color-text-on-subtle;
   }
 }
 
 .iconTooltip {
   display: flex;
   flex-direction: column;
-  color: legacy.$gray-4;
+  color: colors.$color-text-primary;
   z-index: variables.$tooltip-z-index;
   background-color: legacy.$turquoise-1;
   max-width: variables.$mobile-width;

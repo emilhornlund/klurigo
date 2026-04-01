@@ -1,4 +1,4 @@
-@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -50,17 +50,13 @@
   }
 }
 
-// ─── Read-only icon colours ───────────────────────────────────────────────────
-
 .filled {
-  color: legacy.$yellow-2;
+  color: colors.$color-rating;
 }
 
 .empty {
-  color: legacy.$gray-1;
+  color: colors.$color-text-on-subtle;
 }
-
-// ─── Interactive star buttons ─────────────────────────────────────────────────
 
 .starButton {
   background: none;
@@ -71,33 +67,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: legacy.$white;
+  color: colors.$color-text-inverse;
   font-size: inherit;
 
   &:disabled {
-    color: legacy.$white-1-25;
+    color: colors.$color-text-disabled;
     cursor: default;
   }
 
   &.active {
-    color: legacy.$yellow-2;
+    color: colors.$color-rating;
 
     &:hover {
-      color: legacy.$yellow-1;
+      color: colors.$color-rating-hover;
     }
   }
 
   &:hover {
     &:not(:disabled) {
       &:not(.active) {
-        color: legacy.$white-1-70;
+        color: colors.$color-rating-hover;
       }
     }
   }
 
   &:focus-visible {
     &:not(:disabled) {
-      outline: 2px solid legacy.$yellow-2;
+      outline: 2px solid colors.$color-focus-ring;
       outline-offset: 2px;
     }
   }

@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -18,7 +19,7 @@
     border-color: legacy.$gray-1;
     border-style: dashed;
     background-color: color.mix(legacy.$white, legacy.$gray-1, 75%);
-    color: legacy.$gray-2;
+    color: colors.$color-text-muted;
     text-align: center;
     outline: none;
     transition: border .24s ease-in-out;

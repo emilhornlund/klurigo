@@ -1,4 +1,5 @@
 @use '../../../styles/colors' as legacy;
+@use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers';
 @use '../../../styles/variables';
 
@@ -86,7 +87,7 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
     span {
       margin: 0;
       background-color: legacy.$white;
-      color: legacy.$gray-4;
+      color: colors.$color-text-primary;
 
       @include helpers.mobile {
         padding: calc(#{variables.$mobile-narrow-layout-gutter} * 0.3) variables.$mobile-narrow-layout-gutter;

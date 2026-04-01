@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../../../styles/colors' as legacy;
+@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/loading';
 @use '../../../../styles/variables';
@@ -106,7 +107,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        color: legacy.$white;
+        color: colors.$color-text-inverse;
 
         @include helpers.mobile {
           height: helpers.pxToRem(30px);

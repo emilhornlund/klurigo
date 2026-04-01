@@ -107,4 +107,24 @@
   black: palette.$black;
 
   /* Semantic tokens */
+  colorSuccess: semantic.$color-success;
+  colorDanger: semantic.$color-danger;
+  colorWarning: semantic.$color-warning;
+  colorInfo: semantic.$color-info;
+
+  colorTextPrimary: semantic.$color-text-primary;
+  colorTextSecondary: semantic.$color-text-secondary;
+  colorTextMuted: semantic.$color-text-muted;
+  colorTextDisabled: semantic.$color-text-disabled;
+  colorTextInverse: semantic.$color-text-inverse;
+  colorTextOnSubtle: semantic.$color-text-on-subtle;
+  colorTextSuccess: semantic.$color-text-success;
+  colorTextDanger: semantic.$color-text-danger;
+
+  /* Focus */
+  colorFocusRing: semantic.$color-focus-ring;
+
+  /* Rating */
+  colorRating: semantic.$color-rating;
+  colorRatingHover: semantic.$color-rating-hover;
 }

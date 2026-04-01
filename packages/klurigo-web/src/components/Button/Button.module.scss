@@ -1,7 +1,8 @@
+@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/helpers';
 @use '../../styles/inputs';
 @use '../../styles/loading';
-@use '../../styles/colors' as legacy;
-@use '../../styles/helpers';
 @use '../../styles/variables';
 
 .buttonInputContainer {

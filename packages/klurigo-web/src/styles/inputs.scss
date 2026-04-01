@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use './colors' as legacy;
+@use './colors.semantic' as colors;
 @use './helpers';
 @use './variables';
 
@@ -330,7 +331,7 @@
   button {
     background-color: transparent;
     outline-color: transparent;
-    color: legacy.$white;
+    color: colors.$color-text-inverse;
   }
 
   &:has(> button:hover, button:disabled) {
@@ -393,7 +394,7 @@
 .input-error {
   align-items: center;
   background-color: legacy.$yellow-2;
-  color: legacy.$gray-4;
+  color: colors.$color-text-primary;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;

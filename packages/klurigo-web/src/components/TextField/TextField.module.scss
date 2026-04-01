@@ -1,5 +1,6 @@
 @use '../../styles/inputs';
 @use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -59,7 +60,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
       }
 
       .checkboxIcon {
-        color: legacy.$control-primary-normal-color;
+        color: colors.$color-text-inverse;
       }
 
       &:has(> input:checked) {

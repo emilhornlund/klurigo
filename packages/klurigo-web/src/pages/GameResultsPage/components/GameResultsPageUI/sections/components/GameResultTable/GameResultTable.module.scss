@@ -1,11 +1,11 @@
 @use '../../../../../../../styles/colors' as legacy;
+@use '../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../styles/helpers';
 @use '../../../../../../../styles/variables';
 
 .table {
   display: flex;
   flex-direction: column;
-  color: legacy.$gray-4;
 
   @include helpers.mobile {
     row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
@@ -27,7 +27,7 @@
     flex-direction: column;
     background-color: legacy.$white-1-15;
     border: variables.$control-outside-border-width solid legacy.$white-1-25;
-    color: legacy.$white;
+    color: colors.$color-text-inverse;
     cursor: pointer;
 
     @include helpers.mobile {
@@ -69,7 +69,7 @@
         border-radius: 50%;
         background-color: legacy.$white-1-15;
         border: variables.$control-outside-border-width solid legacy.$white-1-25;
-        color: legacy.$white;
+        color: colors.$color-text-inverse;
         font-weight: bold;
 
         @include helpers.mobile {
@@ -114,7 +114,7 @@
           font-weight: bold;
           text-transform: uppercase;
           background-color: legacy.$orange-2;
-          color: legacy.$white;
+          color: colors.$color-text-inverse;
 
           @include helpers.mobile {
             padding: variables.$mobile-control-normal-layout-gutter * 0.5 variables.$mobile-control-normal-layout-gutter;

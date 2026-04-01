@@ -10,3 +10,26 @@
 /* ==========================================================================
    Semantic tokens
    ========================================================================== */
+
+/* Status */
+$color-success: palette.$green-400;
+$color-danger: palette.$red-600;
+$color-warning: palette.$orange-500;
+$color-info: palette.$turquoise-400;
+
+/* Text */
+$color-text-primary: palette.$gray-800;
+$color-text-secondary: palette.$gray-600;
+$color-text-muted: palette.$gray-500;
+$color-text-disabled: palette.$gray-400;
+$color-text-inverse: palette.$white;
+$color-text-on-subtle: palette.$gray-300;
+$color-text-success: $color-success;
+$color-text-danger: $color-danger;
+
+/* Focus */
+$color-focus-ring: palette.$yellow-500;
+
+/* Rating */
+$color-rating: palette.$yellow-500;
+$color-rating-hover: palette.$yellow-400;

@@ -1,5 +1,6 @@
 @use '../../styles/animations';
 @use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -62,12 +63,12 @@
   &.subtle {
     background-color: legacy.$white-1-15;
     border: variables.$control-outside-border-width solid legacy.$white-1-25;
-    color: legacy.$white;
+    color: colors.$color-text-inverse;
   }
 
   &.accent {
     background-color: legacy.$blue-1;
-    color: legacy.$white;
+    color: colors.$color-text-inverse;
   }
 
   .delete {
