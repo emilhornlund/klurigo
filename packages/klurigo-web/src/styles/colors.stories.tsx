@@ -365,6 +365,13 @@ const semanticSections: Array<{
     ],
   },
   {
+    title: 'Surfaces',
+    tokens: [
+      { name: 'colorSurfacePageStart', value: colors.colorSurfacePageStart },
+      { name: 'colorSurfacePageEnd', value: colors.colorSurfacePageEnd },
+    ],
+  },
+  {
     title: 'Focus',
     tokens: [{ name: 'colorFocusRing', value: colors.colorFocusRing }],
   },

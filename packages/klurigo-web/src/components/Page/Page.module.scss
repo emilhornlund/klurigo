@@ -28,8 +28,12 @@
   height: 100vh;
   max-height: 100dvh;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
-  background: legacy.$blue-1;
-  background: linear-gradient(180deg, legacy.$blue-1 25%, 75%, legacy.$blue-2);
+  background: colors.$color-surface-page-start;
+  background: linear-gradient(
+      135deg,
+      colors.$color-surface-page-start 25%,
+      colors.$color-surface-page-end 75%
+  );
   background-size: 400% 400%;
   overflow: hidden;
 
