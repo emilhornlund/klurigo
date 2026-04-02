@@ -11,7 +11,7 @@ exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-circle-question"
-        color="white"
+        color="colorTextInverse"
         data-icon="circle-question"
         data-prefix="fas"
         role="img"
@@ -30,7 +30,7 @@ exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-star"
-        color="yellow2"
+        color="colorRatingDefault"
         data-icon="star"
         data-prefix="fas"
         role="img"
@@ -60,7 +60,7 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-circle-question"
-        color="white"
+        color="colorTextInverse"
         data-icon="circle-question"
         data-prefix="fas"
         role="img"
@@ -79,7 +79,7 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-star"
-        color="yellow2"
+        color="colorRatingDefault"
         data-icon="star"
         data-prefix="fas"
         role="img"
@@ -106,7 +106,7 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-circle-question"
-        color="white"
+        color="colorTextInverse"
         data-icon="circle-question"
         data-prefix="fas"
         role="img"
@@ -125,7 +125,7 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-star"
-        color="yellow2"
+        color="colorRatingDefault"
         data-icon="star"
         data-prefix="fas"
         role="img"
@@ -153,7 +153,7 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-circle-question"
-        color="white"
+        color="colorTextInverse"
         data-icon="circle-question"
         data-prefix="fas"
         role="img"
@@ -172,7 +172,7 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
       <svg
         aria-hidden="true"
         class="svg-inline--fa fa-star"
-        color="yellow2"
+        color="colorRatingDefault"
         data-icon="star"
         data-prefix="fas"
         role="img"

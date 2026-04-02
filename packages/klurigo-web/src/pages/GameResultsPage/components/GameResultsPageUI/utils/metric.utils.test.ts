@@ -1,7 +1,7 @@
 import { GameMode } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import colors from '../../../../../styles/colors.module.scss'
+import colors from '../../../../../styles/colors.tokens.module.scss'
 
 import {
   buildPlayerSectionMetricDetails,
@@ -158,16 +158,16 @@ describe('buildPlayerSectionMetricDetails', () => {
     expect(details.find((d) => d.title === 'Score')?.value).toBe(420)
 
     expect(details.find((d) => d.title === 'Unanswered')?.iconColor).toBe(
-      colors.blue2,
+      colors.colorActionDefault,
     )
     expect(
       details.find((d) => d.title === 'Average response time')?.iconColor,
-    ).toBe(colors.turquoise2)
+    ).toBe(colors.colorStatusInfo)
     expect(
       details.find((d) => d.title === 'Longest correct streak')?.iconColor,
-    ).toBe(colors.orange2)
+    ).toBe(colors.colorStatusWarning)
     expect(details.find((d) => d.title === 'Score')?.iconColor).toBe(
-      colors.yellow2,
+      colors.colorRatingDefault,
     )
   })
 
@@ -227,11 +227,11 @@ describe('buildQuestionSectionMetricDetails', () => {
     ).toBe('sec:4100')
 
     expect(details.find((d) => d.title === 'Unanswered')?.iconColor).toBe(
-      colors.blue2,
+      colors.colorActionDefault,
     )
     expect(
       details.find((d) => d.title === 'Average response time')?.iconColor,
-    ).toBe(colors.turquoise2)
+    ).toBe(colors.colorStatusInfo)
   })
 
   it('returns zero-to-one-hundred question common details only', () => {

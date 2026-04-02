@@ -1,4 +1,3 @@
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
@@ -25,8 +24,9 @@
   }
 
   .box {
-    border: variables.$control-outside-border-width solid legacy.$white;
-    background-color: legacy.$white-1-50;
+    border: variables.$control-outside-border-width solid
+      colors.$color-border-contrast;
+    background-color: colors.$color-surface-floating;
     overflow: hidden;
 
     @include helpers.mobile {
@@ -42,7 +42,7 @@
 
   .boxNoBorder {
     border: none;
-    background-color: legacy.$white-1-50;
+    background-color: colors.$color-surface-floating;
     overflow: hidden;
 
     @include helpers.mobile {
@@ -83,10 +83,10 @@
     inset: 0;
     display: grid;
     place-items: center;
-    background: legacy.$gray-2;
+    background-color: colors.$color-surface-placeholder;
 
     .icon {
-      color: colors.$color-text-on-subtle;
+      color: colors.$color-text-inverse-subtle;
     }
   }
 }

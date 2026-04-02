@@ -4,7 +4,7 @@ import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 
 import { QuestionTypeLabels } from '../../../models'
-import colors from '../../../styles/colors.module.scss'
+import colors from '../../../styles/colors.tokens.module.scss'
 
 import styles from './QuestionTypePointsBar.module.scss'
 
@@ -22,11 +22,14 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
   mode === GameMode.Classic ? (
     <div className={styles.chip}>
       <div className={styles.item}>
-        <FontAwesomeIcon icon={faQuestionCircle} color={colors.white} />
+        <FontAwesomeIcon
+          icon={faQuestionCircle}
+          color={colors.colorTextInverse}
+        />
         {QuestionTypeLabels[questionType]}
       </div>
       <div className={styles.item}>
-        <FontAwesomeIcon icon={faStar} color={colors.yellow2} />
+        <FontAwesomeIcon icon={faStar} color={colors.colorRatingDefault} />
         {questionPoints === 0 && 'Zero Points'}
         {questionPoints === 1000 && 'Standard Points'}
         {questionPoints === 2000 && 'Double Points'}

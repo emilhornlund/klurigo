@@ -1,5 +1,4 @@
 @use '../../styles/animations';
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
@@ -9,7 +8,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: legacy.$black-1-80;
+  background-color: colors.$color-surface-overlay-strong;
   z-index: variables.$modal-z-index;
 
   @include helpers.mobile {
@@ -27,8 +26,8 @@
   .modalContainer {
     display: flex;
     flex-direction: column;
-    background-color: legacy.$white;
-    color: colors.$color-text-primary;
+    background-color: colors.$color-surface-default;
+    color: colors.$color-text-default;
     width: variables.$mobile-width;
     max-height: 100%;
     overflow: hidden;

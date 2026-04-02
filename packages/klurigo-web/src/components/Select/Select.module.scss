@@ -1,5 +1,4 @@
 @use '../../styles/inputs';
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
@@ -17,7 +16,7 @@ $desktop-select-normal-size: calc(#{variables.$desktop-control-normal-height} * 
 
     .selectIcon {
       position: absolute;
-      color: colors.$color-text-primary;
+        color: colors.$color-text-default;
 
       @include helpers.mobile {
         width: $mobile-select-normal-size;

@@ -1,4 +1,3 @@
-@use './colors' as legacy;
 @use './helpers';
 
 @mixin loading-spinner-dimensions($size, $color, $unique-name) {

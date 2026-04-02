@@ -1,66 +1,152 @@
 @use './colors.palette' as palette;
 
 /*
- * Semantic color tokens
+ * Foundational semantic color tokens
  *
- * This file maps primitive palette tokens to meaningful UI roles.
- * Components should prefer these tokens over raw palette values.
+ * This file contains cross-cutting UI roles only.
+ * Component and domain-specific color roles live in focused token files.
  */
 
-/* ==========================================================================
-   Semantic tokens
-   ========================================================================== */
-
 /* Status */
-$color-success: palette.$green-400;
-$color-danger: palette.$red-600;
-$color-warning: palette.$orange-500;
-$color-info: palette.$turquoise-400;
+$color-status-success: palette.$green-400;
+$color-status-danger: palette.$red-600;
+$color-status-warning: palette.$orange-500;
+$color-status-info: palette.$turquoise-400;
 
-/* Accents */
-$color-accent: palette.$blue-500;
+/* Action */
+$color-action-default: palette.$blue-500;
+$color-action-strong: palette.$blue-400;
+$color-action-subtle: palette.alpha(palette.$blue-500, 0.08);
+$color-action-tint: palette.$blue-100;
+$color-action-tint-strong: palette.$blue-200;
+$color-action-alt: palette.$purple-500;
+$color-action-alt-strong: palette.$purple-400;
+$color-action-accent: palette.$yellow-500;
+$color-action-accent-hover: palette.$yellow-300;
 
 /* Text */
-$color-text-primary: palette.$gray-800;
-$color-text-secondary: palette.$gray-600;
+$color-text-default: palette.$gray-900;
+$color-text-subtle: palette.$gray-600;
 $color-text-muted: palette.$gray-500;
 $color-text-disabled: palette.$gray-400;
 $color-text-inverse: palette.$white;
-$color-text-on-subtle: palette.$gray-300;
-$color-text-success: $color-success;
-$color-text-danger: $color-danger;
+$color-text-inverse-subtle: palette.$gray-300;
+$color-text-success: $color-status-success;
+$color-text-danger: $color-status-danger;
+$color-text-warning: $color-action-accent;
+$color-text-warning-soft: $color-action-accent-hover;
+$color-text-emphasis: palette.$gray-700;
 
 /* Surfaces */
-$color-surface-page-start: palette.$blue-500;
-$color-surface-page-end: palette.$blue-600;
+$color-surface-default: palette.$white;
+$color-surface-muted: palette.$gray-50;
+$color-surface-subtle: palette.$gray-100;
 $color-surface-floating: palette.alpha(palette.$white, 0.95);
-$color-surface-accent-subtle: palette.alpha(palette.$blue-500, 0.08);
-$color-surface-glass-start: palette.alpha(palette.$white, 0.1);
-$color-surface-glass-end: palette.alpha(palette.$white, 0.05);
+
+$color-surface-glass-default-start: palette.alpha(palette.$white, 0.1);
+$color-surface-glass-default-end: palette.alpha(palette.$white, 0.05);
 $color-surface-glass-hover-start: palette.alpha(palette.$white, 0.12);
 $color-surface-glass-hover-end: palette.alpha(palette.$white, 0.06);
 $color-surface-glass-active-start: palette.alpha(palette.$white, 0.08);
 $color-surface-glass-active-end: palette.alpha(palette.$white, 0.04);
 
+$color-surface-overlay: palette.alpha(palette.$black, 0.5);
+$color-surface-overlay-subtle: palette.alpha(palette.$black, 0.1);
+$color-surface-overlay-hover: palette.alpha(palette.$black, 0.75);
+$color-surface-overlay-strong: palette.alpha(palette.$black, 0.8);
+
+$color-surface-interactive-hover: palette.$gray-100;
+$color-surface-interactive-active: palette.$gray-200;
+$color-surface-interactive-disabled: palette.$gray-100;
+
+$color-surface-placeholder: palette.$gray-400;
+$color-surface-placeholder-strong: palette.$gray-600;
+
+$color-surface-success: palette.$green-600;
+$color-surface-success-soft: palette.$green-500;
+$color-surface-success-subtle: palette.alpha($color-surface-success, 0.15);
+$color-surface-danger: palette.$red-600;
+$color-surface-danger-soft: palette.$red-500;
+$color-surface-danger-strong: palette.$red-700;
+$color-surface-warning: palette.$orange-500;
+$color-surface-warning-soft: palette.$orange-400;
+$color-surface-info: palette.$turquoise-400;
+$color-surface-info-soft: palette.$turquoise-300;
+$color-surface-accent: $color-action-accent;
+$color-surface-accent-hover: $color-action-accent-hover;
+
+/* Control surfaces */
+$color-surface-control-default: palette.$white;
+$color-surface-control-muted: palette.$gray-200;
+$color-surface-control-disabled: palette.$gray-200;
+$color-surface-control-accent: $color-action-accent;
+$color-surface-control-success: $color-surface-success;
+$color-surface-control-danger: $color-surface-danger;
+$color-surface-control-default-hover: palette.$gray-100;
+$color-surface-control-muted-hover: palette.$gray-100;
+$color-surface-control-accent-hover: $color-action-accent-hover;
+$color-surface-control-success-hover: palette.$green-500;
+$color-surface-control-danger-hover: palette.$red-500;
+
+/* Control text */
+$color-text-control-default: palette.$gray-900;
+$color-text-control-default-hover: palette.$gray-600;
+$color-text-control-inverse: palette.$white;
+$color-text-control-disabled: palette.$gray-500;
+$color-text-control-subtle: palette.$gray-300;
+$color-text-control-inverse-subtle: palette.$gray-100;
+$color-text-control-success: $color-surface-success;
+$color-text-control-danger: $color-surface-danger;
+$color-text-control-plain-hover: palette.$gray-200;
+
 /* Borders */
+$color-border-contrast: palette.$white;
+$color-border-glass-muted: palette.alpha(palette.$white, 0.25);
+$color-border-glass-strong: palette.alpha(palette.$white, 0.5);
+$color-border-default: palette.$gray-500;
+$color-border-action: $color-action-default;
 $color-border-subtle: palette.alpha(palette.$black, 0.2);
-$color-border-glass: palette.alpha(palette.$white, 0.15);
+$color-border-glass-default: palette.alpha(palette.$white, 0.15);
 $color-border-glass-hover: palette.alpha(palette.$white, 0.2);
 $color-border-glass-active: palette.alpha(palette.$white, 0.2);
+$color-border-warning: $color-action-accent-hover;
+$color-border-muted: palette.$gray-200;
+$color-border-control-muted-disabled: palette.$gray-700;
+$color-border-control-success: $color-surface-success;
+$color-border-control-action: $color-action-strong;
+$color-border-control-success-soft: $color-surface-success-soft;
+$color-border-control-danger-soft: $color-surface-danger-soft;
+
+/* Progress */
+$color-progress-success: $color-surface-success;
+$color-progress-danger: $color-surface-danger;
+$color-progress-warning: $color-surface-warning;
+$color-progress-action: $color-action-strong;
+$color-progress-track: $color-surface-default;
+$color-progress-fill-default: palette.$gray-900;
 
 /* Focus */
-$color-focus-ring: palette.$yellow-500;
+$color-focus-outline: palette.$white;
+$color-focus-ring: $color-action-accent;
+$color-focus-control-default: $color-action-accent;
+$color-focus-control-muted: $color-action-accent;
+$color-focus-control-default-ring: palette.alpha(
+  $color-focus-control-default,
+  0.4
+);
+$color-focus-control-muted-ring: palette.alpha(
+  $color-focus-control-muted,
+  0.4
+);
+$color-focus-success: $color-surface-success;
 
 /* Shadows */
-$color-shadow: palette.alpha(palette.$black, 0.2);
+$color-shadow-default: palette.alpha(palette.$black, 0.2);
 $color-shadow-hover: palette.alpha(palette.$black, 0.25);
 $color-shadow-active: palette.alpha(palette.$black, 0.18);
+$color-shadow-subtle: palette.alpha(palette.$black, 0.15);
 
 /* Insets */
-$color-inset: palette.alpha(palette.$white, 0.1);
+$color-inset-default: palette.alpha(palette.$white, 0.1);
 $color-inset-hover: palette.alpha(palette.$white, 0.15);
 $color-inset-active: palette.alpha(palette.$white, 0.08);
-
-/* Rating */
-$color-rating: palette.$yellow-500;
-$color-rating-hover: palette.$yellow-400;

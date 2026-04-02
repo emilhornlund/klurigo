@@ -1,5 +1,4 @@
 @use 'sass:color';
-@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
@@ -27,12 +26,12 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
     flex: 1;
     appearance: none;
-    background-color: color.mix(legacy.$white, legacy.$blue-2, 75%);
-    outline: color.mix(legacy.$white, legacy.$blue-2, 75%) solid $outline-offset;
+    background-color: colors.$color-action-tint;
+    outline: colors.$color-action-tint solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
-    color: colors.$color-text-primary;
+    color: colors.$color-text-default;
     font-weight: bold;
     cursor: pointer;
 
@@ -64,9 +63,9 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     &:hover {
-      background-color: color.mix(legacy.$white, legacy.$blue-2, 85%);
-      outline-color: color.mix(legacy.$white, legacy.$blue-2, 85%);
-      color: color.mix(legacy.$white, legacy.$gray-4, 30%);
+      background-color: colors.$color-action-tint;
+      outline-color: colors.$color-action-tint;
+      color: colors.$color-text-emphasis;
     }
 
     .description {

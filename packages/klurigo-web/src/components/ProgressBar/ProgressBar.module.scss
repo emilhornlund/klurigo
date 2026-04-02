@@ -1,4 +1,4 @@
-@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/helpers';
 
@@ -14,23 +14,23 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: legacy.$white;
+    background-color: colors.$color-surface-default;
     transition: background-color 0.3s ease;
 
     &.safe {
-      background-color: legacy.$white;
+      background-color: colors.$color-surface-default;
     }
 
     &.caution {
-      background-color: legacy.$yellow-2;
+      background-color: colors.$color-surface-accent;
     }
 
     &.urgent {
-      background-color: legacy.$orange-2;
+      background-color: colors.$color-surface-warning;
     }
 
     &.critical {
-      background-color: legacy.$red-2;
+      background-color: colors.$color-surface-danger;
     }
   }
 

@@ -1,4 +1,5 @@
-@use '../../../../../styles/colors' as legacy;
+@use '../../../../../styles/colors.range' as rangeColors;
+@use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/variables';
 
@@ -36,43 +37,52 @@
       appearance: none;
       -webkit-appearance: none;
       box-sizing: border-box;
-      background-color: legacy.$yellow-2;
+      background-color: colors.$color-surface-accent;
 
       @include helpers.mobile {
         height: helpers.pxToRem(14px);
         border-radius: helpers.pxToRem(calc(14px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(2px) legacy.$white;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(2px) legacy.$white;
-        box-shadow: inset 0 0 0 helpers.pxToRem(2px) legacy.$white;
+        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(2px)
+          rangeColors.$color-range-track-border;
+        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(2px)
+          rangeColors.$color-range-track-border;
+        box-shadow: inset 0 0 0 helpers.pxToRem(2px)
+          rangeColors.$color-range-track-border;
       }
 
       @include helpers.tablet {
         height: helpers.pxToRem(18px);
         border-radius: helpers.pxToRem(calc(18px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(4px) legacy.$white;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(4px) legacy.$white;
-        box-shadow: inset 0 0 0 helpers.pxToRem(4px) legacy.$white;
+        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(4px)
+          rangeColors.$color-range-track-border;
+        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(4px)
+          rangeColors.$color-range-track-border;
+        box-shadow: inset 0 0 0 helpers.pxToRem(4px)
+          rangeColors.$color-range-track-border;
       }
 
       @include helpers.desktop {
         height: helpers.pxToRem(22px);
         border-radius: helpers.pxToRem(calc(22px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(6px) legacy.$white;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(6px) legacy.$white;
-        box-shadow: inset 0 0 0 helpers.pxToRem(6px) legacy.$white;
+        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(6px)
+          rangeColors.$color-range-track-border;
+        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(6px)
+          rangeColors.$color-range-track-border;
+        box-shadow: inset 0 0 0 helpers.pxToRem(6px)
+          rangeColors.$color-range-track-border;
       }
 
       &::-webkit-slider-thumb,
       &::-moz-range-thumb {
         -webkit-appearance: none;
         appearance: none;
-        background: legacy.$yellow-2;
+        background: colors.$color-surface-accent;
         cursor: grab;
         transition:
           transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
           box-shadow 0.2s ease;
         border-style: solid;
-        border-color: legacy.$white;
+        border-color: colors.$color-border-contrast;
         box-sizing: border-box;
         transform: translateZ(0); // GPU acceleration
 
@@ -129,11 +139,11 @@
       }
 
       &:disabled {
-        background: legacy.$gray-1;
+        background: colors.$color-surface-muted;
 
         &::-webkit-slider-thumb,
         &::-moz-range-thumb {
-          background: legacy.$gray-1;
+          background: colors.$color-surface-muted;
         }
       }
     }

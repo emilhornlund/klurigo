@@ -1,4 +1,4 @@
-@use '../../../../../../../../../../../styles/colors' as legacy;
+@use '../../../../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../../../../styles/helpers';
 @use '../../../../../../../../../../../styles/variables';
 
@@ -70,7 +70,7 @@
 
     &.divider {
       border-top-style: dashed;
-      border-top-color: legacy.$gray-1;
+      border-top-color: colors.$color-border-muted;
 
       @include helpers.mobile {
         border-top-width: helpers.pxToRem(1px);

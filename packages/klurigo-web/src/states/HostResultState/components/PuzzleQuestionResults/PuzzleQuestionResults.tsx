@@ -5,7 +5,7 @@ import type { FC } from 'react'
 import { useMemo } from 'react'
 
 import { SortableTable } from '../../../../components'
-import colors from '../../../../styles/colors.module.scss'
+import colors from '../../../../styles/colors.tokens.module.scss'
 import { classNames } from '../../../../utils/helpers'
 
 import styles from './PuzzleQuestionResults.module.scss'
@@ -86,7 +86,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
             id: `${value.replace(' ', '-')}_${index}`,
             value,
             icon: faCheck,
-            iconColor: colors.green2,
+            iconColor: colors.colorStatusSuccess,
           }))}
           disabled
         />

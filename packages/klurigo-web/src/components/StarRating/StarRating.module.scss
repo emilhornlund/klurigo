@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/colors.rating' as rating;
 @use '../../styles/variables';
 
 .starRow {
@@ -51,11 +52,11 @@
 }
 
 .filled {
-  color: colors.$color-rating;
+  color: rating.$color-rating-default;
 }
 
 .empty {
-  color: colors.$color-text-on-subtle;
+  color: colors.$color-text-inverse-subtle;
 }
 
 .starButton {
@@ -76,17 +77,17 @@
   }
 
   &.active {
-    color: colors.$color-rating;
+    color: rating.$color-rating-default;
 
     &:hover {
-      color: colors.$color-rating-hover;
+      color: rating.$color-rating-hover;
     }
   }
 
   &:hover {
     &:not(:disabled) {
       &:not(.active) {
-        color: colors.$color-rating-hover;
+        color: rating.$color-rating-hover;
       }
     }
   }

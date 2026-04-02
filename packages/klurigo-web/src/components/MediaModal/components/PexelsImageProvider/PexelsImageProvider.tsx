@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import { useState } from 'react'
 
 import { useKlurigoServiceClient } from '../../../../api'
-import colors from '../../../../styles/colors.module.scss'
+import colors from '../../../../styles/colors.tokens.module.scss'
 import { classNames } from '../../../../utils/helpers'
 import Button from '../../../Button'
 import ResponsiveImage from '../../../ResponsiveImage'
@@ -82,7 +82,7 @@ const PexelsImageProvider: FC<PexelsImageProviderProps> = ({ onChange }) => {
                   fit="width"
                   borderColor={
                     selectedUrl === result.photoURL
-                      ? colors.yellow2
+                      ? colors.colorFocusRing
                       : 'transparent'
                   }
                 />

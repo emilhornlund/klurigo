@@ -1,0 +1,5 @@
+@use './colors.palette' as palette;
+
+/* Rating-specific tokens */
+$color-rating-default: palette.$yellow-500;
+$color-rating-hover: palette.$yellow-400;

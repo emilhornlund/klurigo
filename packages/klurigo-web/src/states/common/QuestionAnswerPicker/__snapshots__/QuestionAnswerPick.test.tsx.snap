@@ -138,7 +138,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-grip icon"
-              color="gray4"
+              color="colorTextDefault"
               data-icon="grip"
               data-prefix="fas"
               role="img"
@@ -166,7 +166,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-grip icon"
-              color="gray4"
+              color="colorTextDefault"
               data-icon="grip"
               data-prefix="fas"
               role="img"
@@ -194,7 +194,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-grip icon"
-              color="gray4"
+              color="colorTextDefault"
               data-icon="grip"
               data-prefix="fas"
               role="img"

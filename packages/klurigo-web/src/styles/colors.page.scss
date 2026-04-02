@@ -1,0 +1,7 @@
+@use './colors.palette' as palette;
+
+/* Page-specific decorative tokens */
+$color-page-background-start: palette.$blue-500;
+$color-page-background-end: palette.$blue-600;
+$color-page-divider-start: palette.alpha(palette.$white, 0.4);
+$color-page-divider-center: palette.alpha(palette.$white, 0.7);

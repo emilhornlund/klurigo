@@ -1,6 +1,6 @@
 @use 'sass:color';
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/colors.dropzone' as dropzone;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -16,9 +16,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-color: legacy.$gray-1;
+    border-color: dropzone.$color-dropzone-border;
     border-style: dashed;
-    background-color: color.mix(legacy.$white, legacy.$gray-1, 75%);
+    background-color: dropzone.$color-dropzone-surface;
     color: colors.$color-text-muted;
     text-align: center;
     outline: none;
@@ -48,14 +48,14 @@
   }
 
   .focused {
-    border-color: legacy.$blue-1;
+    border-color: dropzone.$color-dropzone-border-focus;
   }
 
   .accept {
-    border-color: legacy.$green-1;
+    border-color: dropzone.$color-dropzone-border-success;
   }
 
   .reject {
-    border-color: legacy.$red-1;
+    border-color: dropzone.$color-dropzone-border-danger;
   }
 }

@@ -1,5 +1,5 @@
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/colors.celebration' as celebration;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -26,9 +26,9 @@
     width: 100%;
     min-width: 0;
     overflow: hidden;
-    background-color: legacy.$white;
+      background-color: colors.$color-surface-default;
     border-radius: 0;
-    color: colors.$color-text-primary;
+      color: colors.$color-text-default;
 
     animation: dramaticReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation-delay: calc(var(--row-index) * 0.2s);
@@ -55,13 +55,13 @@
     }
 
     &.gold {
-      background-color: legacy.$gold;
+      background-color: celebration.$color-celebration-medal-gold;
     }
     &.silver {
-      background-color: legacy.$silver;
+      background-color: celebration.$color-celebration-medal-silver;
     }
     &.bronze {
-      background-color: legacy.$bronze;
+      background-color: celebration.$color-celebration-medal-bronze;
     }
 
     .column {
@@ -89,8 +89,8 @@
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          background-color: legacy.$black-1-10;
-          color: colors.$color-text-primary;
+          background-color: colors.$color-surface-overlay-subtle;
+          color: colors.$color-text-default;
           font-weight: bold;
 
           @include helpers.mobile {
@@ -193,8 +193,8 @@
       }
 
       &.score {
-        background-color: legacy.$black-1-10;
-        color: colors.$color-text-primary;
+        background-color: colors.$color-surface-overlay-subtle;
+        color: colors.$color-text-default;
         font-weight: bold;
 
         @include helpers.mobile {

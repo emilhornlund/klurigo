@@ -1,0 +1,7 @@
+@use './colors.palette' as palette;
+
+/* Loading and skeleton tokens */
+$color-loading-skeleton: palette.alpha(palette.$white, 0.7);
+$color-loading-skeleton-surface: palette.alpha(palette.$white, 0.15);
+$color-loading-spinner-default: palette.$gray-900;
+$color-loading-spinner-inverse: palette.alpha(palette.$white, 0.85);

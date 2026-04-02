@@ -1,4 +1,4 @@
-@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -53,28 +53,5 @@
   100% {
     transform: translateY(100vh) rotate(720deg);
     opacity: 0;
-  }
-}
-
-// Color mappings for CSS custom properties
-.confettiParticle {
-  &[style*='--particle-color: $green-2'] {
-    background-color: legacy.$green-2;
-  }
-
-  &[style*='--particle-color: $yellow-2'] {
-    background-color: legacy.$yellow-2;
-  }
-
-  &[style*='--particle-color: $gold'] {
-    background-color: legacy.$gold;
-  }
-
-  &[style*='--particle-color: $pink-2'] {
-    background-color: legacy.$pink-2;
-  }
-
-  &[style*='--particle-color: $turquoise-2'] {
-    background-color: legacy.$turquoise-2;
   }
 }

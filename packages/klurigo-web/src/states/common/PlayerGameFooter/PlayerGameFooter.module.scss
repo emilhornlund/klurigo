@@ -1,4 +1,3 @@
-@use '../../../styles/colors' as legacy;
 @use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers';
 @use '../../../styles/mixins/_surface' as surface;
@@ -88,8 +87,8 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
 
     span {
       margin: 0;
-      background-color: legacy.$white;
-      color: colors.$color-text-primary;
+      background-color: colors.$color-surface-default;
+      color: colors.$color-text-default;
 
       @include helpers.mobile {
         padding: calc(#{variables.$mobile-narrow-layout-gutter} * 0.3) variables.$mobile-narrow-layout-gutter;

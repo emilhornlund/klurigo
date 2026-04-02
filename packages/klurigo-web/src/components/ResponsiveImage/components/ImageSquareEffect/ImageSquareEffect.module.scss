@@ -1,4 +1,4 @@
-@use '../../../../styles/colors' as legacy;
+@use '../../../../styles/colors.semantic' as colors;
 
 .imageSquareEffect {
   position: absolute;
@@ -19,7 +19,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: legacy.$white;
+      background: colors.$color-surface-default;
       transition: opacity 220ms ease-out, background 220ms ease-in-out;
       will-change: opacity, background;
       opacity: 1;

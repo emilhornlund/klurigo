@@ -1,4 +1,4 @@
-import colors from '../../styles/colors.module.scss'
+import colors from '../../styles/colors.tokens.module.scss'
 
 import { PinColor } from './types'
 
@@ -11,13 +11,13 @@ export const clamp01 = (v: number) => roundTo(Math.max(0, Math.min(1, v)), 5)
 export function getPinColorColor(color: PinColor): string {
   switch (color) {
     case PinColor.Red:
-      return colors.red2
+      return colors.colorStatusDanger
     case PinColor.Green:
-      return colors.green2
+      return colors.colorStatusSuccess
     case PinColor.Orange:
-      return colors.orange2
+      return colors.colorStatusWarning
     case PinColor.Blue:
     default:
-      return colors.blue2
+      return colors.colorActionDefault
   }
 }

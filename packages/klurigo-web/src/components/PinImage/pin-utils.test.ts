@@ -4,12 +4,12 @@ import { clamp01, getPinColorColor } from './pin-utils'
 import { PinColor } from './types'
 
 // Mock the colors module
-vi.mock('../../styles/colors.module.scss', () => ({
+vi.mock('../../styles/colors.tokens.module.scss', () => ({
   default: {
-    red2: '#ff4444',
-    green2: '#44ff44',
-    orange2: '#ff8844',
-    blue2: '#4444ff',
+    colorStatusDanger: '#ff4444',
+    colorStatusSuccess: '#44ff44',
+    colorStatusWarning: '#ff8844',
+    colorActionDefault: '#4444ff',
   },
 }))
 

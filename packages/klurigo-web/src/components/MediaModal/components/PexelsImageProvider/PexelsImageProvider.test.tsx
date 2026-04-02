@@ -11,8 +11,8 @@ vi.mock('../../../../api', () => ({
   }),
 }))
 
-vi.mock('../../../../styles/colors.module.scss', () => ({
-  default: { yellow2: 'yellow2' },
+vi.mock('../../../../styles/colors.tokens.module.scss', () => ({
+  default: { colorFocusRing: 'colorFocusRing' },
 }))
 
 vi.mock('../../../../utils/helpers', () => ({
@@ -176,7 +176,7 @@ describe('PexelsImageProvider', () => {
     expect(onChange).toHaveBeenCalledWith(photos[0].photoURL)
   })
 
-  it('applies yellow2 borderColor to selected image and transparent to others', async () => {
+  it('applies focus borderColor to selected image and transparent to others', async () => {
     const photos = makePhotos(2)
     searchPhotosMock.mockResolvedValue({ photos })
 
@@ -199,7 +199,7 @@ describe('PexelsImageProvider', () => {
 
     fireEvent.click(images[0].closest('button') as HTMLElement)
 
-    expect(images[0]).toHaveAttribute('data-border-color', 'yellow2')
+    expect(images[0]).toHaveAttribute('data-border-color', 'colorFocusRing')
     expect(images[1]).toHaveAttribute('data-border-color', 'transparent')
   })
 
@@ -223,7 +223,7 @@ describe('PexelsImageProvider', () => {
     )
     expect(screen.getByTestId('responsive-image')).toHaveAttribute(
       'data-border-color',
-      'yellow2',
+      'colorFocusRing',
     )
 
     searchPhotosMock.mockResolvedValue({ photos: makePhotos(1) })

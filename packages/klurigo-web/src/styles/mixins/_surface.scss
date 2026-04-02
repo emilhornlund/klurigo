@@ -6,21 +6,21 @@
   background:
     linear-gradient(
         135deg,
-        colors.$color-surface-glass-start 0%,
-        colors.$color-surface-glass-end 100%
+        colors.$color-surface-glass-default-start 0%,
+        colors.$color-surface-glass-default-end 100%
     ),
-    colors.$color-surface-glass-start;
+    colors.$color-surface-glass-default-start;
   color: colors.$color-text-inverse;
 }
 
 @mixin surface-border() {
-  border: variables.$control-outside-border-width solid colors.$color-border-glass;
+  border: variables.$control-outside-border-width solid colors.$color-border-glass-default;
 }
 
 @mixin surface-shadow() {
   box-shadow:
-    0 8px 24px colors.$color-shadow,
-    inset 0 1px 0 colors.$color-inset;
+    0 8px 24px colors.$color-shadow-default,
+    inset 0 1px 0 colors.$color-inset-default;
 }
 
 @mixin surface-interactive-hover() {
@@ -32,8 +32,7 @@
     ),
     colors.$color-surface-glass-hover-start;
   border-color: colors.$color-border-glass-hover;
-  box-shadow:
-    0 12px 28px colors.$color-shadow-hover,
+  box-shadow: 0 12px 28px colors.$color-shadow-hover,
     inset 0 1px 0 colors.$color-inset-hover;
   transform: translateY(-1px);
 }
@@ -47,8 +46,7 @@
     ),
     colors.$color-surface-glass-active-start;
   border-color: colors.$color-border-glass-active;
-  box-shadow:
-    0 6px 18px colors.$color-shadow-active,
+  box-shadow: 0 6px 18px colors.$color-shadow-active,
     inset 0 1px 0 colors.$color-inset-active;
   transform: translateY(0);
 }

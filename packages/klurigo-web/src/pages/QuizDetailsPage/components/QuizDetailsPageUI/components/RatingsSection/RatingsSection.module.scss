@@ -1,4 +1,3 @@
-@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
@@ -158,7 +157,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: legacy.$white;
+  background-color: colors.$color-surface-default;
   overflow: hidden;
 
   @include helpers.mobile {
@@ -189,7 +188,7 @@
     justify-content: space-between;
 
     .timeAgo {
-      color: colors.$color-text-secondary;
+      color: colors.$color-text-subtle;
 
       @include helpers.mobile {
         @include helpers.fontSize(12px);
@@ -206,7 +205,7 @@
   }
 
   .author {
-    color: colors.$color-text-primary;
+    color: colors.$color-text-default;
     font-weight: 600;
 
     @include helpers.mobile {
@@ -223,7 +222,7 @@
   }
 
   .comment {
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-subtle;
     margin: 0;
     overflow: hidden;
     display: -webkit-box;
@@ -275,7 +274,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: legacy.$white;
+  background-color: colors.$color-surface-default;
   overflow: hidden;
 
   @include helpers.mobile {
@@ -303,7 +302,7 @@
 .skeletonLine {
   height: 0.75rem;
   border-radius: 0.25rem;
-  background: legacy.$gray-1;
+  background: colors.$color-surface-muted;
   animation: shimmer 1.5s ease-in-out infinite;
 
   &:first-child {

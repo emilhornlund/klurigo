@@ -1,5 +1,5 @@
-@use '../../../../../../styles/colors' as legacy;
 @use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/colors.loading.semantic' as loadingColors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -38,7 +38,7 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  background-color: legacy.$white-1-15;
+  background-color: loadingColors.$color-loading-skeleton-surface;
   overflow: hidden;
   scroll-snap-align: start;
 
@@ -61,7 +61,7 @@
 .skeletonCover {
   width: 100%;
   aspect-ratio: 16 / 10;
-  background: legacy.$white-1-70;
+  background: loadingColors.$color-loading-skeleton;
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
@@ -75,7 +75,7 @@
 .skeletonLine {
   height: 0.75rem;
   border-radius: 0.25rem;
-  background: legacy.$white-1-70;
+  background: loadingColors.$color-loading-skeleton;
   animation: shimmer 1.5s ease-in-out infinite;
 
   &:first-child {

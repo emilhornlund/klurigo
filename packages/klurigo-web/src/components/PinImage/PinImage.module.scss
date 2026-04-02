@@ -1,4 +1,4 @@
-@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -40,8 +40,8 @@
       top: 50%;
       transform: translate(-50%, -50%); /* center this circle */
       border-radius: 50%;
-      background: legacy.$green-2-25;
-      outline: 2px dashed legacy.$green-2;
+      background: colors.$color-surface-success-subtle;
+      outline: 2px dashed colors.$color-focus-success;
       z-index: 0;
       pointer-events: none; /* don't block dragging */
     }

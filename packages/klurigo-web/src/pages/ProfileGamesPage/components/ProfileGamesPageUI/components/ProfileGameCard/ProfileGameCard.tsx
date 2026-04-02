@@ -16,7 +16,7 @@ import {
   MediaInfoCard,
 } from '../../../../../../components'
 import { GameModeLabels } from '../../../../../../models'
-import colors from '../../../../../../styles/colors.module.scss'
+import colors from '../../../../../../styles/colors.tokens.module.scss'
 import {
   DATE_FORMATS,
   formatLocalDate,
@@ -53,7 +53,7 @@ const ProfileGameCard: FC<ProfileGameCardProps> = ({ game, onClick }) => {
       {isActive && (
         <CardInfoItem
           icon={faPlayCircle}
-          iconColor={colors.orange2}
+          iconColor={colors.colorStatusWarning}
           data-testid="info-active">
           Ongoing
         </CardInfoItem>
@@ -62,7 +62,7 @@ const ProfileGameCard: FC<ProfileGameCardProps> = ({ game, onClick }) => {
       {isCompletedHost && (
         <CardInfoItem
           icon={faUserTie}
-          iconColor={colors.blue2}
+          iconColor={colors.colorActionDefault}
           data-testid="info-host">
           Host
         </CardInfoItem>
@@ -72,13 +72,13 @@ const ProfileGameCard: FC<ProfileGameCardProps> = ({ game, onClick }) => {
         <>
           <CardInfoItem
             icon={faRankingStar}
-            iconColor={colors.green2}
+            iconColor={colors.colorStatusSuccess}
             data-testid="info-rank">
             {game.rank}
           </CardInfoItem>
           <CardInfoItem
             icon={faStar}
-            iconColor={colors.yellow2}
+            iconColor={colors.colorRatingDefault}
             data-testid="info-score">
             {game.score}
           </CardInfoItem>

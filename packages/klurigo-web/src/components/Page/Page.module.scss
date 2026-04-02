@@ -1,6 +1,6 @@
 @use '../../styles/animations';
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/colors.page' as pageColors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -28,11 +28,11 @@
   height: 100vh;
   max-height: 100dvh;
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
-  background: colors.$color-surface-page-start;
+  background: pageColors.$color-page-background-start;
   background: linear-gradient(
       135deg,
-      colors.$color-surface-page-start 25%,
-      colors.$color-surface-page-end 75%
+      pageColors.$color-page-background-start 25%,
+      pageColors.$color-page-background-end 75%
   );
   background-size: 400% 400%;
   overflow: hidden;

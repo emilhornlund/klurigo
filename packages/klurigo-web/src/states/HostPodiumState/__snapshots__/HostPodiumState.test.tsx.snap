@@ -221,283 +221,283 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>
@@ -759,283 +759,283 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>
@@ -1297,283 +1297,283 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>
@@ -1835,283 +1835,283 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>
@@ -2418,283 +2418,283 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>
@@ -2956,283 +2956,283 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
             >
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $green-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $yellow-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $gold; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $pink-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
               />
               <div
                 class="confettiParticle"
-                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: $turquoise-2; --particle-size: 8px;"
+                style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
               />
             </div>
           </div>

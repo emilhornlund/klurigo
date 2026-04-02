@@ -3,8 +3,8 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // ---- Mocks (must come before component import) ----
-vi.mock('../../styles/colors.module.scss', () => ({
-  default: { gray4: '#999999' },
+vi.mock('../../styles/colors.tokens.module.scss', () => ({
+  default: { colorTextDefault: '#999999' },
 }))
 
 vi.mock('./SortableTable.module.scss', () => ({

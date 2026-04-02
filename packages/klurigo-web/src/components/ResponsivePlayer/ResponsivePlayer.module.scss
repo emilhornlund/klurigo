@@ -1,4 +1,4 @@
-@use '../../styles/colors' as legacy;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -11,8 +11,8 @@
   height: 100%;
   overflow: hidden;
   border-style: solid;
-  border-color: legacy.$white-1-50;
-  background-color: legacy.$white-1-50;
+  border-color: colors.$color-border-glass-strong;
+  background-color: colors.$color-surface-floating;
 
   @include helpers.mobile {
     border-width: helpers.pxToRem(2px);

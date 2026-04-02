@@ -1,5 +1,3 @@
-@use 'sass:color';
-@use '../../../../styles/colors' as legacy;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/loading';
@@ -87,18 +85,18 @@
       }
 
       &.correct {
-        background-color: legacy.$green-1;
+        background-color: colors.$color-surface-success-soft;
 
         span {
-          background-color: legacy.$green-2;
+          background-color: colors.$color-surface-success;
         }
       }
 
       &.incorrect {
-        background-color: legacy.$red-1;
+        background-color: colors.$color-surface-danger-soft;
 
         span {
-          background-color: color.mix(legacy.$gray-4, legacy.$red-2, 10%);
+          background-color: colors.$color-surface-danger-strong;
         }
       }
 
@@ -142,7 +140,7 @@
         display: none;
         width: 100%;
         height: 100%;
-        background-color: legacy.$black-1-50;
+        background-color: colors.$color-surface-overlay;
         font-family: inherit;
         appearance: none;
         -o-appearance: none;
@@ -171,7 +169,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--mobile-loading-spinner-size,
-              legacy.$white,
+              colors.$color-border-contrast,
               button-mobile-normal
             );
           }
@@ -182,7 +180,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--tablet-loading-spinner-size,
-              legacy.$white,
+              colors.$color-border-contrast,
               button-tablet-normal
             );
           }
@@ -193,7 +191,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--desktop-loading-spinner-size,
-              legacy.$white,
+              colors.$color-border-contrast,
               button-desktop-normal
             );
           }

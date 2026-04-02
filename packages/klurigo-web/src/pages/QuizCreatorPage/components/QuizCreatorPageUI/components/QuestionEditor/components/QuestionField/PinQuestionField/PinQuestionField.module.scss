@@ -1,4 +1,4 @@
-@use '../../../../../../../../../styles/colors' as legacy;
+@use '../../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../../styles/helpers';
 @use '../../../../../../../../../styles/variables';
 
@@ -33,7 +33,7 @@
     .actions {
       display: flex;
       flex-direction: row;
-      background-color: legacy.$white-1-80;
+      background-color: colors.$color-surface-floating;
 
       @include helpers.mobile {
         padding: variables.$mobile-narrow-layout-gutter * 0.5;

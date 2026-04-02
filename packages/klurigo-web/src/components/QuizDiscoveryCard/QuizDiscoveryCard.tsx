@@ -3,7 +3,7 @@ import type { DiscoveryQuizCardDto } from '@klurigo/common'
 import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import colors from '../../styles/colors.module.scss'
+import colors from '../../styles/colors.tokens.module.scss'
 import { CardInfoItem, CardMetaItem, MediaInfoCard } from '../MediaInfoCard'
 
 /**
@@ -47,7 +47,7 @@ const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
       {quiz.ratingSummary.stars > 0 && (
         <CardMetaItem
           icon={faStar}
-          textColor={colors.gold}
+          textColor={colors.colorRatingDefault}
           data-testid="meta-rating">
           {quiz.ratingSummary.stars.toFixed(1)}
         </CardMetaItem>

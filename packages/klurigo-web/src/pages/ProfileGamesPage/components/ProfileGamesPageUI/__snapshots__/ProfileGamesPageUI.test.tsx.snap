@@ -241,7 +241,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
                     <svg
                       aria-hidden="true"
                       class="svg-inline--fa fa-circle-play"
-                      color="orange2"
+                      color="colorStatusWarning"
                       data-icon="circle-play"
                       data-prefix="fas"
                       role="img"
@@ -346,7 +346,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
                     <svg
                       aria-hidden="true"
                       class="svg-inline--fa fa-user-tie"
-                      color="blue2"
+                      color="colorActionDefault"
                       data-icon="user-tie"
                       data-prefix="fas"
                       role="img"
@@ -451,7 +451,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
                     <svg
                       aria-hidden="true"
                       class="svg-inline--fa fa-ranking-star"
-                      color="green2"
+                      color="colorStatusSuccess"
                       data-icon="ranking-star"
                       data-prefix="fas"
                       role="img"
@@ -471,7 +471,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
                     <svg
                       aria-hidden="true"
                       class="svg-inline--fa fa-star"
-                      color="yellow2"
+                      color="colorRatingDefault"
                       data-icon="star"
                       data-prefix="fas"
                       role="img"

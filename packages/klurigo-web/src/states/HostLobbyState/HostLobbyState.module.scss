@@ -1,4 +1,3 @@
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
@@ -27,13 +26,13 @@
 
   .box {
     outline-style: solid;
-    outline-color: legacy.$white;
+    outline-color: colors.$color-focus-outline;
 
     border-style: solid;
     border-color: transparent;
 
-    background-color: legacy.$white;
-    color: colors.$color-text-primary;
+    background-color: colors.$color-surface-default;
+    color: colors.$color-text-default;
 
     @include helpers.mobile {
       height: 98px;

@@ -1,4 +1,4 @@
-@use '../../../../styles/colors' as legacy;
+@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
 
@@ -84,18 +84,18 @@
         }
 
         &.green {
-          background-color: legacy.$green-1;
+          background-color: colors.$color-surface-success-soft;
 
           .footer {
-            background-color: legacy.$green-2;
+            background-color: colors.$color-surface-success;
           }
         }
 
         &.red {
-          background-color: legacy.$red-1;
+          background-color: colors.$color-surface-danger-soft;
 
           .footer {
-            background-color: legacy.$red-2;
+            background-color: colors.$color-surface-danger;
           }
         }
 

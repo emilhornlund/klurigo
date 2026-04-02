@@ -1,5 +1,4 @@
 @use '../../styles/animations';
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
@@ -66,7 +65,7 @@
   }
 
   &.accent {
-    background-color: legacy.$blue-1;
+    background-color: colors.$color-action-strong;
     color: colors.$color-text-inverse;
   }
 
@@ -75,7 +74,7 @@
     -webkit-appearance: none;
     align-items: center;
     appearance: none;
-    background-color: legacy.$black-1-50;
+    background-color: colors.$color-surface-overlay;
     border: none;
     box-shadow: none;
     cursor: pointer;
@@ -106,7 +105,7 @@
 
     &:hover {
       @media (prefers-reduced-motion: no-preference) {
-        background-color: legacy.$black-1-75;
+        background-color: colors.$color-surface-overlay-hover;
       }
     }
   }
@@ -115,15 +114,9 @@
   &:hover {
     @media (prefers-reduced-motion: no-preference) {
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease;
     }
 
     &.subtle {
-      background-color: legacy.$white-1-20;
-      border-color: legacy.$white-1-40;
       opacity: 0.9;
     }
 
