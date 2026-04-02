@@ -1,4 +1,3 @@
-@use '../../styles/colors' as legacy;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
@@ -7,15 +6,16 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: legacy.$white;
+  background-color: colors.$color-surface-floating;
   border: none;
-  color: black;
   z-index: variables.$menu-z-index;
   transform: translateX(-100%);
   row-gap: helpers.pxToRem(8px);
   padding: helpers.pxToRem(8px) 0;
   border-radius: helpers.pxToRem(8px);
-  box-shadow: 0 helpers.pxToRem(4px) helpers.pxToRem(4px) rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 24px colors.$color-shadow,
+    inset 0 1px 0 colors.$color-inset;
 
   .menuItem {
     display: flex;
@@ -33,7 +33,6 @@
       flex-wrap: nowrap;
       align-items: center;
       width: 100%;
-      background-color: legacy.$white;
       column-gap: helpers.pxToRem(16px);
       padding: helpers.pxToRem(8px) helpers.pxToRem(16px);
       white-space: nowrap;
@@ -50,7 +49,11 @@
         cursor: pointer;
 
         .content {
-          background-color: legacy.$gray-1;
+          background-color: colors.$color-surface-accent-subtle;
+        }
+
+        .icon {
+          color: colors.$color-accent;
         }
       }
     }
@@ -67,7 +70,7 @@
     appearance: none;
     margin: 0 variables.$desktop-narrow-layout-gutter;
     border: none;
-    border-bottom: 1px dashed legacy.$gray-2;
+    border-bottom: 1px dashed colors.$color-border-subtle;
     outline: none;
   }
 }
