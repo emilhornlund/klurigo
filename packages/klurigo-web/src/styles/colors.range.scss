@@ -1,0 +1,4 @@
+@use './colors.semantic' as semantic;
+
+/* Range input-specific tokens */
+$color-range-track-border: semantic.$color-border-contrast;

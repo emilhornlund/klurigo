@@ -1,4 +1,4 @@
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -20,7 +20,7 @@
   }
 
   .title {
-    color: colors.$white;
+    color: colors.$color-text-inverse;
     font-weight: 700;
     text-align: center;
     margin: 0;
@@ -64,7 +64,7 @@
       flex-shrink: 0;
 
       .average {
-        color: colors.$white;
+        color: colors.$color-text-inverse;
         font-weight: 700;
         line-height: 1;
 
@@ -82,7 +82,7 @@
       }
 
       .outOf {
-        color: colors.$white;
+        color: colors.$color-text-inverse;
         opacity: 0.6;
 
         @include helpers.mobile {
@@ -118,7 +118,7 @@
       }
 
       .count {
-        color: colors.$white;
+        color: colors.$color-text-inverse;
         font-weight: 500;
         opacity: 0.6;
 
@@ -157,7 +157,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: colors.$white;
+  background-color: colors.$color-surface-default;
   overflow: hidden;
 
   @include helpers.mobile {
@@ -188,7 +188,7 @@
     justify-content: space-between;
 
     .timeAgo {
-      color: colors.$gray-2;
+      color: colors.$color-text-subtle;
 
       @include helpers.mobile {
         @include helpers.fontSize(12px);
@@ -205,7 +205,7 @@
   }
 
   .author {
-    color: colors.$gray-4;
+    color: colors.$color-text-default;
     font-weight: 600;
 
     @include helpers.mobile {
@@ -222,7 +222,7 @@
   }
 
   .comment {
-    color: colors.$gray-3;
+    color: colors.$color-text-subtle;
     margin: 0;
     overflow: hidden;
     display: -webkit-box;
@@ -244,7 +244,7 @@
 }
 
 .emptyState {
-  color: colors.$white;
+  color: colors.$color-text-inverse;
   opacity: 0.5;
   margin: 0;
   font-style: italic;
@@ -274,7 +274,7 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background-color: colors.$white;
+  background-color: colors.$color-surface-default;
   overflow: hidden;
 
   @include helpers.mobile {
@@ -302,7 +302,7 @@
 .skeletonLine {
   height: 0.75rem;
   border-radius: 0.25rem;
-  background: colors.$gray-1;
+  background: colors.$color-surface-muted;
   animation: shimmer 1.5s ease-in-out infinite;
 
   &:first-child {

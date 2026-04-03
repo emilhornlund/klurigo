@@ -1635,7 +1635,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <svg
                     aria-hidden="true"
                     class="svg-inline--fa fa-check icon"
-                    color="green2"
+                    color="colorStatusSuccess"
                     data-icon="check"
                     data-prefix="fas"
                     role="img"
@@ -1663,7 +1663,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <svg
                     aria-hidden="true"
                     class="svg-inline--fa fa-check icon"
-                    color="green2"
+                    color="colorStatusSuccess"
                     data-icon="check"
                     data-prefix="fas"
                     role="img"
@@ -1691,7 +1691,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <svg
                     aria-hidden="true"
                     class="svg-inline--fa fa-check icon"
-                    color="green2"
+                    color="colorStatusSuccess"
                     data-icon="check"
                     data-prefix="fas"
                     role="img"
@@ -1719,7 +1719,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <svg
                     aria-hidden="true"
                     class="svg-inline--fa fa-check icon"
-                    color="green2"
+                    color="colorStatusSuccess"
                     data-icon="check"
                     data-prefix="fas"
                     role="img"

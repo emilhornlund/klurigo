@@ -1,5 +1,6 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
 
 .sortableTable {
@@ -28,9 +29,9 @@
     align-items: center;
     border-width: variables.$control-outside-border-width;
     border-style: solid;
-    border-color: colors.$white;
-    background: colors.$white;
-    color: colors.$gray-4;
+    border-color: colors.$color-border-contrast;
+    background: colors.$color-surface-default;
+    color: colors.$color-text-default;
     flex: 1;
     width: 100%;
     -webkit-user-select: none;
@@ -101,15 +102,15 @@
   @keyframes dropSuccess {
     0% {
       transform: scale(1.02) translateZ(0);
-      box-shadow: 0 4px 12px rgba(46, 213, 115, 0.3);
+      box-shadow: shadows.$shadow-status-success;
     }
     50% {
       transform: scale(1.1) translateZ(0);
-      box-shadow: 0 6px 20px rgba(46, 213, 115, 0.4);
+      box-shadow: shadows.$shadow-status-success-strong;
     }
     100% {
       transform: scale(1) translateZ(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: shadows.$shadow-control-active;
     }
   }
 

@@ -1,14 +1,14 @@
-@use '../../../../styles/colors';
+@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
+@use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/variables';
 
 .ratingCard {
+  @include surface.surface-box;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: colors.$white-1-15;
-  border: variables.$control-outside-border-width solid colors.$white-1-25;
-  color: colors.$white;
   width: 100%;
 
   @include helpers.mobile {

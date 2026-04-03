@@ -1,5 +1,6 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_shadow' as shadow;
 @use '../../styles/variables';
 
 $mobile-switch-height: helpers.pxToRem(30px);
@@ -83,18 +84,27 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       cursor: pointer;
 
       &:checked + .slider {
-        background-color: colors.$green-2;
+        background-color: colors.$color-surface-success;
       }
 
       &:focus-visible + .slider {
         @include helpers.mobile {
-          box-shadow: 0 0 0 $mobile-switch-visible-border-width colors.$green-2;
+          @include shadow.focus-ring(
+            $mobile-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
         @include helpers.tablet {
-          box-shadow: 0 0 0 $tablet-switch-visible-border-width colors.$green-2;
+          @include shadow.focus-ring(
+            $tablet-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
         @include helpers.desktop {
-          box-shadow: 0 0 0 $desktop-switch-visible-border-width colors.$green-2;
+          @include shadow.focus-ring(
+            $desktop-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
       }
 
@@ -123,7 +133,7 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: colors.$gray-1;
+      background-color: colors.$color-surface-control-muted;
       -webkit-transition: .4s;
       transition: .4s;
 
@@ -140,7 +150,7 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       &:before {
         position: absolute;
         content: "";
-        background-color: colors.$white;
+        background-color: colors.$color-surface-default;
         border-radius: 50%;
         -webkit-transition: .4s;
         transition: .4s;

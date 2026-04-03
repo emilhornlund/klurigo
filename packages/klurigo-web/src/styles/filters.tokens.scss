@@ -1,0 +1,3 @@
+@use './colors.semantic' as colors;
+
+$filter-glow-inverse-subtle: drop-shadow(0 0 8px colors.$color-shadow-glow-inverse);

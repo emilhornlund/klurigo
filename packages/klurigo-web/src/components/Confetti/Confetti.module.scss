@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -53,28 +53,5 @@
   100% {
     transform: translateY(100vh) rotate(720deg);
     opacity: 0;
-  }
-}
-
-// Color mappings for CSS custom properties
-.confettiParticle {
-  &[style*='--particle-color: $green-2'] {
-    background-color: colors.$green-2;
-  }
-
-  &[style*='--particle-color: $yellow-2'] {
-    background-color: colors.$yellow-2;
-  }
-
-  &[style*='--particle-color: $gold'] {
-    background-color: colors.$gold;
-  }
-
-  &[style*='--particle-color: $pink-2'] {
-    background-color: colors.$pink-2;
-  }
-
-  &[style*='--particle-color: $turquoise-2'] {
-    background-color: colors.$turquoise-2;
   }
 }

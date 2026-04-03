@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 
 .header {
@@ -19,7 +19,8 @@
 .title {
   margin: 0;
   font-weight: 700;
-  color: colors.$white;
+  color: colors.$color-text-inverse;
+  opacity: 0.95;
 
   @include helpers.mobile {
     @include helpers.fontSize(20px);
@@ -34,7 +35,8 @@
 
 .description {
   margin: 0;
-  color: colors.$white-1-70;
+  color: colors.$color-text-inverse;
+  opacity: 0.80;
 
   @include helpers.mobile {
     @include helpers.fontSize(14px);

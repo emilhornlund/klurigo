@@ -16,7 +16,7 @@ import type {
 } from '@klurigo/common'
 import { GameMode } from '@klurigo/common'
 
-import colors from '../../../../../styles/colors.module.scss'
+import colors from '../../../../../styles/colors.tokens.module.scss'
 
 import { formatRoundedSeconds } from './format.utils'
 
@@ -99,25 +99,25 @@ export function buildPlayerSectionMetricDetails(
       title: 'Unanswered',
       value: metric.unanswered,
       icon: faMinusCircle,
-      iconColor: colors.blue2,
+      iconColor: colors.colorActionDefault,
     },
     {
       title: 'Average response time',
       value: formatRoundedSeconds(metric.averageResponseTime),
       icon: faStopwatch,
-      iconColor: colors.turquoise2,
+      iconColor: colors.colorStatusInfo,
     },
     {
       title: 'Longest correct streak',
       value: metric.longestCorrectStreak,
       icon: faFire,
-      iconColor: colors.orange2,
+      iconColor: colors.colorStatusWarning,
     },
     {
       title: 'Score',
       value: metric.score,
       icon: faStar,
-      iconColor: colors.yellow2,
+      iconColor: colors.colorRatingDefault,
     },
   ]
   if (mode === GameMode.Classic) {
@@ -128,13 +128,13 @@ export function buildPlayerSectionMetricDetails(
         title: 'Correct',
         value: classicModePlayerMetric.correct,
         icon: faCheckCircle,
-        iconColor: colors.green2,
+        iconColor: colors.colorStatusSuccess,
       },
       {
         title: 'Incorrect',
         value: classicModePlayerMetric.incorrect,
         icon: faTimesCircle,
-        iconColor: colors.red2,
+        iconColor: colors.colorStatusDanger,
       },
       ...common,
     ]
@@ -158,13 +158,13 @@ export function buildQuestionSectionMetricDetails(
       title: 'Unanswered',
       value: metric.unanswered,
       icon: faMinusCircle,
-      iconColor: colors.blue2,
+      iconColor: colors.colorActionDefault,
     },
     {
       title: 'Average response time',
       value: formatRoundedSeconds(metric.averageResponseTime),
       icon: faStopwatch,
-      iconColor: colors.turquoise2,
+      iconColor: colors.colorStatusInfo,
     },
   ]
   if (mode === GameMode.Classic) {
@@ -175,13 +175,13 @@ export function buildQuestionSectionMetricDetails(
         title: 'Correct',
         value: classicModePlayerMetric.correct,
         icon: faCheckCircle,
-        iconColor: colors.green2,
+        iconColor: colors.colorStatusSuccess,
       },
       {
         title: 'Incorrect',
         value: classicModePlayerMetric.incorrect,
         icon: faTimesCircle,
-        iconColor: colors.red2,
+        iconColor: colors.colorStatusDanger,
       },
       ...common,
     ]

@@ -1,4 +1,4 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -11,7 +11,7 @@
   border: none;
   font-family: inherit;
   outline: none;
-  color: colors.$white;
+  color: colors.$color-text-inverse;
 
   @include helpers.mobile {
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);
@@ -27,16 +27,16 @@
 
   &:hover {
     cursor: pointer;
-    color: colors.$gray-1;
+    color: colors.$color-text-inverse-subtle;
   }
 }
 
 .iconTooltip {
   display: flex;
   flex-direction: column;
-  color: colors.$gray-4;
+  color: colors.$color-text-default;
   z-index: variables.$tooltip-z-index;
-  background-color: colors.$turquoise-1;
+  background-color: colors.$color-surface-info;
   max-width: variables.$mobile-width;
 
   @include helpers.mobile {

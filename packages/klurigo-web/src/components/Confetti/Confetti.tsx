@@ -1,6 +1,8 @@
 import { type CSSProperties, type FC } from 'react'
 import { useEffect, useState } from 'react'
 
+import colors from '../../styles/colors.tokens.module.scss'
+
 import styles from './Confetti.module.scss'
 
 export type ConfettiIntensity = 'normal' | 'major' | 'epic'
@@ -27,9 +29,22 @@ const particleCounts = {
 }
 
 const colorPalettes = {
-  normal: ['$green-2', '$yellow-2'],
-  major: ['$green-2', '$yellow-2', '$gold'],
-  epic: ['$green-2', '$yellow-2', '$gold', '$pink-2', '$turquoise-2'],
+  normal: [
+    colors.colorCelebrationConfettiSuccess,
+    colors.colorCelebrationConfettiAccent,
+  ],
+  major: [
+    colors.colorCelebrationConfettiSuccess,
+    colors.colorCelebrationConfettiAccent,
+    colors.colorCelebrationConfettiRankGold,
+  ],
+  epic: [
+    colors.colorCelebrationConfettiSuccess,
+    colors.colorCelebrationConfettiAccent,
+    colors.colorCelebrationConfettiRankGold,
+    colors.colorCelebrationConfettiAlt,
+    colors.colorCelebrationConfettiInfo,
+  ],
 }
 
 const generateParticles = (

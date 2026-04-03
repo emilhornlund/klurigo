@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 
@@ -26,12 +26,12 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
     flex: 1;
     appearance: none;
-    background-color: color.mix(colors.$white, colors.$blue-2, 75%);
-    outline: color.mix(colors.$white, colors.$blue-2, 75%) solid $outline-offset;
+    background-color: colors.$color-action-tint;
+    outline: colors.$color-action-tint solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     margin: calc($outline-offset * 2);
-    color: colors.$gray-4;
+    color: colors.$color-text-default;
     font-weight: bold;
     cursor: pointer;
 
@@ -63,9 +63,9 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     &:hover {
-      background-color: color.mix(colors.$white, colors.$blue-2, 85%);
-      outline-color: color.mix(colors.$white, colors.$blue-2, 85%);
-      color: color.mix(colors.$white, colors.$gray-4, 30%);
+      background-color: colors.$color-action-tint;
+      outline-color: colors.$color-action-tint;
+      color: colors.$color-text-emphasis;
     }
 
     .description {

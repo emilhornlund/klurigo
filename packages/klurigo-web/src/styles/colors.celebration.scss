@@ -1,0 +1,20 @@
+@use './colors.palette' as palette;
+@use './colors.semantic' as semantic;
+
+/* Celebration, podium, medal, and confetti tokens */
+$color-celebration-rank-gold: palette.$yellow-500;
+$color-celebration-rank-silver: palette.$gray-300;
+$color-celebration-rank-bronze: palette.$orange-400;
+
+$color-celebration-medal-gold: $color-celebration-rank-gold;
+$color-celebration-medal-gold-highlight: palette.$yellow-400;
+$color-celebration-medal-silver: $color-celebration-rank-silver;
+$color-celebration-medal-silver-highlight: palette.$gray-200;
+$color-celebration-medal-bronze: $color-celebration-rank-bronze;
+$color-celebration-medal-bronze-highlight: palette.$orange-300;
+
+$color-celebration-confetti-success: semantic.$color-surface-success;
+$color-celebration-confetti-accent: semantic.$color-action-accent;
+$color-celebration-confetti-rank-gold: $color-celebration-rank-gold;
+$color-celebration-confetti-alt: semantic.$color-action-alt;
+$color-celebration-confetti-info: semantic.$color-surface-info;

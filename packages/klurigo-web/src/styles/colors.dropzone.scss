@@ -1,0 +1,8 @@
+@use './colors.semantic' as semantic;
+
+/* Dropzone-specific tokens */
+$color-dropzone-border: semantic.$color-border-muted;
+$color-dropzone-surface: semantic.$color-surface-muted;
+$color-dropzone-border-focus: semantic.$color-action-strong;
+$color-dropzone-border-success: semantic.$color-surface-success-soft;
+$color-dropzone-border-danger: semantic.$color-surface-danger-soft;

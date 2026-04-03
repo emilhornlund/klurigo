@@ -1,8 +1,8 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 
 .errorIcon {
   @include helpers.fontSize(148px);
 
-  color: colors.$red-1;
+  color: colors.$color-text-danger;
 }

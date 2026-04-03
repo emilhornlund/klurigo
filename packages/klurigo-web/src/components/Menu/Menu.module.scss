@@ -1,26 +1,27 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
 
 .menu {
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: colors.$white;
+  background-color: colors.$color-surface-floating;
   border: none;
-  color: black;
   z-index: variables.$menu-z-index;
   transform: translateX(-100%);
   row-gap: helpers.pxToRem(8px);
   padding: helpers.pxToRem(8px) 0;
   border-radius: helpers.pxToRem(8px);
-  box-shadow: 0 helpers.pxToRem(4px) helpers.pxToRem(4px) rgba(0, 0, 0, 0.1);
+  box-shadow: shadows.$shadow-overlay;
 
   .menuItem {
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: colors.$gray-4;
+    color: colors.$color-text-default;
+    background-color: transparent;
     appearance: none;
     padding: 0;
     border: none;
@@ -32,7 +33,6 @@
       flex-wrap: nowrap;
       align-items: center;
       width: 100%;
-      background-color: colors.$white;
       column-gap: helpers.pxToRem(16px);
       padding: helpers.pxToRem(8px) helpers.pxToRem(16px);
       white-space: nowrap;
@@ -49,13 +49,17 @@
         cursor: pointer;
 
         .content {
-          background-color: colors.$gray-1;
+          background-color: colors.$color-action-subtle;
+        }
+
+        .icon {
+          color: colors.$color-action-default;
         }
       }
     }
 
     &:disabled {
-      color: colors.$gray-2;
+      color: colors.$color-text-disabled;
     }
   }
 
@@ -66,7 +70,7 @@
     appearance: none;
     margin: 0 variables.$desktop-narrow-layout-gutter;
     border: none;
-    border-bottom: 1px dashed colors.$gray-2;
+    border-bottom: 1px dashed colors.$color-border-subtle;
     outline: none;
   }
 }

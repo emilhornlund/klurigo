@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import colors from '../../styles/colors.module.scss'
+import colors from '../../styles/colors.tokens.module.scss'
 import { classNames } from '../../utils/helpers'
 
 import styles from './SortableTable.module.scss'
@@ -53,7 +53,7 @@ const SortableItem: FC<SortableItemProps> = ({
   dropAnimation,
   value,
   icon,
-  iconColor = colors.gray4,
+  iconColor = colors.colorTextDefault,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })

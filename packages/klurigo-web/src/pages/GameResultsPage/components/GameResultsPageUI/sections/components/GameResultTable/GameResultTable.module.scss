@@ -1,11 +1,11 @@
-@use '../../../../../../../styles/colors';
+@use '../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../styles/helpers';
+@use '../../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../../styles/variables';
 
 .table {
   display: flex;
   flex-direction: column;
-  color: colors.$gray-4;
 
   @include helpers.mobile {
     row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
@@ -23,11 +23,10 @@
   }
 
   .tableRow {
+    @include surface.surface-box(true);
+
     display: flex;
     flex-direction: column;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white;
     cursor: pointer;
 
     @include helpers.mobile {
@@ -63,13 +62,12 @@
       }
 
       .badge {
+        @include surface.surface-box(true);
+
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
-        background-color: colors.$white-1-15;
-        border: variables.$control-outside-border-width solid colors.$white-1-25;
-        color: colors.$white;
         font-weight: bold;
 
         @include helpers.mobile {
@@ -113,8 +111,8 @@
         .label {
           font-weight: bold;
           text-transform: uppercase;
-          background-color: colors.$orange-2;
-          color: colors.$white;
+          background-color: colors.$color-surface-warning;
+          color: colors.$color-text-inverse;
 
           @include helpers.mobile {
             padding: variables.$mobile-control-normal-layout-gutter * 0.5 variables.$mobile-control-normal-layout-gutter;
@@ -244,15 +242,7 @@
     }
 
     &:hover {
-      background-color: colors.$white-1-20;
-      border-color: colors.$white-1-40;
-
       .main {
-        .badge {
-          background-color: colors.$white-1-25;
-          border-color: colors.$white-1-40;
-        }
-
         .value {
           opacity: 1;
         }

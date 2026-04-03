@@ -1,5 +1,6 @@
-@use '../../../../../../styles/colors';
+@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
+@use '../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../styles/variables';
 
 $contrast-opacity: 0.8;
@@ -42,14 +43,13 @@ $contrast-opacity: 0.8;
   }
 
   .card {
+    @include surface.surface-box;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex: 1;
-    background-color: colors.$white-1-15;
-    border: variables.$control-outside-border-width solid colors.$white-1-25;
-    color: colors.$white;
 
     @include helpers.mobile {
       padding: variables.$mobile-narrow-layout-gutter;
@@ -116,6 +116,8 @@ $contrast-opacity: 0.8;
     }
 
     &.hostGameButton {
+      @include surface.surface-box(true);
+
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -207,12 +209,12 @@ $contrast-opacity: 0.8;
       }
 
       .icon {
+        @include surface.surface-box(true);
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: colors.$white-1-15;
-        border: variables.$control-outside-border-width solid colors.$white-1-25;
 
         @include helpers.mobile {
           width: 2.1rem;
@@ -253,10 +255,8 @@ $contrast-opacity: 0.8;
       &:hover,
       &:focus-visible {
         &:not(:disabled) {
-          background-color: colors.$white-1-20;
-
           @media (prefers-reduced-motion: no-preference) {
-            transform: scale(1.05);
+            transform: scale(1.025);
           }
 
           .content {
@@ -270,9 +270,6 @@ $contrast-opacity: 0.8;
           }
 
           .icon {
-            background-color: colors.$white-1-25;
-            border-color: colors.$white-1-40;
-
             svg {
               opacity: 1;
             }
@@ -474,11 +471,9 @@ $contrast-opacity: 0.8;
         }
 
         .nickname {
+          @include surface.surface-box;
+
           display: flex;
-          background-color: colors.$white-1-15;
-          border: variables.$control-outside-border-width solid
-            colors.$white-1-25;
-          color: colors.$white;
           justify-content: center;
           align-items: center;
 
@@ -514,8 +509,6 @@ $contrast-opacity: 0.8;
           }
 
           &:hover {
-            background-color: colors.$white-1-20;
-            border-color: colors.$white-1-40;
             opacity: 0.9;
 
             @media (prefers-reduced-motion: no-preference) {
@@ -566,6 +559,7 @@ $contrast-opacity: 0.8;
         align-items: center;
         gap: variables.$mobile-layout-gutter;
         position: relative;
+        width: 100%;
 
         @include helpers.tablet {
           gap: variables.$tablet-layout-gutter;

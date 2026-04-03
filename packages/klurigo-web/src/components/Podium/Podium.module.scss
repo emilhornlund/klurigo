@@ -1,12 +1,15 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/celebration.effects.tokens' as celebrationEffects;
+@use '../../styles/colors.celebration' as celebration;
 @use '../../styles/helpers';
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
 
 .main {
   display: flex;
   flex-direction: row;
   column-gap: 0;
-  border-bottom: helpers.pxToRem(4px) solid colors.$white;
+  border-bottom: helpers.pxToRem(4px) solid colors.$color-border-contrast;
   width: 100%;
 
   @include helpers.mobile {
@@ -145,7 +148,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: colors.$black-1-50;
+          background-color: colors.$color-surface-overlay;
         }
 
         .position {
@@ -154,14 +157,13 @@
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: colors.$white-1-50;
-          color: colors.$black-1-50;
+          color: colors.$color-text-default;
           font-weight: bolder;
           position: relative;
           line-height: 0;
 
           @include helpers.mobile {
-            filter: drop-shadow(3px 3px 3px colors.$black-1-15);
+            filter: celebrationEffects.$filter-celebration-rank-mobile;
             width: helpers.pxToRem(50px);
             height: helpers.pxToRem(50px);
             padding: 0.1rem;
@@ -169,7 +171,7 @@
           }
 
           @include helpers.tablet {
-            filter: drop-shadow(4px 4px 4px colors.$black-1-15);
+            filter: celebrationEffects.$filter-celebration-rank-tablet;
             width: helpers.pxToRem(65px);
             height: helpers.pxToRem(65px);
             padding: 0.2rem;
@@ -177,7 +179,7 @@
           }
 
           @include helpers.desktop {
-            filter: drop-shadow(5px 5px 5px colors.$black-1-15);
+            filter: celebrationEffects.$filter-celebration-rank-desktop;
             width: helpers.pxToRem(80px);
             height: helpers.pxToRem(80px);
             padding: 0.3rem;
@@ -187,21 +189,29 @@
           &.position-1 {
             background: linear-gradient(
               135deg,
-              colors.$gold 0%,
-              colors.$yellow-2 100%
+              celebration.$color-celebration-medal-gold 0%,
+              celebration.$color-celebration-medal-gold-highlight 100%
             );
-            box-shadow: 0 0 20px rgba(255, 199, 39, 0.5);
+            box-shadow: celebrationEffects.$shadow-celebration-medal-gold;
             animation: positionGlow 2s ease-in-out infinite alternate;
           }
 
           &.position-2 {
-            background: linear-gradient(135deg, colors.$silver 0%, colors.$gray-1 100%);
-            box-shadow: 0 0 15px rgba(223, 223, 223, 0.4);
+            background: linear-gradient(
+              135deg,
+              celebration.$color-celebration-medal-silver 0%,
+              celebration.$color-celebration-medal-silver-highlight 100%
+            );
+            box-shadow: celebrationEffects.$shadow-celebration-medal-silver;
           }
 
           &.position-3 {
-            background: linear-gradient(135deg, colors.$bronze 0%, #ff8c42 100%);
-            box-shadow: 0 0 15px rgba(255, 167, 80, 0.4);
+            background: linear-gradient(
+              135deg,
+              celebration.$color-celebration-medal-bronze 0%,
+              celebration.$color-celebration-medal-bronze-highlight 100%
+            );
+            box-shadow: celebrationEffects.$shadow-celebration-medal-bronze;
           }
         }
 
@@ -211,7 +221,7 @@
           justify-content: center;
           align-items: center;
           font-weight: bold;
-          color: colors.$black-1-50;
+          color: colors.$color-text-default;
 
           @include helpers.mobile {
             @include helpers.fontSize(16px);
@@ -241,7 +251,7 @@
             position: absolute;
             width: $sparkle-size;
             height: $sparkle-size;
-            background: colors.$white;
+            background: colors.$color-border-contrast;
             border-radius: 50%;
             animation: sparkle 1.5s ease-in-out infinite;
             animation-delay: var(--sparkle-delay);
@@ -268,35 +278,37 @@
     &:nth-child(1) {
       .stack {
         border-radius: helpers.pxToRem(12px) 0 0 0;
-        background-color: colors.$silver;
+        background: linear-gradient(
+            135deg,
+            celebration.$color-celebration-medal-silver 0%,
+            celebration.$color-celebration-medal-silver-highlight 100%
+        );
 
-        box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
-        -webkit-box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
-        -moz-box-shadow: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+        box-shadow: shadows.$shadow-inset-side-left;
       }
     }
 
     &:nth-child(2) {
       .stack {
         border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
-        background-color: colors.$gold;
+        background: linear-gradient(
+            135deg,
+            celebration.$color-celebration-medal-gold 0%,
+            celebration.$color-celebration-medal-gold-highlight 100%
+        );
       }
     }
 
     &:nth-child(3) {
       .stack {
         border-radius: 0 helpers.pxToRem(12px) 0 0;
-        background-color: colors.$bronze;
+        background: linear-gradient(
+            135deg,
+            celebration.$color-celebration-medal-bronze 0%,
+            celebration.$color-celebration-medal-bronze-highlight 100%
+        );
 
-        box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
-        -webkit-box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
-        -moz-box-shadow: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
-          colors.$black-1-15 inset;
+        box-shadow: shadows.$shadow-inset-side-right;
       }
     }
 
@@ -335,13 +347,13 @@
 
 @keyframes positionGlow {
   0% {
-    box-shadow: 0 0 20px rgba(255, 199, 39, 0.3);
+    box-shadow: celebrationEffects.$shadow-celebration-medal-gold-soft;
   }
   50% {
-    box-shadow: 0 0 30px rgba(255, 199, 39, 0.6);
+    box-shadow: celebrationEffects.$shadow-celebration-medal-gold-strong;
   }
   100% {
-    box-shadow: 0 0 20px rgba(255, 199, 39, 0.3);
+    box-shadow: celebrationEffects.$shadow-celebration-medal-gold-soft;
   }
 }
 

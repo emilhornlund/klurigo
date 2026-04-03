@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
-import colors from '../../styles/colors.module.scss'
+import colors from '../../styles/colors.tokens.module.scss'
 import { classNames } from '../../utils/helpers'
 
 import styles from './Badge.module.scss'
@@ -25,15 +25,15 @@ export type BadgeColor =
   | 'black'
 
 const BadgeColorClassName: { [key in BadgeColor]: string } = {
-  green: colors.green2,
-  red: colors.red2,
-  blue: colors.blue2,
-  orange: colors.orange2,
-  gold: colors.gold,
-  silver: colors.silver,
-  bronze: colors.bronze,
+  green: colors.colorStatusSuccess,
+  red: colors.colorStatusDanger,
+  blue: colors.colorActionDefault,
+  orange: colors.colorStatusWarning,
+  gold: colors.colorCelebrationRankGold,
+  silver: colors.colorCelebrationRankSilver,
+  bronze: colors.colorCelebrationRankBronze,
   white: colors.white,
-  black: colors.gray4,
+  black: colors.gray900,
 }
 
 export type BadgeCelebration = 'none' | 'normal' | 'major' | 'epic'

@@ -1,5 +1,6 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/colors.rating' as rating;
 @use '../../styles/variables';
 
 .starRow {
@@ -50,17 +51,13 @@
   }
 }
 
-// ─── Read-only icon colours ───────────────────────────────────────────────────
-
 .filled {
-  color: colors.$yellow-2;
+  color: rating.$color-rating-default;
 }
 
 .empty {
-  color: colors.$gray-1;
+  color: colors.$color-text-inverse-subtle;
 }
-
-// ─── Interactive star buttons ─────────────────────────────────────────────────
 
 .starButton {
   background: none;
@@ -71,33 +68,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: colors.$white;
+  color: colors.$color-text-inverse;
   font-size: inherit;
 
   &:disabled {
-    color: colors.$white-1-25;
+    color: colors.$color-text-disabled;
     cursor: default;
   }
 
   &.active {
-    color: colors.$yellow-2;
+    color: rating.$color-rating-default;
 
     &:hover {
-      color: colors.$yellow-1;
+      color: rating.$color-rating-hover;
     }
   }
 
   &:hover {
     &:not(:disabled) {
       &:not(.active) {
-        color: colors.$white-1-70;
+        color: rating.$color-rating-hover;
       }
     }
   }
 
   &:focus-visible {
     &:not(:disabled) {
-      outline: 2px solid colors.$yellow-2;
+      outline: 2px solid colors.$color-focus-ring;
       outline-offset: 2px;
     }
   }

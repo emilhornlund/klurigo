@@ -1,5 +1,4 @@
-@use 'sass:color';
-@use '../../../../styles/colors';
+@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/loading';
 @use '../../../../styles/variables';
@@ -86,18 +85,18 @@
       }
 
       &.correct {
-        background-color: colors.$green-1;
+        background-color: colors.$color-surface-success-soft;
 
         span {
-          background-color: colors.$green-2;
+          background-color: colors.$color-surface-success;
         }
       }
 
       &.incorrect {
-        background-color: colors.$red-1;
+        background-color: colors.$color-surface-danger-soft;
 
         span {
-          background-color: color.mix(colors.$gray-4, colors.$red-2, 10%);
+          background-color: colors.$color-surface-danger-strong;
         }
       }
 
@@ -106,7 +105,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        color: colors.$white;
+        color: colors.$color-text-inverse;
 
         @include helpers.mobile {
           height: helpers.pxToRem(30px);
@@ -141,7 +140,7 @@
         display: none;
         width: 100%;
         height: 100%;
-        background-color: colors.$black-1-50;
+        background-color: colors.$color-surface-overlay;
         font-family: inherit;
         appearance: none;
         -o-appearance: none;
@@ -170,7 +169,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--mobile-loading-spinner-size,
-              colors.$white,
+              colors.$color-border-contrast,
               button-mobile-normal
             );
           }
@@ -181,7 +180,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--tablet-loading-spinner-size,
-              colors.$white,
+              colors.$color-border-contrast,
               button-tablet-normal
             );
           }
@@ -192,7 +191,7 @@
             );
             @include loading.loading-spinner-dimensions(
               $--desktop-loading-spinner-size,
-              colors.$white,
+              colors.$color-border-contrast,
               button-desktop-normal
             );
           }

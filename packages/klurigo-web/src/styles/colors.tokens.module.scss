@@ -1,0 +1,285 @@
+@use './colors.palette' as palette;
+@use './colors.celebration' as celebration;
+@use './colors.dropzone' as dropzone;
+@use './colors.loading.semantic' as loading;
+@use './colors.page' as page;
+@use './colors.range' as range;
+@use './colors.rating' as rating;
+@use './colors.semantic' as semantic;
+
+:export {
+  /* Primitive palette */
+  yellow50: palette.$yellow-50;
+  yellow100: palette.$yellow-100;
+  yellow200: palette.$yellow-200;
+  yellow300: palette.$yellow-300;
+  yellow400: palette.$yellow-400;
+  yellow500: palette.$yellow-500;
+  yellow600: palette.$yellow-600;
+  yellow700: palette.$yellow-700;
+  yellow800: palette.$yellow-800;
+  yellow900: palette.$yellow-900;
+
+  orange50: palette.$orange-50;
+  orange100: palette.$orange-100;
+  orange200: palette.$orange-200;
+  orange300: palette.$orange-300;
+  orange400: palette.$orange-400;
+  orange500: palette.$orange-500;
+  orange600: palette.$orange-600;
+  orange700: palette.$orange-700;
+  orange800: palette.$orange-800;
+  orange900: palette.$orange-900;
+
+  red50: palette.$red-50;
+  red100: palette.$red-100;
+  red200: palette.$red-200;
+  red300: palette.$red-300;
+  red400: palette.$red-400;
+  red500: palette.$red-500;
+  red600: palette.$red-600;
+  red700: palette.$red-700;
+  red800: palette.$red-800;
+  red900: palette.$red-900;
+
+  pink50: palette.$pink-50;
+  pink100: palette.$pink-100;
+  pink200: palette.$pink-200;
+  pink300: palette.$pink-300;
+  pink400: palette.$pink-400;
+  pink500: palette.$pink-500;
+  pink600: palette.$pink-600;
+  pink700: palette.$pink-700;
+  pink800: palette.$pink-800;
+  pink900: palette.$pink-900;
+
+  purple50: palette.$purple-50;
+  purple100: palette.$purple-100;
+  purple200: palette.$purple-200;
+  purple300: palette.$purple-300;
+  purple400: palette.$purple-400;
+  purple500: palette.$purple-500;
+  purple600: palette.$purple-600;
+  purple700: palette.$purple-700;
+  purple800: palette.$purple-800;
+  purple900: palette.$purple-900;
+
+  blue50: palette.$blue-50;
+  blue100: palette.$blue-100;
+  blue200: palette.$blue-200;
+  blue300: palette.$blue-300;
+  blue400: palette.$blue-400;
+  blue500: palette.$blue-500;
+  blue600: palette.$blue-600;
+  blue700: palette.$blue-700;
+  blue800: palette.$blue-800;
+  blue900: palette.$blue-900;
+
+  turquoise50: palette.$turquoise-50;
+  turquoise100: palette.$turquoise-100;
+  turquoise200: palette.$turquoise-200;
+  turquoise300: palette.$turquoise-300;
+  turquoise400: palette.$turquoise-400;
+  turquoise500: palette.$turquoise-500;
+  turquoise600: palette.$turquoise-600;
+  turquoise700: palette.$turquoise-700;
+  turquoise800: palette.$turquoise-800;
+  turquoise900: palette.$turquoise-900;
+
+  green50: palette.$green-50;
+  green100: palette.$green-100;
+  green200: palette.$green-200;
+  green300: palette.$green-300;
+  green400: palette.$green-400;
+  green500: palette.$green-500;
+  green600: palette.$green-600;
+  green700: palette.$green-700;
+  green800: palette.$green-800;
+  green900: palette.$green-900;
+
+  white: palette.$white;
+
+  gray50: palette.$gray-50;
+  gray100: palette.$gray-100;
+  gray200: palette.$gray-200;
+  gray300: palette.$gray-300;
+  gray400: palette.$gray-400;
+  gray500: palette.$gray-500;
+  gray600: palette.$gray-600;
+  gray700: palette.$gray-700;
+  gray800: palette.$gray-800;
+  gray900: palette.$gray-900;
+
+  black: palette.$black;
+
+  /* Foundational semantic tokens */
+  colorStatusSuccess: semantic.$color-status-success;
+  colorStatusDanger: semantic.$color-status-danger;
+  colorStatusWarning: semantic.$color-status-warning;
+  colorStatusInfo: semantic.$color-status-info;
+
+  colorActionDefault: semantic.$color-action-default;
+  colorActionStrong: semantic.$color-action-strong;
+  colorActionSubtle: semantic.$color-action-subtle;
+  colorActionTint: semantic.$color-action-tint;
+  colorActionTintStrong: semantic.$color-action-tint-strong;
+  colorActionAlt: semantic.$color-action-alt;
+  colorActionAltStrong: semantic.$color-action-alt-strong;
+  colorActionAccent: semantic.$color-action-accent;
+  colorActionAccentHover: semantic.$color-action-accent-hover;
+
+  colorTextDefault: semantic.$color-text-default;
+  colorTextSubtle: semantic.$color-text-subtle;
+  colorTextMuted: semantic.$color-text-muted;
+  colorTextDisabled: semantic.$color-text-disabled;
+  colorTextInverse: semantic.$color-text-inverse;
+  colorTextInverseSubtle: semantic.$color-text-inverse-subtle;
+  colorTextSuccess: semantic.$color-text-success;
+  colorTextDanger: semantic.$color-text-danger;
+  colorTextWarning: semantic.$color-text-warning;
+  colorTextWarningSoft: semantic.$color-text-warning-soft;
+  colorTextEmphasis: semantic.$color-text-emphasis;
+
+  colorSurfaceDefault: semantic.$color-surface-default;
+  colorSurfaceMuted: semantic.$color-surface-muted;
+  colorSurfaceSubtle: semantic.$color-surface-subtle;
+  colorSurfaceFloating: semantic.$color-surface-floating;
+  colorSurfaceGlassDefaultStart: semantic.$color-surface-glass-default-start;
+  colorSurfaceGlassDefaultEnd: semantic.$color-surface-glass-default-end;
+  colorSurfaceGlassHoverStart: semantic.$color-surface-glass-hover-start;
+  colorSurfaceGlassHoverEnd: semantic.$color-surface-glass-hover-end;
+  colorSurfaceGlassActiveStart: semantic.$color-surface-glass-active-start;
+  colorSurfaceGlassActiveEnd: semantic.$color-surface-glass-active-end;
+  colorSurfaceOverlay: semantic.$color-surface-overlay;
+  colorSurfaceOverlaySubtle: semantic.$color-surface-overlay-subtle;
+  colorSurfaceOverlayHover: semantic.$color-surface-overlay-hover;
+  colorSurfaceOverlayStrong: semantic.$color-surface-overlay-strong;
+  colorSurfaceInteractiveHover: semantic.$color-surface-interactive-hover;
+  colorSurfaceInteractiveActive: semantic.$color-surface-interactive-active;
+  colorSurfaceInteractiveDisabled: semantic.$color-surface-interactive-disabled;
+  colorSurfacePlaceholder: semantic.$color-surface-placeholder;
+  colorSurfacePlaceholderStrong: semantic.$color-surface-placeholder-strong;
+  colorSurfaceSuccess: semantic.$color-surface-success;
+  colorSurfaceSuccessSoft: semantic.$color-surface-success-soft;
+  colorSurfaceSuccessSubtle: semantic.$color-surface-success-subtle;
+  colorSurfaceDanger: semantic.$color-surface-danger;
+  colorSurfaceDangerSoft: semantic.$color-surface-danger-soft;
+  colorSurfaceDangerStrong: semantic.$color-surface-danger-strong;
+  colorSurfaceWarning: semantic.$color-surface-warning;
+  colorSurfaceWarningSoft: semantic.$color-surface-warning-soft;
+  colorSurfaceInfo: semantic.$color-surface-info;
+  colorSurfaceInfoSoft: semantic.$color-surface-info-soft;
+  colorSurfaceAccent: semantic.$color-surface-accent;
+  colorSurfaceAccentHover: semantic.$color-surface-accent-hover;
+  colorSurfaceControlDefault: semantic.$color-surface-control-default;
+  colorSurfaceControlMuted: semantic.$color-surface-control-muted;
+  colorSurfaceControlDisabled: semantic.$color-surface-control-disabled;
+  colorSurfaceControlAccent: semantic.$color-surface-control-accent;
+  colorSurfaceControlSuccess: semantic.$color-surface-control-success;
+  colorSurfaceControlDanger: semantic.$color-surface-control-danger;
+  colorSurfaceControlDefaultHover: semantic.$color-surface-control-default-hover;
+  colorSurfaceControlMutedHover: semantic.$color-surface-control-muted-hover;
+  colorSurfaceControlAccentHover: semantic.$color-surface-control-accent-hover;
+  colorSurfaceControlSuccessHover: semantic.$color-surface-control-success-hover;
+  colorSurfaceControlDangerHover: semantic.$color-surface-control-danger-hover;
+
+  colorTextControlDefault: semantic.$color-text-control-default;
+  colorTextControlInverse: semantic.$color-text-control-inverse;
+  colorTextControlDisabled: semantic.$color-text-control-disabled;
+  colorTextControlSubtle: semantic.$color-text-control-subtle;
+  colorTextControlInverseSubtle: semantic.$color-text-control-inverse-subtle;
+  colorTextControlSuccess: semantic.$color-text-control-success;
+  colorTextControlDanger: semantic.$color-text-control-danger;
+  colorTextControlPlainHover: semantic.$color-text-control-plain-hover;
+
+  colorBorderContrast: semantic.$color-border-contrast;
+  colorBorderDefault: semantic.$color-border-default;
+  colorBorderMuted: semantic.$color-border-muted;
+  colorBorderSubtle: semantic.$color-border-subtle;
+  colorBorderAction: semantic.$color-border-action;
+  colorBorderWarning: semantic.$color-border-warning;
+  colorBorderGlassDefault: semantic.$color-border-glass-default;
+  colorBorderGlassHover: semantic.$color-border-glass-hover;
+  colorBorderGlassActive: semantic.$color-border-glass-active;
+  colorBorderGlassMuted: semantic.$color-border-glass-muted;
+  colorBorderGlassStrong: semantic.$color-border-glass-strong;
+  colorBorderControlMutedDisabled: semantic.$color-border-control-muted-disabled;
+  colorBorderControlSuccess: semantic.$color-border-control-success;
+  colorBorderControlAction: semantic.$color-border-control-action;
+  colorBorderControlSuccessSoft: semantic.$color-border-control-success-soft;
+  colorBorderControlDangerSoft: semantic.$color-border-control-danger-soft;
+
+  colorProgressSuccess: semantic.$color-progress-success;
+  colorProgressDanger: semantic.$color-progress-danger;
+  colorProgressWarning: semantic.$color-progress-warning;
+  colorProgressAction: semantic.$color-progress-action;
+  colorProgressTrack: semantic.$color-progress-track;
+  colorProgressFillDefault: semantic.$color-progress-fill-default;
+
+  colorFocusOutline: semantic.$color-focus-outline;
+  colorFocusRing: semantic.$color-focus-ring;
+  colorFocusControlDefault: semantic.$color-focus-control-default;
+  colorFocusControlMuted: semantic.$color-focus-control-muted;
+  colorFocusControlDefaultRing: semantic.$color-focus-control-default-ring;
+  colorFocusControlMutedRing: semantic.$color-focus-control-muted-ring;
+  colorFocusSuccess: semantic.$color-focus-success;
+
+  colorShadowDefault: semantic.$color-shadow-default;
+  colorShadowHover: semantic.$color-shadow-hover;
+  colorShadowActive: semantic.$color-shadow-active;
+  colorShadowSubtle: semantic.$color-shadow-subtle;
+  colorShadowControl: semantic.$color-shadow-control;
+
+  colorShadowGlowAccentSoft: semantic.$color-shadow-glow-accent-soft;
+  colorShadowGlowAccent: semantic.$color-shadow-glow-accent;
+  colorShadowGlowAccentStrong: semantic.$color-shadow-glow-accent-strong;
+
+  colorShadowGlowSuccess: semantic.$color-shadow-glow-success;
+  colorShadowGlowSuccessStrong: semantic.$color-shadow-glow-success-strong;
+
+  colorShadowGlowDangerSoft: semantic.$color-shadow-glow-danger-soft;
+  colorShadowGlowDanger: semantic.$color-shadow-glow-danger;
+
+  colorShadowGlowInverse: semantic.$color-shadow-glow-inverse;
+
+  colorInsetDefault: semantic.$color-inset-default;
+  colorInsetHover: semantic.$color-inset-hover;
+  colorInsetActive: semantic.$color-inset-active;
+
+  /* Specialized semantic tokens */
+  colorPageBackgroundStart: page.$color-page-background-start;
+  colorPageBackgroundEnd: page.$color-page-background-end;
+  colorPageDividerStart: page.$color-page-divider-start;
+  colorPageDividerCenter: page.$color-page-divider-center;
+
+  colorCelebrationRankGold: celebration.$color-celebration-rank-gold;
+  colorCelebrationRankSilver: celebration.$color-celebration-rank-silver;
+  colorCelebrationRankBronze: celebration.$color-celebration-rank-bronze;
+  colorCelebrationMedalGold: celebration.$color-celebration-medal-gold;
+  colorCelebrationMedalGoldHighlight: celebration.$color-celebration-medal-gold-highlight;
+  colorCelebrationMedalSilver: celebration.$color-celebration-medal-silver;
+  colorCelebrationMedalSilverHighlight: celebration.$color-celebration-medal-silver-highlight;
+  colorCelebrationMedalBronze: celebration.$color-celebration-medal-bronze;
+  colorCelebrationMedalBronzeHighlight: celebration.$color-celebration-medal-bronze-highlight;
+  colorCelebrationConfettiSuccess: celebration.$color-celebration-confetti-success;
+  colorCelebrationConfettiAccent: celebration.$color-celebration-confetti-accent;
+  colorCelebrationConfettiRankGold: celebration.$color-celebration-confetti-rank-gold;
+  colorCelebrationConfettiAlt: celebration.$color-celebration-confetti-alt;
+  colorCelebrationConfettiInfo: celebration.$color-celebration-confetti-info;
+
+  colorRatingDefault: rating.$color-rating-default;
+  colorRatingHover: rating.$color-rating-hover;
+
+  colorLoadingSkeleton: loading.$color-loading-skeleton;
+  colorLoadingSkeletonSurface: loading.$color-loading-skeleton-surface;
+  colorLoadingSpinnerDefault: loading.$color-loading-spinner-default;
+  colorLoadingSpinnerInverse: loading.$color-loading-spinner-inverse;
+
+  colorDropzoneBorder: dropzone.$color-dropzone-border;
+  colorDropzoneSurface: dropzone.$color-dropzone-surface;
+  colorDropzoneBorderFocus: dropzone.$color-dropzone-border-focus;
+  colorDropzoneBorderSuccess: dropzone.$color-dropzone-border-success;
+  colorDropzoneBorderDanger: dropzone.$color-dropzone-border-danger;
+
+  colorRangeTrackBorder: range.$color-range-track-border;
+}

@@ -1,0 +1,61 @@
+@use './colors.semantic' as colors;
+@use './helpers';
+
+/* ==========================================================================
+   Surfaces / elevation
+   ========================================================================== */
+
+$shadow-surface-rest:
+  0 8px 24px colors.$color-shadow-default,
+  inset 0 1px 0 colors.$color-inset-default;
+$shadow-surface-hover:
+  0 12px 28px colors.$color-shadow-hover,
+  inset 0 1px 0 colors.$color-inset-hover;
+$shadow-surface-active:
+  0 6px 18px colors.$color-shadow-active,
+  inset 0 1px 0 colors.$color-inset-active;
+$shadow-surface-hover-subtle: 0 6px 6px colors.$color-shadow-subtle;
+
+/* ==========================================================================
+   Overlays
+   ========================================================================== */
+
+$shadow-overlay: $shadow-surface-rest;
+
+/* ==========================================================================
+   Controls / focus
+   ========================================================================== */
+
+$shadow-control-hover: 0 4px 12px colors.$color-shadow-control;
+$shadow-control-active: 0 2px 4px colors.$color-shadow-control;
+
+$shadow-focus-control-default: 0 0 0 3px colors.$color-focus-control-default-ring;
+$shadow-focus-control-muted: 0 0 0 3px colors.$color-focus-control-muted-ring;
+
+/* ==========================================================================
+   Slider thumb
+   ========================================================================== */
+
+$shadow-slider-thumb-hover: 0 4px 12px colors.$color-shadow-glow-accent;
+$shadow-slider-thumb-active: 0 6px 16px colors.$color-shadow-glow-accent-strong;
+$shadow-slider-thumb-focus:
+  0 0 0 3px colors.$color-shadow-glow-accent-soft,
+  $shadow-slider-thumb-hover;
+
+/* ==========================================================================
+   Status / feedback
+   ========================================================================== */
+
+$shadow-status-success: 0 4px 12px colors.$color-shadow-glow-success;
+$shadow-status-success-strong: 0 6px 20px colors.$color-shadow-glow-success-strong;
+$shadow-status-danger-pulse-rest: 0 0 0 0 colors.$color-shadow-glow-danger;
+$shadow-status-danger-pulse-peak: 0 0 0 4px colors.$color-shadow-glow-danger-soft;
+
+/* ==========================================================================
+   Insets
+   ========================================================================== */
+
+$shadow-inset-side-left:
+  helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0 colors.$color-shadow-subtle inset;
+$shadow-inset-side-right:
+  helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0 colors.$color-shadow-subtle inset;

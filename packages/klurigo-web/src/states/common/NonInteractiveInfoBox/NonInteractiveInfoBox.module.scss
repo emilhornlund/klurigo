@@ -1,4 +1,4 @@
-@use '../../../styles/colors';
+@use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers';
 @use '../../../styles/variables';
 
@@ -7,7 +7,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: colors.$turquoise-2;
+  background-color: colors.$color-surface-info;
   flex: 0 0 auto;
 
   @include helpers.mobile {

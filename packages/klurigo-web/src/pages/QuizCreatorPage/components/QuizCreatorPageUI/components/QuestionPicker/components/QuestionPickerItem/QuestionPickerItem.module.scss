@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../../../../../../../styles/colors';
+@use '../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../styles/helpers';
 @use '../../../../../../../../styles/variables';
 
@@ -46,11 +46,11 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: colors.$gray-2;
+    color: colors.$color-text-default;
     border-style: solid;
-    border-color: colors.$gray-2;
+    border-color: colors.$color-border-default;
     cursor: pointer;
-    background-color: colors.$white;
+    background-color: colors.$color-surface-default;
     appearance: none;
     width: 100%;
     max-height: 100%;
@@ -78,9 +78,9 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     }
 
     &.questionPickerItemActive, &:hover {
-      border-color: colors.$blue-2;
-      background-color: color.mix(colors.$white, colors.$blue-2, 85%);
-      color: colors.$gray-4;
+      border-color: colors.$color-border-action;
+      background-color: colors.$color-action-tint;
+      color: colors.$color-text-default;
     }
 
     &.questionPickerItemActive {
@@ -193,8 +193,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
 
     .questionPickerItemOverlayTop {
       .questionPickerItemOverlayNumber {
-        background-color: colors.$gray-2;
-        color: colors.$white;
+        background-color: colors.$color-surface-control-muted;
+        color: colors.$color-text-control-default;
         font-weight: bold;
 
         @include helpers.mobile {
@@ -210,7 +210,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
         }
 
         &.questionPickerItemActive {
-          background-color: colors.$blue-2;
+          background-color: colors.$color-surface-accent;
         }
       }
     }
@@ -222,8 +222,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
         appearance: none;
         pointer-events: auto;
         cursor: pointer;
-        color: colors.$white;
-        background-color: colors.$gray-2;
+        color: colors.$color-text-control-default;
+        background-color: colors.$color-surface-control-muted;
 
         @include helpers.mobile {
           @include helpers.fontSize(10px);
@@ -236,11 +236,16 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
         @include helpers.desktop {
           @include helpers.fontSize(12px);
         }
+
+        &:hover {
+          color: colors.$color-text-control-default-hover;
+          background-color: colors.$color-surface-control-muted-hover;
+        }
       }
 
       .questionPickerItemOverlayError {
-        color: colors.$orange-2;
-        background-color: colors.$white;
+        color: colors.$color-status-warning;
+        background-color: colors.$color-surface-default;
         pointer-events: auto;
 
         @include helpers.mobile {

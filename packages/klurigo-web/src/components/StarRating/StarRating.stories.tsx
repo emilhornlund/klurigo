@@ -48,3 +48,12 @@ export const Interactive = {
     size: 'large',
   },
 } satisfies Story
+
+export const Disabled = {
+  name: 'Disabled',
+  render: (props) => <InteractiveStarRating {...props} />,
+  args: {
+    size: 'large',
+    disabled: true,
+  },
+} satisfies Story

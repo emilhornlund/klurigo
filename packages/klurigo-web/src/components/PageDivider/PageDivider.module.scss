@@ -1,4 +1,5 @@
-@use '../../styles/colors';
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/colors.page' as pageColors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -36,9 +37,9 @@
     background: linear-gradient(
         to right,
         transparent 0%,
-        colors.$white-1-40 15%,
-        colors.$white-1-70 50%,
-        colors.$white-1-40 85%,
+        pageColors.$color-page-divider-start 15%,
+        pageColors.$color-page-divider-center 50%,
+        pageColors.$color-page-divider-start 85%,
         transparent 100%
     );
 

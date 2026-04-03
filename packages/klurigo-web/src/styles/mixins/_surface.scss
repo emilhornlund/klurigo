@@ -1,0 +1,75 @@
+@use '../colors.semantic' as colors;
+@use '../shadows.tokens' as shadows;
+@use '../variables';
+
+@mixin surface-base() {
+  background:
+    linear-gradient(
+        135deg,
+        colors.$color-surface-glass-default-start 0%,
+        colors.$color-surface-glass-default-end 100%
+    ),
+    colors.$color-surface-glass-default-start;
+  color: colors.$color-text-inverse;
+}
+
+@mixin surface-border() {
+  border: variables.$control-outside-border-width solid colors.$color-border-glass-default;
+}
+
+@mixin surface-shadow() {
+  box-shadow: shadows.$shadow-surface-rest;
+}
+
+@mixin surface-interactive-hover() {
+  background:
+    linear-gradient(
+        135deg,
+        colors.$color-surface-glass-hover-start 0%,
+        colors.$color-surface-glass-hover-end 100%
+    ),
+    colors.$color-surface-glass-hover-start;
+  border-color: colors.$color-border-glass-hover;
+  box-shadow: shadows.$shadow-surface-hover;
+  transform: translateY(-1px);
+}
+
+@mixin surface-interactive-active() {
+  background:
+    linear-gradient(
+        135deg,
+        colors.$color-surface-glass-active-start 0%,
+        colors.$color-surface-glass-active-end 100%
+    ),
+    colors.$color-surface-glass-active-start;
+  border-color: colors.$color-border-glass-active;
+  box-shadow: shadows.$shadow-surface-active;
+  transform: translateY(0);
+}
+
+@mixin surface-box($interactive: false) {
+  @include surface-base;
+  @include surface-border;
+  @include surface-shadow;
+
+  @if $interactive {
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      &:not(:disabled) {
+        @include surface-interactive-hover;
+      }
+    }
+
+    &:active {
+      @include surface-interactive-active;
+    }
+  }
+}

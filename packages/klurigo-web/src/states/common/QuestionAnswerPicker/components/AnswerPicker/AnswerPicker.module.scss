@@ -1,5 +1,6 @@
-@use '../../../../../styles/colors';
+@use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
+@use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/variables';
 
 .answerPicker {
@@ -34,8 +35,8 @@
       align-items: center;
       border: none;
       outline: none;
-      background-color: colors.$white;
-      color: colors.$gray-4;
+      background-color: colors.$color-surface-default;
+      color: colors.$color-text-default;
       overflow: hidden;
       cursor: pointer;
       transition:
@@ -80,18 +81,18 @@
           &:not(:disabled) {
             border: none;
             outline: none;
-            background-color: colors.$gray-1;
-            color: colors.$gray-4;
+            background-color: colors.$color-surface-control-muted;
+            color: colors.$color-text-default;
             transform: scale(1.02) translateZ(0);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: shadows.$shadow-control-hover;
           }
         }
 
         &:active {
           &:not(:disabled) {
             transform: scale(0.96) translateZ(0);
-            background-color: colors.$gray-2;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: colors.$color-surface-subtle;
+            box-shadow: shadows.$shadow-control-active;
             transition:
               transform 0.1s ease,
               box-shadow 0.1s ease;
@@ -104,8 +105,8 @@
           &:not(:disabled) {
             border: none;
             outline: none;
-            background-color: colors.$gray-2;
-            color: colors.$gray-4;
+            background-color: colors.$color-surface-subtle;
+            color: colors.$color-text-default;
             transform: scale(0.96) translateZ(0);
             transition: transform 0.1s ease;
           }
@@ -119,7 +120,7 @@
         align-items: center;
         border-radius: 50%;
         font-weight: bold;
-        color: colors.$white;
+        color: colors.$color-text-inverse;
         position: relative;
 
         &:after {
@@ -159,7 +160,7 @@
 
       &:nth-child(1) {
         div {
-          background-color: colors.$red-2;
+          background-color: colors.$color-surface-danger;
 
           &:after {
             content: 'A';
@@ -168,7 +169,7 @@
       }
       &:nth-child(2) {
         div {
-          background-color: colors.$blue-2;
+          background-color: colors.$color-surface-accent;
 
           &:after {
             content: 'B';
@@ -177,7 +178,7 @@
       }
       &:nth-child(3) {
         div {
-          background-color: colors.$yellow-2;
+          background-color: colors.$color-surface-accent;
 
           &:after {
             content: 'C';
@@ -186,7 +187,7 @@
       }
       &:nth-child(4) {
         div {
-          background-color: colors.$green-2;
+          background-color: colors.$color-surface-success;
 
           &:after {
             content: 'D';
@@ -195,7 +196,7 @@
       }
       &:nth-child(5) {
         div {
-          background-color: colors.$turquoise-2;
+          background-color: colors.$color-surface-info;
 
           &:after {
             content: 'E';
@@ -204,7 +205,7 @@
       }
       &:nth-child(6) {
         div {
-          background-color: colors.$pink-2;
+          background-color: colors.$color-action-alt;
 
           &:after {
             content: 'F';
