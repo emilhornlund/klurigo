@@ -1,5 +1,6 @@
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
+@use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/variables';
 
 .answerPicker {
@@ -83,7 +84,7 @@
             background-color: colors.$color-surface-control-muted;
             color: colors.$color-text-default;
             transform: scale(1.02) translateZ(0);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: shadows.$shadow-control-hover;
           }
         }
 
@@ -91,7 +92,7 @@
           &:not(:disabled) {
             transform: scale(0.96) translateZ(0);
             background-color: colors.$color-surface-subtle;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: shadows.$shadow-control-active;
             transition:
               transform 0.1s ease,
               box-shadow 0.1s ease;

@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_shadow' as shadow;
 @use '../../styles/variables';
 
 $mobile-switch-height: helpers.pxToRem(30px);
@@ -88,13 +89,22 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
 
       &:focus-visible + .slider {
         @include helpers.mobile {
-            box-shadow: 0 0 0 $mobile-switch-visible-border-width colors.$color-focus-success;
+          @include shadow.focus-ring(
+            $mobile-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
         @include helpers.tablet {
-            box-shadow: 0 0 0 $tablet-switch-visible-border-width colors.$color-focus-success;
+          @include shadow.focus-ring(
+            $tablet-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
         @include helpers.desktop {
-            box-shadow: 0 0 0 $desktop-switch-visible-border-width colors.$color-focus-success;
+          @include shadow.focus-ring(
+            $desktop-switch-visible-border-width,
+            colors.$color-focus-success
+          );
         }
       }
 

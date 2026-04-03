@@ -1,6 +1,7 @@
 @use '../../styles/animations';
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.page' as pageColors;
+@use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -120,7 +121,7 @@
       @media (prefers-reduced-motion: no-preference) {
         &:hover {
           transform: scale(1.05);
-          filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+          filter: filters.$filter-glow-inverse-subtle;
           transition:
             transform 0.2s ease,
             filter 0.2s ease;

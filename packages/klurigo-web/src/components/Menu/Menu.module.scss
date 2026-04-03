@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
 
 .menu {
@@ -13,9 +14,7 @@
   row-gap: helpers.pxToRem(8px);
   padding: helpers.pxToRem(8px) 0;
   border-radius: helpers.pxToRem(8px);
-  box-shadow:
-    0 8px 24px colors.$color-shadow-default,
-    inset 0 1px 0 colors.$color-inset-default;
+  box-shadow: shadows.$shadow-overlay;
 
   .menuItem {
     display: flex;

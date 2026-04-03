@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use '../colors.semantic';
+@use '../colors.semantic' as colors;
+@use '../shadows.tokens' as shadows;
 @use '../variables';
 
 @mixin surface-base() {
@@ -18,9 +18,7 @@
 }
 
 @mixin surface-shadow() {
-  box-shadow:
-    0 8px 24px colors.$color-shadow-default,
-    inset 0 1px 0 colors.$color-inset-default;
+  box-shadow: shadows.$shadow-surface-rest;
 }
 
 @mixin surface-interactive-hover() {
@@ -32,8 +30,7 @@
     ),
     colors.$color-surface-glass-hover-start;
   border-color: colors.$color-border-glass-hover;
-  box-shadow: 0 12px 28px colors.$color-shadow-hover,
-    inset 0 1px 0 colors.$color-inset-hover;
+  box-shadow: shadows.$shadow-surface-hover;
   transform: translateY(-1px);
 }
 
@@ -46,8 +43,7 @@
     ),
     colors.$color-surface-glass-active-start;
   border-color: colors.$color-border-glass-active;
-  box-shadow: 0 6px 18px colors.$color-shadow-active,
-    inset 0 1px 0 colors.$color-inset-active;
+  box-shadow: shadows.$shadow-surface-active;
   transform: translateY(0);
 }
 

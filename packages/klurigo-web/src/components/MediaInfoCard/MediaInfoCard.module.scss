@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
 
 .card {
@@ -34,7 +35,7 @@
   &:hover,
   &:focus-visible {
     transform: translateY(-2px);
-    box-shadow: 0 6px 6px colors.$color-shadow-subtle;
+    box-shadow: shadows.$shadow-surface-hover-subtle;
   }
 
   &:focus-visible {

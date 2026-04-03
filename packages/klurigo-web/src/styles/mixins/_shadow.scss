@@ -1,0 +1,7 @@
+@mixin focus-ring($width, $color) {
+  box-shadow: 0 0 0 $width $color;
+}
+
+@mixin inset-ring($width, $color) {
+  box-shadow: inset 0 0 0 $width $color;
+}

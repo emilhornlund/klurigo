@@ -1,0 +1,30 @@
+@use 'sass:color';
+@use './colors.celebration' as celebration;
+@use './colors.semantic' as colors;
+
+$filter-celebration-rank-mobile: drop-shadow(
+  3px 3px 3px colors.$color-shadow-subtle
+);
+$filter-celebration-rank-tablet: drop-shadow(
+  4px 4px 4px colors.$color-shadow-subtle
+);
+$filter-celebration-rank-desktop: drop-shadow(
+  5px 5px 5px colors.$color-shadow-subtle
+);
+
+$shadow-celebration-medal-gold:
+  0 0 20px color.change(celebration.$color-celebration-medal-gold, $alpha: 0.5);
+$shadow-celebration-medal-gold-soft:
+  0 0 20px color.change(celebration.$color-celebration-medal-gold, $alpha: 0.3);
+$shadow-celebration-medal-gold-strong:
+  0 0 30px color.change(celebration.$color-celebration-medal-gold, $alpha: 0.6);
+$shadow-celebration-medal-silver:
+  0 0 15px color.change(
+    celebration.$color-celebration-medal-silver,
+    $alpha: 0.4
+  );
+$shadow-celebration-medal-bronze:
+  0 0 15px color.change(
+    celebration.$color-celebration-medal-bronze,
+    $alpha: 0.4
+  );

@@ -1,6 +1,6 @@
-@use 'sass:color';
 @use './colors.semantic' as colors;
 @use './helpers';
+@use './shadows.tokens' as shadows;
 @use './variables';
 
 .input {
@@ -142,7 +142,7 @@
   &:has(> button:hover, button:disabled) {
     background-color: colors.$color-surface-control-default-hover;
     outline-color: colors.$color-surface-control-default-hover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: shadows.$shadow-control-active;
 
     button {
       color: colors.$color-text-control-default-hover;
@@ -152,7 +152,7 @@
   @media (prefers-reduced-motion: no-preference) {
     &:has(> input:focus, > select:focus, > textarea:focus) {
       outline-color: colors.$color-focus-control-default;
-      box-shadow: 0 0 0 3px colors.$color-focus-control-default-ring;
+      box-shadow: shadows.$shadow-focus-control-default;
     }
   }
 }
@@ -174,7 +174,7 @@
   &:has(> button:hover, button:disabled) {
     background-color: colors.$color-surface-control-muted-hover;
     outline-color: colors.$color-surface-control-muted-hover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: shadows.$shadow-control-active;
 
     button {
       color: colors.$color-text-control-default-hover;
@@ -184,7 +184,7 @@
   @media (prefers-reduced-motion: no-preference) {
     &:has(> input:focus, > select:focus, > textarea:focus) {
       outline-color: colors.$color-focus-control-muted;
-      box-shadow: 0 0 0 3px colors.$color-focus-control-muted-ring;
+      box-shadow: shadows.$shadow-focus-control-muted;
     }
   }
 }
@@ -219,7 +219,7 @@
   &:has(> button:hover, button:disabled) {
     background-color: colors.$color-surface-control-accent-hover;
     outline-color: colors.$color-surface-control-accent-hover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: shadows.$shadow-control-active;
 
     button {
       color: colors.$color-text-control-default-hover;
@@ -244,7 +244,7 @@
   &:has(> button:hover, button:disabled) {
     background-color: colors.$color-surface-control-success-hover;
     outline-color: colors.$color-surface-control-success-hover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: shadows.$shadow-control-active;
 
     button {
       color: colors.$color-text-control-inverse-subtle;
@@ -269,7 +269,7 @@
   &:has(> button:hover, button:disabled) {
     background-color: colors.$color-surface-control-danger-hover;
     outline-color: colors.$color-surface-control-danger-hover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: shadows.$shadow-control-active;
 
     button {
       color: colors.$color-text-control-inverse-subtle;

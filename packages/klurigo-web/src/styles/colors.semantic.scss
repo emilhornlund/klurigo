@@ -145,6 +145,15 @@ $color-shadow-default: palette.alpha(palette.$black, 0.2);
 $color-shadow-hover: palette.alpha(palette.$black, 0.25);
 $color-shadow-active: palette.alpha(palette.$black, 0.18);
 $color-shadow-subtle: palette.alpha(palette.$black, 0.15);
+$color-shadow-control: palette.alpha(palette.$black, 0.1);
+$color-shadow-glow-accent-soft: palette.alpha($color-action-accent, 0.2);
+$color-shadow-glow-accent: palette.alpha($color-action-accent, 0.3);
+$color-shadow-glow-accent-strong: palette.alpha($color-action-accent, 0.4);
+$color-shadow-glow-success: palette.alpha($color-surface-success, 0.3);
+$color-shadow-glow-success-strong: palette.alpha($color-surface-success, 0.4);
+$color-shadow-glow-danger-soft: palette.alpha($color-surface-danger, 0.2);
+$color-shadow-glow-danger: palette.alpha($color-surface-danger, 0.4);
+$color-shadow-glow-inverse: palette.alpha(palette.$white, 0.3);
 
 /* Insets */
 $color-inset-default: palette.alpha(palette.$white, 0.1);

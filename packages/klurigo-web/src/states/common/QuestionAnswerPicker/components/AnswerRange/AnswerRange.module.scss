@@ -1,6 +1,8 @@
 @use '../../../../../styles/colors.range' as rangeColors;
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
+@use '../../../../../styles/mixins/_shadow' as shadow;
+@use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/variables';
 
 .answerRange {
@@ -42,34 +44,28 @@
       @include helpers.mobile {
         height: helpers.pxToRem(14px);
         border-radius: helpers.pxToRem(calc(14px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(2px)
-          rangeColors.$color-range-track-border;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(2px)
-          rangeColors.$color-range-track-border;
-        box-shadow: inset 0 0 0 helpers.pxToRem(2px)
-          rangeColors.$color-range-track-border;
+        @include shadow.inset-ring(
+          helpers.pxToRem(2px),
+          rangeColors.$color-range-track-border
+        );
       }
 
       @include helpers.tablet {
         height: helpers.pxToRem(18px);
         border-radius: helpers.pxToRem(calc(18px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(4px)
-          rangeColors.$color-range-track-border;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(4px)
-          rangeColors.$color-range-track-border;
-        box-shadow: inset 0 0 0 helpers.pxToRem(4px)
-          rangeColors.$color-range-track-border;
+        @include shadow.inset-ring(
+          helpers.pxToRem(4px),
+          rangeColors.$color-range-track-border
+        );
       }
 
       @include helpers.desktop {
         height: helpers.pxToRem(22px);
         border-radius: helpers.pxToRem(calc(22px / 2));
-        -webkit-box-shadow: inset 0 0 0 helpers.pxToRem(6px)
-          rangeColors.$color-range-track-border;
-        -moz-box-shadow: inset 0 0 0 helpers.pxToRem(6px)
-          rangeColors.$color-range-track-border;
-        box-shadow: inset 0 0 0 helpers.pxToRem(6px)
-          rangeColors.$color-range-track-border;
+        @include shadow.inset-ring(
+          helpers.pxToRem(6px),
+          rangeColors.$color-range-track-border
+        );
       }
 
       &::-webkit-slider-thumb,
@@ -112,7 +108,7 @@
         &::-webkit-slider-thumb,
         &::-moz-range-thumb {
           transform: scale(1.1) translateZ(0);
-          box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+          box-shadow: shadows.$shadow-slider-thumb-hover;
         }
       }
 
@@ -121,7 +117,7 @@
         &::-moz-range-thumb {
           cursor: grabbing;
           transform: scale(1.15) translateZ(0);
-          box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);
+          box-shadow: shadows.$shadow-slider-thumb-active;
           transition:
             transform 0.1s ease,
             box-shadow 0.1s ease;
@@ -132,9 +128,7 @@
         outline: none;
         &::-webkit-slider-thumb,
         &::-moz-range-thumb {
-          box-shadow:
-            0 0 0 3px rgba(251, 191, 36, 0.2),
-            0 4px 12px rgba(251, 191, 36, 0.3);
+          box-shadow: shadows.$shadow-slider-thumb-focus;
         }
       }
 
