@@ -1,5 +1,6 @@
 @use '../../../styles/helpers';
 @use '../../../styles/mixins/_surface' as surface;
+@use '../../../styles/spacing.semantic' as spacing;
 @use '../../../styles/variables';
 
 .chip {
@@ -13,28 +14,28 @@
   position: relative;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-layout-gutter;
-    padding: 0 helpers.pxToRem(16px);
-    border-radius: calc(34px / 2);
-    height: 34px;
+    column-gap: spacing.$space-content-distribution-mobile;
+    padding: 0 spacing.$space-content-inline-mobile;
+    border-radius: helpers.pxToRem(calc(34px / 2));
+    height: helpers.pxToRem(34px);
 
     @include helpers.fontSize(14px);
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-layout-gutter;
-    padding: 0 helpers.pxToRem(20px);
-    border-radius: calc(41px / 2);
-    height: 41px;
+    column-gap: spacing.$space-content-distribution-tablet;
+    padding: 0 spacing.$space-content-inline-tablet;
+    border-radius: helpers.pxToRem(calc(41px / 2));
+    height: helpers.pxToRem(41px);
 
     @include helpers.fontSize(18px);
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-layout-gutter;
-    padding: 0 helpers.pxToRem(24px);
-    border-radius: calc(48px / 2);
-    height: 48px;
+    column-gap: spacing.$space-content-distribution-desktop;
+    padding: 0 spacing.$space-content-inline-desktop;
+    border-radius: helpers.pxToRem(calc(48px / 2));
+    height: helpers.pxToRem(48px);
 
     @include helpers.fontSize(22px);
   }
@@ -46,15 +47,15 @@
     align-items: center;
 
     @include helpers.mobile {
-      column-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-content-item-gap-mobile;
     }
 
     @include helpers.tablet {
-      column-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-content-item-gap-tablet;
     }
 
     @include helpers.desktop {
-      column-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-content-item-gap-desktop;
     }
   }
 }

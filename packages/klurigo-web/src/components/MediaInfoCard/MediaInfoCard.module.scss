@@ -1,6 +1,7 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
 .card {
@@ -100,18 +101,18 @@
   flex: 1;
 
   @include helpers.mobile {
-    gap: helpers.pxToRem(4px);
-    padding: helpers.pxToRem(6px);
+    gap: spacing.$space-content-gap-mobile;
+    padding: spacing.$space-content-padding-mobile;
   }
 
   @include helpers.tablet {
-    gap: helpers.pxToRem(6px);
-    padding: helpers.pxToRem(8px);
+    gap: spacing.$space-content-gap-tablet;
+    padding: spacing.$space-content-padding-tablet;
   }
 
   @include helpers.desktop {
-    gap: helpers.pxToRem(8px);
-    padding: helpers.pxToRem(10px);
+    gap: spacing.$space-content-gap-desktop;
+    padding: spacing.$space-content-padding-desktop;
   }
 }
 
@@ -142,15 +143,15 @@
   align-items: center;
 
   @include helpers.mobile {
-    gap: helpers.pxToRem(8px);
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    gap: helpers.pxToRem(10px);
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    gap: helpers.pxToRem(12px);
+    gap: spacing.$space-compact-desktop;
   }
 }
 
@@ -161,17 +162,17 @@
   color: colors.$color-text-subtle;
 
   @include helpers.mobile {
-    gap: helpers.pxToRem(4px);
+    gap: spacing.$space-inline-mobile;
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);
   }
 
   @include helpers.tablet {
-    gap: helpers.pxToRem(5px);
+    gap: spacing.$space-inline-tablet;
     @include helpers.fontSize(variables.$tablet-control-normal-font-size);
   }
 
   @include helpers.desktop {
-    gap: helpers.pxToRem(6px);
+    gap: spacing.$space-inline-desktop;
     @include helpers.fontSize(variables.$desktop-control-normal-font-size);
   }
 
@@ -197,18 +198,18 @@
   align-items: center;
 
   @include helpers.mobile {
-    column-gap: helpers.pxToRem(8px);
-    row-gap: helpers.pxToRem(2px);
+    column-gap: spacing.$space-compact-mobile;
+    row-gap: spacing.$space-content-row-gap-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: helpers.pxToRem(10px);
-    row-gap: helpers.pxToRem(4px);
+    column-gap: spacing.$space-compact-tablet;
+    row-gap: spacing.$space-content-row-gap-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: helpers.pxToRem(12px);
-    row-gap: helpers.pxToRem(6px);
+    column-gap: spacing.$space-compact-desktop;
+    row-gap: spacing.$space-content-row-gap-desktop;
   }
 }
 
@@ -219,17 +220,17 @@
   color: colors.$color-text-subtle;
 
   @include helpers.mobile {
-    gap: helpers.pxToRem(2px);
+    gap: spacing.$space-inline-tight-mobile;
     @include helpers.fontSize(variables.$mobile-control-xsmall-font-size);
   }
 
   @include helpers.tablet {
-    gap: helpers.pxToRem(3px);
+    gap: spacing.$space-inline-tight-tablet;
     @include helpers.fontSize(variables.$tablet-control-xsmall-font-size);
   }
 
   @include helpers.desktop {
-    gap: helpers.pxToRem(4px);
+    gap: spacing.$space-inline-tight-desktop;
     @include helpers.fontSize(variables.$desktop-control-xsmall-font-size);
   }
 

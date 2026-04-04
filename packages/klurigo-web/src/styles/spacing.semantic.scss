@@ -11,12 +11,44 @@ $space-stack-tablet: spacing.space(4);
 $space-stack-desktop: spacing.space(5);
 
 /* Compact spacing */
-$space-compact: spacing.space(2);
+$space-compact-mobile: spacing.space(2);
+$space-compact-tablet: spacing.space(2.5);
+$space-compact-desktop: spacing.space(3);
 
-/* Pill inline spacing */
-$space-pill-inline-mobile: spacing.space(4);
-$space-pill-inline-tablet: spacing.space(5);
-$space-pill-inline-desktop: spacing.space(6);
+/* Inline spacing */
+$space-inline-mobile: spacing.space(1);
+$space-inline-tablet: spacing.space(1.25);
+$space-inline-desktop: spacing.space(1.5);
+
+$space-inline-tight-mobile: spacing.space(0.5);
+$space-inline-tight-tablet: spacing.space(0.75);
+$space-inline-tight-desktop: spacing.space(1);
+
+/* Content spacing */
+$space-content-gap-mobile: spacing.space(1);
+$space-content-gap-tablet: spacing.space(1.5);
+$space-content-gap-desktop: spacing.space(2);
+
+$space-content-padding-mobile: spacing.space(1.5);
+$space-content-padding-tablet: spacing.space(2);
+$space-content-padding-desktop: spacing.space(2.5);
+
+$space-content-row-gap-mobile: spacing.space(0.5);
+$space-content-row-gap-tablet: spacing.space(1);
+$space-content-row-gap-desktop: spacing.space(1.5);
+
+/* Content inline spacing */
+$space-content-inline-mobile: spacing.space(4);
+$space-content-inline-tablet: spacing.space(5);
+$space-content-inline-desktop: spacing.space(6);
+
+$space-content-distribution-mobile: spacing.space(4);
+$space-content-distribution-tablet: spacing.space(5);
+$space-content-distribution-desktop: spacing.space(6);
+
+$space-content-item-gap-mobile: spacing.space(1.25);
+$space-content-item-gap-tablet: spacing.space(1.5);
+$space-content-item-gap-desktop: spacing.space(2);
 
 /* Large section spacing */
 $space-section-lg-mobile: spacing.space(6);

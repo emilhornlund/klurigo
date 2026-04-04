@@ -3,6 +3,7 @@
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
 @mixin iconSize() {
@@ -294,19 +295,19 @@
     }
 
     @include helpers.mobile {
-      padding: variables.$mobile-layout-gutter;
+      padding: spacing.$space-page-mobile;
 
       > .contentWrapper {
         width: 100%;
 
         > .contentInner {
-          row-gap: calc(#{variables.$mobile-layout-gutter} * 0.5);
+          row-gap: spacing.$space-page-mobile;
         }
       }
     }
 
     @include helpers.tablet {
-      padding: variables.$tablet-layout-gutter;
+      padding: spacing.$space-page-tablet;
 
       > .contentWrapper {
         &.smallWidth {
@@ -322,13 +323,13 @@
         }
 
         > .contentInner {
-          row-gap: variables.$tablet-layout-gutter;
+          row-gap: spacing.$space-page-tablet;
         }
       }
     }
 
     @include helpers.desktop {
-      padding: variables.$desktop-layout-gutter;
+      padding: spacing.$space-page-desktop;
 
       > .contentWrapper {
         &.smallWidth {
@@ -344,7 +345,7 @@
         }
 
         > .contentInner {
-          row-gap: variables.$desktop-layout-gutter;
+          row-gap: spacing.$space-page-desktop;
         }
       }
     }

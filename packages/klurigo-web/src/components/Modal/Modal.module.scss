@@ -1,6 +1,7 @@
 @use '../../styles/animations';
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
 .floatingOverlay {
@@ -12,15 +13,15 @@
   z-index: variables.$modal-z-index;
 
   @include helpers.mobile {
-    padding: variables.$mobile-medium-layout-gutter;
+    padding: spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    padding: variables.$tablet-medium-layout-gutter;
+    padding: spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    padding: variables.$desktop-medium-layout-gutter;
+    padding: spacing.$space-stack-desktop;
   }
 
   .modalContainer {
@@ -37,22 +38,22 @@
     }
 
     @include helpers.mobile {
-      padding: variables.$mobile-medium-layout-gutter;
-      row-gap: variables.$mobile-medium-layout-gutter;
+      padding: spacing.$space-stack-mobile;
+      row-gap: spacing.$space-stack-mobile;
       border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
       max-height: 90%;
-      padding: variables.$tablet-medium-layout-gutter;
-      row-gap: variables.$tablet-medium-layout-gutter;
+      padding: spacing.$space-stack-tablet;
+      row-gap: spacing.$space-stack-tablet;
       border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
       max-height: 80%;
-      padding: variables.$desktop-medium-layout-gutter;
-      row-gap: variables.$desktop-medium-layout-gutter;
+      padding: spacing.$space-stack-desktop;
+      row-gap: spacing.$space-stack-desktop;
       border-radius: variables.$desktop-border-radius;
     }
 
@@ -116,20 +117,17 @@
       overflow-x: hidden;
 
       @include helpers.mobile {
-        row-gap: variables.$mobile-medium-layout-gutter;
-
+        row-gap: spacing.$space-stack-mobile;
         @include helpers.fontSize(16px);
       }
 
       @include helpers.tablet {
-        row-gap: variables.$tablet-medium-layout-gutter;
-
+        row-gap: spacing.$space-stack-tablet;
         @include helpers.fontSize(18px);
       }
 
       @include helpers.desktop {
-        row-gap: variables.$desktop-medium-layout-gutter;
-
+        row-gap: spacing.$space-stack-desktop;
         @include helpers.fontSize(20px);
       }
     }
