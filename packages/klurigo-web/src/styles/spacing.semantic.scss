@@ -1,0 +1,24 @@
+@use './spacing' as spacing;
+
+/* Page spacing */
+$space-page-mobile: spacing.space(4);
+$space-page-tablet: spacing.space(5);
+$space-page-desktop: spacing.space(6);
+
+/* Stack spacing */
+$space-stack-mobile: spacing.space(3);
+$space-stack-tablet: spacing.space(4);
+$space-stack-desktop: spacing.space(5);
+
+/* Compact spacing */
+$space-compact: spacing.space(2);
+
+/* Pill inline spacing */
+$space-pill-inline-mobile: spacing.space(4);
+$space-pill-inline-tablet: spacing.space(5);
+$space-pill-inline-desktop: spacing.space(6);
+
+/* Large section spacing */
+$space-section-lg-mobile: spacing.space(6);
+$space-section-lg-tablet: spacing.space(7);
+$space-section-lg-desktop: spacing.space(8);
