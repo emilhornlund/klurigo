@@ -36,7 +36,7 @@ export const MenuItem: FC<MenuItemProps> = ({
 
   return (
     <button
-      className={styles.menuItem}
+      className={styles.menuItemButton}
       disabled={disabled}
       onClick={handleClick}>
       <div className={styles.content}>

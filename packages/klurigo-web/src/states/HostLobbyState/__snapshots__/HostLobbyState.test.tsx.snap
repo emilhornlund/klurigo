@@ -185,7 +185,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Alice
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -208,7 +208,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Bob
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -684,7 +684,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Alice
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -707,7 +707,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Bob
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -918,7 +918,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowCyborg
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -941,7 +941,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Radar
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -964,7 +964,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowWhirlwind
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -987,7 +987,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 WhiskerFox
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1010,7 +1010,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 JollyNimbus
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1033,7 +1033,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 PuddingPop
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1056,7 +1056,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 MysticPine
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1079,7 +1079,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 FrostyBear
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1102,7 +1102,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Willo
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1125,7 +1125,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ScarletFlame
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1336,7 +1336,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Alice
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"
@@ -1359,7 +1359,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Bob
                 <button
-                  class="delete"
+                  class="deleteButton"
                 >
                   <svg
                     aria-hidden="true"

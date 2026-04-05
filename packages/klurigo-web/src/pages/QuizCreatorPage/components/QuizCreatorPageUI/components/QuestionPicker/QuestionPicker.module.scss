@@ -3,6 +3,7 @@
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../../styles/mixins/_button' as button;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -60,10 +61,8 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
 
     .addQuestionButton {
-      -moz-appearance: none;
-      -o-appearance: none;
-      -webkit-appearance: none;
-      appearance: none;
+      @include button.button-reset;
+
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -71,10 +70,8 @@ $outline-offset: helpers.pxToRem(2px);
       outline: colors.$color-focus-ring solid $outline-offset;
       border: $outline-offset solid transparent;
       border-radius: 50%;
-      padding: 0;
       background-color: transparent;
       color: colors.$color-text-warning;
-      cursor: pointer;
 
       @include helpers.mobile {
         @include helpers.fontSize(28px);

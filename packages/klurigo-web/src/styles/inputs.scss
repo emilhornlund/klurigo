@@ -1,8 +1,12 @@
 @use './colors.semantic' as colors;
 @use './helpers';
+@use './mixins/_button' as button;
+@use './mixins/_input' as input;
+@use './mixins/_select' as select;
+@use './mixins/_textarea' as textarea;
 @use './shadows.tokens' as shadows;
-@use './variables';
 @use './spacing.semantic' as spacing;
+@use './variables';
 
 .input {
   align-items: center;
@@ -25,16 +29,23 @@
     @extend .inout-kind-disabled;
   }
 
+  button {
+    @include button.button-reset;
+  }
+  input {
+    @include input.input-reset;
+  }
+  select {
+    @include select.select-reset;
+  }
+  textarea {
+    @include textarea.textarea-reset;
+  }
+
   input,
   select,
   textarea,
   button {
-    -moz-appearance: none;
-    -o-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    border: none;
     display: inline-flex;
     flex-direction: row;
     flex: 1;

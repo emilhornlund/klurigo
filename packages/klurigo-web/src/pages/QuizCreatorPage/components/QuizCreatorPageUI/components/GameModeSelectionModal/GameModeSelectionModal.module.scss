@@ -3,6 +3,7 @@
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../../styles/mixins/_button' as button;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -23,10 +24,11 @@ $outline-offset: helpers.pxToRem(2px);
   }
 
   .classic, .zeroToOneHundred {
+    @include button.button-reset;
+
     display: flex;
     flex-direction: column;
     flex: 1;
-    appearance: none;
     background-color: colors.$color-action-tint;
     outline: colors.$color-action-tint solid $outline-offset;
     outline-offset: $outline-offset;
@@ -34,7 +36,7 @@ $outline-offset: helpers.pxToRem(2px);
     margin: calc($outline-offset * 2);
     color: colors.$color-text-default;
     font-weight: bold;
-    cursor: pointer;
+    text-align: center;
 
     @include helpers.mobile {
       row-gap: spacing.$space-inline-mobile;
@@ -73,7 +75,7 @@ $outline-offset: helpers.pxToRem(2px);
       display: flex;
       flex-direction: column;
       flex: 1;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       font-weight: normal;
 

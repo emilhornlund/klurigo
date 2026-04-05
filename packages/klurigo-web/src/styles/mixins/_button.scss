@@ -1,0 +1,15 @@
+@use './_form' as form;
+
+@mixin button-reset {
+  @include form.form-control-reset;
+
+  text-align: inherit;
+  letter-spacing: inherit;
+
+  cursor: pointer;
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}

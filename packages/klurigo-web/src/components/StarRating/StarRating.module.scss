@@ -1,8 +1,9 @@
+@use '../../styles/colors.rating' as rating;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
-@use '../../styles/colors.rating' as rating;
-@use '../../styles/variables';
+@use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables';
 
 .starRow {
   display: inline-flex;
@@ -61,16 +62,13 @@
 }
 
 .starButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  @include button.button-reset;
+
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   color: colors.$color-text-inverse;
-  font-size: inherit;
 
   &:disabled {
     color: colors.$color-text-disabled;

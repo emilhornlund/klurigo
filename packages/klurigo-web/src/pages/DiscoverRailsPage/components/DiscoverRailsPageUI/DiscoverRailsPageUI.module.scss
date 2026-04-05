@@ -1,7 +1,8 @@
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
-@use '../../../../styles/variables';
+@use '../../../../styles/mixins/_button' as button;
 @use '../../../../styles/spacing.semantic' as spacing;
+@use '../../../../styles/variables';
 
 .container {
   display: flex;
@@ -104,13 +105,9 @@
 }
 
 .clearLink {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
+  @include button.button-reset;
+
   text-decoration: underline;
-  font: inherit;
 
   &:hover {
     opacity: 0.8;

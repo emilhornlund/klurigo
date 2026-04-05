@@ -1,8 +1,10 @@
 @use 'sass:color';
+
 @use '../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../styles/helpers';
-@use '../../../../../../../../styles/variables';
+@use '../../../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../../../../styles/variables';
 
 $small-question-picker-item-width: helpers.pxToRem(120px);
 $normal-question-picker-item-width: helpers.pxToRem(160px);
@@ -42,6 +44,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
   }
 
   .questionPickerItemButton {
+    @include button.button-reset;
+
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -50,9 +54,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     color: colors.$color-text-default;
     border-style: solid;
     border-color: colors.$color-border-default;
-    cursor: pointer;
     background-color: colors.$color-surface-default;
-    appearance: none;
     width: 100%;
     max-height: 100%;
 
@@ -169,6 +171,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       width: 100%;
 
       div, button {
+        @include button.button-reset;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -218,11 +222,10 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
 
     .questionPickerItemOverlayBottom {
       .questionPickerItemOverlayDuplicate, .questionPickerItemOverlayDelete {
-        border: none;
+        @include button.button-reset;
+
         outline: none;
-        appearance: none;
         pointer-events: auto;
-        cursor: pointer;
         color: colors.$color-text-control-default;
         background-color: colors.$color-surface-control-muted;
 

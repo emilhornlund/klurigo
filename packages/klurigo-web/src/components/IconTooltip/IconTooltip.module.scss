@@ -2,15 +2,11 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/mixins/_button' as button;
 
 .iconTooltipButton {
-  -moz-appearance: none;
-  -o-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  border: none;
-  font-family: inherit;
+  @include button.button-reset;
+
   outline: none;
   color: colors.$color-text-inverse;
 
@@ -27,7 +23,6 @@
   }
 
   &:hover {
-    cursor: pointer;
     color: colors.$color-text-inverse-subtle;
   }
 }

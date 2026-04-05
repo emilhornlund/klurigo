@@ -1,8 +1,9 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_input' as input;
 @use '../../styles/mixins/_shadow' as shadow;
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables';
 
 $mobile-switch-height: helpers.pxToRem(30px);
 $mobile-switch-padding: helpers.pxToRem(2px);
@@ -78,10 +79,11 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
     }
 
     input {
+      @include input.input-reset;
+
       position: absolute;
       inset: 0;
       opacity: 0;
-      margin: 0;
       cursor: pointer;
 
       &:checked + .slider {

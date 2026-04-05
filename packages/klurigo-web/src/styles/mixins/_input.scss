@@ -1,0 +1,5 @@
+@use './_form' as form;
+
+@mixin input-reset {
+  @include form.form-control-reset;
+}

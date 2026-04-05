@@ -1,0 +1,7 @@
+@use './_form' as form;
+
+@mixin textarea-reset {
+  @include form.form-control-reset;
+
+  resize: none;
+}
