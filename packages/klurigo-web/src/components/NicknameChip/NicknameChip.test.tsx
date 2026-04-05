@@ -109,7 +109,7 @@ describe('NicknameChip', () => {
 
     const button = container.querySelector('button')
     expect(button).toBeTruthy()
-    expect(button).toHaveClass(styles.delete)
+    expect(button).toHaveClass(styles.deleteButton)
 
     expect(screen.getByTestId('fa-icon')).toBeInTheDocument()
   })

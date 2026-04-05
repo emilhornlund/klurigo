@@ -1,8 +1,9 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_button' as button;
 @use '../../styles/shadows.tokens' as shadows;
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables';
 
 .menu {
   display: flex;
@@ -12,20 +13,17 @@
   border: none;
   z-index: variables.$menu-z-index;
   transform: translateX(-100%);
-  row-gap: spacing.$space-compact-mobile;
+  row-gap: 0;
   padding: spacing.$space-compact-mobile 0;
   border-radius: helpers.pxToRem(8px);
   box-shadow: shadows.$shadow-overlay;
 
-  .menuItem {
+  .menuItemButton {
+    @include button.button-reset;
+
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: colors.$color-text-default;
-    background-color: transparent;
-    appearance: none;
-    padding: 0;
-    border: none;
     outline: none;
 
     .content {
@@ -34,9 +32,21 @@
       flex-wrap: nowrap;
       align-items: center;
       width: 100%;
-      column-gap: spacing.$space-content-gap-mobile;
-      padding: spacing.$space-compact-mobile spacing.$space-content-gap-mobile;
       white-space: nowrap;
+      color: colors.$color-text-default;
+
+      @include helpers.mobile {
+        column-gap: spacing.$space-content-padding-mobile * 2;
+        padding: spacing.$space-content-padding-mobile spacing.$space-content-padding-mobile * 2;
+      }
+      @include helpers.tablet {
+        column-gap: spacing.$space-content-padding-tablet * 2;
+        padding: spacing.$space-content-padding-tablet spacing.$space-content-padding-tablet * 2;
+      }
+      @include helpers.desktop {
+        column-gap: spacing.$space-content-padding-desktop * 2;
+        padding: spacing.$space-content-padding-desktop spacing.$space-content-padding-desktop * 2;
+      }
 
       @include helpers.fontSize(22px);
 
@@ -67,11 +77,22 @@
   .menuSeparator {
     display: flex;
     flex-direction: column;
-    width: calc(100% - (#{spacing.$space-compact-desktop} * 2));
     appearance: none;
-    margin: 0 spacing.$space-compact-desktop;
     border: none;
     border-bottom: 1px dashed colors.$color-border-subtle;
     outline: none;
+
+    @include helpers.mobile {
+      width: calc(100% - (#{spacing.$space-compact-mobile} * 2));
+      margin: spacing.$space-compact-mobile;
+    }
+    @include helpers.tablet {
+      width: calc(100% - (#{spacing.$space-compact-tablet} * 2));
+      margin: spacing.$space-compact-tablet;
+    }
+    @include helpers.desktop {
+      width: calc(100% - (#{spacing.$space-compact-desktop} * 2));
+      margin: spacing.$space-compact-desktop;
+    }
   }
 }

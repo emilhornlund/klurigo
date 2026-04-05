@@ -1,8 +1,9 @@
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
+@use '../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../styles/mixins/_surface' as surface;
-@use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../../styles/variables';
 
 $contrast-opacity: 0.8;
 
@@ -117,17 +118,14 @@ $contrast-opacity: 0.8;
     }
 
     &.hostGameButton {
+      @include button.button-reset;
       @include surface.surface-box(true);
 
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      appearance: none;
       flex: 1;
-      font-family: inherit;
       height: 100%;
       outline: none;
 

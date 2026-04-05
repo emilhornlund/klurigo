@@ -1,0 +1,20 @@
+@mixin form-control-reset {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  box-sizing: border-box;
+
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}

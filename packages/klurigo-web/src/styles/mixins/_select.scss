@@ -1,0 +1,7 @@
+@use './_form' as form;
+
+@mixin select-reset {
+  @include form.form-control-reset;
+
+  cursor: pointer;
+}

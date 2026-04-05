@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_button' as button;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
 
@@ -68,24 +69,18 @@
     color: colors.$color-text-inverse;
   }
 
-  .delete {
-    -o-appearance: none;
-    -webkit-appearance: none;
+  .deleteButton {
+    @include button.button-reset;
+
     align-items: center;
-    appearance: none;
     background-color: colors.$color-surface-overlay;
-    border: none;
     box-shadow: none;
-    cursor: pointer;
     display: none;
     flex-direction: row;
     flex: 1;
-    font-family: inherit;
     height: 100%;
     justify-content: center;
-    margin: 0;
     outline: none;
-    padding: 0;
     position: absolute;
     width: 100%;
     transition: background-color 0.2s ease;

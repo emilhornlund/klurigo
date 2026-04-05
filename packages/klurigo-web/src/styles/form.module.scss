@@ -2,6 +2,7 @@
 @use './helpers';
 @use './variables';
 @use './spacing.semantic' as spacing;
+@use './mixins/button' as button;
 
 .form {
   display: flex;
@@ -54,17 +55,11 @@
       }
 
       .buttonLink {
+        @include button.button-reset;
+
         display: inline-flex;
-        -moz-appearance: none;
-        -o-appearance: none;
-        -webkit-appearance: none;
-        appearance: none;
-        background-color: transparent;
-        border: none;
-        font-family: inherit;
         outline: none;
         text-decoration: underline;
-        cursor: pointer;
         color: colors.$color-text-inverse;
         text-underline-offset: helpers.pxToRem(2px);
 

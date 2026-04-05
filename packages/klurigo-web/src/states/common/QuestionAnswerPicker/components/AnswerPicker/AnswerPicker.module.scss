@@ -1,8 +1,9 @@
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
+@use '../../../../../styles/mixins/_button' as button;
 @use '../../../../../styles/shadows.tokens' as shadows;
-@use '../../../../../styles/variables';
 @use '../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../styles/variables';
 
 .answerPicker {
   display: flex;
@@ -30,16 +31,16 @@
     }
 
     .answerButton {
+      @include button.button-reset;
+
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
-      border: none;
       outline: none;
       background-color: colors.$color-surface-default;
       color: colors.$color-text-default;
       overflow: hidden;
-      cursor: pointer;
       transition:
         transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
         background-color 0.2s ease,

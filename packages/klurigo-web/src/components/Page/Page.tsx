@@ -123,7 +123,10 @@ const Page: FC<PageProps> = ({
             <div
               className={styles.menuButtonWrapper}
               ref={profileMenuButtonRef}>
-              <button onClick={toggleProfileMenu} type="button">
+              <button
+                onClick={toggleProfileMenu}
+                type="button"
+                className={styles.menuButton}>
                 <img src={Avatar} alt="Profile" />
               </button>
               <Menu
@@ -136,7 +139,10 @@ const Page: FC<PageProps> = ({
           )}
           {isUserAuthenticated && isMobile && (discover || profile) && (
             <div className={styles.menuButtonWrapper} ref={mobileMenuButtonRef}>
-              <button onClick={toggleMobileMenu} type="button">
+              <button
+                onClick={toggleMobileMenu}
+                type="button"
+                className={styles.menuButton}>
                 <img src={Bars} alt="Menu" />
               </button>
               <Menu

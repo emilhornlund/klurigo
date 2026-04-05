@@ -1,8 +1,9 @@
 @use '../../styles/animations';
-@use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.page' as pageColors;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers';
+@use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
@@ -65,16 +66,13 @@
     }
 
     .logo {
+      @include button.button-reset;
+
       position: relative;
       display: flex;
       flex-direction: row;
       align-items: center;
-      appearance: none;
-      border: none;
       outline: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
       transform-origin: center;
 
       .icon {
@@ -185,15 +183,12 @@
 
         @include iconSize();
 
-        button {
+        .menuButton {
+          @include button.button-reset;
+
           display: flex;
           flex-direction: column;
-          appearance: none;
-          border: none;
           outline: none;
-          background: none;
-          cursor: pointer;
-          padding: 0;
 
           img {
             filter: brightness(0) saturate(100%) invert(100%) sepia(4%)

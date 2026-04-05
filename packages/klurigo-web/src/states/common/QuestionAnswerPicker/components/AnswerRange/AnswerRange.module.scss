@@ -1,10 +1,11 @@
 @use '../../../../../styles/colors.range' as rangeColors;
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
+@use '../../../../../styles/mixins/_input' as input;
 @use '../../../../../styles/mixins/_shadow' as shadow;
 @use '../../../../../styles/shadows.tokens' as shadows;
-@use '../../../../../styles/variables';
 @use '../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../styles/variables';
 
 .answerRange {
   display: flex;
@@ -32,14 +33,11 @@
     }
 
     input[type='range'] {
+      @include input.input-reset;
+
       display: flex;
       flex-direction: column;
       width: 100%;
-      padding: 0;
-      margin: 0;
-      appearance: none;
-      -webkit-appearance: none;
-      box-sizing: border-box;
       background-color: colors.$color-surface-accent;
 
       @include helpers.mobile {
