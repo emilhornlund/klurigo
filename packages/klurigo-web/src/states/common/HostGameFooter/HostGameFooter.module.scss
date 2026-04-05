@@ -1,6 +1,7 @@
 @use '../../../styles/helpers';
 @use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/variables';
+@use '../../../styles/spacing.semantic' as spacing;
 
 $--mobile-font-size: 16px;
 $--mobile-line-height: helpers.pxToRem($--mobile-font-size);
@@ -21,23 +22,23 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
 
   @include helpers.mobile {
     border-radius: variables.$mobile-narrow-layout-gutter;
-    padding: variables.$mobile-narrow-layout-gutter;
+    padding: spacing.$space-compact-mobile;
     width: 100%;
-    max-height: calc(#{variables.$mobile-narrow-layout-gutter} * 2 + $--mobile-line-height);
+    max-height: calc(#{spacing.$space-compact-mobile} * 2 + $--mobile-line-height);
   }
 
   @include helpers.tablet {
     border-radius: variables.$tablet-narrow-layout-gutter;
-    padding: variables.$tablet-narrow-layout-gutter;
+    padding: spacing.$space-compact-tablet;
     width: variables.$tablet-width;
-    max-height: calc(#{variables.$tablet-narrow-layout-gutter} * 2 + $--tablet-line-height);
+    max-height: calc(#{spacing.$space-compact-tablet} * 2 + $--tablet-line-height);
   }
 
   @include helpers.desktop {
     border-radius: variables.$desktop-narrow-layout-gutter;
-    padding: variables.$desktop-narrow-layout-gutter;
+    padding: spacing.$space-compact-desktop;
     width: variables.$desktop-width;
-    max-height: calc(#{variables.$desktop-narrow-layout-gutter} * 2 + $--desktop-line-height);
+    max-height: calc(#{spacing.$space-compact-desktop} * 2 + $--desktop-line-height);
   }
 
   .questions, .gamePIN {
@@ -48,21 +49,21 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
     flex: 1;
 
     @include helpers.mobile {
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-mobile;
       line-height: $--mobile-line-height;
 
       @include helpers.fontSize($--mobile-font-size);
     }
 
     @include helpers.tablet {
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-tablet;
       line-height: $--tablet-line-height;
 
       @include helpers.fontSize($--tablet-font-size);
     }
 
     @include helpers.desktop {
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-desktop;
       line-height: $--desktop-line-height;
 
       @include helpers.fontSize($--desktop-font-size);
@@ -89,15 +90,15 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
     flex: 1;
 
     @include helpers.mobile {
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-desktop;
     }
 
     @mixin iconSize() {

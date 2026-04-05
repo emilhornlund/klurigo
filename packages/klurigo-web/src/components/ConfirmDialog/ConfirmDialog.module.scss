@@ -1,20 +1,21 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .actions {
   display: flex;
   flex-direction: row;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-desktop;
   }
 
   > div {

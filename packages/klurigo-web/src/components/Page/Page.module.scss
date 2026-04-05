@@ -3,6 +3,7 @@
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
 @mixin iconSize() {
@@ -51,16 +52,16 @@
     width: 100%;
 
     @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter;
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      padding: spacing.$space-compact-mobile;
+      column-gap: spacing.$space-compact-mobile;
     }
     @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter;
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      padding: spacing.$space-compact-tablet;
+      column-gap: spacing.$space-compact-tablet;
     }
     @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter;
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      padding: spacing.$space-compact-desktop;
+      column-gap: spacing.$space-compact-desktop;
     }
 
     .logo {
@@ -99,11 +100,11 @@
       }
 
       @include helpers.mobile {
-        column-gap: variables.$mobile-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        column-gap: variables.$tablet-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-tablet;
 
         .text {
           @include helpers.fontSize(24px);
@@ -111,7 +112,7 @@
       }
 
       @include helpers.desktop {
-        column-gap: variables.$desktop-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-desktop;
 
         .text {
           @include helpers.fontSize(27px);
@@ -137,13 +138,13 @@
       flex: 1;
 
       @include helpers.mobile {
-        column-gap: variables.$mobile-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-mobile;
       }
       @include helpers.tablet {
-        column-gap: variables.$tablet-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-tablet;
       }
       @include helpers.desktop {
-        column-gap: variables.$desktop-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-desktop;
       }
 
       .verticalLine {
@@ -294,19 +295,19 @@
     }
 
     @include helpers.mobile {
-      padding: variables.$mobile-layout-gutter;
+      padding: spacing.$space-page-mobile;
 
       > .contentWrapper {
         width: 100%;
 
         > .contentInner {
-          row-gap: calc(#{variables.$mobile-layout-gutter} * 0.5);
+          row-gap: spacing.$space-page-mobile;
         }
       }
     }
 
     @include helpers.tablet {
-      padding: variables.$tablet-layout-gutter;
+      padding: spacing.$space-page-tablet;
 
       > .contentWrapper {
         &.smallWidth {
@@ -322,13 +323,13 @@
         }
 
         > .contentInner {
-          row-gap: variables.$tablet-layout-gutter;
+          row-gap: spacing.$space-page-tablet;
         }
       }
     }
 
     @include helpers.desktop {
-      padding: variables.$desktop-layout-gutter;
+      padding: spacing.$space-page-desktop;
 
       > .contentWrapper {
         &.smallWidth {
@@ -344,7 +345,7 @@
         }
 
         > .contentInner {
-          row-gap: variables.$desktop-layout-gutter;
+          row-gap: spacing.$space-page-desktop;
         }
       }
     }
@@ -359,17 +360,17 @@
     color: colors.$color-text-inverse;
 
     @include helpers.mobile() {
-      padding: 0 variables.$mobile-narrow-layout-gutter
-        variables.$mobile-narrow-layout-gutter
-        variables.$mobile-narrow-layout-gutter;
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      padding: 0 spacing.$space-compact-mobile
+        spacing.$space-compact-mobile
+        spacing.$space-compact-mobile;
+      column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      padding: 0 variables.$tablet-narrow-layout-gutter
-        variables.$tablet-narrow-layout-gutter
-        variables.$tablet-narrow-layout-gutter;
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      padding: 0 spacing.$space-compact-tablet
+        spacing.$space-compact-tablet
+        spacing.$space-compact-tablet;
+      column-gap: spacing.$space-compact-tablet;
 
       &:not(&.fullWidth) {
         width: variables.$tablet-width;
@@ -377,10 +378,10 @@
     }
 
     @include helpers.desktop {
-      padding: 0 variables.$desktop-narrow-layout-gutter
-        variables.$desktop-narrow-layout-gutter
-        variables.$desktop-narrow-layout-gutter;
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      padding: 0 spacing.$space-compact-desktop
+        spacing.$space-compact-desktop
+        spacing.$space-compact-desktop;
+      column-gap: spacing.$space-compact-desktop;
 
       &:not(&.fullWidth) {
         width: variables.$desktop-width;

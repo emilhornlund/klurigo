@@ -1,0 +1,5 @@
+@use './spacing.tokens' as tokens;
+
+@function space($step) {
+  @return tokens.$space-unit * $step;
+}

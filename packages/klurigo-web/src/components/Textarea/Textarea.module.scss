@@ -1,6 +1,7 @@
 @use '../../styles/inputs';
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -36,14 +37,14 @@ $outline-offset: helpers.pxToRem(2px);
   }
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 }

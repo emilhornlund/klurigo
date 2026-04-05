@@ -2,6 +2,7 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 $mobile-select-normal-size: calc(#{variables.$mobile-control-normal-height} * 0.4);
 $tablet-select-normal-size: calc(#{variables.$tablet-control-normal-height} * 0.4);
@@ -61,14 +62,14 @@ $desktop-select-normal-size: calc(#{variables.$desktop-control-normal-height} * 
   }
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 }

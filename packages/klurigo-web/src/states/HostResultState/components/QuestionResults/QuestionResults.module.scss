@@ -2,6 +2,7 @@
 @use '../../../../styles/helpers';
 @use '../../../../styles/loading';
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .questionResults {
   display: flex;
@@ -11,15 +12,15 @@
   flex: 1;
 
   @include helpers.mobile {
-    gap: variables.$mobile-medium-layout-gutter;
+    gap: spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-medium-layout-gutter;
+    gap: spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-medium-layout-gutter;
+    gap: spacing.$space-stack-desktop;
   }
 
   .chips {
@@ -30,15 +31,15 @@
     flex-wrap: wrap;
 
     @include helpers.mobile {
-      gap: variables.$mobile-medium-layout-gutter;
+      gap: spacing.$space-stack-mobile;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-medium-layout-gutter;
+      gap: spacing.$space-stack-tablet;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-medium-layout-gutter;
+      gap: spacing.$space-stack-desktop;
     }
 
     .chip {
@@ -58,27 +59,27 @@
       }
 
       @include helpers.mobile {
-        padding: variables.$mobile-component-layout-gutter
-          variables.$mobile-medium-layout-gutter;
-        column-gap: variables.$mobile-medium-layout-gutter;
+        padding: spacing.$space-stack-mobile
+          spacing.$space-stack-mobile;
+        column-gap: spacing.$space-stack-mobile;
         border-radius: variables.$mobile-medium-layout-gutter;
 
         @include helpers.fontSize(16px);
       }
 
       @include helpers.tablet {
-        padding: variables.$tablet-component-layout-gutter
-          variables.$tablet-medium-layout-gutter;
-        column-gap: variables.$tablet-medium-layout-gutter;
+        padding: spacing.$space-stack-tablet
+          spacing.$space-stack-tablet;
+        column-gap: spacing.$space-stack-tablet;
         border-radius: variables.$tablet-medium-layout-gutter;
 
         @include helpers.fontSize(22px);
       }
 
       @include helpers.desktop {
-        padding: variables.$desktop-component-layout-gutter
-          variables.$desktop-medium-layout-gutter;
-        column-gap: variables.$desktop-medium-layout-gutter;
+        padding: spacing.$space-stack-desktop
+          spacing.$space-stack-desktop;
+        column-gap: spacing.$space-stack-desktop;
         border-radius: variables.$desktop-medium-layout-gutter;
 
         @include helpers.fontSize(28px);
@@ -110,8 +111,8 @@
         @include helpers.mobile {
           height: helpers.pxToRem(30px);
           border-radius: helpers.pxToRem(calc(30px / 2));
-          padding: variables.$mobile-medium-layout-gutter;
-          column-gap: variables.$mobile-medium-layout-gutter;
+          padding: spacing.$space-stack-mobile;
+          column-gap: spacing.$space-stack-mobile;
 
           @include helpers.fontSize(14px);
         }
@@ -119,8 +120,8 @@
         @include helpers.tablet {
           height: helpers.pxToRem(40px);
           border-radius: helpers.pxToRem(calc(40px / 2));
-          padding: variables.$tablet-medium-layout-gutter;
-          column-gap: variables.$tablet-medium-layout-gutter;
+          padding: spacing.$space-stack-tablet;
+          column-gap: spacing.$space-stack-tablet;
 
           @include helpers.fontSize(18px);
         }
@@ -128,8 +129,8 @@
         @include helpers.desktop {
           height: helpers.pxToRem(50px);
           border-radius: helpers.pxToRem(calc(50px / 2));
-          padding: variables.$desktop-medium-layout-gutter;
-          column-gap: variables.$desktop-medium-layout-gutter;
+          padding: spacing.$space-stack-desktop;
+          column-gap: spacing.$space-stack-desktop;
 
           @include helpers.fontSize(22px);
         }

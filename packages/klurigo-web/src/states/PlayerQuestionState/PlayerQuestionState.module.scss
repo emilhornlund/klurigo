@@ -1,5 +1,6 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .fullHeight {
   display: flex;
@@ -10,14 +11,14 @@
   overflow: auto;
 
   @include helpers.mobile {
-    gap: variables.$mobile-layout-gutter;
+    gap: spacing.$space-page-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-layout-gutter;
+    gap: spacing.$space-page-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-layout-gutter;
+    gap: spacing.$space-page-desktop;
   }
 }

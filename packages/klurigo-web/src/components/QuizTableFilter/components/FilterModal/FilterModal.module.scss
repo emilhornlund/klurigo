@@ -1,20 +1,21 @@
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .filterModalContainer {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    gap: variables.$mobile-narrow-layout-gutter;
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-narrow-layout-gutter;
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-narrow-layout-gutter;
+    gap: spacing.$space-compact-desktop;
   }
 
   .row {
@@ -22,15 +23,15 @@
     flex-direction: column;
 
     @include helpers.mobile {
-      row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+      row-gap: spacing.$space-inline-mobile;
     }
 
     @include helpers.tablet {
-      row-gap: calc(#{variables.$tablet-narrow-layout-gutter * 0.5});
+      row-gap: spacing.$space-inline-tablet;
     }
 
     @include helpers.desktop {
-      row-gap: calc(#{variables.$desktop-narrow-layout-gutter * 0.5});
+      row-gap: spacing.$space-inline-desktop;
     }
 
     .label {
@@ -56,15 +57,15 @@
       flex-direction: row;
 
       @include helpers.mobile {
-        column-gap: variables.$mobile-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        column-gap: variables.$tablet-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        column-gap: variables.$desktop-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-desktop;
       }
 
       > div {

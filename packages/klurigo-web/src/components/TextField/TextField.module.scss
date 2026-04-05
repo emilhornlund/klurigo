@@ -2,6 +2,7 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 $checkbox-height-ratio: 0.7;
 
@@ -132,14 +133,14 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
   }
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-control-normal-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 }

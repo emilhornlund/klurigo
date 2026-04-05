@@ -2,6 +2,7 @@
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .pageDivider {
   display: flex;
@@ -16,17 +17,17 @@
 
   @include helpers.mobile {
     width: 100%;
-    margin: variables.$mobile-layout-gutter 0;
+    margin: spacing.$space-page-mobile 0;
   }
 
   @include helpers.tablet {
     width: variables.$tablet-width;
-    margin: variables.$tablet-layout-gutter 0;
+    margin: spacing.$space-page-tablet 0;
   }
 
   @include helpers.desktop {
     width: variables.$desktop-width;
-    margin: variables.$desktop-layout-gutter 0;
+    margin: spacing.$space-page-desktop 0;
   }
 
   &::before {

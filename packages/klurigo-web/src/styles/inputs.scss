@@ -2,6 +2,7 @@
 @use './helpers';
 @use './shadows.tokens' as shadows;
 @use './variables';
+@use './spacing.semantic' as spacing;
 
 .input {
   align-items: center;
@@ -45,19 +46,19 @@
     min-width: 0;
 
     @include helpers.mobile {
-      column-gap: variables.$mobile-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-mobile;
 
       @include helpers.fontSize(variables.$mobile-control-normal-font-size);
     }
 
     @include helpers.tablet {
-      column-gap: variables.$tablet-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-tablet;
 
       @include helpers.fontSize(variables.$tablet-control-normal-font-size);
     }
 
     @include helpers.desktop {
-      column-gap: variables.$desktop-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-desktop;
 
       @include helpers.fontSize(variables.$desktop-control-normal-font-size);
     }
@@ -93,30 +94,30 @@
   @include helpers.mobile {
     border-radius: variables.$mobile-control-normal-border-radius;
     min-height: variables.$mobile-control-normal-height;
-    padding: 0 variables.$mobile-control-normal-layout-gutter;
+    padding: 0 spacing.$space-compact-mobile;
 
     &:has(> textarea) {
-      padding: variables.$mobile-control-normal-layout-gutter;
+      padding: spacing.$space-compact-mobile;
     }
   }
 
   @include helpers.tablet {
     border-radius: variables.$tablet-control-normal-border-radius;
     min-height: variables.$tablet-control-normal-height;
-    padding: 0 variables.$tablet-control-normal-layout-gutter;
+    padding: 0 spacing.$space-compact-tablet;
 
     &:has(> textarea) {
-      padding: variables.$tablet-control-normal-layout-gutter;
+      padding: spacing.$space-compact-tablet;
     }
   }
 
   @include helpers.desktop {
     border-radius: variables.$desktop-control-normal-border-radius;
     min-height: variables.$desktop-control-normal-height;
-    padding: 0 variables.$desktop-control-normal-layout-gutter;
+    padding: 0 spacing.$space-compact-desktop;
 
     &:has(> textarea) {
-      padding: variables.$desktop-control-normal-layout-gutter;
+      padding: spacing.$space-compact-desktop;
     }
   }
 }
@@ -308,13 +309,13 @@
   @include helpers.mobile {
     border-radius: variables.$mobile-control-small-border-radius;
     min-height: variables.$mobile-control-small-height;
-    padding: 0 variables.$mobile-control-small-layout-gutter;
+    padding: 0 spacing.$space-inline-mobile;
 
     input,
     select,
     textarea,
     button {
-      column-gap: variables.$mobile-control-small-layout-gutter;
+      column-gap: spacing.$space-inline-mobile;
 
       @include helpers.fontSize(variables.$mobile-control-small-font-size);
     }
@@ -323,13 +324,13 @@
   @include helpers.tablet {
     border-radius: variables.$tablet-control-small-border-radius;
     min-height: variables.$tablet-control-small-height;
-    padding: 0 variables.$tablet-control-small-layout-gutter;
+    padding: 0 spacing.$space-inline-tablet;
 
     input,
     select,
     textarea,
     button {
-      column-gap: variables.$tablet-control-small-layout-gutter;
+      column-gap: spacing.$space-inline-tablet;
 
       @include helpers.fontSize(variables.$tablet-control-small-font-size);
     }
@@ -338,13 +339,13 @@
   @include helpers.desktop {
     border-radius: variables.$desktop-control-small-border-radius;
     min-height: variables.$desktop-control-small-height;
-    padding: 0 variables.$desktop-control-small-layout-gutter;
+    padding: 0 spacing.$space-inline-desktop;
 
     input,
     select,
     textarea,
     button {
-      column-gap: variables.$desktop-control-small-layout-gutter;
+      column-gap: spacing.$space-inline-desktop;
 
       @include helpers.fontSize(variables.$desktop-control-small-font-size);
     }
@@ -363,24 +364,24 @@
 
   @include helpers.mobile {
     border-radius: variables.$mobile-control-normal-border-radius;
-    padding: variables.$mobile-control-normal-layout-gutter;
-    column-gap: variables.$mobile-control-normal-layout-gutter;
+    padding: spacing.$space-compact-mobile;
+    column-gap: spacing.$space-compact-mobile;
 
     @include helpers.fontSize(variables.$mobile-control-small-font-size);
   }
 
   @include helpers.tablet {
     border-radius: variables.$tablet-control-normal-border-radius;
-    padding: variables.$tablet-control-normal-layout-gutter;
-    column-gap: variables.$tablet-control-normal-layout-gutter;
+    padding: spacing.$space-compact-tablet;
+    column-gap: spacing.$space-compact-tablet;
 
     @include helpers.fontSize(variables.$tablet-control-small-font-size);
   }
 
   @include helpers.desktop {
     border-radius: variables.$desktop-control-normal-border-radius;
-    padding: variables.$desktop-control-normal-layout-gutter;
-    column-gap: variables.$desktop-control-normal-layout-gutter;
+    padding: spacing.$space-compact-desktop;
+    column-gap: spacing.$space-compact-desktop;
 
     @include helpers.fontSize(variables.$desktop-control-small-font-size);
   }

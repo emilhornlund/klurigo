@@ -1,23 +1,24 @@
 @use './colors.semantic' as colors;
 @use './helpers';
 @use './variables';
+@use './spacing.semantic' as spacing;
 
 .form {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-medium-layout-gutter;
+    row-gap: spacing.$space-stack-mobile;
     width: 100%;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-medium-layout-gutter;
+    row-gap: spacing.$space-stack-tablet;
     width: variables.$mobile-width;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-medium-layout-gutter;
+    row-gap: spacing.$space-stack-desktop;
     width: variables.$mobile-width;
   }
 
@@ -26,15 +27,15 @@
     flex-direction: column;
 
     @include helpers.mobile {
-      row-gap: variables.$mobile-form-layout-gutter;
+      row-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      row-gap: variables.$tablet-form-layout-gutter;
+      row-gap: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      row-gap: variables.$desktop-form-layout-gutter;
+      row-gap: spacing.$space-compact-desktop;
     }
 
     .hint {

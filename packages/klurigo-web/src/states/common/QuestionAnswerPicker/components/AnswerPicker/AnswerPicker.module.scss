@@ -2,6 +2,7 @@
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/variables';
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .answerPicker {
   display: flex;
@@ -17,15 +18,15 @@
     grid-auto-rows: 1fr;
 
     @include helpers.mobile {
-      gap: variables.$mobile-medium-layout-gutter;
+      gap: spacing.$space-stack-mobile;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-medium-layout-gutter;
+      gap: spacing.$space-stack-tablet;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-medium-layout-gutter;
+      gap: spacing.$space-stack-desktop;
     }
 
     .answerButton {
@@ -49,24 +50,24 @@
       transform: translateZ(0); // GPU acceleration
 
       @include helpers.mobile {
-        gap: variables.$mobile-medium-layout-gutter;
-        padding: variables.$mobile-component-layout-gutter;
+        gap: spacing.$space-stack-mobile;
+        padding: spacing.$space-stack-mobile;
         border-radius: helpers.pxToRem(8px);
 
         @include helpers.fontSize(12px);
       }
 
       @include helpers.tablet {
-        gap: variables.$tablet-medium-layout-gutter;
-        padding: variables.$tablet-component-layout-gutter;
+        gap: spacing.$space-stack-tablet;
+        padding: spacing.$space-stack-tablet;
         border-radius: helpers.pxToRem(12px);
 
         @include helpers.fontSize(18px);
       }
 
       @include helpers.desktop {
-        gap: variables.$desktop-medium-layout-gutter;
-        padding: variables.$desktop-component-layout-gutter;
+        gap: spacing.$space-stack-desktop;
+        padding: spacing.$space-stack-desktop;
         border-radius: helpers.pxToRem(16px);
 
         @include helpers.fontSize(24px);

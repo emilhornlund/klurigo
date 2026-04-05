@@ -3,6 +3,7 @@
 @use '../../styles/colors.dropzone' as dropzone;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .dropzone {
   display: flex;
@@ -26,21 +27,21 @@
     cursor: pointer;
 
     @include helpers.mobile {
-      padding: calc(#{variables.$mobile-control-normal-layout-gutter} * 2) #{variables.$mobile-control-normal-layout-gutter};
+      padding: spacing.$space-page-mobile spacing.$space-compact-mobile;
       border-width: variables.$control-outside-border-width;
       border-radius: variables.$mobile-control-normal-border-radius;
       min-height: 120px;
     }
 
     @include helpers.tablet {
-      padding: calc(#{variables.$tablet-control-normal-layout-gutter} * 2) #{variables.$tablet-control-normal-layout-gutter};
+      padding: spacing.$space-page-tablet spacing.$space-compact-tablet;
       border-width: variables.$control-outside-border-width;
       border-radius: variables.$tablet-control-normal-border-radius;
       min-height: 140px;
     }
 
     @include helpers.desktop {
-      padding: calc(#{variables.$desktop-control-normal-layout-gutter} * 2) #{variables.$desktop-control-normal-layout-gutter};
+      padding: spacing.$space-page-desktop spacing.$space-compact-desktop;
       border-width: variables.$control-outside-border-width;
       border-radius: variables.$desktop-control-normal-border-radius;
       min-height: 160px;

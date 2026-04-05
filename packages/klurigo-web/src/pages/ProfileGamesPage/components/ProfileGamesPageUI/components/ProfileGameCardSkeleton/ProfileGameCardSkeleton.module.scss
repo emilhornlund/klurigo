@@ -2,6 +2,7 @@
 @use '../../../../../../styles/colors.loading.semantic' as loadingColors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 .skeleton {
   display: flex;
@@ -39,18 +40,18 @@
   flex-direction: column;
 
   @include helpers.mobile {
-    gap: 0.3rem;
-    padding: variables.$mobile-layout-gutter;
+    gap: spacing.$space-content-gap-mobile;
+    padding: spacing.$space-page-mobile;
   }
 
   @include helpers.tablet {
-    gap: 0.4rem;
-    padding: variables.$tablet-layout-gutter;
+    gap: spacing.$space-content-gap-tablet;
+    padding: spacing.$space-page-tablet;
   }
 
   @include helpers.desktop {
-    gap: 0.5rem;
-    padding: variables.$desktop-layout-gutter;
+    gap: spacing.$space-content-gap-desktop;
+    padding: spacing.$space-page-desktop;
   }
 }
 

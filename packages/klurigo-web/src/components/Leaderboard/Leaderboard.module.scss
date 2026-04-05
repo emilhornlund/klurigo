@@ -2,6 +2,7 @@
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .leaderboard {
   display: flex;
@@ -10,13 +11,13 @@
   box-sizing: border-box;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-medium-layout-gutter;
+    row-gap: spacing.$space-stack-mobile;
   }
   @include helpers.tablet {
-    row-gap: variables.$tablet-medium-layout-gutter;
+    row-gap: spacing.$space-stack-tablet;
   }
   @include helpers.desktop {
-    row-gap: variables.$desktop-medium-layout-gutter;
+    row-gap: spacing.$space-stack-desktop;
   }
 
   .row {
@@ -40,18 +41,18 @@
 
     @include helpers.mobile {
       border-radius: variables.$mobile-medium-layout-gutter;
-      column-gap: variables.$mobile-medium-layout-gutter;
-      padding: variables.$mobile-medium-layout-gutter;
+      column-gap: spacing.$space-stack-mobile;
+      padding: spacing.$space-stack-mobile;
     }
     @include helpers.tablet {
       border-radius: variables.$tablet-medium-layout-gutter;
-      column-gap: variables.$tablet-medium-layout-gutter;
-      padding: variables.$tablet-medium-layout-gutter;
+      column-gap: spacing.$space-stack-tablet;
+      padding: spacing.$space-stack-tablet;
     }
     @include helpers.desktop {
       border-radius: variables.$desktop-medium-layout-gutter;
-      column-gap: variables.$desktop-medium-layout-gutter;
-      padding: variables.$desktop-medium-layout-gutter;
+      column-gap: spacing.$space-stack-desktop;
+      padding: spacing.$space-stack-desktop;
     }
 
     &.gold {
@@ -96,21 +97,21 @@
           @include helpers.mobile {
             width: helpers.pxToRem(30px);
             height: helpers.pxToRem(30px);
-            padding: 0.2rem;
+            padding: spacing.$space-inline-mobile;
             @include helpers.fontSize(16px);
           }
 
           @include helpers.tablet {
             width: helpers.pxToRem(40px);
             height: helpers.pxToRem(40px);
-            padding: 0.2rem;
+            padding: spacing.$space-inline-tablet;
             @include helpers.fontSize(22px);
           }
 
           @include helpers.desktop {
             width: helpers.pxToRem(50px);
             height: helpers.pxToRem(50px);
-            padding: 0.2rem;
+            padding: spacing.$space-inline-desktop;
             @include helpers.fontSize(28px);
           }
         }
@@ -132,7 +133,7 @@
       }
 
       &.rankChange {
-        column-gap: 0.2rem;
+        column-gap: spacing.$space-inline-mobile;
         font-weight: bold;
         animation: rankChange 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         animation-delay: calc(var(--row-index) * 0.2s + 0.6s);
@@ -198,17 +199,17 @@
         font-weight: bold;
 
         @include helpers.mobile {
-          padding: 0 variables.$mobile-medium-layout-gutter;
+          padding: 0 spacing.$space-stack-mobile;
           border-radius: helpers.pxToRem(8px);
         }
 
         @include helpers.tablet {
-          padding: 0 variables.$tablet-medium-layout-gutter;
+          padding: 0 spacing.$space-stack-tablet;
           border-radius: helpers.pxToRem(10px);
         }
 
         @include helpers.desktop {
-          padding: 0 variables.$desktop-medium-layout-gutter;
+          padding: 0 spacing.$space-stack-desktop;
           border-radius: helpers.pxToRem(12px);
         }
       }

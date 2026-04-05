@@ -4,6 +4,7 @@
 @use '../../../../../styles/mixins/_shadow' as shadow;
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/variables';
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .answerRange {
   display: flex;
@@ -19,15 +20,15 @@
     flex: 1;
 
     @include helpers.mobile {
-      row-gap: variables.$mobile-layout-gutter;
+      row-gap: spacing.$space-page-mobile;
     }
 
     @include helpers.tablet {
-      row-gap: variables.$tablet-layout-gutter;
+      row-gap: spacing.$space-page-tablet;
     }
 
     @include helpers.desktop {
-      row-gap: variables.$desktop-layout-gutter;
+      row-gap: spacing.$space-page-desktop;
     }
 
     input[type='range'] {

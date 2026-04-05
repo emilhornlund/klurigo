@@ -1,6 +1,7 @@
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .grid {
   display: grid;
@@ -8,17 +9,17 @@
 
   @include helpers.mobile {
     grid-template-columns: repeat(2, 1fr);
-    gap: variables.$mobile-narrow-layout-gutter;
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     grid-template-columns: repeat(3, 1fr);
-    gap: variables.$tablet-narrow-layout-gutter;
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     grid-template-columns: repeat(4, 1fr);
-    gap: variables.$desktop-narrow-layout-gutter;
+    gap: spacing.$space-compact-desktop;
   }
 
   :global([data-testid='profile-quiz-card']) {
@@ -29,7 +30,7 @@
 .loadMoreContainer {
   display: flex;
   justify-content: center;
-  padding: 1rem 0;
+  padding: spacing.$space-page-mobile 0;
 }
 
 .emptyState {
@@ -38,17 +39,17 @@
   color: colors.$color-text-inverse-subtle;
 
   @include helpers.mobile {
-    padding: 1rem 0;
+    padding: spacing.$space-page-mobile 0;
     @include helpers.fontSize(16px);
   }
 
   @include helpers.tablet {
-    padding: 1.5rem 0;
+    padding: spacing.$space-page-desktop 0;
     @include helpers.fontSize(20px);
   }
 
   @include helpers.desktop {
-    padding: 2rem 0;
+    padding: spacing.$space-section-lg-desktop 0;
     @include helpers.fontSize(24px);
   }
 }

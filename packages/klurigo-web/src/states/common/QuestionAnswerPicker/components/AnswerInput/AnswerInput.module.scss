@@ -1,5 +1,6 @@
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/variables';
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .answerInput {
   display: flex;
@@ -18,15 +19,15 @@
       justify-content: center;
 
       @include helpers.mobile {
-        gap: variables.$mobile-narrow-layout-gutter;
+        gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        gap: variables.$tablet-narrow-layout-gutter;
+        gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        gap: variables.$desktop-narrow-layout-gutter;
+        gap: spacing.$space-compact-desktop;
       }
     }
   }

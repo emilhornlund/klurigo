@@ -1,6 +1,7 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .iconTooltipButton {
   -moz-appearance: none;
@@ -42,24 +43,24 @@
   @include helpers.mobile {
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);
 
-    row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
-    padding: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5) variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-inline-mobile;
+    padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
     border-radius: variables.$mobile-control-small-border-radius;
   }
 
   @include helpers.tablet {
     @include helpers.fontSize(variables.$tablet-control-normal-font-size);
 
-    row-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
-    padding: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5) variables.$tablet-narrow-layout-gutter;
+    row-gap: spacing.$space-inline-tablet;
+    padding: spacing.$space-inline-tablet spacing.$space-compact-tablet;
     border-radius: variables.$tablet-control-small-border-radius;
   }
 
   @include helpers.desktop {
     @include helpers.fontSize(variables.$desktop-control-normal-font-size);
 
-    row-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
-    padding: variables.$desktop-narrow-layout-gutter * 0.5 variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-inline-desktop;
+    padding: spacing.$space-inline-desktop spacing.$space-compact-desktop;
     border-radius: variables.$desktop-control-small-border-radius;
   }
 
