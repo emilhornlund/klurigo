@@ -2,11 +2,6 @@ $mobile-width: 480px;
 $tablet-width: 768px;
 $desktop-width: 1024px;
 
-/* Legacy layout gutters — do not use for new code. */
-$mobile-layout-gutter: 1rem;
-$tablet-layout-gutter: 1.25rem;
-$desktop-layout-gutter: 1.5rem;
-
 /* Legacy narrow layout gutters — do not use for new code. */
 $mobile-narrow-layout-gutter: 0.6rem;
 $tablet-narrow-layout-gutter: 0.8rem;
@@ -17,18 +12,6 @@ $desktop-narrow-layout-gutter: 1rem;
 $mobile-medium-layout-gutter: 0.8rem; // +33% from narrow
 $tablet-medium-layout-gutter: 1rem; // +25% from narrow
 $desktop-medium-layout-gutter: 1.25rem; // +25% from narrow
-
-/* Legacy form layout gutters — do not use for new code. */
-/* Enhanced form spacing (increase from 0.5× to 0.75× narrow) */
-$mobile-form-layout-gutter: 0.45rem; // +50% from current 0.3rem
-$tablet-form-layout-gutter: 0.6rem; // +50% from current 0.4rem
-$desktop-form-layout-gutter: 0.75rem; // +50% from current 0.5rem
-
-/* Legacy component layout gutters — do not use for new code. */
-/* Enhanced component spacing for better visual hierarchy */
-$mobile-component-layout-gutter: 0.75rem; // +25% from narrow
-$tablet-component-layout-gutter: 1rem; // +25% from narrow
-$desktop-component-layout-gutter: 1.25rem; // +25% from narrow
 
 $mobile-border-radius: 0.6rem;
 $tablet-border-radius: 0.8rem;
@@ -71,12 +54,6 @@ $tablet-control-normal-layout-gutter: calc($tablet-control-normal-height * 0.2);
 $desktop-control-normal-layout-gutter: calc(
   $desktop-control-normal-height * 0.2
 );
-
-/* Legacy control layout gutters — do not use for new code. */
-/* Layout gutters for small sized control components */
-$mobile-control-small-layout-gutter: calc($mobile-control-small-height * 0.2);
-$tablet-control-small-layout-gutter: calc($tablet-control-small-height * 0.2);
-$desktop-control-small-layout-gutter: calc($desktop-control-small-height * 0.2);
 
 /* Outside border widths for control components */
 $control-outside-border-width: 0.125rem; //2px

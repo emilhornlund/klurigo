@@ -36,7 +36,7 @@
 
     @include helpers.mobile {
       height: 98px;
-      margin: helpers.pxToRem(4px) 0;
+      margin: spacing.$space-content-gap-mobile 0;
       outline-width: helpers.pxToRem(2px);
       outline-offset: helpers.pxToRem(2px);
       border-width: helpers.pxToRem(2px);
@@ -45,7 +45,7 @@
 
     @include helpers.tablet {
       height: 118px;
-      margin: helpers.pxToRem(6px) 0;
+      margin: spacing.$space-content-gap-tablet 0;
       outline-width: helpers.pxToRem(3px);
       outline-offset: helpers.pxToRem(3px);
       border-width: helpers.pxToRem(3px);
@@ -54,7 +54,7 @@
 
     @include helpers.desktop {
       height: 138px;
-      margin: helpers.pxToRem(8px) 0;
+      margin: spacing.$space-content-gap-desktop 0;
       outline-width: helpers.pxToRem(4px);
       outline-offset: helpers.pxToRem(4px);
       border-width: helpers.pxToRem(4px);
