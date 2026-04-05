@@ -1,5 +1,6 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 @keyframes fadeInUp {
   from {
@@ -55,17 +56,17 @@
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
     width: 100%;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
     width: variables.$mobile-width;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
     width: variables.$mobile-width;
   }
 }

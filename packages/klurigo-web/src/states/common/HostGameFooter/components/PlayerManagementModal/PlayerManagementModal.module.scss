@@ -1,18 +1,19 @@
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/variables';
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .playerManagementModal {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-layout-gutter;
+    row-gap: spacing.$space-page-mobile;
   }
   @include helpers.tablet {
-    row-gap: variables.$tablet-layout-gutter;
+    row-gap: spacing.$space-page-tablet;
   }
   @include helpers.desktop {
-    row-gap: variables.$desktop-layout-gutter;
+    row-gap: spacing.$space-page-desktop;
   }
 
   .message {
@@ -38,18 +39,18 @@
     overflow-y: auto;
 
     @include helpers.mobile {
-      gap: variables.$mobile-narrow-layout-gutter;
-      padding: variables.$mobile-narrow-layout-gutter;
+      gap: spacing.$space-compact-mobile;
+      padding: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-narrow-layout-gutter;
-      padding: variables.$tablet-narrow-layout-gutter;
+      gap: spacing.$space-compact-tablet;
+      padding: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-narrow-layout-gutter;
-      padding: variables.$desktop-narrow-layout-gutter;
+      gap: spacing.$space-compact-desktop;
+      padding: spacing.$space-compact-desktop;
     }
   }
 }

@@ -1,5 +1,6 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .leaveModalActionButtons {
   display: flex;
@@ -12,15 +13,15 @@
   max-width: variables.$mobile-width;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-control-normal-layout-gutter;
+    column-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-control-normal-layout-gutter;
+    column-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-control-normal-layout-gutter;
+    column-gap: spacing.$space-compact-desktop;
   }
 
   div[class*='buttonInputContainer'] {

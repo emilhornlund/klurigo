@@ -1,5 +1,6 @@
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/variables';
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .answerSort {
   display: flex;
@@ -9,15 +10,15 @@
   flex: 1;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 
   .table {

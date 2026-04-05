@@ -1,5 +1,6 @@
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -8,15 +9,15 @@ $outline-offset: helpers.pxToRem(2px);
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 
   .quizSettingsRow {
@@ -24,15 +25,15 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
 
     @include helpers.mobile {
-      row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+      row-gap: spacing.$space-inline-mobile;
     }
 
     @include helpers.tablet {
-      row-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+      row-gap: spacing.$space-inline-tablet;
     }
 
     @include helpers.desktop {
-      row-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+      row-gap: spacing.$space-inline-desktop;
     }
 
     .label {
@@ -65,15 +66,15 @@ $outline-offset: helpers.pxToRem(2px);
   max-width: variables.$mobile-width;
 
   @include helpers.mobile {
-    column-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+    column-gap: spacing.$space-inline-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+    column-gap: spacing.$space-inline-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+    column-gap: spacing.$space-inline-desktop;
   }
 
   div[class*='buttonInputContainer'] {

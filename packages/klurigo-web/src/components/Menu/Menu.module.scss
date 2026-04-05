@@ -2,6 +2,7 @@
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .menu {
   display: flex;
@@ -11,8 +12,8 @@
   border: none;
   z-index: variables.$menu-z-index;
   transform: translateX(-100%);
-  row-gap: helpers.pxToRem(8px);
-  padding: helpers.pxToRem(8px) 0;
+  row-gap: spacing.$space-compact-mobile;
+  padding: spacing.$space-compact-mobile 0;
   border-radius: helpers.pxToRem(8px);
   box-shadow: shadows.$shadow-overlay;
 
@@ -33,8 +34,8 @@
       flex-wrap: nowrap;
       align-items: center;
       width: 100%;
-      column-gap: helpers.pxToRem(16px);
-      padding: helpers.pxToRem(8px) helpers.pxToRem(16px);
+      column-gap: spacing.$space-content-gap-mobile;
+      padding: spacing.$space-compact-mobile spacing.$space-content-gap-mobile;
       white-space: nowrap;
 
       @include helpers.fontSize(22px);
@@ -66,9 +67,9 @@
   .menuSeparator {
     display: flex;
     flex-direction: column;
-    width: calc(100% - (#{variables.$desktop-narrow-layout-gutter} * 2));
+    width: calc(100% - (#{spacing.$space-compact-desktop} * 2));
     appearance: none;
-    margin: 0 variables.$desktop-narrow-layout-gutter;
+    margin: 0 spacing.$space-compact-desktop;
     border: none;
     border-bottom: 1px dashed colors.$color-border-subtle;
     outline: none;

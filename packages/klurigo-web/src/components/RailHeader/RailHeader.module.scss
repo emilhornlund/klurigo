@@ -1,18 +1,19 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 
 .header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem;
+  gap: spacing.$space-page-mobile;
 
 }
 
 .headerText {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: spacing.$space-inline-tight-mobile;
   min-width: 0;
 }
 

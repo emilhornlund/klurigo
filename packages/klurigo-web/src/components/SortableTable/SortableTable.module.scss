@@ -2,6 +2,7 @@
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .sortableTable {
   display: flex;
@@ -12,15 +13,15 @@
   width: 100%;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter * 0.5;
+    row-gap: spacing.$space-inline-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter * 0.5;
+    row-gap: spacing.$space-inline-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter * 0.5;
+    row-gap: spacing.$space-inline-desktop;
   }
 
   .item {
@@ -39,24 +40,24 @@
     outline: none;
 
     @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter
-        variables.$mobile-layout-gutter;
+      padding: spacing.$space-compact-mobile
+        spacing.$space-page-mobile;
       border-radius: variables.$mobile-control-normal-border-radius;
 
       @include helpers.fontSize(14px);
     }
 
     @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter
-        variables.$tablet-layout-gutter;
+      padding: spacing.$space-compact-tablet
+        spacing.$space-page-tablet;
       border-radius: variables.$tablet-control-normal-border-radius;
 
       @include helpers.fontSize(18px);
     }
 
     @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter
-        variables.$desktop-layout-gutter;
+      padding: spacing.$space-compact-desktop
+        spacing.$space-page-desktop;
       border-radius: variables.$desktop-control-normal-border-radius;
 
       @include helpers.fontSize(24px);

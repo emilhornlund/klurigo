@@ -1,20 +1,21 @@
 @use '../../../../../../../../styles/helpers';
 @use '../../../../../../../../styles/variables';
+@use '../../../../../../../../styles/spacing.semantic' as spacing;
 
 .questionFieldContainer {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.3);
+    row-gap: spacing.$space-inline-tight-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.3);
+    row-gap: spacing.$space-inline-tight-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.3);
+    row-gap: spacing.$space-inline-tight-desktop;
   }
 
   &.layoutFull {
@@ -27,11 +28,11 @@
     }
 
     @include helpers.tablet {
-      width: calc(50% - (#{variables.$desktop-narrow-layout-gutter} * 0.5));
+      width: calc(50% - (#{spacing.$space-compact-desktop} * 0.5));
     }
 
     @include helpers.desktop {
-      width: calc(50% - (#{variables.$desktop-narrow-layout-gutter} * 0.5));
+      width: calc(50% - (#{spacing.$space-compact-desktop} * 0.5));
     }
   }
 
@@ -44,19 +45,19 @@
     @include helpers.mobile {
       @include helpers.fontSize(14px);
 
-      column-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-inline-mobile;
     }
 
     @include helpers.tablet {
       @include helpers.fontSize(16px);
 
-      column-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-inline-tablet;
     }
 
     @include helpers.desktop {
       @include helpers.fontSize(18px);
 
-      column-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+      column-gap: spacing.$space-inline-desktop;
     }
   }
 
@@ -80,15 +81,15 @@
   grid-auto-rows: min-content;
 
   @include helpers.mobile {
-    grid-gap: variables.$mobile-narrow-layout-gutter;
+    grid-gap: spacing.$space-compact-mobile;
   }
   @include helpers.tablet {
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: variables.$tablet-narrow-layout-gutter;
+    grid-gap: spacing.$space-compact-tablet;
   }
   @include helpers.desktop {
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: variables.$desktop-narrow-layout-gutter;
+    grid-gap: spacing.$space-compact-desktop;
   }
 
   &.fullWidth {
@@ -111,13 +112,13 @@
     }
 
     @include helpers.mobile {
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-mobile;
     }
     @include helpers.tablet {
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-tablet;
     }
     @include helpers.desktop {
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      column-gap: spacing.$space-compact-desktop;
     }
 
     .content {

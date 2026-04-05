@@ -1,6 +1,7 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .mediaModal {
   display: flex;
@@ -8,15 +9,15 @@
   overflow: hidden;
 
   @include helpers.mobile {
-    gap: variables.$mobile-control-normal-layout-gutter;
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-control-normal-layout-gutter;
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-control-normal-layout-gutter;
+    gap: spacing.$space-compact-desktop;
   }
 
   .content {
@@ -26,15 +27,15 @@
     flex: 1;
 
     @include helpers.mobile {
-      gap: variables.$mobile-control-normal-layout-gutter;
+      gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-control-normal-layout-gutter;
+      gap: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-control-normal-layout-gutter;
+      gap: spacing.$space-compact-desktop;
     }
 
     .column {
@@ -45,15 +46,15 @@
 
       &.half {
         @include helpers.mobile {
-          width: calc(50% - #{variables.$mobile-control-normal-layout-gutter} * 0.5);
+          width: calc(50% - #{spacing.$space-compact-mobile} * 0.5);
         }
 
         @include helpers.tablet {
-          width: calc(50% - #{variables.$tablet-control-normal-layout-gutter} * 0.5);
+          width: calc(50% - #{spacing.$space-compact-tablet} * 0.5);
         }
 
         @include helpers.desktop {
-          width: calc(50% - #{variables.$desktop-control-normal-layout-gutter} * 0.5);
+          width: calc(50% - #{spacing.$space-compact-desktop} * 0.5);
         }
       }
 
@@ -62,15 +63,15 @@
         justify-content: space-between;
 
         @include helpers.mobile {
-          column-gap: variables.$mobile-control-normal-layout-gutter;
+          column-gap: spacing.$space-compact-mobile;
         }
 
         @include helpers.tablet {
-          column-gap: variables.$tablet-control-normal-layout-gutter;
+          column-gap: spacing.$space-compact-tablet;
         }
 
         @include helpers.desktop {
-          column-gap: variables.$desktop-control-normal-layout-gutter;
+          column-gap: spacing.$space-compact-desktop;
         }
 
         .textFieldWrapper {
@@ -84,17 +85,17 @@
 
         @include helpers.mobile {
           border-top-width: helpers.pxToRem(1px);
-          margin: variables.$mobile-control-normal-layout-gutter 0;
+          margin: spacing.$space-compact-mobile 0;
         }
 
         @include helpers.tablet {
           border-top-width: helpers.pxToRem(2px);
-          margin: variables.$tablet-control-normal-layout-gutter 0;
+          margin: spacing.$space-compact-tablet 0;
         }
 
         @include helpers.desktop {
           border-top-width: helpers.pxToRem(3px);
-          margin: variables.$desktop-control-normal-layout-gutter 0;
+          margin: spacing.$space-compact-desktop 0;
         }
       }
 
@@ -113,17 +114,17 @@
           min-height: 0;
 
           @include helpers.mobile {
-            gap: variables.$mobile-control-normal-layout-gutter;
+            gap: spacing.$space-compact-mobile;
             grid-template-columns: 1fr 1fr;
           }
 
           @include helpers.tablet {
-            gap: variables.$tablet-control-normal-layout-gutter;
+            gap: spacing.$space-compact-tablet;
             grid-template-columns: 1fr 1fr 1fr;
           }
 
           @include helpers.desktop {
-            gap: variables.$desktop-control-normal-layout-gutter;
+            gap: spacing.$space-compact-desktop;
             grid-template-columns: 1fr 1fr 1fr;
           }
 
@@ -165,15 +166,15 @@
     max-width: variables.$mobile-width;
 
     @include helpers.mobile {
-      column-gap: variables.$mobile-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      column-gap: variables.$tablet-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      column-gap: variables.$desktop-control-normal-layout-gutter;
+      column-gap: spacing.$space-compact-desktop;
     }
 
     div[class*="buttonInputContainer"] {

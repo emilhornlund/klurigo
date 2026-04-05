@@ -1,6 +1,7 @@
 @use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers';
 @use '../../../styles/variables';
+@use '../../../styles/spacing.semantic' as spacing;
 
 .nonInteractiveInfoBox {
   display: flex;
@@ -11,20 +12,20 @@
   flex: 0 0 auto;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-layout-gutter;
-    padding: variables.$mobile-layout-gutter;
+    column-gap: spacing.$space-page-mobile;
+    padding: spacing.$space-page-mobile;
     border-radius: helpers.pxToRem(8px);
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-layout-gutter;
-    padding: variables.$tablet-layout-gutter;
+    column-gap: spacing.$space-page-tablet;
+    padding: spacing.$space-page-tablet;
     border-radius: helpers.pxToRem(12px);
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-layout-gutter;
-    padding: variables.$desktop-layout-gutter;
+    column-gap: spacing.$space-page-desktop;
+    padding: spacing.$space-page-desktop;
     border-radius: helpers.pxToRem(16px);
   }
 

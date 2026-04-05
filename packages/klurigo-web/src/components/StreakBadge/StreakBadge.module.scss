@@ -1,5 +1,6 @@
 @use '../../styles/helpers';
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .streakBadge {
   display: flex;
@@ -8,17 +9,17 @@
   align-items: center;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-mobile;
     @include helpers.fontSize(variables.$mobile-text-font-size);
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-tablet;
     @include helpers.fontSize(variables.$tablet-text-font-size);
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-desktop;
     @include helpers.fontSize(variables.$desktop-text-font-size);
   }
 }

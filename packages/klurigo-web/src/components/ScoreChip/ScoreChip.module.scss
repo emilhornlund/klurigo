@@ -1,5 +1,6 @@
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 
 .score {
@@ -12,8 +13,8 @@
   flex-wrap: nowrap;
   font-weight: bold;
 
-  @mixin score-dimensions($size, $layout-gutter) {
-    padding: calc(#{$layout-gutter} * 0.5) calc(#{$layout-gutter} * 2);
+  @mixin score-dimensions($size, $padding-y, $padding-x) {
+    padding: $padding-y $padding-x;
     border-radius: calc($size / 2);
     line-height: $size * 0.7;
 
@@ -21,14 +22,26 @@
   }
 
   @include helpers.mobile {
-    @include score-dimensions(42px, variables.$mobile-narrow-layout-gutter);
+    @include score-dimensions(
+      42px,
+      spacing.$space-inline-mobile,
+      calc(#{spacing.$space-compact-mobile} * 2)
+    );
   }
 
   @include helpers.tablet {
-    @include score-dimensions(52px, variables.$tablet-narrow-layout-gutter);
+    @include score-dimensions(
+      52px,
+      spacing.$space-inline-tablet,
+      calc(#{spacing.$space-compact-tablet} * 2)
+    );
   }
 
   @include helpers.desktop {
-    @include score-dimensions(62px, variables.$desktop-narrow-layout-gutter);
+    @include score-dimensions(
+      62px,
+      spacing.$space-inline-desktop,
+      calc(#{spacing.$space-compact-desktop} * 2)
+    );
   }
 }

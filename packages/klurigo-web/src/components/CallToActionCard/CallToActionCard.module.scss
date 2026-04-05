@@ -2,6 +2,7 @@
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 .callToActionCard {
   display: flex;
@@ -15,15 +16,15 @@
 
   @include helpers.mobile {
     width: 100%;
-    row-gap: variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
   @include helpers.tablet {
-    width: calc(#{variables.$mobile-width} + (#{variables.$tablet-narrow-layout-gutter} * 2));
-    row-gap: variables.$tablet-narrow-layout-gutter;
+    width: calc(#{variables.$mobile-width} + (#{spacing.$space-compact-tablet} * 2));
+    row-gap: spacing.$space-compact-tablet;
   }
   @include helpers.desktop {
-    width: calc(#{variables.$mobile-width} + (#{variables.$desktop-narrow-layout-gutter} * 2));
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    width: calc(#{variables.$mobile-width} + (#{spacing.$space-compact-desktop} * 2));
+    row-gap: spacing.$space-compact-desktop;
   }
 
   .button {
@@ -43,18 +44,18 @@
     outline: none;
 
     @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter variables.$mobile-layout-gutter;
-      column-gap: variables.$mobile-narrow-layout-gutter;
+      padding: spacing.$space-compact-mobile spacing.$space-page-mobile;
+      column-gap: spacing.$space-compact-mobile;
       border-radius: variables.$mobile-border-radius;
     }
     @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter variables.$tablet-layout-gutter;
-      column-gap: variables.$tablet-narrow-layout-gutter;
+      padding: spacing.$space-compact-tablet spacing.$space-page-tablet;
+      column-gap: spacing.$space-compact-tablet;
       border-radius: variables.$tablet-border-radius;
     }
     @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter variables.$desktop-layout-gutter;
-      column-gap: variables.$desktop-narrow-layout-gutter;
+      padding: spacing.$space-compact-desktop spacing.$space-page-desktop;
+      column-gap: spacing.$space-compact-desktop;
       border-radius: variables.$desktop-border-radius;
     }
 
@@ -66,15 +67,15 @@
       flex: 1;
 
       @include helpers.mobile {
-        row-gap: variables.$mobile-narrow-layout-gutter * 0.5;
+        row-gap: spacing.$space-inline-mobile;
       }
 
       @include helpers.tablet {
-        row-gap: variables.$tablet-narrow-layout-gutter * 0.5;
+        row-gap: spacing.$space-inline-tablet;
       }
 
       @include helpers.desktop {
-        row-gap: variables.$desktop-narrow-layout-gutter * 0.5;
+        row-gap: spacing.$space-inline-desktop;
       }
 
       .title {
@@ -101,13 +102,13 @@
 
         .spacing {
           @include helpers.mobile {
-            width: 1.5rem + variables.$mobile-narrow-layout-gutter;
+            width: 1.5rem + spacing.$space-compact-mobile;
           }
           @include helpers.tablet {
-            width: 2rem + variables.$tablet-narrow-layout-gutter;
+            width: 2rem + spacing.$space-compact-tablet;
           }
           @include helpers.desktop {
-            width: 2.5rem + variables.$desktop-narrow-layout-gutter;
+            width: 2.5rem + spacing.$space-compact-desktop;
           }
         }
       }

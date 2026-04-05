@@ -2,6 +2,7 @@
 @use '../../styles/helpers';
 @use '../../styles/mixins/_shadow' as shadow;
 @use '../../styles/variables';
+@use '../../styles/spacing.semantic' as spacing;
 
 $mobile-switch-height: helpers.pxToRem(30px);
 $mobile-switch-padding: helpers.pxToRem(2px);
@@ -30,13 +31,13 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
   user-select: none;
 
   @include helpers.mobile {
-    gap: variables.$mobile-control-normal-layout-gutter;
+    gap: spacing.$space-compact-mobile;
   }
   @include helpers.tablet {
-    gap: variables.$tablet-control-normal-layout-gutter;
+    gap: spacing.$space-compact-tablet;
   }
   @include helpers.desktop {
-    gap: variables.$desktop-control-normal-layout-gutter;
+    gap: spacing.$space-compact-desktop;
   }
 
   .labelText {

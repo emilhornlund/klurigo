@@ -1,5 +1,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 
 .railWrapper {
   position: relative;
@@ -59,13 +60,22 @@
 
 .rail {
   display: flex;
-  gap: 0.75rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-padding-left: 0;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   padding-top: helpers.pxToRem(2px);
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
 }
 
 .hideScrollbar {

@@ -2,6 +2,7 @@
 @use '../../../../styles/helpers';
 @use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .ratingCard {
   @include surface.surface-box;
@@ -12,22 +13,22 @@
   width: 100%;
 
   @include helpers.mobile {
-    gap: variables.$mobile-layout-gutter;
-    padding: variables.$mobile-narrow-layout-gutter;
+    gap: spacing.$space-page-mobile;
+    padding: spacing.$space-compact-mobile;
     border-radius: variables.$mobile-border-radius;
     max-width: 100%;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-layout-gutter;
-    padding: variables.$tablet-narrow-layout-gutter;
+    gap: spacing.$space-page-tablet;
+    padding: spacing.$space-compact-tablet;
     border-radius: variables.$tablet-border-radius;
     max-width: 350px;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-layout-gutter;
-    padding: variables.$desktop-narrow-layout-gutter;
+    gap: spacing.$space-page-desktop;
+    padding: spacing.$space-compact-desktop;
     border-radius: variables.$desktop-border-radius;
     max-width: 400px;
   }

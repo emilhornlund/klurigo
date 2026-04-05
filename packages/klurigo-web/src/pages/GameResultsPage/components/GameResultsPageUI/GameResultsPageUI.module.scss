@@ -1,5 +1,6 @@
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .gameResultsPage {
   display: flex;
@@ -7,17 +8,17 @@
   flex: 1;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-layout-gutter;
+    row-gap: spacing.$space-page-mobile;
     width: 100%;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-layout-gutter;
+    row-gap: spacing.$space-page-tablet;
     width: 100%;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-layout-gutter;
+    row-gap: spacing.$space-page-desktop;
     width: calc(#{variables.$desktop-width} * 0.8);
   }
 
@@ -28,17 +29,17 @@
 
     @include helpers.mobile {
       max-width: variables.$mobile-width;
-      row-gap: variables.$mobile-layout-gutter;
+      row-gap: spacing.$space-page-mobile;
     }
 
     @include helpers.tablet {
       max-width: variables.$tablet-width;
-      row-gap: variables.$tablet-layout-gutter;
+      row-gap: spacing.$space-page-tablet;
     }
 
     @include helpers.desktop {
       max-width: variables.$desktop-width;
-      row-gap: variables.$desktop-layout-gutter;
+      row-gap: spacing.$space-page-desktop;
     }
   }
 }

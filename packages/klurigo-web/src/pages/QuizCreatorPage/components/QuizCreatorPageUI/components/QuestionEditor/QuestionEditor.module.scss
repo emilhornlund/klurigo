@@ -1,20 +1,21 @@
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 .questionEditorContainer, .section {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 
   .section {
@@ -23,15 +24,15 @@
     flex-wrap: wrap;
 
     @include helpers.mobile {
-      gap: variables.$mobile-narrow-layout-gutter;
+      gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-narrow-layout-gutter;
+      gap: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-narrow-layout-gutter;
+      gap: spacing.$space-compact-desktop;
     }
   }
 }

@@ -1,6 +1,7 @@
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/variables';
+@use '../../../../styles/spacing.semantic' as spacing;
 
 .quizCreatorPageHeader {
   display: flex;
@@ -9,15 +10,15 @@
   flex: 1;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-narrow-layout-gutter
+    column-gap: spacing.$space-compact-mobile
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-narrow-layout-gutter
+    column-gap: spacing.$space-compact-tablet
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-desktop;
   }
 }
 
@@ -29,32 +30,32 @@
   height: 100%;
 
   @include helpers.mobile {
-    row-gap: variables.$mobile-narrow-layout-gutter
+    row-gap: spacing.$space-compact-mobile
   }
 
   @include helpers.tablet {
-    row-gap: variables.$tablet-narrow-layout-gutter
+    row-gap: spacing.$space-compact-tablet
   }
 
   @include helpers.desktop {
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
   }
 
   .editorToggleSection {
     display: flex;
     flex-direction: column;
-    row-gap: variables.$desktop-narrow-layout-gutter;
+    row-gap: spacing.$space-compact-desktop;
 
     @include helpers.mobile {
-      padding-bottom: variables.$mobile-narrow-layout-gutter;
+      padding-bottom: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      padding-bottom: variables.$tablet-narrow-layout-gutter;
+      padding-bottom: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
-      padding-bottom: variables.$desktop-narrow-layout-gutter;
+      padding-bottom: spacing.$space-compact-desktop;
     }
 
     .divider {

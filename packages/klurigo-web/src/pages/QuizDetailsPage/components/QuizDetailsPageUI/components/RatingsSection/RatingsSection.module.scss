@@ -1,6 +1,7 @@
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 .section {
   display: flex;
@@ -8,15 +9,15 @@
   width: 100%;
 
   @include helpers.mobile {
-    gap: variables.$mobile-narrow-layout-gutter;
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-narrow-layout-gutter;
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-narrow-layout-gutter;
+    gap: spacing.$space-compact-desktop;
   }
 
   .title {
@@ -45,15 +46,15 @@
     align-self: center;
 
     @include helpers.mobile {
-      gap: variables.$mobile-layout-gutter * 1.5;
+      gap: spacing.$space-page-mobile * 1.5;
     }
 
     @include helpers.tablet {
-      gap: variables.$tablet-layout-gutter * 1.5;
+      gap: spacing.$space-page-tablet * 1.5;
     }
 
     @include helpers.desktop {
-      gap: variables.$desktop-layout-gutter * 1.5;
+      gap: spacing.$space-page-desktop * 1.5;
     }
 
     .score {
@@ -106,15 +107,15 @@
       align-items: center;
 
       @include helpers.mobile {
-        gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+        gap: spacing.$space-inline-mobile;
       }
 
       @include helpers.tablet {
-        gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+        gap: spacing.$space-inline-tablet;
       }
 
       @include helpers.desktop {
-        gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+        gap: spacing.$space-inline-desktop;
       }
 
       .count {
@@ -140,15 +141,15 @@
 
 .railMargin {
   @include helpers.mobile {
-    margin-top: variables.$mobile-layout-gutter;
+    margin-top: spacing.$space-page-mobile;
   }
 
   @include helpers.tablet {
-    margin-top: variables.$tablet-layout-gutter;
+    margin-top: spacing.$space-page-tablet;
   }
 
   @include helpers.desktop {
-    margin-top: variables.$desktop-layout-gutter;
+    margin-top: spacing.$space-page-desktop;
   }
 }
 
@@ -162,23 +163,23 @@
 
   @include helpers.mobile {
     width: 80%;
-    gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-mobile;
     border-radius: variables.$mobile-border-radius;
-    padding: variables.$mobile-narrow-layout-gutter;
+    padding: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     width: 60%;
-    gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-tablet;
     border-radius: variables.$tablet-border-radius;
-    padding: variables.$tablet-narrow-layout-gutter;
+    padding: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     width: 40%;
-    gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-desktop;
     border-radius: variables.$desktop-border-radius;
-    padding: variables.$desktop-narrow-layout-gutter;
+    padding: spacing.$space-compact-desktop;
   }
 
   .cardHeader {
@@ -251,19 +252,19 @@
   text-align: center;
 
   @include helpers.mobile {
-    margin-top: variables.$mobile-layout-gutter;
+    margin-top: spacing.$space-page-mobile;
 
     @include helpers.fontSize(18px);
   }
 
   @include helpers.tablet {
-    margin-top: variables.$tablet-layout-gutter;
+    margin-top: spacing.$space-page-tablet;
 
     @include helpers.fontSize(20px);
   }
 
   @include helpers.desktop {
-    margin-top: variables.$desktop-layout-gutter;
+    margin-top: spacing.$space-page-desktop;
 
     @include helpers.fontSize(22px);
   }
@@ -279,23 +280,23 @@
 
   @include helpers.mobile {
     width: 80%;
-    gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-mobile;
     border-radius: variables.$mobile-border-radius;
-    padding: variables.$mobile-narrow-layout-gutter;
+    padding: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     width: 60%;
-    gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-tablet;
     border-radius: variables.$tablet-border-radius;
-    padding: variables.$tablet-narrow-layout-gutter;
+    padding: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     width: 40%;
-    gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+    gap: spacing.$space-inline-desktop;
     border-radius: variables.$desktop-border-radius;
-    padding: variables.$desktop-narrow-layout-gutter;
+    padding: spacing.$space-compact-desktop;
   }
 }
 

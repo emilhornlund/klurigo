@@ -2,6 +2,7 @@
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -10,15 +11,15 @@ $outline-offset: helpers.pxToRem(2px);
   flex-direction: row;
 
   @include helpers.mobile {
-    column-gap: variables.$mobile-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: variables.$tablet-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: variables.$desktop-narrow-layout-gutter;
+    column-gap: spacing.$space-compact-desktop;
   }
 
   .classic, .zeroToOneHundred {
@@ -36,8 +37,8 @@ $outline-offset: helpers.pxToRem(2px);
     cursor: pointer;
 
     @include helpers.mobile {
-      row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
-      padding: helpers.pxToRem(10px) helpers.pxToRem(2px);
+      row-gap: spacing.$space-inline-mobile;
+      padding: spacing.$space-compact-mobile;
       border-width: helpers.pxToRem(1px);
       border-radius: variables.$mobile-border-radius;
 
@@ -45,8 +46,8 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     @include helpers.tablet {
-      row-gap: variables.$tablet-narrow-layout-gutter * 0.5;
-      padding: helpers.pxToRem(13px) helpers.pxToRem(4px);
+      row-gap: spacing.$space-inline-tablet;
+      padding: spacing.$space-compact-tablet;
       border-width: helpers.pxToRem(2px);
       border-radius: variables.$tablet-border-radius;
 
@@ -54,8 +55,8 @@ $outline-offset: helpers.pxToRem(2px);
     }
 
     @include helpers.desktop {
-      row-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
-      padding: helpers.pxToRem(16px) helpers.pxToRem(6px);
+      row-gap: spacing.$space-inline-desktop;
+      padding: spacing.$space-compact-desktop;
       border-width: helpers.pxToRem(3px);
       border-radius: variables.$desktop-border-radius;
 

@@ -2,6 +2,7 @@
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../styles/variables';
+@use '../../../../../../styles/spacing.semantic' as spacing;
 
 $contrast-opacity: 0.8;
 
@@ -10,15 +11,15 @@ $contrast-opacity: 0.8;
   grid-template-columns: 1fr 1fr;
 
   @include helpers.mobile {
-    gap: variables.$mobile-layout-gutter;
+    gap: spacing.$space-page-mobile;
   }
 
   @include helpers.tablet {
-    gap: variables.$tablet-layout-gutter;
+    gap: spacing.$space-page-tablet;
   }
 
   @include helpers.desktop {
-    gap: variables.$desktop-layout-gutter;
+    gap: spacing.$space-page-desktop;
   }
 
   .podiumWrapper {
@@ -30,15 +31,15 @@ $contrast-opacity: 0.8;
     grid-column: span 2;
 
     @include helpers.mobile {
-      margin-top: variables.$mobile-layout-gutter;
+      margin-top: spacing.$space-page-mobile;
     }
 
     @include helpers.tablet {
-      margin-top: variables.$tablet-layout-gutter;
+      margin-top: spacing.$space-page-tablet;
     }
 
     @include helpers.desktop {
-      margin-top: variables.$desktop-layout-gutter;
+      margin-top: spacing.$space-page-desktop;
     }
   }
 
@@ -52,17 +53,17 @@ $contrast-opacity: 0.8;
     flex: 1;
 
     @include helpers.mobile {
-      padding: variables.$mobile-narrow-layout-gutter;
+      padding: spacing.$space-compact-mobile;
       border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
-      padding: variables.$tablet-narrow-layout-gutter;
+      padding: spacing.$space-compact-tablet;
       border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
-      padding: variables.$desktop-narrow-layout-gutter;
+      padding: spacing.$space-compact-desktop;
       border-radius: variables.$desktop-border-radius;
     }
 
@@ -79,15 +80,15 @@ $contrast-opacity: 0.8;
       flex-direction: row;
 
       @include helpers.mobile {
-        column-gap: variables.$mobile-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        column-gap: variables.$tablet-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        column-gap: variables.$desktop-narrow-layout-gutter;
+        column-gap: spacing.$space-compact-desktop;
       }
 
       .text {
@@ -135,21 +136,21 @@ $contrast-opacity: 0.8;
       }
 
       @include helpers.mobile {
-        padding: variables.$mobile-narrow-layout-gutter
-          variables.$mobile-layout-gutter;
-        column-gap: variables.$mobile-narrow-layout-gutter;
+        padding: spacing.$space-compact-mobile
+          spacing.$space-page-mobile;
+        column-gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        padding: variables.$tablet-narrow-layout-gutter
-          variables.$tablet-layout-gutter;
-        column-gap: variables.$tablet-narrow-layout-gutter;
+        padding: spacing.$space-compact-tablet
+          spacing.$space-page-tablet;
+        column-gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        padding: variables.$desktop-narrow-layout-gutter
-          variables.$desktop-layout-gutter;
-        column-gap: variables.$desktop-narrow-layout-gutter;
+        padding: spacing.$space-compact-desktop
+          spacing.$space-page-desktop;
+        column-gap: spacing.$space-compact-desktop;
       }
 
       .content {
@@ -160,15 +161,15 @@ $contrast-opacity: 0.8;
         flex: 1;
 
         @include helpers.mobile {
-          row-gap: variables.$mobile-narrow-layout-gutter * 0.5;
+          row-gap: spacing.$space-inline-mobile;
         }
 
         @include helpers.tablet {
-          row-gap: variables.$tablet-narrow-layout-gutter * 0.5;
+          row-gap: spacing.$space-inline-tablet;
         }
 
         @include helpers.desktop {
-          row-gap: variables.$desktop-narrow-layout-gutter * 0.5;
+          row-gap: spacing.$space-inline-desktop;
         }
 
         .title {
@@ -284,15 +285,15 @@ $contrast-opacity: 0.8;
 
       @include helpers.mobile {
         flex-direction: column;
-        gap: variables.$mobile-layout-gutter * 0.5;
+        gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        gap: variables.$tablet-layout-gutter;
+        gap: spacing.$space-page-tablet;
       }
 
       @include helpers.desktop {
-        gap: variables.$desktop-layout-gutter;
+        gap: spacing.$space-page-desktop;
       }
 
       .column {
@@ -302,33 +303,33 @@ $contrast-opacity: 0.8;
         width: 100%;
 
         @include helpers.mobile {
-          gap: variables.$mobile-layout-gutter * 0.5;
+          gap: spacing.$space-compact-mobile;
         }
 
         @include helpers.tablet {
-          gap: variables.$tablet-layout-gutter * 0.5;
+          gap: spacing.$space-compact-tablet;
         }
 
         @include helpers.desktop {
-          gap: variables.$desktop-layout-gutter * 0.5;
+          gap: spacing.$space-compact-desktop;
         }
 
         .item {
           display: grid;
 
           @include helpers.mobile {
-            grid-template-columns: variables.$mobile-layout-gutter 1fr 1fr;
-            gap: variables.$mobile-layout-gutter;
+            grid-template-columns: spacing.$space-page-mobile 1fr 1fr;
+            gap: spacing.$space-page-mobile;
           }
 
           @include helpers.tablet {
-            grid-template-columns: variables.$tablet-layout-gutter 1fr 1fr;
-            gap: variables.$tablet-layout-gutter * 0.5;
+            grid-template-columns: spacing.$space-page-tablet 1fr 1fr;
+            gap: spacing.$space-compact-tablet;
           }
 
           @include helpers.desktop {
-            grid-template-columns: variables.$desktop-layout-gutter 1fr 1fr;
-            gap: variables.$desktop-layout-gutter * 0.5;
+            grid-template-columns: spacing.$space-page-desktop 1fr 1fr;
+            gap: spacing.$space-compact-desktop;
           }
 
           .icon {
@@ -359,17 +360,17 @@ $contrast-opacity: 0.8;
             opacity: $contrast-opacity;
 
             @include helpers.mobile {
-              column-gap: variables.$mobile-narrow-layout-gutter;
+              column-gap: spacing.$space-compact-mobile;
               @include helpers.fontSize(16px);
             }
 
             @include helpers.tablet {
-              column-gap: variables.$tablet-narrow-layout-gutter;
+              column-gap: spacing.$space-compact-tablet;
               @include helpers.fontSize(18px);
             }
 
             @include helpers.desktop {
-              column-gap: variables.$desktop-narrow-layout-gutter;
+              column-gap: spacing.$space-compact-desktop;
               @include helpers.fontSize(20px);
             }
           }
@@ -425,15 +426,15 @@ $contrast-opacity: 0.8;
 
     &.metric {
       @include helpers.mobile {
-        row-gap: calc(#{variables.$mobile-narrow-layout-gutter} * 0.5);
+        row-gap: spacing.$space-inline-mobile;
       }
 
       @include helpers.tablet {
-        row-gap: calc(#{variables.$tablet-narrow-layout-gutter} * 0.5);
+        row-gap: spacing.$space-inline-tablet;
       }
 
       @include helpers.desktop {
-        row-gap: calc(#{variables.$desktop-narrow-layout-gutter} * 0.5);
+        row-gap: spacing.$space-inline-desktop;
       }
 
       .value {
@@ -461,13 +462,13 @@ $contrast-opacity: 0.8;
         align-items: center;
 
         @include helpers.mobile {
-          gap: variables.$mobile-narrow-layout-gutter;
+          gap: spacing.$space-compact-mobile;
         }
         @include helpers.tablet {
-          gap: variables.$tablet-narrow-layout-gutter;
+          gap: spacing.$space-compact-tablet;
         }
         @include helpers.desktop {
-          gap: variables.$desktop-narrow-layout-gutter;
+          gap: spacing.$space-compact-desktop;
         }
 
         .nickname {
@@ -542,14 +543,14 @@ $contrast-opacity: 0.8;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: variables.$mobile-layout-gutter;
+      gap: spacing.$space-page-mobile;
 
       @include helpers.tablet {
-        gap: variables.$tablet-layout-gutter;
+        gap: spacing.$space-page-tablet;
       }
 
       @include helpers.desktop {
-        gap: variables.$desktop-narrow-layout-gutter;
+        gap: spacing.$space-compact-desktop;
       }
 
       .content {
@@ -557,16 +558,16 @@ $contrast-opacity: 0.8;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: variables.$mobile-layout-gutter;
+        gap: spacing.$space-page-mobile;
         position: relative;
         width: 100%;
 
         @include helpers.tablet {
-          gap: variables.$tablet-layout-gutter;
+          gap: spacing.$space-page-tablet;
         }
 
         @include helpers.desktop {
-          gap: variables.$desktop-narrow-layout-gutter;
+          gap: spacing.$space-compact-desktop;
         }
 
         .title {

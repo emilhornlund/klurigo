@@ -1,4 +1,5 @@
 @use '../../styles/helpers';
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/variables';
 @use '../../styles/animations';
 
@@ -7,19 +8,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: spacing.$space-section-lg-desktop;
   transition: min-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   @include helpers.mobile {
-    min-height: helpers.pxToRem(variables.$mobile-badge-large-size + variables.$mobile-subtitle-font-size) + variables.$mobile-medium-layout-gutter;
+    min-height:
+      helpers.pxToRem(
+        variables.$mobile-badge-large-size + variables.$mobile-subtitle-font-size
+      ) + spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    min-height: helpers.pxToRem(variables.$tablet-badge-large-size + variables.$tablet-subtitle-font-size) + variables.$tablet-medium-layout-gutter;
+    min-height:
+      helpers.pxToRem(
+        variables.$tablet-badge-large-size + variables.$tablet-subtitle-font-size
+      ) + spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    min-height: helpers.pxToRem(variables.$desktop-badge-large-size + variables.$desktop-subtitle-font-size) + variables.$desktop-medium-layout-gutter;
+    min-height:
+      helpers.pxToRem(
+        variables.$desktop-badge-large-size + variables.$desktop-subtitle-font-size
+      ) + spacing.$space-stack-desktop;
   }
 
   &.shrink {
@@ -43,7 +53,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: spacing.$space-page-mobile;
   transition:
     transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.4s ease;
