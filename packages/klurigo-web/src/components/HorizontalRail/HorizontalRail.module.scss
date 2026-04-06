@@ -1,3 +1,4 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_button' as button;
@@ -33,7 +34,7 @@
   z-index: 2;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 50%;
+  border-radius: radius.$radius-circle;
   border: 1px solid colors.$color-border-glass-muted;
   background: rgba(0, 0, 0, 0.35);
   color: colors.$color-text-inverse;

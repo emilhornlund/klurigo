@@ -1,6 +1,6 @@
+@use '../../../styles/border-radius.tokens' as radius;
 @use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers';
-@use '../../../styles/variables';
 @use '../../../styles/spacing.semantic' as spacing;
 
 .nonInteractiveInfoBox {
@@ -9,24 +9,22 @@
   justify-content: center;
   align-items: center;
   background-color: colors.$color-surface-info;
+  border-radius: radius.$radius-surface-lg;
   flex: 0 0 auto;
 
   @include helpers.mobile {
     column-gap: spacing.$space-page-mobile;
     padding: spacing.$space-page-mobile;
-    border-radius: helpers.pxToRem(8px);
   }
 
   @include helpers.tablet {
     column-gap: spacing.$space-page-tablet;
     padding: spacing.$space-page-tablet;
-    border-radius: helpers.pxToRem(12px);
   }
 
   @include helpers.desktop {
     column-gap: spacing.$space-page-desktop;
     padding: spacing.$space-page-desktop;
-    border-radius: helpers.pxToRem(16px);
   }
 
   svg {

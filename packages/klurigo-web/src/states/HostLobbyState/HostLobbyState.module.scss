@@ -1,7 +1,7 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
 
 .header {
@@ -30,6 +30,7 @@
 
     border-style: solid;
     border-color: transparent;
+    border-radius: radius.$radius-surface-sm;
 
     background-color: colors.$color-surface-default;
     color: colors.$color-text-default;
@@ -40,7 +41,6 @@
       outline-width: helpers.pxToRem(2px);
       outline-offset: helpers.pxToRem(2px);
       border-width: helpers.pxToRem(2px);
-      border-radius: helpers.pxToRem(6px);
     }
 
     @include helpers.tablet {
@@ -49,7 +49,6 @@
       outline-width: helpers.pxToRem(3px);
       outline-offset: helpers.pxToRem(3px);
       border-width: helpers.pxToRem(3px);
-      border-radius: helpers.pxToRem(8px);
     }
 
     @include helpers.desktop {
@@ -58,7 +57,6 @@
       outline-width: helpers.pxToRem(4px);
       outline-offset: helpers.pxToRem(4px);
       border-width: helpers.pxToRem(4px);
-      border-radius: helpers.pxToRem(10px);
     }
   }
 
@@ -200,7 +198,7 @@
       column-gap: $size * 0.4;
       height: $size;
       padding: 0 $size * 0.5;
-      border-radius: calc($size / 2);
+      border-radius: radius.pill-radius($size);
 
       .playerIcon {
         @include helpers.fontSize($size * 0.5);

@@ -1,3 +1,4 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_button' as button;
@@ -15,7 +16,7 @@
   transform: translateX(-100%);
   row-gap: 0;
   padding: spacing.$space-compact-mobile 0;
-  border-radius: helpers.pxToRem(8px);
+  border-radius: radius.$radius-surface-sm;
   box-shadow: shadows.$shadow-overlay;
 
   .menuItemButton {

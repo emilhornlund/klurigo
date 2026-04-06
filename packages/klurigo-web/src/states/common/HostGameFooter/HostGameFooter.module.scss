@@ -1,3 +1,4 @@
+@use '../../../styles/border-radius.tokens' as radius;
 @use '../../../styles/helpers';
 @use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/variables';
@@ -19,23 +20,21 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  border-radius: radius.$radius-surface-lg;
 
   @include helpers.mobile {
-    border-radius: variables.$mobile-narrow-layout-gutter;
     padding: spacing.$space-compact-mobile;
     width: 100%;
     max-height: calc(#{spacing.$space-compact-mobile} * 2 + $--mobile-line-height);
   }
 
   @include helpers.tablet {
-    border-radius: variables.$tablet-narrow-layout-gutter;
     padding: spacing.$space-compact-tablet;
     width: variables.$tablet-width;
     max-height: calc(#{spacing.$space-compact-tablet} * 2 + $--tablet-line-height);
   }
 
   @include helpers.desktop {
-    border-radius: variables.$desktop-narrow-layout-gutter;
     padding: spacing.$space-compact-desktop;
     width: variables.$desktop-width;
     max-height: calc(#{spacing.$space-compact-desktop} * 2 + $--desktop-line-height);

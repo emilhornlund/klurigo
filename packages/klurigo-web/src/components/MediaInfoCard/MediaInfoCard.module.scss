@@ -1,3 +1,4 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
@@ -14,6 +15,7 @@
   margin: 0;
   padding: 0;
   border: none;
+  border-radius: radius.$radius-control-md;
   background: transparent;
   color: inherit;
   font: inherit;
@@ -51,17 +53,14 @@
 
   @include helpers.mobile {
     width: 65%;
-    border-radius: variables.$mobile-control-normal-border-radius;
   }
 
   @include helpers.tablet {
     width: 30%;
-    border-radius: variables.$tablet-control-normal-border-radius;
   }
 
   @include helpers.desktop {
     width: 25%;
-    border-radius: variables.$desktop-control-normal-border-radius;
   }
 }
 

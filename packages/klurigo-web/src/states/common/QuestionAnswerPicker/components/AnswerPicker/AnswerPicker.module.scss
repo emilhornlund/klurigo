@@ -1,9 +1,9 @@
+@use '../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
 @use '../../../../../styles/mixins/_button' as button;
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../styles/variables';
 
 .answerPicker {
   display: flex;
@@ -49,11 +49,11 @@
       animation-delay: calc(var(--index) * 0.1s);
       animation-fill-mode: backwards;
       transform: translateZ(0); // GPU acceleration
+      border-radius: radius.$radius-surface-lg;
 
       @include helpers.mobile {
         gap: spacing.$space-stack-mobile;
         padding: spacing.$space-stack-mobile;
-        border-radius: helpers.pxToRem(8px);
 
         @include helpers.fontSize(12px);
       }
@@ -61,7 +61,6 @@
       @include helpers.tablet {
         gap: spacing.$space-stack-tablet;
         padding: spacing.$space-stack-tablet;
-        border-radius: helpers.pxToRem(12px);
 
         @include helpers.fontSize(18px);
       }
@@ -69,7 +68,6 @@
       @include helpers.desktop {
         gap: spacing.$space-stack-desktop;
         padding: spacing.$space-stack-desktop;
-        border-radius: helpers.pxToRem(16px);
 
         @include helpers.fontSize(24px);
       }
@@ -120,7 +118,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 50%;
+        border-radius: radius.$radius-circle;
         font-weight: bold;
         color: colors.$color-text-inverse;
         position: relative;

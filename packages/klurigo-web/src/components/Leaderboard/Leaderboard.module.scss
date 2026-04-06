@@ -1,7 +1,7 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/helpers';
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
 
 .leaderboard {
@@ -27,9 +27,9 @@
     width: 100%;
     min-width: 0;
     overflow: hidden;
-      background-color: colors.$color-surface-default;
-    border-radius: 0;
-      color: colors.$color-text-default;
+    background-color: colors.$color-surface-default;
+    border-radius: radius.$radius-surface-lg;
+    color: colors.$color-text-default;
 
     animation: dramaticReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation-delay: calc(var(--row-index) * 0.2s);
@@ -40,17 +40,14 @@
     }
 
     @include helpers.mobile {
-      border-radius: variables.$mobile-medium-layout-gutter;
       column-gap: spacing.$space-stack-mobile;
       padding: spacing.$space-stack-mobile;
     }
     @include helpers.tablet {
-      border-radius: variables.$tablet-medium-layout-gutter;
       column-gap: spacing.$space-stack-tablet;
       padding: spacing.$space-stack-tablet;
     }
     @include helpers.desktop {
-      border-radius: variables.$desktop-medium-layout-gutter;
       column-gap: spacing.$space-stack-desktop;
       padding: spacing.$space-stack-desktop;
     }
@@ -89,7 +86,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 50%;
+          border-radius: radius.$radius-circle;
           background-color: colors.$color-surface-overlay-subtle;
           color: colors.$color-text-default;
           font-weight: bold;
@@ -197,20 +194,18 @@
         background-color: colors.$color-surface-overlay-subtle;
         color: colors.$color-text-default;
         font-weight: bold;
+        border-radius: radius.$radius-control-md;
 
         @include helpers.mobile {
           padding: 0 spacing.$space-stack-mobile;
-          border-radius: helpers.pxToRem(8px);
         }
 
         @include helpers.tablet {
           padding: 0 spacing.$space-stack-tablet;
-          border-radius: helpers.pxToRem(10px);
         }
 
         @include helpers.desktop {
           padding: 0 spacing.$space-stack-desktop;
-          border-radius: helpers.pxToRem(12px);
         }
       }
     }

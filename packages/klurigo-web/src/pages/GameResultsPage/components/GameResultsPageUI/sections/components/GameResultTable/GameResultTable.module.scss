@@ -1,3 +1,4 @@
+@use '../../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../styles/helpers';
 @use '../../../../../../../styles/mixins/_surface' as surface;
@@ -29,20 +30,18 @@
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    border-radius: radius.$radius-surface-lg;
 
     @include helpers.mobile {
       padding: spacing.$space-content-padding-mobile spacing.$space-page-mobile;
-      border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
       padding: spacing.$space-content-padding-tablet spacing.$space-page-tablet;
-      border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
       padding: spacing.$space-content-padding-desktop spacing.$space-page-desktop;
-      border-radius: variables.$desktop-border-radius;
     }
 
     .main {
@@ -68,7 +67,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 50%;
+        border-radius: radius.$radius-circle;
         font-weight: bold;
 
         @include helpers.mobile {
@@ -114,24 +113,22 @@
           text-transform: uppercase;
           background-color: colors.$color-surface-warning;
           color: colors.$color-text-inverse;
+          border-radius: radius.$radius-control-md;
 
           @include helpers.mobile {
             padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
-            border-radius: variables.$mobile-control-normal-border-radius;
 
             @include helpers.fontSize(variables.$mobile-control-small-font-size);
           }
 
           @include helpers.tablet {
             padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
-            border-radius: variables.$mobile-control-normal-border-radius;
 
             @include helpers.fontSize(variables.$mobile-control-small-font-size);
           }
 
           @include helpers.desktop {
             padding: spacing.$space-inline-desktop spacing.$space-compact-desktop;
-            border-radius: variables.$desktop-control-normal-border-radius;
 
             @include helpers.fontSize(variables.$desktop-control-small-font-size);
           }

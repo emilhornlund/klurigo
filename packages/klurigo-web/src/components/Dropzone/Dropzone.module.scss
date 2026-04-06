@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.dropzone' as dropzone;
 @use '../../styles/helpers';
@@ -19,6 +20,7 @@
     justify-content: center;
     border-color: dropzone.$color-dropzone-border;
     border-style: dashed;
+    border-radius: radius.$radius-control-md;
     background-color: dropzone.$color-dropzone-surface;
     color: colors.$color-text-muted;
     text-align: center;
@@ -29,21 +31,18 @@
     @include helpers.mobile {
       padding: spacing.$space-page-mobile spacing.$space-compact-mobile;
       border-width: variables.$control-outside-border-width;
-      border-radius: variables.$mobile-control-normal-border-radius;
       min-height: 120px;
     }
 
     @include helpers.tablet {
       padding: spacing.$space-page-tablet spacing.$space-compact-tablet;
       border-width: variables.$control-outside-border-width;
-      border-radius: variables.$tablet-control-normal-border-radius;
       min-height: 140px;
     }
 
     @include helpers.desktop {
       padding: spacing.$space-page-desktop spacing.$space-compact-desktop;
       border-width: variables.$control-outside-border-width;
-      border-radius: variables.$desktop-control-normal-border-radius;
       min-height: 160px;
     }
   }

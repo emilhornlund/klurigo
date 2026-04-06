@@ -1,3 +1,4 @@
+@use '../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../styles/colors.range' as rangeColors;
 @use '../../../../../styles/colors.semantic' as colors;
 @use '../../../../../styles/helpers';
@@ -5,7 +6,6 @@
 @use '../../../../../styles/mixins/_shadow' as shadow;
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../styles/variables';
 
 .answerRange {
   display: flex;
@@ -41,8 +41,9 @@
       background-color: colors.$color-surface-accent;
 
       @include helpers.mobile {
-        height: helpers.pxToRem(14px);
-        border-radius: helpers.pxToRem(calc(14px / 2));
+        $track-height: helpers.pxToRem(14px);
+        height: $track-height;
+        border-radius: radius.pill-radius($track-height);
         @include shadow.inset-ring(
           helpers.pxToRem(2px),
           rangeColors.$color-range-track-border
@@ -50,8 +51,9 @@
       }
 
       @include helpers.tablet {
-        height: helpers.pxToRem(18px);
-        border-radius: helpers.pxToRem(calc(18px / 2));
+        $track-height: helpers.pxToRem(18px);
+        height: $track-height;
+        border-radius: radius.pill-radius($track-height);
         @include shadow.inset-ring(
           helpers.pxToRem(4px),
           rangeColors.$color-range-track-border
@@ -59,8 +61,9 @@
       }
 
       @include helpers.desktop {
-        height: helpers.pxToRem(22px);
-        border-radius: helpers.pxToRem(calc(22px / 2));
+        $track-height: helpers.pxToRem(22px);
+        height: $track-height;
+        border-radius: radius.pill-radius($track-height);
         @include shadow.inset-ring(
           helpers.pxToRem(6px),
           rangeColors.$color-range-track-border
@@ -82,23 +85,26 @@
         transform: translateZ(0); // GPU acceleration
 
         @include helpers.mobile {
-          width: helpers.pxToRem(30px);
-          height: helpers.pxToRem(30px);
-          border-radius: helpers.pxToRem(15px);
+          $thumb-size: helpers.pxToRem(30px);
+          width: $thumb-size;
+          height: $thumb-size;
+          border-radius: radius.pill-radius($thumb-size);
           border-width: helpers.pxToRem(4px);
         }
 
         @include helpers.tablet {
-          width: helpers.pxToRem(40px);
-          height: helpers.pxToRem(40px);
-          border-radius: helpers.pxToRem(20px);
+          $thumb-size: helpers.pxToRem(40px);
+          width: $thumb-size;
+          height: $thumb-size;
+          border-radius: radius.pill-radius($thumb-size);
           border-width: helpers.pxToRem(6px);
         }
 
         @include helpers.desktop {
-          width: helpers.pxToRem(50px);
-          height: helpers.pxToRem(50px);
-          border-radius: helpers.pxToRem(25px);
+          $thumb-size: helpers.pxToRem(50px);
+          width: $thumb-size;
+          height: $thumb-size;
+          border-radius: radius.pill-radius($thumb-size);
           border-width: helpers.pxToRem(8px);
         }
       }

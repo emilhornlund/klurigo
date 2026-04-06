@@ -1,3 +1,4 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/inputs';
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
@@ -51,7 +52,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
       align-items: center;
       background-color: transparent;
       border: variables.$control-outside-border-width solid colors.$color-border-control-success;
-      border-radius: 50%;
+      border-radius: radius.$radius-circle;
       transition: background-color 0.3s ease, border-color 0.3s ease;
       cursor: pointer;
 
