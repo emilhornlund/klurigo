@@ -1,7 +1,7 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/colors.loading.semantic' as loadingColors;
 @use '../../../../../../styles/helpers';
-@use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
 .skeleton {
@@ -11,20 +11,18 @@
   overflow: hidden;
   background-color: loadingColors.$color-loading-skeleton-surface;
   cursor: default;
+  border-radius: radius.$radius-control-md;
 
   @include helpers.mobile {
     width: 100%;
-    border-radius: variables.$mobile-control-normal-border-radius;
   }
 
   @include helpers.tablet {
     width: 220px;
-    border-radius: variables.$tablet-control-normal-border-radius;
   }
 
   @include helpers.desktop {
     width: 240px;
-    border-radius: variables.$desktop-control-normal-border-radius;
   }
 }
 
@@ -59,15 +57,15 @@
 
   @include helpers.mobile {
     height: helpers.pxToRem(12px);
-    border-radius: helpers.pxToRem(2px);
+    border-radius: radius.$radius-decorative-sm;
   }
   @include helpers.tablet {
     height: helpers.pxToRem(13px);
-    border-radius: helpers.pxToRem(3px);
+    border-radius: radius.$radius-decorative-md;
   }
   @include helpers.desktop {
     height: helpers.pxToRem(14px);
-    border-radius: helpers.pxToRem(4px);
+    border-radius: radius.$radius-decorative-lg;
   }
 
   &:first-child {

@@ -1,6 +1,6 @@
+@use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
-@use '../../../../styles/variables';
 @use '../../../../styles/spacing.semantic' as spacing;
 
 .puzzleQuestionResults {
@@ -71,18 +71,7 @@
         flex-direction: column;
         flex: 1;
         overflow: hidden;
-
-        @include helpers.mobile {
-          border-radius: variables.$mobile-control-normal-border-radius;
-        }
-
-        @include helpers.tablet {
-          border-radius: variables.$tablet-control-normal-border-radius;
-        }
-
-        @include helpers.desktop {
-          border-radius: variables.$desktop-control-normal-border-radius;
-        }
+        border-radius: radius.$radius-control-md;
 
         &.green {
           background-color: colors.$color-surface-success-soft;

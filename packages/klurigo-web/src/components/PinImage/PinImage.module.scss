@@ -1,5 +1,5 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
 @use '../../styles/variables';
 
 .pinImage {
@@ -26,7 +26,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%); /* center by its own size */
-    border-radius: 50%;
+    border-radius: radius.$radius-circle;
     cursor: grab;
     user-select: none;
     /* don't clip tolerance */
@@ -39,7 +39,7 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%); /* center this circle */
-      border-radius: 50%;
+      border-radius: radius.$radius-circle;
       background: colors.$color-surface-success-subtle;
       outline: 2px dashed colors.$color-focus-success;
       z-index: 0;
@@ -54,7 +54,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 50%;
+      border-radius: radius.$radius-circle;
       transform: translate(0%, -50%);
       z-index: 1;
 

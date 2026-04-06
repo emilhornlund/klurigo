@@ -1,9 +1,9 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/celebration.effects.tokens' as celebrationEffects;
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
 
 .main {
@@ -157,7 +157,7 @@
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          border-radius: 50%;
+          border-radius: radius.$radius-circle;
           color: colors.$color-text-default;
           font-weight: bolder;
           position: relative;
@@ -253,7 +253,7 @@
             width: $sparkle-size;
             height: $sparkle-size;
             background: colors.$color-border-contrast;
-            border-radius: 50%;
+            border-radius: radius.$radius-circle;
             animation: sparkle 1.5s ease-in-out infinite;
             animation-delay: var(--sparkle-delay);
             left: calc(var(--sparkle-x) - (#{$sparkle-size} / 2));

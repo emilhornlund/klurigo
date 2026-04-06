@@ -1,7 +1,7 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/helpers';
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
 
 .score {
   @include surface.surface-box;
@@ -15,7 +15,7 @@
 
   @mixin score-dimensions($size, $padding-y, $padding-x) {
     padding: $padding-y $padding-x;
-    border-radius: calc($size / 2);
+    border-radius: radius.pill-radius($size);
     line-height: $size * 0.7;
 
     @include helpers.fontSize($size * 0.7);

@@ -1,6 +1,6 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
-@use '../../styles/variables';
 
 .playerWrapper {
   display: flex;
@@ -12,20 +12,18 @@
   overflow: hidden;
   border-style: solid;
   border-color: colors.$color-border-glass-strong;
+  border-radius: radius.$radius-surface-md;
   background-color: colors.$color-surface-floating;
 
   @include helpers.mobile {
     border-width: helpers.pxToRem(2px);
-    border-radius: variables.$mobile-narrow-layout-gutter;
   }
 
   @include helpers.tablet {
     border-width: helpers.pxToRem(3px);
-    border-radius: variables.$tablet-narrow-layout-gutter;
   }
 
   @include helpers.desktop {
     border-width: helpers.pxToRem(4px);
-    border-radius: variables.$desktop-narrow-layout-gutter;
   }
 }

@@ -13,10 +13,6 @@ $mobile-medium-layout-gutter: 0.8rem; // +33% from narrow
 $tablet-medium-layout-gutter: 1rem; // +25% from narrow
 $desktop-medium-layout-gutter: 1.25rem; // +25% from narrow
 
-$mobile-border-radius: 0.6rem;
-$tablet-border-radius: 0.8rem;
-$desktop-border-radius: 1rem;
-
 $mobile-hero-font-size: 46px;
 $tablet-hero-font-size: 66px;
 $desktop-hero-font-size: 86px;
@@ -57,18 +53,6 @@ $desktop-control-normal-layout-gutter: calc(
 
 /* Outside border widths for control components */
 $control-outside-border-width: 0.125rem; //2px
-
-/* Border radius for normal sized control components */
-$mobile-control-normal-border-radius: calc($mobile-control-normal-height * 0.2);
-$tablet-control-normal-border-radius: calc($tablet-control-normal-height * 0.2);
-$desktop-control-normal-border-radius: calc(
-  $desktop-control-normal-height * 0.2
-);
-
-/* Border radius for small sized control components */
-$mobile-control-small-border-radius: calc($mobile-control-small-height * 0.2);
-$tablet-control-small-border-radius: calc($tablet-control-small-height * 0.2);
-$desktop-control-small-border-radius: calc($desktop-control-small-height * 0.2);
 
 /* Font size for normal sized control components */
 $mobile-control-normal-font-size: 16px;

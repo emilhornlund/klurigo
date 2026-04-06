@@ -1,3 +1,4 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
@@ -34,13 +35,13 @@
   z-index: variables.$tooltip-z-index;
   background-color: colors.$color-surface-info;
   max-width: variables.$mobile-width;
+  border-radius: radius.$radius-control-sm;
 
   @include helpers.mobile {
     @include helpers.fontSize(variables.$mobile-control-normal-font-size);
 
     row-gap: spacing.$space-inline-mobile;
     padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
-    border-radius: variables.$mobile-control-small-border-radius;
   }
 
   @include helpers.tablet {
@@ -48,7 +49,6 @@
 
     row-gap: spacing.$space-inline-tablet;
     padding: spacing.$space-inline-tablet spacing.$space-compact-tablet;
-    border-radius: variables.$tablet-control-small-border-radius;
   }
 
   @include helpers.desktop {
@@ -56,7 +56,6 @@
 
     row-gap: spacing.$space-inline-desktop;
     padding: spacing.$space-inline-desktop spacing.$space-compact-desktop;
-    border-radius: variables.$desktop-control-small-border-radius;
   }
 
   ul {

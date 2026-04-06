@@ -1,9 +1,9 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
 @use '../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../../styles/variables';
 
 $contrast-opacity: 0.8;
 
@@ -55,17 +55,17 @@ $contrast-opacity: 0.8;
 
     @include helpers.mobile {
       padding: spacing.$space-compact-mobile;
-      border-radius: variables.$mobile-border-radius;
+      border-radius: radius.$radius-surface-lg;
     }
 
     @include helpers.tablet {
       padding: spacing.$space-compact-tablet;
-      border-radius: variables.$tablet-border-radius;
+      border-radius: radius.$radius-surface-lg;
     }
 
     @include helpers.desktop {
       padding: spacing.$space-compact-desktop;
-      border-radius: variables.$desktop-border-radius;
+      border-radius: radius.$radius-surface-lg;
     }
 
     &.full {

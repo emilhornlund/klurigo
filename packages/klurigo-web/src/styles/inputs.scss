@@ -1,4 +1,5 @@
 @use './colors.semantic' as colors;
+@use './border-radius.tokens' as radius;
 @use './helpers';
 @use './mixins/_button' as button;
 @use './mixins/_input' as input;
@@ -17,6 +18,7 @@
   flex-shrink: 1;
   justify-content: center;
   margin: calc(#{variables.$control-outside-border-width} * 2);
+  border-radius: radius.$radius-control-md;
   outline-offset: variables.$control-outside-border-width;
   outline-style: solid;
   outline-width: variables.$control-outside-border-width;
@@ -103,7 +105,6 @@
   /* end button overrides */
 
   @include helpers.mobile {
-    border-radius: variables.$mobile-control-normal-border-radius;
     min-height: variables.$mobile-control-normal-height;
     padding: 0 spacing.$space-compact-mobile;
 
@@ -113,7 +114,6 @@
   }
 
   @include helpers.tablet {
-    border-radius: variables.$tablet-control-normal-border-radius;
     min-height: variables.$tablet-control-normal-height;
     padding: 0 spacing.$space-compact-tablet;
 
@@ -123,7 +123,6 @@
   }
 
   @include helpers.desktop {
-    border-radius: variables.$desktop-control-normal-border-radius;
     min-height: variables.$desktop-control-normal-height;
     padding: 0 spacing.$space-compact-desktop;
 
@@ -317,8 +316,9 @@
 }
 
 .input-size-small {
+  border-radius: radius.$radius-control-sm;
+
   @include helpers.mobile {
-    border-radius: variables.$mobile-control-small-border-radius;
     min-height: variables.$mobile-control-small-height;
     padding: 0 spacing.$space-inline-mobile;
 
@@ -333,7 +333,6 @@
   }
 
   @include helpers.tablet {
-    border-radius: variables.$tablet-control-small-border-radius;
     min-height: variables.$tablet-control-small-height;
     padding: 0 spacing.$space-inline-tablet;
 
@@ -348,7 +347,6 @@
   }
 
   @include helpers.desktop {
-    border-radius: variables.$desktop-control-small-border-radius;
     min-height: variables.$desktop-control-small-height;
     padding: 0 spacing.$space-inline-desktop;
 
@@ -367,6 +365,7 @@
   align-items: center;
   background-color: colors.$color-surface-accent;
   color: colors.$color-text-default;
+  border-radius: radius.$radius-control-md;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -374,7 +373,6 @@
   justify-content: flex-start;
 
   @include helpers.mobile {
-    border-radius: variables.$mobile-control-normal-border-radius;
     padding: spacing.$space-compact-mobile;
     column-gap: spacing.$space-compact-mobile;
 
@@ -382,7 +380,6 @@
   }
 
   @include helpers.tablet {
-    border-radius: variables.$tablet-control-normal-border-radius;
     padding: spacing.$space-compact-tablet;
     column-gap: spacing.$space-compact-tablet;
 
@@ -390,7 +387,6 @@
   }
 
   @include helpers.desktop {
-    border-radius: variables.$desktop-control-normal-border-radius;
     padding: spacing.$space-compact-desktop;
     column-gap: spacing.$space-compact-desktop;
 

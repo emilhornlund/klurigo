@@ -1,6 +1,6 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
-@use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
 .section {
@@ -160,25 +160,23 @@
   flex-direction: column;
   background-color: colors.$color-surface-default;
   overflow: hidden;
+  border-radius: radius.$radius-surface-md;
 
   @include helpers.mobile {
     width: 80%;
     gap: spacing.$space-inline-mobile;
-    border-radius: variables.$mobile-border-radius;
     padding: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     width: 60%;
     gap: spacing.$space-inline-tablet;
-    border-radius: variables.$tablet-border-radius;
     padding: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     width: 40%;
     gap: spacing.$space-inline-desktop;
-    border-radius: variables.$desktop-border-radius;
     padding: spacing.$space-compact-desktop;
   }
 
@@ -277,32 +275,30 @@
   flex-direction: column;
   background-color: colors.$color-surface-default;
   overflow: hidden;
+  border-radius: radius.$radius-surface-md;
 
   @include helpers.mobile {
     width: 80%;
     gap: spacing.$space-inline-mobile;
-    border-radius: variables.$mobile-border-radius;
     padding: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     width: 60%;
     gap: spacing.$space-inline-tablet;
-    border-radius: variables.$tablet-border-radius;
     padding: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     width: 40%;
     gap: spacing.$space-inline-desktop;
-    border-radius: variables.$desktop-border-radius;
     padding: spacing.$space-compact-desktop;
   }
 }
 
 .skeletonLine {
   height: 0.75rem;
-  border-radius: 0.25rem;
+  border-radius: radius.$radius-decorative-lg;
   background: colors.$color-surface-muted;
   animation: shimmer 1.5s ease-in-out infinite;
 
