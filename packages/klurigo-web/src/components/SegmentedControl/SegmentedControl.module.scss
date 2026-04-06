@@ -1,6 +1,6 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/helpers';
 @use '../../styles/inputs';
-@use '../../styles/variables';
 
 .segmentedControl {
   display: flex;
@@ -10,7 +10,7 @@
     @extend .input;
 
     flex: 1;
-    border-radius: 0;
+    border-radius: radius.$radius-sharp;
 
     &.segmentedControlInputKindPrimary {
       &.segmentedControlInputActive {
@@ -31,81 +31,29 @@
     }
 
     &.segmentedControlInputSizeNormal {
-      @include helpers.mobile {
-        &:first-child {
-          border-top-left-radius: variables.$mobile-control-normal-border-radius;
-          border-bottom-left-radius: variables.$mobile-control-normal-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$mobile-control-normal-border-radius;
-          border-bottom-right-radius: variables.$mobile-control-normal-border-radius;
-        }
+      &:first-child {
+        border-top-left-radius: radius.$radius-control-md;
+        border-bottom-left-radius: radius.$radius-control-md;
       }
 
-      @include helpers.tablet {
-        &:first-child {
-          border-top-left-radius: variables.$tablet-control-normal-border-radius;
-          border-bottom-left-radius: variables.$tablet-control-normal-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$tablet-control-normal-border-radius;
-          border-bottom-right-radius: variables.$tablet-control-normal-border-radius;
-        }
-      }
-
-      @include helpers.desktop {
-        &:first-child {
-          border-top-left-radius: variables.$desktop-control-normal-border-radius;
-          border-bottom-left-radius: variables.$desktop-control-normal-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$desktop-control-normal-border-radius;
-          border-bottom-right-radius: variables.$desktop-control-normal-border-radius;
-        }
+      &:last-child {
+        border-top-right-radius: radius.$radius-control-md;
+        border-bottom-right-radius: radius.$radius-control-md;
       }
     }
 
     &.segmentedControlInputSizeSmall {
-      border-radius: 0;
+      border-radius: radius.$radius-sharp;
       @extend .input-size-small;
 
-      @include helpers.mobile {
-        &:first-child {
-          border-top-left-radius: variables.$mobile-control-small-border-radius;
-          border-bottom-left-radius: variables.$mobile-control-small-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$mobile-control-small-border-radius;
-          border-bottom-right-radius: variables.$mobile-control-small-border-radius;
-        }
+      &:first-child {
+        border-top-left-radius: radius.$radius-control-sm;
+        border-bottom-left-radius: radius.$radius-control-sm;
       }
 
-      @include helpers.tablet {
-        &:first-child {
-          border-top-left-radius: variables.$tablet-control-small-border-radius;
-          border-bottom-left-radius: variables.$tablet-control-small-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$tablet-control-small-border-radius;
-          border-bottom-right-radius: variables.$tablet-control-small-border-radius;
-        }
-      }
-
-      @include helpers.desktop {
-        &:first-child {
-          border-top-left-radius: variables.$desktop-control-small-border-radius;
-          border-bottom-left-radius: variables.$desktop-control-small-border-radius;
-        }
-
-        &:last-child {
-          border-top-right-radius: variables.$desktop-control-small-border-radius;
-          border-bottom-right-radius: variables.$desktop-control-small-border-radius;
-        }
+      &:last-child {
+        border-top-right-radius: radius.$radius-control-sm;
+        border-bottom-right-radius: radius.$radius-control-sm;
       }
     }
   }

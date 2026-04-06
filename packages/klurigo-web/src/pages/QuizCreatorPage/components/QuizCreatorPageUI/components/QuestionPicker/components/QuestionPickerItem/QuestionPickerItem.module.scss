@@ -1,10 +1,10 @@
 @use 'sass:color';
 
+@use '../../../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../styles/helpers';
 @use '../../../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../../../../styles/variables';
 
 $small-question-picker-item-width: helpers.pxToRem(120px);
 $normal-question-picker-item-width: helpers.pxToRem(160px);
@@ -54,6 +54,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     color: colors.$color-text-default;
     border-style: solid;
     border-color: colors.$color-border-default;
+    border-radius: radius.$radius-control-sm;
     background-color: colors.$color-surface-default;
     width: 100%;
     max-height: 100%;
@@ -62,7 +63,6 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       row-gap: spacing.$space-inline-mobile;
       padding: spacing.$space-compact-mobile;
       border-width: $small-question-picker-item-border-width;
-      border-radius: calc(#{variables.$mobile-border-radius} * 0.5);
       height: $small-question-picker-item-width * 0.7;
     }
 
@@ -70,14 +70,12 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       row-gap: spacing.$space-inline-tablet;
       padding: spacing.$space-compact-tablet;
       border-width: $normal-question-picker-item-border-width;
-      border-radius: calc(#{variables.$tablet-border-radius} * 0.5);
     }
 
     @include helpers.desktop {
       row-gap: spacing.$space-inline-desktop;
       padding: spacing.$space-compact-desktop;
       border-width: $normal-question-picker-item-border-width;
-      border-radius: calc(#{variables.$desktop-border-radius} * 0.5);
     }
 
     &.questionPickerItemActive, &:hover {
@@ -177,7 +175,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 50%;
+        border-radius: radius.$radius-circle;
 
         @include helpers.mobile {
           width: $small-question-picker-item-indicator-size;

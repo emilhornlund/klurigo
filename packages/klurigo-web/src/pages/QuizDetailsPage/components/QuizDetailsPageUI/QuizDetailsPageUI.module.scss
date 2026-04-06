@@ -1,3 +1,4 @@
+@use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/mixins/_surface' as surface;
@@ -81,25 +82,23 @@
     display: grid;
     margin-top: auto;
     width: 100%;
+    border-radius: radius.$radius-surface-lg;
 
     @include helpers.mobile {
       grid-template-columns: 1fr 1fr;
       gap: spacing.$space-compact-mobile;
-      border-radius: variables.$mobile-border-radius;
       padding: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: spacing.$space-compact-tablet;
-      border-radius: variables.$tablet-border-radius;
       padding: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: spacing.$space-compact-desktop;
-      border-radius: variables.$desktop-border-radius;
       padding: spacing.$space-compact-desktop;
     }
 

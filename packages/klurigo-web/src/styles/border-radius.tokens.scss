@@ -1,0 +1,21 @@
+@use './helpers';
+
+$radius-sharp: 0;
+
+$radius-surface-sm: helpers.pxToRem(8px);
+$radius-surface-md: helpers.pxToRem(12px);
+$radius-surface-lg: helpers.pxToRem(16px);
+
+$radius-control-sm: helpers.pxToRem(7px);
+$radius-control-md: helpers.pxToRem(9px);
+
+$radius-decorative-sm: helpers.pxToRem(2px);
+$radius-decorative-md: helpers.pxToRem(3px);
+$radius-decorative-lg: helpers.pxToRem(4px);
+
+$radius-round: 9999px;
+$radius-circle: 50%;
+
+@function pill-radius($size) {
+  @return calc($size / 2);
+}

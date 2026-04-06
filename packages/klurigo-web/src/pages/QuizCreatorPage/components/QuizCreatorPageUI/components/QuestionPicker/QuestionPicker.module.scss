@@ -1,7 +1,7 @@
 @use 'sass:color';
+@use '../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers';
-@use '../../../../../../styles/variables';
 @use '../../../../../../styles/spacing.semantic' as spacing;
 @use '../../../../../../styles/mixins/_button' as button;
 
@@ -32,6 +32,7 @@ $outline-offset: helpers.pxToRem(2px);
     overflow-y: hidden;
     position: relative;
     background-color: colors.$color-surface-default;
+    border-radius: radius.$radius-surface-md;
     outline: colors.$color-focus-outline solid $outline-offset;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
@@ -40,19 +41,16 @@ $outline-offset: helpers.pxToRem(2px);
     @include helpers.mobile {
       column-gap: spacing.$space-inline-mobile;
       padding: spacing.$space-compact-mobile;
-      border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
       column-gap: spacing.$space-inline-tablet;
       padding: spacing.$space-compact-tablet;
-      border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
       column-gap: spacing.$space-compact-desktop;
       padding: spacing.$space-compact-desktop;
-      border-radius: variables.$desktop-border-radius;
     }
   }
 
@@ -69,7 +67,7 @@ $outline-offset: helpers.pxToRem(2px);
       align-items: center;
       outline: colors.$color-focus-ring solid $outline-offset;
       border: $outline-offset solid transparent;
-      border-radius: 50%;
+      border-radius: radius.$radius-circle;
       background-color: transparent;
       color: colors.$color-text-warning;
 

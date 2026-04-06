@@ -1,6 +1,6 @@
+@use '../../../../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../../styles/helpers';
-@use '../../../../../../../../../styles/variables';
 @use '../../../../../../../../../styles/spacing.semantic' as spacing;
 
 .pinQuestionField {
@@ -35,23 +35,21 @@
       display: flex;
       flex-direction: row;
       background-color: colors.$color-surface-floating;
+      border-radius: radius.$radius-control-md;
 
       @include helpers.mobile {
         padding: spacing.$space-inline-mobile;
         column-gap: spacing.$space-inline-mobile;
-        border-radius: variables.$mobile-narrow-layout-gutter;
       }
 
       @include helpers.tablet {
         padding: spacing.$space-inline-tablet;
         column-gap: spacing.$space-inline-tablet;
-        border-radius: variables.$tablet-narrow-layout-gutter;
       }
 
       @include helpers.desktop {
         padding: spacing.$space-inline-desktop;
         column-gap: spacing.$space-inline-desktop;
-        border-radius: variables.$desktop-control-normal-border-radius;
       }
     }
   }

@@ -1,7 +1,7 @@
+@use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/mixins/_surface' as surface;
-@use '../../../../styles/variables';
 @use '../../../../styles/spacing.semantic' as spacing;
 
 .stats {
@@ -31,23 +31,21 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    border-radius: radius.$radius-surface-lg;
 
     @include helpers.mobile {
       padding: spacing.$space-page-mobile spacing.$space-compact-mobile;
       gap: spacing.$space-inline-tight-mobile;
-      border-radius: variables.$mobile-border-radius;
     }
 
     @include helpers.tablet {
       padding: spacing.$space-page-tablet spacing.$space-compact-tablet;
       gap: spacing.$space-inline-tight-tablet;
-      border-radius: variables.$tablet-border-radius;
     }
 
     @include helpers.desktop {
       padding: spacing.$space-page-desktop spacing.$space-compact-desktop;
       gap: spacing.$space-inline-tight-desktop;
-      border-radius: variables.$desktop-border-radius;
     }
 
     .title {
