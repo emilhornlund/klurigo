@@ -22,19 +22,19 @@ $desktop-select-normal-size: calc(#{variables.$desktop-control-normal-height} * 
       @include helpers.mobile {
         width: $mobile-select-normal-size;
         height: $mobile-select-normal-size;
-        right: variables.$mobile-control-normal-layout-gutter;
+        right: variables.$mobile-control-normal-height * 0.2;
       }
 
       @include helpers.tablet {
         width: $tablet-select-normal-size;
         height: $tablet-select-normal-size;
-        right: variables.$tablet-control-normal-layout-gutter;
+        right: variables.$tablet-control-normal-height * 0.2;
       }
 
       @include helpers.desktop {
         width: $desktop-select-normal-size;
         height: $desktop-select-normal-size;
-        right: variables.$desktop-control-normal-layout-gutter;
+        right: variables.$desktop-control-normal-height * 0.2;
       }
     }
 
