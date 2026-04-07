@@ -2,17 +2,6 @@ $mobile-width: 480px;
 $tablet-width: 768px;
 $desktop-width: 1024px;
 
-/* Legacy narrow layout gutters — do not use for new code. */
-$mobile-narrow-layout-gutter: 0.6rem;
-$tablet-narrow-layout-gutter: 0.8rem;
-$desktop-narrow-layout-gutter: 1rem;
-
-/* Legacy medium layout gutters — do not use for new code. */
-/* Medium spacing tier (between narrow and standard) */
-$mobile-medium-layout-gutter: 0.8rem; // +33% from narrow
-$tablet-medium-layout-gutter: 1rem; // +25% from narrow
-$desktop-medium-layout-gutter: 1.25rem; // +25% from narrow
-
 $mobile-hero-font-size: 46px;
 $tablet-hero-font-size: 66px;
 $desktop-hero-font-size: 86px;
@@ -42,14 +31,6 @@ $desktop-control-normal-height: 2.875rem; //46px
 $mobile-control-small-height: 2rem; //32px
 $tablet-control-small-height: 2.125rem; //34px
 $desktop-control-small-height: 2.25rem; //36px
-
-/* Legacy control layout gutters — do not use for new code. */
-/* Layout gutters for normal sized control components */
-$mobile-control-normal-layout-gutter: calc($mobile-control-normal-height * 0.2);
-$tablet-control-normal-layout-gutter: calc($tablet-control-normal-height * 0.2);
-$desktop-control-normal-layout-gutter: calc(
-  $desktop-control-normal-height * 0.2
-);
 
 /* Outside border widths for control components */
 $control-outside-border-width: 0.125rem; //2px
