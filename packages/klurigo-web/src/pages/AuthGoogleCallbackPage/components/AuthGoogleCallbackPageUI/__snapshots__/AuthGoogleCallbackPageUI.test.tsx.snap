@@ -43,12 +43,12 @@ exports[`AuthGoogleCallbackPageUI > should render AuthGoogleCallbackPageUI 1`] =
           class="contentInner"
         >
           <h1
-            class="typography title small"
+            class="typography title widthSmall"
           >
             Hold tight—calling in the Google cavalry!
           </h1>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             We’re doing the secret handshake with Google. Almost there…
           </p>

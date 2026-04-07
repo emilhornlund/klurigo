@@ -64,7 +64,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>
@@ -602,7 +602,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>
@@ -1140,7 +1140,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>
@@ -1678,7 +1678,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>
@@ -2269,7 +2269,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>
@@ -2799,7 +2799,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Trivia Battle
           </h1>

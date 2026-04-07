@@ -42,7 +42,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -94,7 +94,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             1000
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 1 - correct
           </p>
@@ -478,7 +478,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -519,7 +519,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             900
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 2 - correct
           </p>
@@ -803,7 +803,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -855,7 +855,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             600
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 8 - correct
           </p>
@@ -1239,7 +1239,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -1291,7 +1291,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             500
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 15 - correct
           </p>
@@ -1675,7 +1675,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -1716,7 +1716,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             800
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 3 - correct
           </p>
@@ -2000,7 +2000,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -2052,7 +2052,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             400
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 12 - correct
           </p>
@@ -2336,7 +2336,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Incorrect
               </h1>
@@ -2377,7 +2377,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
             0
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 20 - incorrect
           </p>
@@ -2474,7 +2474,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -2515,7 +2515,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
             100
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 15 - correct
           </p>
@@ -2612,7 +2612,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -2653,7 +2653,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             200
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 10 - correct
           </p>
@@ -2857,7 +2857,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -2909,7 +2909,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             300
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 8 - correct
           </p>
@@ -3113,7 +3113,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Correct
               </h1>
@@ -3165,7 +3165,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             634
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 1 - correct
           </p>
@@ -3560,7 +3560,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
               class="correctnessBatch"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Incorrect
               </h1>
@@ -3601,7 +3601,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             50
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Message for 7 - incorrect
           </p>

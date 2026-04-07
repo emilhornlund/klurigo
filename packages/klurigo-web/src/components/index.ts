@@ -51,10 +51,11 @@ export type { StarRatingProps, StarRatingSize } from './StarRating'
 export type { StreakBadgeProps } from './StreakBadge'
 export type { TextareaProps } from './Textarea'
 export type { TextFieldProps } from './TextField'
-export type {
-  TypographyVariant,
-  TypographySize,
-  TypographyProps,
+export {
+  type TypographyVariant,
+  type TypographyWidth,
+  type TypographyProps,
+  default as Typography,
 } from './Typography'
 export { default as Badge, getBadgePositionBackgroundColor } from './Badge'
 export {
@@ -104,4 +105,3 @@ export { default as Switch, type SwitchProps } from './Switch'
 export { default as Textarea } from './Textarea'
 export { default as TextField } from './TextField'
 export { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip'
-export { default as Typography } from './Typography'

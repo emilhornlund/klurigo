@@ -88,11 +88,11 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
           <FontAwesomeIcon icon={faXmark} />
         </Badge>
 
-        <Typography variant="title" size="small">
+        <Typography variant="title" width="small">
           Oops! Something went wrong.
         </Typography>
 
-        <Typography variant="text" size="medium">
+        <Typography variant="text" width="medium">
           The supplied link is invalid or has expired.
         </Typography>
       </Page>
@@ -102,7 +102,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
   return (
     <Page>
       <Typography variant="title">Lock It Down!</Typography>
-      <Typography variant="text" size="medium">
+      <Typography variant="text" width="medium">
         Choose your dazzling new password and confirm it below. Let’s keep those
         sneaky hackers out!
       </Typography>

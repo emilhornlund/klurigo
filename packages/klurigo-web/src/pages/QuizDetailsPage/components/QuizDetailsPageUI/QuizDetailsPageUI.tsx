@@ -100,12 +100,12 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
   return (
     <Page align="start" height="full" noPadding discover profile>
       <div className={styles.layout}>
-        <Typography variant="title" size="full">
+        <Typography variant="title" width="full">
           {quiz.title}
         </Typography>
 
         {quiz.description && (
-          <Typography variant="text" size="medium">
+          <Typography variant="text" width="medium">
             {quiz.description}
           </Typography>
         )}

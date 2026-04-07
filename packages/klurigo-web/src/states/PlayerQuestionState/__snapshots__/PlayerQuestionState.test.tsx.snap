@@ -39,7 +39,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               Who painted The Starry Night?
             </h1>
@@ -185,7 +185,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               Who painted The Starry Night?
             </h1>
@@ -349,7 +349,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               Who painted The Starry Night?
             </h1>
@@ -477,7 +477,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               What percentage of the earth's surface is covered by water?
             </h1>
@@ -642,7 +642,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               Rabbits can't vomit?
             </h1>
@@ -770,7 +770,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title full"
+              class="typography title widthFull"
             >
               Who painted the Mono Lisa?
             </h1>

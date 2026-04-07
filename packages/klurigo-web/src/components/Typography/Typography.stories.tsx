@@ -37,7 +37,7 @@ export const AllVariants: Story = {
           <div
             key={variant}
             style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Typography variant="subtitle" size="full">
+            <Typography variant="subtitle" width="full">
               Variant: {variant}
             </Typography>
 

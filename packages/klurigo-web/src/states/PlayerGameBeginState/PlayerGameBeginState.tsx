@@ -22,10 +22,10 @@ const PlayerGameBeginState: FC<PlayerGameBeginStateProps> = ({
   <GamePage>
     <PageProminentIcon src={BellRingIcon} alt="BellRing" />
     <NicknameChip value={nickname} />
-    <Typography variant="title" size="medium">
+    <Typography variant="title" width="medium">
       Get ready!
     </Typography>
-    <Typography variant="text" size="small">
+    <Typography variant="text" width="small">
       The game starts any second
     </Typography>
     <LoadingSpinner />

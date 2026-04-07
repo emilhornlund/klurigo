@@ -42,7 +42,7 @@ const UserQuizzesPageUI: FC<UserQuizzesPageUIProps> = ({
   return (
     <Page align="start" discover profile>
       <Typography variant="title">Public Quiz Shelf</Typography>
-      <Typography variant="text" size="medium">
+      <Typography variant="text" width="medium">
         Browse public quizzes shared by this user.
       </Typography>
       {isError || (!isLoading && quizzes.length === 0) ? (

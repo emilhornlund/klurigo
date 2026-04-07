@@ -109,7 +109,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
 
       <ScoreChip value={lastScore} />
 
-      <Typography variant="text" size="small">
+      <Typography variant="text" width="small">
         {message}
       </Typography>
 

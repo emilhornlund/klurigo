@@ -31,7 +31,7 @@ export type TypographyVariant = 'hero' | 'title' | 'subtitle' | 'text' | 'link'
  * These values control the maximum width behavior of the rendered element
  * through CSS modifiers.
  */
-export type TypographySize = 'small' | 'medium' | 'full'
+export type TypographyWidth = 'small' | 'medium' | 'full'
 
 /**
  * Maps each Typography variant to the semantic HTML element it should render.
@@ -66,7 +66,7 @@ type SharedProps = {
    *
    * Defaults to full width.
    */
-  size?: TypographySize
+  width?: TypographyWidth
 
   /**
    * Content rendered inside the typography element.
@@ -222,7 +222,7 @@ export type TypographyProps = NonLinkProps | LinkProps
 const Typography: FC<TypographyProps> = (props) => {
   const {
     variant = 'text',
-    size = 'full',
+    width = 'full',
     children,
     asChild,
     className,
@@ -287,9 +287,9 @@ const Typography: FC<TypographyProps> = (props) => {
     variant === 'subtitle' ? styles.subtitle : undefined,
     variant === 'text' ? styles.text : undefined,
     variant === 'link' ? styles.link : undefined,
-    size === 'small' ? styles.small : undefined,
-    size === 'medium' ? styles.medium : undefined,
-    size === 'full' ? styles.full : undefined,
+    width === 'small' ? styles.widthSmall : undefined,
+    width === 'medium' ? styles.widthMedium : undefined,
+    width === 'full' ? styles.widthFull : undefined,
     inlineStyle !== undefined ? styles.textFitEnabled : undefined,
     className,
   )

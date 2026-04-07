@@ -92,7 +92,7 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
   return (
     <Page align="start" discover profile>
       <Typography variant="title">Your Quiz Shelf</Typography>
-      <Typography variant="text" size="medium">
+      <Typography variant="text" width="medium">
         All your quiz creations, lined up and ready for their next moment in the
         spotlight.
       </Typography>
