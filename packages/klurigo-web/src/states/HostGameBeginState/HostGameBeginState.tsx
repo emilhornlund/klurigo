@@ -12,10 +12,10 @@ export interface HostGameBeginStateProps {
 const HostGameBeginState: FC<HostGameBeginStateProps> = () => (
   <GamePage>
     <PageProminentIcon src={MegaphoneIcon} alt="Megaphone" />
-    <Typography variant="title" size="medium">
+    <Typography variant="title" width="medium">
       Loading Game
     </Typography>
-    <Typography variant="text" size="small">
+    <Typography variant="text" width="small">
       The game starts any second
     </Typography>
     <LoadingSpinner />

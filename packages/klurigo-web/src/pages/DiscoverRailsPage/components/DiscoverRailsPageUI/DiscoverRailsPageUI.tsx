@@ -77,10 +77,10 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
     <Page align="start" discover profile>
       <div className={styles.container}>
         <div className={styles.heading}>
-          <Typography variant="title" size="full">
+          <Typography variant="title" width="full">
             Discover
           </Typography>
-          <Typography variant="text" size="full">
+          <Typography variant="text" width="full">
             Explore curated quizzes across different categories
           </Typography>
         </div>

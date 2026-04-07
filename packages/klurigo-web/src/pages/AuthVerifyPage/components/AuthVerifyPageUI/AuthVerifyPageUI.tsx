@@ -23,20 +23,20 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           <FontAwesomeIcon icon={faCheck} />
         </Badge>
 
-        <Typography variant="title" size="medium">
+        <Typography variant="title" width="medium">
           Hooray! Your email’s all set!
         </Typography>
 
-        <Typography variant="text" size="medium">
+        <Typography variant="text" width="medium">
           Welcome aboard the fun train. Let’s roll!
         </Typography>
 
         {loggedIn ? (
-          <Typography variant="link" size="small" asChild>
+          <Typography variant="link" width="small" asChild>
             <Link to={'/'}>Take me home</Link>
           </Typography>
         ) : (
-          <Typography variant="link" size="small" asChild>
+          <Typography variant="link" width="small" asChild>
             <Link to={'/auth/login'}>Log in to get started!</Link>
           </Typography>
         )}
@@ -45,13 +45,13 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
 
     {!verified && !error && (
       <>
-        <Typography variant="title" size="medium">
+        <Typography variant="title" width="medium">
           One moment… verifying your magic link!
         </Typography>
 
         <LoadingSpinner />
 
-        <Typography variant="text" size="small">
+        <Typography variant="text" width="small">
           Good things come to those who wait!
         </Typography>
       </>
@@ -63,11 +63,11 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           <FontAwesomeIcon icon={faXmark} />
         </Badge>
 
-        <Typography variant="title" size="medium">
+        <Typography variant="title" width="medium">
           Oops! Something went wrong.
         </Typography>
 
-        <Typography variant="text" size="medium">
+        <Typography variant="text" width="medium">
           The supplied link is invalid or has expired.
         </Typography>
       </>

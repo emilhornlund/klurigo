@@ -61,12 +61,12 @@ exports[`AuthVerifyPageUI > renders error state 1`] = `
             </svg>
           </div>
           <h1
-            class="typography title medium"
+            class="typography title widthMedium"
           >
             Oops! Something went wrong.
           </h1>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             The supplied link is invalid or has expired.
           </p>
@@ -138,17 +138,17 @@ exports[`AuthVerifyPageUI > renders verified state (logged in) with home link 1`
             </svg>
           </div>
           <h1
-            class="typography title medium"
+            class="typography title widthMedium"
           >
             Hooray! Your email’s all set!
           </h1>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             Welcome aboard the fun train. Let’s roll!
           </p>
           <a
-            class="typography link small"
+            class="typography link widthSmall"
             data-discover="true"
             href="/"
           >
@@ -222,17 +222,17 @@ exports[`AuthVerifyPageUI > renders verified state (not logged in) with login li
             </svg>
           </div>
           <h1
-            class="typography title medium"
+            class="typography title widthMedium"
           >
             Hooray! Your email’s all set!
           </h1>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             Welcome aboard the fun train. Let’s roll!
           </p>
           <a
-            class="typography link small"
+            class="typography link widthSmall"
             data-discover="true"
             href="/auth/login"
           >
@@ -288,7 +288,7 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title medium"
+            class="typography title widthMedium"
           >
             One moment… verifying your magic link!
           </h1>
@@ -301,7 +301,7 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
             <div />
           </div>
           <p
-            class="typography text small"
+            class="typography text widthSmall"
           >
             Good things come to those who wait!
           </p>

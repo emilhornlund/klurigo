@@ -1,6 +1,6 @@
-export type {
-  TypographyVariant,
-  TypographySize,
-  TypographyProps,
+export {
+  type TypographyVariant,
+  type TypographyWidth,
+  type TypographyProps,
+  default,
 } from './Typography'
-export { default } from './Typography'

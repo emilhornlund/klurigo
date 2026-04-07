@@ -136,7 +136,7 @@ const HomePage: FC = () => {
         <PageProminentIcon src={KlurigoIcon} alt="Klurigo" />
       </div>
       <div className={styles.hero}>
-        <Typography variant="hero" size="medium">
+        <Typography variant="hero" width="medium">
           Let’s play
         </Typography>
       </div>
@@ -144,7 +144,7 @@ const HomePage: FC = () => {
         <RotatingMessage
           messages={MESSAGES}
           renderMessage={(message) => (
-            <Typography variant="text" size="small">
+            <Typography variant="text" width="small">
               {message}
             </Typography>
           )}
@@ -183,13 +183,13 @@ const HomePage: FC = () => {
         />
       </form>
       {isUserAuthenticated ? (
-        <Typography variant="link" size="small" asChild>
+        <Typography variant="link" width="small" asChild>
           <Link to={'/quiz/create'} className={styles.link}>
             Create your own quiz and challenge others!
           </Link>
         </Typography>
       ) : (
-        <Typography variant="link" size="small" asChild>
+        <Typography variant="link" width="small" asChild>
           <Link to={'/auth/login'} className={styles.link}>
             Want to create your own quiz? Log in to get started!
           </Link>

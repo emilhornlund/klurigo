@@ -3,7 +3,7 @@
 exports[`Typography > matches snapshot for asChild composition 1`] = `
 <DocumentFragment>
   <a
-    class="inner typography link small outer"
+    class="inner typography link widthSmall outer"
     href="/quiz/create"
   >
     Create your own quiz
@@ -14,7 +14,7 @@ exports[`Typography > matches snapshot for asChild composition 1`] = `
 exports[`Typography > matches snapshot for hero variant 1`] = `
 <DocumentFragment>
   <h1
-    class="typography hero medium"
+    class="typography hero widthMedium"
   >
     Let’s play
   </h1>
@@ -24,7 +24,7 @@ exports[`Typography > matches snapshot for hero variant 1`] = `
 exports[`Typography > matches snapshot for link variant 1`] = `
 <DocumentFragment>
   <a
-    class="typography link full"
+    class="typography link widthFull"
     href="/profile"
   >
     Profile
@@ -35,7 +35,7 @@ exports[`Typography > matches snapshot for link variant 1`] = `
 exports[`Typography > matches snapshot for title variant 1`] = `
 <DocumentFragment>
   <h1
-    class="typography title small"
+    class="typography title widthSmall"
   >
     Leaderboard
   </h1>

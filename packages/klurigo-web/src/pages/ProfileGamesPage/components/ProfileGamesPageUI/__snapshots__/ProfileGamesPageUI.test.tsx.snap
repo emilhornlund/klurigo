@@ -43,12 +43,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             No Games Yet
           </h1>
           <p
-            class="typography text full"
+            class="typography text widthFull"
           >
             Host live quizzes and play together with others. Your games will appear here once you start.
           </p>
@@ -56,12 +56,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle medium"
+            class="typography subtitle widthMedium"
           >
             Looking for something to play?
           </h2>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             Browse quizzes made by others and host a live game in seconds.
           </p>
@@ -96,12 +96,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle medium"
+            class="typography subtitle widthMedium"
           >
             Want to make your own?
           </h2>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             Create a quiz in minutes and reuse it for future games.
           </p>
@@ -182,12 +182,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
           class="contentInner"
         >
           <h1
-            class="typography title full"
+            class="typography title widthFull"
           >
             Game History
           </h1>
           <p
-            class="typography text medium"
+            class="typography text widthMedium"
           >
             Review your past games and track your performance.
           </p>

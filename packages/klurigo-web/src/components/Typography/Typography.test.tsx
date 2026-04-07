@@ -3,20 +3,6 @@ import { describe, expect, it, vi } from 'vitest'
 
 import Typography from './Typography'
 
-vi.mock('./Typography.module.scss', () => ({
-  default: {
-    typography: 'typography',
-    hero: 'hero',
-    title: 'title',
-    subtitle: 'subtitle',
-    text: 'text',
-    link: 'link',
-    small: 'small',
-    medium: 'medium',
-    full: 'full',
-  },
-}))
-
 describe('Typography', () => {
   it('renders a <p> by default (variant=text) with full size', () => {
     render(<Typography>Hello</Typography>)
@@ -25,7 +11,7 @@ describe('Typography', () => {
     expect(el.tagName.toLowerCase()).toBe('p')
     expect(el).toHaveClass('typography')
     expect(el).toHaveClass('text')
-    expect(el).toHaveClass('full')
+    expect(el).toHaveClass('widthFull')
   })
 
   it('renders semantic elements for each variant', () => {
@@ -51,25 +37,25 @@ describe('Typography', () => {
 
   it('applies size modifier classes', () => {
     const { rerender } = render(
-      <Typography variant="text" size="small">
+      <Typography variant="text" width="small">
         Small
       </Typography>,
     )
-    expect(screen.getByText('Small')).toHaveClass('small')
+    expect(screen.getByText('Small')).toHaveClass('widthSmall')
 
     rerender(
-      <Typography variant="text" size="medium">
+      <Typography variant="text" width="medium">
         Medium
       </Typography>,
     )
-    expect(screen.getByText('Medium')).toHaveClass('medium')
+    expect(screen.getByText('Medium')).toHaveClass('widthMedium')
 
     rerender(
-      <Typography variant="text" size="full">
+      <Typography variant="text" width="full">
         Full
       </Typography>,
     )
-    expect(screen.getByText('Full')).toHaveClass('full')
+    expect(screen.getByText('Full')).toHaveClass('widthFull')
   })
 
   it('includes a custom className in the resolved classes', () => {
@@ -160,7 +146,7 @@ describe('Typography', () => {
 
   it('matches snapshot for hero variant', () => {
     const { asFragment } = render(
-      <Typography variant="hero" size="medium">
+      <Typography variant="hero" width="medium">
         Let’s play
       </Typography>,
     )
@@ -169,7 +155,7 @@ describe('Typography', () => {
 
   it('matches snapshot for title variant', () => {
     const { asFragment } = render(
-      <Typography variant="title" size="small">
+      <Typography variant="title" width="small">
         Leaderboard
       </Typography>,
     )
@@ -178,7 +164,7 @@ describe('Typography', () => {
 
   it('matches snapshot for link variant', () => {
     const { asFragment } = render(
-      <Typography variant="link" href="/profile" size="full">
+      <Typography variant="link" href="/profile" width="full">
         Profile
       </Typography>,
     )
@@ -197,12 +183,12 @@ describe('Typography', () => {
 
     expect(el).toHaveClass('typography')
     expect(el).toHaveClass('title')
-    expect(el).toHaveClass('full')
+    expect(el).toHaveClass('widthFull')
   })
 
   it('merges child className with Typography classes when asChild=true', () => {
     render(
-      <Typography variant="subtitle" size="small" asChild className="outer">
+      <Typography variant="subtitle" width="small" asChild className="outer">
         <span className="inner">Merged</span>
       </Typography>,
     )
@@ -213,7 +199,7 @@ describe('Typography', () => {
 
     expect(el).toHaveClass('typography')
     expect(el).toHaveClass('subtitle')
-    expect(el).toHaveClass('small')
+    expect(el).toHaveClass('widthSmall')
   })
 
   it('forwards aria and data attributes onto the child element when asChild=true', () => {
@@ -273,7 +259,7 @@ describe('Typography', () => {
 
   it('allows composing with an <a> child to avoid nested anchors (single anchor in output)', () => {
     const { container } = render(
-      <Typography variant="link" size="small" asChild>
+      <Typography variant="link" width="small" asChild>
         <a href="/quiz/create">Create your own quiz</a>
       </Typography>,
     )
@@ -286,12 +272,12 @@ describe('Typography', () => {
     expect(el).toHaveAttribute('href', '/quiz/create')
     expect(el).toHaveClass('typography')
     expect(el).toHaveClass('link')
-    expect(el).toHaveClass('small')
+    expect(el).toHaveClass('widthSmall')
   })
 
   it('matches snapshot for asChild composition', () => {
     const { asFragment } = render(
-      <Typography variant="link" size="small" asChild className="outer">
+      <Typography variant="link" width="small" asChild className="outer">
         <a href="/quiz/create" className="inner">
           Create your own quiz
         </a>

@@ -93,7 +93,7 @@ const UserDetailsForm: FC<UserDetailsFormProps> = ({
   return (
     <>
       <Typography variant="title">Shape your quiz identity</Typography>
-      <Typography variant="text" size="medium">
+      <Typography variant="text" width="medium">
         Update your personal details to keep your profile up to date. Your
         information helps personalize your quiz experience and lets others
         recognize you during games.

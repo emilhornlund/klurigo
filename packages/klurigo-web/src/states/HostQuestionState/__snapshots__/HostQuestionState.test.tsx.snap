@@ -70,7 +70,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Skip me?
               </h1>
@@ -309,7 +309,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Place the pin on the map
               </h1>
@@ -527,7 +527,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Audio clip question?
               </h1>
@@ -781,7 +781,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Video clip question?
               </h1>
@@ -1035,7 +1035,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1315,7 +1315,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1615,7 +1615,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1875,7 +1875,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 What percentage of the earth's surface is covered by water?
               </h1>
@@ -2113,7 +2113,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Rabbits can't vomit?
               </h1>
@@ -2352,7 +2352,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <h1
-                class="typography title full"
+                class="typography title widthFull"
               >
                 Who painted the Mono Lisa?
               </h1>
