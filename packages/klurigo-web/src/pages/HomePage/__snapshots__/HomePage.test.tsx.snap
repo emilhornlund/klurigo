@@ -63,7 +63,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             class="hero"
           >
             <h1
-              class="typography hero widthMedium"
+              class="typography extraLargeTitle widthMedium"
             >
               Let’s play
             </h1>
@@ -75,7 +75,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
               data-testid="rotating-message"
             >
               <p
-                class="typography text widthSmall"
+                class="typography body widthSmall"
               >
                 Ready to show off your skills? Let’s go!
               </p>
@@ -252,7 +252,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
             class="hero"
           >
             <h1
-              class="typography hero widthMedium"
+              class="typography extraLargeTitle widthMedium"
             >
               Let’s play
             </h1>
@@ -264,7 +264,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
               data-testid="rotating-message"
             >
               <p
-                class="typography text widthSmall"
+                class="typography body widthSmall"
               >
                 Ready to show off your skills? Let’s go!
               </p>

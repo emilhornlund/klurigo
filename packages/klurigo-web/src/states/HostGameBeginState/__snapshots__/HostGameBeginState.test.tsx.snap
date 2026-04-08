@@ -54,7 +54,7 @@ exports[`HostGameBeginState > should render HostGameBeginState 1`] = `
             Loading Game
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             The game starts any second
           </p>

@@ -48,7 +48,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
             Hold tight—calling in the Google cavalry!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             We’re doing the secret handshake with Google. Almost there…
           </p>
@@ -115,7 +115,7 @@ exports[`AuthGoogleCallbackPage > shows error and redirects to /auth/login when 
             Hold tight—calling in the Google cavalry!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             We’re doing the secret handshake with Google. Almost there…
           </p>

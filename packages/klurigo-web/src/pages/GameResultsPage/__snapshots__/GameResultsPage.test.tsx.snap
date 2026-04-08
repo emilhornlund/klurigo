@@ -108,7 +108,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
               Classic Minimal
             </h1>
             <p
-              class="typography text widthFull"
+              class="typography body widthFull"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -1213,7 +1213,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
               Deferred Load
             </h1>
             <p
-              class="typography text widthFull"
+              class="typography body widthFull"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>

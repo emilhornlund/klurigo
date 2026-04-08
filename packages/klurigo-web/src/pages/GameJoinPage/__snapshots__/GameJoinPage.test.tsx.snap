@@ -89,7 +89,7 @@ exports[`GameJoinPage > disables the input while joining and re-enables after pr
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -228,7 +228,7 @@ exports[`GameJoinPage > does not submit when nickname is blank or whitespace 1`]
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -368,7 +368,7 @@ exports[`GameJoinPage > does nothing when gameID is missing 1`] = `
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -507,7 +507,7 @@ exports[`GameJoinPage > join button stays disabled until nickname is valid 1`] =
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -646,7 +646,7 @@ exports[`GameJoinPage > navigates back when clicking the back button 1`] = `
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -786,7 +786,7 @@ exports[`GameJoinPage > prefills nickname from user default and enables Join aft
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -925,7 +925,7 @@ exports[`GameJoinPage > renders title and message (via RotatingMessage) 1`] = `
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -1065,7 +1065,7 @@ exports[`GameJoinPage > starts with empty nickname when user has no default, kee
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -1205,7 +1205,7 @@ exports[`GameJoinPage > submits when the form is submitted (Enter key equivalent
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>
@@ -1344,7 +1344,7 @@ exports[`GameJoinPage > submits with gameID and nickname and navigates to /game 
             data-testid="rotating-message"
           >
             <p
-              class="typography text widthSmall"
+              class="typography body widthSmall"
             >
               Pick a nickname and jump in!
             </p>

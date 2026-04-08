@@ -87,7 +87,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
       <Typography variant="title" width="medium">
         {title}
       </Typography>
-      <Typography variant="text" width="small">
+      <Typography variant="body" width="small">
         {message}
       </Typography>
       <form className={styles.loginForm} onSubmit={handleSubmit}>

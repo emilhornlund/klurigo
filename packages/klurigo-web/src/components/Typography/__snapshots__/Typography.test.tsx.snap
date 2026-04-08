@@ -11,10 +11,10 @@ exports[`Typography > matches snapshot for asChild composition 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Typography > matches snapshot for hero variant 1`] = `
+exports[`Typography > matches snapshot for extraLargeTitle variant 1`] = `
 <DocumentFragment>
   <h1
-    class="typography hero widthMedium"
+    class="typography extraLargeTitle widthMedium"
   >
     Let’s play
   </h1>

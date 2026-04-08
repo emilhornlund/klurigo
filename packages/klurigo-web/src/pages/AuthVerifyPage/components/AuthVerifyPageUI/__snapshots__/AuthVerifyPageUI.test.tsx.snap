@@ -66,7 +66,7 @@ exports[`AuthVerifyPageUI > renders error state 1`] = `
             Oops! Something went wrong.
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             The supplied link is invalid or has expired.
           </p>
@@ -143,7 +143,7 @@ exports[`AuthVerifyPageUI > renders verified state (logged in) with home link 1`
             Hooray! Your email’s all set!
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Welcome aboard the fun train. Let’s roll!
           </p>
@@ -227,7 +227,7 @@ exports[`AuthVerifyPageUI > renders verified state (not logged in) with login li
             Hooray! Your email’s all set!
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Welcome aboard the fun train. Let’s roll!
           </p>
@@ -301,7 +301,7 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
             <div />
           </div>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Good things come to those who wait!
           </p>

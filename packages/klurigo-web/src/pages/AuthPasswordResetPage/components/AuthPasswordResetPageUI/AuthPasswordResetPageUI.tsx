@@ -92,7 +92,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
           Oops! Something went wrong.
         </Typography>
 
-        <Typography variant="text" width="medium">
+        <Typography variant="body" width="medium">
           The supplied link is invalid or has expired.
         </Typography>
       </Page>
@@ -102,7 +102,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
   return (
     <Page>
       <Typography variant="title">Lock It Down!</Typography>
-      <Typography variant="text" width="medium">
+      <Typography variant="body" width="medium">
         Choose your dazzling new password and confirm it below. Let’s keep those
         sneaky hackers out!
       </Typography>

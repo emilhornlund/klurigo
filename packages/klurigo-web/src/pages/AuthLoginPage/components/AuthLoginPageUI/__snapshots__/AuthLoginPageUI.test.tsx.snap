@@ -48,7 +48,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
             Welcome back!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Please sign in to continue.
           </p>
@@ -224,7 +224,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
             Welcome back!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Please sign in to continue.
           </p>
@@ -401,7 +401,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
             Welcome back!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Please sign in to continue.
           </p>
@@ -578,7 +578,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
             Welcome back!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Please sign in to continue.
           </p>
@@ -755,7 +755,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
             Welcome back!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Please sign in to continue.
           </p>

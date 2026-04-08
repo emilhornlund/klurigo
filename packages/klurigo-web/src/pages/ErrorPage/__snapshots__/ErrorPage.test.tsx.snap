@@ -92,12 +92,12 @@ exports[`ErrorPage > should match snapshot 1`] = `
             Oops! Something went wrong.
           </h1>
           <h2
-            class="typography subtitle widthMedium"
+            class="typography title2 widthMedium"
           >
             An unexpected error occurred.
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Please try refreshing the page or go back to the homepage.
           </p>

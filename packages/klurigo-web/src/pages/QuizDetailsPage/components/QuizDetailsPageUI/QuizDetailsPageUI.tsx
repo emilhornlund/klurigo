@@ -105,7 +105,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
         </Typography>
 
         {quiz.description && (
-          <Typography variant="text" width="medium">
+          <Typography variant="body" width="medium">
             {quiz.description}
           </Typography>
         )}

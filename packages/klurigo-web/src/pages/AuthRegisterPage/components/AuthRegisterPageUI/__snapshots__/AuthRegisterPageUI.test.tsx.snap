@@ -48,7 +48,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
             Create your account
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Join the party — make an account in seconds.
           </p>
@@ -269,7 +269,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
             Create your account
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body widthSmall"
           >
             Join the party — make an account in seconds.
           </p>

@@ -48,7 +48,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             No Games Yet
           </h1>
           <p
-            class="typography text widthFull"
+            class="typography body widthFull"
           >
             Host live quizzes and play together with others. Your games will appear here once you start.
           </p>
@@ -56,12 +56,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthMedium"
+            class="typography title2 widthMedium"
           >
             Looking for something to play?
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Browse quizzes made by others and host a live game in seconds.
           </p>
@@ -96,12 +96,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthMedium"
+            class="typography title2 widthMedium"
           >
             Want to make your own?
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Create a quiz in minutes and reuse it for future games.
           </p>
@@ -187,7 +187,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
             Game History
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Review your past games and track your performance.
           </p>

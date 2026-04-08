@@ -48,7 +48,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -250,7 +250,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -398,12 +398,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthFull"
+            class="typography title2 widthFull"
           >
             Upgrade Your Password
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
           </p>
@@ -551,7 +551,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -752,7 +752,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -899,12 +899,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthFull"
+            class="typography title2 widthFull"
           >
             Upgrade Your Password
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
           </p>
@@ -1052,7 +1052,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -1273,7 +1273,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
             Shape your quiz identity
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Update your personal details to keep your profile up to date. Your information helps personalize your quiz experience and lets others recognize you during games.
           </p>
@@ -1440,12 +1440,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthFull"
+            class="typography title2 widthFull"
           >
             Upgrade Your Password
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             Enhance your account security with a fresh password—verify your current one, choose a new one, and confirm to complete the update.
           </p>

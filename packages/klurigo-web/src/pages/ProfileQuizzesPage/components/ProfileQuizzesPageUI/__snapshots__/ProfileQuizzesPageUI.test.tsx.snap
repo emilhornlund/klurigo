@@ -48,7 +48,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
             Your Quiz Shelf
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body widthMedium"
           >
             All your quiz creations, lined up and ready for their next moment in the spotlight.
           </p>

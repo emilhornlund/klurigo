@@ -25,7 +25,7 @@ const PlayerGameBeginState: FC<PlayerGameBeginStateProps> = ({
     <Typography variant="title" width="medium">
       Get ready!
     </Typography>
-    <Typography variant="text" width="small">
+    <Typography variant="body" width="small">
       The game starts any second
     </Typography>
     <LoadingSpinner />
