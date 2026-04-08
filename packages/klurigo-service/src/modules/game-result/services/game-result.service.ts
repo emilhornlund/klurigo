@@ -183,7 +183,7 @@ export class GameResultService {
    */
   public async deleteByGameId(gameId: string): Promise<void> {
     const deletedCount = await this.gameResultRepository.deleteMany({
-      game: { _id: gameId },
+      game: gameId as never,
     })
 
     this.logger.log(

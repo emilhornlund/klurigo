@@ -125,7 +125,7 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
       status: { $in: [GameStatus.Completed] },
-      quiz: { _id: 'quiz-1' },
+      quiz: 'quiz-1',
       'participants.participantId': 'user-1',
     })
   })
@@ -140,7 +140,7 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
       status: { $in: [GameStatus.Completed] },
-      quiz: { _id: 'quiz-1' },
+      quiz: 'quiz-1',
       'participants.participantId': 'user-1',
     })
   })
@@ -155,7 +155,7 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
       status: { $in: [GameStatus.Completed] },
-      quiz: { _id: 'quiz-1' },
+      quiz: 'quiz-1',
       'participants.participantId': 'user-1',
     })
   })

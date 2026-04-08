@@ -188,13 +188,13 @@ describe('UserProfileService', () => {
       })
 
       expect(quizRepository.countQuizzes).toHaveBeenCalledWith({
-        owner: { _id: userId },
+        owner: userId,
         visibility: QuizVisibility.Public,
       })
       expect(userService.findUserProfileOrThrow).toHaveBeenCalledWith(userId)
       expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
         {
-          owner: { _id: userId },
+          owner: userId,
           visibility: QuizVisibility.Public,
         },
         'title',
@@ -221,13 +221,13 @@ describe('UserProfileService', () => {
       })
 
       expect(quizRepository.countQuizzes).toHaveBeenCalledWith({
-        owner: { _id: userId },
+        owner: userId,
         visibility: QuizVisibility.Public,
       })
       expect(userService.findUserProfileOrThrow).toHaveBeenCalledWith(userId)
       expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
         {
-          owner: { _id: userId },
+          owner: userId,
           visibility: QuizVisibility.Public,
         },
         'updated',

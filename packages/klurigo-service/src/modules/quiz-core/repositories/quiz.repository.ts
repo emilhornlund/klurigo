@@ -67,7 +67,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
    */
   public async countPublicQuizzesByOwnerId(ownerId: string): Promise<number> {
     return this.count({
-      owner: { _id: ownerId },
+      owner: ownerId as never,
       visibility: QuizVisibility.Public,
     })
   }

@@ -394,7 +394,7 @@ describe(GameService.name, () => {
 
       expect(gameRepository.find).toHaveBeenCalledTimes(1)
       expect(gameRepository.find).toHaveBeenCalledWith({
-        quiz: { _id: 'q-1' },
+        quiz: 'q-1',
       })
 
       expect(gameRepository.delete).toHaveBeenCalledTimes(2)

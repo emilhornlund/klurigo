@@ -207,7 +207,7 @@ export class QuizService {
     offset: number = 0,
   ): Promise<PaginatedQuizResponseDto> {
     const filter: QueryFilter<Quiz> = {
-      ...(ownerId ? { owner: { _id: ownerId } } : {}),
+      ...(ownerId ? { owner: ownerId as never } : {}),
       ...(search?.length ? { title: { $regex: search, $options: 'i' } } : {}),
       ...(mode ? { mode } : {}),
       ...(visibility ? { visibility } : {}),
