@@ -988,7 +988,7 @@ describe(GameResultService.name, () => {
 
       expect(gameResultRepository.deleteMany).toHaveBeenCalledTimes(1)
       expect(gameResultRepository.deleteMany).toHaveBeenCalledWith({
-        game: { _id: gameId },
+        game: gameId,
       })
 
       expect(logSpy).toHaveBeenCalledWith(
@@ -1005,7 +1005,7 @@ describe(GameResultService.name, () => {
       await service.deleteByGameId(gameId)
 
       expect(gameResultRepository.deleteMany).toHaveBeenCalledWith({
-        game: { _id: gameId },
+        game: gameId,
       })
 
       expect(logSpy).toHaveBeenCalledWith(
@@ -1022,7 +1022,7 @@ describe(GameResultService.name, () => {
       await expect(service.deleteByGameId(gameId)).rejects.toThrow('db down')
 
       expect(gameResultRepository.deleteMany).toHaveBeenCalledWith({
-        game: { _id: gameId },
+        game: gameId,
       })
 
       expect(logSpy).not.toHaveBeenCalled()

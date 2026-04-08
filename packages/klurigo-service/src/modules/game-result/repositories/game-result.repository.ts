@@ -32,7 +32,7 @@ export class GameResultRepository extends BaseRepository<GameResult> {
   public async findGameResult(gameID: string): Promise<GameResult | null> {
     return this.gameResultModel
       .findOne({
-        game: { _id: gameID },
+        game: gameID as never,
       })
       .populate([
         {

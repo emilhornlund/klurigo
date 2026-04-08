@@ -79,7 +79,7 @@ export class UserProfileService {
     await this.userService.findUserProfileOrThrow(userId)
 
     const filter: QueryFilter<Quiz> = {
-      owner: { _id: userId },
+      owner: userId as never,
       visibility: QuizVisibility.Public,
     }
 

@@ -238,7 +238,7 @@ export class GameRepository extends BaseRepository<Game> {
    * This is used to enforce authorization rules for quiz-related operations (for example, allowing a user
    * to rate a quiz only after they have participated in a completed game that used that quiz).
    *
-   * @param quizId - The quiz id to match against `game.quiz._id`.
+   * @param quizId - The quiz id stored in the `game.quiz` reference field.
    * @param participantId - The participant id to match against `participants.participantId`.
    *
    * @returns `true` if at least one completed game exists for the given quiz and participant; otherwise `false`.
@@ -249,7 +249,7 @@ export class GameRepository extends BaseRepository<Game> {
   ): Promise<boolean> {
     const filter: QueryFilter<Game> = {
       status: { $in: [GameStatus.Completed] },
-      quiz: { _id: quizId },
+      quiz: quizId as never,
       'participants.participantId': participantId,
     }
 

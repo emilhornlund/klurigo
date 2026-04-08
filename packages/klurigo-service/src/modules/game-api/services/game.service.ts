@@ -610,7 +610,7 @@ export class GameService {
    */
   public async deleteQuiz(quizId: string): Promise<void> {
     const games = await this.gameRepository.find({
-      quiz: { _id: quizId },
+      quiz: quizId as never,
     })
 
     for (const game of games) {

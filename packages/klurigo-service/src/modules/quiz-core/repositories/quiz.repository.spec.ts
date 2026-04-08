@@ -124,7 +124,7 @@ describe('QuizRepository', () => {
 
       expect(countMock).toHaveBeenCalledTimes(1)
       expect(countMock).toHaveBeenCalledWith({
-        owner: { _id: 'owner-1' },
+        owner: 'owner-1',
         visibility: QuizVisibility.Public,
       })
     })
