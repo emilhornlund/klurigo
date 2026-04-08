@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import Typography from './Typography'
 
 describe('Typography', () => {
-  it('renders a <p> by default (variant=text) with full size', () => {
+  it('renders a <p> by default (variant=body) with full size', () => {
     render(<Typography>Hello</Typography>)
 
     const el = screen.getByText('Hello')
@@ -157,7 +157,7 @@ describe('Typography', () => {
 
   it('matches snapshot for title variant', () => {
     const { asFragment } = render(
-      <Typography variant="title" width="small">
+      <Typography variant="title" width="small" align="left">
         Leaderboard
       </Typography>,
     )
@@ -287,5 +287,37 @@ describe('Typography', () => {
     )
 
     expect(asFragment()).toMatchSnapshot()
+  })
+
+  it('applies center alignment by default when align is not provided', () => {
+    render(<Typography>Centered</Typography>)
+
+    const el = screen.getByText('Centered')
+    expect(el).toHaveClass('alignCenter')
+  })
+
+  it('applies alignment modifier classes', () => {
+    const { rerender } = render(<Typography align="center">Center</Typography>)
+    expect(screen.getByText('Center')).toHaveClass('alignCenter')
+
+    rerender(<Typography align="justify">Justify</Typography>)
+    expect(screen.getByText('Justify')).toHaveClass('alignJustify')
+
+    rerender(<Typography align="left">Left</Typography>)
+    expect(screen.getByText('Left')).toHaveClass('alignLeft')
+
+    rerender(<Typography align="right">Right</Typography>)
+    expect(screen.getByText('Right')).toHaveClass('alignRight')
+  })
+
+  it('applies alignment modifier classes when asChild=true', () => {
+    render(
+      <Typography variant="body" align="right" asChild>
+        <span>Aligned child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Aligned child')
+    expect(el).toHaveClass('alignRight')
   })
 })

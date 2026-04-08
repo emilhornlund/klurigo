@@ -53,6 +53,7 @@ export type { TextareaProps } from './Textarea'
 export type { TextFieldProps } from './TextField'
 export {
   type TypographyVariant,
+  type TypographyAlign,
   type TypographyWidth,
   type TypographyProps,
   default as Typography,

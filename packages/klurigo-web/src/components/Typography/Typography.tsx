@@ -31,6 +31,11 @@ export type TypographyVariant =
   | 'link'
 
 /**
+ * Defines the supported text alignment options for the Typography component.
+ */
+export type TypographyAlign = 'center' | 'justify' | 'left' | 'right'
+
+/**
  * Defines the supported width constraints for the Typography component.
  *
  * These values control the maximum width behavior of the rendered element
@@ -66,6 +71,13 @@ const elementByVariant = {
  * concerns that are applicable regardless of the rendered element.
  */
 type SharedProps = {
+  /**
+   * Controls the text alignment of the typography element.
+   *
+   * Defaults to center.
+   */
+  align?: TypographyAlign
+
   /**
    * Controls the horizontal width constraint applied to the typography element.
    *
@@ -227,6 +239,7 @@ export type TypographyProps = NonLinkProps | LinkProps
 const Typography: FC<TypographyProps> = (props) => {
   const {
     variant = 'body',
+    align = 'center',
     width = 'full',
     children,
     asChild,
@@ -292,6 +305,10 @@ const Typography: FC<TypographyProps> = (props) => {
     variant === 'title2' ? styles.title2 : undefined,
     variant === 'body' ? styles.body : undefined,
     variant === 'link' ? styles.link : undefined,
+    align === 'center' ? styles.alignCenter : undefined,
+    align === 'justify' ? styles.alignJustify : undefined,
+    align === 'left' ? styles.alignLeft : undefined,
+    align === 'right' ? styles.alignRight : undefined,
     width === 'small' ? styles.widthSmall : undefined,
     width === 'medium' ? styles.widthMedium : undefined,
     width === 'full' ? styles.widthFull : undefined,
