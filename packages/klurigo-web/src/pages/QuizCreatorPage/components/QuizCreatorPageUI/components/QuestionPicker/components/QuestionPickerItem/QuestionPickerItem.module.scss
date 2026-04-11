@@ -248,7 +248,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       .questionPickerItemOverlayError {
         color: colors.$color-status-warning;
         background-color: colors.$color-surface-default;
-        pointer-events: auto;
+        pointer-events: none;
 
         @include helpers.mobile {
           @include helpers.fontSize(16px);

@@ -4,11 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionType } from '@klurigo/common'
 import type { DragEvent, FC, MouseEvent } from 'react'
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../../../../../../../components'
 import { QuestionTypeLabels } from '../../../../../../../../models'
 import { classNames } from '../../../../../../../../utils/helpers'
 
@@ -19,7 +14,7 @@ export interface QuestionPickerItemProps {
   text: string
   type: QuestionType
   active?: boolean
-  errorMessage?: string
+  valid: boolean
   onClick?: () => void
   onDrop?: (id: number) => void
   onDuplicate?: () => void
@@ -31,7 +26,7 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
   text,
   type,
   active,
-  errorMessage,
+  valid,
   onClick,
   onDrop,
   onDuplicate,
@@ -102,18 +97,9 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
               <FontAwesomeIcon icon={faCopy} />
             </button>
           )}
-          {!!errorMessage && (
+          {!valid && (
             <div className={styles.questionPickerItemOverlayError}>
-              <Tooltip placement="bottom">
-                <TooltipTrigger>
-                  <FontAwesomeIcon icon={faCircleExclamation} />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className={styles.tooltipErrorContent}>
-                    {errorMessage}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
+              <FontAwesomeIcon icon={faCircleExclamation} />
             </div>
           )}
           {active && (
