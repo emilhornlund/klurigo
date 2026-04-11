@@ -12,7 +12,7 @@ import styles from './QuestionPicker.module.scss'
 export type QuestionPickerItem = {
   type: QuestionType
   text?: string
-  errorMessage?: string
+  valid: boolean
 }
 
 export interface QuestionPickerProps {
@@ -75,14 +75,14 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
       <div
         ref={questionPickerItemContainerRef}
         className={styles.questionPickerItemContainer}>
-        {questions.map(({ type, text, errorMessage }, index) => (
+        {questions.map(({ type, text, valid }, index) => (
           <QuestionPickerItem
             key={`question-picker-item-${index}`}
             index={index}
             text={text || 'Question'}
             type={type}
             active={isActive(index)}
-            errorMessage={errorMessage}
+            valid={valid}
             onClick={() => onSelectQuestion(index)}
             onDrop={onDropQuestion}
             onDuplicate={() => onDuplicateQuestion(index)}

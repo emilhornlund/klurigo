@@ -159,7 +159,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
               questions={questions.map((question, index) => ({
                 type: question.type as QuestionType,
                 text: question.question,
-                error: !questionValidations[index].valid,
+                valid: questionValidations[index].valid,
               }))}
               selectedQuestionIndex={selectedQuestionIndex}
               onAddQuestion={onAddQuestion}
