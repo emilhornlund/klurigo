@@ -43,12 +43,12 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title widthMedium"
+            class="typography title alignCenter widthMedium colorInverse"
           >
             Create your account
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body alignCenter widthSmall colorInverse"
           >
             Join the party — make an account in seconds.
           </p>
@@ -208,7 +208,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
             </div>
           </form>
           <a
-            class="typography link widthSmall"
+            class="typography link alignCenter widthSmall colorInverse"
             data-discover="true"
             href="/auth/login"
           >
@@ -264,12 +264,12 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title widthMedium"
+            class="typography title alignCenter widthMedium colorInverse"
           >
             Create your account
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body alignCenter widthSmall colorInverse"
           >
             Join the party — make an account in seconds.
           </p>
@@ -426,7 +426,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
             </div>
           </form>
           <a
-            class="typography link widthSmall"
+            class="typography link alignCenter widthSmall colorInverse"
             data-discover="true"
             href="/auth/login"
           >

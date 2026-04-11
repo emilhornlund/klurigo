@@ -32,10 +32,10 @@ const ErrorPage: FC = () => {
       <Typography variant="title" width="medium">
         Oops! Something went wrong.
       </Typography>
-      <Typography variant="subtitle" width="medium">
+      <Typography variant="title2" width="medium">
         {error?.statusText || 'An unexpected error occurred.'}
       </Typography>
-      <Typography variant="text" width="medium">
+      <Typography variant="body" width="medium">
         {error?.data ||
           'Please try refreshing the page or go back to the homepage.'}
       </Typography>

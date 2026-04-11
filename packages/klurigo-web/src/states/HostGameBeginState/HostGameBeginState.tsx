@@ -15,7 +15,7 @@ const HostGameBeginState: FC<HostGameBeginStateProps> = () => (
     <Typography variant="title" width="medium">
       Loading Game
     </Typography>
-    <Typography variant="text" width="small">
+    <Typography variant="body" width="small">
       The game starts any second
     </Typography>
     <LoadingSpinner />

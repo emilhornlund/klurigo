@@ -91,7 +91,7 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
         <RotatingMessage
           messages={MESSAGES}
           renderMessage={(message) => (
-            <Typography variant="text" width="small">
+            <Typography variant="body" width="small">
               {message}
             </Typography>
           )}

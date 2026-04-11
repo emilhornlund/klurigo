@@ -27,7 +27,7 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           Hooray! Your email’s all set!
         </Typography>
 
-        <Typography variant="text" width="medium">
+        <Typography variant="body" width="medium">
           Welcome aboard the fun train. Let’s roll!
         </Typography>
 
@@ -51,7 +51,7 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
 
         <LoadingSpinner />
 
-        <Typography variant="text" width="small">
+        <Typography variant="body" width="small">
           Good things come to those who wait!
         </Typography>
       </>
@@ -67,7 +67,7 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           Oops! Something went wrong.
         </Typography>
 
-        <Typography variant="text" width="medium">
+        <Typography variant="body" width="medium">
           The supplied link is invalid or has expired.
         </Typography>
       </>

@@ -66,7 +66,7 @@ const DiscoverSectionPageUI: FC<DiscoverSectionPageUIProps> = ({
               <Typography variant="title" width="full">
                 {title}
               </Typography>
-              <Typography variant="text" width="full">
+              <Typography variant="body" width="full">
                 {description}
               </Typography>
             </div>

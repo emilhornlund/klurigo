@@ -75,7 +75,7 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
   if (isError || !profile) {
     return (
       <Page align="center" discover profile>
-        <Typography variant="text" data-testid="user-profile-error-state">
+        <Typography variant="body" data-testid="user-profile-error-state">
           This user profile is not available right now.
         </Typography>
       </Page>
@@ -103,7 +103,7 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 
       {quizzes.length === 0 ? (
         <section className={styles.railSection}>
-          <Typography variant="text" data-testid="user-profile-empty-rail">
+          <Typography variant="body" data-testid="user-profile-empty-rail">
             This user hasn&apos;t shared any quizzes yet.
           </Typography>
         </section>

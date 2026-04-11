@@ -54,17 +54,17 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
     return (
       <Page align="start" width="medium" discover profile>
         <Typography variant="title">No Games Yet</Typography>
-        <Typography variant="text">
+        <Typography variant="body">
           Host live quizzes and play together with others. Your games will
           appear here once you start.
         </Typography>
 
         <PageDivider />
 
-        <Typography variant="subtitle" width="medium">
+        <Typography variant="title2" width="medium">
           Looking for something to play?
         </Typography>
-        <Typography variant="text" width="medium">
+        <Typography variant="body" width="medium">
           Browse quizzes made by others and host a live game in seconds.
         </Typography>
         <Button
@@ -80,10 +80,10 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
 
         <PageDivider />
 
-        <Typography variant="subtitle" width="medium">
+        <Typography variant="title2" width="medium">
           Want to make your own?
         </Typography>
-        <Typography variant="text" width="medium">
+        <Typography variant="body" width="medium">
           Create a quiz in minutes and reuse it for future games.
         </Typography>
         <Button
@@ -103,7 +103,7 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
   return (
     <Page align="start" discover profile>
       <Typography variant="title">Game History</Typography>
-      <Typography variant="text" width="medium">
+      <Typography variant="body" width="medium">
         Review your past games and track your performance.
       </Typography>
       {isError ? (

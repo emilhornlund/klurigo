@@ -43,12 +43,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             No Games Yet
           </h1>
           <p
-            class="typography text widthFull"
+            class="typography body alignCenter widthFull colorInverse"
           >
             Host live quizzes and play together with others. Your games will appear here once you start.
           </p>
@@ -56,12 +56,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthMedium"
+            class="typography title2 alignCenter widthMedium colorInverse"
           >
             Looking for something to play?
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body alignCenter widthMedium colorInverse"
           >
             Browse quizzes made by others and host a live game in seconds.
           </p>
@@ -96,12 +96,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             class="pageDivider"
           />
           <h2
-            class="typography subtitle widthMedium"
+            class="typography title2 alignCenter widthMedium colorInverse"
           >
             Want to make your own?
           </h2>
           <p
-            class="typography text widthMedium"
+            class="typography body alignCenter widthMedium colorInverse"
           >
             Create a quiz in minutes and reuse it for future games.
           </p>
@@ -182,12 +182,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Game History
           </h1>
           <p
-            class="typography text widthMedium"
+            class="typography body alignCenter widthMedium colorInverse"
           >
             Review your past games and track your performance.
           </p>

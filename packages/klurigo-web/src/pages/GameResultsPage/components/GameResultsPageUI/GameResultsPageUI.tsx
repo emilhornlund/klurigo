@@ -70,7 +70,7 @@ const GameResultsPageUI: FC<GameResultsPageUIProps> = ({
       <div className={styles.gameResultsPage}>
         <Typography variant="title">{results.name}</Typography>
 
-        <Typography variant="text">
+        <Typography variant="body">
           A quick look at how this game unfolded — see how players performed,
           how fast they answered, and who stood out.
         </Typography>

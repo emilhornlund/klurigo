@@ -4,27 +4,29 @@ import { describe, expect, it, vi } from 'vitest'
 import Typography from './Typography'
 
 describe('Typography', () => {
-  it('renders a <p> by default (variant=text) with full size', () => {
+  it('renders a <p> by default (variant=body) with full size', () => {
     render(<Typography>Hello</Typography>)
 
     const el = screen.getByText('Hello')
     expect(el.tagName.toLowerCase()).toBe('p')
     expect(el).toHaveClass('typography')
-    expect(el).toHaveClass('text')
+    expect(el).toHaveClass('body')
     expect(el).toHaveClass('widthFull')
   })
 
   it('renders semantic elements for each variant', () => {
-    const { rerender } = render(<Typography variant="hero">Hero</Typography>)
+    const { rerender } = render(
+      <Typography variant="extraLargeTitle">Hero</Typography>,
+    )
     expect(screen.getByText('Hero').tagName.toLowerCase()).toBe('h1')
 
     rerender(<Typography variant="title">Title</Typography>)
     expect(screen.getByText('Title').tagName.toLowerCase()).toBe('h1')
 
-    rerender(<Typography variant="subtitle">Subtitle</Typography>)
+    rerender(<Typography variant="title2">Subtitle</Typography>)
     expect(screen.getByText('Subtitle').tagName.toLowerCase()).toBe('h2')
 
-    rerender(<Typography variant="text">Text</Typography>)
+    rerender(<Typography variant="body">Text</Typography>)
     expect(screen.getByText('Text').tagName.toLowerCase()).toBe('p')
 
     rerender(
@@ -37,21 +39,21 @@ describe('Typography', () => {
 
   it('applies size modifier classes', () => {
     const { rerender } = render(
-      <Typography variant="text" width="small">
+      <Typography variant="body" width="small">
         Small
       </Typography>,
     )
     expect(screen.getByText('Small')).toHaveClass('widthSmall')
 
     rerender(
-      <Typography variant="text" width="medium">
+      <Typography variant="body" width="medium">
         Medium
       </Typography>,
     )
     expect(screen.getByText('Medium')).toHaveClass('widthMedium')
 
     rerender(
-      <Typography variant="text" width="full">
+      <Typography variant="body" width="full">
         Full
       </Typography>,
     )
@@ -92,7 +94,7 @@ describe('Typography', () => {
   it('forwards aria attributes and data attributes', () => {
     render(
       <Typography
-        variant="text"
+        variant="body"
         aria-label="Accessible label"
         aria-live="polite"
         data-testid="typography"
@@ -110,8 +112,8 @@ describe('Typography', () => {
   it('forwards standard DOM props like id, title, role, and tabIndex', () => {
     render(
       <Typography
-        variant="subtitle"
-        id="subtitle-id"
+        variant="title2"
+        id="title2-id"
         title="tooltip"
         role="heading"
         tabIndex={0}>
@@ -120,7 +122,7 @@ describe('Typography', () => {
     )
 
     const el = screen.getByText('Subtitle')
-    expect(el).toHaveAttribute('id', 'subtitle-id')
+    expect(el).toHaveAttribute('id', 'title2-id')
     expect(el).toHaveAttribute('title', 'tooltip')
     expect(el).toHaveAttribute('role', 'heading')
     expect(el).toHaveAttribute('tabindex', '0')
@@ -131,7 +133,7 @@ describe('Typography', () => {
     const onKeyDown = vi.fn()
 
     render(
-      <Typography variant="text" onClick={onClick} onKeyDown={onKeyDown}>
+      <Typography variant="body" onClick={onClick} onKeyDown={onKeyDown}>
         Clickable
       </Typography>,
     )
@@ -144,9 +146,9 @@ describe('Typography', () => {
     expect(onKeyDown).toHaveBeenCalledTimes(1)
   })
 
-  it('matches snapshot for hero variant', () => {
+  it('matches snapshot for extraLargeTitle variant', () => {
     const { asFragment } = render(
-      <Typography variant="hero" width="medium">
+      <Typography variant="extraLargeTitle" width="medium">
         Let’s play
       </Typography>,
     )
@@ -155,7 +157,7 @@ describe('Typography', () => {
 
   it('matches snapshot for title variant', () => {
     const { asFragment } = render(
-      <Typography variant="title" width="small">
+      <Typography variant="title" width="small" align="left">
         Leaderboard
       </Typography>,
     )
@@ -188,7 +190,7 @@ describe('Typography', () => {
 
   it('merges child className with Typography classes when asChild=true', () => {
     render(
-      <Typography variant="subtitle" width="small" asChild className="outer">
+      <Typography variant="title2" width="small" asChild className="outer">
         <span className="inner">Merged</span>
       </Typography>,
     )
@@ -198,14 +200,14 @@ describe('Typography', () => {
     expect(el).toHaveClass('outer')
 
     expect(el).toHaveClass('typography')
-    expect(el).toHaveClass('subtitle')
+    expect(el).toHaveClass('title2')
     expect(el).toHaveClass('widthSmall')
   })
 
   it('forwards aria and data attributes onto the child element when asChild=true', () => {
     render(
       <Typography
-        variant="text"
+        variant="body"
         asChild
         aria-label="Label"
         aria-hidden="true"
@@ -228,7 +230,7 @@ describe('Typography', () => {
 
     render(
       <Typography
-        variant="text"
+        variant="body"
         asChild
         onClick={onClick}
         onKeyDown={onKeyDown}>
@@ -247,7 +249,7 @@ describe('Typography', () => {
   it('throws when asChild=true and children is not a valid React element', () => {
     const renderInvalid = () =>
       render(
-        <Typography variant="text" asChild>
+        <Typography variant="body" asChild>
           {'Not an element'}
         </Typography>,
       )
@@ -281,6 +283,103 @@ describe('Typography', () => {
         <a href="/quiz/create" className="inner">
           Create your own quiz
         </a>
+      </Typography>,
+    )
+
+    expect(asFragment()).toMatchSnapshot()
+  })
+
+  it('applies center alignment by default when align is not provided', () => {
+    render(<Typography>Centered</Typography>)
+
+    const el = screen.getByText('Centered')
+    expect(el).toHaveClass('alignCenter')
+  })
+
+  it('applies alignment modifier classes', () => {
+    const { rerender } = render(<Typography align="center">Center</Typography>)
+    expect(screen.getByText('Center')).toHaveClass('alignCenter')
+
+    rerender(<Typography align="justify">Justify</Typography>)
+    expect(screen.getByText('Justify')).toHaveClass('alignJustify')
+
+    rerender(<Typography align="left">Left</Typography>)
+    expect(screen.getByText('Left')).toHaveClass('alignLeft')
+
+    rerender(<Typography align="right">Right</Typography>)
+    expect(screen.getByText('Right')).toHaveClass('alignRight')
+  })
+
+  it('applies alignment modifier classes when asChild=true', () => {
+    render(
+      <Typography variant="body" align="right" asChild>
+        <span>Aligned child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Aligned child')
+    expect(el).toHaveClass('alignRight')
+  })
+
+  it('applies inverse color by default when color is not provided', () => {
+    render(<Typography>Default color</Typography>)
+
+    const el = screen.getByText('Default color')
+    expect(el).toHaveClass('colorInverse')
+  })
+
+  it('applies color modifier classes', () => {
+    const { rerender } = render(
+      <Typography color="default">Default</Typography>,
+    )
+    expect(screen.getByText('Default')).toHaveClass('colorDefault')
+
+    rerender(<Typography color="subtle">Subtle</Typography>)
+    expect(screen.getByText('Subtle')).toHaveClass('colorSubtle')
+
+    rerender(<Typography color="muted">Muted</Typography>)
+    expect(screen.getByText('Muted')).toHaveClass('colorMuted')
+
+    rerender(<Typography color="disabled">Disabled</Typography>)
+    expect(screen.getByText('Disabled')).toHaveClass('colorDisabled')
+
+    rerender(<Typography color="inverse">Inverse</Typography>)
+    expect(screen.getByText('Inverse')).toHaveClass('colorInverse')
+
+    rerender(<Typography color="inverseSubtle">Inverse subtle</Typography>)
+    expect(screen.getByText('Inverse subtle')).toHaveClass('colorInverseSubtle')
+
+    rerender(<Typography color="success">Success</Typography>)
+    expect(screen.getByText('Success')).toHaveClass('colorSuccess')
+
+    rerender(<Typography color="danger">Danger</Typography>)
+    expect(screen.getByText('Danger')).toHaveClass('colorDanger')
+
+    rerender(<Typography color="warning">Warning</Typography>)
+    expect(screen.getByText('Warning')).toHaveClass('colorWarning')
+
+    rerender(<Typography color="warningSoft">Warning soft</Typography>)
+    expect(screen.getByText('Warning soft')).toHaveClass('colorWarningSoft')
+
+    rerender(<Typography color="emphasis">Emphasis</Typography>)
+    expect(screen.getByText('Emphasis')).toHaveClass('colorEmphasis')
+  })
+
+  it('applies color modifier classes when asChild=true', () => {
+    render(
+      <Typography variant="body" color="danger" asChild>
+        <span>Danger child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Danger child')
+    expect(el).toHaveClass('colorDanger')
+  })
+
+  it('matches snapshot for body variant with semantic color', () => {
+    const { asFragment } = render(
+      <Typography variant="body" color="success" align="left" width="medium">
+        Saved successfully
       </Typography>,
     )
 

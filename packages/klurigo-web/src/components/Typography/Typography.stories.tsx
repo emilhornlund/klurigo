@@ -13,11 +13,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const variants = ['hero', 'title', 'subtitle', 'text', 'link'] as const
+const variants = ['extraLargeTitle', 'title', 'title2', 'body', 'link'] as const
 
 export const AllVariants: Story = {
   args: {
-    variant: 'text',
+    variant: 'body',
     children: 'Preview',
   },
   render: () => {
@@ -37,7 +37,7 @@ export const AllVariants: Story = {
           <div
             key={variant}
             style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Typography variant="subtitle" width="full">
+            <Typography variant="title2" width="full">
               Variant: {variant}
             </Typography>
 

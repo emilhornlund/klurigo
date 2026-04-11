@@ -54,12 +54,12 @@ exports[`PlayerGameBeginState > should render PlayerGameBeginState 1`] = `
             FrostyBear
           </div>
           <h1
-            class="typography title widthMedium"
+            class="typography title alignCenter widthMedium colorInverse"
           >
             Get ready!
           </h1>
           <p
-            class="typography text widthSmall"
+            class="typography body alignCenter widthSmall colorInverse"
           >
             The game starts any second
           </p>

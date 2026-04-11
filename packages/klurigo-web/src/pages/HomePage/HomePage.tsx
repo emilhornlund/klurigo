@@ -136,7 +136,7 @@ const HomePage: FC = () => {
         <PageProminentIcon src={KlurigoIcon} alt="Klurigo" />
       </div>
       <div className={styles.hero}>
-        <Typography variant="hero" width="medium">
+        <Typography variant="extraLargeTitle" width="medium">
           Let’s play
         </Typography>
       </div>
@@ -144,7 +144,7 @@ const HomePage: FC = () => {
         <RotatingMessage
           messages={MESSAGES}
           renderMessage={(message) => (
-            <Typography variant="text" width="small">
+            <Typography variant="body" width="small">
               {message}
             </Typography>
           )}

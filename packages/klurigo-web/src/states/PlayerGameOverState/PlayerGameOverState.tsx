@@ -100,7 +100,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
 
       <Typography variant="title">{quiz.title}</Typography>
 
-      <Typography variant="text" width="medium">
+      <Typography variant="body" width="medium">
         {message}
       </Typography>
 
@@ -114,7 +114,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
           celebration={celebrationLevel}>
           {rank}
         </Badge>
-        <Typography variant="text" width="small">
+        <Typography variant="body" width="small">
           out of {totalPlayers} players
         </Typography>
       </div>
@@ -124,7 +124,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
       <StreakBadge streak={currentStreak}>Streak</StreakBadge>
 
       {comebackRankGain > 0 && (
-        <Typography variant="text" width="small">
+        <Typography variant="body" width="small">
           ↗ Comeback! +{comebackRankGain} ranks
         </Typography>
       )}

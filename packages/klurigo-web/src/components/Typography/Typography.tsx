@@ -23,7 +23,17 @@ import styles from './Typography.module.scss'
  * Each variant maps to a specific semantic HTML element and a corresponding
  * visual style defined in the stylesheet.
  */
-export type TypographyVariant = 'hero' | 'title' | 'subtitle' | 'text' | 'link'
+export type TypographyVariant =
+  | 'extraLargeTitle'
+  | 'title'
+  | 'title2'
+  | 'body'
+  | 'link'
+
+/**
+ * Defines the supported text alignment options for the Typography component.
+ */
+export type TypographyAlign = 'center' | 'justify' | 'left' | 'right'
 
 /**
  * Defines the supported width constraints for the Typography component.
@@ -34,23 +44,44 @@ export type TypographyVariant = 'hero' | 'title' | 'subtitle' | 'text' | 'link'
 export type TypographyWidth = 'small' | 'medium' | 'full'
 
 /**
+ * Defines the supported semantic text color variants for the Typography component.
+ *
+ * Each value maps to a semantic color token in the design system.
+ * These tokens ensure consistent and accessible text color usage across the application.
+ *
+ * Defaults to `inverse`.
+ */
+export type TypographyColor =
+  | 'default'
+  | 'subtle'
+  | 'muted'
+  | 'disabled'
+  | 'inverse'
+  | 'inverseSubtle'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'warningSoft'
+  | 'emphasis'
+
+/**
  * Maps each Typography variant to the semantic HTML element it should render.
  *
  * Semantic rules:
- * - hero     renders as h1 with extra-large visual styling
- * - title    renders as h1 with standard title styling
- * - subtitle renders as h2
- * - text     renders as p
- * - link     renders as a
+ * - extraLargeTitle renders as h1 with extra-large visual styling
+ * - title           renders as h1 with standard title styling
+ * - title2          renders as h2
+ * - body            renders as p
+ * - link            renders as a
  *
- * Both hero and title intentionally render as h1. The distinction between them
+ * Both extraLargeTitle and title intentionally render as h1. The distinction between them
  * is visual only and does not affect document structure.
  */
 const elementByVariant = {
-  hero: 'h1',
+  extraLargeTitle: 'h1',
   title: 'h1',
-  subtitle: 'h2',
-  text: 'p',
+  title2: 'h2',
+  body: 'p',
   link: 'a',
 } as const satisfies Record<TypographyVariant, keyof JSX.IntrinsicElements>
 
@@ -62,11 +93,25 @@ const elementByVariant = {
  */
 type SharedProps = {
   /**
+   * Controls the text alignment of the typography element.
+   *
+   * Defaults to center.
+   */
+  align?: TypographyAlign
+
+  /**
    * Controls the horizontal width constraint applied to the typography element.
    *
    * Defaults to full width.
    */
   width?: TypographyWidth
+
+  /**
+   * Controls the text color using semantic tokens.
+   *
+   * Defaults to inverse.
+   */
+  color?: TypographyColor
 
   /**
    * Content rendered inside the typography element.
@@ -175,13 +220,13 @@ type NonLinkVariant = Exclude<TypographyVariant, 'link'>
 /**
  * Properties for non-link Typography variants.
  *
- * Used for hero, title, subtitle, and text variants.
+ * Used for extraLargeTitle, title, title2, and body variants.
  */
 type NonLinkProps = SharedProps & {
   /**
    * Typography variant excluding link.
    *
-   * Defaults to text.
+   * Defaults to body.
    */
   variant?: NonLinkVariant
 }
@@ -221,8 +266,10 @@ export type TypographyProps = NonLinkProps | LinkProps
  */
 const Typography: FC<TypographyProps> = (props) => {
   const {
-    variant = 'text',
+    variant = 'body',
+    align = 'center',
     width = 'full',
+    color = 'inverse',
     children,
     asChild,
     className,
@@ -282,14 +329,29 @@ const Typography: FC<TypographyProps> = (props) => {
    */
   const classes = classNames(
     styles.typography,
-    variant === 'hero' ? styles.hero : undefined,
+    variant === 'extraLargeTitle' ? styles.extraLargeTitle : undefined,
     variant === 'title' ? styles.title : undefined,
-    variant === 'subtitle' ? styles.subtitle : undefined,
-    variant === 'text' ? styles.text : undefined,
+    variant === 'title2' ? styles.title2 : undefined,
+    variant === 'body' ? styles.body : undefined,
     variant === 'link' ? styles.link : undefined,
+    align === 'center' ? styles.alignCenter : undefined,
+    align === 'justify' ? styles.alignJustify : undefined,
+    align === 'left' ? styles.alignLeft : undefined,
+    align === 'right' ? styles.alignRight : undefined,
     width === 'small' ? styles.widthSmall : undefined,
     width === 'medium' ? styles.widthMedium : undefined,
     width === 'full' ? styles.widthFull : undefined,
+    color === 'default' ? styles.colorDefault : undefined,
+    color === 'subtle' ? styles.colorSubtle : undefined,
+    color === 'muted' ? styles.colorMuted : undefined,
+    color === 'disabled' ? styles.colorDisabled : undefined,
+    color === 'inverse' ? styles.colorInverse : undefined,
+    color === 'inverseSubtle' ? styles.colorInverseSubtle : undefined,
+    color === 'success' ? styles.colorSuccess : undefined,
+    color === 'danger' ? styles.colorDanger : undefined,
+    color === 'warning' ? styles.colorWarning : undefined,
+    color === 'warningSoft' ? styles.colorWarningSoft : undefined,
+    color === 'emphasis' ? styles.colorEmphasis : undefined,
     inlineStyle !== undefined ? styles.textFitEnabled : undefined,
     className,
   )
