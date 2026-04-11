@@ -320,4 +320,69 @@ describe('Typography', () => {
     const el = screen.getByText('Aligned child')
     expect(el).toHaveClass('alignRight')
   })
+
+  it('applies inverse color by default when color is not provided', () => {
+    render(<Typography>Default color</Typography>)
+
+    const el = screen.getByText('Default color')
+    expect(el).toHaveClass('colorInverse')
+  })
+
+  it('applies color modifier classes', () => {
+    const { rerender } = render(
+      <Typography color="default">Default</Typography>,
+    )
+    expect(screen.getByText('Default')).toHaveClass('colorDefault')
+
+    rerender(<Typography color="subtle">Subtle</Typography>)
+    expect(screen.getByText('Subtle')).toHaveClass('colorSubtle')
+
+    rerender(<Typography color="muted">Muted</Typography>)
+    expect(screen.getByText('Muted')).toHaveClass('colorMuted')
+
+    rerender(<Typography color="disabled">Disabled</Typography>)
+    expect(screen.getByText('Disabled')).toHaveClass('colorDisabled')
+
+    rerender(<Typography color="inverse">Inverse</Typography>)
+    expect(screen.getByText('Inverse')).toHaveClass('colorInverse')
+
+    rerender(<Typography color="inverseSubtle">Inverse subtle</Typography>)
+    expect(screen.getByText('Inverse subtle')).toHaveClass('colorInverseSubtle')
+
+    rerender(<Typography color="success">Success</Typography>)
+    expect(screen.getByText('Success')).toHaveClass('colorSuccess')
+
+    rerender(<Typography color="danger">Danger</Typography>)
+    expect(screen.getByText('Danger')).toHaveClass('colorDanger')
+
+    rerender(<Typography color="warning">Warning</Typography>)
+    expect(screen.getByText('Warning')).toHaveClass('colorWarning')
+
+    rerender(<Typography color="warningSoft">Warning soft</Typography>)
+    expect(screen.getByText('Warning soft')).toHaveClass('colorWarningSoft')
+
+    rerender(<Typography color="emphasis">Emphasis</Typography>)
+    expect(screen.getByText('Emphasis')).toHaveClass('colorEmphasis')
+  })
+
+  it('applies color modifier classes when asChild=true', () => {
+    render(
+      <Typography variant="body" color="danger" asChild>
+        <span>Danger child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Danger child')
+    expect(el).toHaveClass('colorDanger')
+  })
+
+  it('matches snapshot for body variant with semantic color', () => {
+    const { asFragment } = render(
+      <Typography variant="body" color="success" align="left" width="medium">
+        Saved successfully
+      </Typography>,
+    )
+
+    expect(asFragment()).toMatchSnapshot()
+  })
 })

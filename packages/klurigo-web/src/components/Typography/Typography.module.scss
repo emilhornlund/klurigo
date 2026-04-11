@@ -1,3 +1,4 @@
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -5,7 +6,7 @@
   margin: 0;
   display: flex;
   flex-direction: row;
-  color: white;
+  color: colors.$color-text-inverse;
 
   &.textFitEnabled {
     font-size: var(--fitted-font-size) !important;
@@ -170,5 +171,49 @@
 
   &.widthFull {
     width: 100%;
+  }
+
+  &.colorDefault {
+    color: colors.$color-text-default;
+  }
+
+  &.colorSubtle {
+    color: colors.$color-text-subtle;
+  }
+
+  &.colorMuted {
+    color: colors.$color-text-muted;
+  }
+
+  &.colorDisabled {
+    color: colors.$color-text-disabled;
+  }
+
+  &.colorInverse {
+    color: colors.$color-text-inverse;
+  }
+
+  &.colorInverseSubtle {
+    color: colors.$color-text-inverse-subtle;
+  }
+
+  &.colorSuccess {
+    color: colors.$color-text-success;
+  }
+
+  &.colorDanger {
+    color: colors.$color-text-danger;
+  }
+
+  &.colorWarning {
+    color: colors.$color-text-warning;
+  }
+
+  &.colorWarningSoft {
+    color: colors.$color-text-warning-soft;
+  }
+
+  &.colorEmphasis {
+    color: colors.$color-text-emphasis;
   }
 }

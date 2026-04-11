@@ -64,7 +64,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Leaderboard
           </h1>
@@ -269,7 +269,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Leaderboard
           </h1>
@@ -482,7 +482,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Leaderboard
           </h1>
@@ -695,7 +695,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Leaderboard
           </h1>

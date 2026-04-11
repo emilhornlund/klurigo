@@ -43,12 +43,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
           class="contentInner"
         >
           <h1
-            class="typography title widthFull"
+            class="typography title alignCenter widthFull colorInverse"
           >
             Your Quiz Shelf
           </h1>
           <p
-            class="typography body widthMedium"
+            class="typography body alignCenter widthMedium colorInverse"
           >
             All your quiz creations, lined up and ready for their next moment in the spotlight.
           </p>

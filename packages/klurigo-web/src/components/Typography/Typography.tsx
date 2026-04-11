@@ -44,6 +44,27 @@ export type TypographyAlign = 'center' | 'justify' | 'left' | 'right'
 export type TypographyWidth = 'small' | 'medium' | 'full'
 
 /**
+ * Defines the supported semantic text color variants for the Typography component.
+ *
+ * Each value maps to a semantic color token in the design system.
+ * These tokens ensure consistent and accessible text color usage across the application.
+ *
+ * Defaults to `inverse`.
+ */
+export type TypographyColor =
+  | 'default'
+  | 'subtle'
+  | 'muted'
+  | 'disabled'
+  | 'inverse'
+  | 'inverseSubtle'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'warningSoft'
+  | 'emphasis'
+
+/**
  * Maps each Typography variant to the semantic HTML element it should render.
  *
  * Semantic rules:
@@ -84,6 +105,13 @@ type SharedProps = {
    * Defaults to full width.
    */
   width?: TypographyWidth
+
+  /**
+   * Controls the text color using semantic tokens.
+   *
+   * Defaults to inverse.
+   */
+  color?: TypographyColor
 
   /**
    * Content rendered inside the typography element.
@@ -241,6 +269,7 @@ const Typography: FC<TypographyProps> = (props) => {
     variant = 'body',
     align = 'center',
     width = 'full',
+    color = 'inverse',
     children,
     asChild,
     className,
@@ -312,6 +341,17 @@ const Typography: FC<TypographyProps> = (props) => {
     width === 'small' ? styles.widthSmall : undefined,
     width === 'medium' ? styles.widthMedium : undefined,
     width === 'full' ? styles.widthFull : undefined,
+    color === 'default' ? styles.colorDefault : undefined,
+    color === 'subtle' ? styles.colorSubtle : undefined,
+    color === 'muted' ? styles.colorMuted : undefined,
+    color === 'disabled' ? styles.colorDisabled : undefined,
+    color === 'inverse' ? styles.colorInverse : undefined,
+    color === 'inverseSubtle' ? styles.colorInverseSubtle : undefined,
+    color === 'success' ? styles.colorSuccess : undefined,
+    color === 'danger' ? styles.colorDanger : undefined,
+    color === 'warning' ? styles.colorWarning : undefined,
+    color === 'warningSoft' ? styles.colorWarningSoft : undefined,
+    color === 'emphasis' ? styles.colorEmphasis : undefined,
     inlineStyle !== undefined ? styles.textFitEnabled : undefined,
     className,
   )

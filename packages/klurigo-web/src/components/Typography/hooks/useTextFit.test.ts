@@ -63,7 +63,13 @@ describe('useTextFit', () => {
   })
 
   it('handles all typography variants', () => {
-    const variants = ['hero', 'title', 'subtitle', 'text', 'link'] as const
+    const variants = [
+      'extraLargeTitle',
+      'title',
+      'title2',
+      'body',
+      'link',
+    ] as const
 
     variants.forEach((variant) => {
       const ref = { current: null }

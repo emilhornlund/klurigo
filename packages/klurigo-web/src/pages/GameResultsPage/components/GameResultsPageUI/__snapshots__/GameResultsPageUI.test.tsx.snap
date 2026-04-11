@@ -46,12 +46,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Quiz Debug
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -1093,12 +1093,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               0-100 Quiz Debug
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -2124,12 +2124,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -3167,12 +3167,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -3786,12 +3786,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -4285,12 +4285,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -5328,12 +5328,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               0-100 Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -6355,12 +6355,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               0-100 Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -6854,12 +6854,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               0-100 Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -7233,12 +7233,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               0-100 Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>

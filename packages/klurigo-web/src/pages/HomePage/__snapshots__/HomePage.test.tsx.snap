@@ -63,7 +63,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             class="hero"
           >
             <h1
-              class="typography extraLargeTitle widthMedium"
+              class="typography extraLargeTitle alignCenter widthMedium colorInverse"
             >
               Let’s play
             </h1>
@@ -75,7 +75,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
               data-testid="rotating-message"
             >
               <p
-                class="typography body widthSmall"
+                class="typography body alignCenter widthSmall colorInverse"
               >
                 Ready to show off your skills? Let’s go!
               </p>
@@ -176,7 +176,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             </div>
           </form>
           <a
-            class="link typography link widthSmall"
+            class="link typography link alignCenter widthSmall colorInverse"
             data-discover="true"
             href="/auth/login"
           >
@@ -252,7 +252,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
             class="hero"
           >
             <h1
-              class="typography extraLargeTitle widthMedium"
+              class="typography extraLargeTitle alignCenter widthMedium colorInverse"
             >
               Let’s play
             </h1>
@@ -264,7 +264,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
               data-testid="rotating-message"
             >
               <p
-                class="typography body widthSmall"
+                class="typography body alignCenter widthSmall colorInverse"
               >
                 Ready to show off your skills? Let’s go!
               </p>
@@ -322,7 +322,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
             </div>
           </form>
           <a
-            class="link typography link widthSmall"
+            class="link typography link alignCenter widthSmall colorInverse"
             data-discover="true"
             href="/auth/login"
           >

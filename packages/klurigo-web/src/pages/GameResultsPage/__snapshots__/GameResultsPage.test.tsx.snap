@@ -103,12 +103,12 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Classic Minimal
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>
@@ -1208,12 +1208,12 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
             class="gameResultsPage"
           >
             <h1
-              class="typography title widthFull"
+              class="typography title alignCenter widthFull colorInverse"
             >
               Deferred Load
             </h1>
             <p
-              class="typography body widthFull"
+              class="typography body alignCenter widthFull colorInverse"
             >
               A quick look at how this game unfolded — see how players performed, how fast they answered, and who stood out.
             </p>

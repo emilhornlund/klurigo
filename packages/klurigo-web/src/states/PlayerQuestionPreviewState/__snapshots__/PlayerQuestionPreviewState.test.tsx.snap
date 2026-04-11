@@ -87,7 +87,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
                 class="block"
               >
                 <h1
-                  class="typography extraLargeTitle widthMedium"
+                  class="typography extraLargeTitle alignCenter widthMedium colorInverse"
                 >
                   Who painted The Starry Night?
                 </h1>
