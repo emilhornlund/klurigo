@@ -163,7 +163,6 @@
   @media (prefers-reduced-motion: no-preference) {
     &:has(> input:focus, > select:focus, > textarea:focus) {
       outline-color: colors.$color-focus-control-default;
-      box-shadow: shadows.$shadow-focus-control-default;
     }
   }
 }

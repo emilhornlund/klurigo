@@ -129,8 +129,8 @@ $contrast-opacity: 0.8;
       height: 100%;
       outline: none;
 
-      &:not(:disabled) {
-        cursor: pointer;
+      &:disabled {
+        cursor: auto;
       }
 
       @include helpers.mobile {
