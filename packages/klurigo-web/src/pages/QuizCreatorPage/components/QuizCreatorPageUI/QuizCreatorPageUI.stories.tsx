@@ -17,7 +17,6 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
   const {
     settings: quizSettings,
     settingsValidation: quizSettingsValidation,
-    allSettingsValid: allQuizSettingsValid,
     updateSettingsField: onQuizSettingsValueChange,
   } = useQuizSettingsDataSource()
 
@@ -27,7 +26,6 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
     questions,
     setQuestions,
     questionValidations,
-    allQuestionsValid,
     selectedQuestion,
     selectedQuestionIndex,
     selectQuestion,
@@ -54,13 +52,12 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
       onSelectGameMode={setGameMode}
       quizSettings={quizSettings}
       quizSettingsValidation={quizSettingsValidation}
-      allQuizSettingsValid={allQuizSettingsValid}
       onQuizSettingsValueChange={onQuizSettingsValueChange}
       questions={questions}
       questionValidations={questionValidations}
-      allQuestionsValid={allQuestionsValid}
       selectedQuestion={selectedQuestion}
       selectedQuestionIndex={selectedQuestionIndex}
+      canSaveQuiz={false}
       onSetQuestions={setQuestions}
       onSelectedQuestionIndex={selectQuestion}
       onAddQuestion={handleAddQuestion}
@@ -70,6 +67,7 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
       onDeleteQuestionIndex={deleteQuestion}
       onReplaceQuestion={replaceQuestion}
       onSaveQuiz={() => undefined}
+      onExit={() => undefined}
     />
   )
 }
@@ -91,12 +89,11 @@ export const Default = {
   args: {
     quizSettings: {},
     quizSettingsValidation: {} as QuizSettingsValidationResult,
-    allQuizSettingsValid: false,
     questions: [],
     questionValidations: [] as QuizQuestionValidationResult[],
-    allQuestionsValid: false,
     selectedQuestion: undefined,
     selectedQuestionIndex: -1,
+    canSaveQuiz: true,
     onSetQuestions: () => undefined,
     onQuizSettingsValueChange: () => undefined,
     onSelectedQuestionIndex: () => undefined,
@@ -107,5 +104,6 @@ export const Default = {
     onDeleteQuestionIndex: () => undefined,
     onReplaceQuestion: () => undefined,
     onSaveQuiz: () => undefined,
+    onExit: () => undefined,
   },
 } satisfies Story

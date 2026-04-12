@@ -82,7 +82,7 @@ const Page: FC<PageProps> = ({
     return (
       <>
         <MenuItem icon={faIdCard} link={`/users/${user?.ACCESS.sub}/profile`}>
-          My Profile
+          Profile
         </MenuItem>
         <MenuItem icon={faLightbulb} link="/profile/quizzes">
           Quizzes

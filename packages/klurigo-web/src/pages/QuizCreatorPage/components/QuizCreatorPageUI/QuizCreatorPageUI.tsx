@@ -1,4 +1,5 @@
 import {
+  faArrowRightFromBracket,
   faCode,
   faFloppyDisk,
   faGear,
@@ -7,7 +8,7 @@ import {
 import type { QuestionDto } from '@klurigo/common'
 import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Page, TextField } from '../../../../components'
 import { DeviceType } from '../../../../utils/device-size.types'
@@ -37,14 +38,14 @@ export interface QuizCreatorPageUIProps {
   onSelectGameMode?: (gameMode: GameMode) => void
   quizSettings: QuizSettingsModel
   quizSettingsValidation: QuizSettingsValidationResult
-  allQuizSettingsValid: boolean
   onQuizSettingsValueChange: QuizSettingsModelFieldChangeFunction
   questions: QuizQuestionModel[]
   questionValidations: QuizQuestionValidationResult[]
   onSetQuestions: (questions: QuizQuestionModel[]) => void
-  allQuestionsValid: boolean
   selectedQuestion?: QuizQuestionModel
   selectedQuestionIndex: number
+  canSaveQuiz: boolean
+  isSavingQuiz?: boolean
   onSelectedQuestionIndex: (index: number) => void
   onAddQuestion: () => void
   onQuestionValueChange: QuizQuestionModelFieldChangeFunction<QuestionDto>
@@ -52,8 +53,8 @@ export interface QuizCreatorPageUIProps {
   onDuplicateQuestionIndex: (index: number) => void
   onDeleteQuestionIndex: (index: number) => void
   onReplaceQuestion: (type: QuestionType) => void
-  isSavingQuiz?: boolean
   onSaveQuiz: () => void
+  onExit: () => void
 }
 
 const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
@@ -61,14 +62,14 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   onSelectGameMode,
   quizSettings,
   quizSettingsValidation,
-  allQuizSettingsValid,
   onQuizSettingsValueChange,
   questions,
   questionValidations,
   onSetQuestions,
-  allQuestionsValid,
   selectedQuestion,
   selectedQuestionIndex,
+  canSaveQuiz,
+  isSavingQuiz,
   onSelectedQuestionIndex,
   onAddQuestion,
   onQuestionValueChange,
@@ -76,8 +77,8 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   onDuplicateQuestionIndex,
   onDeleteQuestionIndex,
   onReplaceQuestion,
-  isSavingQuiz,
   onSaveQuiz,
+  onExit,
 }) => {
   const deviceType = useDeviceSizeType()
 
@@ -85,11 +86,6 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
 
   const [showAdvancedQuestionEditor, setShowAdvancedQuestionEditor] =
     useState(false)
-
-  const isValid = useMemo(
-    () => allQuestionsValid && allQuizSettingsValid,
-    [allQuestionsValid, allQuizSettingsValid],
-  )
 
   return (
     <Page
@@ -135,8 +131,18 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             hideValue="mobile"
             icon={faFloppyDisk}
             loading={!!isSavingQuiz}
-            disabled={!isValid}
+            disabled={!canSaveQuiz}
             onClick={onSaveQuiz}
+          />
+          <Button
+            id="exit-button"
+            type="button"
+            size="small"
+            kind="primary"
+            value="Exit"
+            hideValue="mobile"
+            icon={faArrowRightFromBracket}
+            onClick={onExit}
           />
         </div>
       }
