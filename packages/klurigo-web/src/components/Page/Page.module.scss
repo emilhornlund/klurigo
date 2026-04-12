@@ -91,10 +91,12 @@
 
       .text {
         position: relative;
-        @include helpers.fontSize(20px);
-        font-weight: bolder;
+        font-weight: 900;
         color: colors.$color-text-inverse;
+        letter-spacing: 1px;
         top: helpers.pxToRem(-1px);
+
+        @include helpers.fontSize(20px);
       }
 
       @include helpers.mobile {

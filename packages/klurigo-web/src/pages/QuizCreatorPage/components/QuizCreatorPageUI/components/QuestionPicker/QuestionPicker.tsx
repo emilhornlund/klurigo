@@ -64,7 +64,12 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
   }
 
   const handleDeleteQuestion = () => {
-    if (deleteQuestionIndex) {
+    if (
+      deleteQuestionIndex !== undefined &&
+      deleteQuestionIndex >= 0 &&
+      deleteQuestionIndex < questions.length &&
+      questions.length > 1
+    ) {
       onDeleteQuestion?.(deleteQuestionIndex)
       setDeleteQuestionIndex(undefined)
     }
@@ -83,6 +88,7 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
             type={type}
             active={isActive(index)}
             valid={valid}
+            canDelete={questions.length > 1}
             onClick={() => onSelectQuestion(index)}
             onDrop={onDropQuestion}
             onDuplicate={() => onDuplicateQuestion(index)}

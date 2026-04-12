@@ -15,6 +15,7 @@ export interface QuestionPickerItemProps {
   type: QuestionType
   active?: boolean
   valid: boolean
+  canDelete: boolean
   onClick?: () => void
   onDrop?: (id: number) => void
   onDuplicate?: () => void
@@ -27,6 +28,7 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
   type,
   active,
   valid,
+  canDelete,
   onClick,
   onDrop,
   onDuplicate,
@@ -92,19 +94,20 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
         <div className={styles.questionPickerItemOverlayBottom}>
           {active && (
             <button
-              className={styles.questionPickerItemOverlayDuplicate}
+              className={styles.cloneButton}
               onClick={handleClickDuplicate}>
               <FontAwesomeIcon icon={faCopy} />
             </button>
           )}
           {!valid && (
-            <div className={styles.questionPickerItemOverlayError}>
+            <div className={styles.validationErrorSymbol}>
               <FontAwesomeIcon icon={faCircleExclamation} />
             </div>
           )}
           {active && (
             <button
-              className={styles.questionPickerItemOverlayDelete}
+              disabled={!canDelete}
+              className={styles.deleteButton}
               onClick={handleClickDelete}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
