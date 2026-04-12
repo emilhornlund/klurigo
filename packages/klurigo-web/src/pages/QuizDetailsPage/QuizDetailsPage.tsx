@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,6 +10,8 @@ import { QuizDetailsPageUI } from './components'
 
 const QuizDetailsPage: FC = () => {
   const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
 
   const { quizId } = useParams<{ quizId: string }>()
 
@@ -83,6 +85,9 @@ const QuizDetailsPage: FC = () => {
     if (quizId) {
       setIsDeleteQuizLoading(true)
       deleteQuiz(quizId)
+        .then(() =>
+          queryClient.invalidateQueries({ queryKey: ['myProfileQuizzes'] }),
+        )
         .then(() => navigate('/profile/quizzes'))
         .finally(() => setIsDeleteQuizLoading(false))
     }

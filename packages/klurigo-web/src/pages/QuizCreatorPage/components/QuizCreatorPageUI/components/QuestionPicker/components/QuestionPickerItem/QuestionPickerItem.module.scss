@@ -219,13 +219,11 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     }
 
     .questionPickerItemOverlayBottom {
-      .questionPickerItemOverlayDuplicate, .questionPickerItemOverlayDelete {
+      .cloneButton, .deleteButton {
         @include button.button-reset;
 
         outline: none;
         pointer-events: auto;
-        color: colors.$color-text-control-default;
-        background-color: colors.$color-surface-control-muted;
 
         @include helpers.mobile {
           @include helpers.fontSize(10px);
@@ -239,16 +237,39 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
           @include helpers.fontSize(12px);
         }
 
-        &:hover {
-          color: colors.$color-text-control-default-hover;
-          background-color: colors.$color-surface-control-muted-hover;
+        &:disabled {
+          color: colors.$color-text-control-disabled;
+          background-color: colors.$color-surface-control-disabled;
         }
       }
 
-      .questionPickerItemOverlayError {
+      .cloneButton {
+        color: colors.$color-text-control-default;
+        background-color: colors.$color-surface-control-accent;
+
+        &:hover {
+          &:not(:disabled) {
+            color: colors.$color-text-control-default-hover;
+            background-color: colors.$color-surface-control-accent-hover;
+          }
+        }
+      }
+
+      .deleteButton {
+        color: colors.$color-text-inverse;
+        background-color: colors.$color-surface-control-danger;
+
+        &:hover {
+          &:not(:disabled) {
+            color: colors.$color-text-inverse;
+            background-color: colors.$color-surface-control-danger-hover;
+          }
+        }
+      }
+
+      .validationErrorSymbol {
         color: colors.$color-status-warning;
         background-color: colors.$color-surface-default;
-        pointer-events: none;
 
         @include helpers.mobile {
           @include helpers.fontSize(16px);

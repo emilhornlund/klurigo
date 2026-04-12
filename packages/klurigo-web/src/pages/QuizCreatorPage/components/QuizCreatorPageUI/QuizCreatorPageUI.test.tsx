@@ -4,10 +4,11 @@ import {
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import type { ComponentProps } from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import type { ValidationResult } from '../../../../validation'
 
@@ -27,8 +28,39 @@ function makeValidation(
   } as unknown as AnyValidation
 }
 
+const renderQuizCreatorPageUI = (
+  props: Partial<ComponentProps<typeof QuizCreatorPageUI>> = {},
+) =>
+  render(
+    <MemoryRouter>
+      <QuizCreatorPageUI
+        gameMode={undefined}
+        onSelectGameMode={() => undefined}
+        quizSettings={{}}
+        quizSettingsValidation={makeValidation()}
+        onQuizSettingsValueChange={() => undefined}
+        questions={[]}
+        questionValidations={[]}
+        selectedQuestion={undefined}
+        selectedQuestionIndex={0}
+        canSaveQuiz={false}
+        onSetQuestions={() => undefined}
+        onSelectedQuestionIndex={() => undefined}
+        onAddQuestion={() => undefined}
+        onQuestionValueChange={() => undefined}
+        onDropQuestionIndex={() => undefined}
+        onDuplicateQuestionIndex={() => undefined}
+        onDeleteQuestionIndex={() => undefined}
+        onReplaceQuestion={() => undefined}
+        onSaveQuiz={() => undefined}
+        onExit={() => undefined}
+        {...props}
+      />
+    </MemoryRouter>,
+  )
+
 describe('QuizCreatorPageUI', () => {
-  it('renders QuizCreatorPageUI without mdoe', () => {
+  it('renders QuizCreatorPageUI without mode', () => {
     const { container } = render(
       <MemoryRouter>
         <QuizCreatorPageUI
@@ -36,13 +68,12 @@ describe('QuizCreatorPageUI', () => {
           onSelectGameMode={() => undefined}
           quizSettings={{}}
           quizSettingsValidation={makeValidation()}
-          allQuizSettingsValid={false}
           onQuizSettingsValueChange={() => undefined}
           questions={[]}
           questionValidations={[]}
-          allQuestionsValid={false}
           selectedQuestion={undefined}
           selectedQuestionIndex={0}
+          canSaveQuiz={false}
           onSetQuestions={() => undefined}
           onSelectedQuestionIndex={() => undefined}
           onAddQuestion={() => undefined}
@@ -52,6 +83,7 @@ describe('QuizCreatorPageUI', () => {
           onDeleteQuestionIndex={() => undefined}
           onReplaceQuestion={() => undefined}
           onSaveQuiz={() => undefined}
+          onExit={() => undefined}
         />
       </MemoryRouter>,
     )
@@ -67,13 +99,12 @@ describe('QuizCreatorPageUI', () => {
           onSelectGameMode={() => undefined}
           quizSettings={{}}
           quizSettingsValidation={makeValidation()}
-          allQuizSettingsValid={false}
           onQuizSettingsValueChange={() => undefined}
           questions={[]}
           questionValidations={[]}
-          allQuestionsValid={false}
           selectedQuestion={undefined}
           selectedQuestionIndex={0}
+          canSaveQuiz={false}
           onSetQuestions={() => undefined}
           onSelectedQuestionIndex={() => undefined}
           onAddQuestion={() => undefined}
@@ -83,6 +114,7 @@ describe('QuizCreatorPageUI', () => {
           onDeleteQuestionIndex={() => undefined}
           onReplaceQuestion={() => undefined}
           onSaveQuiz={() => undefined}
+          onExit={() => undefined}
         />
       </MemoryRouter>,
     )
@@ -98,7 +130,6 @@ describe('QuizCreatorPageUI', () => {
           onSelectGameMode={() => undefined}
           quizSettings={{}}
           quizSettingsValidation={makeValidation()}
-          allQuizSettingsValid={false}
           onQuizSettingsValueChange={() => undefined}
           questions={[
             {
@@ -180,8 +211,8 @@ describe('QuizCreatorPageUI', () => {
             points: 1000,
             duration: 30,
           }}
-          allQuestionsValid={false}
           selectedQuestionIndex={0}
+          canSaveQuiz={false}
           onSetQuestions={() => undefined}
           onSelectedQuestionIndex={() => undefined}
           onAddQuestion={() => undefined}
@@ -191,6 +222,7 @@ describe('QuizCreatorPageUI', () => {
           onDeleteQuestionIndex={() => undefined}
           onReplaceQuestion={() => undefined}
           onSaveQuiz={() => undefined}
+          onExit={() => undefined}
         />
       </MemoryRouter>,
     )
@@ -206,13 +238,12 @@ describe('QuizCreatorPageUI', () => {
           onSelectGameMode={() => undefined}
           quizSettings={{}}
           quizSettingsValidation={makeValidation()}
-          allQuizSettingsValid={false}
           onQuizSettingsValueChange={() => undefined}
           questions={[]}
           questionValidations={[]}
-          allQuestionsValid={false}
           selectedQuestion={undefined}
           selectedQuestionIndex={0}
+          canSaveQuiz={false}
           onSetQuestions={() => undefined}
           onSelectedQuestionIndex={() => undefined}
           onAddQuestion={() => undefined}
@@ -222,6 +253,7 @@ describe('QuizCreatorPageUI', () => {
           onDeleteQuestionIndex={() => undefined}
           onReplaceQuestion={() => undefined}
           onSaveQuiz={() => undefined}
+          onExit={() => undefined}
         />
       </MemoryRouter>,
     )
@@ -237,7 +269,6 @@ describe('QuizCreatorPageUI', () => {
           onSelectGameMode={() => undefined}
           quizSettings={{}}
           quizSettingsValidation={makeValidation()}
-          allQuizSettingsValid={false}
           onQuizSettingsValueChange={() => undefined}
           questions={[
             {
@@ -253,9 +284,9 @@ describe('QuizCreatorPageUI', () => {
             },
           ]}
           questionValidations={[]}
-          allQuestionsValid={false}
           selectedQuestion={undefined}
           selectedQuestionIndex={0}
+          canSaveQuiz={false}
           onSetQuestions={() => undefined}
           onSelectedQuestionIndex={() => undefined}
           onAddQuestion={() => undefined}
@@ -265,10 +296,35 @@ describe('QuizCreatorPageUI', () => {
           onDeleteQuestionIndex={() => undefined}
           onReplaceQuestion={() => undefined}
           onSaveQuiz={() => undefined}
+          onExit={() => undefined}
         />
       </MemoryRouter>,
     )
 
     expect(container).toMatchSnapshot()
+  })
+
+  it('disables the save button when canSaveQuiz is false', () => {
+    const { container } = renderQuizCreatorPageUI({ canSaveQuiz: false })
+
+    expect(container.querySelector('#save-button')).toBeDisabled()
+  })
+
+  it('enables the save button when canSaveQuiz is true', () => {
+    const { container } = renderQuizCreatorPageUI({ canSaveQuiz: true })
+
+    expect(container.querySelector('#save-button')).toBeEnabled()
+  })
+
+  it('calls onExit when the exit button is clicked', () => {
+    const onExit = vi.fn()
+
+    const { container } = renderQuizCreatorPageUI({ onExit })
+
+    fireEvent.click(
+      container.querySelector('#exit-button') as HTMLButtonElement,
+    )
+
+    expect(onExit).toHaveBeenCalledTimes(1)
   })
 })

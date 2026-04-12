@@ -1,1 +1,1 @@
-export { default } from './QuizCreatorPageUI'
+export { type QuizCreatorPageUIProps, default } from './QuizCreatorPageUI'

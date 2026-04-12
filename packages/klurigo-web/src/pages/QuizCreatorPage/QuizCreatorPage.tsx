@@ -15,10 +15,17 @@ import {
   QuizCategory,
   QuizVisibility,
 } from '@klurigo/common'
-import { useQuery } from '@tanstack/react-query'
-import { type FC, useRef } from 'react'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  type FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { type BlockerFunction, useNavigate, useParams } from 'react-router-dom'
+import { useBlocker } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import { LoadingSpinner, Page } from '../../components'
@@ -33,7 +40,7 @@ import {
   isZeroToOneHundredRangeQuestion,
 } from '../../utils/questions'
 
-import QuizCreatorPageUI from './components/QuizCreatorPageUI'
+import { QuizCreatorPageUI, UnsavedChangesExitModal } from './components'
 import { useQuestionDataSource } from './utils/QuestionDataSource'
 import { useQuizSettingsDataSource } from './utils/QuizSettingsDataSource'
 
@@ -41,6 +48,8 @@ const QuizCreatorPage: FC = () => {
   const { quizId } = useParams<{ quizId: string }>()
 
   const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
 
   const { createQuiz, getQuiz, getQuizQuestions, updateQuiz } =
     useKlurigoServiceClient()
@@ -134,6 +143,55 @@ const QuizCreatorPage: FC = () => {
     selectQuestion,
   ])
 
+  const [isSavingQuiz, setIsSavingQuiz] = useState(false)
+
+  type SavedQuizSnapshot = {
+    gameMode: GameMode | null
+    quizSettings: {
+      title: string
+      description: string
+      imageCoverURL: string | undefined
+      visibility: QuizVisibility
+      category: QuizCategory
+      languageCode: LanguageCode
+    }
+    questions: typeof questions
+  }
+
+  const [savedQuizSnapshot, setSavedQuizSnapshot] =
+    useState<SavedQuizSnapshot | null>(null)
+
+  useEffect(() => {
+    if (!quizId) return
+    if (!originalQuiz) return
+    if (!originalQuizQuestions) return
+    if (isQuizLoading || isQuizError) return
+    if (isQuizQuestionsLoading || isQuizQuestionsError) return
+    if (!isFetchedAfterMount) return
+
+    setSavedQuizSnapshot({
+      gameMode: originalQuiz.mode,
+      quizSettings: {
+        title: originalQuiz.title ?? '',
+        description: originalQuiz.description ?? '',
+        imageCoverURL: originalQuiz.imageCoverURL,
+        visibility: originalQuiz.visibility,
+        category: originalQuiz.category,
+        languageCode: originalQuiz.languageCode,
+      },
+      questions: structuredClone(originalQuizQuestions),
+    })
+  }, [
+    quizId,
+    originalQuiz,
+    originalQuizQuestions,
+    isQuizLoading,
+    isQuizError,
+    isQuizQuestionsLoading,
+    isQuizQuestionsError,
+    isFetchedAfterMount,
+  ])
+
   useEffect(() => {
     didHydrateQuestionsRef.current = false
   }, [quizId])
@@ -147,10 +205,58 @@ const QuizCreatorPage: FC = () => {
     }
   }
 
-  const [isSavingQuiz, setIsSavingQuiz] = useState(false)
+  const currentQuizSettings = useMemo(
+    () => ({
+      title: quizSettings.title?.trim() ?? '',
+      description: quizSettings.description?.trim() ?? '',
+      imageCoverURL: quizSettings.imageCoverURL,
+      visibility: quizSettings.visibility ?? QuizVisibility.Public,
+      category: quizSettings.category ?? QuizCategory.Other,
+      languageCode: quizSettings.languageCode ?? LanguageCode.English,
+    }),
+    [quizSettings],
+  )
+
+  const normalizedCurrentQuestions = useMemo(() => questions, [questions])
+
+  const hasUnsavedChanges = useMemo(() => {
+    if (!quizId) {
+      return (
+        !!gameMode ||
+        currentQuizSettings.title !== '' ||
+        currentQuizSettings.description !== '' ||
+        !!currentQuizSettings.imageCoverURL ||
+        normalizedCurrentQuestions.length > 0
+      )
+    }
+
+    if (!savedQuizSnapshot) {
+      return false
+    }
+
+    return (
+      gameMode !== savedQuizSnapshot.gameMode ||
+      JSON.stringify(savedQuizSnapshot.quizSettings) !==
+        JSON.stringify(currentQuizSettings) ||
+      JSON.stringify(savedQuizSnapshot.questions) !==
+        JSON.stringify(normalizedCurrentQuestions)
+    )
+  }, [
+    quizId,
+    gameMode,
+    currentQuizSettings,
+    normalizedCurrentQuestions,
+    savedQuizSnapshot,
+  ])
+
+  const shouldBlock = useCallback<BlockerFunction>(() => {
+    return hasUnsavedChanges && !isSavingQuiz
+  }, [hasUnsavedChanges, isSavingQuiz])
+
+  const blocker = useBlocker(shouldBlock)
 
   const handleSaveQuiz = () => {
-    if (isSavingQuiz) {
+    if (isSavingQuiz || !hasUnsavedChanges) {
       return
     }
 
@@ -230,13 +336,39 @@ const QuizCreatorPage: FC = () => {
 
     setIsSavingQuiz(true)
 
-    const savePromise = quizId
-      ? updateQuiz(quizId, requestData)
-      : createQuiz(requestData)
+    if (quizId) {
+      updateQuiz(quizId, requestData)
+        .then(() => {
+          setSavedQuizSnapshot({
+            gameMode,
+            quizSettings: currentQuizSettings,
+            questions: structuredClone(normalizedCurrentQuestions),
+          })
+        })
+        .finally(() => setIsSavingQuiz(false))
+    } else {
+      createQuiz(requestData)
+        .then((response) => {
+          navigate(`/quiz/details/${response.id}/edit`)
+        })
+        .finally(() => setIsSavingQuiz(false))
+    }
+  }
 
-    savePromise
-      .then(() => navigate('/profile/quizzes'))
-      .finally(() => setIsSavingQuiz(false))
+  const handleExit = () => {
+    if (quizId) {
+      queryClient
+        .invalidateQueries({ queryKey: ['myProfileQuizzes'] })
+        .then(() => navigate(`/quiz/details/${quizId}`))
+    } else {
+      navigate('/profile/quizzes')
+    }
+  }
+
+  const handleConfirmedExit = () => {
+    if (blocker.state === 'blocked') {
+      blocker.proceed()
+    }
   }
 
   if (
@@ -254,29 +386,40 @@ const QuizCreatorPage: FC = () => {
   }
 
   return (
-    <QuizCreatorPageUI
-      gameMode={gameMode}
-      onSelectGameMode={setGameMode}
-      quizSettings={quizSettings}
-      quizSettingsValidation={quizSettingsValidation}
-      allQuizSettingsValid={allQuizSettingsValid}
-      onQuizSettingsValueChange={onQuizSettingsValueChange}
-      questions={questions}
-      questionValidations={questionValidations}
-      allQuestionsValid={allQuestionsValid}
-      selectedQuestion={selectedQuestion}
-      selectedQuestionIndex={selectedQuestionIndex}
-      onSetQuestions={setQuestions}
-      onSelectedQuestionIndex={selectQuestion}
-      onAddQuestion={handleAddQuestion}
-      onQuestionValueChange={updateSelectedQuestionField}
-      onDropQuestionIndex={moveSelectedQuestionTo}
-      onDuplicateQuestionIndex={duplicateQuestion}
-      onDeleteQuestionIndex={deleteQuestion}
-      onReplaceQuestion={replaceQuestion}
-      isSavingQuiz={isSavingQuiz}
-      onSaveQuiz={handleSaveQuiz}
-    />
+    <>
+      <QuizCreatorPageUI
+        gameMode={gameMode}
+        onSelectGameMode={setGameMode}
+        quizSettings={quizSettings}
+        quizSettingsValidation={quizSettingsValidation}
+        onQuizSettingsValueChange={onQuizSettingsValueChange}
+        questions={questions}
+        questionValidations={questionValidations}
+        selectedQuestion={selectedQuestion}
+        selectedQuestionIndex={selectedQuestionIndex}
+        canSaveQuiz={
+          allQuizSettingsValid && allQuestionsValid && hasUnsavedChanges
+        }
+        isSavingQuiz={isSavingQuiz}
+        onSetQuestions={setQuestions}
+        onSelectedQuestionIndex={selectQuestion}
+        onAddQuestion={handleAddQuestion}
+        onQuestionValueChange={updateSelectedQuestionField}
+        onDropQuestionIndex={moveSelectedQuestionTo}
+        onDuplicateQuestionIndex={duplicateQuestion}
+        onDeleteQuestionIndex={deleteQuestion}
+        onReplaceQuestion={replaceQuestion}
+        onSaveQuiz={handleSaveQuiz}
+        onExit={handleExit}
+      />
+
+      {blocker.state === 'blocked' && (
+        <UnsavedChangesExitModal
+          onReset={() => blocker.reset()}
+          onConfirm={handleConfirmedExit}
+        />
+      )}
+    </>
   )
 }
 

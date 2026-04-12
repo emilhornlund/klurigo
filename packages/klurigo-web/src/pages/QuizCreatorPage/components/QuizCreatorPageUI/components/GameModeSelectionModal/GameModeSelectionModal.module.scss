@@ -30,7 +30,7 @@ $outline-offset: helpers.pxToRem(2px);
     flex-direction: column;
     flex: 1;
     background-color: colors.$color-action-accent;
-    outline: colors.$color-action-accent solid $outline-offset;
+    outline: colors.$color-action-accent solid $outline-offset !important;
     outline-offset: $outline-offset;
     border: $outline-offset solid transparent;
     border-radius: radius.$radius-surface-lg;
