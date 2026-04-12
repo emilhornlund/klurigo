@@ -4,7 +4,7 @@ import {
   BSONDocument,
   extractValue,
   extractValueOrThrow,
-  toDate,
+  toDateOrThrow,
 } from '../utils'
 
 /**
@@ -23,8 +23,12 @@ export function transformQuizRatingDocument(
     author: extractAuthorOrThrow(document),
     stars: extractValueOrThrow<number>(document, {}, 'stars'),
     comment: extractValue<number>(document, {}, 'comment'),
-    updated: toDate(extractValueOrThrow<string>(document, {}, 'updated')),
-    created: toDate(extractValueOrThrow<string>(document, {}, 'created')),
+    updated: toDateOrThrow(
+      extractValueOrThrow<string>(document, {}, 'updated'),
+    ),
+    created: toDateOrThrow(
+      extractValueOrThrow<string>(document, {}, 'created'),
+    ),
   }
 }
 

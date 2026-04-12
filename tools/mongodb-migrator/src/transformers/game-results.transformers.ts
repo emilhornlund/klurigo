@@ -29,7 +29,11 @@ export function transformGameResultsDocument(
         participantId: extractValueOrThrow<string>(player, {}, 'participantId'),
         nickname: extractValueOrThrow<string>(player, {}, 'nickname'),
         rank: extractValueOrThrow<number>(player, {}, 'rank'),
-        comebackRankGain: extractValue<number>(player, {}, 'comebackRankGain'),
+        comebackRankGain: extractValueOrThrow<number>(
+          player,
+          {},
+          'comebackRankGain',
+        ),
         correct: extractValue<number>(player, {}, 'correct'),
         incorrect: extractValue<number>(player, {}, 'incorrect'),
         averagePrecision: extractValue<number>(player, {}, 'averagePrecision'),
