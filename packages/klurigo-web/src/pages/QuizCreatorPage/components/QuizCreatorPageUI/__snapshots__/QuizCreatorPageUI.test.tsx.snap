@@ -502,10 +502,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                           class="preview"
                         >
                           <div
-                            class="container"
+                            class="container fallbackAspectRatio"
                           >
                             <div
-                              class="centerOverlay"
+                              class="centerOverlay box"
+                              style="width: 100%;"
                             >
                               <div
                                 class="loadingSpinnerContainer"

@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>
 export const Default = {
   args: {
     imageURL:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
     value: { x: 0.45838, y: 0.35438, tolerance: QuestionPinTolerance.Medium },
   },
 } satisfies Story
@@ -43,7 +43,7 @@ export const NoPin = {
   name: 'No Pin',
   args: {
     imageURL:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
   },
 } satisfies Story
 
@@ -51,7 +51,7 @@ export const NoTolerance = {
   name: 'No Tolerance',
   args: {
     imageURL:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
     value: { x: 0.45838, y: 0.35438 },
   },
 } satisfies Story
@@ -60,7 +60,7 @@ export const Multiple = {
   name: 'Multiple Pins',
   args: {
     imageURL:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
     value: {
       x: 0.45838,
       y: 0.35438,

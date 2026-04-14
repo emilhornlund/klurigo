@@ -2,8 +2,15 @@ import { faLinkSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { CountdownEvent } from '@klurigo/common'
 import { QuestionImageRevealEffectType } from '@klurigo/common'
-import type { FC, ReactNode } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type FC,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useDebounceCallback, useResizeObserver } from 'usehooks-ts'
 
 import { classNames } from '../../utils/helpers'
@@ -143,8 +150,15 @@ const ResponsiveImage: FC<ResponsiveImageProps> = ({
     ),
   )
 
+  const shouldUseFallbackAspectRatio = phase === 'loading' || phase === 'error'
+
   return (
-    <div ref={ref} className={styles.container}>
+    <div
+      ref={ref}
+      className={classNames(
+        styles.container,
+        shouldUseFallbackAspectRatio ? styles.fallbackAspectRatio : undefined,
+      )}>
       {phase === 'ready' && displaySrc && box && (
         <div
           className={classNames(
@@ -181,25 +195,31 @@ const ResponsiveImage: FC<ResponsiveImageProps> = ({
         </div>
       )}
 
-      {phase === 'loading' && (
-        <div className={styles.centerOverlay}>
-          <LoadingSpinner />
-        </div>
-      )}
-
-      {phase === 'error' && (
+      {(phase === 'loading' || phase === 'error') && (
         <div
           className={classNames(
             styles.centerOverlay,
             noBorder ? styles.boxNoBorder : styles.box,
             noCornerRadius ? styles.noRadius : undefined,
           )}
-          style={borderColor ? { borderColor } : undefined}>
-          <FontAwesomeIcon
-            icon={faLinkSlash}
-            className={styles.icon}
-            style={{ fontSize: iconSize }}
-          />
+          style={{
+            ...(borderColor ? { borderColor } : undefined),
+            ...(shouldUseFallbackAspectRatio
+              ? {
+                  width: '100%',
+                  aspectRatio: String(16 / 10),
+                }
+              : undefined),
+          }}>
+          {phase === 'loading' ? (
+            <LoadingSpinner />
+          ) : (
+            <FontAwesomeIcon
+              icon={faLinkSlash}
+              className={styles.icon}
+              style={{ fontSize: iconSize }}
+            />
+          )}
         </div>
       )}
     </div>

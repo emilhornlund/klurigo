@@ -210,7 +210,7 @@ export const QuestionPin = {
         question:
           'Where is the capital Stockholm located? Pin the answer on a map of Europe',
         imageURL:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
         duration: 30,
       },
       countdown: {

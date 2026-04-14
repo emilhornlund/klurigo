@@ -56,10 +56,11 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
         class="interactive"
       >
         <div
-          class="container"
+          class="container fallbackAspectRatio"
         >
           <div
-            class="centerOverlay"
+            class="centerOverlay box"
+            style="width: 100%;"
           >
             <div
               class="loadingSpinnerContainer"

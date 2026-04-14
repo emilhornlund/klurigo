@@ -1076,10 +1076,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             data-testid="question-media"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1356,10 +1357,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             data-testid="question-media"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1656,10 +1658,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             data-testid="question-media"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
