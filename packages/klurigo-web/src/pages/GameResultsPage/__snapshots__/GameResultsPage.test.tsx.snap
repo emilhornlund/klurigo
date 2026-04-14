@@ -588,6 +588,12 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -1693,6 +1699,12 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"

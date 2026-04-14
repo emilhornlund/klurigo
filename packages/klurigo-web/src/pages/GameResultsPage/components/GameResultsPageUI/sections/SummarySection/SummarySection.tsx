@@ -26,6 +26,9 @@ import {
   CircularProgressBarKind,
   CircularProgressBarSize,
   ConfirmDialog,
+  Leaderboard,
+  type LeaderboardValue,
+  PageDivider,
   Podium,
   type PodiumValue,
 } from '../../../../../../components'
@@ -188,6 +191,18 @@ const SummarySection: FC<SummarySectionProps> = ({
       }))
   }, [playerMetrics])
 
+  const leaderboardValues = useMemo<LeaderboardValue[]>(
+    () =>
+      playerMetrics
+        .sort((lhs, rhs) => lhs.rank - rhs.rank)
+        .map(({ rank, player, score }) => ({
+          position: rank,
+          nickname: player?.nickname ?? '',
+          score,
+        })),
+    [playerMetrics],
+  )
+
   const handleCreateGame = (): void => {
     if (quiz.canHostLiveGame) {
       setIsHostGameLoading(true)
@@ -205,6 +220,8 @@ const SummarySection: FC<SummarySectionProps> = ({
       <div className={styles.cards}>
         <div className={styles.podiumWrapper}>
           <Podium values={podiumValues} />
+          <Leaderboard values={leaderboardValues} includePodium={false} />
+          <PageDivider />
         </div>
 
         <div className={classNames(styles.card, styles.full, styles.progress)}>

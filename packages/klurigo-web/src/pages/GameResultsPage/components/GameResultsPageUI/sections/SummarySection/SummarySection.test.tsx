@@ -49,6 +49,8 @@ vi.mock('../../../../../../api', () => ({
 vi.mock('../../../../../../components', () => ({
   CircularProgressBar: () => <div data-testid="circular-progress" />,
   Podium: () => <div data-testid="podium" />,
+  Leaderboard: () => <div data-testid="leaderboard" />,
+  PageDivider: () => <div data-testid="page-divider" />,
 
   CircularProgressBarKind: { Correct: 'Correct' },
   CircularProgressBarSize: { Medium: 'Medium' },

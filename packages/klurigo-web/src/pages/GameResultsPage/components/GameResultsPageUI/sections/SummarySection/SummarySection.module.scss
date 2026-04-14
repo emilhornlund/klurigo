@@ -33,14 +33,17 @@ $contrast-opacity: 0.8;
 
     @include helpers.mobile {
       margin-top: spacing.$space-page-mobile;
+      row-gap: spacing.$space-page-mobile;
     }
 
     @include helpers.tablet {
       margin-top: spacing.$space-page-tablet;
+      row-gap: spacing.$space-page-tablet;
     }
 
     @include helpers.desktop {
       margin-top: spacing.$space-page-desktop;
+      row-gap: spacing.$space-page-desktop;
     }
   }
 
@@ -128,6 +131,7 @@ $contrast-opacity: 0.8;
       flex: 1;
       height: 100%;
       outline: none;
+      text-align: center;
 
       &:disabled {
         cursor: auto;
