@@ -33,14 +33,16 @@ const getStreakBadgeStyle = (
   return 'default'
 }
 
-export interface LeaderboardProps {
-  values: {
-    position: number
-    nickname: string
-    score: number
-    streaks?: number
-    previousPosition?: number
-  }[]
+export type LeaderboardValue = {
+  position: number
+  nickname: string
+  score: number
+  streaks?: number
+  previousPosition?: number
+}
+
+export type LeaderboardProps = {
+  values: LeaderboardValue[]
   includePodium?: boolean
 }
 

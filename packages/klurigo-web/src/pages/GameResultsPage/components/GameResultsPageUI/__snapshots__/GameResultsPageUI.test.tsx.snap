@@ -535,6 +535,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -1582,6 +1588,12 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -2609,6 +2621,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -4770,6 +4788,12 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -5813,6 +5837,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"
@@ -7718,6 +7748,12 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       />
                     </div>
                   </div>
+                  <div
+                    class="leaderboard"
+                  />
+                  <div
+                    class="pageDivider"
+                  />
                 </div>
                 <div
                   class="card full progress"

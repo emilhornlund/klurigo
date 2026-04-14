@@ -1,2 +1,5 @@
-export type { LeaderboardProps } from './Leaderboard'
-export { default } from './Leaderboard'
+export {
+  default,
+  type LeaderboardValue,
+  type LeaderboardProps,
+} from './Leaderboard'

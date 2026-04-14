@@ -12,6 +12,12 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
         <div
           data-testid="podium"
         />
+        <div
+          data-testid="leaderboard"
+        />
+        <div
+          data-testid="page-divider"
+        />
       </div>
       <div
         class="card full progress"
@@ -297,6 +303,12 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
       >
         <div
           data-testid="podium"
+        />
+        <div
+          data-testid="leaderboard"
+        />
+        <div
+          data-testid="page-divider"
         />
       </div>
       <div
@@ -679,6 +691,12 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
       >
         <div
           data-testid="podium"
+        />
+        <div
+          data-testid="leaderboard"
+        />
+        <div
+          data-testid="page-divider"
         />
       </div>
       <div
