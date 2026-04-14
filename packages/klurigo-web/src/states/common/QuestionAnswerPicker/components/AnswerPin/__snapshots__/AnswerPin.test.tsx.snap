@@ -67,10 +67,11 @@ exports[`AnswerPin > renders non-interactive mode without submit button 1`] = `
     class="answerPin"
   >
     <div
-      class="container"
+      class="container fallbackAspectRatio"
     >
       <div
-        class="centerOverlay"
+        class="centerOverlay box"
+        style="width: 100%;"
       >
         <div
           class="loadingSpinnerContainer"

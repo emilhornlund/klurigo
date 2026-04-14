@@ -287,7 +287,7 @@ describe('HostResultState', () => {
             results: {
               type: QuestionType.Pin,
               imageURL:
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Europe_laea_location_map.svg/1401px-Europe_laea_location_map.svg.png',
+                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Europe_EU_laea_location_map_%28configurable%29.svg',
               positionX: 0.45838,
               positionY: 0.35438,
               tolerance: QuestionPinTolerance.Medium,

@@ -175,10 +175,11 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                 class="cover"
               >
                 <div
-                  class="container"
+                  class="container fallbackAspectRatio"
                 >
                   <div
-                    class="centerOverlay"
+                    class="centerOverlay boxNoBorder noRadius"
+                    style="width: 100%;"
                   >
                     <div
                       class="loadingSpinnerContainer"

@@ -231,10 +231,11 @@ exports[`QuestionField > renders a image media question field 1`] = `
             class="preview"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1813,10 +1814,11 @@ exports[`QuestionField > renders an image media question field with blur effect 
             class="preview"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1942,10 +1944,11 @@ exports[`QuestionField > renders an image media question field with square effec
             class="preview"
           >
             <div
-              class="container"
+              class="container fallbackAspectRatio"
             >
               <div
-                class="centerOverlay"
+                class="centerOverlay box"
+                style="width: 100%;"
               >
                 <div
                   class="loadingSpinnerContainer"
