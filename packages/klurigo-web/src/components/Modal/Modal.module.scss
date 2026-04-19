@@ -1,10 +1,11 @@
 @use '../../styles/animations';
 @use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
+@use '../../styles/layers.tokens' as layers;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .floatingOverlay {
   display: flex;
@@ -12,7 +13,7 @@
   justify-content: center;
   align-items: center;
   background-color: colors.$color-surface-overlay-strong;
-  z-index: variables.$modal-z-index;
+  z-index: layers.$z-index-modal;
 
   @include helpers.mobile {
     padding: spacing.$space-stack-mobile;
@@ -31,7 +32,7 @@
     flex-direction: column;
     background-color: colors.$color-surface-default;
     color: colors.$color-text-default;
-    width: variables.$mobile-width;
+    width: breakpoints.$breakpoint-mobile;
     max-height: 100%;
     overflow: hidden;
     border-radius: radius.$radius-surface-lg;
@@ -63,11 +64,11 @@
       }
 
       @include helpers.tablet {
-        width: variables.$mobile-width;
+        width: breakpoints.$breakpoint-mobile;
       }
 
       @include helpers.desktop {
-        width: variables.$mobile-width;
+        width: breakpoints.$breakpoint-mobile;
       }
     }
 
@@ -77,11 +78,11 @@
       }
 
       @include helpers.tablet {
-        width: variables.$tablet-width;
+        width: breakpoints.$breakpoint-tablet;
       }
 
       @include helpers.desktop {
-        width: variables.$tablet-width;
+        width: breakpoints.$breakpoint-tablet;
       }
     }
 

@@ -1,6 +1,6 @@
+@use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
 @keyframes fadeInUp {
   from {
@@ -62,11 +62,11 @@
 
   @include helpers.tablet {
     row-gap: spacing.$space-compact-tablet;
-    width: variables.$mobile-width;
+    width: breakpoints.$breakpoint-mobile;
   }
 
   @include helpers.desktop {
     row-gap: spacing.$space-compact-desktop;
-    width: variables.$mobile-width;
+    width: breakpoints.$breakpoint-mobile;
   }
 }

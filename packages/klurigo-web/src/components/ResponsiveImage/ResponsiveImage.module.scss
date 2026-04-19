@@ -1,7 +1,7 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/variables' as variables;
 
 .container {
   width: 100%;
@@ -30,7 +30,7 @@
   }
 
   .box {
-    border: variables.$control-outside-border-width solid
+    border: controls.$control-border-width-outside solid
       colors.$color-border-contrast;
     border-radius: radius.$radius-surface-md;
     background-color: colors.$color-surface-floating;

@@ -1,6 +1,6 @@
+@use '../../../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../../../styles/helpers' as helpers;
 @use '../../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../../styles/variables' as variables;
 
 $outline-offset: helpers.pxToRem(2px);
 
@@ -45,7 +45,7 @@ $outline-offset: helpers.pxToRem(2px);
   align-items: center;
   align-self: center;
   width: 100%;
-  max-width: variables.$mobile-width;
+  max-width: breakpoints.$breakpoint-mobile;
 
   @include helpers.mobile {
     column-gap: spacing.$space-inline-mobile;

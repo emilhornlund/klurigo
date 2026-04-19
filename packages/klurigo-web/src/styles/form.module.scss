@@ -1,9 +1,9 @@
+@use './breakpoints.tokens' as breakpoints;
 @use './colors.semantic' as colors;
 @use './helpers' as helpers;
 @use './mixins/button' as button;
 @use './spacing.semantic' as spacing;
 @use './typography.tokens' as typography;
-@use './variables' as variables;
 
 .form {
   display: flex;
@@ -16,12 +16,12 @@
 
   @include helpers.tablet {
     row-gap: spacing.$space-stack-tablet;
-    width: variables.$mobile-width;
+    width: breakpoints.$breakpoint-mobile;
   }
 
   @include helpers.desktop {
     row-gap: spacing.$space-stack-desktop;
-    width: variables.$mobile-width;
+    width: breakpoints.$breakpoint-mobile;
   }
 
   .formField {
@@ -73,7 +73,9 @@
         }
 
         @include helpers.desktop {
-          @include helpers.fontSize(typography.$font-size-control-small-desktop);
+          @include helpers.fontSize(
+            typography.$font-size-control-small-desktop
+          );
         }
 
         &:hover {

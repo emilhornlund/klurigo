@@ -1,6 +1,6 @@
+@use '../../../../../../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../../../../../../styles/helpers' as helpers;
 @use '../../../../../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../../../../../styles/variables' as variables;
 
 .mediaQuestionField {
   display: flex;
@@ -42,11 +42,11 @@
       }
 
       @include helpers.tablet {
-        max-width: variables.$mobile-width;
+        max-width: breakpoints.$breakpoint-mobile;
       }
 
       @include helpers.desktop {
-        max-width: variables.$tablet-width;
+        max-width: breakpoints.$breakpoint-tablet;
       }
     }
 

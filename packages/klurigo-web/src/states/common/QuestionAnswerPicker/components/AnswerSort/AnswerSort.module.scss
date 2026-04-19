@@ -1,6 +1,6 @@
+@use '../../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../../styles/helpers' as helpers;
 @use '../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../styles/variables' as variables;
 
 .answerSort {
   display: flex;
@@ -33,11 +33,11 @@
     }
 
     @include helpers.tablet {
-      width: variables.$mobile-width;
+      width: breakpoints.$breakpoint-mobile;
     }
 
     @include helpers.desktop {
-      width: variables.$tablet-width;
+      width: breakpoints.$breakpoint-tablet;
     }
   }
 
@@ -51,11 +51,11 @@
     }
 
     @include helpers.tablet {
-      width: variables.$mobile-width;
+      width: breakpoints.$breakpoint-mobile;
     }
 
     @include helpers.desktop {
-      width: variables.$tablet-width;
+      width: breakpoints.$breakpoint-tablet;
     }
   }
 }

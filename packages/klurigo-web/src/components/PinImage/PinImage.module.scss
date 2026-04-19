@@ -1,6 +1,6 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/variables' as variables;
+@use '../../styles/layers.tokens' as layers;
 
 .pinImage {
   width: 100%;
@@ -18,7 +18,7 @@
   height: 100%;
   pointer-events: auto;
   touch-action: none;
-  z-index: variables.$pin-image-z-index;
+  z-index: layers.$z-index-pin-image;
 
   /* The pin is centered via transform so size changes don't affect math */
   .pin {

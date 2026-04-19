@@ -3,9 +3,9 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.dropzone' as dropzone;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
 .dropzone {
   display: flex;
@@ -26,24 +26,24 @@
     color: colors.$color-text-muted;
     text-align: center;
     outline: none;
-    transition: border .24s ease-in-out;
+    transition: border 0.24s ease-in-out;
     cursor: pointer;
 
     @include helpers.mobile {
       padding: spacing.$space-page-mobile spacing.$space-compact-mobile;
-      border-width: variables.$control-outside-border-width;
+      border-width: controls.$control-border-width-outside;
       min-height: 120px;
     }
 
     @include helpers.tablet {
       padding: spacing.$space-page-tablet spacing.$space-compact-tablet;
-      border-width: variables.$control-outside-border-width;
+      border-width: controls.$control-border-width-outside;
       min-height: 140px;
     }
 
     @include helpers.desktop {
       padding: spacing.$space-page-desktop spacing.$space-compact-desktop;
-      border-width: variables.$control-outside-border-width;
+      border-width: controls.$control-border-width-outside;
       min-height: 160px;
     }
   }

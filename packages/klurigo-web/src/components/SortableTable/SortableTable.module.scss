@@ -1,10 +1,10 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .sortableTable {
   display: flex;
@@ -30,7 +30,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    border-width: variables.$control-outside-border-width;
+    border-width: controls.$control-border-width-outside;
     border-style: solid;
     border-color: colors.$color-border-contrast;
     border-radius: radius.$radius-control-md;

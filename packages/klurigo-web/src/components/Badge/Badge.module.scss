@@ -1,8 +1,8 @@
+@use '../../styles/badges.tokens' as badges;
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/transitions' as transitions;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .badge {
   display: flex;
@@ -35,24 +35,24 @@
   &.small {
     @include helpers.mobile {
       @include badge-size(
-        variables.$mobile-badge-small-size,
-        variables.$mobile-badge-small-border-width
+        badges.$badge-small-size-mobile,
+        badges.$badge-small-border-width-mobile
       );
       @include helpers.fontSize(typography.$font-size-body-mobile);
     }
 
     @include helpers.tablet {
       @include badge-size(
-        variables.$tablet-badge-small-size,
-        variables.$tablet-badge-small-border-width
+        badges.$badge-small-size-tablet,
+        badges.$badge-small-border-width-tablet
       );
       @include helpers.fontSize(typography.$font-size-body-tablet);
     }
 
     @include helpers.desktop {
       @include badge-size(
-        variables.$desktop-badge-small-size,
-        variables.$desktop-badge-small-border-width
+        badges.$badge-small-size-desktop,
+        badges.$badge-small-border-width-desktop
       );
       @include helpers.fontSize(typography.$font-size-body-desktop);
     }
@@ -61,26 +61,28 @@
   &.large {
     @include helpers.mobile {
       @include badge-size(
-        variables.$mobile-badge-large-size,
-        variables.$mobile-badge-large-border-width
+        badges.$badge-large-size-mobile,
+        badges.$badge-large-border-width-mobile
       );
       @include helpers.fontSize(typography.$font-size-extra-large-title-mobile);
     }
 
     @include helpers.tablet {
       @include badge-size(
-        variables.$tablet-badge-large-size,
-        variables.$tablet-badge-large-border-width
+        badges.$badge-large-size-tablet,
+        badges.$badge-large-border-width-tablet
       );
       @include helpers.fontSize(typography.$font-size-extra-large-title-tablet);
     }
 
     @include helpers.desktop {
       @include badge-size(
-        variables.$desktop-badge-large-size,
-        variables.$desktop-badge-large-border-width
+        badges.$badge-large-size-desktop,
+        badges.$badge-large-border-width-desktop
       );
-      @include helpers.fontSize(typography.$font-size-extra-large-title-desktop);
+      @include helpers.fontSize(
+        typography.$font-size-extra-large-title-desktop
+      );
     }
   }
 

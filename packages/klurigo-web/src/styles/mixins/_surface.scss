@@ -1,20 +1,21 @@
 @use '../colors.semantic' as colors;
+@use '../controls.tokens' as controls;
 @use '../shadows.tokens' as shadows;
-@use '../variables' as variables;
 
 @mixin surface-base() {
   background:
     linear-gradient(
-        135deg,
-        colors.$color-surface-glass-default-start 0%,
-        colors.$color-surface-glass-default-end 100%
+      135deg,
+      colors.$color-surface-glass-default-start 0%,
+      colors.$color-surface-glass-default-end 100%
     ),
     colors.$color-surface-glass-default-start;
   color: colors.$color-text-inverse;
 }
 
 @mixin surface-border() {
-  border: variables.$control-outside-border-width solid colors.$color-border-glass-default;
+  border: controls.$control-border-width-outside solid
+    colors.$color-border-glass-default;
 }
 
 @mixin surface-shadow() {
@@ -24,9 +25,9 @@
 @mixin surface-interactive-hover() {
   background:
     linear-gradient(
-        135deg,
-        colors.$color-surface-glass-hover-start 0%,
-        colors.$color-surface-glass-hover-end 100%
+      135deg,
+      colors.$color-surface-glass-hover-start 0%,
+      colors.$color-surface-glass-hover-end 100%
     ),
     colors.$color-surface-glass-hover-start;
   border-color: colors.$color-border-glass-hover;
@@ -37,9 +38,9 @@
 @mixin surface-interactive-active() {
   background:
     linear-gradient(
-        135deg,
-        colors.$color-surface-glass-active-start 0%,
-        colors.$color-surface-glass-active-end 100%
+      135deg,
+      colors.$color-surface-glass-active-start 0%,
+      colors.$color-surface-glass-active-end 100%
     ),
     colors.$color-surface-glass-active-start;
   border-color: colors.$color-border-glass-active;

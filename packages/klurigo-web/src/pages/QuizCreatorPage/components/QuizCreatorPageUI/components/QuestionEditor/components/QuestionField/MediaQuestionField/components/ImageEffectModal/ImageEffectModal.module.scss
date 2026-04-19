@@ -1,7 +1,7 @@
+@use '../../../../../../../../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../../../../styles/helpers' as helpers;
 @use '../../../../../../../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../../../../../../../styles/variables' as variables;
 
 .imageMediaModal {
   display: flex;
@@ -48,7 +48,8 @@
       overflow: hidden;
     }
 
-    &.inline, &.search {
+    &.inline,
+    &.search {
       flex-direction: row;
       justify-content: space-between;
 
@@ -151,7 +152,7 @@
       align-items: center;
       align-self: center;
       width: 100%;
-      max-width: variables.$mobile-width;
+      max-width: breakpoints.$breakpoint-mobile;
 
       @include helpers.mobile {
         column-gap: spacing.$space-compact-mobile;
@@ -165,7 +166,7 @@
         column-gap: spacing.$space-compact-desktop;
       }
 
-      div[class*="buttonInputContainer"] {
+      div[class*='buttonInputContainer'] {
         flex: 1;
       }
     }

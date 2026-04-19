@@ -1,7 +1,7 @@
+@use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
 .pageDivider {
   display: flex;
@@ -20,12 +20,12 @@
   }
 
   @include helpers.tablet {
-    width: variables.$tablet-width;
+    width: breakpoints.$breakpoint-tablet;
     margin: spacing.$space-page-tablet 0;
   }
 
   @include helpers.desktop {
-    width: variables.$desktop-width;
+    width: breakpoints.$breakpoint-desktop;
     margin: spacing.$space-page-desktop 0;
   }
 
@@ -35,12 +35,12 @@
     left: 8%;
     right: 8%;
     background: linear-gradient(
-        to right,
-        transparent 0%,
-        pageColors.$color-page-divider-start 15%,
-        pageColors.$color-page-divider-center 50%,
-        pageColors.$color-page-divider-start 85%,
-        transparent 100%
+      to right,
+      transparent 0%,
+      pageColors.$color-page-divider-start 15%,
+      pageColors.$color-page-divider-center 50%,
+      pageColors.$color-page-divider-start 85%,
+      transparent 100%
     );
 
     @include helpers.mobile {

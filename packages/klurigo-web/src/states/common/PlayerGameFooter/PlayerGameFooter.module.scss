@@ -1,10 +1,10 @@
 @use '../../../styles/border-radius.tokens' as radius;
+@use '../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/spacing.semantic' as spacing;
 @use '../../../styles/typography.tokens' as typography;
-@use '../../../styles/variables' as variables;
 
 .main {
   @include surface.surface-box;
@@ -22,15 +22,17 @@
 
   @include helpers.tablet {
     padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
-    width: variables.$tablet-width;
+    width: breakpoints.$breakpoint-tablet;
   }
 
   @include helpers.desktop {
     padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
-    width: variables.$desktop-width;
+    width: breakpoints.$breakpoint-desktop;
   }
 
-  .questions, .nickname, .score {
+  .questions,
+  .nickname,
+  .score {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -82,15 +84,18 @@
       border-radius: radius.$radius-control-md;
 
       @include helpers.mobile {
-        padding: spacing.$space-inline-tight-mobile spacing.$space-compact-mobile;
+        padding: spacing.$space-inline-tight-mobile
+          spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
+        padding: spacing.$space-inline-tight-tablet
+          spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
+        padding: spacing.$space-inline-tight-desktop
+          spacing.$space-compact-desktop;
       }
     }
   }
