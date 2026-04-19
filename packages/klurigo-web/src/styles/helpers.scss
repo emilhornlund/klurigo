@@ -1,7 +1,7 @@
-@use 'sass:math';
 @use 'sass:color';
+@use 'sass:math';
 
-@use './variables' as variables;
+@use './breakpoints.tokens' as breakpoints;
 
 @function pxToRem($size) {
   @return math.div($size, 16px) * 1rem;
@@ -13,19 +13,19 @@
 }
 
 @mixin mobile {
-  @media (max-width: #{variables.$tablet-width - 1px}) {
+  @media (max-width: #{breakpoints.$breakpoint-tablet - 1px}) {
     @content;
   }
 }
 
 @mixin tablet {
-  @media (min-width: #{variables.$tablet-width}) and (max-width: #{variables.$desktop-width - 1px}) {
+  @media (min-width: #{breakpoints.$breakpoint-tablet}) and (max-width: #{breakpoints.$breakpoint-desktop - 1px}) {
     @content;
   }
 }
 
 @mixin desktop {
-  @media (min-width: #{variables.$desktop-width}) {
+  @media (min-width: #{breakpoints.$breakpoint-desktop}) {
     @content;
   }
 }

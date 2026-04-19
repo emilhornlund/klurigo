@@ -1,12 +1,18 @@
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/inputs';
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
-$mobile-select-normal-size: calc(#{variables.$mobile-control-normal-height} * 0.4);
-$tablet-select-normal-size: calc(#{variables.$tablet-control-normal-height} * 0.4);
-$desktop-select-normal-size: calc(#{variables.$desktop-control-normal-height} * 0.4);
+$mobile-select-normal-size: calc(
+  #{controls.$control-normal-height-mobile} * 0.4
+);
+$tablet-select-normal-size: calc(
+  #{controls.$control-normal-height-tablet} * 0.4
+);
+$desktop-select-normal-size: calc(
+  #{controls.$control-normal-height-desktop} * 0.4
+);
 
 .inputContainer {
   display: flex;
@@ -17,24 +23,24 @@ $desktop-select-normal-size: calc(#{variables.$desktop-control-normal-height} * 
 
     .selectIcon {
       position: absolute;
-        color: colors.$color-text-default;
+      color: colors.$color-text-default;
 
       @include helpers.mobile {
         width: $mobile-select-normal-size;
         height: $mobile-select-normal-size;
-        right: variables.$mobile-control-normal-height * 0.2;
+        right: controls.$control-normal-height-mobile * 0.2;
       }
 
       @include helpers.tablet {
         width: $tablet-select-normal-size;
         height: $tablet-select-normal-size;
-        right: variables.$tablet-control-normal-height * 0.2;
+        right: controls.$control-normal-height-tablet * 0.2;
       }
 
       @include helpers.desktop {
         width: $desktop-select-normal-size;
         height: $desktop-select-normal-size;
-        right: variables.$desktop-control-normal-height * 0.2;
+        right: controls.$control-normal-height-desktop * 0.2;
       }
     }
 

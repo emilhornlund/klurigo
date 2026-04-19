@@ -1,8 +1,8 @@
+@use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .typography {
   margin: 0;
@@ -47,7 +47,9 @@
 
     @include helpers.desktop {
       line-height: typography.$line-height-extra-large-title-desktop;
-      @include helpers.fontSize(typography.$font-size-extra-large-title-desktop);
+      @include helpers.fontSize(
+        typography.$font-size-extra-large-title-desktop
+      );
     }
   }
 
@@ -297,11 +299,11 @@
     }
 
     @include helpers.tablet {
-      width: variables.$mobile-width;
+      width: breakpoints.$breakpoint-mobile;
     }
 
     @include helpers.desktop {
-      width: variables.$mobile-width;
+      width: breakpoints.$breakpoint-mobile;
     }
   }
 
@@ -311,11 +313,11 @@
     }
 
     @include helpers.tablet {
-      width: variables.$tablet-width;
+      width: breakpoints.$breakpoint-tablet;
     }
 
     @include helpers.desktop {
-      width: variables.$tablet-width;
+      width: breakpoints.$breakpoint-tablet;
     }
   }
 

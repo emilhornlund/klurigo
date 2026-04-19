@@ -1,10 +1,10 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
+@use '../../styles/layers.tokens' as layers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
 .menu {
   display: flex;
@@ -12,7 +12,7 @@
   position: absolute;
   background-color: colors.$color-surface-floating;
   border: none;
-  z-index: variables.$menu-z-index;
+  z-index: layers.$z-index-menu;
   transform: translateX(-100%);
   row-gap: 0;
   padding: spacing.$space-compact-mobile 0;
@@ -38,15 +38,18 @@
 
       @include helpers.mobile {
         column-gap: spacing.$space-content-padding-mobile * 2;
-        padding: spacing.$space-content-padding-mobile spacing.$space-content-padding-mobile * 2;
+        padding: spacing.$space-content-padding-mobile
+          spacing.$space-content-padding-mobile * 2;
       }
       @include helpers.tablet {
         column-gap: spacing.$space-content-padding-tablet * 2;
-        padding: spacing.$space-content-padding-tablet spacing.$space-content-padding-tablet * 2;
+        padding: spacing.$space-content-padding-tablet
+          spacing.$space-content-padding-tablet * 2;
       }
       @include helpers.desktop {
         column-gap: spacing.$space-content-padding-desktop * 2;
-        padding: spacing.$space-content-padding-desktop spacing.$space-content-padding-desktop * 2;
+        padding: spacing.$space-content-padding-desktop
+          spacing.$space-content-padding-desktop * 2;
       }
 
       @include helpers.fontSize(22px);

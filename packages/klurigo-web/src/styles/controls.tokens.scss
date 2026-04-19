@@ -1,0 +1,12 @@
+/* Control heights – primary interactive elements (buttons, inputs) */
+$control-normal-height-mobile: 2.625rem; // 42px
+$control-normal-height-tablet: 2.75rem; // 44px
+$control-normal-height-desktop: 2.875rem; // 46px
+
+/* Smaller controls – dense layouts or secondary actions */
+$control-small-height-mobile: 2rem; // 32px
+$control-small-height-tablet: 2.125rem; // 34px
+$control-small-height-desktop: 2.25rem; // 36px
+
+/* Visual border thickness for controls */
+$control-border-width-outside: 0.125rem; // 2px

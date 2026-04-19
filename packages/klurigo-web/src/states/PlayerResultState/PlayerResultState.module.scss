@@ -1,7 +1,7 @@
+@use '../../styles/badges.tokens' as badges;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .contentContainer {
   position: relative;
@@ -12,37 +12,37 @@
   transition: min-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   @include helpers.mobile {
-    min-height:
-      helpers.pxToRem(
-        variables.$mobile-badge-large-size + typography.$font-size-title2-mobile
-      ) + spacing.$space-stack-mobile;
+    min-height: helpers.pxToRem(
+        badges.$badge-large-size-mobile + typography.$font-size-title2-mobile
+      ) +
+      spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    min-height:
-      helpers.pxToRem(
-        variables.$tablet-badge-large-size + typography.$font-size-title2-tablet
-      ) + spacing.$space-stack-tablet;
+    min-height: helpers.pxToRem(
+        badges.$badge-large-size-tablet + typography.$font-size-title2-tablet
+      ) +
+      spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    min-height:
-      helpers.pxToRem(
-        variables.$desktop-badge-large-size + typography.$font-size-title2-desktop
-      ) + spacing.$space-stack-desktop;
+    min-height: helpers.pxToRem(
+        badges.$badge-large-size-desktop + typography.$font-size-title2-desktop
+      ) +
+      spacing.$space-stack-desktop;
   }
 
   &.shrink {
     @include helpers.mobile {
-      min-height: helpers.pxToRem(variables.$mobile-badge-large-size);
+      min-height: helpers.pxToRem(badges.$badge-large-size-mobile);
     }
 
     @include helpers.tablet {
-      min-height: helpers.pxToRem(variables.$tablet-badge-large-size);
+      min-height: helpers.pxToRem(badges.$badge-large-size-tablet);
     }
 
     @include helpers.desktop {
-      min-height: helpers.pxToRem(variables.$desktop-badge-large-size);
+      min-height: helpers.pxToRem(badges.$badge-large-size-desktop);
     }
   }
 }

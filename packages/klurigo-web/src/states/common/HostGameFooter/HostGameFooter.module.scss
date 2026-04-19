@@ -1,9 +1,9 @@
 @use '../../../styles/border-radius.tokens' as radius;
+@use '../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/spacing.semantic' as spacing;
 @use '../../../styles/typography.tokens' as typography;
-@use '../../../styles/variables' as variables;
 
 .main {
   @include surface.surface-box;
@@ -21,15 +21,16 @@
 
   @include helpers.tablet {
     padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
-    width: variables.$tablet-width;
+    width: breakpoints.$breakpoint-tablet;
   }
 
   @include helpers.desktop {
     padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
-    width: variables.$desktop-width;
+    width: breakpoints.$breakpoint-desktop;
   }
 
-  .questions, .gamePIN {
+  .questions,
+  .gamePIN {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -91,7 +92,7 @@
     }
 
     .menuButtonWrapper {
-      div[class*=_buttonInputContainer] {
+      div[class*='_buttonInputContainer'] {
         padding: 0;
         margin: 0;
 

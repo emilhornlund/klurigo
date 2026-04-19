@@ -1,6 +1,5 @@
 @use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
 
 .nicknameTextFieldContainer {
   display: flex;
@@ -8,11 +7,11 @@
   width: 100%;
 
   @include helpers.mobile {
-    column-gap: spacing.$space-compact-mobile
+    column-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: spacing.$space-compact-tablet
+    column-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {

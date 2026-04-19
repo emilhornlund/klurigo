@@ -1,5 +1,6 @@
 @use './border-radius.tokens' as radius;
 @use './colors.semantic' as colors;
+@use './controls.tokens' as controls;
 @use './helpers' as helpers;
 @use './mixins/_button' as button;
 @use './mixins/_input' as input;
@@ -8,21 +9,20 @@
 @use './shadows.tokens' as shadows;
 @use './spacing.semantic' as spacing;
 @use './typography.tokens' as typography;
-@use './variables' as variables;
 
 .input {
   align-items: center;
-  border: variables.$control-outside-border-width solid transparent;
+  border: controls.$control-border-width-outside solid transparent;
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-shrink: 1;
   justify-content: center;
-  margin: calc(#{variables.$control-outside-border-width} * 2);
+  margin: calc(#{controls.$control-border-width-outside} * 2);
   border-radius: radius.$radius-control-md;
-  outline-offset: variables.$control-outside-border-width;
+  outline-offset: controls.$control-border-width-outside;
   outline-style: solid;
-  outline-width: variables.$control-outside-border-width;
+  outline-width: controls.$control-border-width-outside;
   overflow: hidden;
   position: relative;
 
@@ -106,7 +106,7 @@
   /* end button overrides */
 
   @include helpers.mobile {
-    min-height: variables.$mobile-control-normal-height;
+    min-height: controls.$control-normal-height-mobile;
     padding: 0 spacing.$space-compact-mobile;
 
     &:has(> textarea) {
@@ -115,7 +115,7 @@
   }
 
   @include helpers.tablet {
-    min-height: variables.$tablet-control-normal-height;
+    min-height: controls.$control-normal-height-tablet;
     padding: 0 spacing.$space-compact-tablet;
 
     &:has(> textarea) {
@@ -124,7 +124,7 @@
   }
 
   @include helpers.desktop {
-    min-height: variables.$desktop-control-normal-height;
+    min-height: controls.$control-normal-height-desktop;
     padding: 0 spacing.$space-compact-desktop;
 
     &:has(> textarea) {
@@ -319,7 +319,7 @@
   border-radius: radius.$radius-control-sm;
 
   @include helpers.mobile {
-    min-height: variables.$mobile-control-small-height;
+    min-height: controls.$control-small-height-mobile;
     padding: 0 spacing.$space-inline-mobile;
 
     input,
@@ -333,7 +333,7 @@
   }
 
   @include helpers.tablet {
-    min-height: variables.$tablet-control-small-height;
+    min-height: controls.$control-small-height-tablet;
     padding: 0 spacing.$space-inline-tablet;
 
     input,
@@ -347,7 +347,7 @@
   }
 
   @include helpers.desktop {
-    min-height: variables.$desktop-control-small-height;
+    min-height: controls.$control-small-height-desktop;
     padding: 0 spacing.$space-inline-desktop;
 
     input,

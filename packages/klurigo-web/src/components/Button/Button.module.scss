@@ -1,8 +1,8 @@
 @use '../../styles/colors.loading.semantic' as loadingColors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/inputs' as inputs;
 @use '../../styles/loading' as loading;
-@use '../../styles/variables' as variables;
 
 .buttonInputContainer {
   @extend .input;
@@ -12,18 +12,36 @@
       @extend .loading-spinner;
 
       @include helpers.mobile {
-        $--mobile-loading-spinner-size: calc(#{variables.$mobile-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-mobile-normal);
+        $--mobile-loading-spinner-size: calc(
+          #{controls.$control-normal-height-mobile} * 0.9
+        );
+        @include loading.loading-spinner-dimensions(
+          $--mobile-loading-spinner-size,
+          loadingColors.$color-loading-spinner-default,
+          button-mobile-normal
+        );
       }
 
       @include helpers.tablet {
-        $--tablet-loading-spinner-size: calc(#{variables.$tablet-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-tablet-normal);
+        $--tablet-loading-spinner-size: calc(
+          #{controls.$control-normal-height-tablet} * 0.9
+        );
+        @include loading.loading-spinner-dimensions(
+          $--tablet-loading-spinner-size,
+          loadingColors.$color-loading-spinner-default,
+          button-tablet-normal
+        );
       }
 
       @include helpers.desktop {
-        $--desktop-loading-spinner-size: calc(#{variables.$desktop-control-normal-height} * 0.9);
-        @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-desktop-normal);
+        $--desktop-loading-spinner-size: calc(
+          #{controls.$control-normal-height-desktop} * 0.9
+        );
+        @include loading.loading-spinner-dimensions(
+          $--desktop-loading-spinner-size,
+          loadingColors.$color-loading-spinner-default,
+          button-desktop-normal
+        );
       }
     }
   }
@@ -58,18 +76,36 @@
     button {
       .loadingSpinner {
         @include helpers.mobile {
-          $--mobile-loading-spinner-size: calc(#{variables.$mobile-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--mobile-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-mobile-small);
+          $--mobile-loading-spinner-size: calc(
+            #{controls.$control-small-height-mobile} * 0.9
+          );
+          @include loading.loading-spinner-dimensions(
+            $--mobile-loading-spinner-size,
+            loadingColors.$color-loading-spinner-default,
+            button-mobile-small
+          );
         }
 
         @include helpers.tablet {
-          $--tablet-loading-spinner-size: calc(#{variables.$tablet-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--tablet-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-tablet-small);
+          $--tablet-loading-spinner-size: calc(
+            #{controls.$control-small-height-tablet} * 0.9
+          );
+          @include loading.loading-spinner-dimensions(
+            $--tablet-loading-spinner-size,
+            loadingColors.$color-loading-spinner-default,
+            button-tablet-small
+          );
         }
 
         @include helpers.desktop {
-          $--desktop-loading-spinner-size: calc(#{variables.$desktop-control-small-height} * 0.9);
-          @include loading.loading-spinner-dimensions($--desktop-loading-spinner-size, loadingColors.$color-loading-spinner-default, button-desktop-small);
+          $--desktop-loading-spinner-size: calc(
+            #{controls.$control-small-height-desktop} * 0.9
+          );
+          @include loading.loading-spinner-dimensions(
+            $--desktop-loading-spinner-size,
+            loadingColors.$color-loading-spinner-default,
+            button-desktop-small
+          );
         }
       }
     }

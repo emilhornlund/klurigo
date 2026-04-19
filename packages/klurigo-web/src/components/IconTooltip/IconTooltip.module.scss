@@ -1,10 +1,11 @@
 @use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
+@use '../../styles/layers.tokens' as layers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
-@use '../../styles/variables' as variables;
 
 .iconTooltipButton {
   @include button.button-reset;
@@ -33,9 +34,9 @@
   display: flex;
   flex-direction: column;
   color: colors.$color-text-default;
-  z-index: variables.$tooltip-z-index;
+  z-index: layers.$z-index-tooltip;
   background-color: colors.$color-surface-info;
-  max-width: variables.$mobile-width;
+  max-width: breakpoints.$breakpoint-mobile;
   border-radius: radius.$radius-control-sm;
 
   @include helpers.mobile {

@@ -1,9 +1,9 @@
 @use '../../../../styles/border-radius.tokens' as radius;
+@use '../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/spacing.semantic' as spacing;
-@use '../../../../styles/variables' as variables;
 
 .layout {
   display: flex;
@@ -35,7 +35,7 @@
   @include helpers.desktop {
     row-gap: spacing.$space-page-desktop;
     padding-bottom: spacing.$space-page-desktop;
-    width: variables.$desktop-width * 0.85;
+    width: breakpoints.$breakpoint-desktop * 0.85;
   }
 
   .thumbnailContainer {

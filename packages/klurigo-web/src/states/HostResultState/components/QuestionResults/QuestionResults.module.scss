@@ -1,11 +1,11 @@
 @use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/colors.semantic' as colors;
+@use '../../../../styles/controls.tokens' as controls;
 @use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/loading';
 @use '../../../../styles/mixins/_button' as button;
 @use '../../../../styles/spacing.semantic' as spacing;
 @use '../../../../styles/typography.tokens' as typography;
-@use '../../../../styles/variables' as variables;
 
 .questionResults {
   display: flex;
@@ -63,24 +63,21 @@
       }
 
       @include helpers.mobile {
-        padding: spacing.$space-stack-mobile
-          spacing.$space-stack-mobile;
+        padding: spacing.$space-stack-mobile spacing.$space-stack-mobile;
         column-gap: spacing.$space-stack-mobile;
 
         @include helpers.fontSize(typography.$font-size-body-mobile);
       }
 
       @include helpers.tablet {
-        padding: spacing.$space-stack-tablet
-          spacing.$space-stack-tablet;
+        padding: spacing.$space-stack-tablet spacing.$space-stack-tablet;
         column-gap: spacing.$space-stack-tablet;
 
         @include helpers.fontSize(typography.$font-size-body-tablet);
       }
 
       @include helpers.desktop {
-        padding: spacing.$space-stack-desktop
-          spacing.$space-stack-desktop;
+        padding: spacing.$space-stack-desktop spacing.$space-stack-desktop;
         column-gap: spacing.$space-stack-desktop;
 
         @include helpers.fontSize(typography.$font-size-body-desktop);
@@ -156,7 +153,7 @@
 
           @include helpers.mobile {
             $--mobile-loading-spinner-size: calc(
-              #{variables.$mobile-control-normal-height} * 1.5
+              #{controls.$control-normal-height-mobile} * 1.5
             );
             @include loading.loading-spinner-dimensions(
               $--mobile-loading-spinner-size,
@@ -167,7 +164,7 @@
 
           @include helpers.tablet {
             $--tablet-loading-spinner-size: calc(
-              #{variables.$tablet-control-normal-height} * 1.5
+              #{controls.$control-normal-height-tablet} * 1.5
             );
             @include loading.loading-spinner-dimensions(
               $--tablet-loading-spinner-size,
@@ -178,7 +175,7 @@
 
           @include helpers.desktop {
             $--desktop-loading-spinner-size: calc(
-              #{variables.$desktop-control-normal-height} * 1.5
+              #{controls.$control-normal-height-desktop} * 1.5
             );
             @include loading.loading-spinner-dimensions(
               $--desktop-loading-spinner-size,
