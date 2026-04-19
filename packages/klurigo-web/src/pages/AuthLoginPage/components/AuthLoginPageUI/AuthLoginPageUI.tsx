@@ -84,10 +84,10 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
 
   return (
     <Page align="start">
-      <Typography variant="title" width="medium">
+      <Typography variant="title" width="medium" align="center" color="inverse">
         {title}
       </Typography>
-      <Typography variant="body" width="small">
+      <Typography variant="body" width="small" align="center" color="inverse">
         {message}
       </Typography>
       <form className={styles.loginForm} onSubmit={handleSubmit}>
@@ -123,7 +123,12 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
           onValid={(valid) => handleChangeValidFormField('password', valid)}
           required
         />
-        <Typography variant="link" width="small" asChild>
+        <Typography
+          variant="link"
+          width="small"
+          align="center"
+          color="inverse"
+          asChild>
           <Link to={'/auth/password/forgot'}>Forgot your password?</Link>
         </Typography>
         <IconButtonArrowRight
@@ -135,7 +140,12 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
           disabled={!isFormValid || loading}
         />
       </form>
-      <Typography variant="link" width="small" asChild>
+      <Typography
+        variant="link"
+        width="small"
+        align="center"
+        color="inverse"
+        asChild>
         <Link to={'/auth/register'}>
           New here? Join the fun and create your account!
         </Link>

@@ -22,7 +22,7 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
   <div className={styles.main}>
     <div className={styles.questions}>
       <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
-      <Typography variant="body2" align="left" color="inverse" noOpacity bold>
+      <Typography variant="body2" color="inverse" noOpacity bold>
         {currentQuestion} / {totalQuestions}
       </Typography>
     </div>
@@ -36,7 +36,6 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
         <Typography
           variant="body2"
           align="right"
-          color="default"
           className={styles.badge}
           noOpacity
           bold>

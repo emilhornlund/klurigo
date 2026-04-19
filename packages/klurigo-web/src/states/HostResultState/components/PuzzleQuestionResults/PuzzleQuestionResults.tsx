@@ -55,7 +55,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           <div className={classNames(styles.inner, styles.green)}>
             <div className={styles.spacer} />
             <div className={styles.footer}>
-              <Typography>
+              <Typography variant="body" align="center" color="inverse">
                 {correct} <FontAwesomeIcon icon={faCheck} />
               </Typography>
             </div>
@@ -71,7 +71,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           <div className={classNames(styles.inner, styles.red)}>
             <div className={styles.spacer} />
             <div className={styles.footer}>
-              <Typography>
+              <Typography align="center" color="inverse">
                 {incorrect} <FontAwesomeIcon icon={faXmark} />
               </Typography>
             </div>

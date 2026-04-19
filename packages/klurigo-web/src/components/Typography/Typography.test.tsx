@@ -213,7 +213,7 @@ describe('Typography', () => {
 
   it('matches snapshot for title variant', () => {
     const { asFragment } = render(
-      <Typography variant="title" width="small" align="left">
+      <Typography variant="title" width="small">
         Leaderboard
       </Typography>,
     )
@@ -345,11 +345,11 @@ describe('Typography', () => {
     expect(asFragment()).toMatchSnapshot()
   })
 
-  it('applies center alignment by default when align is not provided', () => {
-    render(<Typography>Centered</Typography>)
+  it('applies left alignment by default when align is not provided', () => {
+    render(<Typography>Left aligned</Typography>)
 
-    const el = screen.getByText('Centered')
-    expect(el).toHaveClass('alignCenter')
+    const el = screen.getByText('Left aligned')
+    expect(el).toHaveClass('alignLeft')
   })
 
   it('applies alignment modifier classes', () => {
@@ -359,7 +359,7 @@ describe('Typography', () => {
     rerender(<Typography align="justify">Justify</Typography>)
     expect(screen.getByText('Justify')).toHaveClass('alignJustify')
 
-    rerender(<Typography align="left">Left</Typography>)
+    rerender(<Typography>Left</Typography>)
     expect(screen.getByText('Left')).toHaveClass('alignLeft')
 
     rerender(<Typography align="right">Right</Typography>)
@@ -377,17 +377,15 @@ describe('Typography', () => {
     expect(el).toHaveClass('alignRight')
   })
 
-  it('applies inverse color by default when color is not provided', () => {
+  it('applies default color by default when color is not provided', () => {
     render(<Typography>Default color</Typography>)
 
     const el = screen.getByText('Default color')
-    expect(el).toHaveClass('colorInverse')
+    expect(el).toHaveClass('colorDefault')
   })
 
   it('applies color modifier classes', () => {
-    const { rerender } = render(
-      <Typography color="default">Default</Typography>,
-    )
+    const { rerender } = render(<Typography>Default</Typography>)
     expect(screen.getByText('Default')).toHaveClass('colorDefault')
 
     rerender(<Typography color="subtle">Subtle</Typography>)
@@ -594,7 +592,7 @@ describe('Typography', () => {
 
   it('matches snapshot for body variant with semantic color', () => {
     const { asFragment } = render(
-      <Typography variant="body" color="success" align="left" width="medium">
+      <Typography variant="body" color="success" width="medium">
         Saved successfully
       </Typography>,
     )

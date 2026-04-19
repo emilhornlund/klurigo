@@ -59,7 +59,9 @@ const RatingCard: FC<RatingCardProps> = ({
 }) => (
   <div className={classNames(styles.card, styles.rating)}>
     <div className={styles.content}>
-      <Typography variant="title3">Rate this quiz</Typography>
+      <Typography variant="title3" align="center" color="inverse">
+        Rate this quiz
+      </Typography>
       <StarRating
         value={stars}
         size="large"
@@ -79,7 +81,9 @@ const RatingCard: FC<RatingCardProps> = ({
       )}
     </div>
     {!canRateQuiz && (
-      <Typography variant="control">You cannot rate your own quiz</Typography>
+      <Typography variant="control" align="center" color="inverse">
+        You cannot rate your own quiz
+      </Typography>
     )}
   </div>
 )

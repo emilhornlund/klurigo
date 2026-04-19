@@ -159,23 +159,18 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
         }>
         <div className={styles.header}>
           <div className={classNames(styles.box, styles.info)}>
-            <Typography variant="body2" align="left" color="default" noOpacity>
+            <Typography variant="body2" noOpacity>
               Join at
             </Typography>{' '}
-            <Typography
-              variant="body2"
-              align="left"
-              color="default"
-              noOpacity
-              bold>
+            <Typography variant="body2" noOpacity bold>
               {extractUrl(config.baseUrl, { omitProtocol: true })}
             </Typography>
           </div>
           <div className={classNames(styles.box, styles.pin)}>
-            <Typography variant="body2" align="left" color="default" noOpacity>
+            <Typography variant="body2" noOpacity>
               Game PIN
             </Typography>
-            <Typography variant="title" align="left" color="default" noOpacity>
+            <Typography variant="title" noOpacity>
               {pin}
             </Typography>
           </div>

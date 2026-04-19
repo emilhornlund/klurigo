@@ -71,8 +71,10 @@ const AuthPasswordForgotPageUI: FC<AuthPasswordForgotPageUIProps> = ({
 
   return (
     <Page>
-      <Typography variant="title">Uh-oh, Lost Your Key?</Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="title" align="center" color="inverse">
+        Uh-oh, Lost Your Key?
+      </Typography>
+      <Typography variant="body" width="medium" align="center" color="inverse">
         Don’t panic – it happens! Drop your email below and we’ll beam you a
         shiny new password link.
       </Typography>

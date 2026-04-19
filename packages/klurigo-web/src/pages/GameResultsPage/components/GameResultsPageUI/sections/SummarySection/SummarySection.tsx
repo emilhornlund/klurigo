@@ -66,10 +66,10 @@ const DetailsItem: FC<{
 }> = ({ title, icon, children }) => (
   <div className={styles.item}>
     <FontAwesomeIcon icon={icon} className={styles.icon} />
-    <Typography variant="body2" align="left">
+    <Typography variant="body2" color="inverse">
       {title}
     </Typography>
-    <Typography variant="body2" align="right" noOpacity bold>
+    <Typography variant="body2" align="right" color="inverse" noOpacity bold>
       {children}
     </Typography>
   </div>
@@ -81,8 +81,10 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
   nicknames,
 }) => (
   <div className={classNames(styles.card, styles.metric)}>
-    <Typography variant="body2">{title}</Typography>
-    <Typography variant="title3" noOpacity>
+    <Typography variant="body2" align="center" color="inverse">
+      {title}
+    </Typography>
+    <Typography variant="title3" align="center" color="inverse" noOpacity>
       {value}
     </Typography>
     <div className={styles.nicknames}>
@@ -235,7 +237,7 @@ const SummarySection: FC<SummarySectionProps> = ({
             progress={percentage}
             percentageColor="white"
           />
-          <Typography variant="body2" align="left" className={styles.text}>
+          <Typography variant="body2" color="inverse" className={styles.text}>
             {getQuizDifficultyMessage(percentage)}
           </Typography>
         </div>
@@ -257,8 +259,10 @@ const SummarySection: FC<SummarySectionProps> = ({
           {quiz.canHostLiveGame ? (
             <>
               <div className={styles.content}>
-                <Typography variant="title3">Play again</Typography>
-                <Typography variant="body2">
+                <Typography variant="title3" align="center" color="inverse">
+                  Play again
+                </Typography>
+                <Typography variant="body2" align="center" color="inverse">
                   Start a new live game with this quiz and invite others to
                   join.
                 </Typography>
@@ -270,8 +274,10 @@ const SummarySection: FC<SummarySectionProps> = ({
           ) : (
             <>
               <div className={styles.content}>
-                <Typography variant="title3">Play again</Typography>
-                <Typography variant="body2">
+                <Typography variant="title3" align="center" color="inverse">
+                  Play again
+                </Typography>
+                <Typography variant="body2" align="center" color="inverse">
                   This quiz isn’t public yet. Ask the owner to make it public
                   before hosting a live game.
                 </Typography>

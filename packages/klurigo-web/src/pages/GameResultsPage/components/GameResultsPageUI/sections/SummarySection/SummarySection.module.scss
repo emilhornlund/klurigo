@@ -284,6 +284,14 @@ $contrast-opacity: 0.8;
               @include helpers.fontSize(typography.$font-size-body2-desktop);
             }
           }
+
+          p > a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+            opacity: 1;
+          }
         }
       }
 

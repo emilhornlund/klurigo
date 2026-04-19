@@ -22,20 +22,14 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
 }) =>
   mode === GameMode.Classic ? (
     <div className={styles.chip}>
-      <Typography variant="body2" align="left" color="inverse" noOpacity bold>
+      <Typography variant="body2" color="inverse" noOpacity bold>
         <FontAwesomeIcon
           icon={faQuestionCircle}
           color={colors.colorTextInverse}
         />
         {QuestionTypeLabels[questionType]}
       </Typography>
-      <Typography
-        variant="body2"
-        align="left"
-        color="inverse"
-        noOpacity
-        noWrap
-        bold>
+      <Typography variant="body2" color="inverse" noOpacity noWrap bold>
         <FontAwesomeIcon icon={faStar} color={colors.colorRatingDefault} />
         {questionPoints === 0 && 'Zero Points'}
         {questionPoints === 1000 && 'Standard Points'}

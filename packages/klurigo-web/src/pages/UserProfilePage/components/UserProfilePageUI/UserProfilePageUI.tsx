@@ -44,8 +44,15 @@ const Card: FC<{
   alt?: string
 }> = ({ title, value, alt }) => (
   <div className={styles.card}>
-    <Typography variant="body2">{title}</Typography>
-    <Typography variant="title3" noOpacity title={alt}>
+    <Typography variant="body2" align="center" color="inverse">
+      {title}
+    </Typography>
+    <Typography
+      variant="title3"
+      align="center"
+      color="inverse"
+      noOpacity
+      title={alt}>
       {value}
     </Typography>
   </div>
@@ -75,7 +82,11 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
   if (isError || !profile) {
     return (
       <Page align="center" discover profile>
-        <Typography variant="body" data-testid="user-profile-error-state">
+        <Typography
+          variant="body"
+          align="center"
+          color="inverse"
+          data-testid="user-profile-error-state">
           This user profile is not available right now.
         </Typography>
       </Page>
@@ -84,7 +95,11 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 
   return (
     <Page align="start" discover profile>
-      <Typography variant="title" data-testid="user-profile-nickname">
+      <Typography
+        variant="title"
+        align="center"
+        color="inverse"
+        data-testid="user-profile-nickname">
         {profile.nickname}
       </Typography>
 
@@ -103,7 +118,11 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 
       {quizzes.length === 0 ? (
         <section className={styles.railSection}>
-          <Typography variant="body" data-testid="user-profile-empty-rail">
+          <Typography
+            variant="body"
+            align="center"
+            color="inverse"
+            data-testid="user-profile-empty-rail">
             This user hasn&apos;t shared any quizzes yet.
           </Typography>
         </section>
@@ -113,7 +132,12 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
             title="Quizzes"
             description={`Browse quizzes created by ${profile.nickname}.`}
             action={
-              <Typography variant="link2" width="small" align="right" asChild>
+              <Typography
+                variant="link2"
+                width="small"
+                align="right"
+                color="inverse"
+                asChild>
                 <Link
                   to={`/users/${userId}/quizzes`}
                   data-testid="user-profile-see-all-link">

@@ -14,7 +14,7 @@ const NonInteractiveInfoBox: FC<NonInteractiveInfoBoxProps> = ({ info }) => {
   return (
     <div className={styles.nonInteractiveInfoBox}>
       <FontAwesomeIcon icon={faCircleInfo} />
-      <Typography variant="title2" align="left" color="inverse">
+      <Typography variant="title2" color="inverse">
         {info}
       </Typography>
     </div>

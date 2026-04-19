@@ -48,7 +48,9 @@ const RatingCard: FC<RatingCardProps> = ({
   onCommentChange,
 }) => (
   <div className={styles.ratingCard}>
-    <Typography variant="title3">Rate this quiz</Typography>
+    <Typography variant="title3" align="center" color="inverse">
+      Rate this quiz
+    </Typography>
     <StarRating value={stars} size="large" onChange={onRatingChange} />
     {stars && (
       <div className={styles.comment}>

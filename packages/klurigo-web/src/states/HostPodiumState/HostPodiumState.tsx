@@ -45,7 +45,9 @@ const HostPodiumState: FC<HostPodiumStateProps> = ({
           Back to Home
         </IconButtonArrowLeft>
       }>
-      <Typography variant="title">{game.name}</Typography>
+      <Typography variant="title" align="center" color="inverse">
+        {game.name}
+      </Typography>
 
       <Podium values={leaderboard} />
 

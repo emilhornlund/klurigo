@@ -79,7 +79,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
               styles.correctnessBatch,
               showPosition ? styles.slideOutLeft : undefined,
             )}>
-            <Typography variant="title">
+            <Typography variant="title" align="center" color="inverse">
               {correct ? 'Correct' : 'Incorrect'}
             </Typography>
 
@@ -110,7 +110,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
 
       <ScoreChip value={lastScore} />
 
-      <Typography variant="body" width="small">
+      <Typography variant="body" width="small" align="center" color="inverse">
         {message}
       </Typography>
 

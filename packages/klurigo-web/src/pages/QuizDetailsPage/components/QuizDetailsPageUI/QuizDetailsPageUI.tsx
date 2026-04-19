@@ -55,7 +55,7 @@ const DetailItem: FC<{
 }> = ({ value, icon, title, children }) => (
   <div className={styles.item} title={title ?? value}>
     <FontAwesomeIcon icon={icon} className={styles.icon} />
-    <Typography variant="body2" bold>
+    <Typography variant="body2" align="center" color="inverse" bold>
       {value || children}
     </Typography>
   </div>
@@ -102,12 +102,16 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
   return (
     <Page align="start" height="full" noPadding discover profile>
       <div className={styles.layout}>
-        <Typography variant="title" width="full">
+        <Typography variant="title" width="full" align="center" color="inverse">
           {quiz.title}
         </Typography>
 
         {quiz.description && (
-          <Typography variant="body" width="medium">
+          <Typography
+            variant="body"
+            width="medium"
+            align="center"
+            color="inverse">
             {quiz.description}
           </Typography>
         )}

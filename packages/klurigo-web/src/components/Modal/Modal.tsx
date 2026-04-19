@@ -63,12 +63,7 @@ const Modal: FC<ModalProps> = ({
           ref={refs.setFloating}
           {...getFloatingProps()}>
           <div className={styles.header}>
-            <Typography
-              id={titleId}
-              variant="title4"
-              align="left"
-              color="default"
-              noOpacity>
+            <Typography id={titleId} variant="title4" noOpacity>
               {title}
             </Typography>
             {onClose && (

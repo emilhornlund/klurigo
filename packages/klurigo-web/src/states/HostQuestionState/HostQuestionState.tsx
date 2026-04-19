@@ -70,7 +70,11 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
       }>
       <div className={classNames(styles.row, styles.flexibleHeight)}>
         <div className={styles.column}>
-          <Typography variant="title" maxLines={3}>
+          <Typography
+            variant="title"
+            align="center"
+            color="inverse"
+            maxLines={3}>
             {question.question}
           </Typography>
         </div>

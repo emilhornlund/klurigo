@@ -54,7 +54,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
         />
       }>
       <div className={styles.fullHeight}>
-        <Typography variant="title" maxLines={2}>
+        <Typography variant="title" align="center" color="inverse" maxLines={2}>
           {question.question}
         </Typography>
 

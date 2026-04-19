@@ -41,12 +41,18 @@ const UserQuizzesPageUI: FC<UserQuizzesPageUIProps> = ({
 }) => {
   return (
     <Page align="start" discover profile>
-      <Typography variant="title">Public Quiz Shelf</Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="title" align="center" color="inverse">
+        Public Quiz Shelf
+      </Typography>
+      <Typography variant="body" width="medium" align="center" color="inverse">
         Browse public quizzes shared by this user.
       </Typography>
       {isError || (!isLoading && quizzes.length === 0) ? (
-        <Typography variant="body2" data-testid="profile-empty-state">
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          data-testid="profile-empty-state">
           {isError
             ? "Oops! This user's quizzes are playing hide-and-seek right now. Please try again."
             : "This user hasn't shared any quizzes yet."}
