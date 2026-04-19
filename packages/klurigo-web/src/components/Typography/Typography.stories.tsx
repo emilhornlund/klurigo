@@ -13,7 +13,20 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const variants = ['extraLargeTitle', 'title', 'title2', 'body', 'link'] as const
+const variants = [
+  'extraLargeTitle',
+  'title',
+  'title2',
+  'title3',
+  'title4',
+  'title5',
+  'body',
+  'body2',
+  'control',
+  'control2',
+  'link',
+  'link2',
+] as const
 
 export const AllVariants: Story = {
   args: {

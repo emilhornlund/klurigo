@@ -43,20 +43,17 @@
 
     @include helpers.mobile {
       padding: spacing.$space-compact-mobile spacing.$space-page-mobile;
-
-      @include helpers.fontSize(14px);
+      @include helpers.fontSize(variables.$mobile-body2-font-size);
     }
 
     @include helpers.tablet {
       padding: spacing.$space-compact-tablet spacing.$space-page-tablet;
-
-      @include helpers.fontSize(18px);
+      @include helpers.fontSize(variables.$tablet-body2-font-size);
     }
 
     @include helpers.desktop {
       padding: spacing.$space-compact-desktop spacing.$space-page-desktop;
-
-      @include helpers.fontSize(24px);
+      @include helpers.fontSize(variables.$desktop-body2-font-size);
     }
 
     &.draggable {

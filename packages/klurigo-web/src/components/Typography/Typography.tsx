@@ -27,8 +27,15 @@ export type TypographyVariant =
   | 'extraLargeTitle'
   | 'title'
   | 'title2'
+  | 'title3'
+  | 'title4'
+  | 'title5'
   | 'body'
+  | 'body2'
+  | 'control'
+  | 'control2'
   | 'link'
+  | 'link2'
 
 /**
  * Defines the supported text alignment options for the Typography component.
@@ -81,8 +88,15 @@ const elementByVariant = {
   extraLargeTitle: 'h1',
   title: 'h1',
   title2: 'h2',
+  title3: 'h3',
+  title4: 'h4',
+  title5: 'h5',
   body: 'p',
+  body2: 'p',
+  control: 'p',
+  control2: 'p',
   link: 'a',
+  link2: 'a',
 } as const satisfies Record<TypographyVariant, keyof JSX.IntrinsicElements>
 
 /**
@@ -112,6 +126,26 @@ type SharedProps = {
    * Defaults to inverse.
    */
   color?: TypographyColor
+
+  /**
+   * Disables the default opacity applied by typography variants.
+   */
+  noOpacity?: boolean
+
+  /**
+   * Prevents text from wrapping to multiple lines.
+   */
+  noWrap?: boolean
+
+  /**
+   * Prevents text from wrapping and truncates overflowing content with an ellipsis.
+   */
+  truncate?: boolean
+
+  /**
+   * Forces bold font weight regardless of variant defaults.
+   */
+  bold?: boolean
 
   /**
    * Content rendered inside the typography element.
@@ -215,7 +249,7 @@ type SharedProps = {
 /**
  * Typography variants that do not render as links.
  */
-type NonLinkVariant = Exclude<TypographyVariant, 'link'>
+type NonLinkVariant = Exclude<TypographyVariant, 'link' | 'link2'>
 
 /**
  * Properties for non-link Typography variants.
@@ -240,7 +274,7 @@ type LinkProps = SharedProps & {
   /**
    * Explicitly identifies this typography element as a link.
    */
-  variant: 'link'
+  variant: 'link' | 'link2'
 } & Pick<
     AnchorHTMLAttributes<HTMLAnchorElement>,
     'href' | 'target' | 'rel' | 'download'
@@ -270,6 +304,10 @@ const Typography: FC<TypographyProps> = (props) => {
     align = 'center',
     width = 'full',
     color = 'inverse',
+    noOpacity = false,
+    noWrap = false,
+    truncate = false,
+    bold = false,
     children,
     asChild,
     className,
@@ -332,8 +370,15 @@ const Typography: FC<TypographyProps> = (props) => {
     variant === 'extraLargeTitle' ? styles.extraLargeTitle : undefined,
     variant === 'title' ? styles.title : undefined,
     variant === 'title2' ? styles.title2 : undefined,
+    variant === 'title3' ? styles.title3 : undefined,
+    variant === 'title4' ? styles.title4 : undefined,
+    variant === 'title5' ? styles.title5 : undefined,
     variant === 'body' ? styles.body : undefined,
+    variant === 'body2' ? styles.body2 : undefined,
+    variant === 'control' ? styles.control : undefined,
+    variant === 'control2' ? styles.control2 : undefined,
     variant === 'link' ? styles.link : undefined,
+    variant === 'link2' ? styles.link2 : undefined,
     align === 'center' ? styles.alignCenter : undefined,
     align === 'justify' ? styles.alignJustify : undefined,
     align === 'left' ? styles.alignLeft : undefined,
@@ -352,6 +397,10 @@ const Typography: FC<TypographyProps> = (props) => {
     color === 'warning' ? styles.colorWarning : undefined,
     color === 'warningSoft' ? styles.colorWarningSoft : undefined,
     color === 'emphasis' ? styles.colorEmphasis : undefined,
+    noOpacity ? styles.noOpacity : undefined,
+    noWrap ? styles.noWrap : undefined,
+    truncate ? styles.truncate : undefined,
+    bold ? styles.bold : undefined,
     inlineStyle !== undefined ? styles.textFitEnabled : undefined,
     className,
   )

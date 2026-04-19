@@ -1,8 +1,9 @@
 @use '../../styles/border-radius.tokens' as radius;
-@use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.celebration' as celebration;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .leaderboard {
   display: flex;
@@ -41,15 +42,15 @@
 
     @include helpers.mobile {
       column-gap: spacing.$space-stack-mobile;
-      padding: spacing.$space-stack-mobile;
+      padding: spacing.$space-compact-mobile;
     }
     @include helpers.tablet {
       column-gap: spacing.$space-stack-tablet;
-      padding: spacing.$space-stack-tablet;
+      padding: spacing.$space-compact-tablet;
     }
     @include helpers.desktop {
       column-gap: spacing.$space-stack-desktop;
-      padding: spacing.$space-stack-desktop;
+      padding: spacing.$space-compact-desktop;
     }
 
     &.gold {
@@ -69,15 +70,15 @@
       justify-content: center;
 
       @include helpers.mobile {
-        @include helpers.fontSize(16px);
+        @include helpers.fontSize(variables.$mobile-body2-font-size);
       }
 
       @include helpers.tablet {
-        @include helpers.fontSize(22px);
+        @include helpers.fontSize(variables.$tablet-body2-font-size);
       }
 
       @include helpers.desktop {
-        @include helpers.fontSize(28px);
+        @include helpers.fontSize(variables.$desktop-body2-font-size);
       }
 
       &.position {
@@ -92,24 +93,24 @@
           font-weight: bold;
 
           @include helpers.mobile {
-            width: helpers.pxToRem(30px);
-            height: helpers.pxToRem(30px);
+            width: helpers.pxToRem(40px);
+            height: helpers.pxToRem(40px);
             padding: spacing.$space-inline-mobile;
-            @include helpers.fontSize(16px);
+            @include helpers.fontSize(variables.$mobile-body2-font-size);
           }
 
           @include helpers.tablet {
-            width: helpers.pxToRem(40px);
-            height: helpers.pxToRem(40px);
+            width: helpers.pxToRem(44px);
+            height: helpers.pxToRem(44px);
             padding: spacing.$space-inline-tablet;
-            @include helpers.fontSize(22px);
+            @include helpers.fontSize(variables.$tablet-body2-font-size);
           }
 
           @include helpers.desktop {
-            width: helpers.pxToRem(50px);
-            height: helpers.pxToRem(50px);
+            width: helpers.pxToRem(48px);
+            height: helpers.pxToRem(48px);
             padding: spacing.$space-inline-desktop;
-            @include helpers.fontSize(28px);
+            @include helpers.fontSize(variables.$desktop-body2-font-size);
           }
         }
       }
@@ -141,35 +142,29 @@
         }
 
         @include helpers.mobile {
-          @include helpers.fontSize(16px);
-
           .rankChangeArrow {
-            @include helpers.fontSize(16px);
+            @include helpers.fontSize(variables.$mobile-body-font-size);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(14px);
+            @include helpers.fontSize(variables.$mobile-body2-font-size);
           }
         }
 
         @include helpers.tablet {
-          @include helpers.fontSize(22px);
-
           .rankChangeArrow {
-            @include helpers.fontSize(22px);
+            @include helpers.fontSize(variables.$tablet-body-font-size);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(18px);
+            @include helpers.fontSize(variables.$tablet-body2-font-size);
           }
         }
 
         @include helpers.desktop {
-          @include helpers.fontSize(28px);
-
           .rankChangeArrow {
-            @include helpers.fontSize(28px);
+            @include helpers.fontSize(variables.$desktop-body-font-size);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(24px);
+            @include helpers.fontSize(variables.$desktop-body2-font-size);
           }
         }
 
@@ -194,18 +189,18 @@
         background-color: colors.$color-surface-overlay-subtle;
         color: colors.$color-text-default;
         font-weight: bold;
-        border-radius: radius.$radius-control-md;
+        border-radius: radius.$radius-control-lg;
 
         @include helpers.mobile {
-          padding: 0 spacing.$space-stack-mobile;
+          padding: 0 spacing.$space-compact-mobile;
         }
 
         @include helpers.tablet {
-          padding: 0 spacing.$space-stack-tablet;
+          padding: 0 spacing.$space-compact-tablet;
         }
 
         @include helpers.desktop {
-          padding: 0 spacing.$space-stack-desktop;
+          padding: 0 spacing.$space-compact-desktop;
         }
       }
     }

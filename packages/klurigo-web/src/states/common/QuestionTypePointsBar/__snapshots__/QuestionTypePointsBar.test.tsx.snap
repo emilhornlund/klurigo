@@ -5,8 +5,8 @@ exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
   <div
     class="chip"
   >
-    <div
-      class="item"
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       <svg
         aria-hidden="true"
@@ -23,9 +23,9 @@ exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
         />
       </svg>
       Range
-    </div>
-    <div
-      class="item"
+    </p>
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
     >
       <svg
         aria-hidden="true"
@@ -42,7 +42,7 @@ exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
         />
       </svg>
       Double Points
-    </div>
+    </p>
   </div>
 </div>
 `;
@@ -54,8 +54,8 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
   <div
     class="chip"
   >
-    <div
-      class="item"
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       <svg
         aria-hidden="true"
@@ -72,9 +72,9 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
         />
       </svg>
       Type Answer
-    </div>
-    <div
-      class="item"
+    </p>
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
     >
       <svg
         aria-hidden="true"
@@ -90,7 +90,7 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
           fill="currentColor"
         />
       </svg>
-    </div>
+    </p>
   </div>
 </div>
 `;
@@ -100,8 +100,8 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
   <div
     class="chip"
   >
-    <div
-      class="item"
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       <svg
         aria-hidden="true"
@@ -118,9 +118,9 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
         />
       </svg>
       Multi Choice
-    </div>
-    <div
-      class="item"
+    </p>
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
     >
       <svg
         aria-hidden="true"
@@ -137,7 +137,7 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
         />
       </svg>
       Zero Points
-    </div>
+    </p>
   </div>
 </div>
 `;
@@ -147,8 +147,8 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
   <div
     class="chip"
   >
-    <div
-      class="item"
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       <svg
         aria-hidden="true"
@@ -165,9 +165,9 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
         />
       </svg>
       True or False
-    </div>
-    <div
-      class="item"
+    </p>
+    <p
+      class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
     >
       <svg
         aria-hidden="true"
@@ -184,7 +184,7 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
         />
       </svg>
       Standard Points
-    </div>
+    </p>
   </div>
 </div>
 `;

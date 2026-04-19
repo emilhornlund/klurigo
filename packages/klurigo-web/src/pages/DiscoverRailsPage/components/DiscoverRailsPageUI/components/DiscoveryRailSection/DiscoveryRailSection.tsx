@@ -8,6 +8,7 @@ import {
   HorizontalRail,
   QuizDiscoveryCard,
   RailHeader,
+  Typography,
 } from '../../../../../../components'
 
 import styles from './DiscoveryRailSection.module.scss'
@@ -55,9 +56,11 @@ const DiscoveryRailSection: FC<DiscoveryRailSectionProps> = ({
       title={title}
       description={description}
       action={
-        <Link to={`/discover/section/${sectionKey}`} className={styles.seeAll}>
-          See all <FontAwesomeIcon icon={faArrowRight} />
-        </Link>
+        <Typography variant="link2" width="small" align="right" asChild>
+          <Link to={`/discover/section/${sectionKey}`}>
+            See all <FontAwesomeIcon icon={faArrowRight} />
+          </Link>
+        </Typography>
       }
     />
     <HorizontalRail>

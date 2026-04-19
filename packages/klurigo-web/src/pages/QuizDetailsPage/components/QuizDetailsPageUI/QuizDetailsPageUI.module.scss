@@ -86,20 +86,20 @@
 
     @include helpers.mobile {
       grid-template-columns: 1fr 1fr;
-      gap: spacing.$space-compact-mobile;
-      padding: spacing.$space-compact-mobile;
+      gap: spacing.$space-stack-mobile;
+      padding: spacing.$space-stack-mobile;
     }
 
     @include helpers.tablet {
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: spacing.$space-compact-tablet;
-      padding: spacing.$space-compact-tablet;
+      gap: spacing.$space-stack-tablet;
+      padding: spacing.$space-stack-tablet;
     }
 
     @include helpers.desktop {
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: spacing.$space-compact-desktop;
-      padding: spacing.$space-compact-desktop;
+      gap: spacing.$space-stack-desktop;
+      padding: spacing.$space-stack-desktop;
     }
 
     .item {
@@ -109,43 +109,42 @@
       align-items: center;
       overflow: hidden;
 
-      .icon, .value, .value > a {
-        color: colors.$color-text-inverse;
-        width: 100%;
-      }
-
-      .icon {
-        opacity: 0.95;
-      }
-
-      .value, .value > a {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 600;
-        opacity: 0.85;
-
-        a {
-          opacity: 1;
-        }
-      }
-
       @include helpers.mobile {
         gap: spacing.$space-inline-mobile;
-
-        @include helpers.fontSize(16px);
       }
 
       @include helpers.tablet {
         gap: spacing.$space-inline-tablet;
-
-        @include helpers.fontSize(18px);
       }
 
       @include helpers.desktop {
         gap: spacing.$space-inline-desktop;
+      }
 
-        @include helpers.fontSize(20px);
+      .icon {
+        color: colors.$color-text-inverse;
+        width: 100%;
+        opacity: 0.95;
+
+        @include helpers.mobile {
+          @include helpers.fontSize(20px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(24px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(28px);
+        }
+      }
+
+      p > a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 600;
+        opacity: 1;
       }
     }
   }

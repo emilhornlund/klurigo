@@ -172,7 +172,7 @@ describe('RatingsSection', () => {
           ratings={[makeRating({ comment: undefined })]}
         />,
       )
-      expect(screen.queryByRole('paragraph')).not.toBeInTheDocument()
+      expect(screen.queryByText('Great quiz!')).not.toBeInTheDocument()
     })
 
     it('renders per-card star row with aria-label matching the star count', () => {

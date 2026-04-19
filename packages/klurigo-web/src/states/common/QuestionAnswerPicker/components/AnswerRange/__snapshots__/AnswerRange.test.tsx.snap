@@ -97,9 +97,11 @@ exports[`AnswerRange > renders non-interactive mode with info message and no for
           fill="currentColor"
         />
       </svg>
-      <span>
+      <h2
+        class="typography title2 alignLeft widthFull colorInverse"
+      >
         Pick an answer between 5 and 15 on your screen
-      </span>
+      </h2>
     </div>
   </div>
 </div>

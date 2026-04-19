@@ -16,6 +16,7 @@ import {
   Menu,
   MenuItem,
   MenuSeparator,
+  Typography,
 } from '../../../components'
 import { useGameContext } from '../../../context/game'
 
@@ -48,14 +49,20 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
   return (
     <div className={styles.main}>
       <div className={styles.questions}>
-        <FontAwesomeIcon icon={faCircleQuestion} />
-        <span>
+        <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
+        <Typography variant="body2" align="left" color="inverse" noOpacity bold>
           {currentQuestion} / {totalQuestions}
-        </span>
+        </Typography>
       </div>
       <div className={styles.gamePIN}>
-        <FontAwesomeIcon icon={faLockOpen} />
-        <span>{gamePIN}</span>
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          noOpacity
+          bold>
+          <FontAwesomeIcon icon={faLockOpen} /> {gamePIN}
+        </Typography>
       </div>
       <div className={styles.actions}>
         <div className={styles.menuButtonWrapper} ref={settingsMenuButtonRef}>

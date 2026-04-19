@@ -2,13 +2,14 @@ import { type GameOverPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import ScoreChip, {
+import {
   Badge,
   Confetti,
   getBadgePositionBackgroundColor,
   getCelebrationLevel,
   IconButtonArrowLeft,
   IconButtonArrowRight,
+  ScoreChip,
   StreakBadge,
   Typography,
 } from '../../components'

@@ -100,27 +100,20 @@
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          font-weight: bold;
 
           @include helpers.mobile {
             column-gap: spacing.$space-compact-mobile;
             padding: spacing.$space-compact-mobile;
-
-            @include helpers.fontSize(18px);
           }
 
           @include helpers.tablet {
             column-gap: spacing.$space-compact-tablet;
             padding: spacing.$space-compact-tablet;
-
-            @include helpers.fontSize(20px);
           }
 
           @include helpers.desktop {
             column-gap: spacing.$space-compact-desktop;
             padding: spacing.$space-compact-desktop;
-
-            @include helpers.fontSize(22px);
           }
         }
       }

@@ -4,6 +4,7 @@
 @use '../../../../../styles/mixins/_button' as button;
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../styles/variables' as variables;
 
 .answerPicker {
   display: flex;
@@ -54,22 +55,22 @@
       @include helpers.mobile {
         gap: spacing.$space-stack-mobile;
         padding: spacing.$space-stack-mobile;
-
-        @include helpers.fontSize(12px);
+        line-height: variables.$mobile-body2-line-height;
+        @include helpers.fontSize(variables.$mobile-body2-font-size);
       }
 
       @include helpers.tablet {
         gap: spacing.$space-stack-tablet;
         padding: spacing.$space-stack-tablet;
-
-        @include helpers.fontSize(18px);
+        line-height: variables.$tablet-body2-line-height;
+        @include helpers.fontSize(variables.$tablet-body2-font-size);
       }
 
       @include helpers.desktop {
         gap: spacing.$space-stack-desktop;
         padding: spacing.$space-stack-desktop;
-
-        @include helpers.fontSize(24px);
+        line-height: variables.$desktop-body2-line-height;
+        @include helpers.fontSize(variables.$desktop-body2-font-size);
       }
 
       &:disabled {
@@ -136,25 +137,22 @@
         @include helpers.mobile {
           min-width: helpers.pxToRem(30px);
           min-height: helpers.pxToRem(30px);
-          line-height: 16px;
-
-          @include helpers.fontSize(16px);
+          line-height: variables.$mobile-body2-line-height;
+          @include helpers.fontSize(variables.$mobile-body2-font-size);
         }
 
         @include helpers.tablet {
           min-width: helpers.pxToRem(40px);
           min-height: helpers.pxToRem(40px);
-          line-height: 20px;
-
-          @include helpers.fontSize(20px);
+          line-height: variables.$tablet-body2-line-height;
+          @include helpers.fontSize(variables.$tablet-body2-font-size);
         }
 
         @include helpers.desktop {
           min-width: helpers.pxToRem(50px);
           min-height: helpers.pxToRem(50px);
-          line-height: 24px;
-
-          @include helpers.fontSize(24px);
+          line-height: variables.$desktop-body2-line-height;
+          @include helpers.fontSize(variables.$desktop-body2-font-size);
         }
       }
 

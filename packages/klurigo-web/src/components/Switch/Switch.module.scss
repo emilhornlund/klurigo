@@ -4,6 +4,7 @@
 @use '../../styles/mixins/_input' as input;
 @use '../../styles/mixins/_shadow' as shadow;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 $mobile-switch-height: helpers.pxToRem(30px);
 $mobile-switch-padding: helpers.pxToRem(2px);
@@ -50,13 +51,13 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
     text-overflow: ellipsis;
 
     @include helpers.mobile {
-      @include helpers.fontSize(16px);
+      @include helpers.fontSize(variables.$mobile-control-large-font-size);
     }
     @include helpers.tablet {
-      @include helpers.fontSize(20px);
+      @include helpers.fontSize(variables.$tablet-control-large-font-size);
     }
     @include helpers.desktop {
-      @include helpers.fontSize(22px);
+      @include helpers.fontSize(variables.$desktop-control-large-font-size);
     }
   }
 

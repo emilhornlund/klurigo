@@ -90,7 +90,7 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
         {filterActive ? (
           <>
             {isSearchLoading ? null : searchResults.length === 0 ? (
-              <p className={styles.emptyState} data-testid="search-empty-state">
+              <Typography variant="body2" data-testid="search-empty-state">
                 No quizzes found. Try a different search or{' '}
                 <button
                   className={styles.clearLink}
@@ -99,7 +99,7 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
                   clear the filter
                 </button>{' '}
                 to browse all quizzes.
-              </p>
+              </Typography>
             ) : (
               <>
                 <div className={styles.grid} data-testid="search-quiz-grid">
@@ -155,9 +155,9 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
                 />
               ))
             ) : (
-              <p className={styles.emptyState} data-testid="empty-state">
+              <Typography variant="body2" data-testid="empty-state">
                 More quizzes coming soon — check back later!
-              </p>
+              </Typography>
             )}
           </div>
         )}

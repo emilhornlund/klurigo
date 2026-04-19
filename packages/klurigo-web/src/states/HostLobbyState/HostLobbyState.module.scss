@@ -70,20 +70,14 @@
 
     @include helpers.mobile {
       padding: spacing.$space-page-mobile;
-
-      @include helpers.fontSize(16px);
     }
 
     @include helpers.tablet {
       padding: spacing.$space-page-tablet;
-
-      @include helpers.fontSize(20px);
     }
 
     @include helpers.desktop {
       padding: spacing.$space-page-desktop;
-
-      @include helpers.fontSize(24px);
     }
   }
 
@@ -108,38 +102,6 @@
     div {
       display: flex;
       flex-direction: column;
-    }
-
-    div:nth-child(1) {
-      font-weight: normal;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(16px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(20px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(24px);
-      }
-    }
-
-    div:nth-child(2) {
-      font-weight: bold;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(28px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(38px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(48px);
-      }
     }
   }
 

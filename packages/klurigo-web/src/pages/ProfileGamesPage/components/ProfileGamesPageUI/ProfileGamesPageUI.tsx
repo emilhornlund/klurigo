@@ -107,12 +107,10 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
         Review your past games and track your performance.
       </Typography>
       {isError ? (
-        <p
-          className={styles.emptyState}
-          data-testid="profile-games-empty-state">
+        <Typography variant="body2" data-testid="profile-games-empty-state">
           Oops! Your game history is playing hide-and-seek right now. Please try
           again.
-        </p>
+        </Typography>
       ) : (
         <>
           <div className={styles.grid} data-testid="profile-game-grid">

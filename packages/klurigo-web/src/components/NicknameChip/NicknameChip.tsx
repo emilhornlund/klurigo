@@ -109,7 +109,9 @@ const NicknameChip: FC<NicknameChipProps> = ({
       style={inlineStyles}>
       {value}
       {onDelete && (
-        <button className={styles.deleteButton} onClick={onDelete}>
+        <button
+          className={classNames(styles.deleteButton, styles.delete)}
+          onClick={onDelete}>
           <FontAwesomeIcon icon={faXmark} />
         </button>
       )}

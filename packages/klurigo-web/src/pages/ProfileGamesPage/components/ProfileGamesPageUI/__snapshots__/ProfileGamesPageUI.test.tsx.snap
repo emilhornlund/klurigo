@@ -225,12 +225,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="Math Marathon"
                 >
                   Math Marathon
-                </h3>
+                </p>
                 <div
                   class="info"
                 >
@@ -330,12 +330,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="Science Challenge"
                 >
                   Science Challenge
-                </h3>
+                </p>
                 <div
                   class="info"
                 >
@@ -435,12 +435,12 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="World History Battle"
                 >
                   World History Battle
-                </h3>
+                </p>
                 <div
                   class="info"
                 >

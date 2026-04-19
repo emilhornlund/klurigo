@@ -37,7 +37,7 @@
         variables.$mobile-badge-small-size,
         variables.$mobile-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$mobile-text-font-size);
+      @include helpers.fontSize(variables.$mobile-body-font-size);
     }
 
     @include helpers.tablet {
@@ -45,7 +45,7 @@
         variables.$tablet-badge-small-size,
         variables.$tablet-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$tablet-text-font-size);
+      @include helpers.fontSize(variables.$tablet-body-font-size);
     }
 
     @include helpers.desktop {
@@ -53,7 +53,7 @@
         variables.$desktop-badge-small-size,
         variables.$desktop-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$desktop-text-font-size);
+      @include helpers.fontSize(variables.$desktop-body-font-size);
     }
   }
 
@@ -63,7 +63,7 @@
         variables.$mobile-badge-large-size,
         variables.$mobile-badge-large-border-width
       );
-      @include helpers.fontSize(68px);
+      @include helpers.fontSize(variables.$mobile-extra-large-title-font-size);
     }
 
     @include helpers.tablet {
@@ -71,7 +71,7 @@
         variables.$tablet-badge-large-size,
         variables.$tablet-badge-large-border-width
       );
-      @include helpers.fontSize(78px);
+      @include helpers.fontSize(variables.$tablet-extra-large-title-font-size);
     }
 
     @include helpers.desktop {
@@ -79,7 +79,7 @@
         variables.$desktop-badge-large-size,
         variables.$desktop-badge-large-border-width
       );
-      @include helpers.fontSize(88px);
+      @include helpers.fontSize(variables.$desktop-extra-large-title-font-size);
     }
   }
 

@@ -43,24 +43,4 @@
       @include helpers.fontSize(48px);
     }
   }
-
-  span {
-    display: flex;
-    flex-direction: column;
-    font-weight: bold;
-    width: 100%;
-    flex: 1;
-
-    @include helpers.mobile {
-      @include helpers.fontSize(18px);
-    }
-
-    @include helpers.tablet {
-      @include helpers.fontSize(28px);
-    }
-
-    @include helpers.desktop {
-      @include helpers.fontSize(38px);
-    }
-  }
 }

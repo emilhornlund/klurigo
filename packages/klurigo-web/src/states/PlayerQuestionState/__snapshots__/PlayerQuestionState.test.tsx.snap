@@ -109,7 +109,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -120,24 +120,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -273,7 +281,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -284,24 +292,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -401,7 +417,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -412,24 +428,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -566,7 +590,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -577,24 +601,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -694,7 +726,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -705,24 +737,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -872,7 +912,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -883,24 +923,32 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>

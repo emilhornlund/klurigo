@@ -68,6 +68,27 @@ vi.mock('../../../../../../components', () => ({
   ResponsiveImage: ({ imageURL }: { imageURL?: string }) => (
     <div data-testid="responsive-image" data-url={imageURL ?? ''} />
   ),
+  Typography: ({
+    children,
+    variant = 'body',
+    className,
+  }: {
+    children?: React.ReactNode
+    variant?: string
+    className?: string
+  }) => {
+    const Tag = ['title', 'title2', 'title3', 'title4', 'title5'].includes(
+      variant,
+    )
+      ? 'h2'
+      : 'p'
+
+    return (
+      <Tag className={[variant, className].filter(Boolean).join(' ')}>
+        {children}
+      </Tag>
+    )
+  },
 }))
 
 vi.mock('../../../../../../components/Select', () => ({

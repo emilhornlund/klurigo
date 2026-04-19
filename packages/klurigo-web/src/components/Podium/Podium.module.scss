@@ -5,6 +5,7 @@
 @use '../../styles/helpers';
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .main {
   display: flex;
@@ -168,7 +169,7 @@
             width: helpers.pxToRem(50px);
             height: helpers.pxToRem(50px);
             padding: spacing.$space-inline-tight-mobile;
-            @include helpers.fontSize(26px);
+            @include helpers.fontSize(variables.$mobile-title2-font-size);
           }
 
           @include helpers.tablet {
@@ -176,7 +177,7 @@
             width: helpers.pxToRem(65px);
             height: helpers.pxToRem(65px);
             padding: spacing.$space-inline-tight-tablet;
-            @include helpers.fontSize(36px);
+            @include helpers.fontSize(variables.$tablet-title2-font-size);
           }
 
           @include helpers.desktop {
@@ -184,7 +185,7 @@
             width: helpers.pxToRem(80px);
             height: helpers.pxToRem(80px);
             padding: spacing.$space-inline-tight-desktop;
-            @include helpers.fontSize(46px);
+            @include helpers.fontSize(variables.$desktop-title2-font-size);
           }
 
           &.position-1 {
@@ -225,15 +226,15 @@
           color: colors.$color-text-default;
 
           @include helpers.mobile {
-            @include helpers.fontSize(16px);
+            @include helpers.fontSize(variables.$mobile-title3-font-size);
           }
 
           @include helpers.tablet {
-            @include helpers.fontSize(26px);
+            @include helpers.fontSize(variables.$tablet-title3-font-size);
           }
 
           @include helpers.desktop {
-            @include helpers.fontSize(36px);
+            @include helpers.fontSize(variables.$desktop-title3-font-size);
           }
         }
 

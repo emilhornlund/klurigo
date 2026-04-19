@@ -55,7 +55,9 @@ const DetailItem: FC<{
 }> = ({ value, icon, title, children }) => (
   <div className={styles.item} title={title ?? value}>
     <FontAwesomeIcon icon={icon} className={styles.icon} />
-    <span className={styles.value}>{value || children}</span>
+    <Typography variant="body2" bold>
+      {value || children}
+    </Typography>
   </div>
 )
 

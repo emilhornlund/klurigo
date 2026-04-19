@@ -91,19 +91,16 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
               <div
                 class="content"
               >
-                <div
-                  class="title"
+                <h3
+                  class="typography title3 alignCenter widthFull colorInverse"
                 >
-                  <div
-                    class="spacing"
-                  />
                   Resume game
-                </div>
-                <div
-                  class="text"
+                </h3>
+                <p
+                  class="typography body2 alignCenter widthFull colorInverse"
                 >
                   Jump back in where you left off
-                </div>
+                </p>
               </div>
               <div
                 class="icon"

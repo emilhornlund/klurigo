@@ -18,9 +18,11 @@ exports[`NonInteractiveInfoBox > renders a NonInteractiveInfoBox 1`] = `
         fill="currentColor"
       />
     </svg>
-    <span>
+    <h2
+      class="typography title2 alignLeft widthFull colorInverse"
+    >
       This is a non-interactive info box
-    </span>
+    </h2>
   </div>
 </div>
 `;

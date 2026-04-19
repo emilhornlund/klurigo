@@ -142,6 +142,27 @@ vi.mock('../../../components', () => ({
   MenuItem: (props: MenuItemProps) => menuItemMock(props),
   MenuSeparator: () => menuSeparatorMock(),
   ConfirmDialog: (props: ConfirmDialogProps) => confirmDialogMock(props),
+  Typography: ({
+    children,
+    variant = 'body',
+    className,
+  }: {
+    children?: React.ReactNode
+    variant?: string
+    className?: string
+  }) => {
+    const Tag = ['title', 'title2', 'title3', 'title4', 'title5'].includes(
+      variant,
+    )
+      ? 'h2'
+      : 'p'
+
+    return (
+      <Tag className={[variant, className].filter(Boolean).join(' ')}>
+        {children}
+      </Tag>
+    )
+  },
 }))
 
 vi.mock('./components', () => ({

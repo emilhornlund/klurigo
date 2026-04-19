@@ -6,7 +6,7 @@ import RailHeader from './RailHeader'
 describe('RailHeader', () => {
   it('renders the title', () => {
     render(<RailHeader title="Trending" />)
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+    expect(screen.getByRole('heading', { level: 4 })).toHaveTextContent(
       'Trending',
     )
   })

@@ -8,13 +8,13 @@ exports[`RailHeader > matches snapshot with all props 1`] = `
     <div
       class="headerText"
     >
-      <h2
-        class="title"
+      <h4
+        class="typography title4 alignLeft widthFull colorInverse"
       >
         Top Rated
-      </h2>
+      </h4>
       <p
-        class="description"
+        class="typography body2 alignCenter widthFull colorInverse"
       >
         Hand-picked quizzes
       </p>
@@ -36,11 +36,11 @@ exports[`RailHeader > matches snapshot with title only 1`] = `
     <div
       class="headerText"
     >
-      <h2
-        class="title"
+      <h4
+        class="typography title4 alignLeft widthFull colorInverse"
       >
         Featured
-      </h2>
+      </h4>
     </div>
   </div>
 </div>

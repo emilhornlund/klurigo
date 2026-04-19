@@ -11,17 +11,17 @@
 
   @include helpers.mobile {
     row-gap: spacing.$space-inline-mobile;
-    @include helpers.fontSize(18px);
+    @include helpers.fontSize(variables.$mobile-body2-font-size);
   }
 
   @include helpers.tablet {
     row-gap: spacing.$space-inline-tablet;
-    @include helpers.fontSize(20px);
+    @include helpers.fontSize(variables.$tablet-body2-font-size);
   }
 
   @include helpers.desktop {
     row-gap: spacing.$space-inline-desktop;
-    @include helpers.fontSize(22px);
+    @include helpers.fontSize(variables.$desktop-body2-font-size);
   }
 
   .tableRow {
@@ -146,24 +146,24 @@
       height: 0;
 
       @include helpers.mobile {
-        column-gap: spacing.$space-page-mobile;
+        column-gap: spacing.$space-content-inline-mobile;
         row-gap: spacing.$space-compact-mobile;
 
-        @include helpers.fontSize(16px);
+        @include helpers.fontSize(variables.$mobile-body2-font-size);
       }
 
       @include helpers.tablet {
-        column-gap: spacing.$space-page-tablet;
+        column-gap: spacing.$space-content-inline-tablet;
         row-gap: spacing.$space-compact-tablet;
 
-        @include helpers.fontSize(18px);
+        @include helpers.fontSize(variables.$tablet-body2-font-size);
       }
 
       @include helpers.desktop {
-        column-gap: spacing.$space-page-desktop;
+        column-gap: spacing.$space-content-inline-desktop;
         row-gap: spacing.$space-compact-desktop;
 
-        @include helpers.fontSize(20px);
+        @include helpers.fontSize(variables.$desktop-body2-font-size);
       }
 
       &.active {

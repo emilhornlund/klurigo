@@ -1,5 +1,4 @@
 @use '../../../../styles/border-radius.tokens' as radius;
-@use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers';
 @use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/spacing.semantic' as spacing;
@@ -29,23 +28,6 @@
     gap: spacing.$space-page-desktop;
     padding: spacing.$space-compact-desktop;
     max-width: 400px;
-  }
-}
-
-.ratingTitle {
-  font-weight: bold;
-  opacity: 0.95;
-
-  @include helpers.mobile {
-    @include helpers.fontSize(20px);
-  }
-
-  @include helpers.tablet {
-    @include helpers.fontSize(22px);
-  }
-
-  @include helpers.desktop {
-    @include helpers.fontSize(24px);
   }
 }
 

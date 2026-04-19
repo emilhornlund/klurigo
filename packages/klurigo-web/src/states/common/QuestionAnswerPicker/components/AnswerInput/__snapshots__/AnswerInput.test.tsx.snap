@@ -105,9 +105,11 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with info 
           fill="currentColor"
         />
       </svg>
-      <span>
+      <h2
+        class="typography title2 alignLeft widthFull colorInverse"
+      >
         Type an answer on your screen
-      </span>
+      </h2>
     </div>
   </div>
 </div>

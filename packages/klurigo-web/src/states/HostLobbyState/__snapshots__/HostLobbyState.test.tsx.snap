@@ -69,21 +69,31 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
             <div
               class="box info"
             >
-              Join at
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
+                Join at
+              </p>
                
-              <strong>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity bold"
+              >
                 example.com
-              </strong>
+              </p>
             </div>
             <div
               class="box pin"
             >
-              <div>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
                 Game PIN
-              </div>
-              <div>
+              </p>
+              <h1
+                class="typography title alignLeft widthFull colorDefault noOpacity"
+              >
                 654321
-              </div>
+              </h1>
             </div>
             <div
               class="box qr qrContainer"
@@ -185,7 +195,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Alice
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -208,7 +218,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Bob
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -305,21 +315,31 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
             <div
               class="box info"
             >
-              Join at
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
+                Join at
+              </p>
                
-              <strong>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity bold"
+              >
                 example.com
-              </strong>
+              </p>
             </div>
             <div
               class="box pin"
             >
-              <div>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
                 Game PIN
-              </div>
-              <div>
+              </p>
+              <h1
+                class="typography title alignLeft widthFull colorDefault noOpacity"
+              >
                 111111
-              </div>
+              </h1>
             </div>
             <div
               class="box qr qrContainer"
@@ -443,17 +463,21 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
       <div
         class="header"
       >
-        <div
-          class="title"
+        <h4
+          class="typography title4 alignLeft widthFull colorDefault noOpacity"
           id="_r_2m_"
         >
           Start Game Without Players?
-        </div>
+        </h4>
       </div>
       <div
         class="content"
       >
-        There are no players in the game. Are you sure you want to start the game anyway?
+        <p
+          class="typography body2 alignLeft widthFull colorDefault noOpacity"
+        >
+          There are no players in the game. Are you sure you want to start the game anyway?
+        </p>
         <div
           class="actions"
         >
@@ -568,21 +592,31 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
             <div
               class="box info"
             >
-              Join at
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
+                Join at
+              </p>
                
-              <strong>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity bold"
+              >
                 example.com
-              </strong>
+              </p>
             </div>
             <div
               class="box pin"
             >
-              <div>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
                 Game PIN
-              </div>
-              <div>
+              </p>
+              <h1
+                class="typography title alignLeft widthFull colorDefault noOpacity"
+              >
                 654321
-              </div>
+              </h1>
             </div>
             <div
               class="box qr qrContainer"
@@ -684,7 +718,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Alice
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -707,7 +741,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Bob
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -802,21 +836,31 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
             <div
               class="box info"
             >
-              Join at
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
+                Join at
+              </p>
                
-              <strong>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity bold"
+              >
                 example.com
-              </strong>
+              </p>
             </div>
             <div
               class="box pin"
             >
-              <div>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
                 Game PIN
-              </div>
-              <div>
+              </p>
+              <h1
+                class="typography title alignLeft widthFull colorDefault noOpacity"
+              >
                 123456
-              </div>
+              </h1>
             </div>
             <div
               class="box qr qrContainer"
@@ -918,7 +962,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowCyborg
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -941,7 +985,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Radar
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -964,7 +1008,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowWhirlwind
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -987,7 +1031,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 WhiskerFox
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1010,7 +1054,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 JollyNimbus
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1033,7 +1077,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 PuddingPop
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1056,7 +1100,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 MysticPine
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1079,7 +1123,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 FrostyBear
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1102,7 +1146,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Willo
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1125,7 +1169,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ScarletFlame
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1220,21 +1264,31 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
             <div
               class="box info"
             >
-              Join at
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
+                Join at
+              </p>
                
-              <strong>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity bold"
+              >
                 example.com
-              </strong>
+              </p>
             </div>
             <div
               class="box pin"
             >
-              <div>
+              <p
+                class="typography body2 alignLeft widthFull colorDefault noOpacity"
+              >
                 Game PIN
-              </div>
-              <div>
+              </p>
+              <h1
+                class="typography title alignLeft widthFull colorDefault noOpacity"
+              >
                 654321
-              </div>
+              </h1>
             </div>
             <div
               class="box qr qrContainer"
@@ -1336,7 +1390,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Alice
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"
@@ -1359,7 +1413,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Bob
                 <button
-                  class="deleteButton"
+                  class="deleteButton delete"
                 >
                   <svg
                     aria-hidden="true"

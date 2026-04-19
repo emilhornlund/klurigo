@@ -399,7 +399,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -410,24 +410,32 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             5
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             Winner
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10000
+            </p>
           </span>
         </div>
       </div>
@@ -724,7 +732,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -735,24 +743,32 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             9
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             SecondPlace
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            6000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              6000
+            </p>
           </span>
         </div>
       </div>
@@ -1160,7 +1176,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1171,24 +1187,32 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             10
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             HighStreak
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            4000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              4000
+            </p>
           </span>
         </div>
       </div>
@@ -1596,7 +1620,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1607,24 +1631,32 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             8
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             StreakMaster
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            8000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              8000
+            </p>
           </span>
         </div>
       </div>
@@ -1921,7 +1953,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1932,24 +1964,32 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             6
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             ThirdPlace
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            5000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              5000
+            </p>
           </span>
         </div>
       </div>
@@ -2257,7 +2297,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2268,24 +2308,32 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             7
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             StreakBuilder
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            3000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              3000
+            </p>
           </span>
         </div>
       </div>
@@ -2395,7 +2443,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2406,24 +2454,32 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             2
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             WrongAnswer
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            700
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              700
+            </p>
           </span>
         </div>
       </div>
@@ -2533,7 +2589,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2544,24 +2600,32 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             2
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             SimpleCorrect
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            800
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              800
+            </p>
           </span>
         </div>
       </div>
@@ -2778,7 +2842,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2789,24 +2853,32 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             3
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             TopTen
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            1500
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              1500
+            </p>
           </span>
         </div>
       </div>
@@ -3034,7 +3106,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3045,24 +3117,32 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             4
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             StreakStarter
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            2000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              2000
+            </p>
           </span>
         </div>
       </div>
@@ -3481,7 +3561,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3492,24 +3572,32 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             FrostyBear
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            10458
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              10458
+            </p>
           </span>
         </div>
       </div>
@@ -3619,7 +3707,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3630,24 +3718,32 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             2
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="nickname"
         >
-          <span>
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
+          >
             Radar
-          </span>
+          </p>
         </div>
         <div
           class="score"
         >
           <span>
-            9000
+            <p
+              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
+            >
+              9000
+            </p>
           </span>
         </div>
       </div>

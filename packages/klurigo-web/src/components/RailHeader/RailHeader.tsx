@@ -1,5 +1,7 @@
 import { type FC, type ReactNode } from 'react'
 
+import Typography from '../Typography'
+
 import styles from './RailHeader.module.scss'
 
 /**
@@ -23,8 +25,10 @@ export type RailHeaderProps = {
 const RailHeader: FC<RailHeaderProps> = ({ title, description, action }) => (
   <div className={styles.header}>
     <div className={styles.headerText}>
-      <h2 className={styles.title}>{title}</h2>
-      {description && <p className={styles.description}>{description}</p>}
+      <Typography variant="title4" align="left">
+        {title}
+      </Typography>
+      {description && <Typography variant="body2">{description}</Typography>}
     </div>
     {action}
   </div>

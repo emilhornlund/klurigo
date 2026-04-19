@@ -1,7 +1,10 @@
 import type { GameParticipantPlayerDto } from '@klurigo/common'
 import { type FC, useEffect, useRef, useState } from 'react'
 
-import type { NicknameChipAnimationState } from '../../../../../components'
+import {
+  type NicknameChipAnimationState,
+  Typography,
+} from '../../../../../components'
 import { ConfirmDialog, Modal, NicknameChip } from '../../../../../components'
 import { useGameContext } from '../../../../../context/game'
 
@@ -204,10 +207,10 @@ const PlayerManagementModal: FC<PlayerManagementModalProps> = ({
   return (
     <Modal title="Who’s Playing?" size="large" open={open} onClose={onClose}>
       <div className={styles.playerManagementModal}>
-        <span className={styles.message}>
+        <Typography variant="body2" align="left" color="default">
           Here’s everyone in the game. If someone shouldn’t be here, you can
           politely show them the exit.
-        </span>
+        </Typography>
 
         <div className={styles.flow}>
           {players.map(({ id, nickname }) => (

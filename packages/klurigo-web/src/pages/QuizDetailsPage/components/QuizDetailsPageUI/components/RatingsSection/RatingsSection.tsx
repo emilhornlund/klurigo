@@ -1,7 +1,11 @@
 import type { QuizRatingDto, QuizRatingSummaryDto } from '@klurigo/common'
 import { type FC } from 'react'
 
-import { HorizontalRail, StarRating } from '../../../../../../components'
+import {
+  HorizontalRail,
+  StarRating,
+  Typography,
+} from '../../../../../../components'
 import { formatTimeAgo } from '../../../../../../utils/date.utils'
 
 import styles from './RatingsSection.module.scss'
@@ -52,9 +56,9 @@ const RatingsSection: FC<RatingsSectionProps> = ({
 
     if (ratings.length === 0) {
       return (
-        <p className={styles.emptyState} data-testid="ratings-empty-state">
+        <Typography variant="body2" data-testid="ratings-empty-state">
           No written reviews yet
-        </p>
+        </Typography>
       )
     }
 
@@ -67,13 +71,17 @@ const RatingsSection: FC<RatingsSectionProps> = ({
             data-testid="rating-card">
             <div className={styles.cardHeader}>
               <StarRating value={rating.stars} size="small" />
-              <span className={styles.timeAgo}>
+              <Typography variant="control2" align="right" color="subtle">
                 {formatTimeAgo(rating.updatedAt)}
-              </span>
+              </Typography>
             </div>
-            <span className={styles.author}>{rating.author.nickname}</span>
+            <Typography variant="control" align="left" color="default" bold>
+              {rating.author.nickname}
+            </Typography>
             {rating.comment && (
-              <p className={styles.comment}>{rating.comment}</p>
+              <Typography variant="control2" align="left" color="default">
+                {rating.comment}
+              </Typography>
             )}
           </div>
         ))}
@@ -83,22 +91,22 @@ const RatingsSection: FC<RatingsSectionProps> = ({
 
   return (
     <section className={styles.section} data-testid="ratings-section">
-      <h2 className={styles.title}>Ratings &amp; Reviews</h2>
+      <Typography variant="title3">Ratings &amp; Reviews</Typography>
 
       <div className={styles.summary} data-testid="ratings-summary">
         <div className={styles.score}>
-          <span
-            className={styles.average}
+          <Typography
+            variant="title"
             aria-label={`Average rating: ${summary.stars.toFixed(1)}`}>
             {summary.stars.toFixed(1)}
-          </span>
-          <span className={styles.outOf}>out of 5</span>
+          </Typography>
+          <Typography variant="control">out of 5</Typography>
         </div>
         <div className={styles.summaryRight}>
           <StarRating value={summary.stars} size="small" />
-          <span className={styles.count} data-testid="ratings-count">
+          <Typography variant="control" data-testid="ratings-count">
             {summary.total} {summary.total > 1 ? 'Ratings' : 'Rating'}
-          </span>
+          </Typography>
         </div>
       </div>
 

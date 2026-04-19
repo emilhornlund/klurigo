@@ -44,10 +44,10 @@ const Card: FC<{
   alt?: string
 }> = ({ title, value, alt }) => (
   <div className={styles.card}>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.value} title={alt}>
+    <Typography variant="body2">{title}</Typography>
+    <Typography variant="title3" noOpacity title={alt}>
       {value}
-    </div>
+    </Typography>
   </div>
 )
 
@@ -113,12 +113,13 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
             title="Quizzes"
             description={`Browse quizzes created by ${profile.nickname}.`}
             action={
-              <Link
-                to={`/users/${userId}/quizzes`}
-                className={styles.seeAll}
-                data-testid="user-profile-see-all-link">
-                See all <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
+              <Typography variant="link2" width="small" align="right" asChild>
+                <Link
+                  to={`/users/${userId}/quizzes`}
+                  data-testid="user-profile-see-all-link">
+                  See all <FontAwesomeIcon icon={faArrowRight} />
+                </Link>
+              </Typography>
             }
           />
 

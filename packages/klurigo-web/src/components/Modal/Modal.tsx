@@ -13,6 +13,7 @@ import { useId } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import Button from '../Button'
+import Typography from '../Typography'
 
 import styles from './Modal.module.scss'
 
@@ -62,9 +63,14 @@ const Modal: FC<ModalProps> = ({
           ref={refs.setFloating}
           {...getFloatingProps()}>
           <div className={styles.header}>
-            <div id={titleId} className={styles.title}>
+            <Typography
+              id={titleId}
+              variant="title4"
+              align="left"
+              color="default"
+              noOpacity>
               {title}
-            </div>
+            </Typography>
             {onClose && (
               <Button
                 id="close-modal-button"

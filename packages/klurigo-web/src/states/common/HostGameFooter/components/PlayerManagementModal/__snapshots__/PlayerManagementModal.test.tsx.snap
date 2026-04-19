@@ -15,11 +15,11 @@ exports[`PlayerManagementModal > matches snapshot (after players load) 1`] = `
   <div
     class="playerManagementModal"
   >
-    <span
-      class="message"
+    <p
+      class="body2"
     >
       Here’s everyone in the game. If someone shouldn’t be here, you can politely show them the exit.
-    </span>
+    </p>
     <div
       class="flow"
     >
@@ -73,11 +73,11 @@ exports[`PlayerManagementModal > matches snapshot (confirm dialog open for selec
   <div
     class="playerManagementModal"
   >
-    <span
-      class="message"
+    <p
+      class="body2"
     >
       Here’s everyone in the game. If someone shouldn’t be here, you can politely show them the exit.
-    </span>
+    </p>
     <div
       class="flow"
     >
@@ -142,11 +142,11 @@ exports[`PlayerManagementModal > matches snapshot (modal open, before players lo
   <div
     class="playerManagementModal"
   >
-    <span
-      class="message"
+    <p
+      class="body2"
     >
       Here’s everyone in the game. If someone shouldn’t be here, you can politely show them the exit.
-    </span>
+    </p>
     <div
       class="flow"
     />

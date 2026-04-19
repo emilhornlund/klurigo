@@ -4,6 +4,7 @@ import type { FC, ReactNode } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import ResponsiveImage from '../ResponsiveImage'
+import Typography from '../Typography'
 
 import styles from './MediaInfoCard.module.scss'
 
@@ -67,9 +68,16 @@ const MediaInfoCard: FC<MediaInfoCardProps> = ({
       </div>
 
       <div className={styles.body}>
-        <h3 className={styles.title} title={title}>
+        <Typography
+          variant="control"
+          align="left"
+          color="default"
+          title={title}
+          noOpacity
+          truncate
+          bold>
           {title}
-        </h3>
+        </Typography>
 
         {info ? <div className={styles.info}>{info}</div> : null}
         {meta ? <div className={styles.meta}>{meta}</div> : null}

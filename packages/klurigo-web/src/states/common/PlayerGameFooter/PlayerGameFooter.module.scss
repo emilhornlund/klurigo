@@ -5,15 +5,6 @@
 @use '../../../styles/variables';
 @use '../../../styles/spacing.semantic' as spacing;
 
-$--mobile-font-size: 16px;
-$--mobile-line-height: helpers.pxToRem($--mobile-font-size);
-
-$--tablet-font-size: 20px;
-$--tablet-line-height: helpers.pxToRem($--tablet-font-size);
-
-$--desktop-font-size: 24px;
-$--desktop-line-height: helpers.pxToRem($--desktop-font-size);
-
 .main {
   @include surface.surface-box;
 
@@ -24,21 +15,18 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
   border-radius: radius.$radius-surface-lg;
 
   @include helpers.mobile {
-    padding: spacing.$space-compact-mobile;
+    padding: spacing.$space-inline-tight-mobile spacing.$space-compact-mobile;
     width: 100%;
-    max-height: calc(#{spacing.$space-compact-mobile} * 2 + $--mobile-line-height);
   }
 
   @include helpers.tablet {
-    padding: spacing.$space-compact-tablet;
+    padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
     width: variables.$tablet-width;
-    max-height: calc(#{spacing.$space-compact-tablet} * 2 + $--tablet-line-height);
   }
 
   @include helpers.desktop {
-    padding: spacing.$space-compact-desktop;
+    padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
     width: variables.$desktop-width;
-    max-height: calc(#{spacing.$space-compact-desktop} * 2 + $--desktop-line-height);
   }
 
   .questions, .nickname, .score {
@@ -50,27 +38,28 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
 
     @include helpers.mobile {
       column-gap: spacing.$space-compact-mobile;
-      line-height: $--mobile-line-height;
-
-      @include helpers.fontSize($--mobile-font-size);
     }
 
     @include helpers.tablet {
       column-gap: spacing.$space-compact-tablet;
-      line-height: $--tablet-line-height;
-
-      @include helpers.fontSize($--tablet-font-size);
     }
 
     @include helpers.desktop {
       column-gap: spacing.$space-compact-desktop;
-      line-height: $--desktop-line-height;
-
-      @include helpers.fontSize($--desktop-font-size);
     }
 
-    span {
-      font-weight: bold;
+    .icon {
+      @include helpers.mobile {
+        @include helpers.fontSize(variables.$mobile-body2-font-size);
+      }
+
+      @include helpers.tablet {
+        @include helpers.fontSize(variables.$tablet-body2-font-size);
+      }
+
+      @include helpers.desktop {
+        @include helpers.fontSize(variables.$desktop-body2-font-size);
+      }
     }
   }
 
@@ -85,7 +74,7 @@ $--desktop-line-height: helpers.pxToRem($--desktop-font-size);
   .score {
     justify-content: flex-end;
 
-    span {
+    .badge {
       margin: 0;
       background-color: colors.$color-surface-default;
       color: colors.$color-text-default;

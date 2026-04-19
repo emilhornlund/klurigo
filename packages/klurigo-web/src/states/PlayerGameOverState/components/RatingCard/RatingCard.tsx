@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { StarRating, Textarea } from '../../../../components'
+import { StarRating, Textarea, Typography } from '../../../../components'
 
 import styles from './RatingCard.module.scss'
 
@@ -48,7 +48,7 @@ const RatingCard: FC<RatingCardProps> = ({
   onCommentChange,
 }) => (
   <div className={styles.ratingCard}>
-    <div className={styles.ratingTitle}>Rate this quiz</div>
+    <Typography variant="title3">Rate this quiz</Typography>
     <StarRating value={stars} size="large" onChange={onRatingChange} />
     {stars && (
       <div className={styles.comment}>
