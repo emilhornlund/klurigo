@@ -1,5 +1,5 @@
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
 
 .header {
@@ -8,20 +8,33 @@
   justify-content: space-between;
   gap: spacing.$space-page-mobile;
 
-}
+  .headerText {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
 
-.headerText {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+    @include helpers.mobile {
+      gap: spacing.$space-inline-tight-mobile;
+    }
 
-  @include helpers.mobile {
-    gap: spacing.$space-inline-tight-mobile;
+    @include helpers.tablet {
+      gap: spacing.$space-inline-tight-tablet;
+    }
+
+    @include helpers.desktop {
+      gap: spacing.$space-inline-tight-desktop;
+    }
   }
-  @include helpers.tablet {
-    gap: spacing.$space-inline-tight-tablet;
-  }
-  @include helpers.desktop {
-    gap: spacing.$space-inline-tight-desktop;
+
+  .action {
+    flex: 0 0 auto;
+    width: fit-content;
+    margin-left: auto;
+
+    & > * {
+      width: auto;
+      flex: 0 0 auto;
+    }
   }
 }

@@ -1,9 +1,9 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
+@use '../../styles/typography.tokens' as typography;
 
 .card {
   display: flex;
@@ -141,30 +141,30 @@
 
   @include helpers.mobile {
     gap: spacing.$space-inline-mobile;
-    @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-mobile);
   }
 
   @include helpers.tablet {
     gap: spacing.$space-inline-tablet;
-    @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-tablet);
   }
 
   @include helpers.desktop {
     gap: spacing.$space-inline-desktop;
-    @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-desktop);
   }
 
   &.infoItemSmall {
     @include helpers.mobile {
-      @include helpers.fontSize(variables.$mobile-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-mobile);
     }
 
     @include helpers.tablet {
-      @include helpers.fontSize(variables.$tablet-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-tablet);
     }
 
     @include helpers.desktop {
-      @include helpers.fontSize(variables.$desktop-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-desktop);
     }
   }
 }
@@ -199,30 +199,30 @@
 
   @include helpers.mobile {
     gap: spacing.$space-inline-tight-mobile;
-    @include helpers.fontSize(variables.$mobile-control-xsmall-font-size);
+    @include helpers.fontSize(typography.$font-size-control-xsmall-mobile);
   }
 
   @include helpers.tablet {
     gap: spacing.$space-inline-tight-tablet;
-    @include helpers.fontSize(variables.$tablet-control-xsmall-font-size);
+    @include helpers.fontSize(typography.$font-size-control-xsmall-tablet);
   }
 
   @include helpers.desktop {
     gap: spacing.$space-inline-tight-desktop;
-    @include helpers.fontSize(variables.$desktop-control-xsmall-font-size);
+    @include helpers.fontSize(typography.$font-size-control-xsmall-desktop);
   }
 
   svg {
     @include helpers.mobile {
-      @include helpers.fontSize(variables.$mobile-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-mobile);
     }
 
     @include helpers.tablet {
-      @include helpers.fontSize(variables.$tablet-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-tablet);
     }
 
     @include helpers.desktop {
-      @include helpers.fontSize(variables.$desktop-control-xsmall-font-size);
+      @include helpers.fontSize(typography.$font-size-control-xsmall-desktop);
     }
   }
 }

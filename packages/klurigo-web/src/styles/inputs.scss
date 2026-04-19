@@ -1,13 +1,14 @@
-@use './colors.semantic' as colors;
 @use './border-radius.tokens' as radius;
-@use './helpers';
+@use './colors.semantic' as colors;
+@use './helpers' as helpers;
 @use './mixins/_button' as button;
 @use './mixins/_input' as input;
 @use './mixins/_select' as select;
 @use './mixins/_textarea' as textarea;
 @use './shadows.tokens' as shadows;
 @use './spacing.semantic' as spacing;
-@use './variables';
+@use './typography.tokens' as typography;
+@use './variables' as variables;
 
 .input {
   align-items: center;
@@ -61,19 +62,19 @@
     @include helpers.mobile {
       column-gap: spacing.$space-compact-mobile;
 
-      @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+      @include helpers.fontSize(typography.$font-size-control-normal-mobile);
     }
 
     @include helpers.tablet {
       column-gap: spacing.$space-compact-tablet;
 
-      @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+      @include helpers.fontSize(typography.$font-size-control-normal-tablet);
     }
 
     @include helpers.desktop {
       column-gap: spacing.$space-compact-desktop;
 
-      @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+      @include helpers.fontSize(typography.$font-size-control-normal-desktop);
     }
   }
 
@@ -327,7 +328,7 @@
     button {
       column-gap: spacing.$space-inline-mobile;
 
-      @include helpers.fontSize(variables.$mobile-control-small-font-size);
+      @include helpers.fontSize(typography.$font-size-control-small-mobile);
     }
   }
 
@@ -341,7 +342,7 @@
     button {
       column-gap: spacing.$space-inline-tablet;
 
-      @include helpers.fontSize(variables.$tablet-control-small-font-size);
+      @include helpers.fontSize(typography.$font-size-control-small-tablet);
     }
   }
 
@@ -355,7 +356,7 @@
     button {
       column-gap: spacing.$space-inline-desktop;
 
-      @include helpers.fontSize(variables.$desktop-control-small-font-size);
+      @include helpers.fontSize(typography.$font-size-control-small-desktop);
     }
   }
 }
@@ -375,20 +376,20 @@
     padding: spacing.$space-compact-mobile;
     column-gap: spacing.$space-compact-mobile;
 
-    @include helpers.fontSize(variables.$mobile-control-small-font-size);
+    @include helpers.fontSize(typography.$font-size-control-small-mobile);
   }
 
   @include helpers.tablet {
     padding: spacing.$space-compact-tablet;
     column-gap: spacing.$space-compact-tablet;
 
-    @include helpers.fontSize(variables.$tablet-control-small-font-size);
+    @include helpers.fontSize(typography.$font-size-control-small-tablet);
   }
 
   @include helpers.desktop {
     padding: spacing.$space-compact-desktop;
     column-gap: spacing.$space-compact-desktop;
 
-    @include helpers.fontSize(variables.$desktop-control-small-font-size);
+    @include helpers.fontSize(typography.$font-size-control-small-desktop);
   }
 }

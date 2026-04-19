@@ -1,7 +1,8 @@
 @use '../../styles/border-radius.tokens' as radius;
-@use '../../styles/helpers';
-@use '../../styles/variables';
-@use '../../styles/transitions';
+@use '../../styles/helpers' as helpers;
+@use '../../styles/transitions' as transitions;
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 .badge {
   display: flex;
@@ -37,7 +38,7 @@
         variables.$mobile-badge-small-size,
         variables.$mobile-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$mobile-body-font-size);
+      @include helpers.fontSize(typography.$font-size-body-mobile);
     }
 
     @include helpers.tablet {
@@ -45,7 +46,7 @@
         variables.$tablet-badge-small-size,
         variables.$tablet-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$tablet-body-font-size);
+      @include helpers.fontSize(typography.$font-size-body-tablet);
     }
 
     @include helpers.desktop {
@@ -53,7 +54,7 @@
         variables.$desktop-badge-small-size,
         variables.$desktop-badge-small-border-width
       );
-      @include helpers.fontSize(variables.$desktop-body-font-size);
+      @include helpers.fontSize(typography.$font-size-body-desktop);
     }
   }
 
@@ -63,7 +64,7 @@
         variables.$mobile-badge-large-size,
         variables.$mobile-badge-large-border-width
       );
-      @include helpers.fontSize(variables.$mobile-extra-large-title-font-size);
+      @include helpers.fontSize(typography.$font-size-extra-large-title-mobile);
     }
 
     @include helpers.tablet {
@@ -71,7 +72,7 @@
         variables.$tablet-badge-large-size,
         variables.$tablet-badge-large-border-width
       );
-      @include helpers.fontSize(variables.$tablet-extra-large-title-font-size);
+      @include helpers.fontSize(typography.$font-size-extra-large-title-tablet);
     }
 
     @include helpers.desktop {
@@ -79,7 +80,7 @@
         variables.$desktop-badge-large-size,
         variables.$desktop-badge-large-border-width
       );
-      @include helpers.fontSize(variables.$desktop-extra-large-title-font-size);
+      @include helpers.fontSize(typography.$font-size-extra-large-title-desktop);
     }
   }
 

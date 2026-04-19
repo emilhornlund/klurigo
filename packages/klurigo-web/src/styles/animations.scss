@@ -1,6 +1,3 @@
-@use './helpers';
-@use './variables';
-
 // GPU-accelerated animation mixin following existing patterns
 @mixin smooth-transition {
   transform: translateZ(0);

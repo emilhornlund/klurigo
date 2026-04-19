@@ -1,9 +1,9 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
+@use '../../styles/typography.tokens' as typography;
 
 .leaderboard {
   display: flex;
@@ -70,15 +70,15 @@
       justify-content: center;
 
       @include helpers.mobile {
-        @include helpers.fontSize(variables.$mobile-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
-        @include helpers.fontSize(variables.$tablet-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
-        @include helpers.fontSize(variables.$desktop-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
 
       &.position {
@@ -96,21 +96,21 @@
             width: helpers.pxToRem(40px);
             height: helpers.pxToRem(40px);
             padding: spacing.$space-inline-mobile;
-            @include helpers.fontSize(variables.$mobile-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-mobile);
           }
 
           @include helpers.tablet {
             width: helpers.pxToRem(44px);
             height: helpers.pxToRem(44px);
             padding: spacing.$space-inline-tablet;
-            @include helpers.fontSize(variables.$tablet-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-tablet);
           }
 
           @include helpers.desktop {
             width: helpers.pxToRem(48px);
             height: helpers.pxToRem(48px);
             padding: spacing.$space-inline-desktop;
-            @include helpers.fontSize(variables.$desktop-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-desktop);
           }
         }
       }
@@ -143,28 +143,28 @@
 
         @include helpers.mobile {
           .rankChangeArrow {
-            @include helpers.fontSize(variables.$mobile-body-font-size);
+            @include helpers.fontSize(typography.$font-size-body-mobile);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(variables.$mobile-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-mobile);
           }
         }
 
         @include helpers.tablet {
           .rankChangeArrow {
-            @include helpers.fontSize(variables.$tablet-body-font-size);
+            @include helpers.fontSize(typography.$font-size-body-tablet);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(variables.$tablet-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-tablet);
           }
         }
 
         @include helpers.desktop {
           .rankChangeArrow {
-            @include helpers.fontSize(variables.$desktop-body-font-size);
+            @include helpers.fontSize(typography.$font-size-body-desktop);
           }
           .rankChangeAmount {
-            @include helpers.fontSize(variables.$desktop-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-desktop);
           }
         }
 

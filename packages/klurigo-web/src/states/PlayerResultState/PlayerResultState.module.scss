@@ -1,7 +1,7 @@
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
-@use '../../styles/animations';
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 .contentContainer {
   position: relative;
@@ -14,21 +14,21 @@
   @include helpers.mobile {
     min-height:
       helpers.pxToRem(
-        variables.$mobile-badge-large-size + variables.$mobile-title2-font-size
+        variables.$mobile-badge-large-size + typography.$font-size-title2-mobile
       ) + spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
     min-height:
       helpers.pxToRem(
-        variables.$tablet-badge-large-size + variables.$tablet-title2-font-size
+        variables.$tablet-badge-large-size + typography.$font-size-title2-tablet
       ) + spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
     min-height:
       helpers.pxToRem(
-        variables.$desktop-badge-large-size + variables.$desktop-title2-font-size
+        variables.$desktop-badge-large-size + typography.$font-size-title2-desktop
       ) + spacing.$space-stack-desktop;
   }
 

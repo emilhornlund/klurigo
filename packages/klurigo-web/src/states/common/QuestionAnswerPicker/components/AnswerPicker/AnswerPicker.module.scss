@@ -1,10 +1,10 @@
 @use '../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../styles/colors.semantic' as colors;
-@use '../../../../../styles/helpers';
+@use '../../../../../styles/helpers' as helpers;
 @use '../../../../../styles/mixins/_button' as button;
 @use '../../../../../styles/shadows.tokens' as shadows;
 @use '../../../../../styles/spacing.semantic' as spacing;
-@use '../../../../../styles/variables' as variables;
+@use '../../../../../styles/typography.tokens' as typography;
 
 .answerPicker {
   display: flex;
@@ -55,22 +55,22 @@
       @include helpers.mobile {
         gap: spacing.$space-stack-mobile;
         padding: spacing.$space-stack-mobile;
-        line-height: variables.$mobile-body2-line-height;
-        @include helpers.fontSize(variables.$mobile-body2-font-size);
+        line-height: typography.$line-height-body2-mobile;
+        @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
         gap: spacing.$space-stack-tablet;
         padding: spacing.$space-stack-tablet;
-        line-height: variables.$tablet-body2-line-height;
-        @include helpers.fontSize(variables.$tablet-body2-font-size);
+        line-height: typography.$line-height-body2-tablet;
+        @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
         gap: spacing.$space-stack-desktop;
         padding: spacing.$space-stack-desktop;
-        line-height: variables.$desktop-body2-line-height;
-        @include helpers.fontSize(variables.$desktop-body2-font-size);
+        line-height: typography.$line-height-body2-desktop;
+        @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
 
       &:disabled {
@@ -137,22 +137,22 @@
         @include helpers.mobile {
           min-width: helpers.pxToRem(30px);
           min-height: helpers.pxToRem(30px);
-          line-height: variables.$mobile-body2-line-height;
-          @include helpers.fontSize(variables.$mobile-body2-font-size);
+          line-height: typography.$line-height-body2-mobile;
+          @include helpers.fontSize(typography.$font-size-body2-mobile);
         }
 
         @include helpers.tablet {
           min-width: helpers.pxToRem(40px);
           min-height: helpers.pxToRem(40px);
-          line-height: variables.$tablet-body2-line-height;
-          @include helpers.fontSize(variables.$tablet-body2-font-size);
+          line-height: typography.$line-height-body2-tablet;
+          @include helpers.fontSize(typography.$font-size-body2-tablet);
         }
 
         @include helpers.desktop {
           min-width: helpers.pxToRem(50px);
           min-height: helpers.pxToRem(50px);
-          line-height: variables.$desktop-body2-line-height;
-          @include helpers.fontSize(variables.$desktop-body2-font-size);
+          line-height: typography.$line-height-body2-desktop;
+          @include helpers.fontSize(typography.$font-size-body2-desktop);
         }
       }
 

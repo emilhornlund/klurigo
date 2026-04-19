@@ -1,7 +1,7 @@
 @use '../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../styles/colors.range' as rangeColors;
 @use '../../../../../styles/colors.semantic' as colors;
-@use '../../../../../styles/helpers';
+@use '../../../../../styles/helpers' as helpers;
 @use '../../../../../styles/mixins/_input' as input;
 @use '../../../../../styles/mixins/_shadow' as shadow;
 @use '../../../../../styles/shadows.tokens' as shadows;

@@ -1,6 +1,6 @@
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .nicknameTextFieldContainer {
   display: flex;

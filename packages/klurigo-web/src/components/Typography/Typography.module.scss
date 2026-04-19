@@ -1,7 +1,8 @@
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 .typography {
   margin: 0;
@@ -35,18 +36,18 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-extra-large-title-line-height;
-      @include helpers.fontSize(variables.$mobile-extra-large-title-font-size);
+      line-height: typography.$line-height-extra-large-title-mobile;
+      @include helpers.fontSize(typography.$font-size-extra-large-title-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-extra-large-title-line-height;
-      @include helpers.fontSize(variables.$tablet-extra-large-title-font-size);
+      line-height: typography.$line-height-extra-large-title-tablet;
+      @include helpers.fontSize(typography.$font-size-extra-large-title-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-extra-large-title-line-height;
-      @include helpers.fontSize(variables.$desktop-extra-large-title-font-size);
+      line-height: typography.$line-height-extra-large-title-desktop;
+      @include helpers.fontSize(typography.$font-size-extra-large-title-desktop);
     }
   }
 
@@ -55,18 +56,18 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-title-line-height;
-      @include helpers.fontSize(variables.$mobile-title-font-size);
+      line-height: typography.$line-height-title-mobile;
+      @include helpers.fontSize(typography.$font-size-title-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-title-line-height;
-      @include helpers.fontSize(variables.$tablet-title-font-size);
+      line-height: typography.$line-height-title-tablet;
+      @include helpers.fontSize(typography.$font-size-title-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-title-line-height;
-      @include helpers.fontSize(variables.$desktop-title-font-size);
+      line-height: typography.$line-height-title-desktop;
+      @include helpers.fontSize(typography.$font-size-title-desktop);
     }
   }
 
@@ -75,18 +76,18 @@
     opacity: 0.88;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-title2-line-height;
-      @include helpers.fontSize(variables.$mobile-title2-font-size);
+      line-height: typography.$line-height-title2-mobile;
+      @include helpers.fontSize(typography.$font-size-title2-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-title2-line-height;
-      @include helpers.fontSize(variables.$tablet-title2-font-size);
+      line-height: typography.$line-height-title2-tablet;
+      @include helpers.fontSize(typography.$font-size-title2-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-title2-line-height;
-      @include helpers.fontSize(variables.$desktop-title2-font-size);
+      line-height: typography.$line-height-title2-desktop;
+      @include helpers.fontSize(typography.$font-size-title2-desktop);
     }
   }
 
@@ -95,18 +96,18 @@
     opacity: 0.86;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-title3-line-height;
-      @include helpers.fontSize(variables.$mobile-title3-font-size);
+      line-height: typography.$line-height-title3-mobile;
+      @include helpers.fontSize(typography.$font-size-title3-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-title3-line-height;
-      @include helpers.fontSize(variables.$tablet-title3-font-size);
+      line-height: typography.$line-height-title3-tablet;
+      @include helpers.fontSize(typography.$font-size-title3-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-title3-line-height;
-      @include helpers.fontSize(variables.$desktop-title3-font-size);
+      line-height: typography.$line-height-title3-desktop;
+      @include helpers.fontSize(typography.$font-size-title3-desktop);
     }
   }
 
@@ -115,18 +116,18 @@
     opacity: 0.84;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-title4-line-height;
-      @include helpers.fontSize(variables.$mobile-title4-font-size);
+      line-height: typography.$line-height-title4-mobile;
+      @include helpers.fontSize(typography.$font-size-title4-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-title4-line-height;
-      @include helpers.fontSize(variables.$tablet-title4-font-size);
+      line-height: typography.$line-height-title4-tablet;
+      @include helpers.fontSize(typography.$font-size-title4-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-title4-line-height;
-      @include helpers.fontSize(variables.$desktop-title4-font-size);
+      line-height: typography.$line-height-title4-desktop;
+      @include helpers.fontSize(typography.$font-size-title4-desktop);
     }
   }
 
@@ -135,18 +136,18 @@
     opacity: 0.84;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-title5-line-height;
-      @include helpers.fontSize(variables.$mobile-title5-font-size);
+      line-height: typography.$line-height-title5-mobile;
+      @include helpers.fontSize(typography.$font-size-title5-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-title5-line-height;
-      @include helpers.fontSize(variables.$tablet-title5-font-size);
+      line-height: typography.$line-height-title5-tablet;
+      @include helpers.fontSize(typography.$font-size-title5-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-title5-line-height;
-      @include helpers.fontSize(variables.$desktop-title5-font-size);
+      line-height: typography.$line-height-title5-desktop;
+      @include helpers.fontSize(typography.$font-size-title5-desktop);
     }
   }
 
@@ -155,18 +156,18 @@
     opacity: 0.8;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-body-line-height;
-      @include helpers.fontSize(variables.$mobile-body-font-size);
+      line-height: typography.$line-height-body-mobile;
+      @include helpers.fontSize(typography.$font-size-body-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-body-line-height;
-      @include helpers.fontSize(variables.$tablet-body-font-size);
+      line-height: typography.$line-height-body-tablet;
+      @include helpers.fontSize(typography.$font-size-body-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-body-line-height;
-      @include helpers.fontSize(variables.$desktop-body-font-size);
+      line-height: typography.$line-height-body-desktop;
+      @include helpers.fontSize(typography.$font-size-body-desktop);
     }
   }
 
@@ -175,18 +176,18 @@
     opacity: 0.8;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-body2-line-height;
-      @include helpers.fontSize(variables.$mobile-body2-font-size);
+      line-height: typography.$line-height-body2-mobile;
+      @include helpers.fontSize(typography.$font-size-body2-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-body2-line-height;
-      @include helpers.fontSize(variables.$tablet-body2-font-size);
+      line-height: typography.$line-height-body2-tablet;
+      @include helpers.fontSize(typography.$font-size-body2-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-body2-line-height;
-      @include helpers.fontSize(variables.$desktop-body2-font-size);
+      line-height: typography.$line-height-body2-desktop;
+      @include helpers.fontSize(typography.$font-size-body2-desktop);
     }
   }
 
@@ -195,18 +196,18 @@
     cursor: pointer;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-link-line-height;
-      @include helpers.fontSize(variables.$mobile-link-font-size);
+      line-height: typography.$line-height-link-mobile;
+      @include helpers.fontSize(typography.$font-size-link-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-link-line-height;
-      @include helpers.fontSize(variables.$tablet-link-font-size);
+      line-height: typography.$line-height-link-tablet;
+      @include helpers.fontSize(typography.$font-size-link-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-link-line-height;
-      @include helpers.fontSize(variables.$desktop-link-font-size);
+      line-height: typography.$line-height-link-desktop;
+      @include helpers.fontSize(typography.$font-size-link-desktop);
     }
   }
 
@@ -215,18 +216,18 @@
     cursor: pointer;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-link2-line-height;
-      @include helpers.fontSize(variables.$mobile-link2-font-size);
+      line-height: typography.$line-height-link2-mobile;
+      @include helpers.fontSize(typography.$font-size-link2-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-link2-line-height;
-      @include helpers.fontSize(variables.$tablet-link2-font-size);
+      line-height: typography.$line-height-link2-tablet;
+      @include helpers.fontSize(typography.$font-size-link2-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-link2-line-height;
-      @include helpers.fontSize(variables.$desktop-link2-font-size);
+      line-height: typography.$line-height-link2-desktop;
+      @include helpers.fontSize(typography.$font-size-link2-desktop);
     }
   }
 
@@ -235,18 +236,18 @@
     opacity: 0.8;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-control-normal-line-height;
-      @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+      line-height: typography.$line-height-control-normal-mobile;
+      @include helpers.fontSize(typography.$font-size-control-normal-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-control-normal-line-height;
-      @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+      line-height: typography.$line-height-control-normal-tablet;
+      @include helpers.fontSize(typography.$font-size-control-normal-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-control-normal-line-height;
-      @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+      line-height: typography.$line-height-control-normal-desktop;
+      @include helpers.fontSize(typography.$font-size-control-normal-desktop);
     }
   }
 
@@ -255,18 +256,18 @@
     opacity: 0.8;
 
     @include helpers.mobile {
-      line-height: variables.$mobile-control-small-line-height;
-      @include helpers.fontSize(variables.$mobile-control-small-font-size);
+      line-height: typography.$line-height-control-small-mobile;
+      @include helpers.fontSize(typography.$font-size-control-small-mobile);
     }
 
     @include helpers.tablet {
-      line-height: variables.$tablet-control-small-line-height;
-      @include helpers.fontSize(variables.$tablet-control-small-font-size);
+      line-height: typography.$line-height-control-small-tablet;
+      @include helpers.fontSize(typography.$font-size-control-small-tablet);
     }
 
     @include helpers.desktop {
-      line-height: variables.$desktop-control-small-line-height;
-      @include helpers.fontSize(variables.$desktop-control-small-font-size);
+      line-height: typography.$line-height-control-small-desktop;
+      @include helpers.fontSize(typography.$font-size-control-small-desktop);
     }
   }
 

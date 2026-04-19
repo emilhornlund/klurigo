@@ -1,6 +1,6 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/variables';
+@use '../../styles/variables' as variables;
 
 .pinImage {
   width: 100%;

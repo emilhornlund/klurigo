@@ -1,9 +1,10 @@
 @use '../../styles/animations';
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 .floatingOverlay {
   display: flex;
@@ -98,17 +99,17 @@
 
       @include helpers.mobile {
         row-gap: spacing.$space-stack-mobile;
-        @include helpers.fontSize(variables.$mobile-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
         row-gap: spacing.$space-stack-tablet;
-        @include helpers.fontSize(variables.$tablet-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
         row-gap: spacing.$space-stack-desktop;
-        @include helpers.fontSize(variables.$desktop-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
     }
   }

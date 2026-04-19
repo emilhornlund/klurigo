@@ -1,8 +1,9 @@
 @use '../../../styles/border-radius.tokens' as radius;
-@use '../../../styles/helpers';
+@use '../../../styles/helpers' as helpers;
 @use '../../../styles/mixins/_surface' as surface;
-@use '../../../styles/variables';
 @use '../../../styles/spacing.semantic' as spacing;
+@use '../../../styles/typography.tokens' as typography;
+@use '../../../styles/variables' as variables;
 
 .main {
   @include surface.surface-box;
@@ -49,15 +50,15 @@
 
     .icon {
       @include helpers.mobile {
-        @include helpers.fontSize(variables.$mobile-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
-        @include helpers.fontSize(variables.$tablet-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
-        @include helpers.fontSize(variables.$desktop-body2-font-size);
+        @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
     }
   }
@@ -96,15 +97,15 @@
 
         button {
           @include helpers.mobile {
-            @include helpers.fontSize(variables.$mobile-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-mobile);
           }
 
           @include helpers.tablet {
-            @include helpers.fontSize(variables.$tablet-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-tablet);
           }
 
           @include helpers.desktop {
-            @include helpers.fontSize(variables.$desktop-body2-font-size);
+            @include helpers.fontSize(typography.$font-size-body2-desktop);
           }
         }
       }

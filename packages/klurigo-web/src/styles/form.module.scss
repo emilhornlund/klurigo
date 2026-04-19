@@ -1,8 +1,9 @@
 @use './colors.semantic' as colors;
-@use './helpers';
-@use './variables';
-@use './spacing.semantic' as spacing;
+@use './helpers' as helpers;
 @use './mixins/button' as button;
+@use './spacing.semantic' as spacing;
+@use './typography.tokens' as typography;
+@use './variables' as variables;
 
 .form {
   display: flex;
@@ -43,15 +44,15 @@
       display: inline;
 
       @include helpers.mobile {
-        @include helpers.fontSize(variables.$mobile-control-small-font-size);
+        @include helpers.fontSize(typography.$font-size-control-small-mobile);
       }
 
       @include helpers.tablet {
-        @include helpers.fontSize(variables.$tablet-control-small-font-size);
+        @include helpers.fontSize(typography.$font-size-control-small-tablet);
       }
 
       @include helpers.desktop {
-        @include helpers.fontSize(variables.$desktop-control-small-font-size);
+        @include helpers.fontSize(typography.$font-size-control-small-desktop);
       }
 
       .buttonLink {
@@ -64,15 +65,15 @@
         text-underline-offset: helpers.pxToRem(2px);
 
         @include helpers.mobile {
-          @include helpers.fontSize(variables.$mobile-control-small-font-size);
+          @include helpers.fontSize(typography.$font-size-control-small-mobile);
         }
 
         @include helpers.tablet {
-          @include helpers.fontSize(variables.$tablet-control-small-font-size);
+          @include helpers.fontSize(typography.$font-size-control-small-tablet);
         }
 
         @include helpers.desktop {
-          @include helpers.fontSize(variables.$desktop-control-small-font-size);
+          @include helpers.fontSize(typography.$font-size-control-small-desktop);
         }
 
         &:hover {

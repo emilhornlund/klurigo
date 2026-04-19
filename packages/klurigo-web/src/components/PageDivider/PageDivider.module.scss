@@ -1,8 +1,7 @@
-@use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.page' as pageColors;
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .pageDivider {
   display: flex;

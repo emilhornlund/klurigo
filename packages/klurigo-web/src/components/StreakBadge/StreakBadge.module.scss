@@ -1,6 +1,6 @@
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
 
 .streakBadge {
   display: flex;
@@ -10,16 +10,16 @@
 
   @include helpers.mobile {
     column-gap: spacing.$space-compact-mobile;
-    @include helpers.fontSize(variables.$mobile-body-font-size);
+    @include helpers.fontSize(typography.$font-size-body-mobile);
   }
 
   @include helpers.tablet {
     column-gap: spacing.$space-compact-tablet;
-    @include helpers.fontSize(variables.$tablet-body-font-size);
+    @include helpers.fontSize(typography.$font-size-body-tablet);
   }
 
   @include helpers.desktop {
     column-gap: spacing.$space-compact-desktop;
-    @include helpers.fontSize(variables.$desktop-body-font-size);
+    @include helpers.fontSize(typography.$font-size-body-desktop);
   }
 }

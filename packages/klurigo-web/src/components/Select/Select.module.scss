@@ -1,8 +1,8 @@
-@use '../../styles/inputs';
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/helpers' as helpers;
+@use '../../styles/inputs';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 $mobile-select-normal-size: calc(#{variables.$mobile-control-normal-height} * 0.4);
 $tablet-select-normal-size: calc(#{variables.$tablet-control-normal-height} * 0.4);

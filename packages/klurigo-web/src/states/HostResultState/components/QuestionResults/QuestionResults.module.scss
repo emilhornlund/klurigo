@@ -1,10 +1,11 @@
 @use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/colors.semantic' as colors;
-@use '../../../../styles/helpers';
+@use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/loading';
 @use '../../../../styles/mixins/_button' as button;
 @use '../../../../styles/spacing.semantic' as spacing;
-@use '../../../../styles/variables';
+@use '../../../../styles/typography.tokens' as typography;
+@use '../../../../styles/variables' as variables;
 
 .questionResults {
   display: flex;
@@ -66,7 +67,7 @@
           spacing.$space-stack-mobile;
         column-gap: spacing.$space-stack-mobile;
 
-        @include helpers.fontSize(variables.$mobile-body-font-size);
+        @include helpers.fontSize(typography.$font-size-body-mobile);
       }
 
       @include helpers.tablet {
@@ -74,7 +75,7 @@
           spacing.$space-stack-tablet;
         column-gap: spacing.$space-stack-tablet;
 
-        @include helpers.fontSize(variables.$tablet-body-font-size);
+        @include helpers.fontSize(typography.$font-size-body-tablet);
       }
 
       @include helpers.desktop {
@@ -82,7 +83,7 @@
           spacing.$space-stack-desktop;
         column-gap: spacing.$space-stack-desktop;
 
-        @include helpers.fontSize(variables.$desktop-body-font-size);
+        @include helpers.fontSize(typography.$font-size-body-desktop);
       }
 
       &.correct {
