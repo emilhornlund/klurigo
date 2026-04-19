@@ -1,9 +1,10 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
-@use '../../styles/variables';
-@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 .iconTooltipButton {
   @include button.button-reset;
@@ -12,15 +13,15 @@
   color: colors.$color-text-inverse;
 
   @include helpers.mobile {
-    @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-mobile);
   }
 
   @include helpers.tablet {
-    @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-tablet);
   }
 
   @include helpers.desktop {
-    @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-desktop);
   }
 
   &:hover {
@@ -38,21 +39,21 @@
   border-radius: radius.$radius-control-sm;
 
   @include helpers.mobile {
-    @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-mobile);
 
     row-gap: spacing.$space-inline-mobile;
     padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-tablet);
 
     row-gap: spacing.$space-inline-tablet;
     padding: spacing.$space-inline-tablet spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+    @include helpers.fontSize(typography.$font-size-control-normal-desktop);
 
     row-gap: spacing.$space-inline-desktop;
     padding: spacing.$space-inline-desktop spacing.$space-compact-desktop;

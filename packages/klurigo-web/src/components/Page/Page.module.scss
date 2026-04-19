@@ -2,10 +2,11 @@
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/filters.tokens' as filters;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 @mixin iconSize() {
   @include helpers.mobile {
@@ -101,7 +102,7 @@
         column-gap: spacing.$space-compact-mobile;
 
         .text {
-          @include helpers.fontSize(variables.$mobile-title3-font-size);
+          @include helpers.fontSize(typography.$font-size-title3-mobile);
         }
       }
 
@@ -109,7 +110,7 @@
         column-gap: spacing.$space-compact-tablet;
 
         .text {
-          @include helpers.fontSize(variables.$tablet-title3-font-size);
+          @include helpers.fontSize(typography.$font-size-title3-tablet);
         }
       }
 
@@ -117,7 +118,7 @@
         column-gap: spacing.$space-compact-desktop;
 
         .text {
-          @include helpers.fontSize(variables.$desktop-title3-font-size);
+          @include helpers.fontSize(typography.$font-size-title3-desktop);
         }
       }
 
@@ -170,13 +171,13 @@
         color: colors.$color-text-inverse;
 
         @include helpers.mobile {
-          @include helpers.fontSize(variables.$mobile-link2-font-size);
+          @include helpers.fontSize(typography.$font-size-link2-mobile);
         }
         @include helpers.tablet {
-          @include helpers.fontSize(variables.$tablet-link2-font-size);
+          @include helpers.fontSize(typography.$font-size-link2-tablet);
         }
         @include helpers.desktop {
-          @include helpers.fontSize(variables.$desktop-link2-font-size);
+          @include helpers.fontSize(typography.$font-size-link2-desktop);
         }
       }
 
@@ -392,13 +393,13 @@
       color: colors.$color-text-inverse;
 
       @include helpers.mobile {
-        @include helpers.fontSize(variables.$mobile-link2-font-size);
+        @include helpers.fontSize(typography.$font-size-link2-mobile);
       }
       @include helpers.tablet {
-        @include helpers.fontSize(variables.$tablet-link2-font-size);
+        @include helpers.fontSize(typography.$font-size-link2-tablet);
       }
       @include helpers.desktop {
-        @include helpers.fontSize(variables.$desktop-link2-font-size);
+        @include helpers.fontSize(typography.$font-size-link2-desktop);
       }
     }
   }

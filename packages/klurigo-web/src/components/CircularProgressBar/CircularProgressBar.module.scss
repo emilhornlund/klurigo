@@ -1,7 +1,7 @@
 @use 'sass:math';
 
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 
 .circularProgressBar {
   display: block;

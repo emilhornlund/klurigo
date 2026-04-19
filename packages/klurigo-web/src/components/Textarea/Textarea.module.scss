@@ -1,6 +1,5 @@
+@use '../../styles/helpers' as helpers;
 @use '../../styles/inputs';
-@use '../../styles/helpers';
-@use '../../styles/variables';
 @use '../../styles/spacing.semantic' as spacing;
 
 $outline-offset: helpers.pxToRem(2px);

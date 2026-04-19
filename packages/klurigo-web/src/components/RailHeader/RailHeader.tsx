@@ -28,9 +28,13 @@ const RailHeader: FC<RailHeaderProps> = ({ title, description, action }) => (
       <Typography variant="title4" align="left">
         {title}
       </Typography>
-      {description && <Typography variant="body2">{description}</Typography>}
+      {description && (
+        <Typography variant="body2" align="left">
+          {description}
+        </Typography>
+      )}
     </div>
-    {action}
+    <div className={styles.action}>{action}</div>
   </div>
 )
 

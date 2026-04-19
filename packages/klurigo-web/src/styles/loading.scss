@@ -1,5 +1,3 @@
-@use './helpers';
-
 @mixin loading-spinner-dimensions($size, $color, $unique-name) {
   width: $size;
   height: $size;

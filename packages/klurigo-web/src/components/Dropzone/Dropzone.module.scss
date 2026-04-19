@@ -1,10 +1,11 @@
 @use 'sass:color';
+
 @use '../../styles/border-radius.tokens' as radius;
-@use '../../styles/colors.semantic' as colors;
 @use '../../styles/colors.dropzone' as dropzone;
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/helpers' as helpers;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .dropzone {
   display: flex;

@@ -1,6 +1,6 @@
 @use '../colors.semantic' as colors;
 @use '../shadows.tokens' as shadows;
-@use '../variables';
+@use '../variables' as variables;
 
 @mixin surface-base() {
   background:

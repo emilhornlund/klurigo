@@ -1,0 +1,153 @@
+/**
+ * Typography tokens.
+ *
+ * Raw design values per breakpoint.
+ * These tokens should not be used directly in components.
+ * Use typography.semantic instead.
+ */
+
+/* Extra large title */
+$font-size-extra-large-title-mobile: 66px;
+$font-size-extra-large-title-tablet: 76px;
+$font-size-extra-large-title-desktop: 86px;
+
+/* Title */
+$font-size-title-mobile: 40px;
+$font-size-title-tablet: 46px;
+$font-size-title-desktop: 54px;
+
+/* Title 2 */
+$font-size-title2-mobile: 30px;
+$font-size-title2-tablet: 36px;
+$font-size-title2-desktop: 42px;
+
+/* Title 3 */
+$font-size-title3-mobile: 22px;
+$font-size-title3-tablet: 26px;
+$font-size-title3-desktop: 30px;
+
+/* Title 4 */
+$font-size-title4-mobile: 20px;
+$font-size-title4-tablet: 22px;
+$font-size-title4-desktop: 24px;
+
+/* Title 5 */
+$font-size-title5-mobile: 16px;
+$font-size-title5-tablet: 18px;
+$font-size-title5-desktop: 20px;
+
+/* Body */
+$font-size-body-mobile: 22px;
+$font-size-body-tablet: 26px;
+$font-size-body-desktop: 30px;
+
+/* Body 2 */
+$font-size-body2-mobile: 20px;
+$font-size-body2-tablet: 22px;
+$font-size-body2-desktop: 24px;
+
+/* Link */
+$font-size-link-mobile: 20px;
+$font-size-link-tablet: 22px;
+$font-size-link-desktop: 24px;
+
+/* Link 2 */
+$font-size-link2-mobile: 16px;
+$font-size-link2-tablet: 18px;
+$font-size-link2-desktop: 20px;
+
+/* Large control */
+$font-size-control-large-mobile: 18px;
+$font-size-control-large-tablet: 20px;
+$font-size-control-large-desktop: 22px;
+
+/* Normal control */
+$font-size-control-normal-mobile: 16px;
+$font-size-control-normal-tablet: 17px;
+$font-size-control-normal-desktop: 18px;
+
+/* Small control */
+$font-size-control-small-mobile: 14px;
+$font-size-control-small-tablet: 15px;
+$font-size-control-small-desktop: 16px;
+
+/* Extra small control */
+$font-size-control-xsmall-mobile: 12px;
+$font-size-control-xsmall-tablet: 13px;
+$font-size-control-xsmall-desktop: 14px;
+
+/**
+ * Line height tokens.
+ *
+ * Unitless values matched to the typography scale above.
+ */
+
+/* Extra large title */
+$line-height-extra-large-title-mobile: 1.2;
+$line-height-extra-large-title-tablet: 1.22;
+$line-height-extra-large-title-desktop: 1.24;
+
+/* Title */
+$line-height-title-mobile: 1.15;
+$line-height-title-tablet: 1.13;
+$line-height-title-desktop: 1.15;
+
+/* Title 2 */
+$line-height-title2-mobile: 1.2;
+$line-height-title2-tablet: 1.22;
+$line-height-title2-desktop: 1.19;
+
+/* Title 3 */
+$line-height-title3-mobile: 1.5;
+$line-height-title3-tablet: 1.54;
+$line-height-title3-desktop: 1.53;
+
+/* Title 4 */
+$line-height-title4-mobile: 1.45;
+$line-height-title4-tablet: 1.5;
+$line-height-title4-desktop: 1.58;
+
+/* Title 5 */
+$line-height-title5-mobile: 1.4;
+$line-height-title5-tablet: 1.42;
+$line-height-title5-desktop: 1.45;
+
+/* Body */
+$line-height-body-mobile: 1.5;
+$line-height-body-tablet: 1.54;
+$line-height-body-desktop: 1.53;
+
+/* Body 2 */
+$line-height-body2-mobile: 1.45;
+$line-height-body2-tablet: 1.5;
+$line-height-body2-desktop: 1.58;
+
+/* Link */
+$line-height-link-mobile: 1.45;
+$line-height-link-tablet: 1.5;
+$line-height-link-desktop: 1.58;
+
+/* Link 2 */
+$line-height-link2-mobile: 1.4;
+$line-height-link2-tablet: 1.42;
+$line-height-link2-desktop: 1.45;
+
+/* Large control */
+$line-height-control-large-mobile: 1.45;
+$line-height-control-large-tablet: 1.5;
+$line-height-control-large-desktop: 1.58;
+
+/* Normal control */
+$line-height-control-normal-mobile: 1.4;
+$line-height-control-normal-tablet: 1.42;
+$line-height-control-normal-desktop: 1.45;
+
+/* Small control */
+$line-height-control-small-mobile: 1.35;
+$line-height-control-small-tablet: 1.38;
+$line-height-control-small-desktop: 1.4;
+
+/* Extra small control */
+$line-height-control-xsmall-mobile: 1.3;
+$line-height-control-xsmall-tablet: 1.32;
+$line-height-control-xsmall-desktop: 1.35;

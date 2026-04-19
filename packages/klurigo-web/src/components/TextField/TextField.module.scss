@@ -1,9 +1,10 @@
 @use '../../styles/border-radius.tokens' as radius;
-@use '../../styles/inputs';
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
-@use '../../styles/variables';
+@use '../../styles/helpers' as helpers;
+@use '../../styles/inputs';
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
+@use '../../styles/variables' as variables;
 
 $checkbox-height-ratio: 0.7;
 
@@ -15,13 +16,13 @@ $mobile-checkbox-small-size: calc(#{variables.$mobile-control-small-height} * $c
 $tablet-checkbox-small-size: calc(#{variables.$tablet-control-small-height} * $checkbox-height-ratio);
 $desktop-checkbox-small-size: calc(#{variables.$desktop-control-small-height} * $checkbox-height-ratio);
 
-$mobile-checkbox-normal-font-size: variables.$mobile-control-normal-font-size;
-$tablet-checkbox-normal-font-size: variables.$tablet-control-normal-font-size;
-$desktop-checkbox-normal-font-size: variables.$desktop-control-normal-font-size;
+$checkbox-normal-font-size-mobile: typography.$font-size-control-normal-mobile;
+$checkbox-normal-font-size-tablet: typography.$font-size-control-normal-tablet;
+$checkbox-normal-font-size-desktop: typography.$font-size-control-normal-desktop;
 
-$mobile-checkbox-small-font-size: calc($mobile-checkbox-normal-font-size * 0.8);
-$tablet-checkbox-small-font-size: calc($tablet-checkbox-normal-font-size * 0.8);
-$desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8);
+$checkbox-small-font-size-mobile: calc($checkbox-normal-font-size-mobile * 0.8);
+$checkbox-small-font-size-tablet: calc($checkbox-normal-font-size-tablet * 0.8);
+$checkbox-small-font-size-desktop: calc($checkbox-normal-font-size-desktop * 0.8);
 
 .inputContainer {
   display: flex;
@@ -77,21 +78,21 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
         width: $mobile-checkbox-normal-size;
         height: $mobile-checkbox-normal-size;
 
-        @include helpers.fontSize($tablet-checkbox-normal-font-size);
+        @include helpers.fontSize($checkbox-normal-font-size-tablet);
       }
 
       @include helpers.tablet {
         width: $tablet-checkbox-normal-size;
         height: $tablet-checkbox-normal-size;
 
-        @include helpers.fontSize($tablet-checkbox-normal-font-size);
+        @include helpers.fontSize($checkbox-normal-font-size-tablet);
       }
 
       @include helpers.desktop {
         width: $desktop-checkbox-normal-size;
         height: $desktop-checkbox-normal-size;
 
-        @include helpers.fontSize($desktop-checkbox-normal-font-size);
+        @include helpers.fontSize($checkbox-normal-font-size-desktop);
       }
     }
 
@@ -101,7 +102,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
           width: $mobile-checkbox-small-size;
           height: $mobile-checkbox-small-size;
 
-          @include helpers.fontSize($mobile-checkbox-small-font-size);
+          @include helpers.fontSize($checkbox-small-font-size-mobile);
         }
       }
     }
@@ -112,7 +113,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
           width: $tablet-checkbox-small-size;
           height: $tablet-checkbox-small-size;
 
-          @include helpers.fontSize($tablet-checkbox-small-font-size);
+          @include helpers.fontSize($checkbox-small-font-size-tablet);
         }
       }
     }
@@ -123,7 +124,7 @@ $desktop-checkbox-small-font-size: calc($desktop-checkbox-normal-font-size * 0.8
           width: $desktop-checkbox-small-size;
           height: $desktop-checkbox-small-size;
 
-          @include helpers.fontSize($desktop-checkbox-small-font-size);
+          @include helpers.fontSize($checkbox-small-font-size-desktop);
         }
       }
     }

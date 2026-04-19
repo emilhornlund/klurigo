@@ -1,9 +1,9 @@
 @use '../../styles/colors.rating' as rating;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables';
+@use '../../styles/variables' as variables;
 
 .starRow {
   display: inline-flex;

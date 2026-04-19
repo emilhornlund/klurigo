@@ -1,9 +1,9 @@
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
+@use '../../styles/typography.tokens' as typography;
 
 .main {
   display: flex;
@@ -19,7 +19,7 @@
     border-radius: helpers.pxToRem(calc(34px / 2));
     height: helpers.pxToRem(34px);
 
-    @include helpers.fontSize(variables.$mobile-control-large-font-size);
+    @include helpers.fontSize(typography.$font-size-control-large-mobile);
   }
 
   @include helpers.tablet {
@@ -27,7 +27,7 @@
     border-radius: helpers.pxToRem(calc(41px / 2));
     height: helpers.pxToRem(41px);
 
-    @include helpers.fontSize(variables.$tablet-control-large-font-size);
+    @include helpers.fontSize(typography.$font-size-control-large-tablet);
   }
 
   @include helpers.desktop {
@@ -35,7 +35,7 @@
     border-radius: helpers.pxToRem(calc(48px / 2));
     height: helpers.pxToRem(48px);
 
-    @include helpers.fontSize(variables.$desktop-control-large-font-size);
+    @include helpers.fontSize(typography.$font-size-control-large-desktop);
   }
 
   @media (prefers-reduced-motion: no-preference) {

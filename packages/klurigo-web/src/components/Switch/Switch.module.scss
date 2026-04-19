@@ -1,10 +1,10 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
-@use '../../styles/helpers';
+@use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_input' as input;
 @use '../../styles/mixins/_shadow' as shadow;
 @use '../../styles/spacing.semantic' as spacing;
-@use '../../styles/variables' as variables;
+@use '../../styles/typography.tokens' as typography;
 
 $mobile-switch-height: helpers.pxToRem(30px);
 $mobile-switch-padding: helpers.pxToRem(2px);
@@ -51,13 +51,13 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
     text-overflow: ellipsis;
 
     @include helpers.mobile {
-      @include helpers.fontSize(variables.$mobile-control-large-font-size);
+      @include helpers.fontSize(typography.$font-size-control-large-mobile);
     }
     @include helpers.tablet {
-      @include helpers.fontSize(variables.$tablet-control-large-font-size);
+      @include helpers.fontSize(typography.$font-size-control-large-tablet);
     }
     @include helpers.desktop {
-      @include helpers.fontSize(variables.$desktop-control-large-font-size);
+      @include helpers.fontSize(typography.$font-size-control-large-desktop);
     }
   }
 

@@ -1,7 +1,6 @@
 @use '../../../../../../styles/border-radius.tokens' as radius;
-@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/colors.loading.semantic' as loadingColors;
-@use '../../../../../../styles/helpers';
+@use '../../../../../../styles/helpers' as helpers;
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
 .section {
