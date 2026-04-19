@@ -301,9 +301,9 @@ export type TypographyProps = NonLinkProps | LinkProps
 const Typography: FC<TypographyProps> = (props) => {
   const {
     variant = 'body',
-    align = 'center',
+    align = 'left',
     width = 'full',
-    color = 'inverse',
+    color = 'default',
     noOpacity = false,
     noWrap = false,
     truncate = false,

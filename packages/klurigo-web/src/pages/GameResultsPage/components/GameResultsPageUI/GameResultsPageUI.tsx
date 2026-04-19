@@ -68,9 +68,11 @@ const GameResultsPageUI: FC<GameResultsPageUIProps> = ({
   return (
     <Page align="start" height="normal" discover profile>
       <div className={styles.gameResultsPage}>
-        <Typography variant="title">{results.name}</Typography>
+        <Typography variant="title" align="center" color="inverse">
+          {results.name}
+        </Typography>
 
-        <Typography variant="body">
+        <Typography variant="body" align="center" color="inverse">
           A quick look at how this game unfolded — see how players performed,
           how fast they answered, and who stood out.
         </Typography>

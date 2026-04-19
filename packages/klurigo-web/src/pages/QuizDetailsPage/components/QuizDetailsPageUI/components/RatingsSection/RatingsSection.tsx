@@ -56,7 +56,11 @@ const RatingsSection: FC<RatingsSectionProps> = ({
 
     if (ratings.length === 0) {
       return (
-        <Typography variant="body2" data-testid="ratings-empty-state">
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          data-testid="ratings-empty-state">
           No written reviews yet
         </Typography>
       )
@@ -75,13 +79,11 @@ const RatingsSection: FC<RatingsSectionProps> = ({
                 {formatTimeAgo(rating.updatedAt)}
               </Typography>
             </div>
-            <Typography variant="control" align="left" color="default" bold>
+            <Typography variant="control" bold>
               {rating.author.nickname}
             </Typography>
             {rating.comment && (
-              <Typography variant="control2" align="left" color="default">
-                {rating.comment}
-              </Typography>
+              <Typography variant="control2">{rating.comment}</Typography>
             )}
           </div>
         ))}
@@ -91,20 +93,30 @@ const RatingsSection: FC<RatingsSectionProps> = ({
 
   return (
     <section className={styles.section} data-testid="ratings-section">
-      <Typography variant="title3">Ratings &amp; Reviews</Typography>
+      <Typography variant="title3" align="center" color="inverse">
+        Ratings &amp; Reviews
+      </Typography>
 
       <div className={styles.summary} data-testid="ratings-summary">
         <div className={styles.score}>
           <Typography
             variant="title"
+            align="center"
+            color="inverse"
             aria-label={`Average rating: ${summary.stars.toFixed(1)}`}>
             {summary.stars.toFixed(1)}
           </Typography>
-          <Typography variant="control">out of 5</Typography>
+          <Typography variant="control" align="center" color="inverse">
+            out of 5
+          </Typography>
         </div>
         <div className={styles.summaryRight}>
           <StarRating value={summary.stars} size="small" />
-          <Typography variant="control" data-testid="ratings-count">
+          <Typography
+            variant="control"
+            align="center"
+            color="inverse"
+            data-testid="ratings-count">
             {summary.total} {summary.total > 1 ? 'Ratings' : 'Rating'}
           </Typography>
         </div>

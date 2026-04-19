@@ -68,14 +68,7 @@ const MediaInfoCard: FC<MediaInfoCardProps> = ({
       </div>
 
       <div className={styles.body}>
-        <Typography
-          variant="control"
-          align="left"
-          color="default"
-          title={title}
-          noOpacity
-          truncate
-          bold>
+        <Typography variant="control" title={title} noOpacity truncate bold>
           {title}
         </Typography>
 

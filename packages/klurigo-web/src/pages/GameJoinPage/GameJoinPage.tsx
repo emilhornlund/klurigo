@@ -69,7 +69,11 @@ const GameJoinPage: FC = () => {
       <RotatingMessage
         messages={TITLES}
         renderMessage={(title) => (
-          <Typography variant="title" width="medium">
+          <Typography
+            variant="title"
+            width="medium"
+            align="center"
+            color="inverse">
             {title}
           </Typography>
         )}
@@ -78,7 +82,11 @@ const GameJoinPage: FC = () => {
       <RotatingMessage
         messages={MESSAGES}
         renderMessage={(message) => (
-          <Typography variant="body" width="small">
+          <Typography
+            variant="body"
+            width="small"
+            align="center"
+            color="inverse">
             {message}
           </Typography>
         )}

@@ -74,8 +74,10 @@ const UserPasswordForm: FC<UserPasswordFormProps> = ({ loading, onChange }) => {
 
   return (
     <>
-      <Typography variant="title2">Upgrade Your Password</Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="title2" align="center" color="inverse">
+        Upgrade Your Password
+      </Typography>
+      <Typography variant="body" width="medium" align="center" color="inverse">
         Enhance your account security with a fresh password—verify your current
         one, choose a new one, and confirm to complete the update.
       </Typography>

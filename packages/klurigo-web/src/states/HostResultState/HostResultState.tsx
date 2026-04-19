@@ -82,7 +82,9 @@ const HostResultState: FC<HostResultStateProps> = ({
           totalQuestions={totalQuestions}
         />
       }>
-      <Typography variant="title">{text}</Typography>
+      <Typography variant="title" align="center" color="inverse">
+        {text}
+      </Typography>
       {(!showMedia || type === QuestionType.Pin) && (
         <>
           {type === QuestionType.Pin && (

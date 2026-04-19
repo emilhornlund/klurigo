@@ -99,9 +99,11 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
         <Confetti trigger={true} intensity={celebrationLevel} />
       )}
 
-      <Typography variant="title">{quiz.title}</Typography>
+      <Typography variant="title" align="center" color="inverse">
+        {quiz.title}
+      </Typography>
 
-      <Typography variant="body" width="medium">
+      <Typography variant="body" width="medium" align="center" color="inverse">
         {message}
       </Typography>
 
@@ -115,7 +117,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
           celebration={celebrationLevel}>
           {rank}
         </Badge>
-        <Typography variant="body" width="small">
+        <Typography variant="body" width="small" align="center" color="inverse">
           out of {totalPlayers} players
         </Typography>
       </div>
@@ -125,7 +127,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
       <StreakBadge streak={currentStreak}>Streak</StreakBadge>
 
       {comebackRankGain > 0 && (
-        <Typography variant="body" width="small">
+        <Typography variant="body" width="small" align="center" color="inverse">
           ↗ Comeback! +{comebackRankGain} ranks
         </Typography>
       )}

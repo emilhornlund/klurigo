@@ -13,19 +13,25 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const variants = [
-  'extraLargeTitle',
-  'title',
-  'title2',
-  'title3',
-  'title4',
-  'title5',
-  'body',
-  'body2',
-  'control',
-  'control2',
-  'link',
-  'link2',
+const samples = [
+  { variant: 'extraLargeTitle', text: 'Heading' },
+  { variant: 'title', text: 'Heading' },
+  { variant: 'title2', text: 'Heading' },
+  { variant: 'title3', text: 'Heading' },
+  { variant: 'title4', text: 'Heading' },
+  { variant: 'title5', text: 'Heading' },
+  {
+    variant: 'body',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur',
+  },
+  {
+    variant: 'body2',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur',
+  },
+  { variant: 'control', text: 'Sample text' },
+  { variant: 'control2', text: 'Sample text' },
+  { variant: 'link', text: 'Sample text' },
+  { variant: 'link2', text: 'Sample text' },
 ] as const
 
 export const AllVariants: Story = {
@@ -33,35 +39,24 @@ export const AllVariants: Story = {
     variant: 'body',
     children: 'Preview',
   },
-  render: () => {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          padding: 24,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 24,
-          maxWidth: 1000,
-          margin: '0 auto',
-          overflowY: 'auto',
-        }}>
-        {variants.map((variant) => (
-          <div
-            key={variant}
-            style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Typography variant="title2" width="full">
-              Variant: {variant}
-            </Typography>
-
-            <Typography variant={variant}>
-              The quick brown fox jumps over the lazy dog.
-            </Typography>
-
-            <div style={{ height: 1, opacity: 0.2, background: 'white' }} />
-          </div>
-        ))}
-      </div>
-    )
-  },
+  render: () => (
+    <div
+      style={{
+        minHeight: '100vh',
+        padding: '48px 56px',
+        maxWidth: 1200,
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 16,
+        boxSizing: 'border-box',
+      }}>
+      {samples.map(({ variant, text }) => (
+        <Typography key={variant} variant={variant} color="inverse" noOpacity>
+          {variant}. {text}
+        </Typography>
+      ))}
+    </div>
+  ),
 }

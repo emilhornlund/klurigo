@@ -47,7 +47,7 @@ const ResultChip: FC<ResultChipProps> = ({
     }>
     {value}
     <span>
-      <Typography variant="body2" align="left" noWrap bold>
+      <Typography variant="body2" color="inverse" noWrap bold>
         <FontAwesomeIcon icon={faUserGroup} /> {count}
       </Typography>
     </span>

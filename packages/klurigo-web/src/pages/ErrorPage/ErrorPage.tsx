@@ -29,13 +29,17 @@ const ErrorPage: FC = () => {
       <div className={styles.errorIcon}>
         <FontAwesomeIcon icon={faHeartCrack} />
       </div>
-      <Typography variant="title" width="medium">
+      <Typography variant="title" width="medium" align="center" color="inverse">
         Oops! Something went wrong.
       </Typography>
-      <Typography variant="title2" width="medium">
+      <Typography
+        variant="title2"
+        width="medium"
+        align="center"
+        color="inverse">
         {error?.statusText || 'An unexpected error occurred.'}
       </Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="body" width="medium" align="center" color="inverse">
         {error?.data ||
           'Please try refreshing the page or go back to the homepage.'}
       </Typography>

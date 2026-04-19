@@ -25,11 +25,11 @@ export type RailHeaderProps = {
 const RailHeader: FC<RailHeaderProps> = ({ title, description, action }) => (
   <div className={styles.header}>
     <div className={styles.headerText}>
-      <Typography variant="title4" align="left">
+      <Typography variant="title4" color="inverse">
         {title}
       </Typography>
       {description && (
-        <Typography variant="body2" align="left">
+        <Typography variant="body2" color="inverse">
           {description}
         </Typography>
       )}

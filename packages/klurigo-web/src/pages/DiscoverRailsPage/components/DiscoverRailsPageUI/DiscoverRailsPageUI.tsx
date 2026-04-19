@@ -77,10 +77,18 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
     <Page align="start" discover profile>
       <div className={styles.container}>
         <div className={styles.heading}>
-          <Typography variant="title" width="full">
+          <Typography
+            variant="title"
+            width="full"
+            align="center"
+            color="inverse">
             Discover
           </Typography>
-          <Typography variant="body" width="full">
+          <Typography
+            variant="body"
+            width="full"
+            align="center"
+            color="inverse">
             Explore curated quizzes across different categories
           </Typography>
         </div>
@@ -90,7 +98,11 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
         {filterActive ? (
           <>
             {isSearchLoading ? null : searchResults.length === 0 ? (
-              <Typography variant="body2" data-testid="search-empty-state">
+              <Typography
+                variant="body2"
+                align="center"
+                color="inverse"
+                data-testid="search-empty-state">
                 No quizzes found. Try a different search or{' '}
                 <button
                   className={styles.clearLink}
@@ -155,7 +167,11 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
                 />
               ))
             ) : (
-              <Typography variant="body2" data-testid="empty-state">
+              <Typography
+                variant="body2"
+                align="center"
+                color="inverse"
+                data-testid="empty-state">
                 More quizzes coming soon — check back later!
               </Typography>
             )}

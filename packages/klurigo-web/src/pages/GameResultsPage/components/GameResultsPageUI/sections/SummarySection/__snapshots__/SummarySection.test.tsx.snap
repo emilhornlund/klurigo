@@ -26,8 +26,8 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
           data-testid="circular-progress"
         />
         <p
-          align="left"
           class="body2 text"
+          color="inverse"
         >
           Difficulty: 100%
         </p>
@@ -71,12 +71,16 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
           class="content"
         >
           <h3
+            align="center"
             class="title3"
+            color="inverse"
           >
             Play again
           </h3>
           <p
+            align="center"
             class="body2"
+            color="inverse"
           >
             This quiz isn’t public yet. Ask the owner to make it public before hosting a live game.
           </p>
@@ -105,14 +109,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Game Mode
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               Classic
             </p>
@@ -134,14 +139,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Players
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -163,14 +169,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Questions
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -199,14 +206,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Host
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               <a
                 data-discover="true"
@@ -233,14 +241,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Date
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2025-01-01 12:00
             </p>
@@ -262,14 +271,15 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Duration
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               dur:0
             </p>
@@ -307,8 +317,8 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
           data-testid="circular-progress"
         />
         <p
-          align="left"
           class="body2 text"
+          color="inverse"
         >
           Difficulty: 70%
         </p>
@@ -351,12 +361,16 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
           class="content"
         >
           <h3
+            align="center"
             class="title3"
+            color="inverse"
           >
             Play again
           </h3>
           <p
+            align="center"
             class="body2"
+            color="inverse"
           >
             Start a new live game with this quiz and invite others to join.
           </p>
@@ -402,14 +416,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Game Mode
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               Classic
             </p>
@@ -431,14 +446,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Players
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -460,14 +476,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Questions
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -496,14 +513,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Host
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               <a
                 data-discover="true"
@@ -530,14 +548,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Date
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2025-01-01 12:00
             </p>
@@ -559,14 +578,15 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Duration
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               dur:123
             </p>
@@ -577,12 +597,16 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Fastest Overall Player
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           sec:3.2
         </h3>
@@ -598,12 +622,16 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Longest Correct Streak
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           7
         </h3>
@@ -619,12 +647,16 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Most Accurate Player
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           NaN%
         </h3>
@@ -636,12 +668,16 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Biggest Comeback
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           NaN
         </h3>
@@ -680,8 +716,8 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
           data-testid="circular-progress"
         />
         <p
-          align="left"
           class="body2 text"
+          color="inverse"
         >
           Difficulty: 50%
         </p>
@@ -725,12 +761,16 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
           class="content"
         >
           <h3
+            align="center"
             class="title3"
+            color="inverse"
           >
             Play again
           </h3>
           <p
+            align="center"
             class="body2"
+            color="inverse"
           >
             This quiz isn’t public yet. Ask the owner to make it public before hosting a live game.
           </p>
@@ -759,14 +799,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Game Mode
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               0 to 100
             </p>
@@ -788,14 +829,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Players
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -817,14 +859,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Questions
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2
             </p>
@@ -853,14 +896,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Host
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               <a
                 data-discover="true"
@@ -887,14 +931,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Date
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               2025-01-01 12:00
             </p>
@@ -916,14 +961,15 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
               />
             </svg>
             <p
-              align="left"
               class="body2"
+              color="inverse"
             >
               Duration
             </p>
             <p
               align="right"
               class="body2"
+              color="inverse"
             >
               dur:45
             </p>
@@ -934,12 +980,16 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Fastest Overall Player
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           sec:2.1
         </h3>
@@ -955,12 +1005,16 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Longest Correct Streak
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           3
         </h3>
@@ -976,12 +1030,16 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Precision Champion
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           NaN%
         </h3>
@@ -993,12 +1051,16 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
         class="card metric"
       >
         <p
+          align="center"
           class="body2"
+          color="inverse"
         >
           Biggest Comeback
         </p>
         <h3
+          align="center"
           class="title3"
+          color="inverse"
         >
           NaN
         </h3>

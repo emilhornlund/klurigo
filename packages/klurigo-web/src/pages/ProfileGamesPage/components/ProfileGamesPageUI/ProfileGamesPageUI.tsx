@@ -53,18 +53,28 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
   if (!isLoading && !isError && games.length === 0) {
     return (
       <Page align="start" width="medium" discover profile>
-        <Typography variant="title">No Games Yet</Typography>
-        <Typography variant="body">
+        <Typography variant="title" align="center" color="inverse">
+          No Games Yet
+        </Typography>
+        <Typography variant="body" align="center" color="inverse">
           Host live quizzes and play together with others. Your games will
           appear here once you start.
         </Typography>
 
         <PageDivider />
 
-        <Typography variant="title2" width="medium">
+        <Typography
+          variant="title2"
+          width="medium"
+          align="center"
+          color="inverse">
           Looking for something to play?
         </Typography>
-        <Typography variant="body" width="medium">
+        <Typography
+          variant="body"
+          width="medium"
+          align="center"
+          color="inverse">
           Browse quizzes made by others and host a live game in seconds.
         </Typography>
         <Button
@@ -80,10 +90,18 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
 
         <PageDivider />
 
-        <Typography variant="title2" width="medium">
+        <Typography
+          variant="title2"
+          width="medium"
+          align="center"
+          color="inverse">
           Want to make your own?
         </Typography>
-        <Typography variant="body" width="medium">
+        <Typography
+          variant="body"
+          width="medium"
+          align="center"
+          color="inverse">
           Create a quiz in minutes and reuse it for future games.
         </Typography>
         <Button
@@ -102,12 +120,18 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
 
   return (
     <Page align="start" discover profile>
-      <Typography variant="title">Game History</Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="title" align="center" color="inverse">
+        Game History
+      </Typography>
+      <Typography variant="body" width="medium" align="center" color="inverse">
         Review your past games and track your performance.
       </Typography>
       {isError ? (
-        <Typography variant="body2" data-testid="profile-games-empty-state">
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          data-testid="profile-games-empty-state">
           Oops! Your game history is playing hide-and-seek right now. Please try
           again.
         </Typography>

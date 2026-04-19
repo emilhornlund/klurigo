@@ -91,8 +91,10 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
 
   return (
     <Page align="start" discover profile>
-      <Typography variant="title">Your Quiz Shelf</Typography>
-      <Typography variant="body" width="medium">
+      <Typography variant="title" align="center" color="inverse">
+        Your Quiz Shelf
+      </Typography>
+      <Typography variant="body" width="medium" align="center" color="inverse">
         All your quiz creations, lined up and ready for their next moment in the
         spotlight.
       </Typography>
@@ -114,7 +116,11 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
         />
       )}
       {isError || (!isLoading && quizzes.length === 0) ? (
-        <Typography variant="body2" data-testid="profile-empty-state">
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          data-testid="profile-empty-state">
           {isError
             ? 'Oops! Your quizzes are playing hide-and-seek right now. Please try again.'
             : hasSearchFilter

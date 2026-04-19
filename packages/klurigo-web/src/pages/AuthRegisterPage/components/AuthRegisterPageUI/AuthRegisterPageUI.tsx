@@ -100,10 +100,10 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
 
   return (
     <Page align="start">
-      <Typography variant="title" width="medium">
+      <Typography variant="title" width="medium" align="center" color="inverse">
         {title}
       </Typography>
-      <Typography variant="body" width="small">
+      <Typography variant="body" width="small" align="center" color="inverse">
         {message}
       </Typography>
       <form className={styles.createUserForm} onSubmit={handleSubmit}>
@@ -184,7 +184,12 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
           disabled={!isFormValid || loading}
         />
       </form>
-      <Typography variant="link" width="small" asChild>
+      <Typography
+        variant="link"
+        width="small"
+        align="center"
+        color="inverse"
+        asChild>
         <Link to={'/auth/login'}>
           Got an account? Flash your credentials and come on in!
         </Link>

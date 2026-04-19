@@ -23,20 +23,38 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           <FontAwesomeIcon icon={faCheck} />
         </Badge>
 
-        <Typography variant="title" width="medium">
+        <Typography
+          variant="title"
+          width="medium"
+          align="center"
+          color="inverse">
           Hooray! Your email’s all set!
         </Typography>
 
-        <Typography variant="body" width="medium">
+        <Typography
+          variant="body"
+          width="medium"
+          align="center"
+          color="inverse">
           Welcome aboard the fun train. Let’s roll!
         </Typography>
 
         {loggedIn ? (
-          <Typography variant="link" width="small" asChild>
+          <Typography
+            variant="link"
+            width="small"
+            align="center"
+            color="inverse"
+            asChild>
             <Link to={'/'}>Take me home</Link>
           </Typography>
         ) : (
-          <Typography variant="link" width="small" asChild>
+          <Typography
+            variant="link"
+            width="small"
+            align="center"
+            color="inverse"
+            asChild>
             <Link to={'/auth/login'}>Log in to get started!</Link>
           </Typography>
         )}
@@ -45,13 +63,17 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
 
     {!verified && !error && (
       <>
-        <Typography variant="title" width="medium">
+        <Typography
+          variant="title"
+          width="medium"
+          align="center"
+          color="inverse">
           One moment… verifying your magic link!
         </Typography>
 
         <LoadingSpinner />
 
-        <Typography variant="body" width="small">
+        <Typography variant="body" width="small" align="center" color="inverse">
           Good things come to those who wait!
         </Typography>
       </>
@@ -63,11 +85,19 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
           <FontAwesomeIcon icon={faXmark} />
         </Badge>
 
-        <Typography variant="title" width="medium">
+        <Typography
+          variant="title"
+          width="medium"
+          align="center"
+          color="inverse">
           Oops! Something went wrong.
         </Typography>
 
-        <Typography variant="body" width="medium">
+        <Typography
+          variant="body"
+          width="medium"
+          align="center"
+          color="inverse">
           The supplied link is invalid or has expired.
         </Typography>
       </>

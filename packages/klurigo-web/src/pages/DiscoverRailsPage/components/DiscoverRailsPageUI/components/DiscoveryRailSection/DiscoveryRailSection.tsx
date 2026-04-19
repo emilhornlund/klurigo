@@ -56,7 +56,12 @@ const DiscoveryRailSection: FC<DiscoveryRailSectionProps> = ({
       title={title}
       description={description}
       action={
-        <Typography variant="link2" width="small" align="right" asChild>
+        <Typography
+          variant="link2"
+          width="small"
+          align="right"
+          color="inverse"
+          asChild>
           <Link to={`/discover/section/${sectionKey}`}>
             See all <FontAwesomeIcon icon={faArrowRight} />
           </Link>

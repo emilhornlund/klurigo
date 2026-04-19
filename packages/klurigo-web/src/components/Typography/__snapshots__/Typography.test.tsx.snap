@@ -3,7 +3,7 @@
 exports[`Typography > matches snapshot for asChild composition 1`] = `
 <DocumentFragment>
   <a
-    class="inner typography link alignCenter widthSmall colorInverse outer"
+    class="inner typography link alignLeft widthSmall colorDefault outer"
     href="/quiz/create"
   >
     Create your own quiz
@@ -24,7 +24,7 @@ exports[`Typography > matches snapshot for body variant with semantic color 1`] 
 exports[`Typography > matches snapshot for extraLargeTitle variant 1`] = `
 <DocumentFragment>
   <h1
-    class="typography extraLargeTitle alignCenter widthMedium colorInverse"
+    class="typography extraLargeTitle alignLeft widthMedium colorDefault"
   >
     Let’s play
   </h1>
@@ -34,7 +34,7 @@ exports[`Typography > matches snapshot for extraLargeTitle variant 1`] = `
 exports[`Typography > matches snapshot for link variant 1`] = `
 <DocumentFragment>
   <a
-    class="typography link alignCenter widthFull colorInverse"
+    class="typography link alignLeft widthFull colorDefault"
     href="/profile"
   >
     Profile
@@ -45,7 +45,7 @@ exports[`Typography > matches snapshot for link variant 1`] = `
 exports[`Typography > matches snapshot for title variant 1`] = `
 <DocumentFragment>
   <h1
-    class="typography title alignLeft widthSmall colorInverse"
+    class="typography title alignLeft widthSmall colorDefault"
   >
     Leaderboard
   </h1>

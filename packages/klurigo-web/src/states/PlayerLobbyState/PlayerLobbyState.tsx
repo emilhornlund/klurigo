@@ -84,14 +84,22 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
 
         <NicknameChip value={nickname} />
 
-        <Typography variant="title" width="medium">
+        <Typography
+          variant="title"
+          width="medium"
+          align="center"
+          color="inverse">
           You’re in the waiting room
         </Typography>
 
         <RotatingMessage
           messages={MESSAGES}
           renderMessage={(message) => (
-            <Typography variant="body" width="small">
+            <Typography
+              variant="body"
+              width="small"
+              align="center"
+              color="inverse">
               {message}
             </Typography>
           )}

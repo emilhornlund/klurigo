@@ -50,7 +50,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
     <div className={styles.main}>
       <div className={styles.questions}>
         <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
-        <Typography variant="body2" align="left" color="inverse" noOpacity bold>
+        <Typography variant="body2" color="inverse" noOpacity bold>
           {currentQuestion} / {totalQuestions}
         </Typography>
       </div>

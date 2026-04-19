@@ -207,7 +207,7 @@ const PlayerManagementModal: FC<PlayerManagementModalProps> = ({
   return (
     <Modal title="Who’s Playing?" size="large" open={open} onClose={onClose}>
       <div className={styles.playerManagementModal}>
-        <Typography variant="body2" align="left" color="default">
+        <Typography variant="body2">
           Here’s everyone in the game. If someone shouldn’t be here, you can
           politely show them the exit.
         </Typography>

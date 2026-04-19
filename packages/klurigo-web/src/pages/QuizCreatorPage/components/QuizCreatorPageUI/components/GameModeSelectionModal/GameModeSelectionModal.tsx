@@ -14,7 +14,7 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
 }) => {
   return (
     <Modal title="Choose Your Game Mode" open>
-      <Typography variant="body2" align="left" color="default" noOpacity>
+      <Typography variant="body2" noOpacity>
         Choose the game mode for your quiz. Each mode offers a unique way for
         participants to play and enjoy!
       </Typography>
@@ -22,10 +22,10 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
         <button
           className={styles.classic}
           onClick={() => onSelect?.(GameMode.Classic)}>
-          <Typography variant="title4" color="default" noOpacity>
+          <Typography variant="title4" align="center" noOpacity>
             Classic
           </Typography>
-          <Typography variant="control" color="default" noOpacity>
+          <Typography variant="control" align="center" noOpacity>
             Create a traditional quiz with a mix of question types, including
             multiple-choice, true/false, range sliders, and typed answers.
           </Typography>
@@ -33,10 +33,10 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
         <button
           className={styles.zeroToOneHundred}
           onClick={() => onSelect?.(GameMode.ZeroToOneHundred)}>
-          <Typography variant="title4" color="default" noOpacity>
+          <Typography variant="title4" align="center" noOpacity>
             0-100
           </Typography>
-          <Typography variant="control" color="default" noOpacity>
+          <Typography variant="control" align="center" noOpacity>
             Design a quiz with slider-based questions, where all answers range
             between 0 and 100.
           </Typography>

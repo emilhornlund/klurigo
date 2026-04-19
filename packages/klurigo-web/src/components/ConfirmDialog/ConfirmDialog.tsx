@@ -30,7 +30,7 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   onClose,
 }) => (
   <Modal title={title} open={open}>
-    <Typography variant="body2" align="left" color="default" noOpacity>
+    <Typography variant="body2" noOpacity>
       {message}
     </Typography>
     <div className={styles.actions}>

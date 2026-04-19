@@ -72,16 +72,11 @@ const FilterModal: FC<FilterModalProps> = ({
   return (
     <Modal title="Refine Your Quiz Search" open={open}>
       <div className={styles.filterModalContainer}>
-        <Typography variant="body2" align="left" color="default" noOpacity>
+        <Typography variant="body2" noOpacity>
           Narrow down your search and find the perfect quiz!
         </Typography>
         <div className={styles.row}>
-          <Typography
-            variant="control"
-            align="left"
-            color="default"
-            noOpacity
-            bold>
+          <Typography variant="control" noOpacity bold>
             Category
           </Typography>
           <Select
@@ -106,12 +101,7 @@ const FilterModal: FC<FilterModalProps> = ({
         </div>
         {showVisibilityFilter && (
           <div className={styles.row}>
-            <Typography
-              variant="control"
-              align="left"
-              color="default"
-              noOpacity
-              bold>
+            <Typography variant="control" noOpacity bold>
               Visibility
             </Typography>
             <Select
@@ -136,12 +126,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </div>
         )}
         <div className={styles.row}>
-          <Typography
-            variant="control"
-            align="left"
-            color="default"
-            noOpacity
-            bold>
+          <Typography variant="control" noOpacity bold>
             Language
           </Typography>
           <Select
@@ -165,12 +150,7 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <Typography
-            variant="control"
-            align="left"
-            color="default"
-            noOpacity
-            bold>
+          <Typography variant="control" noOpacity bold>
             Game Mode
           </Typography>
           <Select
@@ -194,12 +174,7 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <Typography
-            variant="control"
-            align="left"
-            color="default"
-            noOpacity
-            bold>
+          <Typography variant="control" noOpacity bold>
             Sort By
           </Typography>
           <Select
@@ -220,12 +195,7 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <Typography
-            variant="control"
-            align="left"
-            color="default"
-            noOpacity
-            bold>
+          <Typography variant="control" noOpacity bold>
             Sort Order
           </Typography>
           <Select
