@@ -1,5 +1,5 @@
 import { GameMode, type GameResultDto } from '@klurigo/common'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -51,6 +51,43 @@ vi.mock('../../../../../../components', () => ({
   Podium: () => <div data-testid="podium" />,
   Leaderboard: () => <div data-testid="leaderboard" />,
   PageDivider: () => <div data-testid="page-divider" />,
+  Typography: ({
+    children,
+    variant = 'body',
+    className,
+    ...props
+  }: {
+    children?: React.ReactNode
+    variant?: string
+    className?: string
+    noOpacity?: boolean
+    bold?: boolean
+  }) => {
+    const tagByVariant = {
+      extraLargeTitle: 'h1',
+      title: 'h1',
+      title2: 'h2',
+      title3: 'h3',
+      title4: 'h4',
+      title5: 'h5',
+      body: 'p',
+      body2: 'p',
+      control: 'p',
+      control2: 'p',
+      link: 'a',
+      link2: 'a',
+    } as const
+
+    const Tag = tagByVariant[variant as keyof typeof tagByVariant] ?? 'p'
+
+    return (
+      <Tag
+        className={[variant, className].filter(Boolean).join(' ')}
+        {...props}>
+        {children}
+      </Tag>
+    )
+  },
 
   CircularProgressBarKind: { Correct: 'Correct' },
   CircularProgressBarSize: { Medium: 'Medium' },
@@ -83,6 +120,7 @@ vi.mock('../../../../../../components', () => ({
         </button>
       </div>
     ) : null,
+  NicknameChip: ({ value }: { value: string }) => <div>{value}</div>,
 }))
 
 const h = vi.hoisted(() => {
@@ -220,15 +258,18 @@ describe('SummarySection', () => {
     expect(screen.getByText('7')).toBeInTheDocument()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
-    const titles = Array.from(detailsCard.querySelectorAll('.title'))
-    const getValueFor = (label: string) => {
-      const titleEl = titles.find(
-        (el) => el.textContent === label,
-      ) as HTMLElement
-      return titleEl.nextElementSibling?.textContent
-    }
-    expect(getValueFor('Players')).toBe(String(playerMetrics.length))
-    expect(getValueFor('Questions')).toBe(String(questionMetrics.length))
+    const playersItem = within(detailsCard)
+      .getByText('Players')
+      .closest('.item') as HTMLElement
+    expect(
+      within(playersItem).getByText(String(playerMetrics.length)),
+    ).toBeInTheDocument()
+    const questionsItem = within(detailsCard)
+      .getByText('Questions')
+      .closest('.item') as HTMLElement
+    expect(
+      within(questionsItem).getByText(String(questionMetrics.length)),
+    ).toBeInTheDocument()
 
     const playAgainButton = screen.getByRole('button', { name: /play again/i })
     expect(playAgainButton).toBeEnabled()
@@ -287,15 +328,18 @@ describe('SummarySection', () => {
     expect(screen.getByText('Difficulty: 50%')).toBeInTheDocument()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
-    const titles = Array.from(detailsCard.querySelectorAll('.title'))
-    const getValueFor = (label: string) => {
-      const titleEl = titles.find(
-        (el) => el.textContent === label,
-      ) as HTMLElement
-      return titleEl.nextElementSibling?.textContent
-    }
-    expect(getValueFor('Players')).toBe(String(playerMetrics.length))
-    expect(getValueFor('Questions')).toBe(String(questionMetrics.length))
+    const playersItem = within(detailsCard)
+      .getByText('Players')
+      .closest('.item') as HTMLElement
+    expect(
+      within(playersItem).getByText(String(playerMetrics.length)),
+    ).toBeInTheDocument()
+    const questionsItem = within(detailsCard)
+      .getByText('Questions')
+      .closest('.item') as HTMLElement
+    expect(
+      within(questionsItem).getByText(String(questionMetrics.length)),
+    ).toBeInTheDocument()
 
     const playAgainButton = screen.getByRole('button', { name: /play again/i })
     expect(playAgainButton).toBeDisabled()

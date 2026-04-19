@@ -25,6 +25,27 @@ vi.mock('../../../../../context/game', () => ({
  * - Avoid coupling to Modal/ConfirmDialog/NicknameChip internal markup.
  */
 vi.mock('../../../../../components', () => ({
+  Typography: ({
+    children,
+    variant = 'body',
+    className,
+  }: {
+    children?: React.ReactNode
+    variant?: string
+    className?: string
+  }) => {
+    const Tag = ['title', 'title2', 'title3', 'title4', 'title5'].includes(
+      variant,
+    )
+      ? 'h2'
+      : 'p'
+
+    return (
+      <Tag className={[variant, className].filter(Boolean).join(' ')}>
+        {children}
+      </Tag>
+    )
+  },
   Modal: ({
     title,
     open,

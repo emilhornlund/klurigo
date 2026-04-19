@@ -195,12 +195,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="The Ultimate Geography Challenge"
                 >
                   The Ultimate Geography Challenge
-                </h3>
+                </p>
                 <div
                   class="meta"
                 >
@@ -276,12 +276,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="Pop Culture Trivia"
                 >
                   Pop Culture Trivia
-                </h3>
+                </p>
                 <div
                   class="meta"
                 >
@@ -357,12 +357,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="History Through the Ages"
                 >
                   History Through the Ages
-                </h3>
+                </p>
                 <div
                   class="meta"
                 >
@@ -438,12 +438,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="Science Facts and Myths"
                 >
                   Science Facts and Myths
-                </h3>
+                </p>
                 <div
                   class="meta"
                 >
@@ -519,12 +519,12 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               <div
                 class="body"
               >
-                <h3
-                  class="title"
+                <p
+                  class="typography control alignLeft widthFull colorDefault noOpacity truncate bold"
                   title="Literary Legends"
                 >
                   Literary Legends
-                </h3>
+                </p>
                 <div
                   class="meta"
                 >

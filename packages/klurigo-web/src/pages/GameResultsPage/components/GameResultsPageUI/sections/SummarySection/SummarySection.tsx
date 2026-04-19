@@ -28,9 +28,11 @@ import {
   ConfirmDialog,
   Leaderboard,
   type LeaderboardValue,
+  NicknameChip,
   PageDivider,
   Podium,
   type PodiumValue,
+  Typography,
 } from '../../../../../../components'
 import { GameModeLabels } from '../../../../../../models'
 import {
@@ -63,11 +65,13 @@ const DetailsItem: FC<{
   children: ReactElement | string | number
 }> = ({ title, icon, children }) => (
   <div className={styles.item}>
-    <div className={styles.icon}>
-      <FontAwesomeIcon icon={icon} />
-    </div>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.value}>{children}</div>
+    <FontAwesomeIcon icon={icon} className={styles.icon} />
+    <Typography variant="body2" align="left">
+      {title}
+    </Typography>
+    <Typography variant="body2" align="right" noOpacity bold>
+      {children}
+    </Typography>
   </div>
 )
 
@@ -77,13 +81,13 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
   nicknames,
 }) => (
   <div className={classNames(styles.card, styles.metric)}>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.value}>{value}</div>
+    <Typography variant="body2">{title}</Typography>
+    <Typography variant="title3" noOpacity>
+      {value}
+    </Typography>
     <div className={styles.nicknames}>
       {nicknames.map((nickname, index) => (
-        <div key={`${nickname}_${index}`} className={styles.nickname}>
-          {nickname}
-        </div>
+        <NicknameChip key={`${nickname}_${index}`} value={nickname} />
       ))}
     </div>
   </div>
@@ -231,9 +235,9 @@ const SummarySection: FC<SummarySectionProps> = ({
             progress={percentage}
             percentageColor="white"
           />
-          <div className={styles.text}>
+          <Typography variant="body2" align="left" className={styles.text}>
             {getQuizDifficultyMessage(percentage)}
-          </div>
+          </Typography>
         </div>
 
         <RatingCard
@@ -253,11 +257,11 @@ const SummarySection: FC<SummarySectionProps> = ({
           {quiz.canHostLiveGame ? (
             <>
               <div className={styles.content}>
-                <div className={styles.title}>Play again</div>
-                <div className={styles.subtitle}>
+                <Typography variant="title3">Play again</Typography>
+                <Typography variant="body2">
                   Start a new live game with this quiz and invite others to
                   join.
-                </div>
+                </Typography>
               </div>
               <div className={styles.icon}>
                 <FontAwesomeIcon icon={faPlay} />
@@ -266,11 +270,11 @@ const SummarySection: FC<SummarySectionProps> = ({
           ) : (
             <>
               <div className={styles.content}>
-                <div className={styles.title}>Play again</div>
-                <div className={styles.subtitle}>
+                <Typography variant="title3">Play again</Typography>
+                <Typography variant="body2">
                   This quiz isn’t public yet. Ask the owner to make it public
                   before hosting a live game.
-                </div>
+                </Typography>
               </div>
             </>
           )}

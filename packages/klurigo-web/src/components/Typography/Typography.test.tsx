@@ -1,7 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import * as hooks from './hooks'
 import Typography from './Typography'
+
+vi.mock('./hooks', async () => {
+  const actual = await vi.importActual<typeof import('./hooks')>('./hooks')
+
+  return {
+    ...actual,
+    useTextFit: vi.fn(() => null),
+  }
+})
 
 describe('Typography', () => {
   it('renders a <p> by default (variant=body) with full size', () => {
@@ -26,8 +36,20 @@ describe('Typography', () => {
     rerender(<Typography variant="title2">Subtitle</Typography>)
     expect(screen.getByText('Subtitle').tagName.toLowerCase()).toBe('h2')
 
+    rerender(<Typography variant="title3">Title 3</Typography>)
+    expect(screen.getByText('Title 3').tagName.toLowerCase()).toBe('h3')
+
+    rerender(<Typography variant="title4">Title 4</Typography>)
+    expect(screen.getByText('Title 4').tagName.toLowerCase()).toBe('h4')
+
+    rerender(<Typography variant="title5">Title 5</Typography>)
+    expect(screen.getByText('Title 5').tagName.toLowerCase()).toBe('h5')
+
     rerender(<Typography variant="body">Text</Typography>)
     expect(screen.getByText('Text').tagName.toLowerCase()).toBe('p')
+
+    rerender(<Typography variant="body2">Body 2</Typography>)
+    expect(screen.getByText('Body 2').tagName.toLowerCase()).toBe('p')
 
     rerender(
       <Typography variant="link" href="https://example.com">
@@ -35,6 +57,19 @@ describe('Typography', () => {
       </Typography>,
     )
     expect(screen.getByText('Link').tagName.toLowerCase()).toBe('a')
+
+    rerender(
+      <Typography variant="link2" href="/secondary-link">
+        Link 2
+      </Typography>,
+    )
+    expect(screen.getByText('Link 2').tagName.toLowerCase()).toBe('a')
+
+    rerender(<Typography variant="control">Control</Typography>)
+    expect(screen.getByText('Control').tagName.toLowerCase()).toBe('p')
+
+    rerender(<Typography variant="control2">Control 2</Typography>)
+    expect(screen.getByText('Control 2').tagName.toLowerCase()).toBe('p')
   })
 
   it('applies size modifier classes', () => {
@@ -89,6 +124,27 @@ describe('Typography', () => {
     expect(el.getAttribute('rel')).toBe('noreferrer')
     expect(el.getAttribute('download')).toBe('file.txt')
     expect(el).toHaveClass('link')
+  })
+
+  it('forwards link attributes for the link2 variant', () => {
+    render(
+      <Typography
+        variant="link2"
+        href="/secondary"
+        target="_self"
+        rel="noopener"
+        download="secondary.txt">
+        Secondary link
+      </Typography>,
+    )
+
+    const el = screen.getByText('Secondary link') as HTMLAnchorElement
+    expect(el.tagName.toLowerCase()).toBe('a')
+    expect(el.getAttribute('href')).toBe('/secondary')
+    expect(el.getAttribute('target')).toBe('_self')
+    expect(el.getAttribute('rel')).toBe('noopener')
+    expect(el.getAttribute('download')).toBe('secondary.txt')
+    expect(el).toHaveClass('link2')
   })
 
   it('forwards aria attributes and data attributes', () => {
@@ -365,6 +421,54 @@ describe('Typography', () => {
     expect(screen.getByText('Emphasis')).toHaveClass('colorEmphasis')
   })
 
+  it('applies variant classes for all variants', () => {
+    const { rerender } = render(
+      <Typography variant="extraLargeTitle">Hero</Typography>,
+    )
+    expect(screen.getByText('Hero')).toHaveClass('extraLargeTitle')
+
+    rerender(<Typography variant="title">Title</Typography>)
+    expect(screen.getByText('Title')).toHaveClass('title')
+
+    rerender(<Typography variant="title2">Title 2</Typography>)
+    expect(screen.getByText('Title 2')).toHaveClass('title2')
+
+    rerender(<Typography variant="title3">Title 3</Typography>)
+    expect(screen.getByText('Title 3')).toHaveClass('title3')
+
+    rerender(<Typography variant="title4">Title 4</Typography>)
+    expect(screen.getByText('Title 4')).toHaveClass('title4')
+
+    rerender(<Typography variant="title5">Title 5</Typography>)
+    expect(screen.getByText('Title 5')).toHaveClass('title5')
+
+    rerender(<Typography variant="body">Body</Typography>)
+    expect(screen.getByText('Body')).toHaveClass('body')
+
+    rerender(<Typography variant="body2">Body 2</Typography>)
+    expect(screen.getByText('Body 2')).toHaveClass('body2')
+
+    rerender(<Typography variant="control">Control</Typography>)
+    expect(screen.getByText('Control')).toHaveClass('control')
+
+    rerender(<Typography variant="control2">Control 2</Typography>)
+    expect(screen.getByText('Control 2')).toHaveClass('control2')
+
+    rerender(
+      <Typography variant="link" href="/link">
+        Link
+      </Typography>,
+    )
+    expect(screen.getByText('Link')).toHaveClass('link')
+
+    rerender(
+      <Typography variant="link2" href="/secondary-link">
+        Link 2
+      </Typography>,
+    )
+    expect(screen.getByText('Link 2')).toHaveClass('link2')
+  })
+
   it('applies color modifier classes when asChild=true', () => {
     render(
       <Typography variant="body" color="danger" asChild>
@@ -374,6 +478,118 @@ describe('Typography', () => {
 
     const el = screen.getByText('Danger child')
     expect(el).toHaveClass('colorDanger')
+  })
+
+  it('applies noOpacity, noWrap, truncate, and bold classes', () => {
+    render(
+      <Typography noOpacity noWrap truncate bold>
+        Styled text
+      </Typography>,
+    )
+
+    const el = screen.getByText('Styled text')
+    expect(el).toHaveClass('noOpacity')
+    expect(el).toHaveClass('noWrap')
+    expect(el).toHaveClass('truncate')
+    expect(el).toHaveClass('bold')
+  })
+
+  it('applies noOpacity, noWrap, truncate, and bold classes when asChild=true', () => {
+    render(
+      <Typography variant="body" noOpacity noWrap truncate bold asChild>
+        <span>Styled child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Styled child')
+    expect(el).toHaveClass('noOpacity')
+    expect(el).toHaveClass('noWrap')
+    expect(el).toHaveClass('truncate')
+    expect(el).toHaveClass('bold')
+  })
+
+  it('does not apply inline text fit styles when useTextFit returns null', () => {
+    vi.mocked(hooks.useTextFit).mockReturnValueOnce(null)
+
+    render(
+      <Typography variant="body" maxLines={2}>
+        Plain text
+      </Typography>,
+    )
+
+    const el = screen.getByText('Plain text')
+    expect(el).not.toHaveStyle('--fitted-font-size: 20px')
+    expect(el).not.toHaveClass('textFitEnabled')
+  })
+
+  it('applies inline text fit styles when useTextFit returns valid values', () => {
+    vi.mocked(hooks.useTextFit).mockReturnValueOnce({
+      fontSize: 18,
+      lineHeight: 24,
+    })
+
+    render(
+      <Typography variant="body" maxLines={2}>
+        Fitted text
+      </Typography>,
+    )
+
+    const el = screen.getByText('Fitted text')
+    expect(el).toHaveClass('textFitEnabled')
+    expect(el).toHaveStyle({
+      '--fitted-font-size': '18px',
+      '--fitted-line-height': '24px',
+      '--max-lines': '2',
+    })
+  })
+
+  it('does not apply inline text fit styles when fitted values are invalid', () => {
+    vi.mocked(hooks.useTextFit).mockReturnValueOnce({
+      fontSize: Number.NaN,
+      lineHeight: 24,
+    })
+
+    render(
+      <Typography variant="body" maxLines={2}>
+        Invalid fitted text
+      </Typography>,
+    )
+
+    const el = screen.getByText('Invalid fitted text')
+    expect(el).not.toHaveClass('textFitEnabled')
+    expect(el.getAttribute('style')).toBeNull()
+  })
+
+  it('applies inline text fit styles onto the child element when asChild=true', () => {
+    vi.mocked(hooks.useTextFit).mockReturnValueOnce({
+      fontSize: 16,
+      lineHeight: 22,
+    })
+
+    render(
+      <Typography variant="body" maxLines={3} asChild>
+        <span>Fitted child</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Fitted child')
+    expect(el).toHaveClass('textFitEnabled')
+    expect(el).toHaveStyle({
+      '--fitted-font-size': '16px',
+      '--fitted-line-height': '22px',
+      '--max-lines': '3',
+    })
+  })
+
+  it('handles non-string children without applying text fit styles by default', () => {
+    render(
+      <Typography variant="body" maxLines={2}>
+        <span>Nested content</span>
+      </Typography>,
+    )
+
+    const el = screen.getByText('Nested content')
+    expect(el.parentElement).toHaveClass('body')
   })
 
   it('matches snapshot for body variant with semantic color', () => {

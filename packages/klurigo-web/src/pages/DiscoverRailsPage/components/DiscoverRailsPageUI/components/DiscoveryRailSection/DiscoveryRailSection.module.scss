@@ -10,31 +10,6 @@
   gap: spacing.$space-compact-desktop;
 }
 
-.seeAll {
-  display: flex;
-  align-items: center;
-  gap: spacing.$space-inline-desktop;
-  flex-shrink: 0;
-  font-weight: 600;
-  color: colors.$color-text-inverse;
-  text-decoration: none;
-  white-space: nowrap;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  @include helpers.mobile {
-    @include helpers.fontSize(14px);
-  }
-  @include helpers.tablet {
-    @include helpers.fontSize(16px);
-  }
-  @include helpers.desktop {
-    @include helpers.fontSize(18px);
-  }
-}
-
 .skeleton {
   display: flex;
   flex-direction: column;

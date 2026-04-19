@@ -35,24 +35,6 @@ $outline-offset: helpers.pxToRem(2px);
     @include helpers.desktop {
       row-gap: spacing.$space-inline-desktop;
     }
-
-    .label {
-      display: flex;
-      flex-direction: column;
-      font-weight: 700;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(14px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(16px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(18px);
-      }
-    }
   }
 }
 

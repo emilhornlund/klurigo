@@ -13,6 +13,7 @@ import {
   MediaModal,
   Modal,
   ResponsiveImage,
+  Typography,
 } from '../../../../../../components'
 import Select from '../../../../../../components/Select'
 import Textarea from '../../../../../../components/Textarea'
@@ -61,7 +62,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
     <Modal title="Settings" onClose={onClose} open>
       <div className={styles.quizSettingsModalWrapper}>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Title</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Title
+          </Typography>
           <TextField
             id="quiz-title-textfield"
             type="text"
@@ -74,7 +82,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Description</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Description
+          </Typography>
           <Textarea
             id="quiz-description-textarea"
             placeholder="Description"
@@ -89,7 +104,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Image Cover</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Image Cover
+          </Typography>
           {imageCoverURL && <ResponsiveImage imageURL={imageCoverURL} />}
           <div className={styles.actions}>
             <Button
@@ -115,7 +137,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           </div>
         </div>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Category</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Category
+          </Typography>
           <Select
             id="category-select"
             kind="secondary"
@@ -141,7 +170,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Visibility</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Visibility
+          </Typography>
           <Select
             id="visibility-select"
             kind="secondary"
@@ -164,7 +200,14 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <div className={styles.label}>Language</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Language
+          </Typography>
           <Select
             id="language-select"
             kind="secondary"

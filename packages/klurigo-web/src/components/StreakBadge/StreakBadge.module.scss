@@ -10,16 +10,16 @@
 
   @include helpers.mobile {
     column-gap: spacing.$space-compact-mobile;
-    @include helpers.fontSize(variables.$mobile-text-font-size);
+    @include helpers.fontSize(variables.$mobile-body-font-size);
   }
 
   @include helpers.tablet {
     column-gap: spacing.$space-compact-tablet;
-    @include helpers.fontSize(variables.$tablet-text-font-size);
+    @include helpers.fontSize(variables.$tablet-body-font-size);
   }
 
   @include helpers.desktop {
     column-gap: spacing.$space-compact-desktop;
-    @include helpers.fontSize(variables.$desktop-text-font-size);
+    @include helpers.fontSize(variables.$desktop-body-font-size);
   }
 }

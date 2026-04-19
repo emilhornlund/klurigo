@@ -4,7 +4,7 @@ import type { GameEventQuestionResultsPuzzle } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
-import { SortableTable } from '../../../../components'
+import { SortableTable, Typography } from '../../../../components'
 import colors from '../../../../styles/colors.tokens.module.scss'
 import { classNames } from '../../../../utils/helpers'
 
@@ -55,10 +55,9 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           <div className={classNames(styles.inner, styles.green)}>
             <div className={styles.spacer} />
             <div className={styles.footer}>
-              <div>{correct}</div>
-              <div>
-                <FontAwesomeIcon icon={faCheck} />
-              </div>
+              <Typography>
+                {correct} <FontAwesomeIcon icon={faCheck} />
+              </Typography>
             </div>
           </div>
         </div>
@@ -72,10 +71,9 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           <div className={classNames(styles.inner, styles.red)}>
             <div className={styles.spacer} />
             <div className={styles.footer}>
-              <div>{incorrect}</div>
-              <div>
-                <FontAwesomeIcon icon={faXmark} />
-              </div>
+              <Typography>
+                {incorrect} <FontAwesomeIcon icon={faXmark} />
+              </Typography>
             </div>
           </div>
         </div>

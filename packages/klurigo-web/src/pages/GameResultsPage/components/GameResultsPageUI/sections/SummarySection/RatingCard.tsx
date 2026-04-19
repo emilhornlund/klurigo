@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { StarRating, Textarea } from '../../../../../../components'
+import { StarRating, Textarea, Typography } from '../../../../../../components'
 import { classNames } from '../../../../../../utils/helpers'
 
 import styles from './SummarySection.module.scss'
@@ -59,7 +59,7 @@ const RatingCard: FC<RatingCardProps> = ({
 }) => (
   <div className={classNames(styles.card, styles.rating)}>
     <div className={styles.content}>
-      <div className={styles.title}>Rate this quiz</div>
+      <Typography variant="title3">Rate this quiz</Typography>
       <StarRating
         value={stars}
         size="large"
@@ -79,9 +79,7 @@ const RatingCard: FC<RatingCardProps> = ({
       )}
     </div>
     {!canRateQuiz && (
-      <div className={styles.disabledMessage}>
-        You cannot rate your own quiz
-      </div>
+      <Typography variant="control">You cannot rate your own quiz</Typography>
     )}
   </div>
 )

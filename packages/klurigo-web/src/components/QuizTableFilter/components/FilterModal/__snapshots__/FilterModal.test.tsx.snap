@@ -24,12 +24,12 @@ exports[`FilterModal > should render FilterModal 1`] = `
       <div
         class="header"
       >
-        <div
-          class="title"
+        <h4
+          class="typography title4 alignLeft widthFull colorDefault noOpacity"
           id="_r_2_"
         >
           Refine Your Quiz Search
-        </div>
+        </h4>
       </div>
       <div
         class="content"
@@ -37,15 +37,19 @@ exports[`FilterModal > should render FilterModal 1`] = `
         <div
           class="filterModalContainer"
         >
-          Narrow down your search and find the perfect quiz!
+          <p
+            class="typography body2 alignLeft widthFull colorDefault noOpacity"
+          >
+            Narrow down your search and find the perfect quiz!
+          </p>
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Category
-            </div>
+            </p>
             <div
               class="inputContainer"
             >
@@ -188,11 +192,11 @@ exports[`FilterModal > should render FilterModal 1`] = `
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Visibility
-            </div>
+            </p>
             <div
               class="inputContainer"
             >
@@ -240,11 +244,11 @@ exports[`FilterModal > should render FilterModal 1`] = `
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Language
-            </div>
+            </p>
             <div
               class="inputContainer"
             >
@@ -1197,11 +1201,11 @@ exports[`FilterModal > should render FilterModal 1`] = `
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Game Mode
-            </div>
+            </p>
             <div
               class="inputContainer"
             >
@@ -1249,11 +1253,11 @@ exports[`FilterModal > should render FilterModal 1`] = `
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Sort By
-            </div>
+            </p>
             <div
               class="inputContainer"
             >
@@ -1301,11 +1305,11 @@ exports[`FilterModal > should render FilterModal 1`] = `
           <div
             class="row"
           >
-            <div
-              class="label"
+            <p
+              class="typography control alignLeft widthFull colorDefault noOpacity bold"
             >
               Sort Order
-            </div>
+            </p>
             <div
               class="inputContainer"
             >

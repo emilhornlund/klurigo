@@ -1,4 +1,5 @@
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/helpers';
 @use '../../styles/variables';
 
@@ -7,6 +8,17 @@
   display: flex;
   flex-direction: row;
   color: colors.$color-text-inverse;
+  align-items: center;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
 
   &.textFitEnabled {
     font-size: var(--fitted-font-size) !important;
@@ -23,18 +35,18 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: 4rem;
-      @include helpers.fontSize(variables.$mobile-hero-font-size);
+      line-height: variables.$mobile-extra-large-title-line-height;
+      @include helpers.fontSize(variables.$mobile-extra-large-title-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 6rem;
-      @include helpers.fontSize(variables.$tablet-hero-font-size);
+      line-height: variables.$tablet-extra-large-title-line-height;
+      @include helpers.fontSize(variables.$tablet-extra-large-title-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 8rem;
-      @include helpers.fontSize(variables.$desktop-hero-font-size);
+      line-height: variables.$desktop-extra-large-title-line-height;
+      @include helpers.fontSize(variables.$desktop-extra-large-title-font-size);
     }
   }
 
@@ -43,20 +55,17 @@
     opacity: 0.95;
 
     @include helpers.mobile {
-      line-height: 3rem;
-
+      line-height: variables.$mobile-title-line-height;
       @include helpers.fontSize(variables.$mobile-title-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 4rem;
-
+      line-height: variables.$tablet-title-line-height;
       @include helpers.fontSize(variables.$tablet-title-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 5rem;
-
+      line-height: variables.$desktop-title-line-height;
       @include helpers.fontSize(variables.$desktop-title-font-size);
     }
   }
@@ -66,38 +75,118 @@
     opacity: 0.88;
 
     @include helpers.mobile {
-      line-height: 2rem;
-      @include helpers.fontSize(variables.$mobile-subtitle-font-size);
+      line-height: variables.$mobile-title2-line-height;
+      @include helpers.fontSize(variables.$mobile-title2-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 3rem;
-      @include helpers.fontSize(variables.$tablet-subtitle-font-size);
+      line-height: variables.$tablet-title2-line-height;
+      @include helpers.fontSize(variables.$tablet-title2-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 4rem;
-      @include helpers.fontSize(variables.$desktop-subtitle-font-size);
+      line-height: variables.$desktop-title2-line-height;
+      @include helpers.fontSize(variables.$desktop-title2-font-size);
+    }
+  }
+
+  &.title3 {
+    font-weight: 700;
+    opacity: 0.86;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-title3-line-height;
+      @include helpers.fontSize(variables.$mobile-title3-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-title3-line-height;
+      @include helpers.fontSize(variables.$tablet-title3-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-title3-line-height;
+      @include helpers.fontSize(variables.$desktop-title3-font-size);
+    }
+  }
+
+  &.title4 {
+    font-weight: 700;
+    opacity: 0.84;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-title4-line-height;
+      @include helpers.fontSize(variables.$mobile-title4-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-title4-line-height;
+      @include helpers.fontSize(variables.$tablet-title4-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-title4-line-height;
+      @include helpers.fontSize(variables.$desktop-title4-font-size);
+    }
+  }
+
+  &.title5 {
+    font-weight: 700;
+    opacity: 0.84;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-title5-line-height;
+      @include helpers.fontSize(variables.$mobile-title5-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-title5-line-height;
+      @include helpers.fontSize(variables.$tablet-title5-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-title5-line-height;
+      @include helpers.fontSize(variables.$desktop-title5-font-size);
     }
   }
 
   &.body {
     font-weight: 400;
-    opacity: 0.80;
+    opacity: 0.8;
 
     @include helpers.mobile {
-      line-height: 1.5rem;
-      @include helpers.fontSize(variables.$mobile-text-font-size);
+      line-height: variables.$mobile-body-line-height;
+      @include helpers.fontSize(variables.$mobile-body-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 2rem;
-      @include helpers.fontSize(variables.$tablet-text-font-size);
+      line-height: variables.$tablet-body-line-height;
+      @include helpers.fontSize(variables.$tablet-body-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 2.5rem;
-      @include helpers.fontSize(variables.$desktop-text-font-size);
+      line-height: variables.$desktop-body-line-height;
+      @include helpers.fontSize(variables.$desktop-body-font-size);
+    }
+  }
+
+  &.body2 {
+    font-weight: 400;
+    opacity: 0.8;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-body2-line-height;
+      @include helpers.fontSize(variables.$mobile-body2-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-body2-line-height;
+      @include helpers.fontSize(variables.$tablet-body2-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-body2-line-height;
+      @include helpers.fontSize(variables.$desktop-body2-font-size);
     }
   }
 
@@ -106,18 +195,78 @@
     cursor: pointer;
 
     @include helpers.mobile {
-      line-height: 1.5rem;
+      line-height: variables.$mobile-link-line-height;
       @include helpers.fontSize(variables.$mobile-link-font-size);
     }
 
     @include helpers.tablet {
-      line-height: 1.75rem;
+      line-height: variables.$tablet-link-line-height;
       @include helpers.fontSize(variables.$tablet-link-font-size);
     }
 
     @include helpers.desktop {
-      line-height: 2rem;
+      line-height: variables.$desktop-link-line-height;
       @include helpers.fontSize(variables.$desktop-link-font-size);
+    }
+  }
+
+  &.link2 {
+    font-weight: 400;
+    cursor: pointer;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-link2-line-height;
+      @include helpers.fontSize(variables.$mobile-link2-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-link2-line-height;
+      @include helpers.fontSize(variables.$tablet-link2-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-link2-line-height;
+      @include helpers.fontSize(variables.$desktop-link2-font-size);
+    }
+  }
+
+  &.control {
+    font-weight: 400;
+    opacity: 0.8;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-control-normal-line-height;
+      @include helpers.fontSize(variables.$mobile-control-normal-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-control-normal-line-height;
+      @include helpers.fontSize(variables.$tablet-control-normal-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-control-normal-line-height;
+      @include helpers.fontSize(variables.$desktop-control-normal-font-size);
+    }
+  }
+
+  &.control2 {
+    font-weight: 400;
+    opacity: 0.8;
+
+    @include helpers.mobile {
+      line-height: variables.$mobile-control-small-line-height;
+      @include helpers.fontSize(variables.$mobile-control-small-font-size);
+    }
+
+    @include helpers.tablet {
+      line-height: variables.$tablet-control-small-line-height;
+      @include helpers.fontSize(variables.$tablet-control-small-font-size);
+    }
+
+    @include helpers.desktop {
+      line-height: variables.$desktop-control-small-line-height;
+      @include helpers.fontSize(variables.$desktop-control-small-font-size);
     }
   }
 
@@ -215,5 +364,26 @@
 
   &.colorEmphasis {
     color: colors.$color-text-emphasis;
+  }
+
+  &.noOpacity {
+    opacity: 1 !important;
+  }
+
+  &.noWrap {
+    white-space: nowrap;
+  }
+
+  &.truncate {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &.bold {
+    font-weight: 700 !important;
   }
 }

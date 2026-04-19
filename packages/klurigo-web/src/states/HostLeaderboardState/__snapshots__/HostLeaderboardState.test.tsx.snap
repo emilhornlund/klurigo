@@ -138,7 +138,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -149,31 +149,36 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -343,7 +348,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -354,31 +359,36 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -556,7 +566,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -567,31 +577,36 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -847,7 +862,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -858,31 +873,36 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"

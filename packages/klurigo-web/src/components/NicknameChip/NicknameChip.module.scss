@@ -3,6 +3,7 @@
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/variables' as variables;
 
 .main {
   display: flex;
@@ -18,7 +19,7 @@
     border-radius: helpers.pxToRem(calc(34px / 2));
     height: helpers.pxToRem(34px);
 
-    @include helpers.fontSize(14px);
+    @include helpers.fontSize(variables.$mobile-control-large-font-size);
   }
 
   @include helpers.tablet {
@@ -26,7 +27,7 @@
     border-radius: helpers.pxToRem(calc(41px / 2));
     height: helpers.pxToRem(41px);
 
-    @include helpers.fontSize(18px);
+    @include helpers.fontSize(variables.$tablet-control-large-font-size);
   }
 
   @include helpers.desktop {
@@ -34,7 +35,7 @@
     border-radius: helpers.pxToRem(calc(48px / 2));
     height: helpers.pxToRem(48px);
 
-    @include helpers.fontSize(22px);
+    @include helpers.fontSize(variables.$desktop-control-large-font-size);
   }
 
   @media (prefers-reduced-motion: no-preference) {

@@ -46,11 +46,11 @@ const UserQuizzesPageUI: FC<UserQuizzesPageUIProps> = ({
         Browse public quizzes shared by this user.
       </Typography>
       {isError || (!isLoading && quizzes.length === 0) ? (
-        <p className={styles.emptyState} data-testid="profile-empty-state">
+        <Typography variant="body2" data-testid="profile-empty-state">
           {isError
             ? "Oops! This user's quizzes are playing hide-and-seek right now. Please try again."
             : "This user hasn't shared any quizzes yet."}
-        </p>
+        </Typography>
       ) : (
         <>
           <div className={styles.grid} data-testid="profile-quiz-grid">

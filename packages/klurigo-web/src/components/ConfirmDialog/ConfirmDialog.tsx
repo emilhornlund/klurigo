@@ -2,6 +2,7 @@ import type { FC } from 'react'
 
 import Button from '../Button'
 import Modal from '../Modal'
+import Typography from '../Typography'
 
 import styles from './ConfirmDialog.module.scss'
 
@@ -29,7 +30,9 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   onClose,
 }) => (
   <Modal title={title} open={open}>
-    {message}
+    <Typography variant="body2" align="left" color="default" noOpacity>
+      {message}
+    </Typography>
     <div className={styles.actions}>
       <Button
         id="confirm-button"

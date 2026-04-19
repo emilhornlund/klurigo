@@ -17,6 +17,7 @@ import { classNames } from '../../../../utils/helpers'
 import Button from '../../../Button'
 import Modal from '../../../Modal'
 import Select from '../../../Select'
+import Typography from '../../../Typography'
 
 import styles from './FilterModal.module.scss'
 
@@ -71,9 +72,18 @@ const FilterModal: FC<FilterModalProps> = ({
   return (
     <Modal title="Refine Your Quiz Search" open={open}>
       <div className={styles.filterModalContainer}>
-        Narrow down your search and find the perfect quiz!
+        <Typography variant="body2" align="left" color="default" noOpacity>
+          Narrow down your search and find the perfect quiz!
+        </Typography>
         <div className={styles.row}>
-          <div className={styles.label}>Category</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Category
+          </Typography>
           <Select
             id="category-select"
             kind="secondary"
@@ -96,7 +106,14 @@ const FilterModal: FC<FilterModalProps> = ({
         </div>
         {showVisibilityFilter && (
           <div className={styles.row}>
-            <div className={styles.label}>Visibility</div>
+            <Typography
+              variant="control"
+              align="left"
+              color="default"
+              noOpacity
+              bold>
+              Visibility
+            </Typography>
             <Select
               id="visibility-select"
               kind="secondary"
@@ -119,7 +136,14 @@ const FilterModal: FC<FilterModalProps> = ({
           </div>
         )}
         <div className={styles.row}>
-          <div className={styles.label}>Language</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Language
+          </Typography>
           <Select
             id="language-select"
             kind="secondary"
@@ -141,7 +165,14 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <div className={styles.label}>Game Mode</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Game Mode
+          </Typography>
           <Select
             id="game-mode-select"
             kind="secondary"
@@ -163,7 +194,14 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <div className={styles.label}>Sort By</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Sort By
+          </Typography>
           <Select
             id="sort-by-select"
             kind="secondary"
@@ -182,7 +220,14 @@ const FilterModal: FC<FilterModalProps> = ({
           />
         </div>
         <div className={styles.row}>
-          <div className={styles.label}>Sort Order</div>
+          <Typography
+            variant="control"
+            align="left"
+            color="default"
+            noOpacity
+            bold>
+            Sort Order
+          </Typography>
           <Select
             id="sort-order-select"
             kind="secondary"

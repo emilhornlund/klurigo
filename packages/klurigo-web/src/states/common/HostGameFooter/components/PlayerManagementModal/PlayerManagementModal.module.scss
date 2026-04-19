@@ -16,20 +16,6 @@
     row-gap: spacing.$space-page-desktop;
   }
 
-  .message {
-    @include helpers.mobile {
-      @include helpers.fontSize(20px);
-    }
-
-    @include helpers.tablet {
-      @include helpers.fontSize(22px);
-    }
-
-    @include helpers.desktop {
-      @include helpers.fontSize(24px);
-    }
-  }
-
   .flow {
     display: flex;
     flex-direction: row;

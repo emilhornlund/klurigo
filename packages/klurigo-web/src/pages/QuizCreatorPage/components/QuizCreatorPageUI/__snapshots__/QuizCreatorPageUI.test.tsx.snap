@@ -2075,39 +2075,51 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                 <div
                   class="header"
                 >
-                  <div
-                    class="title"
+                  <h4
+                    class="typography title4 alignLeft widthFull colorDefault noOpacity"
                     id="_r_8_"
                   >
                     Choose Your Game Mode
-                  </div>
+                  </h4>
                 </div>
                 <div
                   class="content"
                 >
-                  Choose the game mode for your quiz. Each mode offers a unique way for participants to play and enjoy!
+                  <p
+                    class="typography body2 alignLeft widthFull colorDefault noOpacity"
+                  >
+                    Choose the game mode for your quiz. Each mode offers a unique way for participants to play and enjoy!
+                  </p>
                   <div
                     class="gameModeSelectionModalWrapper"
                   >
                     <button
                       class="classic"
                     >
-                      Classic Mode
-                      <div
-                        class="description"
+                      <h4
+                        class="typography title4 alignCenter widthFull colorDefault noOpacity"
+                      >
+                        Classic
+                      </h4>
+                      <p
+                        class="typography control alignCenter widthFull colorDefault noOpacity"
                       >
                         Create a traditional quiz with a mix of question types, including multiple-choice, true/false, range sliders, and typed answers.
-                      </div>
+                      </p>
                     </button>
                     <button
                       class="zeroToOneHundred"
                     >
-                      0-100 Mode
-                      <div
-                        class="description"
+                      <h4
+                        class="typography title4 alignCenter widthFull colorDefault noOpacity"
+                      >
+                        0-100
+                      </h4>
+                      <p
+                        class="typography control alignCenter widthFull colorDefault noOpacity"
                       >
                         Design a quiz with slider-based questions, where all answers range between 0 and 100.
-                      </div>
+                      </p>
                     </button>
                   </div>
                 </div>

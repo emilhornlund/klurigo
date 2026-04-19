@@ -445,17 +445,21 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
       <div
         class="header"
       >
-        <div
-          class="title"
+        <h4
+          class="typography title4 alignLeft widthFull colorDefault noOpacity"
           id="_r_9_"
         >
           Confirm Leave Game
-        </div>
+        </h4>
       </div>
       <div
         class="content"
       >
-        Are you sure you want to leave the game? Once you leave, you will need to rejoin to participate again.
+        <p
+          class="typography body2 alignLeft widthFull colorDefault noOpacity"
+        >
+          Are you sure you want to leave the game? Once you leave, you will need to rejoin to participate again.
+        </p>
         <div
           class="actions"
         >

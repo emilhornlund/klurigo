@@ -632,11 +632,11 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       %
                     </text>
                   </svg>
-                  <div
-                    class="text"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse text"
                   >
                     Well played! Most players handled the challenge with confidence.
-                  </div>
+                  </p>
                 </div>
                 <div
                   class="card rating"
@@ -644,11 +644,11 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   <div
                     class="content"
                   >
-                    <div
-                      class="title"
+                    <h3
+                      class="typography title3 alignCenter widthFull colorInverse"
                     >
                       Rate this quiz
-                    </div>
+                    </h3>
                     <span
                       class="starRow large"
                       data-testid="star-row"
@@ -755,11 +755,11 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       </button>
                     </span>
                   </div>
-                  <div
-                    class="disabledMessage"
+                  <p
+                    class="typography control alignCenter widthFull colorInverse"
                   >
                     You cannot rate your own quiz
-                  </div>
+                  </p>
                 </div>
                 <button
                   class="card hostGameButton"
@@ -769,16 +769,16 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   <div
                     class="content"
                   >
-                    <div
-                      class="title"
+                    <h3
+                      class="typography title3 alignCenter widthFull colorInverse"
                     >
                       Play again
-                    </div>
-                    <div
-                      class="subtitle"
+                    </h3>
+                    <p
+                      class="typography body2 alignCenter widthFull colorInverse"
                     >
                       Start a new live game with this quiz and invite others to join.
-                    </div>
+                    </p>
                   </div>
                   <div
                     class="icon"
@@ -807,95 +807,83 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-gamepad icon"
+                        data-icon="gamepad"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 640 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-gamepad"
-                          data-icon="gamepad"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 640 512"
-                        >
-                          <path
-                            d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Game Mode
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         Classic
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-user icon"
+                        data-icon="user"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-user"
-                          data-icon="user"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Players
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question icon"
+                        data-icon="circle-question"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 512 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-circle-question"
-                          data-icon="circle-question"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 512 512"
-                        >
-                          <path
-                            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Questions
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2
-                      </div>
+                      </p>
                     </div>
                   </div>
                   <div
@@ -907,30 +895,26 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-user-tie icon"
+                        data-icon="user-tie"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-user-tie"
-                          data-icon="user-tie"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M224 248a120 120 0 1 1 0-240 120 120 0 1 1 0 240zm-30.5 56l61 0c9.7 0 17.5 7.8 17.5 17.5 0 4.2-1.5 8.2-4.2 11.4l-27.4 32 31 115.1 .6 0 34.6-138.5c2.2-8.7 11.1-14 19.5-10.8 61.9 23.6 105.9 83.6 105.9 153.8 0 15.1-12.3 27.4-27.4 27.4L43.4 512c-15.1 0-27.4-12.3-27.4-27.4 0-70.2 44-130.2 105.9-153.8 8.4-3.2 17.3 2.1 19.5 10.8l34.6 138.5 .6 0 31-115.1-27.4-32c-2.7-3.2-4.2-7.2-4.2-11.4 0-9.7 7.8-17.5 17.5-17.5z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M224 248a120 120 0 1 1 0-240 120 120 0 1 1 0 240zm-30.5 56l61 0c9.7 0 17.5 7.8 17.5 17.5 0 4.2-1.5 8.2-4.2 11.4l-27.4 32 31 115.1 .6 0 34.6-138.5c2.2-8.7 11.1-14 19.5-10.8 61.9 23.6 105.9 83.6 105.9 153.8 0 15.1-12.3 27.4-27.4 27.4L43.4 512c-15.1 0-27.4-12.3-27.4-27.4 0-70.2 44-130.2 105.9-153.8 8.4-3.2 17.3 2.1 19.5 10.8l34.6 138.5 .6 0 31-115.1-27.4-32c-2.7-3.2-4.2-7.2-4.2-11.4 0-9.7 7.8-17.5 17.5-17.5z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Host
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         <a
                           data-discover="true"
@@ -938,90 +922,82 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                         >
                           Hosty
                         </a>
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-calendar icon"
+                        data-icon="calendar"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-calendar"
-                          data-icon="calendar"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M128 0C110.3 0 96 14.3 96 32l0 32-32 0C28.7 64 0 92.7 0 128l0 48 448 0 0-48c0-35.3-28.7-64-64-64l-32 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32-128 0 0-32c0-17.7-14.3-32-32-32zM0 224L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-192-448 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M128 0C110.3 0 96 14.3 96 32l0 32-32 0C28.7 64 0 92.7 0 128l0 48 448 0 0-48c0-35.3-28.7-64-64-64l-32 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32-128 0 0-32c0-17.7-14.3-32-32-32zM0 224L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-192-448 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Date
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2025-01-01 12:00
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-clock icon"
+                        data-icon="clock"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 512 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-clock"
-                          data-icon="clock"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 512 512"
-                        >
-                          <path
-                            d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Duration
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         5 minutes
-                      </div>
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Fastest Overall Player
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     1.5s
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Alice
                     </div>
@@ -1030,21 +1006,21 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Longest Correct Streak
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     2
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Alice
                     </div>
@@ -1053,21 +1029,21 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Most Accurate Player
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     100%
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Alice
                     </div>
@@ -1076,26 +1052,26 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Biggest Comeback
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     1
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Alice
                     </div>
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Bob
                     </div>
@@ -1743,11 +1719,11 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       %
                     </text>
                   </svg>
-                  <div
-                    class="text"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse text"
                   >
                     Well played! Most players handled the challenge with confidence.
-                  </div>
+                  </p>
                 </div>
                 <div
                   class="card rating"
@@ -1755,11 +1731,11 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   <div
                     class="content"
                   >
-                    <div
-                      class="title"
+                    <h3
+                      class="typography title3 alignCenter widthFull colorInverse"
                     >
                       Rate this quiz
-                    </div>
+                    </h3>
                     <span
                       class="starRow large"
                       data-testid="star-row"
@@ -1866,11 +1842,11 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       </button>
                     </span>
                   </div>
-                  <div
-                    class="disabledMessage"
+                  <p
+                    class="typography control alignCenter widthFull colorInverse"
                   >
                     You cannot rate your own quiz
-                  </div>
+                  </p>
                 </div>
                 <button
                   class="card hostGameButton"
@@ -1881,16 +1857,16 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   <div
                     class="content"
                   >
-                    <div
-                      class="title"
+                    <h3
+                      class="typography title3 alignCenter widthFull colorInverse"
                     >
                       Play again
-                    </div>
-                    <div
-                      class="subtitle"
+                    </h3>
+                    <p
+                      class="typography body2 alignCenter widthFull colorInverse"
                     >
                       This quiz isn’t public yet. Ask the owner to make it public before hosting a live game.
-                    </div>
+                    </p>
                   </div>
                 </button>
                 <div
@@ -1902,95 +1878,83 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-gamepad icon"
+                        data-icon="gamepad"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 640 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-gamepad"
-                          data-icon="gamepad"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 640 512"
-                        >
-                          <path
-                            d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M448 64c106 0 192 86 192 192S554 448 448 448l-256 0C86 448 0 362 0 256S86 64 192 64l256 0zM192 176c-13.3 0-24 10.7-24 24l0 32-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 32c0 13.3 10.7 24 24 24s24-10.7 24-24l0-32 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-32c0-13.3-10.7-24-24-24zm240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64zm64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Game Mode
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         0 to 100
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-user icon"
+                        data-icon="user"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-user"
-                          data-icon="user"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Players
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-circle-question icon"
+                        data-icon="circle-question"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 512 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-circle-question"
-                          data-icon="circle-question"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 512 512"
-                        >
-                          <path
-                            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Questions
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2
-                      </div>
+                      </p>
                     </div>
                   </div>
                   <div
@@ -2002,30 +1966,26 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-user-tie icon"
+                        data-icon="user-tie"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-user-tie"
-                          data-icon="user-tie"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M224 248a120 120 0 1 1 0-240 120 120 0 1 1 0 240zm-30.5 56l61 0c9.7 0 17.5 7.8 17.5 17.5 0 4.2-1.5 8.2-4.2 11.4l-27.4 32 31 115.1 .6 0 34.6-138.5c2.2-8.7 11.1-14 19.5-10.8 61.9 23.6 105.9 83.6 105.9 153.8 0 15.1-12.3 27.4-27.4 27.4L43.4 512c-15.1 0-27.4-12.3-27.4-27.4 0-70.2 44-130.2 105.9-153.8 8.4-3.2 17.3 2.1 19.5 10.8l34.6 138.5 .6 0 31-115.1-27.4-32c-2.7-3.2-4.2-7.2-4.2-11.4 0-9.7 7.8-17.5 17.5-17.5z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M224 248a120 120 0 1 1 0-240 120 120 0 1 1 0 240zm-30.5 56l61 0c9.7 0 17.5 7.8 17.5 17.5 0 4.2-1.5 8.2-4.2 11.4l-27.4 32 31 115.1 .6 0 34.6-138.5c2.2-8.7 11.1-14 19.5-10.8 61.9 23.6 105.9 83.6 105.9 153.8 0 15.1-12.3 27.4-27.4 27.4L43.4 512c-15.1 0-27.4-12.3-27.4-27.4 0-70.2 44-130.2 105.9-153.8 8.4-3.2 17.3 2.1 19.5 10.8l34.6 138.5 .6 0 31-115.1-27.4-32c-2.7-3.2-4.2-7.2-4.2-11.4 0-9.7 7.8-17.5 17.5-17.5z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Host
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         <a
                           data-discover="true"
@@ -2033,90 +1993,82 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                         >
                           Hosty
                         </a>
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-calendar icon"
+                        data-icon="calendar"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-calendar"
-                          data-icon="calendar"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 448 512"
-                        >
-                          <path
-                            d="M128 0C110.3 0 96 14.3 96 32l0 32-32 0C28.7 64 0 92.7 0 128l0 48 448 0 0-48c0-35.3-28.7-64-64-64l-32 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32-128 0 0-32c0-17.7-14.3-32-32-32zM0 224L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-192-448 0z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M128 0C110.3 0 96 14.3 96 32l0 32-32 0C28.7 64 0 92.7 0 128l0 48 448 0 0-48c0-35.3-28.7-64-64-64l-32 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32-128 0 0-32c0-17.7-14.3-32-32-32zM0 224L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-192-448 0z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Date
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         2025-01-01 12:00
-                      </div>
+                      </p>
                     </div>
                     <div
                       class="item"
                     >
-                      <div
-                        class="icon"
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-clock icon"
+                        data-icon="clock"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 512 512"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-clock"
-                          data-icon="clock"
-                          data-prefix="fas"
-                          role="img"
-                          viewBox="0 0 512 512"
-                        >
-                          <path
-                            d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </div>
-                      <div
-                        class="title"
+                        <path
+                          d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <p
+                        class="typography body2 alignLeft widthFull colorInverse"
                       >
                         Duration
-                      </div>
-                      <div
-                        class="value"
+                      </p>
+                      <p
+                        class="typography body2 alignRight widthFull colorInverse noOpacity bold"
                       >
                         5 minutes
-                      </div>
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Fastest Overall Player
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     2.1s
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Carol
                     </div>
@@ -2125,21 +2077,21 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Longest Correct Streak
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     2
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Carol
                     </div>
@@ -2148,21 +2100,21 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Precision Champion
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     80%
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Carol
                     </div>
@@ -2171,26 +2123,26 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                 <div
                   class="card metric"
                 >
-                  <div
-                    class="title"
+                  <p
+                    class="typography body2 alignCenter widthFull colorInverse"
                   >
                     Biggest Comeback
-                  </div>
-                  <div
-                    class="value"
+                  </p>
+                  <h3
+                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
                   >
                     1
-                  </div>
+                  </h3>
                   <div
                     class="nicknames"
                   >
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Carol
                     </div>
                     <div
-                      class="nickname"
+                      class="main subtle"
                     >
                       Dave
                     </div>

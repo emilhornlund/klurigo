@@ -57,9 +57,9 @@ const DiscoverSectionPageUI: FC<DiscoverSectionPageUIProps> = ({
     <Page align="start" discover profile>
       <div className={styles.container}>
         {isError || !sectionKey || (!isLoading && quizzes.length === 0) ? (
-          <p className={styles.emptyState} data-testid="section-empty-state">
+          <Typography variant="body2" data-testid="section-empty-state">
             This section is not available right now.
-          </p>
+          </Typography>
         ) : (
           <>
             <div className={styles.heading}>

@@ -88,25 +88,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-
-      .title {
-        display: flex;
-        flex-direction: column;
-        font-weight: bold;
-        flex: 1;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(16px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(20px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(24px);
-        }
-      }
     }
 
     .content {
@@ -117,17 +98,17 @@
 
       @include helpers.mobile {
         row-gap: spacing.$space-stack-mobile;
-        @include helpers.fontSize(16px);
+        @include helpers.fontSize(variables.$mobile-body2-font-size);
       }
 
       @include helpers.tablet {
         row-gap: spacing.$space-stack-tablet;
-        @include helpers.fontSize(18px);
+        @include helpers.fontSize(variables.$tablet-body2-font-size);
       }
 
       @include helpers.desktop {
         row-gap: spacing.$space-stack-desktop;
-        @include helpers.fontSize(20px);
+        @include helpers.fontSize(variables.$desktop-body2-font-size);
       }
     }
   }

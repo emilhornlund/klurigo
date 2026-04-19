@@ -115,27 +115,6 @@
   }
 }
 
-.title {
-  margin: 0;
-  font-weight: 600;
-  color: colors.$color-text-default;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  @include helpers.mobile {
-    @include helpers.fontSize(variables.$mobile-control-normal-font-size);
-  }
-
-  @include helpers.tablet {
-    @include helpers.fontSize(variables.$tablet-control-normal-font-size);
-  }
-
-  @include helpers.desktop {
-    @include helpers.fontSize(variables.$desktop-control-normal-font-size);
-  }
-}
-
 .info {
   display: flex;
   flex-direction: row;

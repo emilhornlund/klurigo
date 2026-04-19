@@ -35,7 +35,6 @@ $outline-offset: helpers.pxToRem(2px);
     border: $outline-offset solid transparent;
     border-radius: radius.$radius-surface-lg;
     margin: calc($outline-offset * 2);
-    color: colors.$color-text-default;
     font-weight: bold;
     text-align: center;
 
@@ -43,56 +42,23 @@ $outline-offset: helpers.pxToRem(2px);
       row-gap: spacing.$space-inline-mobile;
       padding: spacing.$space-compact-mobile;
       border-width: helpers.pxToRem(1px);
-
-      @include helpers.fontSize(16px);
     }
 
     @include helpers.tablet {
       row-gap: spacing.$space-inline-tablet;
       padding: spacing.$space-compact-tablet;
       border-width: helpers.pxToRem(2px);
-
-      @include helpers.fontSize(18px);
     }
 
     @include helpers.desktop {
       row-gap: spacing.$space-inline-desktop;
       padding: spacing.$space-compact-desktop;
       border-width: helpers.pxToRem(3px);
-
-      @include helpers.fontSize(20px);
     }
 
     &:hover {
       background-color: colors.$color-action-accent-hover;
       outline-color: colors.$color-action-accent-hover;
-    }
-
-    .description {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      justify-content: flex-start;
-      align-items: center;
-      font-weight: normal;
-
-      @include helpers.mobile {
-        line-height: helpers.pxToRem(18px);
-
-        @include helpers.fontSize(12px);
-      }
-
-      @include helpers.tablet {
-        line-height: helpers.pxToRem(21px);
-
-        @include helpers.fontSize(14px);
-      }
-
-      @include helpers.desktop {
-        line-height: helpers.pxToRem(24px);
-
-        @include helpers.fontSize(16px);
-      }
     }
   }
 }

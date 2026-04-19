@@ -2,6 +2,8 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 
+import { Typography } from '../../../components'
+
 import styles from './NonInteractiveInfoBox.module.scss'
 
 export type NonInteractiveInfoBoxProps = {
@@ -12,7 +14,9 @@ const NonInteractiveInfoBox: FC<NonInteractiveInfoBoxProps> = ({ info }) => {
   return (
     <div className={styles.nonInteractiveInfoBox}>
       <FontAwesomeIcon icon={faCircleInfo} />
-      <span>{info}</span>
+      <Typography variant="title2" align="left" color="inverse">
+        {info}
+      </Typography>
     </div>
   )
 }

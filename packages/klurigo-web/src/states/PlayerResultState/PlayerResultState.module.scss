@@ -14,21 +14,21 @@
   @include helpers.mobile {
     min-height:
       helpers.pxToRem(
-        variables.$mobile-badge-large-size + variables.$mobile-subtitle-font-size
+        variables.$mobile-badge-large-size + variables.$mobile-title2-font-size
       ) + spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
     min-height:
       helpers.pxToRem(
-        variables.$tablet-badge-large-size + variables.$tablet-subtitle-font-size
+        variables.$tablet-badge-large-size + variables.$tablet-title2-font-size
       ) + spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
     min-height:
       helpers.pxToRem(
-        variables.$desktop-badge-large-size + variables.$desktop-subtitle-font-size
+        variables.$desktop-badge-large-size + variables.$desktop-title2-font-size
       ) + spacing.$space-stack-desktop;
   }
 

@@ -66,7 +66,7 @@
           spacing.$space-stack-mobile;
         column-gap: spacing.$space-stack-mobile;
 
-        @include helpers.fontSize(16px);
+        @include helpers.fontSize(variables.$mobile-body-font-size);
       }
 
       @include helpers.tablet {
@@ -74,7 +74,7 @@
           spacing.$space-stack-tablet;
         column-gap: spacing.$space-stack-tablet;
 
-        @include helpers.fontSize(22px);
+        @include helpers.fontSize(variables.$tablet-body-font-size);
       }
 
       @include helpers.desktop {
@@ -82,7 +82,7 @@
           spacing.$space-stack-desktop;
         column-gap: spacing.$space-stack-desktop;
 
-        @include helpers.fontSize(28px);
+        @include helpers.fontSize(variables.$desktop-body-font-size);
       }
 
       &.correct {
@@ -106,15 +106,12 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        color: colors.$color-text-inverse;
 
         @include helpers.mobile {
           height: helpers.pxToRem(30px);
           border-radius: helpers.pxToRem(calc(30px / 2));
           padding: spacing.$space-stack-mobile;
           column-gap: spacing.$space-stack-mobile;
-
-          @include helpers.fontSize(14px);
         }
 
         @include helpers.tablet {
@@ -122,8 +119,6 @@
           border-radius: helpers.pxToRem(calc(40px / 2));
           padding: spacing.$space-stack-tablet;
           column-gap: spacing.$space-stack-tablet;
-
-          @include helpers.fontSize(18px);
         }
 
         @include helpers.desktop {
@@ -131,8 +126,6 @@
           border-radius: helpers.pxToRem(calc(50px / 2));
           padding: spacing.$space-stack-desktop;
           column-gap: spacing.$space-stack-desktop;
-
-          @include helpers.fontSize(22px);
         }
       }
 

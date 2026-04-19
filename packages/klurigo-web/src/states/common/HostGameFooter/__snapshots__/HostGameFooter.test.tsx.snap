@@ -12,23 +12,28 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
     >
       true
     </span>
-    <span>
+    <p
+      class="body2"
+    >
       1
        / 
       1
-    </span>
+    </p>
   </div>
   <div
     class="gamePIN"
   >
-    <span
-      data-testid="fa-icon"
+    <p
+      class="body2"
     >
-      true
-    </span>
-    <span>
+      <span
+        data-testid="fa-icon"
+      >
+        true
+      </span>
+       
       123456
-    </span>
+    </p>
   </div>
   <div
     class="actions"
@@ -74,23 +79,28 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
     >
       true
     </span>
-    <span>
+    <p
+      class="body2"
+    >
       1
        / 
       1
-    </span>
+    </p>
   </div>
   <div
     class="gamePIN"
   >
-    <span
-      data-testid="fa-icon"
+    <p
+      class="body2"
     >
-      true
-    </span>
-    <span>
+      <span
+        data-testid="fa-icon"
+      >
+        true
+      </span>
+       
       123456
-    </span>
+    </p>
   </div>
   <div
     class="actions"
@@ -158,23 +168,28 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
     >
       true
     </span>
-    <span>
+    <p
+      class="body2"
+    >
       1
        / 
       1
-    </span>
+    </p>
   </div>
   <div
     class="gamePIN"
   >
-    <span
-      data-testid="fa-icon"
+    <p
+      class="body2"
     >
-      true
-    </span>
-    <span>
+      <span
+        data-testid="fa-icon"
+      >
+        true
+      </span>
+       
       123456
-    </span>
+    </p>
   </div>
   <div
     class="actions"
@@ -257,23 +272,28 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
     >
       true
     </span>
-    <span>
+    <p
+      class="body2"
+    >
       1
        / 
       1
-    </span>
+    </p>
   </div>
   <div
     class="gamePIN"
   >
-    <span
-      data-testid="fa-icon"
+    <p
+      class="body2"
     >
-      true
-    </span>
-    <span>
+      <span
+        data-testid="fa-icon"
+      >
+        true
+      </span>
+       
       123456
-    </span>
+    </p>
   </div>
   <div
     class="actions"

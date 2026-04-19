@@ -7,7 +7,7 @@ exports[`NicknameChip > matches snapshot (accent + entrance + delete + staggerDe
 >
   Snapshot complex
   <button
-    class="deleteButton"
+    class="deleteButton delete"
   >
     <span
       data-icon="faXmark"

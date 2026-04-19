@@ -101,11 +101,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               Public
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -124,11 +124,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               General Knowledge
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -147,11 +147,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               English
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -170,11 +170,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               Classic
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -193,11 +193,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               14 Questions
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -216,8 +216,8 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               <a
                 data-discover="true"
@@ -225,7 +225,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
               >
                 FrostyBear
               </a>
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -244,11 +244,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               1 year ago
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -267,11 +267,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               N/A
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -290,11 +290,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               5 times
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -313,11 +313,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               42
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -336,11 +336,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               Medium
-            </span>
+            </div>
           </div>
           <div
             class="item"
@@ -359,11 +359,11 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 fill="currentColor"
               />
             </svg>
-            <span
-              class="value"
+            <div
+              data-testid="typography"
             >
               1 year ago
-            </span>
+            </div>
           </div>
         </div>
       </div>

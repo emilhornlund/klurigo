@@ -4,11 +4,12 @@ import { GameMode, type GameResultPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import ScoreChip, {
+import {
   Badge,
   Confetti,
   getBadgePositionBackgroundColor,
   getCelebrationLevel,
+  ScoreChip,
   StreakBadge,
   Typography,
 } from '../../components'

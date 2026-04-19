@@ -1,15 +1,16 @@
 @use '../../../styles/helpers';
+@use '../../../styles/variables' as variables;
 
 .pointsBehindIndicator {
   @include helpers.mobile {
-    @include helpers.fontSize(14px);
+    @include helpers.fontSize(variables.$mobile-body2-font-size);
   }
 
   @include helpers.tablet {
-    @include helpers.fontSize(18px);
+    @include helpers.fontSize(variables.$tablet-body2-font-size);
   }
 
   @include helpers.desktop {
-    @include helpers.fontSize(22px);
+    @include helpers.fontSize(variables.$desktop-body2-font-size);
   }
 }

@@ -20,25 +20,6 @@
     gap: spacing.$space-compact-desktop;
   }
 
-  .title {
-    color: colors.$color-text-inverse;
-    font-weight: 700;
-    text-align: center;
-    margin: 0;
-
-    @include helpers.mobile {
-      @include helpers.fontSize(20px);
-    }
-
-    @include helpers.tablet {
-      @include helpers.fontSize(24px);
-    }
-
-    @include helpers.desktop {
-      @include helpers.fontSize(28px);
-    }
-  }
-
   .summary {
     display: flex;
     flex-direction: row;
@@ -63,41 +44,6 @@
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
-
-      .average {
-        color: colors.$color-text-inverse;
-        font-weight: 700;
-        line-height: 1;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(48px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(56px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(64px);
-        }
-      }
-
-      .outOf {
-        color: colors.$color-text-inverse;
-        opacity: 0.6;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(16px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(17px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(18px);
-        }
-      }
     }
 
     .summaryRight {
@@ -116,24 +62,6 @@
 
       @include helpers.desktop {
         gap: spacing.$space-inline-desktop;
-      }
-
-      .count {
-        color: colors.$color-text-inverse;
-        font-weight: 500;
-        opacity: 0.6;
-
-        @include helpers.mobile {
-          @include helpers.fontSize(16px);
-        }
-
-        @include helpers.tablet {
-          @include helpers.fontSize(17px);
-        }
-
-        @include helpers.desktop {
-          @include helpers.fontSize(18px);
-        }
       }
     }
   }
@@ -185,86 +113,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    .timeAgo {
-      color: colors.$color-text-subtle;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(12px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(13px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(14px);
-      }
-    }
-  }
-
-  .author {
-    color: colors.$color-text-default;
-    font-weight: 600;
-
-    @include helpers.mobile {
-      @include helpers.fontSize(14px);
-    }
-
-    @include helpers.tablet {
-      @include helpers.fontSize(15px);
-    }
-
-    @include helpers.desktop {
-      @include helpers.fontSize(16px);
-    }
-  }
-
-  .comment {
-    color: colors.$color-text-subtle;
-    margin: 0;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-
-    @include helpers.mobile {
-      @include helpers.fontSize(13px);
-    }
-
-    @include helpers.tablet {
-      @include helpers.fontSize(14px);
-    }
-
-    @include helpers.desktop {
-      @include helpers.fontSize(15px);
-    }
-  }
-}
-
-.emptyState {
-  color: colors.$color-text-inverse;
-  opacity: 0.5;
-  margin: 0;
-  font-style: italic;
-  text-align: center;
-
-  @include helpers.mobile {
-    margin-top: spacing.$space-page-mobile;
-
-    @include helpers.fontSize(18px);
-  }
-
-  @include helpers.tablet {
-    margin-top: spacing.$space-page-tablet;
-
-    @include helpers.fontSize(20px);
-  }
-
-  @include helpers.desktop {
-    margin-top: spacing.$space-page-desktop;
-
-    @include helpers.fontSize(22px);
   }
 }
 

@@ -13,6 +13,7 @@ import { QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
+import { Typography } from '../../../../components'
 import { classNames } from '../../../../utils/helpers'
 
 import styles from './QuestionResults.module.scss'
@@ -46,7 +47,9 @@ const ResultChip: FC<ResultChipProps> = ({
     }>
     {value}
     <span>
-      <FontAwesomeIcon icon={faUserGroup} /> {count}
+      <Typography variant="body2" align="left" noWrap bold>
+        <FontAwesomeIcon icon={faUserGroup} /> {count}
+      </Typography>
     </span>
     {onClick && (
       <button

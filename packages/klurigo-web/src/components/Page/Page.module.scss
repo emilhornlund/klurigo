@@ -95,19 +95,21 @@
         color: colors.$color-text-inverse;
         letter-spacing: 1px;
         top: helpers.pxToRem(-1px);
-
-        @include helpers.fontSize(20px);
       }
 
       @include helpers.mobile {
         column-gap: spacing.$space-compact-mobile;
+
+        .text {
+          @include helpers.fontSize(variables.$mobile-title3-font-size);
+        }
       }
 
       @include helpers.tablet {
         column-gap: spacing.$space-compact-tablet;
 
         .text {
-          @include helpers.fontSize(24px);
+          @include helpers.fontSize(variables.$tablet-title3-font-size);
         }
       }
 
@@ -115,7 +117,7 @@
         column-gap: spacing.$space-compact-desktop;
 
         .text {
-          @include helpers.fontSize(27px);
+          @include helpers.fontSize(variables.$desktop-title3-font-size);
         }
       }
 
@@ -168,13 +170,13 @@
         color: colors.$color-text-inverse;
 
         @include helpers.mobile {
-          @include helpers.fontSize(16px);
+          @include helpers.fontSize(variables.$mobile-link2-font-size);
         }
         @include helpers.tablet {
-          @include helpers.fontSize(18px);
+          @include helpers.fontSize(variables.$tablet-link2-font-size);
         }
         @include helpers.desktop {
-          @include helpers.fontSize(20px);
+          @include helpers.fontSize(variables.$desktop-link2-font-size);
         }
       }
 
@@ -390,13 +392,13 @@
       color: colors.$color-text-inverse;
 
       @include helpers.mobile {
-        @include helpers.fontSize(14px);
+        @include helpers.fontSize(variables.$mobile-link2-font-size);
       }
       @include helpers.tablet {
-        @include helpers.fontSize(16px);
+        @include helpers.fontSize(variables.$tablet-link2-font-size);
       }
       @include helpers.desktop {
-        @include helpers.fontSize(18px);
+        @include helpers.fontSize(variables.$desktop-link2-font-size);
       }
     }
   }

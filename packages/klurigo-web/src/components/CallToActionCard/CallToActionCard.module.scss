@@ -73,61 +73,6 @@
       @include helpers.desktop {
         row-gap: spacing.$space-inline-desktop;
       }
-
-      .title {
-        display: flex;
-        flex-direction: row;
-        font-weight: bold;
-        opacity: 0.95;
-        color: colors.$color-text-inverse;
-
-        @include helpers.mobile {
-          line-height: calc(24px * 1.45);
-          @include helpers.fontSize(24px);
-        }
-
-        @include helpers.tablet {
-          line-height: calc(26px * 1.45);
-          @include helpers.fontSize(26px);
-        }
-
-        @include helpers.desktop {
-          line-height: calc(28px * 1.45);
-          @include helpers.fontSize(28px);
-        }
-
-        .spacing {
-          @include helpers.mobile {
-            width: 1.5rem + spacing.$space-compact-mobile;
-          }
-          @include helpers.tablet {
-            width: 2rem + spacing.$space-compact-tablet;
-          }
-          @include helpers.desktop {
-            width: 2.5rem + spacing.$space-compact-desktop;
-          }
-        }
-      }
-
-      .text {
-        opacity: 0.78;
-        color: colors.$color-text-inverse;
-
-        @include helpers.mobile {
-          line-height: calc(20px * 1.45);
-          @include helpers.fontSize(20px);
-        }
-
-        @include helpers.tablet {
-          line-height: calc(22px * 1.45);
-          @include helpers.fontSize(22px);
-        }
-
-        @include helpers.desktop {
-          line-height: calc(24px * 1.45);
-          @include helpers.fontSize(24px);
-        }
-      }
     }
 
     .icon {

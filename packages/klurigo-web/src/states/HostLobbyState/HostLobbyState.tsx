@@ -11,6 +11,7 @@ import {
   ConfirmDialog,
   IconButtonArrowRight,
   NicknameChip,
+  Typography,
 } from '../../components'
 import config from '../../config'
 import { useGameContext } from '../../context/game'
@@ -158,14 +159,25 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
         }>
         <div className={styles.header}>
           <div className={classNames(styles.box, styles.info)}>
-            Join at{' '}
-            <strong>
+            <Typography variant="body2" align="left" color="default" noOpacity>
+              Join at
+            </Typography>{' '}
+            <Typography
+              variant="body2"
+              align="left"
+              color="default"
+              noOpacity
+              bold>
               {extractUrl(config.baseUrl, { omitProtocol: true })}
-            </strong>
+            </Typography>
           </div>
           <div className={classNames(styles.box, styles.pin)}>
-            <div>Game PIN</div>
-            <div>{pin}</div>
+            <Typography variant="body2" align="left" color="default" noOpacity>
+              Game PIN
+            </Typography>
+            <Typography variant="title" align="left" color="default" noOpacity>
+              {pin}
+            </Typography>
           </div>
           <div
             className={classNames(styles.box, styles.qr, styles.qrContainer)}>

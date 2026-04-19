@@ -81,21 +81,25 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
               >
                 True
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
             </div>
@@ -108,21 +112,25 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
               >
                 False
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  0
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    0
+                  </p>
                 </span>
               </div>
             </div>
@@ -141,7 +149,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -152,31 +160,36 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             3
              / 
             5
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             999999
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -297,21 +310,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Vincent van Gogh
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  3
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    3
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -341,21 +358,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Claude Monet
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  5
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    5
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -381,21 +402,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Pablo Picasso
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  2
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    2
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -421,21 +446,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Leonardo da Vinci
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  0
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    0
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -473,9 +502,11 @@ exports[`HostResultState > should render HostResultState with question type mult
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -491,7 +522,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -502,31 +533,36 @@ exports[`HostResultState > should render HostResultState with question type mult
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -647,21 +683,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Vincent van Gogh
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -691,21 +731,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Leonardo da Vinci
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  4
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    4
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -731,21 +775,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Rembrandt
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  3
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    3
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -771,21 +819,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Pablo Picasso
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  2
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    2
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -811,21 +863,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Claude Monet
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  0
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    0
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -851,21 +907,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Michelangelo
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  0
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    0
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -903,9 +963,11 @@ exports[`HostResultState > should render HostResultState with question type mult
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -921,7 +983,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -932,31 +994,36 @@ exports[`HostResultState > should render HostResultState with question type mult
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -1077,21 +1144,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Vincent van Gogh
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  3
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    3
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -1121,21 +1192,25 @@ exports[`HostResultState > should render HostResultState with question type mult
               >
                 Pablo Picasso
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  7
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    7
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -1173,9 +1248,11 @@ exports[`HostResultState > should render HostResultState with question type mult
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -1191,7 +1268,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1202,31 +1279,36 @@ exports[`HostResultState > should render HostResultState with question type mult
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -1372,9 +1454,11 @@ exports[`HostResultState > should render HostResultState with question type pin 
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -1390,7 +1474,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1401,31 +1485,36 @@ exports[`HostResultState > should render HostResultState with question type pin 
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -1555,10 +1644,11 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <div
                     class="footer"
                   >
-                    <div>
+                    <p
+                      class="typography body alignCenter widthFull colorInverse"
+                    >
                       1
-                    </div>
-                    <div>
+                       
                       <svg
                         aria-hidden="true"
                         class="svg-inline--fa fa-check"
@@ -1572,7 +1662,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                           fill="currentColor"
                         />
                       </svg>
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1592,10 +1682,11 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   <div
                     class="footer"
                   >
-                    <div>
+                    <p
+                      class="typography body alignCenter widthFull colorInverse"
+                    >
                       3
-                    </div>
-                    <div>
+                       
                       <svg
                         aria-hidden="true"
                         class="svg-inline--fa fa-xmark"
@@ -1609,7 +1700,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                           fill="currentColor"
                         />
                       </svg>
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1768,9 +1859,11 @@ exports[`HostResultState > should render HostResultState with question type puzz
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -1786,7 +1879,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1797,31 +1890,36 @@ exports[`HostResultState > should render HostResultState with question type puzz
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -1942,21 +2040,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 71
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  2
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    2
+                  </p>
                 </span>
               </div>
             </div>
@@ -1969,21 +2071,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 59
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -1992,21 +2098,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 61
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2015,21 +2125,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 64
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2038,21 +2152,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 65
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2061,21 +2179,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 72
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2084,21 +2206,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 73
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2107,21 +2233,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 79
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
               <div
@@ -2130,21 +2260,25 @@ exports[`HostResultState > should render HostResultState with question type rang
               >
                 83
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
               </div>
             </div>
@@ -2165,9 +2299,11 @@ exports[`HostResultState > should render HostResultState with question type rang
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -2183,7 +2319,7 @@ exports[`HostResultState > should render HostResultState with question type rang
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2194,31 +2330,36 @@ exports[`HostResultState > should render HostResultState with question type rang
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -2339,21 +2480,25 @@ exports[`HostResultState > should render HostResultState with question type true
               >
                 True
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  4
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    4
+                  </p>
                 </span>
               </div>
             </div>
@@ -2366,21 +2511,25 @@ exports[`HostResultState > should render HostResultState with question type true
               >
                 False
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  6
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    6
+                  </p>
                 </span>
               </div>
             </div>
@@ -2401,9 +2550,11 @@ exports[`HostResultState > should render HostResultState with question type true
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -2419,7 +2570,7 @@ exports[`HostResultState > should render HostResultState with question type true
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2430,31 +2581,36 @@ exports[`HostResultState > should render HostResultState with question type true
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"
@@ -2575,21 +2731,25 @@ exports[`HostResultState > should render HostResultState with question type type
               >
                 leonardo da vinci
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  2
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    2
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -2619,21 +2779,25 @@ exports[`HostResultState > should render HostResultState with question type type
               >
                 leonardo
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  4
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    4
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -2659,21 +2823,25 @@ exports[`HostResultState > should render HostResultState with question type type
               >
                 picasso
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  3
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    3
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -2699,21 +2867,25 @@ exports[`HostResultState > should render HostResultState with question type type
               >
                 rembrandt
                 <span>
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-user-group"
-                    data-icon="user-group"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 576 512"
+                  <p
+                    class="typography body2 alignLeft widthFull colorInverse noWrap bold"
                   >
-                    <path
-                      d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                   
-                  1
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-user-group"
+                      data-icon="user-group"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M64 128a112 112 0 1 1 224 0 112 112 0 1 1 -224 0zM0 464c0-97.2 78.8-176 176-176s176 78.8 176 176l0 6c0 23.2-18.8 42-42 42L42 512c-23.2 0-42-18.8-42-42l0-6zM432 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zm0 240c79.5 0 144 64.5 144 144l0 22.4c0 23-18.6 41.6-41.6 41.6l-144.8 0c6.6-12.5 10.4-26.8 10.4-42l0-6c0-51.5-17.4-98.9-46.5-136.7 22.6-14.7 49.6-23.3 78.5-23.3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                     
+                    1
+                  </p>
                 </span>
                 <button
                   class="buttonOverlay"
@@ -2751,9 +2923,11 @@ exports[`HostResultState > should render HostResultState with question type type
                 fill="currentColor"
               />
             </svg>
-            <span>
+            <h2
+              class="typography title2 alignLeft widthFull colorInverse"
+            >
               This is an info text displayed along the question result.
-            </span>
+            </h2>
           </div>
         </div>
       </div>
@@ -2769,7 +2943,7 @@ exports[`HostResultState > should render HostResultState with question type type
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
+            class="svg-inline--fa fa-circle-question icon"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2780,31 +2954,36 @@ exports[`HostResultState > should render HostResultState with question type type
               fill="currentColor"
             />
           </svg>
-          <span>
+          <p
+            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
+          >
             1
              / 
             20
-          </span>
+          </p>
         </div>
         <div
           class="gamePIN"
         >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-lock-open"
-            data-icon="lock-open"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 576 512"
+          <p
+            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
           >
-            <path
-              d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-lock-open"
+              data-icon="lock-open"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 576 512"
+            >
+              <path
+                d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+                fill="currentColor"
+              />
+            </svg>
+             
             123456
-          </span>
+          </p>
         </div>
         <div
           class="actions"

@@ -114,13 +114,13 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
         />
       )}
       {isError || (!isLoading && quizzes.length === 0) ? (
-        <p className={styles.emptyState} data-testid="profile-empty-state">
+        <Typography variant="body2" data-testid="profile-empty-state">
           {isError
             ? 'Oops! Your quizzes are playing hide-and-seek right now. Please try again.'
             : hasSearchFilter
               ? 'No quiz cards matched that combo. Try mixing up your filters.'
               : 'Your quiz shelf is empty. Time to create your first one!'}
-        </p>
+        </Typography>
       ) : (
         <>
           <div className={styles.grid} data-testid="profile-quiz-grid">

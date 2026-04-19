@@ -2,7 +2,6 @@
 @use '../../../../styles/helpers';
 @use '../../../../styles/mixins/_button' as button;
 @use '../../../../styles/spacing.semantic' as spacing;
-@use '../../../../styles/variables';
 
 .container {
   display: flex;
@@ -53,25 +52,17 @@
 
 .emptyState {
   margin: 0;
-  text-align: center;
-  color: colors.$color-text-inverse-subtle;
 
   @include helpers.mobile {
     padding: spacing.$space-page-mobile 0;
-
-    @include helpers.fontSize(16px);
   }
 
   @include helpers.tablet {
     padding: spacing.$space-page-desktop 0;
-
-    @include helpers.fontSize(20px);
   }
 
   @include helpers.desktop {
     padding: spacing.$space-section-lg-desktop 0;
-
-    @include helpers.fontSize(24px);
   }
 }
 
