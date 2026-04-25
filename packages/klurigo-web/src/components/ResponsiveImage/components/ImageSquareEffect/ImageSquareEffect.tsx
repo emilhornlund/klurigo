@@ -40,27 +40,30 @@ const ImageSquareEffect: FC<ImageSquareEffectProps> = ({
     return Number.isFinite(initiated) ? initiated : Date.now()
   }, [countdown])
 
-  const rng = useMemo(() => {
-    let t = seed >>> 0 || 1
-    return () => {
-      t += 0x6d2b79f5
-      let r = Math.imul(t ^ (t >>> 15), 1 | t)
-      r ^= r + Math.imul(r ^ (r >>> 7), 61 | r)
-      return ((r ^ (r >>> 14)) >>> 0) / 4294967296
-    }
-  }, [seed])
+  const random = (value: number): number => {
+    let t = value >>> 0 || 1
+
+    t += 0x6d2b79f5
+
+    let r = Math.imul(t ^ (t >>> 15), 1 | t)
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r)
+
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296
+  }
 
   const { rank } = useMemo(() => {
     const arr = Array.from({ length: totalSquares }, (_, i) => i)
-    // Fisher–Yates with seeded RNG
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(rng() * (i + 1))
-      ;[arr[i], arr[j]] = [arr[j], arr[i]]
-    }
+
+    arr.sort((a, b) => random(seed + a) - random(seed + b))
+
     const rnk = new Array<number>(totalSquares)
-    for (let pos = 0; pos < totalSquares; pos++) rnk[arr[pos]] = pos
+
+    for (let pos = 0; pos < totalSquares; pos++) {
+      rnk[arr[pos]] = pos
+    }
+
     return { rank: rnk }
-  }, [totalSquares, rng])
+  }, [seed, totalSquares])
 
   const [coveredCount, setCoveredCount] = useState(totalSquares)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)

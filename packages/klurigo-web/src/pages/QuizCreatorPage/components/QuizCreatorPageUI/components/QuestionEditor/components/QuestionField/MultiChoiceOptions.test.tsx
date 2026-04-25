@@ -65,7 +65,6 @@ vi.mock('@dnd-kit/core', async () => {
   const DndContext = (
     props: Record<string, unknown> & { children: ReactNode },
   ) => {
-    // eslint-disable-next-line react-hooks/globals
     lastProps = props
     return <div data-testid="dnd">{props.children}</div>
   }
