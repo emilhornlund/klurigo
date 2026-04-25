@@ -19,16 +19,15 @@
 
     /* Emit */
     "outDir": "./dist",
+    "rootDir": "./src",
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,
 
-    /* Paths */
-    "baseUrl": "./",
-
     /* Strictness & checks */
     "skipLibCheck": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
@@ -36,5 +35,16 @@
 
     /* Tooling / Build info */
     "incremental": true,
-  }
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test",
+    "scripts",
+    "test-utils",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.e2e-spec.ts"
+  ]
 }

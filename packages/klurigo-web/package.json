@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "test": "vitest run",
+    "pretest:e2e": "yarn playwright install chromium firefox webkit",
     "test:e2e": "yarn playwright test",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
