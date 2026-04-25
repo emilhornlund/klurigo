@@ -5,8 +5,8 @@
     "lib": ["ES2022"],
 
     /* Modules & Resolution */
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
     /* Emit */
     "outDir": "dist",
@@ -17,11 +17,9 @@
     /* Interop & ergonomics */
     "esModuleInterop": true,
 
-    /* Paths */
-    "baseUrl": "./",
-
     /* Strictness & checks */
     "strict": true,
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

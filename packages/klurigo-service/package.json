@@ -5,7 +5,7 @@
   "private": true,
   "main": "dist/main.js",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo",
     "prebuild": "yarn workspace @klurigo/common build",
     "build": "yarn clean && nest build",
     "dev": "nest start --watch",
