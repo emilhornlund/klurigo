@@ -129,19 +129,19 @@
         @include helpers.mobile {
           padding: spacing.$space-page-mobile 0
             calc(#{spacing.$space-page-mobile} * 4) 0;
-          row-gap: spacing.$space-compact-mobile;
+          row-gap: spacing.$space-content-distribution-mobile;
         }
 
         @include helpers.tablet {
           padding: spacing.$space-page-tablet 0
             calc(#{spacing.$space-page-tablet} * 4) 0;
-          row-gap: spacing.$space-compact-tablet;
+          row-gap: spacing.$space-content-distribution-tablet;
         }
 
         @include helpers.desktop {
           padding: spacing.$space-page-desktop 0
             calc(#{spacing.$space-page-desktop} * 4) 0;
-          row-gap: spacing.$space-compact-desktop;
+          row-gap: spacing.$space-content-distribution-desktop;
         }
 
         .disabledOverlay {

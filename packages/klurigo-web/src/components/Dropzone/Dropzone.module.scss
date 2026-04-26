@@ -46,6 +46,46 @@
       border-width: controls.$control-border-width-outside;
       min-height: 160px;
     }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      @include helpers.mobile {
+        row-gap: spacing.$space-compact-mobile;
+      }
+
+      @include helpers.tablet {
+        row-gap: spacing.$space-compact-tablet;
+      }
+
+      @include helpers.desktop {
+        row-gap: spacing.$space-compact-desktop;
+      }
+
+      .icon {
+        color: colors.$color-text-control-default;
+        background-color: colors.$color-surface-control-muted;
+        border-radius: 50%;
+
+        @include helpers.mobile {
+          padding: spacing.$space-stack-mobile;
+          height: helpers.pxToRem(26px);
+        }
+
+        @include helpers.tablet {
+          padding: spacing.$space-stack-tablet;
+          height: helpers.pxToRem(28px);
+        }
+
+        @include helpers.desktop {
+          padding: spacing.$space-stack-desktop;
+          height: helpers.pxToRem(30px);
+        }
+      }
+    }
   }
 
   .focused {

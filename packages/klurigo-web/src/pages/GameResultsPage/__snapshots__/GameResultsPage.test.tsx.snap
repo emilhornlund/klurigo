@@ -190,9 +190,14 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             2
                           </div>
                           <div
-                            class="score"
+                            class="score sizeSmall"
+                            data-testid="score-chip"
                           >
-                            120
+                            <h3
+                              class="typography title3 alignCenter widthFull colorDefault"
+                            >
+                              120
+                            </h3>
                           </div>
                         </div>
                       </div>
@@ -227,9 +232,14 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             1
                           </div>
                           <div
-                            class="score"
+                            class="score sizeSmall"
+                            data-testid="score-chip"
                           >
-                            200
+                            <h3
+                              class="typography title3 alignCenter widthFull colorDefault"
+                            >
+                              200
+                            </h3>
                           </div>
                           <div
                             class="sparkleContainer"
@@ -293,9 +303,6 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                           <div
                             class="disabledOverlay"
                             data-testid="podium-disabled-overlay-3"
-                          />
-                          <div
-                            class="score"
                           />
                         </div>
                       </div>
@@ -1277,9 +1284,14 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             2
                           </div>
                           <div
-                            class="score"
+                            class="score sizeSmall"
+                            data-testid="score-chip"
                           >
-                            5
+                            <h3
+                              class="typography title3 alignCenter widthFull colorDefault"
+                            >
+                              5
+                            </h3>
                           </div>
                         </div>
                       </div>
@@ -1314,9 +1326,14 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             1
                           </div>
                           <div
-                            class="score"
+                            class="score sizeSmall"
+                            data-testid="score-chip"
                           >
-                            10
+                            <h3
+                              class="typography title3 alignCenter widthFull colorDefault"
+                            >
+                              10
+                            </h3>
                           </div>
                           <div
                             class="sparkleContainer"
@@ -1380,9 +1397,6 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                           <div
                             class="disabledOverlay"
                             data-testid="podium-disabled-overlay-3"
-                          />
-                          <div
-                            class="score"
                           />
                         </div>
                       </div>

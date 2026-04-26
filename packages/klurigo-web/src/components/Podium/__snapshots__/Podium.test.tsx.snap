@@ -33,9 +33,14 @@ exports[`Podium > should render Podium from a full leaderboard 1`] = `
             2
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18398
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18398
+            </h3>
           </div>
         </div>
       </div>
@@ -70,9 +75,14 @@ exports[`Podium > should render Podium from a full leaderboard 1`] = `
             1
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18456
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18456
+            </h3>
           </div>
           <div
             class="sparkleContainer"
@@ -140,9 +150,14 @@ exports[`Podium > should render Podium from a full leaderboard 1`] = `
             3
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            15492
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              15492
+            </h3>
           </div>
         </div>
       </div>
@@ -468,9 +483,6 @@ exports[`Podium > should render Podium from a leaderboard with 1 player 1`] = `
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-2"
           />
-          <div
-            class="score"
-          />
         </div>
       </div>
     </div>
@@ -504,9 +516,14 @@ exports[`Podium > should render Podium from a leaderboard with 1 player 1`] = `
             1
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18456
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18456
+            </h3>
           </div>
           <div
             class="sparkleContainer"
@@ -570,9 +587,6 @@ exports[`Podium > should render Podium from a leaderboard with 1 player 1`] = `
           <div
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-3"
-          />
-          <div
-            class="score"
           />
         </div>
       </div>
@@ -901,9 +915,14 @@ exports[`Podium > should render Podium from a leaderboard with 2 players 1`] = `
             2
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18398
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18398
+            </h3>
           </div>
         </div>
       </div>
@@ -938,9 +957,14 @@ exports[`Podium > should render Podium from a leaderboard with 2 players 1`] = `
             1
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18456
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18456
+            </h3>
           </div>
           <div
             class="sparkleContainer"
@@ -1004,9 +1028,6 @@ exports[`Podium > should render Podium from a leaderboard with 2 players 1`] = `
           <div
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-3"
-          />
-          <div
-            class="score"
           />
         </div>
       </div>
@@ -1335,9 +1356,14 @@ exports[`Podium > should render Podium from a leaderboard with 3 players 1`] = `
             2
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18398
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18398
+            </h3>
           </div>
         </div>
       </div>
@@ -1372,9 +1398,14 @@ exports[`Podium > should render Podium from a leaderboard with 3 players 1`] = `
             1
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            18456
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              18456
+            </h3>
           </div>
           <div
             class="sparkleContainer"
@@ -1442,9 +1473,14 @@ exports[`Podium > should render Podium from a leaderboard with 3 players 1`] = `
             3
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            15492
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              15492
+            </h3>
           </div>
         </div>
       </div>
@@ -1770,9 +1806,6 @@ exports[`Podium > should render a disabled overlay for positions without a nickn
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-2"
           />
-          <div
-            class="score"
-          />
         </div>
       </div>
     </div>
@@ -1806,9 +1839,14 @@ exports[`Podium > should render a disabled overlay for positions without a nickn
             1
           </div>
           <div
-            class="score"
+            class="score sizeSmall"
+            data-testid="score-chip"
           >
-            100
+            <h3
+              class="typography title3 alignCenter widthFull colorDefault"
+            >
+              100
+            </h3>
           </div>
           <div
             class="sparkleContainer"
@@ -1872,9 +1910,6 @@ exports[`Podium > should render a disabled overlay for positions without a nickn
           <div
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-3"
-          />
-          <div
-            class="score"
           />
         </div>
       </div>
@@ -2200,9 +2235,6 @@ exports[`Podium > should render disabled stacks when values are empty 1`] = `
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-2"
           />
-          <div
-            class="score"
-          />
         </div>
       </div>
     </div>
@@ -2227,9 +2259,6 @@ exports[`Podium > should render disabled stacks when values are empty 1`] = `
           <div
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-1"
-          />
-          <div
-            class="score"
           />
           <div
             class="sparkleContainer"
@@ -2293,9 +2322,6 @@ exports[`Podium > should render disabled stacks when values are empty 1`] = `
           <div
             class="disabledOverlay"
             data-testid="podium-disabled-overlay-3"
-          />
-          <div
-            class="score"
           />
         </div>
       </div>

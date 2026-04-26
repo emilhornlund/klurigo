@@ -2,6 +2,7 @@
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
 
 .score {
   @include surface.surface-box;
@@ -21,27 +22,55 @@
     @include helpers.fontSize($size * 0.7);
   }
 
-  @include helpers.mobile {
-    @include score-dimensions(
-      42px,
-      spacing.$space-inline-mobile,
-      calc(#{spacing.$space-compact-mobile} * 2)
-    );
+  &.sizeNormal {
+    @include helpers.mobile {
+      @include score-dimensions(
+        48px,
+        spacing.$space-inline-mobile,
+        calc(#{spacing.$space-compact-mobile} * 2)
+      );
+    }
+
+    @include helpers.tablet {
+      @include score-dimensions(
+        58px,
+        spacing.$space-inline-tablet,
+        calc(#{spacing.$space-compact-tablet} * 2)
+      );
+    }
+
+    @include helpers.desktop {
+      @include score-dimensions(
+        66px,
+        spacing.$space-inline-desktop,
+        calc(#{spacing.$space-compact-desktop} * 2)
+      );
+    }
   }
 
-  @include helpers.tablet {
-    @include score-dimensions(
-      52px,
-      spacing.$space-inline-tablet,
-      calc(#{spacing.$space-compact-tablet} * 2)
-    );
-  }
+  &.sizeSmall {
+    @include helpers.mobile {
+      @include score-dimensions(
+        46px,
+        spacing.$space-inline-tight-mobile,
+        calc(#{spacing.$space-compact-mobile} * 2)
+      );
+    }
 
-  @include helpers.desktop {
-    @include score-dimensions(
-      62px,
-      spacing.$space-inline-desktop,
-      calc(#{spacing.$space-compact-desktop} * 2)
-    );
+    @include helpers.tablet {
+      @include score-dimensions(
+        54px,
+        spacing.$space-inline-tight-tablet,
+        calc(#{spacing.$space-compact-tablet} * 2)
+      );
+    }
+
+    @include helpers.desktop {
+      @include score-dimensions(
+        62px,
+        spacing.$space-inline-tight-desktop,
+        calc(#{spacing.$space-inline-desktop} * 2)
+      );
+    }
   }
 }

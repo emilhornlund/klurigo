@@ -1,3 +1,5 @@
+import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   UPLOAD_IMAGE_MAX_FILE_SIZE,
   UPLOAD_IMAGE_MIN_FILE_SIZE,
@@ -11,6 +13,7 @@ import { notifyWarning } from '../../utils/notification'
 import CircularProgressBar, {
   CircularProgressBarKind,
 } from '../CircularProgressBar'
+import Typography from '../Typography'
 
 import styles from './Dropzone.module.scss'
 
@@ -73,11 +76,22 @@ const Dropzone: FC<DropzoneProps> = ({ progress, onUpload }) => {
           <>
             <input {...getInputProps()} />
             {isDragActive ? (
-              <span>Drop the files here ...</span>
+              <Typography variant="body2" align="center" color="subtle">
+                Drop the files here ...
+              </Typography>
             ) : (
-              <span>
-                Drag &#39;n&#39; drop a file here, or click to select one
-              </span>
+              <div className={styles.content}>
+                <FontAwesomeIcon
+                  icon={faArrowUpFromBracket}
+                  className={styles.icon}
+                />
+                <Typography variant="body2" align="center" color="default">
+                  Drag &#39;n&#39; drop a file here, or click to select one
+                </Typography>
+                <Typography variant="control" align="center" color="subtle">
+                  PNG, JPG, GIF, TIFF or WEBP - Max 20 MB
+                </Typography>
+              </div>
             )}
           </>
         )}
