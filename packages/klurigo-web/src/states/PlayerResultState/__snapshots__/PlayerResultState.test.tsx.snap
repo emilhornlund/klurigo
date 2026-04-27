@@ -88,10 +88,14 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            1000
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              1000
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -521,10 +525,14 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            900
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              900
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -865,10 +873,14 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            600
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              600
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -1309,10 +1321,14 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            500
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              500
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -1742,10 +1758,14 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            800
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              800
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -2086,10 +2106,14 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            400
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              400
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -2419,10 +2443,14 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            0
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              0
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -2565,10 +2593,14 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            100
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              100
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -2711,10 +2743,14 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            200
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              200
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -2975,10 +3011,14 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            300
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              300
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -3239,10 +3279,14 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            634
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              634
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"
@@ -3683,10 +3727,14 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             </div>
           </div>
           <div
-            class="score"
+            class="score sizeNormal"
             data-testid="score-chip"
           >
-            50
+            <h2
+              class="typography title2 alignCenter widthFull colorInverse"
+            >
+              50
+            </h2>
           </div>
           <p
             class="typography body alignCenter widthSmall colorInverse"

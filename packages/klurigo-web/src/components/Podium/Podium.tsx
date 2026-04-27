@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { classNames } from '../../utils/helpers'
 import Confetti, { getCelebrationLevel } from '../Confetti'
 import NicknameChip from '../NicknameChip'
+import ScoreChip from '../ScoreChip'
 
 import styles from './Podium.module.scss'
 
@@ -55,7 +56,10 @@ const Stack: FC<StackProps> = ({
           />
         )}
 
-        <div className={styles.score}>{score}</div>
+        {score !== undefined && (
+          <ScoreChip value={score} color="default" size="small" />
+        )}
+
         {position === 1 && (
           <div className={styles.sparkleContainer}>
             <div

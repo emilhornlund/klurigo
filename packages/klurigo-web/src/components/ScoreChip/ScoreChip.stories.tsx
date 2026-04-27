@@ -6,13 +6,20 @@ const meta = {
   title: 'Gameplay Components/ScoreChip',
   component: ScoreChip,
   tags: ['autodocs'],
+  args: {
+    value: 1337,
+    size: 'normal',
+    color: 'inverse',
+  },
 } satisfies Meta<typeof ScoreChip>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default = {
+export const Default: Story = {}
+
+export const Small: Story = {
   args: {
-    value: 1337,
+    size: 'small',
   },
-} satisfies Story
+}

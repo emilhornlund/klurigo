@@ -2,9 +2,13 @@
 
 exports[`ScoreChip > should match snapshot 1`] = `
 <div
-  class="score"
+  class="score sizeNormal"
   data-testid="score-chip"
 >
-  1337
+  <h2
+    class="typography title2 alignCenter widthFull colorInverse"
+  >
+    1337
+  </h2>
 </div>
 `;
