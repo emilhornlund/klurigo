@@ -1,5 +1,27 @@
+#
+# Dependencies
+#
+node_modules/
+
+#
+# Build output
+#
+dist/
+build/
+out/
+coverage/
+.nyc_output/
+.storybook-static/
+
+#
+# TypeScript
+#
+*.tsbuildinfo
+
+#
 # Logs
-logs
+#
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,27 +29,63 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# compiled output
-dist/
-node_modules/
-build/
+#
+# Environment files
+#
+.env
+.env.local
+.env.*.local
 
-# Editor directories and files
+#
+# IDE - VS Code
+#
 .vscode/*
 !.vscode/extensions.json
-/.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-*.tsbuildinfo
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 
-# OS
+#
+# IDE - IntelliJ / WebStorm
+#
+.idea/*
+!.idea/.gitignore
+!.idea/misc.xml
+!.idea/vcs.xml
+!.idea/codeStyles/
+!.idea/codeStyles/**
+!.idea/inspectionProfiles/
+!.idea/inspectionProfiles/**
+!.idea/runConfigurations/
+!.idea/runConfigurations/**
+*.iml
+
+#
+# OS files
+#
 .DS_Store
+Thumbs.db
+Desktop.ini
 
-# Tests
-coverage/
-.nyc_output/
+#
+# Temporary files
+#
+.tmp/
+tmp/
+temp/
 
-*storybook.log
+#
+# Package managers
+#
+.pnp.*
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+!.yarn/patches
+
+#
+# Storybook
+#
+storybook.log
