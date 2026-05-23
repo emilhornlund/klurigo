@@ -33,7 +33,7 @@
     overflow: visible;
     pointer-events: none;
 
-    /* Large translucent circle centered on the pin, *behind* the dot */
+    /* Large translucent tolerance area centered on the pin, *behind* the dot */
     .tolerance {
       position: absolute;
       left: 50%;

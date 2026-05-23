@@ -27,7 +27,10 @@ type PinProps = {
   height: number
   x: number
   y: number
-  toleranceDiameterPx: number
+  toleranceSizePx?: {
+    width: number
+    height: number
+  }
   color?: PinColor
   disabled?: boolean
 }
@@ -45,7 +48,8 @@ vi.mock('./Pin', () => ({
         data-y={props.y}
         data-width={props.width}
         data-height={props.height}
-        data-tolerance={props.toleranceDiameterPx}
+        data-tolerance-width={props.toleranceSizePx?.width ?? 0}
+        data-tolerance-height={props.toleranceSizePx?.height ?? 0}
         data-color={props.color}
         data-disabled={props.disabled ? 'true' : 'false'}
       />
@@ -192,7 +196,7 @@ describe('PinImage', () => {
     expect(pinCalls[1].y).toBe(1)
   })
 
-  it('computes toleranceDiameterPx based on overlay size and tolerance', async () => {
+  it('computes toleranceSizePx based on overlay size and tolerance', async () => {
     const { container } = render(
       <PinImage
         value={{
@@ -213,13 +217,40 @@ describe('PinImage', () => {
       ro.trigger(300, 200)
     })
 
-    const minSide = 200
-    const radius =
-      QUESTION_PIN_TOLERANCE_RADIUS[QuestionPinTolerance.Medium] * minSide
-    const expectedDiameter = Math.max(0, radius * 2)
+    const radius = QUESTION_PIN_TOLERANCE_RADIUS[QuestionPinTolerance.Medium]
+    const expectedWidth = Math.max(0, radius * 300 * 2)
+    const expectedHeight = Math.max(0, radius * 200 * 2)
 
     const interactivePin = pinCalls[pinCalls.length - 1]
-    expect(interactivePin.toleranceDiameterPx).toBeCloseTo(expectedDiameter)
+    expect(interactivePin.toleranceSizePx?.width).toBeCloseTo(expectedWidth)
+    expect(interactivePin.toleranceSizePx?.height).toBeCloseTo(expectedHeight)
+  })
+
+  it('uses a circular tolerance area for square overlays', async () => {
+    const { container } = render(
+      <PinImage
+        value={{
+          x: 0.5,
+          y: 0.5,
+          color: PinColor.Red,
+          tolerance: QuestionPinTolerance.Medium,
+        }}
+      />,
+    )
+
+    const overlay = getOverlay(container)
+    setOverlayRect(overlay, 240, 240)
+
+    await act(async () => {
+      const ro = ResizeObserverMock.instances[0]
+      expect(ro).toBeTruthy()
+      ro.trigger(240, 240)
+    })
+
+    const interactivePin = pinCalls[pinCalls.length - 1]
+    expect(interactivePin.toleranceSizePx?.width).toBeCloseTo(
+      interactivePin.toleranceSizePx?.height ?? 0,
+    )
   })
 
   it('dragging updates cursor to grabbing on pointer down, back to grab on pointer up', async () => {

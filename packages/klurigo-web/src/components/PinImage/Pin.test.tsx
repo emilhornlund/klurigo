@@ -42,14 +42,14 @@ describe('Pin', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should match snapshot with tolerance circle', () => {
+  it('should match snapshot with tolerance area', () => {
     const { container } = render(
       <Pin
         width={30}
         height={30}
         x={0.1}
         y={0.9}
-        toleranceDiameterPx={120}
+        toleranceSizePx={{ width: 120, height: 90 }}
         color={PinColor.Green}
       />,
     )
@@ -79,21 +79,27 @@ describe('Pin', () => {
     expect(pin.style.top).toBe('34%')
   })
 
-  it('renders tolerance circle only when toleranceDiameterPx > 0 and applies px sizing', () => {
+  it('renders tolerance area only when toleranceSizePx is provided and applies sizing', () => {
     const { container, rerender } = render(
-      <Pin width={40} height={40} x={0.5} y={0.5} toleranceDiameterPx={0} />,
+      <Pin width={40} height={40} x={0.5} y={0.5} />,
     )
 
     expect(container.querySelector('.tolerance')).toBeNull()
 
     rerender(
-      <Pin width={40} height={40} x={0.5} y={0.5} toleranceDiameterPx={88} />,
+      <Pin
+        width={40}
+        height={40}
+        x={0.5}
+        y={0.5}
+        toleranceSizePx={{ width: 88, height: 66 }}
+      />,
     )
 
     const tolerance = container.querySelector('.tolerance') as HTMLDivElement
     expect(tolerance).toBeTruthy()
     expect(tolerance.style.width).toBe('88px')
-    expect(tolerance.style.height).toBe('88px')
+    expect(tolerance.style.height).toBe('66px')
   })
 
   it('sets icon color based on getPinColorColor (default Blue)', () => {
