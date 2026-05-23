@@ -64,7 +64,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
               >
                 <div
                   class="centerOverlay box"
-                  style="width: 100%;"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
                   <div
                     class="loadingSpinnerContainer"
@@ -899,7 +899,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
               >
                 <div
                   class="centerOverlay box"
-                  style="width: 100%;"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
                   <div
                     class="loadingSpinnerContainer"
@@ -1552,7 +1552,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
               >
                 <div
                   class="centerOverlay box"
-                  style="width: 100%;"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
                   <div
                     class="loadingSpinnerContainer"
@@ -2075,7 +2075,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
               >
                 <div
                   class="centerOverlay box"
-                  style="width: 100%;"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
                   <div
                     class="loadingSpinnerContainer"
@@ -2627,7 +2627,7 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
               >
                 <div
                   class="centerOverlay box"
-                  style="width: 100%;"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
                   <div
                     class="loadingSpinnerContainer"

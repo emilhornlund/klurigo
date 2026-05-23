@@ -1100,7 +1100,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             >
               <div
                 class="centerOverlay box"
-                style="width: 100%;"
+                style="width: 100%; aspect-ratio: 1.6 / 1;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1386,7 +1386,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             >
               <div
                 class="centerOverlay box"
-                style="width: 100%;"
+                style="width: 100%; aspect-ratio: 1.6 / 1;"
               >
                 <div
                   class="loadingSpinnerContainer"
@@ -1692,7 +1692,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             >
               <div
                 class="centerOverlay box"
-                style="width: 100%;"
+                style="width: 100%; aspect-ratio: 1.6 / 1;"
               >
                 <div
                   class="loadingSpinnerContainer"

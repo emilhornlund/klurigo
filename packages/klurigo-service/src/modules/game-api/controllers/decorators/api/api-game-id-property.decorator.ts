@@ -1,6 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiProperty } from '@nestjs/swagger'
-import { ApiPropertyOptions } from '@nestjs/swagger/dist/decorators/api-property.decorator'
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 /**
