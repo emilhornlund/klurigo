@@ -144,7 +144,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                 >
                   <div
                     class="centerOverlay box"
-                    style="width: 100%;"
+                    style="width: 100%; aspect-ratio: 1.6 / 1;"
                   >
                     <div
                       class="loadingSpinnerContainer"
@@ -1060,7 +1060,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                 >
                   <div
                     class="centerOverlay box"
-                    style="width: 100%;"
+                    style="width: 100%; aspect-ratio: 1.6 / 1;"
                   >
                     <div
                       class="loadingSpinnerContainer"
@@ -1794,7 +1794,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                 >
                   <div
                     class="centerOverlay box"
-                    style="width: 100%;"
+                    style="width: 100%; aspect-ratio: 1.6 / 1;"
                   >
                     <div
                       class="loadingSpinnerContainer"
@@ -2398,7 +2398,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                 >
                   <div
                     class="centerOverlay box"
-                    style="width: 100%;"
+                    style="width: 100%; aspect-ratio: 1.6 / 1;"
                   >
                     <div
                       class="loadingSpinnerContainer"
@@ -2954,7 +2954,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                 >
                   <div
                     class="centerOverlay box"
-                    style="width: 100%;"
+                    style="width: 100%; aspect-ratio: 1.6 / 1;"
                   >
                     <div
                       class="loadingSpinnerContainer"
