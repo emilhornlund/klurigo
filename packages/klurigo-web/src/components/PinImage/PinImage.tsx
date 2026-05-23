@@ -243,13 +243,14 @@ const PinImage: FC<PinImageProps> = ({
     }
   }
 
-  const getToleranceDiameterPx = useCallback(
+  const getToleranceSizePx = useCallback(
     (tolerance?: QuestionPinTolerance) => {
-      if (!overlaySize.w || !overlaySize.h || !tolerance) return 0
-      const radius =
-        QUESTION_PIN_TOLERANCE_RADIUS[tolerance] *
-        Math.min(overlaySize.w, overlaySize.h)
-      return Math.max(0, radius * 2)
+      if (!overlaySize.w || !overlaySize.h || !tolerance) return undefined
+      const radius = QUESTION_PIN_TOLERANCE_RADIUS[tolerance]
+      return {
+        width: Math.max(0, radius * overlaySize.w * 2),
+        height: Math.max(0, radius * overlaySize.h * 2),
+      }
     },
     [overlaySize],
   )
@@ -280,7 +281,7 @@ const PinImage: FC<PinImageProps> = ({
             height={pinSizePx}
             x={interactivePinPosition.x}
             y={interactivePinPosition.y}
-            toleranceDiameterPx={getToleranceDiameterPx(value?.tolerance)}
+            toleranceSizePx={getToleranceSizePx(value?.tolerance)}
             color={disabled ? PinColor.Orange : value?.color}
             disabled={disabled}
           />
@@ -293,7 +294,7 @@ const PinImage: FC<PinImageProps> = ({
             height={pinSizePx}
             x={p.x}
             y={p.y}
-            toleranceDiameterPx={getToleranceDiameterPx(p.tolerance)}
+            toleranceSizePx={getToleranceSizePx(p.tolerance)}
             color={p.color}
             disabled={disabled}
           />

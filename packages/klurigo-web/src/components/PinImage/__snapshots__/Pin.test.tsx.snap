@@ -38,7 +38,7 @@ exports[`Pin > should match snapshot with default props (no tolerance) 1`] = `
 </div>
 `;
 
-exports[`Pin > should match snapshot with tolerance circle 1`] = `
+exports[`Pin > should match snapshot with tolerance area 1`] = `
 <div>
   <div
     class="pin"
@@ -46,7 +46,7 @@ exports[`Pin > should match snapshot with tolerance circle 1`] = `
   >
     <div
       class="tolerance"
-      style="width: 120px; height: 120px;"
+      style="width: 120px; height: 90px;"
     />
     <div
       class="dot"

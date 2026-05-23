@@ -11,7 +11,10 @@ interface PinProps {
   height: number
   x: number
   y: number
-  toleranceDiameterPx?: number
+  toleranceSizePx?: {
+    width: number
+    height: number
+  }
   color?: PinColor
   disabled?: boolean
 }
@@ -21,7 +24,7 @@ const Pin: FC<PinProps> = ({
   height,
   x,
   y,
-  toleranceDiameterPx = 0,
+  toleranceSizePx,
   color = PinColor.Blue,
   disabled,
 }) => (
@@ -34,12 +37,12 @@ const Pin: FC<PinProps> = ({
       top: `${y * 100}%`,
       ...(disabled ? { cursor: 'default' } : {}),
     }}>
-    {toleranceDiameterPx > 0 && (
+    {toleranceSizePx && (
       <div
         className={styles.tolerance}
         style={{
-          width: `${toleranceDiameterPx}px`,
-          height: `${toleranceDiameterPx}px`,
+          width: `${toleranceSizePx.width}px`,
+          height: `${toleranceSizePx.height}px`,
         }}
       />
     )}
