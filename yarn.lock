@@ -10191,10 +10191,10 @@ multer@2.1.1:
     concat-stream "^2.0.0"
     type-is "^1.6.18"
 
-murlock@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/murlock/-/murlock-4.4.0.tgz#44d4d078cd5c3609a887a5ffa54ad2c0545fcebc"
-  integrity sha512-pJnDajO3fgx1P23M4az6qi9nnmi4KlhffBYlttti65NUew6diamk45Wg1mcBF6OrMk4k4SzblwFFfYgknNvEhA==
+murlock@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/murlock/-/murlock-5.1.0.tgz#0b9f4adb66817f8cb7c1cdeba1f20912e80f9ef8"
+  integrity sha512-NKyxI1RNSxoz0LjAianbdJMSEXaC7/HHtbg2qWd83Ld4kY/rFN3Fc7koVtEtul/44MLR1TQwC94ggBfcBVrE8g==
   dependencies:
     "@nestjs/common" ">=10.0.5"
     "@nestjs/core" ">=10.0.5"
