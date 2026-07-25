@@ -10,12 +10,7 @@ import { writeFileSync } from 'fs'
  * - `undefined`
  */
 export type JSONValue =
-  | string
-  | number
-  | boolean
-  | JSONObject
-  | JSONArray
-  | undefined
+  string | number | boolean | JSONObject | JSONArray | undefined
 
 /**
  * An object whose keys are strings and whose values are valid JSON values.

@@ -110,5 +110,4 @@ export type QuizRatingAnonymousAuthorWithBase = QuizRatingAuthorBase &
  * Discriminated union of all supported quiz rating author types.
  */
 export type QuizRatingAuthor =
-  | QuizRatingUserAuthorWithBase
-  | QuizRatingAnonymousAuthorWithBase
+  QuizRatingUserAuthorWithBase | QuizRatingAnonymousAuthorWithBase

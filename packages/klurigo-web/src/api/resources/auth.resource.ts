@@ -354,8 +354,7 @@ export const createAuthResource = (
    */
   const updateUserProfile = (
     request:
-      | UpdateLocalUserProfileRequestDto
-      | UpdateGoogleUserProfileRequestDto,
+      UpdateLocalUserProfileRequestDto | UpdateGoogleUserProfileRequestDto,
   ): Promise<UserProfileResponseDto> =>
     api
       .apiPut<UserProfileResponseDto>('/profile/user', request)

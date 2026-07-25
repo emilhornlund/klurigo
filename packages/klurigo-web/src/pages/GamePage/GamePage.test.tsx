@@ -53,10 +53,7 @@ const h = vi.hoisted(() => {
     control: {
       event: null as unknown,
       status: 'INITIALIZED' as
-        | 'INITIALIZED'
-        | 'CONNECTED'
-        | 'RECONNECTING'
-        | 'RECONNECTING_FAILED',
+        'INITIALIZED' | 'CONNECTED' | 'RECONNECTING' | 'RECONNECTING_FAILED',
     },
     ConnectionStatus: {
       INITIALIZED: 'INITIALIZED',
