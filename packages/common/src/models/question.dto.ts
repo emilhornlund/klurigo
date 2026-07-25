@@ -61,9 +61,7 @@ export type QuestionVideoMediaDto = QuestionCommonMediaDto & {
  * that can be associated with a question.
  */
 export type QuestionMediaDto =
-  | QuestionImageMediaDto
-  | QuestionAudioMediaDto
-  | QuestionVideoMediaDto
+  QuestionImageMediaDto | QuestionAudioMediaDto | QuestionVideoMediaDto
 
 /**
  * Common properties shared across all question types.

@@ -277,12 +277,12 @@ export class GameService {
   ): Promise<GameParticipantPlayerDto[]> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameId)
 
-    return gameDocument.participants.filter(isParticipantPlayer).map(
-      ({ participantId, nickname }): GameParticipantPlayerDto => ({
+    return gameDocument.participants
+      .filter(isParticipantPlayer)
+      .map(({ participantId, nickname }): GameParticipantPlayerDto => ({
         id: participantId,
         nickname,
-      }),
-    )
+      }))
   }
 
   /**
