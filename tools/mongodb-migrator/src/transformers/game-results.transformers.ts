@@ -48,7 +48,7 @@ export function transformGameResultsDocument(
           {},
           'longestCorrectStreak',
         ),
-        score: extractValueOrThrow<number>(player, {}, 'score'),
+        score: Math.round(extractValueOrThrow<number>(player, {}, 'score')),
       }),
     ),
     questions: extractValueOrThrow<BSONDocument[]>(

@@ -422,7 +422,9 @@ function buildGameLeaderboardTaskItem(
         }
       : {}),
     nickname: extractValueOrThrow<string>(leaderboardTaskItem, {}, 'nickname'),
-    score: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'score'),
+    score: Math.round(
+      extractValueOrThrow<number>(leaderboardTaskItem, {}, 'score'),
+    ),
     streaks: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'streaks'),
   }
 }

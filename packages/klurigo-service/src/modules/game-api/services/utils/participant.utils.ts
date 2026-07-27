@@ -93,8 +93,8 @@ function calculateTotalScore(game: GameDocument): number {
 
     const playerCount = game.participants.filter(isParticipantPlayer).length
 
-    // average score if joining late in a 0-100 game
-    return sumOfTotalScores / playerCount
+    // average rounded score if joining late in a 0-100 game
+    return Math.round(sumOfTotalScores / playerCount)
   }
 
   return 0 // default initial totalScore
