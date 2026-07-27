@@ -17,11 +17,11 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '24'
 
@@ -29,7 +29,7 @@ jobs:
         run: npm install -g yarn@1.22.22
 
       - name: Cache Yarn cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         id: yarn-cache
         with:
           path: ~/.cache/yarn
@@ -59,7 +59,7 @@ jobs:
 
       - name: Cache Playwright browsers
         if: ${{ inputs.run_e2e }}
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/yarn.lock') }}
@@ -80,20 +80,20 @@ jobs:
 
       - name: Upload Klurigo artifacts for Sentry
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: klurigo-sentry-artifacts
           path: packages/klurigo-web/dist/assets/**/*.map
 
       - name: Upload Klurigo Service artifacts for Sentry
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: klurigo-service-sentry-artifacts
           path: packages/klurigo-service/dist/**/*.map
 
       - name: Upload coverage (common)
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
           files: ./packages/common/coverage/lcov.info
           flags: common
@@ -103,7 +103,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage (klurigo-web)
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
           files: ./packages/klurigo-web/coverage/lcov.info
           flags: klurigo-web
@@ -113,7 +113,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage (klurigo-service)
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
           files: ./packages/klurigo-service/coverage/lcov.info
           flags: klurigo-service
