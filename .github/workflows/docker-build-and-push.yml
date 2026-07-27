@@ -24,7 +24,7 @@ jobs:
     outputs:
       short_sha: ${{ steps.get_sha.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - id: get_sha
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
@@ -42,7 +42,7 @@ jobs:
       REGISTRY_HOST: emils-nuc-server:5000
       SHORT_SHA: ${{ needs.prepare.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Login to Private Docker Registry
         uses: docker/login-action@v4
