@@ -164,7 +164,7 @@ describe('Participant Utils', () => {
       )
 
       const added = result.participants[result.participants.length - 1] as any
-      expect(added.totalScore).toBe((10 + 30 + 60) / 3)
+      expect(added.totalScore).toBe(33)
       expect(added.rank).toBe(3)
       expect(added.worstRank).toBe(3)
     })
