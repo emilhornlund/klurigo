@@ -24,7 +24,7 @@ jobs:
     outputs:
       short_sha: ${{ steps.get_sha.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - id: get_sha
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
@@ -42,10 +42,10 @@ jobs:
       REGISTRY_HOST: emils-nuc-server:5000
       SHORT_SHA: ${{ needs.prepare.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Login to Private Docker Registry
-        uses: docker/login-action@v4
+        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7
         with:
           registry: ${{ env.REGISTRY_HOST }}
           username: ${{ secrets.REGISTRY_USER }}
@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Build & Push ${{ matrix.service }}
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a
         with:
           context: .
           file: ./packages/${{ matrix.service }}/Dockerfile
