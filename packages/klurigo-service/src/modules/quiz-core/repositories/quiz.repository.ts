@@ -182,6 +182,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
    * A quiz is included when it satisfies the following minimum criteria:
    *
    * - `visibility` is `QuizVisibility.Public`
+   * - `owner` contains a non-null owner reference
    * - `questions` array size is at least 10
    *
    * Quizzes without a cover image or without a meaningful description are
@@ -204,6 +205,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
     return this.quizModel
       .find({
         visibility: QuizVisibility.Public,
+        owner: { $exists: true, $ne: null },
         'questions.9': { $exists: true },
       })
       .sort({ _id: 1 })
