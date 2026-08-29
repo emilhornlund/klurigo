@@ -331,6 +331,11 @@ describe('QuizRepository', () => {
       await repo.findEligiblePublicQuizzes(100, 500)
 
       expect(findMock).toHaveBeenCalledTimes(1)
+      expect(findMock).toHaveBeenCalledWith({
+        visibility: QuizVisibility.Public,
+        owner: { $exists: true, $ne: null },
+        'questions.9': { $exists: true },
+      })
       expect(skipMock).toHaveBeenCalledWith(100)
       expect(limitMock).toHaveBeenCalledWith(500)
       expect(execMock).toHaveBeenCalledTimes(1)

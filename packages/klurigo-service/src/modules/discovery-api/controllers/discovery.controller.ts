@@ -11,6 +11,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Param,
   ParseIntPipe,
   Query,
@@ -64,6 +65,8 @@ import { DiscoveryResponse, PaginatedDiscoverySectionResponse } from './models'
 @RequiredAuthorities(Authority.Discovery)
 @Controller('discover')
 export class DiscoveryController {
+  private readonly logger = new Logger(DiscoveryController.name)
+
   /**
    * Creates a DiscoveryController.
    *
@@ -259,22 +262,50 @@ export class DiscoveryController {
 
   /**
    * Maps an ordered list of quiz IDs to DiscoveryQuizCardDto instances,
-   * preserving snapshot entry order. Missing quizzes are silently skipped.
+   * preserving snapshot entry order. Missing quizzes and quizzes without a
+   * valid populated owner are logged and skipped.
    */
   private hydrateCards(
     ids: string[],
     quizMap: Map<string, Quiz>,
   ): DiscoveryQuizCardDto[] {
-    return ids
-      .map((id) => quizMap.get(id))
-      .filter((quiz): quiz is Quiz => quiz != null)
-      .map((quiz) => this.mapQuizToCard(quiz))
+    const cards: DiscoveryQuizCardDto[] = []
+
+    for (const id of ids) {
+      const quiz = quizMap.get(id)
+      if (!quiz) {
+        this.logger.warn(
+          `Skipping discovery quiz '${id}' because the quiz document no longer exists.`,
+        )
+        continue
+      }
+
+      const card = this.mapQuizToCard(quiz)
+      if (card) cards.push(card)
+    }
+
+    return cards
   }
 
   /**
-   * Maps a Quiz document to a DiscoveryQuizCardDto.
+   * Maps a Quiz document to a DiscoveryQuizCardDto, or skips it when its owner
+   * reference could not be populated. This can happen when the owner was
+   * deleted after the snapshot was generated or when legacy data has no owner.
    */
-  private mapQuizToCard(quiz: Quiz): DiscoveryQuizCardDto {
+  private mapQuizToCard(quiz: Quiz): DiscoveryQuizCardDto | null {
+    const owner = quiz.owner
+    if (
+      owner == null ||
+      typeof owner !== 'object' ||
+      typeof owner._id !== 'string' ||
+      owner._id.length === 0
+    ) {
+      this.logger.warn(
+        `Skipping discovery quiz '${quiz._id}' because its owner is missing or invalid.`,
+      )
+      return null
+    }
+
     return {
       id: quiz._id,
       title: quiz.title,
@@ -285,8 +316,8 @@ export class DiscoveryController {
       mode: quiz.mode,
       numberOfQuestions: quiz.questions.length,
       author: {
-        id: quiz.owner._id,
-        name: quiz.owner.defaultNickname,
+        id: owner._id,
+        name: owner.defaultNickname,
       },
       gameplaySummary: {
         count: quiz.gameplaySummary.count,
