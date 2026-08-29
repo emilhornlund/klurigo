@@ -263,17 +263,28 @@ export class DiscoveryController {
   /**
    * Maps an ordered list of quiz IDs to DiscoveryQuizCardDto instances,
    * preserving snapshot entry order. Missing quizzes and quizzes without a
-   * valid populated owner are skipped.
+   * valid populated owner are logged and skipped.
    */
   private hydrateCards(
     ids: string[],
     quizMap: Map<string, Quiz>,
   ): DiscoveryQuizCardDto[] {
-    return ids
-      .map((id) => quizMap.get(id))
-      .filter((quiz): quiz is Quiz => quiz != null)
-      .map((quiz) => this.mapQuizToCard(quiz))
-      .filter((card): card is DiscoveryQuizCardDto => card != null)
+    const cards: DiscoveryQuizCardDto[] = []
+
+    for (const id of ids) {
+      const quiz = quizMap.get(id)
+      if (!quiz) {
+        this.logger.warn(
+          `Skipping discovery quiz '${id}' because the quiz document no longer exists.`,
+        )
+        continue
+      }
+
+      const card = this.mapQuizToCard(quiz)
+      if (card) cards.push(card)
+    }
+
+    return cards
   }
 
   /**

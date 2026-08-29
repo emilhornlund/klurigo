@@ -227,6 +227,34 @@ describe(DiscoveryController.name, () => {
       expect(result.offset).toBe(0)
     })
 
+    it('skips quizzes with a missing owner while retaining valid results', async () => {
+      const section: DiscoverySnapshotSection = {
+        key: DiscoverySectionKey.TOP_RATED,
+        entries: [
+          { quizId: 'missing-owner', score: 90 },
+          { quizId: 'valid-owner', score: 80 },
+        ],
+      } as DiscoverySnapshotSection
+      snapshotRepo.findLatest.mockResolvedValueOnce(makeSnapshot([section]))
+
+      const quizWithoutOwner = {
+        ...makeQuiz('missing-owner'),
+        owner: null,
+      } as unknown as Quiz
+      quizRepo.findManyByIds.mockResolvedValueOnce([
+        quizWithoutOwner,
+        makeQuiz('valid-owner'),
+      ])
+
+      const result = await controller.getSection(
+        DiscoverySectionKey.TOP_RATED,
+        10,
+        0,
+      )
+
+      expect(result.results.map((quiz) => quiz.id)).toEqual(['valid-owner'])
+    })
+
     it('applies offset correctly', async () => {
       const section = makeSection(DiscoverySectionKey.TOP_RATED, 30)
       const snapshot = makeSnapshot([section])
