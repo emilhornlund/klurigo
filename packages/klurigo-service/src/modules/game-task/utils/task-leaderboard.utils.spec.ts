@@ -157,7 +157,7 @@ describe('Task Leaderboard Utils', () => {
       expect(noRankEntry?.previousPosition).toBeUndefined()
     })
 
-    it('includes players without result entries and keeps their stats unchanged', () => {
+    it('includes late players without result entries and recalculates their position', () => {
       const withResultId = uuidv4()
       const withoutResultId = uuidv4()
 
@@ -218,7 +218,7 @@ describe('Task Leaderboard Utils', () => {
       expect(withoutResultEntry).toMatchObject({
         playerId: withoutResultId,
         nickname: 'WithoutResult',
-        position: 5,
+        position: 2,
         previousPosition: 5,
         score: 30,
         streaks: 3,
@@ -228,9 +228,117 @@ describe('Task Leaderboard Utils', () => {
         (p) => p.participantId === withoutResultId,
       ) as typeof withoutResult
 
-      expect(persistedWithoutResult.rank).toBe(5)
+      expect(persistedWithoutResult.rank).toBe(2)
       expect(persistedWithoutResult.totalScore).toBe(30)
       expect(persistedWithoutResult.currentStreak).toBe(3)
+    })
+
+    it('recalculates all ranks when a late zero-score player was assigned rank one', () => {
+      const highScoreId = uuidv4()
+      const lowScoreId = uuidv4()
+      const latePlayerId = uuidv4()
+
+      const highScore = buildPlayerParticipant({
+        participantId: highScoreId,
+        rank: 0,
+        totalScore: 0,
+      })
+      const lowScore = buildPlayerParticipant({
+        participantId: lowScoreId,
+        rank: 0,
+        totalScore: 0,
+      })
+      const latePlayer = buildPlayerParticipant({
+        participantId: latePlayerId,
+        rank: 1,
+        totalScore: 0,
+      })
+
+      const game = buildGameDocument({
+        mode: GameMode.Classic,
+        participants: [highScore, lowScore, latePlayer],
+        currentTask: buildQuestionResultTask({
+          results: [
+            buildQuestionResultTaskItem({
+              playerId: highScoreId,
+              totalScore: 100,
+              position: 1,
+            }),
+            buildQuestionResultTaskItem({
+              playerId: lowScoreId,
+              totalScore: 50,
+              position: 2,
+            }),
+          ],
+        }),
+      })
+
+      const leaderboard = updateParticipantsAndBuildLeaderboard(game)
+
+      expect(
+        leaderboard.map(({ playerId, position }) => [playerId, position]),
+      ).toEqual([
+        [highScoreId, 1],
+        [lowScoreId, 2],
+        [latePlayerId, 3],
+      ])
+      expect(highScore.rank).toBe(1)
+      expect(lowScore.rank).toBe(2)
+      expect(latePlayer.rank).toBe(3)
+    })
+
+    it('places a late ZeroToOneHundred player using the initialized score', () => {
+      const firstPlayerId = uuidv4()
+      const secondPlayerId = uuidv4()
+      const latePlayerId = uuidv4()
+
+      const firstPlayer = buildPlayerParticipant({
+        participantId: firstPlayerId,
+        rank: 1,
+        totalScore: 10,
+      })
+      const secondPlayer = buildPlayerParticipant({
+        participantId: secondPlayerId,
+        rank: 2,
+        totalScore: 60,
+      })
+      const latePlayer = buildPlayerParticipant({
+        participantId: latePlayerId,
+        rank: 3,
+        totalScore: 35,
+      })
+
+      const game = buildGameDocument({
+        mode: GameMode.ZeroToOneHundred,
+        participants: [firstPlayer, secondPlayer, latePlayer],
+        currentTask: buildQuestionResultTask({
+          results: [
+            buildQuestionResultTaskItem({
+              playerId: firstPlayerId,
+              totalScore: 20,
+              position: 1,
+              totalResponseTime: 1000,
+            }),
+            buildQuestionResultTaskItem({
+              playerId: secondPlayerId,
+              totalScore: 80,
+              position: 2,
+              totalResponseTime: 2000,
+            }),
+          ],
+        }),
+      })
+
+      const leaderboard = updateParticipantsAndBuildLeaderboard(game)
+
+      expect(
+        leaderboard.map(({ playerId, position }) => [playerId, position]),
+      ).toEqual([
+        [firstPlayerId, 1],
+        [latePlayerId, 2],
+        [secondPlayerId, 3],
+      ])
+      expect(latePlayer.rank).toBe(2)
     })
 
     it('sorts players using Classic mode comparator when mode is Classic', () => {
