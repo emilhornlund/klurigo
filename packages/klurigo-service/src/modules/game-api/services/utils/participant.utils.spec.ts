@@ -3,7 +3,11 @@ import { GameMode, GameParticipantType } from '@klurigo/common'
 import {
   createMockGameDocument,
   createMockGamePlayerParticipantDocument,
+  createMockLeaderboardTaskDocument,
+  createMockLeaderboardTaskItem,
   createMockLobbyTaskDocument,
+  createMockQuestionResultTaskDocument,
+  createMockQuestionResultTaskItemDocument,
   createMockQuestionTaskDocument,
 } from '../../../../../test-utils/data'
 
@@ -113,6 +117,166 @@ describe('Participant Utils', () => {
       expect(added.rank).toBe(6)
       expect(added.worstRank).toBe(6)
       expect(added.totalScore).toBe(0)
+    })
+
+    it('ranks a joiner below the current question result when participant ranks are stale', () => {
+      const firstPlayerId = 'player-1'
+      const secondPlayerId = 'player-2'
+      const game = createMockGameDocument({
+        mode: GameMode.Classic,
+        currentTask: createMockQuestionResultTaskDocument({
+          results: [
+            createMockQuestionResultTaskItemDocument({
+              playerId: firstPlayerId,
+              totalScore: 100,
+              position: 1,
+              totalResponseTime: 1000,
+            }),
+            createMockQuestionResultTaskItemDocument({
+              playerId: secondPlayerId,
+              totalScore: 50,
+              position: 2,
+              totalResponseTime: 2000,
+            }),
+          ],
+        }),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: firstPlayerId,
+            rank: 0,
+            totalScore: 0,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: secondPlayerId,
+            rank: 0,
+            totalScore: 0,
+          }),
+        ],
+      })
+
+      const result = addPlayerParticipantToGame(
+        game as never,
+        'player-3',
+        'Late Joiner',
+      )
+
+      const added = result.participants[result.participants.length - 1] as any
+      expect(added.rank).toBe(3)
+      expect(added.totalScore).toBe(0)
+    })
+
+    it('ranks a ZeroToOneHundred joiner using the rounded initialized score', () => {
+      const firstPlayerId = 'player-1'
+      const secondPlayerId = 'player-2'
+      const game = createMockGameDocument({
+        mode: GameMode.ZeroToOneHundred,
+        currentTask: createMockQuestionResultTaskDocument({
+          results: [
+            createMockQuestionResultTaskItemDocument({
+              playerId: firstPlayerId,
+              totalScore: 20,
+              position: 1,
+              totalResponseTime: 1000,
+            }),
+            createMockQuestionResultTaskItemDocument({
+              playerId: secondPlayerId,
+              totalScore: 80,
+              position: 2,
+              totalResponseTime: 2000,
+            }),
+          ],
+        }),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: firstPlayerId,
+            rank: 1,
+            totalScore: 10,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: secondPlayerId,
+            rank: 2,
+            totalScore: 60,
+          }),
+        ],
+      })
+
+      const result = addPlayerParticipantToGame(
+        game as never,
+        'player-3',
+        'Average Starter',
+      )
+
+      const added = result.participants[result.participants.length - 1] as any
+      expect(added.totalScore).toBe(35)
+      expect(added.rank).toBe(2)
+    })
+
+    it('uses established participant scores while the next question is active', () => {
+      const game = createMockGameDocument({
+        mode: GameMode.ZeroToOneHundred,
+        currentTask: createMockQuestionTaskDocument(),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'player-1',
+            rank: 1,
+            totalScore: 10,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: 'player-2',
+            rank: 2,
+            totalScore: 60,
+          }),
+        ],
+      })
+
+      const result = addPlayerParticipantToGame(
+        game as never,
+        'player-3',
+        'Average Starter',
+      )
+
+      const added = result.participants[result.participants.length - 1] as any
+      expect(added.totalScore).toBe(35)
+      expect(added.rank).toBe(2)
+    })
+
+    it('uses the current leaderboard snapshot when assigning a late-join rank', () => {
+      const game = createMockGameDocument({
+        mode: GameMode.Classic,
+        currentTask: createMockLeaderboardTaskDocument({
+          leaderboard: [
+            createMockLeaderboardTaskItem({
+              playerId: 'player-1',
+              score: 100,
+              position: 1,
+            }),
+            createMockLeaderboardTaskItem({
+              playerId: 'player-2',
+              score: 50,
+              position: 2,
+            }),
+          ],
+        }),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'player-1',
+            rank: 0,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: 'player-2',
+            rank: 0,
+          }),
+        ],
+      })
+
+      const result = addPlayerParticipantToGame(
+        game as never,
+        'player-3',
+        'Late Joiner',
+      )
+
+      const added = result.participants[result.participants.length - 1] as any
+      expect(added.rank).toBe(3)
     })
 
     it('when not Lobby and there are no existing PLAYER participants, sets rank=1 (first non-lobby rank)', () => {

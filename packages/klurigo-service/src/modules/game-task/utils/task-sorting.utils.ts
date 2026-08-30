@@ -1,5 +1,10 @@
 import { QuestionResultTaskItem } from '../../game-core/repositories/models/schemas'
 
+type QuestionResultRankingData = Pick<
+  QuestionResultTaskItem,
+  'totalScore' | 'totalResponseTime'
+>
+
 /**
  * Compares two numeric values for sorting in descending order.
  *
@@ -54,8 +59,8 @@ function compareNumbersAsc(lhs: number, rhs: number): number {
  * - `0` if both items are considered equal for ranking
  */
 export function compareClassicModeQuestionResultTaskItemByScoreThenTime(
-  lhs: QuestionResultTaskItem,
-  rhs: QuestionResultTaskItem,
+  lhs: QuestionResultRankingData,
+  rhs: QuestionResultRankingData,
 ): number {
   const scoreCmp = compareNumbersDesc(lhs.totalScore, rhs.totalScore)
   if (scoreCmp !== 0) {
@@ -84,8 +89,8 @@ export function compareClassicModeQuestionResultTaskItemByScoreThenTime(
  * - `0` if both items are considered equal for ranking
  */
 export function compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime(
-  lhs: QuestionResultTaskItem,
-  rhs: QuestionResultTaskItem,
+  lhs: QuestionResultRankingData,
+  rhs: QuestionResultRankingData,
 ): number {
   const scoreCmp = compareNumbersAsc(lhs.totalScore, rhs.totalScore)
   if (scoreCmp !== 0) {

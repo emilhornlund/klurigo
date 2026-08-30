@@ -1,4 +1,4 @@
-import { GameParticipantType } from '@klurigo/common'
+import { GameMode } from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -7,8 +7,13 @@ import {
   LeaderboardTaskWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import { isParticipantPlayer } from '../../game-core/utils'
 import { IllegalTaskTypeException } from '../exceptions'
 
+import {
+  compareClassicModeQuestionResultTaskItemByScoreThenTime,
+  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime,
+} from './task-sorting.utils'
 import { isQuestionResultTask } from './task-type-guards'
 
 /**
@@ -18,7 +23,8 @@ import { isQuestionResultTask } from './task-type-guards'
  * The function:
  * - Reads each player's previous rank (if any).
  * - Applies the new score, streak, and position from the current task results.
- * - Sorts players by their current rank.
+ * - Sorts all eligible players by the current mode's score and response-time rules.
+ * - Reassigns every participant's rank so late joiners cannot leave duplicate or stale positions.
  * - Produces leaderboard entries that include both current and previous positions.
  *
  * @param gameDocument - The current game document containing a QuestionResult task.
@@ -35,8 +41,8 @@ export function updateParticipantsAndBuildLeaderboard(
     )
   }
 
-  return gameDocument.participants
-    .filter((participant) => participant.type === GameParticipantType.PLAYER)
+  const rankedParticipants = gameDocument.participants
+    .filter(isParticipantPlayer)
     .map((participant) => {
       const previousRank =
         typeof participant.rank === 'number' && participant.rank > 0
@@ -58,21 +64,43 @@ export function updateParticipantsAndBuildLeaderboard(
         participant.responseCount = resultEntry.responseCount
       }
 
-      return { participant, previousRank }
+      return {
+        participant,
+        previousRank,
+        resultEntry,
+      }
     })
     .filter(
-      ({ participant }) =>
-        typeof participant.rank === 'number' && participant.rank > 0,
+      ({ participant, resultEntry }) =>
+        resultEntry !== undefined ||
+        (typeof participant.rank === 'number' && participant.rank > 0),
     )
-    .sort((a, b) => a.participant.rank - b.participant.rank)
-    .map(({ participant, previousRank }) => ({
-      playerId: participant.participantId,
-      nickname: participant.nickname,
-      position: participant.rank,
-      previousPosition: previousRank,
-      score: participant.totalScore,
-      streaks: participant.currentStreak,
-    }))
+
+  const compare =
+    gameDocument.mode === GameMode.Classic
+      ? compareClassicModeQuestionResultTaskItemByScoreThenTime
+      : compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime
+
+  return rankedParticipants
+    .sort((a, b) =>
+      compare(a.resultEntry ?? a.participant, b.resultEntry ?? b.participant),
+    )
+    .map(({ participant, previousRank }, index) => {
+      const position = index + 1
+      participant.rank = position
+      if (participant.rank > participant.worstRank) {
+        participant.worstRank = participant.rank
+      }
+
+      return {
+        playerId: participant.participantId,
+        nickname: participant.nickname,
+        position,
+        previousPosition: previousRank,
+        score: participant.totalScore,
+        streaks: participant.currentStreak,
+      }
+    })
 }
 
 /**
