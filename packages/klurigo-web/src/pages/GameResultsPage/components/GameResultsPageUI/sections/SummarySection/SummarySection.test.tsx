@@ -286,14 +286,12 @@ describe('SummarySection', () => {
         rank: 1,
         score: 120,
         averageResponseTime: 2.1,
-        longestCorrectStreak: 2,
         player: { nickname: 'Carol' },
       },
       {
         rank: 2,
         score: 90,
         averageResponseTime: 2.7,
-        longestCorrectStreak: 3,
         player: { nickname: 'Dave' },
       },
     ] as unknown as GameResultDto['playerMetrics']
@@ -326,6 +324,7 @@ describe('SummarySection', () => {
     expect(h.getCorrectPercentage).not.toHaveBeenCalled()
     expect(h.getQuizDifficultyMessage).toHaveBeenCalledWith(50)
     expect(screen.getByText('Difficulty: 50%')).toBeInTheDocument()
+    expect(screen.queryByText('Longest Correct Streak')).toBeNull()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
     const playersItem = within(detailsCard)

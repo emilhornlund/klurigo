@@ -104,7 +104,6 @@ const makeZ2HResults = (name: string): Z2HResult => ({
       averagePrecision: 0.8,
       unanswered: 0,
       averageResponseTime: 2100,
-      longestCorrectStreak: 2,
       score: 10,
     },
     {
@@ -114,7 +113,6 @@ const makeZ2HResults = (name: string): Z2HResult => ({
       averagePrecision: 0.6,
       unanswered: 1,
       averageResponseTime: 2600,
-      longestCorrectStreak: 1,
       score: 5,
     },
   ],

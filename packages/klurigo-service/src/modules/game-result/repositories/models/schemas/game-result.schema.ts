@@ -71,10 +71,12 @@ export class PlayerMetric {
   averageResponseTime: number
 
   /**
-   * The longest streak of consecutive correct answers by the player.
+   * The longest streak of consecutive correct answers by the player in Classic
+   * mode. This remains optional so legacy and newly persisted
+   * ZeroToOneHundred results remain readable.
    */
-  @Prop({ type: Number, required: true })
-  longestCorrectStreak: number
+  @Prop({ type: Number, required: false })
+  longestCorrectStreak?: number
 
   /**
    * The player's total score at the end of the game.

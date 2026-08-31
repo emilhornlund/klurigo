@@ -51,7 +51,6 @@ const buildZeroToOneHundredPlayerMetric = (args: {
   comebackRankGain?: number
   unanswered?: number
   averageResponseTime: number
-  longestCorrectStreak: number
   score?: number
   averagePrecision: number
 }): GameResultZeroToOneHundredModePlayerMetricDto => ({
@@ -60,7 +59,6 @@ const buildZeroToOneHundredPlayerMetric = (args: {
   comebackRankGain: args.comebackRankGain ?? 0,
   unanswered: args.unanswered ?? 0,
   averageResponseTime: args.averageResponseTime,
-  longestCorrectStreak: args.longestCorrectStreak,
   score: args.score ?? 0,
   averagePrecision: args.averagePrecision,
 })
@@ -165,7 +163,7 @@ describe('summary-section.metrics', () => {
   describe('getLongestCorrectStreakMetric', () => {
     it('returns null when there are no players', () => {
       const result = getLongestCorrectStreakMetric(
-        [] as unknown as GameResultDto['playerMetrics'],
+        [] as unknown as GameResultClassicModePlayerMetricDto[],
       )
       expect(result).toBeNull()
     })
@@ -189,7 +187,9 @@ describe('summary-section.metrics', () => {
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
-      const result = getLongestCorrectStreakMetric(playerMetrics)
+      const result = getLongestCorrectStreakMetric(
+        playerMetrics as unknown as GameResultClassicModePlayerMetricDto[],
+      )
 
       expect(result).toEqual({
         value: 7,
@@ -216,7 +216,9 @@ describe('summary-section.metrics', () => {
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
-      const result = getLongestCorrectStreakMetric(playerMetrics)
+      const result = getLongestCorrectStreakMetric(
+        playerMetrics as unknown as GameResultClassicModePlayerMetricDto[],
+      )
 
       expect(result?.value).toBe(5)
       expect(result?.players.map((p) => p.nickname)).toEqual(['Anna', 'Zoe'])
@@ -356,13 +358,11 @@ describe('summary-section.metrics', () => {
         buildZeroToOneHundredPlayerMetric({
           player: alice,
           averageResponseTime: 1200,
-          longestCorrectStreak: 2,
           averagePrecision: 0.84,
         }),
         buildZeroToOneHundredPlayerMetric({
           player: bob,
           averageResponseTime: 900,
-          longestCorrectStreak: 3,
           averagePrecision: 0.901,
         }),
       ] as unknown as GameResultDto['playerMetrics']
@@ -387,19 +387,16 @@ describe('summary-section.metrics', () => {
         buildZeroToOneHundredPlayerMetric({
           player: zoe,
           averageResponseTime: 1000,
-          longestCorrectStreak: 1,
           averagePrecision: 0.9,
         }),
         buildZeroToOneHundredPlayerMetric({
           player: anna,
           averageResponseTime: 1100,
-          longestCorrectStreak: 2,
           averagePrecision: 0.9,
         }),
         buildZeroToOneHundredPlayerMetric({
           player: bob,
           averageResponseTime: 900,
-          longestCorrectStreak: 3,
           averagePrecision: 0.89,
         }),
       ] as unknown as GameResultDto['playerMetrics']
@@ -524,14 +521,12 @@ describe('summary-section.metrics', () => {
         buildZeroToOneHundredPlayerMetric({
           player: alice,
           averageResponseTime: 1200,
-          longestCorrectStreak: 2,
           averagePrecision: 0.84,
           comebackRankGain: 2,
         }),
         buildZeroToOneHundredPlayerMetric({
           player: bob,
           averageResponseTime: 900,
-          longestCorrectStreak: 3,
           averagePrecision: 0.901,
           comebackRankGain: 1,
         }),

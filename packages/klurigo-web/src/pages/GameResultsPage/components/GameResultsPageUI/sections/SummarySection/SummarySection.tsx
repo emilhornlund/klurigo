@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   GameMode,
+  type GameResultClassicModePlayerMetricDto,
   type GameResultClassicModeQuestionMetricDto,
   type GameResultDto,
   type GameResultParticipantDto,
@@ -162,8 +163,13 @@ const SummarySection: FC<SummarySectionProps> = ({
   )
 
   const longestCorrectStreakMetric = useMemo<Metric | null>(
-    () => getLongestCorrectStreakMetric(playerMetrics),
-    [playerMetrics],
+    () =>
+      mode === GameMode.Classic
+        ? getLongestCorrectStreakMetric(
+            playerMetrics as GameResultClassicModePlayerMetricDto[],
+          )
+        : null,
+    [mode, playerMetrics],
   )
 
   const mostAccuratePlayer = useMemo<Metric | null>(
@@ -332,7 +338,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           />
         )}
 
-        {longestCorrectStreakMetric && (
+        {mode === GameMode.Classic && longestCorrectStreakMetric && (
           <MetricCard
             title="Longest Correct Streak"
             value={`${longestCorrectStreakMetric.value}`}

@@ -296,59 +296,87 @@ export type GameResultHostEvent = {
   pagination: PaginationEvent
 }
 
+/**
+ * Score fields shared by player result events in every game mode.
+ */
 export type GameResultPlayerEventScore = {
   correct: boolean
   last: number
   total: number
   position: number
+}
+
+/**
+ * Score fields for a Classic player result event.
+ *
+ * Streaks are a Classic-only gameplay metric.
+ */
+export type GameResultPlayerEventClassicScore = GameResultPlayerEventScore & {
   streak: number
 }
+
+/**
+ * Score fields for a ZeroToOneHundred player result event.
+ *
+ * ZeroToOneHundred does not expose streak metrics.
+ */
+export type GameResultPlayerEventZeroToOneHundredScore =
+  GameResultPlayerEventScore
 
 export type GameResultPlayerEventBehind = {
   points: number
   nickname: string
 }
 
-export type GameResultPlayerEvent = {
-  type: GameEventType.GameResultPlayer
-  game: {
-    mode: GameMode
-  }
-  player: {
-    nickname: string
-    score: GameResultPlayerEventScore
-    behind?: GameResultPlayerEventBehind
-  }
-  pagination: PaginationEvent
+/**
+ * Player result event contracts are mode-specific so ZeroToOneHundred cannot
+ * expose a streak value that is not meaningful for that mode.
+ */
+export type GameResultPlayerEvent =
+  | {
+      type: GameEventType.GameResultPlayer
+      game: { mode: GameMode.Classic }
+      player: {
+        nickname: string
+        score: GameResultPlayerEventClassicScore
+        behind?: GameResultPlayerEventBehind
+      }
+      pagination: PaginationEvent
+    }
+  | {
+      type: GameEventType.GameResultPlayer
+      game: { mode: GameMode.ZeroToOneHundred }
+      player: {
+        nickname: string
+        score: GameResultPlayerEventZeroToOneHundredScore
+        behind?: GameResultPlayerEventBehind
+      }
+      pagination: PaginationEvent
+    }
+
+type GameLeaderboardHostEntry = {
+  position: number
+  previousPosition?: number
+  nickname: string
+  score: number
 }
 
-export type GameLeaderboardHostEvent = {
-  type: GameEventType.GameLeaderboardHost
-  game: {
-    pin: string
-  }
-  leaderboard: {
-    position: number
-    previousPosition?: number
-    nickname: string
-    score: number
-    streaks: number
-  }[]
-  pagination: PaginationEvent
-}
-
-export type GamePodiumHostEvent = {
-  type: GameEventType.GamePodiumHost
-  game: {
-    name: string
-  }
-  leaderboard: { position: number; nickname: string; score: number }[]
-}
-
-export type GameQuitEvent = {
-  type: GameEventType.GameQuitEvent
-  status: GameStatus
-}
+/**
+ * Host leaderboard events retain streaks only for Classic mode.
+ */
+export type GameLeaderboardHostEvent =
+  | {
+      type: GameEventType.GameLeaderboardHost
+      game: { pin: string; mode: GameMode.Classic }
+      leaderboard: (GameLeaderboardHostEntry & { streaks: number })[]
+      pagination: PaginationEvent
+    }
+  | {
+      type: GameEventType.GameLeaderboardHost
+      game: { pin: string; mode: GameMode.ZeroToOneHundred }
+      leaderboard: GameLeaderboardHostEntry[]
+      pagination: PaginationEvent
+    }
 
 export type GameOverPlayerEventBehind = {
   readonly points: number
@@ -361,26 +389,57 @@ export type GameOverPlayerEventRating = {
   readonly comment?: string
 }
 
-export type GameOverPlayerEvent = {
-  type: GameEventType.GameOverPlayer
+type GameOverPlayerEventPlayer = {
+  nickname: string
+  rank: number
+  totalPlayers: number
+  score: number
+  comebackRankGain: number
+  behind: GameOverPlayerEventBehind | null
+}
+
+type GameOverPlayerEventQuiz = {
+  id: string
+  title: string
+}
+
+/**
+ * Game-over event contracts are mode-specific. Current streak is retained for
+ * Classic and omitted from ZeroToOneHundred.
+ */
+export type GameOverPlayerEvent =
+  | {
+      type: GameEventType.GameOverPlayer
+      game: {
+        id: string
+        mode: GameMode.Classic
+      }
+      quiz: GameOverPlayerEventQuiz
+      player: GameOverPlayerEventPlayer & { currentStreak: number }
+      rating: GameOverPlayerEventRating
+    }
+  | {
+      type: GameEventType.GameOverPlayer
+      game: {
+        id: string
+        mode: GameMode.ZeroToOneHundred
+      }
+      quiz: GameOverPlayerEventQuiz
+      player: GameOverPlayerEventPlayer
+      rating: GameOverPlayerEventRating
+    }
+
+export type GamePodiumHostEvent = {
+  type: GameEventType.GamePodiumHost
   game: {
-    id: string
-    mode: GameMode
+    name: string
   }
-  quiz: {
-    id: string
-    title: string
-  }
-  player: {
-    nickname: string
-    rank: number
-    totalPlayers: number
-    score: number
-    currentStreak: number
-    comebackRankGain: number
-    behind: GameOverPlayerEventBehind | null
-  }
-  rating: GameOverPlayerEventRating
+  leaderboard: { position: number; nickname: string; score: number }[]
+}
+
+export type GameQuitEvent = {
+  type: GameEventType.GameQuitEvent
+  status: GameStatus
 }
 
 export type GameEvent =

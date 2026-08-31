@@ -1,4 +1,8 @@
-import { GameEventType, GameMode } from '@klurigo/common'
+import {
+  GameEventType,
+  GameMode,
+  type GameResultPlayerEvent,
+} from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { act } from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -498,21 +502,23 @@ describe('PlayerResultState', () => {
       const { container } = render(
         <MemoryRouter>
           <PlayerResultState
-            event={{
-              type: GameEventType.GameResultPlayer,
-              game: { mode: GameMode.ZeroToOneHundred },
-              player: {
-                nickname: 'ZTOHPlayer',
-                score: {
-                  correct: true,
-                  last: -10,
-                  total: 24,
-                  position: 1,
-                  streak: 3,
+            event={
+              {
+                type: GameEventType.GameResultPlayer,
+                game: { mode: GameMode.ZeroToOneHundred },
+                player: {
+                  nickname: 'ZTOHPlayer',
+                  score: {
+                    correct: true,
+                    last: -10,
+                    total: 24,
+                    position: 1,
+                    streak: 10,
+                  },
                 },
-              },
-              pagination: { current: 1, total: 20 },
-            }}
+                pagination: { current: 1, total: 20 },
+              } as unknown as GameResultPlayerEvent
+            }
           />
         </MemoryRouter>,
       )
@@ -527,6 +533,7 @@ describe('PlayerResultState', () => {
       expect(positionBatch).not.toHaveClass('hidden')
 
       expect(h.getPositionMessage).toHaveBeenCalledWith(1, true)
+      expect(screen.queryByText('Streak')).toBeNull()
     })
 
     it('ZeroToOneHundred does not rely on the 8s timer to reveal position', () => {

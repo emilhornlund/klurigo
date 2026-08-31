@@ -516,6 +516,7 @@ describe(GameResultService.name, () => {
         expect(me).toBeDefined()
         expect(me && 'correct' in me ? me.correct : undefined).toBe(5)
         expect(me && 'incorrect' in me ? me.incorrect : undefined).toBe(5)
+        expect(me).toHaveProperty('longestCorrectStreak', 0)
 
         expect(result.questionMetrics).toHaveLength(2)
 
@@ -621,6 +622,7 @@ describe(GameResultService.name, () => {
               nickname: 'P1',
               rank: 1,
               averagePrecision: 88,
+              longestCorrectStreak: 99,
             }),
             asPlayerMetric({
               participantId: 'p-2',
@@ -676,6 +678,7 @@ describe(GameResultService.name, () => {
         expect(
           p2 && 'averagePrecision' in p2 ? p2.averagePrecision : undefined,
         ).toBe(0)
+        expect(p2).not.toHaveProperty('longestCorrectStreak')
 
         expect(result.questionMetrics).toHaveLength(2)
         expect(result.questionMetrics[0]).toMatchObject({

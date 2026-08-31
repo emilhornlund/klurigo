@@ -44,11 +44,13 @@ export type LeaderboardValue = {
 export type LeaderboardProps = {
   values: LeaderboardValue[]
   includePodium?: boolean
+  showStreaks?: boolean
 }
 
 const Leaderboard: FC<LeaderboardProps> = ({
   values,
   includePodium = true,
+  showStreaks = true,
 }) => {
   const displayedValues = includePodium
     ? values.slice(0, 5)
@@ -98,7 +100,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
                 </div>
               )}
 
-              {!!streaks && (
+              {showStreaks && !!streaks && (
                 <span className={classNames(styles.column, styles.streaks)}>
                   <StreakBadge
                     streak={streaks}

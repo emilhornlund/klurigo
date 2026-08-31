@@ -82,7 +82,6 @@ export const ZeroToOneHundred = {
           last: -10,
           total: 24,
           position: 1,
-          streak: 3,
         },
         behind: {
           points: 12,

@@ -65,7 +65,7 @@ export const getFastestOverallPlayerMetric = (
  * @returns The longest correct streak metric, or `null` if no players exist.
  */
 export const getLongestCorrectStreakMetric = (
-  playerMetrics: GameResultDto['playerMetrics'],
+  playerMetrics: GameResultClassicModePlayerMetricDto[],
 ): Metric | null => {
   if (playerMetrics.length === 0) {
     return null

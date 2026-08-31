@@ -114,7 +114,7 @@ function buildPlayerMetrics(
         leaderboard.find(
           ({ playerId }) => playerId === participantPlayer.participantId,
         ) || {}
-      return questionResultTasks.reduce(
+      const metric = questionResultTasks.reduce(
         (accumulator, { results }) => {
           const { correct, answer, streak, lastScore } = results?.find(
             ({ playerId }) => playerId === participantPlayer.participantId,
@@ -134,10 +134,14 @@ function buildPlayerMetrics(
               lastScore,
             ),
             unanswered: accumulator.unanswered + (answer ? 0 : 1),
-            longestCorrectStreak:
-              streak > accumulator.longestCorrectStreak
-                ? streak
-                : accumulator.longestCorrectStreak,
+            ...(mode === GameMode.Classic
+              ? {
+                  longestCorrectStreak:
+                    streak > (accumulator.longestCorrectStreak ?? 0)
+                      ? streak
+                      : (accumulator.longestCorrectStreak ?? 0),
+                }
+              : {}),
           }
         },
         {
@@ -153,10 +157,19 @@ function buildPlayerMetrics(
             participantPlayer.totalResponseTime,
             participantPlayer.responseCount,
           ),
-          longestCorrectStreak: 0,
+          longestCorrectStreak: mode === GameMode.Classic ? 0 : undefined,
           score,
         },
       )
+
+      const { longestCorrectStreak, ...metricWithoutStreak } = metric
+
+      return {
+        ...metricWithoutStreak,
+        ...(mode === GameMode.Classic
+          ? { longestCorrectStreak: longestCorrectStreak ?? 0 }
+          : {}),
+      }
     })
     .map((metric) => ({
       ...metric,

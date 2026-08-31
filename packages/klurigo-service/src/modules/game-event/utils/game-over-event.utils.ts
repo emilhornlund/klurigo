@@ -1,5 +1,6 @@
 import {
   GameEventType,
+  GameMode,
   GameOverPlayerEvent,
   GameOverPlayerEventBehind,
 } from '@klurigo/common'
@@ -36,8 +37,8 @@ export function buildGameOverPlayerEvent(
 
   const behind = buildBehind(playerParticipants, player)
 
-  return {
-    type: GameEventType.GameOverPlayer,
+  const baseEvent = {
+    type: GameEventType.GameOverPlayer as const,
     game: {
       id: game._id,
       mode: game.mode,
@@ -51,7 +52,6 @@ export function buildGameOverPlayerEvent(
       rank: player.rank,
       totalPlayers,
       score: player.totalScore,
-      currentStreak: player.currentStreak,
       comebackRankGain,
       behind,
     },
@@ -60,6 +60,19 @@ export function buildGameOverPlayerEvent(
       stars: metadata.podiumRatingStars,
       comment: metadata.podiumRatingComment,
     },
+  }
+
+  if (game.mode === GameMode.Classic) {
+    return {
+      ...baseEvent,
+      game: { ...baseEvent.game, mode: GameMode.Classic },
+      player: { ...baseEvent.player, currentStreak: player.currentStreak },
+    }
+  }
+
+  return {
+    ...baseEvent,
+    game: { ...baseEvent.game, mode: GameMode.ZeroToOneHundred },
   }
 }
 

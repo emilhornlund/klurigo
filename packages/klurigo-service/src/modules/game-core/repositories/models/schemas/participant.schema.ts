@@ -100,7 +100,8 @@ export class ParticipantPlayer {
   totalScore: number
 
   /**
-   * The current streak of correct answers for the player.
+   * The current streak of correct answers for the player in Classic mode.
+   * Legacy documents may contain this value for other modes.
    */
   @Prop({ type: Number, required: true })
   currentStreak: number

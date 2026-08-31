@@ -254,7 +254,6 @@ function buildGameResultPlayerEventFromQuestionResultTask(
     last,
     total,
     position,
-    streak,
   }
 
   const previousQuestionResult = findPreviousQuestionResultForPlayer(
@@ -280,6 +279,7 @@ function buildGameResultPlayerEventFromQuestionResultTask(
     score,
     pagination,
     behind,
+    streak,
   )
 }
 
@@ -287,8 +287,8 @@ function buildGameResultPlayerEventFromQuestionResultTask(
  * Builds a fallback `GameResultPlayerEvent` when the player has no entry
  * in the given question result task.
  *
- * Uses the player's aggregate scores (total score, rank, and current streak)
- * and marks the question as incorrect with a last score of `0`.
+ * Uses the player's aggregate scores (total score and rank) and marks the
+ * question as incorrect with a last score of `0`.
  *
  * @param game - Game document containing the full question set for pagination.
  * @param questionResultTask - Question result task used for pagination context.
@@ -312,7 +312,6 @@ function buildFallbackGameResultPlayerEventForQuestionResultTask(
     last: 0,
     total,
     position,
-    streak: 0,
   }
 
   const pagination = buildPaginationEventFromQuestionResultTask(
@@ -366,6 +365,7 @@ function buildGameResultPlayerEventFromLeaderboardOrPodiumTask(
  * @param score - Player score details for the current question and overall game.
  * @param pagination - Pagination metadata for the current question index.
  * @param behind - Optional information about the player directly ahead in score.
+ * @param streak - The Classic-only answer streak for the current result.
  * @returns A fully constructed player game result event.
  */
 function createGameResultPlayerEvent(
@@ -374,7 +374,21 @@ function createGameResultPlayerEvent(
   score: GameResultPlayerEventScore,
   pagination: PaginationEvent,
   behind?: GameResultPlayerEventBehind,
+  streak?: number,
 ): GameResultPlayerEvent {
+  if (mode === GameMode.Classic) {
+    return {
+      type: GameEventType.GameResultPlayer,
+      game: { mode },
+      player: {
+        nickname,
+        score: { ...score, streak: streak ?? 0 },
+        behind,
+      },
+      pagination,
+    }
+  }
+
   return {
     type: GameEventType.GameResultPlayer,
     game: { mode },

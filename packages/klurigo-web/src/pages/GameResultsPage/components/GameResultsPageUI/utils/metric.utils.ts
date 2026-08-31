@@ -107,18 +107,6 @@ export function buildPlayerSectionMetricDetails(
       icon: faStopwatch,
       iconColor: colors.colorStatusInfo,
     },
-    {
-      title: 'Longest correct streak',
-      value: metric.longestCorrectStreak,
-      icon: faFire,
-      iconColor: colors.colorStatusWarning,
-    },
-    {
-      title: 'Score',
-      value: metric.score,
-      icon: faStar,
-      iconColor: colors.colorRatingDefault,
-    },
   ]
   if (mode === GameMode.Classic) {
     const classicModePlayerMetric =
@@ -137,9 +125,29 @@ export function buildPlayerSectionMetricDetails(
         iconColor: colors.colorStatusDanger,
       },
       ...common,
+      {
+        title: 'Longest correct streak',
+        value: classicModePlayerMetric.longestCorrectStreak,
+        icon: faFire,
+        iconColor: colors.colorStatusWarning,
+      },
+      {
+        title: 'Score',
+        value: metric.score,
+        icon: faStar,
+        iconColor: colors.colorRatingDefault,
+      },
     ]
   }
-  return common
+  return [
+    ...common,
+    {
+      title: 'Score',
+      value: metric.score,
+      icon: faStar,
+      iconColor: colors.colorRatingDefault,
+    },
+  ]
 }
 
 /**

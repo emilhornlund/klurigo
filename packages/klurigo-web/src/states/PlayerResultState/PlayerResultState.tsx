@@ -24,17 +24,13 @@ export interface PlayerResultStateProps {
   event: GameResultPlayerEvent
 }
 
-const PlayerResultState: FC<PlayerResultStateProps> = ({
-  event: {
-    game: { mode },
-    player: {
-      nickname,
-      score: { correct, last: lastScore, total: totalScore, position, streak },
-      behind,
-    },
-    pagination: { current: currentQuestion, total: totalQuestions },
-  },
-}) => {
+const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => {
+  const { mode } = event.game
+  const { nickname, score, behind } = event.player
+  const { correct, last: lastScore, total: totalScore, position } = score
+  const streak =
+    mode === GameMode.Classic && 'streak' in score ? score.streak : undefined
+  const { current: currentQuestion, total: totalQuestions } = event.pagination
   const [showPosition, setShowPosition] = useState(false)
 
   useEffect(() => {
@@ -106,7 +102,9 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({
         </div>
       </div>
 
-      <StreakBadge streak={streak}>Streak</StreakBadge>
+      {mode === GameMode.Classic && (
+        <StreakBadge streak={streak}>Streak</StreakBadge>
+      )}
 
       <ScoreChip value={lastScore} />
 

@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { GameEventType, GameMode } from '@klurigo/common'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -19,7 +19,7 @@ describe('HostLeaderboardState', () => {
         <HostLeaderboardState
           event={{
             type: GameEventType.GameLeaderboardHost,
-            game: { pin: '123456' },
+            game: { pin: '123456', mode: GameMode.Classic },
             leaderboard: [
               {
                 position: 1,
@@ -63,7 +63,7 @@ describe('HostLeaderboardState', () => {
 
   const sampleEvent = {
     type: GameEventType.GameLeaderboardHost,
-    game: { pin: '123456' },
+    game: { pin: '123456', mode: GameMode.Classic },
     leaderboard: [
       { position: 1, nickname: 'ShadowCyborg', score: 18456, streaks: 0 },
       { position: 2, nickname: 'Radar', score: 18398, streaks: 0 },
@@ -135,5 +135,24 @@ describe('HostLeaderboardState', () => {
     await user.click(next)
 
     expect(container).toMatchSnapshot()
+  })
+
+  it('does not render legacy streaks for ZeroToOneHundred', () => {
+    const event = {
+      ...sampleEvent,
+      game: { pin: '123456', mode: GameMode.ZeroToOneHundred },
+      leaderboard: [
+        { position: 1, nickname: 'PrecisePlayer', score: 100, streaks: 10 },
+      ],
+    }
+
+    const { container } = render(
+      <MemoryRouter>
+        <HostLeaderboardState event={event as never} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('PrecisePlayer')).toBeInTheDocument()
+    expect(container.querySelector('.streaks')).toBeNull()
   })
 })

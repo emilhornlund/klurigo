@@ -147,7 +147,6 @@ describe('GameResultsPageUI', () => {
                 averagePrecision: 1,
                 unanswered: 0,
                 averageResponseTime: 4015,
-                longestCorrectStreak: 4,
                 score: -40,
               },
               {
@@ -157,7 +156,6 @@ describe('GameResultsPageUI', () => {
                 averagePrecision: 0.95,
                 unanswered: 0,
                 averageResponseTime: 10662,
-                longestCorrectStreak: 1,
                 score: 10,
               },
               {
@@ -167,7 +165,6 @@ describe('GameResultsPageUI', () => {
                 averagePrecision: 0.72,
                 unanswered: 1,
                 averageResponseTime: 27251,
-                longestCorrectStreak: 0,
                 score: 113,
               },
             ],
@@ -282,7 +279,6 @@ describe('GameResultsPageUI', () => {
         averagePrecision: 0.8,
         unanswered: 0,
         averageResponseTime: 2100,
-        longestCorrectStreak: 2,
         score: 10,
       },
       {
@@ -292,7 +288,6 @@ describe('GameResultsPageUI', () => {
         averagePrecision: 0.6,
         unanswered: 1,
         averageResponseTime: 2600,
-        longestCorrectStreak: 1,
         score: 5,
       },
     ],
