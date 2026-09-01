@@ -10441,10 +10441,10 @@ nodemailer@^7.0.12:
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-7.0.13.tgz#74acaa55f0c6f9476384c29f27f53e467e8483cd"
   integrity sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==
 
-nodemailer@^9.0.5:
-  version "9.0.5"
-  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-9.0.5.tgz#edf488e2d25b1688614922d7e733f551114099fc"
-  integrity sha512-wvjiKvjczmsN7U/8006JOdXubgBk2XFAbioDMbT+sM7cPs0QrhJTa6KBRX7P5REGGkDcLUz/EarWidb8G8C1jQ==
+nodemailer@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-9.0.6.tgz#4f3f6b902043823aec98f7b1ee0e3b418c574596"
+  integrity sha512-IQUGFdhdGwI9+AWX+FpUt4DLmvFaOjTMEoneTIWX/RXxuy1TdenPwWrvFMSfLkPKl+HQEXWuSAxEMMbPYXtBmg==
 
 normalize-package-data@^3.0.2:
   version "3.0.3"
