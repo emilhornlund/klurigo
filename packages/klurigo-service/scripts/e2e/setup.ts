@@ -18,6 +18,14 @@ type UserDoc = {
   updatedAt: Date
 }
 
+type QuizQuestionDoc = {
+  type: QuestionType.MultiChoice
+  text: string
+  points: number
+  duration: number
+  options: { value: string; correct: boolean }[]
+}
+
 type QuizDoc = {
   _id: string
   title: string
@@ -25,18 +33,7 @@ type QuizDoc = {
   visibility: QuizVisibility.Private
   category: QuizCategory.GeneralKnowledge
   languageCode: LanguageCode.English
-  questions: [
-    {
-      type: QuestionType.MultiChoice
-      text: string
-      points: number
-      duration: number
-      options: [
-        { value: string; correct: true },
-        { value: string; correct: false },
-      ]
-    },
-  ]
+  questions: QuizQuestionDoc[]
   owner: string
   gameplaySummary: {
     count: number
@@ -122,82 +119,119 @@ const E2E_QUIZ_UPDATED = new Date('2025-12-17T08:18:50.228Z')
 const E2E_QUIZ_SEEDS = [
   {
     id: 'e2e00002-0000-4000-8000-000000000002',
+    lateJoinId: 'e2e10002-0000-4000-8000-000000000002',
     owner: E2E_USER_SEEDS[1].id,
   },
   {
     id: 'e2e00003-0000-4000-8000-000000000003',
+    lateJoinId: 'e2e10003-0000-4000-8000-000000000003',
     owner: E2E_USER_SEEDS[2].id,
   },
   {
     id: 'e2e00004-0000-4000-8000-000000000004',
+    lateJoinId: 'e2e10004-0000-4000-8000-000000000004',
     owner: E2E_USER_SEEDS[3].id,
   },
   {
     id: 'e2e00005-0000-4000-8000-000000000005',
+    lateJoinId: 'e2e10005-0000-4000-8000-000000000005',
     owner: E2E_USER_SEEDS[4].id,
   },
   {
     id: 'e2e00006-0000-4000-8000-000000000006',
+    lateJoinId: 'e2e10006-0000-4000-8000-000000000006',
     owner: E2E_USER_SEEDS[5].id,
   },
   {
     id: 'e2e00007-0000-4000-8000-000000000007',
+    lateJoinId: 'e2e10007-0000-4000-8000-000000000007',
     owner: E2E_USER_SEEDS[6].id,
   },
   {
     id: 'e2e00008-0000-4000-8000-000000000008',
+    lateJoinId: 'e2e10008-0000-4000-8000-000000000008',
     owner: E2E_USER_SEEDS[7].id,
   },
   {
     id: 'e2e00009-0000-4000-8000-000000000009',
+    lateJoinId: 'e2e10009-0000-4000-8000-000000000009',
     owner: E2E_USER_SEEDS[8].id,
   },
   {
     id: 'e2e00010-0000-4000-8000-000000000010',
+    lateJoinId: 'e2e10010-0000-4000-8000-000000000010',
     owner: E2E_USER_SEEDS[9].id,
   },
 ] as const
 
-const E2E_QUIZZES: QuizDoc[] = E2E_QUIZ_SEEDS.map(({ id, owner }) => ({
-  _id: id,
-  title: E2E_QUIZ_TITLE,
-  mode: GameMode.Classic,
-  visibility: QuizVisibility.Private,
-  category: QuizCategory.GeneralKnowledge,
-  languageCode: LanguageCode.English,
-  questions: [
-    {
-      type: QuestionType.MultiChoice,
-      text: 'Which color is associated with a clear daytime sky?',
-      points: 1000,
-      duration: 30,
-      options: [
-        { value: 'Blue', correct: true },
-        { value: 'Green', correct: false },
-      ],
-    },
+const E2E_FIRST_QUESTION: QuizQuestionDoc = {
+  type: QuestionType.MultiChoice,
+  text: 'Which color is associated with a clear daytime sky?',
+  points: 1000,
+  duration: 30,
+  options: [
+    { value: 'Blue', correct: true },
+    { value: 'Green', correct: false },
   ],
-  owner,
-  gameplaySummary: {
-    count: 0,
-    totalPlayerCount: 0,
-    totalClassicCorrectCount: 0,
-    totalClassicIncorrectCount: 0,
-    totalClassicUnansweredCount: 0,
-    totalZeroToOneHundredPrecisionSum: 0,
-    totalZeroToOneHundredAnsweredCount: 0,
-    totalZeroToOneHundredUnansweredCount: 0,
+}
+
+const E2E_SECOND_QUESTION: QuizQuestionDoc = {
+  type: QuestionType.MultiChoice,
+  text: 'Which planet is known as the Red Planet?',
+  points: 1000,
+  duration: 30,
+  options: [
+    { value: 'Mars', correct: true },
+    { value: 'Venus', correct: false },
+  ],
+}
+
+const E2E_QUIZZES: QuizDoc[] = E2E_QUIZ_SEEDS.flatMap(
+  ({ id, lateJoinId, owner }) => [
+    createQuizDoc(id, E2E_QUIZ_TITLE, owner, [E2E_FIRST_QUESTION]),
+    createQuizDoc(lateJoinId, 'E2E Late Join Quiz', owner, [
+      E2E_FIRST_QUESTION,
+      E2E_SECOND_QUESTION,
+    ]),
+  ],
+)
+
+function createQuizDoc(
+  id: string,
+  title: string,
+  owner: string,
+  questions: QuizQuestionDoc[],
+): QuizDoc {
+  return {
+    _id: id,
+    title,
+    mode: GameMode.Classic,
+    visibility: QuizVisibility.Private,
+    category: QuizCategory.GeneralKnowledge,
+    languageCode: LanguageCode.English,
+    questions,
+    owner,
+    gameplaySummary: {
+      count: 0,
+      totalPlayerCount: 0,
+      totalClassicCorrectCount: 0,
+      totalClassicIncorrectCount: 0,
+      totalClassicUnansweredCount: 0,
+      totalZeroToOneHundredPrecisionSum: 0,
+      totalZeroToOneHundredAnsweredCount: 0,
+      totalZeroToOneHundredUnansweredCount: 0,
+      updated: E2E_QUIZ_UPDATED,
+    },
+    ratingSummary: {
+      count: 0,
+      avg: 0,
+      stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
+      commentCount: 0,
+    },
+    created: E2E_QUIZ_CREATED,
     updated: E2E_QUIZ_UPDATED,
-  },
-  ratingSummary: {
-    count: 0,
-    avg: 0,
-    stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
-    commentCount: 0,
-  },
-  created: E2E_QUIZ_CREATED,
-  updated: E2E_QUIZ_UPDATED,
-}))
+  }
+}
 
 async function main() {
   await resetE2eDb({

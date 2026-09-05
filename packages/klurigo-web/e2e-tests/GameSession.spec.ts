@@ -4,6 +4,7 @@ import {
   type AuthResponseDto,
   type CreateGameResponseDto,
   GameEventType,
+  type GameResultPlayerEvent,
   QuestionType,
 } from '@klurigo/common'
 import { expect, test, type TestInfo } from '@playwright/test'
@@ -18,56 +19,67 @@ const API_BASE_URL =
 
 const E2E_HOSTS_BY_PROJECT: Record<
   string,
-  { email: string; quizId: string }[]
+  { email: string; quizId: string; lateJoinQuizId: string }[]
 > = {
   chromium: [
     {
       email: 'tester02@klurigo.com',
       quizId: 'e2e00002-0000-4000-8000-000000000002',
+      lateJoinQuizId: 'e2e10002-0000-4000-8000-000000000002',
     },
     {
       email: 'tester05@klurigo.com',
       quizId: 'e2e00005-0000-4000-8000-000000000005',
+      lateJoinQuizId: 'e2e10005-0000-4000-8000-000000000005',
     },
     {
       email: 'tester08@klurigo.com',
       quizId: 'e2e00008-0000-4000-8000-000000000008',
+      lateJoinQuizId: 'e2e10008-0000-4000-8000-000000000008',
     },
   ],
   firefox: [
     {
       email: 'tester03@klurigo.com',
       quizId: 'e2e00003-0000-4000-8000-000000000003',
+      lateJoinQuizId: 'e2e10003-0000-4000-8000-000000000003',
     },
     {
       email: 'tester06@klurigo.com',
       quizId: 'e2e00006-0000-4000-8000-000000000006',
+      lateJoinQuizId: 'e2e10006-0000-4000-8000-000000000006',
     },
     {
       email: 'tester09@klurigo.com',
       quizId: 'e2e00009-0000-4000-8000-000000000009',
+      lateJoinQuizId: 'e2e10009-0000-4000-8000-000000000009',
     },
   ],
   webkit: [
     {
       email: 'tester04@klurigo.com',
       quizId: 'e2e00004-0000-4000-8000-000000000004',
+      lateJoinQuizId: 'e2e10004-0000-4000-8000-000000000004',
     },
     {
       email: 'tester07@klurigo.com',
       quizId: 'e2e00007-0000-4000-8000-000000000007',
+      lateJoinQuizId: 'e2e10007-0000-4000-8000-000000000007',
     },
     {
       email: 'tester10@klurigo.com',
       quizId: 'e2e00010-0000-4000-8000-000000000010',
+      lateJoinQuizId: 'e2e10010-0000-4000-8000-000000000010',
     },
   ],
 }
 
 const QUIZ_TITLE = 'E2E Game Session Quiz'
+const LATE_JOIN_QUIZ_TITLE = 'E2E Late Join Quiz'
 const QUESTION = 'Which color is associated with a clear daytime sky?'
 const CORRECT_ANSWER = 'Blue'
 const INCORRECT_ANSWER = 'Green'
+const SECOND_QUESTION = 'Which planet is known as the Red Planet?'
 
 test.describe.configure({ mode: 'serial' })
 
@@ -350,6 +362,204 @@ test.describe('Game session: host UI with API player', () => {
       incorrectPlayer.close()
     }
   })
+
+  test('keeps a late Classic joiner behind a scored player', async ({
+    page,
+  }, testInfo) => {
+    const e2eHost = getE2EHost(testInfo)
+    const playerANickname = `ApiEarly${randomUUID().slice(0, 8)}`
+    const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
+
+    await test.step('Authenticate the seeded E2E user', async () => {
+      await authenticatePage(
+        page,
+        API_BASE_URL,
+        e2eHost.email,
+        E2E_USER_PASSWORD,
+      )
+      await expect(page).toHaveURL('/')
+    })
+
+    await test.step('Open the seeded two-question Classic quiz', async () => {
+      await page.goto(`/quiz/details/${e2eHost.lateJoinQuizId}`)
+      await expect(page).toHaveURL(`/quiz/details/${e2eHost.lateJoinQuizId}`)
+      await expect(
+        page.getByText(LATE_JOIN_QUIZ_TITLE, { exact: true }),
+      ).toBeVisible()
+    })
+
+    await test.step('Create and open the host game', async () => {
+      await page.locator('#host-game-button').click()
+      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
+      await expect(page).toHaveURL('/game')
+      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
+    })
+
+    const gamePINElement = page
+      .getByText('Game PIN', { exact: true })
+      .locator('..')
+      .getByText(/^[1-9]\d{5}$/)
+    await expect(gamePINElement).toBeVisible()
+    const gamePIN = (await gamePINElement.textContent())?.trim()
+    if (!gamePIN) {
+      throw new Error('Host lobby did not expose a game PIN')
+    }
+
+    const playerA = new GamePlayerClient(API_BASE_URL)
+    const playerB = new GamePlayerClient(API_BASE_URL)
+    let playerAGameId: string | undefined
+    let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
+
+    try {
+      await test.step('Join Player A before the game starts', async () => {
+        const identity = await playerA.authenticateAndJoin(
+          { gamePIN },
+          playerANickname,
+        )
+        expect(identity.gameId).toMatch(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        )
+        playerAGameId = identity.gameId
+
+        await playerA.connect()
+        await expect(
+          page.getByText(playerANickname, { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Start the game and receive question 1', async () => {
+        const questionPromise = playerA.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+
+        await page.locator('#start-game-button').click()
+        const question = await questionPromise
+
+        await expect(page.getByText(QUESTION, { exact: true })).toBeVisible()
+        expect(question.pagination.total).toBe(2)
+        if (question.question.type !== QuestionType.MultiChoice) {
+          throw new Error('Expected question 1 to be multi-choice')
+        }
+        expect(question.question.answers).toEqual([
+          { value: CORRECT_ANSWER },
+          { value: INCORRECT_ANSWER },
+        ])
+      })
+
+      await test.step('Submit Player A answer and wait for question 1 result', async () => {
+        const resultPromise = playerA.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === playerANickname,
+        )
+
+        await playerA.submitAnswer({
+          type: QuestionType.MultiChoice,
+          optionIndex: 0,
+        })
+        const result = await resultPromise
+
+        expect(result.player.score.correct).toBe(true)
+        await expect(page.getByTestId('question-results')).toBeVisible()
+      })
+
+      await test.step('Connect Player B after question 1 and verify the late join', async () => {
+        const identity = await playerB.authenticateAndJoin(
+          { gamePIN },
+          playerBNickname,
+        )
+        expect(identity.gameId).toBe(playerAGameId)
+
+        await playerB.connect()
+        lateJoinResultPromise = playerB.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === playerBNickname,
+        )
+      })
+
+      await test.step('Assert Player B starts with zero points in second place', async () => {
+        if (!lateJoinResultPromise) {
+          throw new Error('Player B result event was not registered')
+        }
+        const lateJoinResult = await lateJoinResultPromise
+
+        expect(lateJoinResult.player.score).toEqual({
+          correct: false,
+          last: 0,
+          total: 0,
+          position: 2,
+          streak: 0,
+        })
+        expect(lateJoinResult.player.behind).toBeUndefined()
+      })
+
+      await test.step('Verify the host recognizes Player B below Player A', async () => {
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByText('Leaderboard', { exact: true }),
+        ).toBeVisible()
+
+        const playerAColumn = page
+          .getByText(playerANickname, { exact: true })
+          .locator('..')
+          .locator('..')
+        const playerBColumn = page
+          .getByText(playerBNickname, { exact: true })
+          .locator('..')
+          .locator('..')
+
+        await expect(
+          playerAColumn.getByText('1', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          playerBColumn.getByText('2', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          playerBColumn.getByText('0', { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Progress question 2 to the final podium', async () => {
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByText(SECOND_QUESTION, { exact: true }),
+        ).toBeVisible()
+        await expect(page.locator('#skip-button')).toBeVisible()
+        await page.locator('#skip-button').click()
+        await expect(page.getByTestId('question-results')).toBeVisible()
+
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByRole('button', { name: 'View Full Results' }),
+        ).toBeVisible()
+
+        const playerAColumn = page
+          .getByText(playerANickname, { exact: true })
+          .last()
+          .locator('..')
+          .locator('..')
+        const playerBColumn = page
+          .getByText(playerBNickname, { exact: true })
+          .last()
+          .locator('..')
+          .locator('..')
+
+        await expect(
+          playerAColumn.getByText('1', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          playerBColumn.getByText('2', { exact: true }),
+        ).toBeVisible()
+      })
+    } finally {
+      playerA.close()
+      playerB.close()
+    }
+  })
 })
 
 test.describe('Game session: player UI with API host', () => {
@@ -474,7 +684,11 @@ test.describe('Game session: player UI with API host', () => {
   })
 })
 
-function getE2EHost(testInfo: TestInfo): { email: string; quizId: string } {
+function getE2EHost(testInfo: TestInfo): {
+  email: string
+  quizId: string
+  lateJoinQuizId: string
+} {
   const e2eHost =
     E2E_HOSTS_BY_PROJECT[testInfo.project.name]?.[testInfo.repeatEachIndex]
   if (!e2eHost) {
