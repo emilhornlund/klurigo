@@ -10,6 +10,7 @@ dist/
 build/
 out/
 coverage/
+test-results/
 .nyc_output/
 .storybook-static/
 

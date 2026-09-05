@@ -179,6 +179,177 @@ test.describe('Game session: host UI with API player', () => {
       gamePlayer.close()
     }
   })
+
+  test('completes one Classic game with two simulated players', async ({
+    page,
+  }, testInfo) => {
+    const e2eHost = getE2EHost(testInfo)
+    const correctPlayerNickname = `ApiCorrect${randomUUID().slice(0, 8)}`
+    const incorrectPlayerNickname = `ApiIncorrect${randomUUID().slice(0, 8)}`
+
+    await test.step('Authenticate the seeded E2E user', async () => {
+      await authenticatePage(
+        page,
+        API_BASE_URL,
+        e2eHost.email,
+        E2E_USER_PASSWORD,
+      )
+      await expect(page).toHaveURL('/')
+    })
+
+    await test.step('Open the seeded private Classic quiz', async () => {
+      await page.goto(`/quiz/details/${e2eHost.quizId}`)
+      await expect(page).toHaveURL(`/quiz/details/${e2eHost.quizId}`)
+      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+    })
+
+    await test.step('Create and open the host game', async () => {
+      await page.locator('#host-game-button').click()
+      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
+      await expect(page).toHaveURL('/game')
+      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
+    })
+
+    const gamePINElement = page
+      .getByText('Game PIN', { exact: true })
+      .locator('..')
+      .getByText(/^[1-9]\d{5}$/)
+    await expect(gamePINElement).toBeVisible()
+    const gamePIN = (await gamePINElement.textContent())?.trim()
+    if (!gamePIN) {
+      throw new Error('Host lobby did not expose a game PIN')
+    }
+
+    const correctPlayer = new GamePlayerClient(API_BASE_URL)
+    const incorrectPlayer = new GamePlayerClient(API_BASE_URL)
+
+    try {
+      await test.step('Join and connect both simulated players', async () => {
+        const [correctIdentity, incorrectIdentity] = await Promise.all([
+          correctPlayer.authenticateAndJoin({ gamePIN }, correctPlayerNickname),
+          incorrectPlayer.authenticateAndJoin(
+            { gamePIN },
+            incorrectPlayerNickname,
+          ),
+        ])
+
+        expect(correctIdentity.gameId).toMatch(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        )
+        expect(incorrectIdentity.gameId).toBe(correctIdentity.gameId)
+
+        await Promise.all([correctPlayer.connect(), incorrectPlayer.connect()])
+        await expect(
+          page.getByText(correctPlayerNickname, { exact: true }),
+        ).toBeVisible()
+        await expect(
+          page.getByText(incorrectPlayerNickname, { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Start the game and receive both player questions', async () => {
+        const correctQuestionPromise = correctPlayer.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+        const incorrectQuestionPromise = incorrectPlayer.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+
+        await page.locator('#start-game-button').click()
+        const [correctQuestion, incorrectQuestion] = await Promise.all([
+          correctQuestionPromise,
+          incorrectQuestionPromise,
+        ])
+
+        await expect(page.getByText(QUESTION, { exact: true })).toBeVisible()
+        for (const question of [correctQuestion, incorrectQuestion]) {
+          if (question.question.type !== QuestionType.MultiChoice) {
+            throw new Error(
+              'Expected both simulated players to receive multi-choice',
+            )
+          }
+          expect(question.question.answers).toEqual([
+            { value: CORRECT_ANSWER },
+            { value: INCORRECT_ANSWER },
+          ])
+        }
+      })
+
+      await test.step('Submit different answers and wait for both results', async () => {
+        const correctResultPromise = correctPlayer.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === correctPlayerNickname,
+        )
+        const incorrectResultPromise = incorrectPlayer.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === incorrectPlayerNickname,
+        )
+
+        await Promise.all([
+          correctPlayer.submitAnswer({
+            type: QuestionType.MultiChoice,
+            optionIndex: 0,
+          }),
+          incorrectPlayer.submitAnswer({
+            type: QuestionType.MultiChoice,
+            optionIndex: 1,
+          }),
+        ])
+
+        const [correctResult, incorrectResult] = await Promise.all([
+          correctResultPromise,
+          incorrectResultPromise,
+        ])
+        expect(correctResult.player.score.correct).toBe(true)
+        expect(incorrectResult.player.score.correct).toBe(false)
+      })
+
+      await test.step('Verify the host result state reflects both answers', async () => {
+        const questionResults = page.getByTestId('question-results')
+        await expect(questionResults).toBeVisible()
+
+        const resultGroups = questionResults.locator(':scope > div')
+        await expect(resultGroups).toHaveCount(2)
+        await expect(resultGroups.nth(0)).toContainText(CORRECT_ANSWER)
+        await expect(resultGroups.nth(0)).toContainText('1')
+        await expect(resultGroups.nth(1)).toContainText(INCORRECT_ANSWER)
+        await expect(resultGroups.nth(1)).toContainText('1')
+      })
+
+      await test.step('Progress to and verify the final podium ordering', async () => {
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByRole('button', { name: 'View Full Results' }),
+        ).toBeVisible()
+        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+
+        const correctPlayerColumn = page
+          .getByText(correctPlayerNickname, { exact: true })
+          .locator('..')
+          .locator('..')
+        const incorrectPlayerColumn = page
+          .getByText(incorrectPlayerNickname, { exact: true })
+          .locator('..')
+          .locator('..')
+
+        await expect(
+          correctPlayerColumn.getByText('1', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          incorrectPlayerColumn.getByText('2', { exact: true }),
+        ).toBeVisible()
+      })
+    } finally {
+      correctPlayer.close()
+      incorrectPlayer.close()
+    }
+  })
 })
 
 test.describe('Game session: player UI with API host', () => {
