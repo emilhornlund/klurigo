@@ -46,6 +46,7 @@ const GameJoinPage: FC = () => {
       setIsJoiningGame(true)
       joinGame(gameID, nickname)
         .then(() => navigate(`/game`))
+        .catch(() => undefined)
         .finally(() => setIsJoiningGame(false))
     }
   }
