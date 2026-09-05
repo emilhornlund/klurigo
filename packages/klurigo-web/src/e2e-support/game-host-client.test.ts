@@ -1,7 +1,7 @@
 import { type GameEvent, GameEventType } from '@klurigo/common'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { GameHostClient } from '../../e2e-tests/support/game-host-client'
+import { GameHostClient } from '../../e2e-tests/support/api/game-host-client'
 
 const API_BASE_URL = 'http://klurigo-service.local/api'
 const GAME_ID = 'game-123'

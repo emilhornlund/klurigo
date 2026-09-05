@@ -6,6 +6,8 @@ import type {
 import type { Page } from '@playwright/test'
 import { jwtDecode } from 'jwt-decode'
 
+import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../e2e-runtime'
+
 type StoredTokenPayload = Pick<TokenDto, 'sub' | 'exp' | 'authorities'> & {
   token: string
 }
@@ -26,17 +28,15 @@ type StoredCurrentUser = Pick<
  * Authenticates through the public API and hydrates the browser's normal auth
  * storage without exercising the login UI.
  */
-export async function authenticatePage(
+export async function authenticatePageThroughApi(
   page: Page,
-  apiBaseUrl: string,
   email: string,
-  password: string,
 ): Promise<void> {
-  const baseUrl = apiBaseUrl.replace(/\/+$/, '')
+  const baseUrl = E2E_API_BASE_URL.replace(/\/+$/, '')
   const loginResponse = await fetch(`${baseUrl}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password: E2E_USER_PASSWORD }),
   })
 
   if (!loginResponse.ok) {

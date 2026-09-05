@@ -1,8 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
 import {
-  type AuthResponseDto,
-  type CreateGameResponseDto,
   GameEventType,
   GameMode,
   type GameResultPlayerEvent,
@@ -11,14 +9,12 @@ import {
 import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
-import { authenticatePage } from './support/authenticate-page'
+import { createGameThroughPublicApi } from './support/api/create-game-through-public-api'
+import { GameHostClient } from './support/api/game-host-client'
+import { GamePlayerClient } from './support/api/game-player-client'
+import { authenticatePageThroughApi } from './support/browser/authenticate-page-through-api'
+import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from './support/e2e-runtime'
 import { getGameSessionFixture } from './support/fixtures/game-session-fixtures'
-import { GameHostClient } from './support/game-host-client'
-import { GamePlayerClient } from './support/game-player-client'
-
-const API_BASE_URL =
-  process.env.KLURIGO_SERVICE_PROXY || 'http://localhost:8080/api'
-const E2E_USER_PASSWORD = E2E_FIXTURE_MANIFEST.password
 
 const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
 const LATE_JOIN_QUIZ_TITLE =
@@ -56,12 +52,7 @@ test.describe('Game session: host UI with API player', () => {
     const playerNickname = `ApiPlayer${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
-      await authenticatePage(
-        page,
-        API_BASE_URL,
-        e2eHost.email,
-        E2E_USER_PASSWORD,
-      )
+      await authenticatePageThroughApi(page, e2eHost.email)
       await expect(page).toHaveURL('/')
     })
 
@@ -90,7 +81,7 @@ test.describe('Game session: host UI with API player', () => {
       throw new Error('Host lobby did not expose a game PIN')
     }
 
-    const gamePlayer = new GamePlayerClient(API_BASE_URL)
+    const gamePlayer = new GamePlayerClient(E2E_API_BASE_URL)
     try {
       await test.step('Join and connect the simulated player', async () => {
         const identity = await gamePlayer.authenticateAndJoin(
@@ -167,12 +158,7 @@ test.describe('Game session: host UI with API player', () => {
     const incorrectPlayerNickname = `ApiIncorrect${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
-      await authenticatePage(
-        page,
-        API_BASE_URL,
-        e2eHost.email,
-        E2E_USER_PASSWORD,
-      )
+      await authenticatePageThroughApi(page, e2eHost.email)
       await expect(page).toHaveURL('/')
     })
 
@@ -201,8 +187,8 @@ test.describe('Game session: host UI with API player', () => {
       throw new Error('Host lobby did not expose a game PIN')
     }
 
-    const correctPlayer = new GamePlayerClient(API_BASE_URL)
-    const incorrectPlayer = new GamePlayerClient(API_BASE_URL)
+    const correctPlayer = new GamePlayerClient(E2E_API_BASE_URL)
+    const incorrectPlayer = new GamePlayerClient(E2E_API_BASE_URL)
 
     try {
       await test.step('Join and connect both simulated players', async () => {
@@ -340,12 +326,7 @@ test.describe('Game session: host UI with API player', () => {
     const approximatePlayerNickname = `ApiApprox${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
-      await authenticatePage(
-        page,
-        API_BASE_URL,
-        e2eHost.email,
-        E2E_USER_PASSWORD,
-      )
+      await authenticatePageThroughApi(page, e2eHost.email)
       await expect(page).toHaveURL('/')
     })
 
@@ -376,8 +357,8 @@ test.describe('Game session: host UI with API player', () => {
       throw new Error('Host lobby did not expose a game PIN')
     }
 
-    const precisePlayer = new GamePlayerClient(API_BASE_URL)
-    const approximatePlayer = new GamePlayerClient(API_BASE_URL)
+    const precisePlayer = new GamePlayerClient(E2E_API_BASE_URL)
+    const approximatePlayer = new GamePlayerClient(E2E_API_BASE_URL)
 
     try {
       await test.step('Join and connect both simulated players', async () => {
@@ -547,12 +528,7 @@ test.describe('Game session: host UI with API player', () => {
     const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
-      await authenticatePage(
-        page,
-        API_BASE_URL,
-        e2eHost.email,
-        E2E_USER_PASSWORD,
-      )
+      await authenticatePageThroughApi(page, e2eHost.email)
       await expect(page).toHaveURL('/')
     })
 
@@ -587,8 +563,8 @@ test.describe('Game session: host UI with API player', () => {
       throw new Error('Host lobby did not expose a game PIN')
     }
 
-    const playerA = new GamePlayerClient(API_BASE_URL)
-    const playerB = new GamePlayerClient(API_BASE_URL)
+    const playerA = new GamePlayerClient(E2E_API_BASE_URL)
+    const playerB = new GamePlayerClient(E2E_API_BASE_URL)
     const playerACompletedQuestionScores: number[] = []
     let playerAGameId: string | undefined
     let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
@@ -803,12 +779,7 @@ test.describe('Game session: host UI with API player', () => {
     const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
-      await authenticatePage(
-        page,
-        API_BASE_URL,
-        e2eHost.email,
-        E2E_USER_PASSWORD,
-      )
+      await authenticatePageThroughApi(page, e2eHost.email)
       await expect(page).toHaveURL('/')
     })
 
@@ -839,8 +810,8 @@ test.describe('Game session: host UI with API player', () => {
       throw new Error('Host lobby did not expose a game PIN')
     }
 
-    const playerA = new GamePlayerClient(API_BASE_URL)
-    const playerB = new GamePlayerClient(API_BASE_URL)
+    const playerA = new GamePlayerClient(E2E_API_BASE_URL)
+    const playerB = new GamePlayerClient(E2E_API_BASE_URL)
     let playerAGameId: string | undefined
     let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
 
@@ -1002,12 +973,17 @@ test.describe('Game session: player UI with API host', () => {
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
     const playerNickname = `ApiPlayer${randomUUID().slice(0, 8)}`
-    const gameHost = new GameHostClient(API_BASE_URL)
+    const gameHost = new GameHostClient(E2E_API_BASE_URL)
 
     try {
       const createdGame =
         await test.step('Create the game through the public quiz game API', () =>
-          createGameThroughPublicApi(e2eHost.email, e2eHost.quizzes.classic.id))
+          createGameThroughPublicApi({
+            apiBaseUrl: E2E_API_BASE_URL,
+            email: e2eHost.email,
+            password: E2E_USER_PASSWORD,
+            quizId: e2eHost.quizzes.classic.id,
+          }))
 
       await test.step('Authenticate and connect the simulated host', async () => {
         const identity = await gameHost.authenticate(
@@ -1117,37 +1093,3 @@ test.describe('Game session: player UI with API host', () => {
     }
   })
 })
-
-async function createGameThroughPublicApi(
-  email: string,
-  quizId: string,
-): Promise<CreateGameResponseDto> {
-  const loginResponse = await fetch(`${API_BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password: E2E_USER_PASSWORD }),
-  })
-
-  if (!loginResponse.ok) {
-    throw new Error(`Host login failed with HTTP ${loginResponse.status}`)
-  }
-
-  const { accessToken } = (await loginResponse.json()) as AuthResponseDto
-  const gameResponse = await fetch(
-    `${API_BASE_URL}/quizzes/${encodeURIComponent(quizId)}/games`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    },
-  )
-
-  if (!gameResponse.ok) {
-    throw new Error(`Game creation failed with HTTP ${gameResponse.status}`)
-  }
-
-  return (await gameResponse.json()) as CreateGameResponseDto
-}
