@@ -13,6 +13,7 @@ import { createGameThroughPublicApi } from './support/api/create-game-through-pu
 import { GameHostClient } from './support/api/game-host-client'
 import { GamePlayerClient } from './support/api/game-player-client'
 import { authenticatePageThroughApi } from './support/browser/authenticate-page-through-api'
+import { startHostGame } from './support/browser/start-host-game'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from './support/e2e-runtime'
 import { getGameSessionFixture } from './support/fixtures/game-session-fixtures'
 
@@ -64,22 +65,8 @@ test.describe('Game session: host UI with API player', () => {
       await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
     })
 
-    await test.step('Create and open the host game', async () => {
-      await page.locator('#host-game-button').click()
-      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-      await expect(page).toHaveURL('/game')
-      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
-    })
-
-    const gamePINElement = page
-      .getByText('Game PIN', { exact: true })
-      .locator('..')
-      .getByText(/^[1-9]\d{5}$/)
-    await expect(gamePINElement).toBeVisible()
-    const gamePIN = (await gamePINElement.textContent())?.trim()
-    if (!gamePIN) {
-      throw new Error('Host lobby did not expose a game PIN')
-    }
+    const gamePIN = await test.step('Create and open the host game', () =>
+      startHostGame(page))
 
     const gamePlayer = new GamePlayerClient(E2E_API_BASE_URL)
     try {
@@ -170,22 +157,8 @@ test.describe('Game session: host UI with API player', () => {
       await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
     })
 
-    await test.step('Create and open the host game', async () => {
-      await page.locator('#host-game-button').click()
-      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-      await expect(page).toHaveURL('/game')
-      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
-    })
-
-    const gamePINElement = page
-      .getByText('Game PIN', { exact: true })
-      .locator('..')
-      .getByText(/^[1-9]\d{5}$/)
-    await expect(gamePINElement).toBeVisible()
-    const gamePIN = (await gamePINElement.textContent())?.trim()
-    if (!gamePIN) {
-      throw new Error('Host lobby did not expose a game PIN')
-    }
+    const gamePIN = await test.step('Create and open the host game', () =>
+      startHostGame(page))
 
     const correctPlayer = new GamePlayerClient(E2E_API_BASE_URL)
     const incorrectPlayer = new GamePlayerClient(E2E_API_BASE_URL)
@@ -340,22 +313,8 @@ test.describe('Game session: host UI with API player', () => {
       ).toBeVisible()
     })
 
-    await test.step('Create and open the host game', async () => {
-      await page.locator('#host-game-button').click()
-      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-      await expect(page).toHaveURL('/game')
-      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
-    })
-
-    const gamePINElement = page
-      .getByText('Game PIN', { exact: true })
-      .locator('..')
-      .getByText(/^[1-9]\d{5}$/)
-    await expect(gamePINElement).toBeVisible()
-    const gamePIN = (await gamePINElement.textContent())?.trim()
-    if (!gamePIN) {
-      throw new Error('Host lobby did not expose a game PIN')
-    }
+    const gamePIN = await test.step('Create and open the host game', () =>
+      startHostGame(page))
 
     const precisePlayer = new GamePlayerClient(E2E_API_BASE_URL)
     const approximatePlayer = new GamePlayerClient(E2E_API_BASE_URL)
@@ -546,22 +505,8 @@ test.describe('Game session: host UI with API player', () => {
       ).toBeVisible()
     })
 
-    await test.step('Create and open the host game', async () => {
-      await page.locator('#host-game-button').click()
-      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-      await expect(page).toHaveURL('/game')
-      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
-    })
-
-    const gamePINElement = page
-      .getByText('Game PIN', { exact: true })
-      .locator('..')
-      .getByText(/^[1-9]\d{5}$/)
-    await expect(gamePINElement).toBeVisible()
-    const gamePIN = (await gamePINElement.textContent())?.trim()
-    if (!gamePIN) {
-      throw new Error('Host lobby did not expose a game PIN')
-    }
+    const gamePIN = await test.step('Create and open the host game', () =>
+      startHostGame(page))
 
     const playerA = new GamePlayerClient(E2E_API_BASE_URL)
     const playerB = new GamePlayerClient(E2E_API_BASE_URL)
@@ -793,22 +738,8 @@ test.describe('Game session: host UI with API player', () => {
       ).toBeVisible()
     })
 
-    await test.step('Create and open the host game', async () => {
-      await page.locator('#host-game-button').click()
-      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
-      await expect(page).toHaveURL('/game')
-      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
-    })
-
-    const gamePINElement = page
-      .getByText('Game PIN', { exact: true })
-      .locator('..')
-      .getByText(/^[1-9]\d{5}$/)
-    await expect(gamePINElement).toBeVisible()
-    const gamePIN = (await gamePINElement.textContent())?.trim()
-    if (!gamePIN) {
-      throw new Error('Host lobby did not expose a game PIN')
-    }
+    const gamePIN = await test.step('Create and open the host game', () =>
+      startHostGame(page))
 
     const playerA = new GamePlayerClient(E2E_API_BASE_URL)
     const playerB = new GamePlayerClient(E2E_API_BASE_URL)
