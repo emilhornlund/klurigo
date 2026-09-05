@@ -17,36 +17,17 @@ import { startHostGame } from './support/browser/start-host-game'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from './support/e2e-runtime'
 import { getGameSessionFixture } from './support/fixtures/game-session-fixtures'
 
-const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
-const LATE_JOIN_QUIZ_TITLE =
-  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicLateJoin.title
-const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
-const CORRECT_ANSWER =
-  E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
-const INCORRECT_ANSWER =
-  E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
-const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.redPlanet.text
-const ZERO_TO_ONE_HUNDRED_QUIZ_TITLE =
-  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundred.title
-const ZERO_TO_ONE_HUNDRED_QUESTION =
-  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.text
-const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER =
-  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
-const ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER = 75
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE =
-  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundredLateJoin.title
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION =
-  E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.text
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER =
-  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER = 83.33333333333333
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER =
-  E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.correct
-
 test.describe.configure({ mode: 'serial' })
 
-test.describe('Game session: host UI with API player', () => {
-  test('completes one Classic game with one simulated player', async ({
+test.describe('Game session: host UI with simulated players', () => {
+  const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
+  const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
+  const CORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
+  const INCORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
+
+  test('completes a Classic game with one simulated player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
@@ -137,7 +118,7 @@ test.describe('Game session: host UI with API player', () => {
     }
   })
 
-  test('completes one Classic game with two simulated players', async ({
+  test('completes a Classic game with two simulated players', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
@@ -290,8 +271,27 @@ test.describe('Game session: host UI with API player', () => {
       incorrectPlayer.close()
     }
   })
+})
 
-  test('completes one Zero to One Hundred game with two simulated players', async ({
+test.describe('Game session: Zero to One Hundred', () => {
+  const ZERO_TO_ONE_HUNDRED_QUIZ_TITLE =
+    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundred.title
+  const ZERO_TO_ONE_HUNDRED_QUESTION =
+    E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.text
+  const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
+  const ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER = 75
+  const ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE =
+    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundredLateJoin.title
+  const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION =
+    E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.text
+  const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
+  const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER = 83.33333333333333
+  const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.correct
+
+  test('completes a Zero to One Hundred game with two simulated players', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
@@ -715,6 +715,17 @@ test.describe('Game session: host UI with API player', () => {
       playerB.close()
     }
   })
+})
+
+test.describe('Game session: Classic late joining', () => {
+  const LATE_JOIN_QUIZ_TITLE =
+    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicLateJoin.title
+  const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
+  const CORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
+  const INCORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
+  const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.redPlanet.text
 
   test('keeps a late Classic joiner behind a scored player', async ({
     page,
@@ -898,8 +909,15 @@ test.describe('Game session: host UI with API player', () => {
   })
 })
 
-test.describe('Game session: player UI with API host', () => {
-  test('completes one Classic game with one real player', async ({
+test.describe('Game session: player UI with simulated host', () => {
+  const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
+  const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
+  const CORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
+  const INCORRECT_ANSWER =
+    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
+
+  test('completes a Classic game with one real player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
