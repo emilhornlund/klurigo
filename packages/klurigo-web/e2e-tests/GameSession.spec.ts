@@ -8,115 +8,43 @@ import {
   type GameResultPlayerEvent,
   QuestionType,
 } from '@klurigo/common'
-import { expect, test, type TestInfo } from '@playwright/test'
+import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
+import { expect, test } from '@playwright/test'
 
 import { authenticatePage } from './support/authenticate-page'
+import { getGameSessionFixture } from './support/fixtures/game-session-fixtures'
 import { GameHostClient } from './support/game-host-client'
 import { GamePlayerClient } from './support/game-player-client'
 
-const E2E_USER_PASSWORD = 'Super$ecretPassw0rd123#'
 const API_BASE_URL =
   process.env.KLURIGO_SERVICE_PROXY || 'http://localhost:8080/api'
+const E2E_USER_PASSWORD = E2E_FIXTURE_MANIFEST.password
 
-const E2E_HOSTS_BY_PROJECT: Record<
-  string,
-  {
-    email: string
-    quizId: string
-    lateJoinQuizId: string
-    zeroToOneHundredQuizId: string
-    zeroToOneHundredLateJoinQuizId: string
-  }[]
-> = {
-  chromium: [
-    {
-      email: 'tester02@klurigo.com',
-      quizId: 'e2e00002-0000-4000-8000-000000000002',
-      lateJoinQuizId: 'e2e10002-0000-4000-8000-000000000002',
-      zeroToOneHundredQuizId: 'e2e20002-0000-4000-8000-000000000002',
-      zeroToOneHundredLateJoinQuizId: 'e2e30002-0000-4000-8000-000000000002',
-    },
-    {
-      email: 'tester05@klurigo.com',
-      quizId: 'e2e00005-0000-4000-8000-000000000005',
-      lateJoinQuizId: 'e2e10005-0000-4000-8000-000000000005',
-      zeroToOneHundredQuizId: 'e2e20005-0000-4000-8000-000000000005',
-      zeroToOneHundredLateJoinQuizId: 'e2e30005-0000-4000-8000-000000000005',
-    },
-    {
-      email: 'tester08@klurigo.com',
-      quizId: 'e2e00008-0000-4000-8000-000000000008',
-      lateJoinQuizId: 'e2e10008-0000-4000-8000-000000000008',
-      zeroToOneHundredQuizId: 'e2e20008-0000-4000-8000-000000000008',
-      zeroToOneHundredLateJoinQuizId: 'e2e30008-0000-4000-8000-000000000008',
-    },
-  ],
-  firefox: [
-    {
-      email: 'tester03@klurigo.com',
-      quizId: 'e2e00003-0000-4000-8000-000000000003',
-      lateJoinQuizId: 'e2e10003-0000-4000-8000-000000000003',
-      zeroToOneHundredQuizId: 'e2e20003-0000-4000-8000-000000000003',
-      zeroToOneHundredLateJoinQuizId: 'e2e30003-0000-4000-8000-000000000003',
-    },
-    {
-      email: 'tester06@klurigo.com',
-      quizId: 'e2e00006-0000-4000-8000-000000000006',
-      lateJoinQuizId: 'e2e10006-0000-4000-8000-000000000006',
-      zeroToOneHundredQuizId: 'e2e20006-0000-4000-8000-000000000006',
-      zeroToOneHundredLateJoinQuizId: 'e2e30006-0000-4000-8000-000000000006',
-    },
-    {
-      email: 'tester09@klurigo.com',
-      quizId: 'e2e00009-0000-4000-8000-000000000009',
-      lateJoinQuizId: 'e2e10009-0000-4000-8000-000000000009',
-      zeroToOneHundredQuizId: 'e2e20009-0000-4000-8000-000000000009',
-      zeroToOneHundredLateJoinQuizId: 'e2e30009-0000-4000-8000-000000000009',
-    },
-  ],
-  webkit: [
-    {
-      email: 'tester04@klurigo.com',
-      quizId: 'e2e00004-0000-4000-8000-000000000004',
-      lateJoinQuizId: 'e2e10004-0000-4000-8000-000000000004',
-      zeroToOneHundredQuizId: 'e2e20004-0000-4000-8000-000000000004',
-      zeroToOneHundredLateJoinQuizId: 'e2e30004-0000-4000-8000-000000000004',
-    },
-    {
-      email: 'tester07@klurigo.com',
-      quizId: 'e2e00007-0000-4000-8000-000000000007',
-      lateJoinQuizId: 'e2e10007-0000-4000-8000-000000000007',
-      zeroToOneHundredQuizId: 'e2e20007-0000-4000-8000-000000000007',
-      zeroToOneHundredLateJoinQuizId: 'e2e30007-0000-4000-8000-000000000007',
-    },
-    {
-      email: 'tester10@klurigo.com',
-      quizId: 'e2e00010-0000-4000-8000-000000000010',
-      lateJoinQuizId: 'e2e10010-0000-4000-8000-000000000010',
-      zeroToOneHundredQuizId: 'e2e20010-0000-4000-8000-000000000010',
-      zeroToOneHundredLateJoinQuizId: 'e2e30010-0000-4000-8000-000000000010',
-    },
-  ],
-}
-
-const QUIZ_TITLE = 'E2E Game Session Quiz'
-const LATE_JOIN_QUIZ_TITLE = 'E2E Late Join Quiz'
-const QUESTION = 'Which color is associated with a clear daytime sky?'
-const CORRECT_ANSWER = 'Blue'
-const INCORRECT_ANSWER = 'Green'
-const SECOND_QUESTION = 'Which planet is known as the Red Planet?'
-const ZERO_TO_ONE_HUNDRED_QUIZ_TITLE = 'E2E Zero to One Hundred Quiz'
+const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
+const LATE_JOIN_QUIZ_TITLE =
+  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicLateJoin.title
+const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
+const CORRECT_ANSWER =
+  E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
+const INCORRECT_ANSWER =
+  E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
+const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.redPlanet.text
+const ZERO_TO_ONE_HUNDRED_QUIZ_TITLE =
+  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundred.title
 const ZERO_TO_ONE_HUNDRED_QUESTION =
-  'What number is halfway between zero and one hundred?'
-const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER = 50
+  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.text
+const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER =
+  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
 const ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER = 75
 const ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE =
-  'E2E Zero to One Hundred Late Join Quiz'
+  E2E_FIXTURE_MANIFEST.users.tester02.quizzes.zeroToOneHundredLateJoin.title
 const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION =
-  'What number is one quarter of one hundred?'
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER = 50
+  E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.text
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER =
+  E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred.correct
 const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER = 83.33333333333333
-const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER = 25
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER =
+  E2E_FIXTURE_MANIFEST.questions.quarterOfOneHundred.correct
 
 test.describe.configure({ mode: 'serial' })
 
@@ -124,7 +52,7 @@ test.describe('Game session: host UI with API player', () => {
   test('completes one Classic game with one simulated player', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const playerNickname = `ApiPlayer${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
@@ -138,8 +66,10 @@ test.describe('Game session: host UI with API player', () => {
     })
 
     await test.step('Open the seeded private Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizId}`)
-      await expect(page).toHaveURL(`/quiz/details/${e2eHost.quizId}`)
+      await page.goto(`/quiz/details/${e2eHost.quizzes.classic.id}`)
+      await expect(page).toHaveURL(
+        `/quiz/details/${e2eHost.quizzes.classic.id}`,
+      )
       await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
     })
 
@@ -232,7 +162,7 @@ test.describe('Game session: host UI with API player', () => {
   test('completes one Classic game with two simulated players', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const correctPlayerNickname = `ApiCorrect${randomUUID().slice(0, 8)}`
     const incorrectPlayerNickname = `ApiIncorrect${randomUUID().slice(0, 8)}`
 
@@ -247,8 +177,10 @@ test.describe('Game session: host UI with API player', () => {
     })
 
     await test.step('Open the seeded private Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizId}`)
-      await expect(page).toHaveURL(`/quiz/details/${e2eHost.quizId}`)
+      await page.goto(`/quiz/details/${e2eHost.quizzes.classic.id}`)
+      await expect(page).toHaveURL(
+        `/quiz/details/${e2eHost.quizzes.classic.id}`,
+      )
       await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
     })
 
@@ -403,7 +335,7 @@ test.describe('Game session: host UI with API player', () => {
   test('completes one Zero to One Hundred game with two simulated players', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const precisePlayerNickname = `ApiPrecise${randomUUID().slice(0, 8)}`
     const approximatePlayerNickname = `ApiApprox${randomUUID().slice(0, 8)}`
 
@@ -418,9 +350,9 @@ test.describe('Game session: host UI with API player', () => {
     })
 
     await test.step('Open the seeded Zero to One Hundred quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.zeroToOneHundredQuizId}`)
+      await page.goto(`/quiz/details/${e2eHost.quizzes.zeroToOneHundred.id}`)
       await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.zeroToOneHundredQuizId}`,
+        `/quiz/details/${e2eHost.quizzes.zeroToOneHundred.id}`,
       )
       await expect(
         page.getByText(ZERO_TO_ONE_HUNDRED_QUIZ_TITLE, { exact: true }),
@@ -610,7 +542,7 @@ test.describe('Game session: host UI with API player', () => {
   test('rounds a late Zero to One Hundred joiner score and ranks it correctly', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const playerANickname = `ApiEarly${randomUUID().slice(0, 8)}`
     const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
 
@@ -625,9 +557,11 @@ test.describe('Game session: host UI with API player', () => {
     })
 
     await test.step('Open the seeded late-join Zero to One Hundred quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.zeroToOneHundredLateJoinQuizId}`)
+      await page.goto(
+        `/quiz/details/${e2eHost.quizzes.zeroToOneHundredLateJoin.id}`,
+      )
       await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.zeroToOneHundredLateJoinQuizId}`,
+        `/quiz/details/${e2eHost.quizzes.zeroToOneHundredLateJoin.id}`,
       )
       await expect(
         page.getByText(ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE, {
@@ -864,7 +798,7 @@ test.describe('Game session: host UI with API player', () => {
   test('keeps a late Classic joiner behind a scored player', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const playerANickname = `ApiEarly${randomUUID().slice(0, 8)}`
     const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
 
@@ -879,8 +813,10 @@ test.describe('Game session: host UI with API player', () => {
     })
 
     await test.step('Open the seeded two-question Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.lateJoinQuizId}`)
-      await expect(page).toHaveURL(`/quiz/details/${e2eHost.lateJoinQuizId}`)
+      await page.goto(`/quiz/details/${e2eHost.quizzes.classicLateJoin.id}`)
+      await expect(page).toHaveURL(
+        `/quiz/details/${e2eHost.quizzes.classicLateJoin.id}`,
+      )
       await expect(
         page.getByText(LATE_JOIN_QUIZ_TITLE, { exact: true }),
       ).toBeVisible()
@@ -1064,14 +1000,14 @@ test.describe('Game session: player UI with API host', () => {
   test('completes one Classic game with one real player', async ({
     page,
   }, testInfo) => {
-    const e2eHost = getE2EHost(testInfo)
+    const e2eHost = getGameSessionFixture(testInfo)
     const playerNickname = `ApiPlayer${randomUUID().slice(0, 8)}`
     const gameHost = new GameHostClient(API_BASE_URL)
 
     try {
       const createdGame =
         await test.step('Create the game through the public quiz game API', () =>
-          createGameThroughPublicApi(e2eHost.email, e2eHost.quizId))
+          createGameThroughPublicApi(e2eHost.email, e2eHost.quizzes.classic.id))
 
       await test.step('Authenticate and connect the simulated host', async () => {
         const identity = await gameHost.authenticate(
@@ -1181,24 +1117,6 @@ test.describe('Game session: player UI with API host', () => {
     }
   })
 })
-
-function getE2EHost(testInfo: TestInfo): {
-  email: string
-  quizId: string
-  lateJoinQuizId: string
-  zeroToOneHundredQuizId: string
-  zeroToOneHundredLateJoinQuizId: string
-} {
-  const e2eHost =
-    E2E_HOSTS_BY_PROJECT[testInfo.project.name]?.[testInfo.repeatEachIndex]
-  if (!e2eHost) {
-    throw new Error(
-      `No seeded E2E user configured for Playwright project ${testInfo.project.name} and repeat ${testInfo.repeatEachIndex}`,
-    )
-  }
-
-  return e2eHost
-}
 
 async function createGameThroughPublicApi(
   email: string,

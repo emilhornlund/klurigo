@@ -1,3 +1,4 @@
+import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
 test.describe('Auth: Login', () => {
@@ -25,10 +26,10 @@ test.describe('Auth: Login', () => {
     await test.step('Fill credentials and submit', async () => {
       await page
         .getByTestId('test-email-textfield')
-        .fill('tester01@klurigo.com')
+        .fill(E2E_FIXTURE_MANIFEST.users.tester01.email)
       await page
         .getByTestId('test-password-textfield')
-        .fill('Super$ecretPassw0rd123#')
+        .fill(E2E_FIXTURE_MANIFEST.password)
 
       const loginButton = page.getByTestId('test-login-button')
       await expect(loginButton).toBeEnabled()
