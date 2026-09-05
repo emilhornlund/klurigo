@@ -255,6 +255,21 @@ describe('GameJoinPage', () => {
     expect(container).toMatchSnapshot()
   })
 
+  it('handles a rejected join without navigating and re-enables the controls', async () => {
+    mockJoinGame.mockRejectedValueOnce(new Error('Active game not found'))
+
+    renderWithRouter(<GameJoinPage />)
+
+    const input = screen.getByTestId('nickname-input') as HTMLInputElement
+    fireEvent.change(input, { target: { value: 'Runner' } })
+    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
+
+    await waitFor(() => expect(input.disabled).toBe(false))
+
+    expect(mockNavigate).not.toHaveBeenCalledWith('/game')
+    expect(screen.getByRole('button', { name: /ok, go!/i })).not.toBeDisabled()
+  })
+
   it('submits when the form is submitted (Enter key equivalent)', async () => {
     let resolveJoin!: () => void
     mockJoinGame.mockReturnValueOnce(
