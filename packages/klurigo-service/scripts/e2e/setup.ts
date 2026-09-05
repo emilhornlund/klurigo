@@ -134,54 +134,63 @@ const E2E_QUIZ_SEEDS = [
     id: 'e2e00002-0000-4000-8000-000000000002',
     lateJoinId: 'e2e10002-0000-4000-8000-000000000002',
     zeroToOneHundredId: 'e2e20002-0000-4000-8000-000000000002',
+    zeroToOneHundredLateJoinId: 'e2e30002-0000-4000-8000-000000000002',
     owner: E2E_USER_SEEDS[1].id,
   },
   {
     id: 'e2e00003-0000-4000-8000-000000000003',
     lateJoinId: 'e2e10003-0000-4000-8000-000000000003',
     zeroToOneHundredId: 'e2e20003-0000-4000-8000-000000000003',
+    zeroToOneHundredLateJoinId: 'e2e30003-0000-4000-8000-000000000003',
     owner: E2E_USER_SEEDS[2].id,
   },
   {
     id: 'e2e00004-0000-4000-8000-000000000004',
     lateJoinId: 'e2e10004-0000-4000-8000-000000000004',
     zeroToOneHundredId: 'e2e20004-0000-4000-8000-000000000004',
+    zeroToOneHundredLateJoinId: 'e2e30004-0000-4000-8000-000000000004',
     owner: E2E_USER_SEEDS[3].id,
   },
   {
     id: 'e2e00005-0000-4000-8000-000000000005',
     lateJoinId: 'e2e10005-0000-4000-8000-000000000005',
     zeroToOneHundredId: 'e2e20005-0000-4000-8000-000000000005',
+    zeroToOneHundredLateJoinId: 'e2e30005-0000-4000-8000-000000000005',
     owner: E2E_USER_SEEDS[4].id,
   },
   {
     id: 'e2e00006-0000-4000-8000-000000000006',
     lateJoinId: 'e2e10006-0000-4000-8000-000000000006',
     zeroToOneHundredId: 'e2e20006-0000-4000-8000-000000000006',
+    zeroToOneHundredLateJoinId: 'e2e30006-0000-4000-8000-000000000006',
     owner: E2E_USER_SEEDS[5].id,
   },
   {
     id: 'e2e00007-0000-4000-8000-000000000007',
     lateJoinId: 'e2e10007-0000-4000-8000-000000000007',
     zeroToOneHundredId: 'e2e20007-0000-4000-8000-000000000007',
+    zeroToOneHundredLateJoinId: 'e2e30007-0000-4000-8000-000000000007',
     owner: E2E_USER_SEEDS[6].id,
   },
   {
     id: 'e2e00008-0000-4000-8000-000000000008',
     lateJoinId: 'e2e10008-0000-4000-8000-000000000008',
     zeroToOneHundredId: 'e2e20008-0000-4000-8000-000000000008',
+    zeroToOneHundredLateJoinId: 'e2e30008-0000-4000-8000-000000000008',
     owner: E2E_USER_SEEDS[7].id,
   },
   {
     id: 'e2e00009-0000-4000-8000-000000000009',
     lateJoinId: 'e2e10009-0000-4000-8000-000000000009',
     zeroToOneHundredId: 'e2e20009-0000-4000-8000-000000000009',
+    zeroToOneHundredLateJoinId: 'e2e30009-0000-4000-8000-000000000009',
     owner: E2E_USER_SEEDS[8].id,
   },
   {
     id: 'e2e00010-0000-4000-8000-000000000010',
     lateJoinId: 'e2e10010-0000-4000-8000-000000000010',
     zeroToOneHundredId: 'e2e20010-0000-4000-8000-000000000010',
+    zeroToOneHundredLateJoinId: 'e2e30010-0000-4000-8000-000000000010',
     owner: E2E_USER_SEEDS[9].id,
   },
 ] as const
@@ -220,8 +229,26 @@ const E2E_ZERO_TO_ONE_HUNDRED_QUESTION: QuizQuestionDoc = {
   correct: 50,
 }
 
+const E2E_ZERO_TO_ONE_HUNDRED_SECOND_QUESTION: QuizQuestionDoc = {
+  type: QuestionType.Range,
+  text: 'What number is one quarter of one hundred?',
+  points: 0,
+  duration: 30,
+  min: 0,
+  max: 100,
+  step: 1,
+  margin: QuestionRangeAnswerMargin.None,
+  correct: 25,
+}
+
 const E2E_QUIZZES: QuizDoc[] = E2E_QUIZ_SEEDS.flatMap(
-  ({ id, lateJoinId, zeroToOneHundredId, owner }) => [
+  ({
+    id,
+    lateJoinId,
+    zeroToOneHundredId,
+    zeroToOneHundredLateJoinId,
+    owner,
+  }) => [
     createQuizDoc(id, E2E_QUIZ_TITLE, owner, [E2E_FIRST_QUESTION]),
     createQuizDoc(lateJoinId, 'E2E Late Join Quiz', owner, [
       E2E_FIRST_QUESTION,
@@ -232,6 +259,16 @@ const E2E_QUIZZES: QuizDoc[] = E2E_QUIZ_SEEDS.flatMap(
       'E2E Zero to One Hundred Quiz',
       owner,
       [E2E_ZERO_TO_ONE_HUNDRED_QUESTION],
+      GameMode.ZeroToOneHundred,
+    ),
+    createQuizDoc(
+      zeroToOneHundredLateJoinId,
+      'E2E Zero to One Hundred Late Join Quiz',
+      owner,
+      [
+        E2E_ZERO_TO_ONE_HUNDRED_QUESTION,
+        E2E_ZERO_TO_ONE_HUNDRED_SECOND_QUESTION,
+      ],
       GameMode.ZeroToOneHundred,
     ),
   ],

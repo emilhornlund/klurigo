@@ -25,6 +25,7 @@ const E2E_HOSTS_BY_PROJECT: Record<
     quizId: string
     lateJoinQuizId: string
     zeroToOneHundredQuizId: string
+    zeroToOneHundredLateJoinQuizId: string
   }[]
 > = {
   chromium: [
@@ -33,18 +34,21 @@ const E2E_HOSTS_BY_PROJECT: Record<
       quizId: 'e2e00002-0000-4000-8000-000000000002',
       lateJoinQuizId: 'e2e10002-0000-4000-8000-000000000002',
       zeroToOneHundredQuizId: 'e2e20002-0000-4000-8000-000000000002',
+      zeroToOneHundredLateJoinQuizId: 'e2e30002-0000-4000-8000-000000000002',
     },
     {
       email: 'tester05@klurigo.com',
       quizId: 'e2e00005-0000-4000-8000-000000000005',
       lateJoinQuizId: 'e2e10005-0000-4000-8000-000000000005',
       zeroToOneHundredQuizId: 'e2e20005-0000-4000-8000-000000000005',
+      zeroToOneHundredLateJoinQuizId: 'e2e30005-0000-4000-8000-000000000005',
     },
     {
       email: 'tester08@klurigo.com',
       quizId: 'e2e00008-0000-4000-8000-000000000008',
       lateJoinQuizId: 'e2e10008-0000-4000-8000-000000000008',
       zeroToOneHundredQuizId: 'e2e20008-0000-4000-8000-000000000008',
+      zeroToOneHundredLateJoinQuizId: 'e2e30008-0000-4000-8000-000000000008',
     },
   ],
   firefox: [
@@ -53,18 +57,21 @@ const E2E_HOSTS_BY_PROJECT: Record<
       quizId: 'e2e00003-0000-4000-8000-000000000003',
       lateJoinQuizId: 'e2e10003-0000-4000-8000-000000000003',
       zeroToOneHundredQuizId: 'e2e20003-0000-4000-8000-000000000003',
+      zeroToOneHundredLateJoinQuizId: 'e2e30003-0000-4000-8000-000000000003',
     },
     {
       email: 'tester06@klurigo.com',
       quizId: 'e2e00006-0000-4000-8000-000000000006',
       lateJoinQuizId: 'e2e10006-0000-4000-8000-000000000006',
       zeroToOneHundredQuizId: 'e2e20006-0000-4000-8000-000000000006',
+      zeroToOneHundredLateJoinQuizId: 'e2e30006-0000-4000-8000-000000000006',
     },
     {
       email: 'tester09@klurigo.com',
       quizId: 'e2e00009-0000-4000-8000-000000000009',
       lateJoinQuizId: 'e2e10009-0000-4000-8000-000000000009',
       zeroToOneHundredQuizId: 'e2e20009-0000-4000-8000-000000000009',
+      zeroToOneHundredLateJoinQuizId: 'e2e30009-0000-4000-8000-000000000009',
     },
   ],
   webkit: [
@@ -73,18 +80,21 @@ const E2E_HOSTS_BY_PROJECT: Record<
       quizId: 'e2e00004-0000-4000-8000-000000000004',
       lateJoinQuizId: 'e2e10004-0000-4000-8000-000000000004',
       zeroToOneHundredQuizId: 'e2e20004-0000-4000-8000-000000000004',
+      zeroToOneHundredLateJoinQuizId: 'e2e30004-0000-4000-8000-000000000004',
     },
     {
       email: 'tester07@klurigo.com',
       quizId: 'e2e00007-0000-4000-8000-000000000007',
       lateJoinQuizId: 'e2e10007-0000-4000-8000-000000000007',
       zeroToOneHundredQuizId: 'e2e20007-0000-4000-8000-000000000007',
+      zeroToOneHundredLateJoinQuizId: 'e2e30007-0000-4000-8000-000000000007',
     },
     {
       email: 'tester10@klurigo.com',
       quizId: 'e2e00010-0000-4000-8000-000000000010',
       lateJoinQuizId: 'e2e10010-0000-4000-8000-000000000010',
       zeroToOneHundredQuizId: 'e2e20010-0000-4000-8000-000000000010',
+      zeroToOneHundredLateJoinQuizId: 'e2e30010-0000-4000-8000-000000000010',
     },
   ],
 }
@@ -100,6 +110,13 @@ const ZERO_TO_ONE_HUNDRED_QUESTION =
   'What number is halfway between zero and one hundred?'
 const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER = 50
 const ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER = 75
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE =
+  'E2E Zero to One Hundred Late Join Quiz'
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION =
+  'What number is one quarter of one hundred?'
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER = 50
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER = 83.33333333333333
+const ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER = 25
 
 test.describe.configure({ mode: 'serial' })
 
@@ -590,6 +607,260 @@ test.describe('Game session: host UI with API player', () => {
     }
   })
 
+  test('rounds a late Zero to One Hundred joiner score and ranks it correctly', async ({
+    page,
+  }, testInfo) => {
+    const e2eHost = getE2EHost(testInfo)
+    const playerANickname = `ApiEarly${randomUUID().slice(0, 8)}`
+    const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
+
+    await test.step('Authenticate the seeded E2E user', async () => {
+      await authenticatePage(
+        page,
+        API_BASE_URL,
+        e2eHost.email,
+        E2E_USER_PASSWORD,
+      )
+      await expect(page).toHaveURL('/')
+    })
+
+    await test.step('Open the seeded late-join Zero to One Hundred quiz', async () => {
+      await page.goto(`/quiz/details/${e2eHost.zeroToOneHundredLateJoinQuizId}`)
+      await expect(page).toHaveURL(
+        `/quiz/details/${e2eHost.zeroToOneHundredLateJoinQuizId}`,
+      )
+      await expect(
+        page.getByText(ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE, {
+          exact: true,
+        }),
+      ).toBeVisible()
+    })
+
+    await test.step('Create and open the host game', async () => {
+      await page.locator('#host-game-button').click()
+      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
+      await expect(page).toHaveURL('/game')
+      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
+    })
+
+    const gamePINElement = page
+      .getByText('Game PIN', { exact: true })
+      .locator('..')
+      .getByText(/^[1-9]\d{5}$/)
+    await expect(gamePINElement).toBeVisible()
+    const gamePIN = (await gamePINElement.textContent())?.trim()
+    if (!gamePIN) {
+      throw new Error('Host lobby did not expose a game PIN')
+    }
+
+    const playerA = new GamePlayerClient(API_BASE_URL)
+    const playerB = new GamePlayerClient(API_BASE_URL)
+    const playerACompletedQuestionScores: number[] = []
+    let playerAGameId: string | undefined
+    let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
+
+    try {
+      await test.step('Join and connect Player A before the game starts', async () => {
+        const identity = await playerA.authenticateAndJoin(
+          { gamePIN },
+          playerANickname,
+        )
+        expect(identity.gameId).toMatch(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        )
+        playerAGameId = identity.gameId
+
+        await playerA.connect()
+        await expect(
+          page.getByText(playerANickname, { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Start the game and receive question 1', async () => {
+        const questionPromise = playerA.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+
+        await page.locator('#start-game-button').click()
+        const question = await questionPromise
+
+        await expect(
+          page.getByText(ZERO_TO_ONE_HUNDRED_QUESTION, { exact: true }),
+        ).toBeVisible()
+        expect(question.pagination.total).toBe(2)
+        expect(question.question.type).toBe(QuestionType.Range)
+        if (question.question.type !== QuestionType.Range) {
+          throw new Error('Expected question 1 to be a range question')
+        }
+        expect(question.question.min).toBe(0)
+        expect(question.question.max).toBe(100)
+        expect(question.question.step).toBe(1)
+      })
+
+      await test.step('Complete question 1 with a fractional deterministic score', async () => {
+        const resultPromise = playerA.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === playerANickname,
+        )
+
+        await playerA.submitAnswer({
+          type: QuestionType.Range,
+          value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER,
+        })
+        const result = await resultPromise
+        const expectedQuestionScore = Math.abs(
+          ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER -
+            ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER,
+        )
+
+        expect(result.game.mode).toBe(GameMode.ZeroToOneHundred)
+        expect(result.player.score.correct).toBe(true)
+        expect(result.player.score.last).toBe(expectedQuestionScore)
+        expect(result.player.score.total).toBe(expectedQuestionScore)
+        playerACompletedQuestionScores.push(result.player.score.last)
+        await expect(page.getByTestId('question-results')).toBeVisible()
+      })
+
+      await test.step('Advance to the active leaderboard after question 1', async () => {
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByText('Leaderboard', { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Join and connect Player B from the active leaderboard', async () => {
+        const identity = await playerB.authenticateAndJoin(
+          { gamePIN },
+          playerBNickname,
+        )
+        expect(identity.gameId).toBe(playerAGameId)
+
+        await playerB.connect()
+        lateJoinResultPromise = playerB.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === playerBNickname,
+        )
+      })
+
+      await test.step('Assert the rounded late-join score and rank', async () => {
+        if (!lateJoinResultPromise) {
+          throw new Error('Player B result event was not registered')
+        }
+
+        const rawLateJoinAverage =
+          playerACompletedQuestionScores.reduce(
+            (sum, score) => sum + score,
+            0,
+          ) / playerACompletedQuestionScores.length
+        const expectedLateJoinScore = Math.round(rawLateJoinAverage)
+        expect(Number.isInteger(rawLateJoinAverage)).toBe(false)
+
+        const lateJoinResult = await lateJoinResultPromise
+        expect(lateJoinResult.game.mode).toBe(GameMode.ZeroToOneHundred)
+        expect(lateJoinResult.player.score).toEqual({
+          correct: false,
+          last: 0,
+          total: expectedLateJoinScore,
+          position: 1,
+        })
+        expect(lateJoinResult.player.behind).toBeUndefined()
+        expect(expectedLateJoinScore).toBeLessThan(rawLateJoinAverage)
+      })
+
+      await test.step('Complete question 2 and preserve the final podium ordering', async () => {
+        const playerAQuestionPromise = playerA.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 2,
+        )
+        const playerBQuestionPromise = playerB.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 2,
+        )
+
+        await page.locator('#next-button').click()
+        const [playerAQuestion, playerBQuestion] = await Promise.all([
+          playerAQuestionPromise,
+          playerBQuestionPromise,
+        ])
+
+        await expect(
+          page.getByText(ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION, {
+            exact: true,
+          }),
+        ).toBeVisible()
+        for (const question of [playerAQuestion, playerBQuestion]) {
+          expect(question.question.type).toBe(QuestionType.Range)
+        }
+
+        const playerAResultPromise = playerA.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 2 &&
+            event.player.nickname === playerANickname,
+        )
+        const playerBResultPromise = playerB.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 2 &&
+            event.player.nickname === playerBNickname,
+        )
+
+        await playerA.submitAnswer({
+          type: QuestionType.Range,
+          value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER,
+        })
+        await expect(page.locator('#skip-button')).toBeVisible()
+        await page.locator('#skip-button').click()
+
+        const [playerAResult, playerBResult] = await Promise.all([
+          playerAResultPromise,
+          playerBResultPromise,
+        ])
+        const playerAFinalScore = playerACompletedQuestionScores[0] - 10
+
+        expect(playerAResult.player.score.last).toBe(-10)
+        expect(playerAResult.player.score.total).toBe(playerAFinalScore)
+        expect(playerBResult.player.score.last).toBe(100)
+        expect(playerBResult.player.score.total).toBe(
+          Math.round(playerACompletedQuestionScores[0]) + 100,
+        )
+        playerACompletedQuestionScores.push(playerAResult.player.score.last)
+        await expect(page.getByTestId('question-results')).toBeVisible()
+
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByRole('button', { name: 'View Full Results' }),
+        ).toBeVisible()
+
+        const playerAColumn = page
+          .getByText(playerANickname, { exact: true })
+          .last()
+          .locator('..')
+          .locator('..')
+        const playerBColumn = page
+          .getByText(playerBNickname, { exact: true })
+          .last()
+          .locator('..')
+          .locator('..')
+
+        await expect(
+          playerAColumn.getByText('1', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          playerBColumn.getByText('2', { exact: true }),
+        ).toBeVisible()
+      })
+    } finally {
+      playerA.close()
+      playerB.close()
+    }
+  })
+
   test('keeps a late Classic joiner behind a scored player', async ({
     page,
   }, testInfo) => {
@@ -916,6 +1187,7 @@ function getE2EHost(testInfo: TestInfo): {
   quizId: string
   lateJoinQuizId: string
   zeroToOneHundredQuizId: string
+  zeroToOneHundredLateJoinQuizId: string
 } {
   const e2eHost =
     E2E_HOSTS_BY_PROJECT[testInfo.project.name]?.[testInfo.repeatEachIndex]
