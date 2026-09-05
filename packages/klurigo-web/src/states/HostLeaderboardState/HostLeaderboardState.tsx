@@ -1,4 +1,4 @@
-import type { GameLeaderboardHostEvent } from '@klurigo/common'
+import { type GameLeaderboardHostEvent, GameMode } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
@@ -12,7 +12,7 @@ export interface HostLeaderboardStateProps {
 
 const HostLeaderboardState: FC<HostLeaderboardStateProps> = ({
   event: {
-    game: { pin },
+    game: { mode, pin },
     leaderboard,
     pagination: { current: currentQuestion, total: totalQuestions },
   },
@@ -52,7 +52,10 @@ const HostLeaderboardState: FC<HostLeaderboardStateProps> = ({
       <Typography variant="title" align="center" color="inverse">
         Leaderboard
       </Typography>
-      <Leaderboard values={leaderboard} />
+      <Leaderboard
+        values={leaderboard}
+        showStreaks={mode === GameMode.Classic}
+      />
     </GamePage>
   )
 }

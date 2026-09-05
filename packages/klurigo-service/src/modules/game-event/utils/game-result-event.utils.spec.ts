@@ -890,6 +890,48 @@ describe('Game Result Event Utils', () => {
       expect(result.pagination.total).toBe(game.questions.length)
     })
 
+    it('omits legacy streak data for ZeroToOneHundred player results', () => {
+      const playerId = uuidv4()
+      const player = createMockGamePlayerParticipantDocument({
+        participantId: playerId,
+        nickname: 'PrecisePlayer',
+        totalScore: 100,
+        rank: 1,
+        currentStreak: 10,
+      })
+      const questionResultTask = createMockQuestionResultTaskDocument({
+        questionIndex: 0,
+        results: [
+          createMockQuestionResultTaskItemDocument({
+            playerId,
+            nickname: 'PrecisePlayer',
+            correct: true,
+            lastScore: 40,
+            totalScore: 100,
+            position: 1,
+            streak: 10,
+          }),
+        ],
+      })
+      const game = createMockGameDocument({
+        mode: GameMode.ZeroToOneHundred,
+        participants: [player],
+        currentTask: questionResultTask,
+        questions: [{} as never],
+      })
+
+      const result = buildGameResultPlayerEvent(game as never, player)
+
+      expect(result.game.mode).toBe(GameMode.ZeroToOneHundred)
+      expect(result.player.score).toEqual({
+        correct: true,
+        last: 40,
+        total: 100,
+        position: 1,
+      })
+      expect(result.player.score).not.toHaveProperty('streak')
+    })
+
     it('falls back to player aggregate stats when no result entry exists in the QuestionResult task', () => {
       const playerId = uuidv4()
 

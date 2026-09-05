@@ -1,4 +1,8 @@
-import { GameEventType, GameMode } from '@klurigo/common'
+import {
+  GameEventType,
+  GameMode,
+  type GameOverPlayerEvent,
+} from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -27,26 +31,27 @@ import PlayerGameOverState from './PlayerGameOverState'
 
 const makeEvent = (
   overrides: Partial<Parameters<typeof PlayerGameOverState>[0]['event']> = {},
-) => ({
-  type: GameEventType.GameOverPlayer as const,
-  game: { id: 'game-42', mode: GameMode.Classic },
-  quiz: { id: 'quiz-1', title: 'Science Quiz' },
-  player: {
-    nickname: 'FrostyBear',
-    rank: 1,
-    totalPlayers: 10,
-    score: 8500,
-    currentStreak: 5,
-    comebackRankGain: 0,
-    behind: null,
-  },
-  rating: {
-    canRateQuiz: true,
-    stars: undefined,
-    comment: undefined,
-  },
-  ...overrides,
-})
+): GameOverPlayerEvent =>
+  ({
+    type: GameEventType.GameOverPlayer as const,
+    game: { id: 'game-42', mode: GameMode.Classic },
+    quiz: { id: 'quiz-1', title: 'Science Quiz' },
+    player: {
+      nickname: 'FrostyBear',
+      rank: 1,
+      totalPlayers: 10,
+      score: 8500,
+      currentStreak: 5,
+      comebackRankGain: 0,
+      behind: null,
+    },
+    rating: {
+      canRateQuiz: true,
+      stars: undefined,
+      comment: undefined,
+    },
+    ...overrides,
+  }) as GameOverPlayerEvent
 
 describe('PlayerGameOverState', () => {
   beforeEach(() => {
@@ -193,6 +198,31 @@ describe('PlayerGameOverState', () => {
     )
 
     expect(screen.queryByText('Streak')).toBeNull()
+  })
+
+  it('ignores legacy streak data for ZeroToOneHundred games', () => {
+    const event = {
+      ...makeEvent(),
+      game: { id: 'game-42', mode: GameMode.ZeroToOneHundred },
+      player: {
+        nickname: 'P',
+        rank: 11,
+        totalPlayers: 20,
+        score: 8500,
+        currentStreak: 10,
+        comebackRankGain: 0,
+        behind: null,
+      },
+    } as unknown as Parameters<typeof PlayerGameOverState>[0]['event']
+
+    const { container } = render(
+      <MemoryRouter>
+        <PlayerGameOverState event={event} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByText('Streak')).toBeNull()
+    expect(container.querySelector('.confettiContainer')).toBeNull()
   })
 
   it('renders comeback indicator when comebackRankGain > 0', () => {

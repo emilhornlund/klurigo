@@ -1,4 +1,8 @@
-import { GameEventType, GameLeaderboardHostEvent } from '@klurigo/common'
+import {
+  GameEventType,
+  GameLeaderboardHostEvent,
+  GameMode,
+} from '@klurigo/common'
 
 import {
   GameDocument,
@@ -15,20 +19,42 @@ import { buildPaginationEventFromGameDocument } from './pagination-event.utils'
 export function buildGameLeaderboardHostEvent(
   game: GameDocument & { currentTask: { type: TaskType.Leaderboard } },
 ): GameLeaderboardHostEvent {
+  const leaderboard = game.currentTask.leaderboard.slice(0, 5)
+
+  if (game.mode === GameMode.Classic) {
+    return {
+      type: GameEventType.GameLeaderboardHost,
+      game: {
+        pin: game.pin,
+        mode: game.mode,
+      },
+      leaderboard: leaderboard.map(
+        ({ position, previousPosition, nickname, score, streaks }) => ({
+          position,
+          previousPosition,
+          nickname,
+          score,
+          streaks,
+        }),
+      ),
+      pagination: buildPaginationEventFromGameDocument(game),
+    }
+  }
+
   return {
     type: GameEventType.GameLeaderboardHost,
     game: {
       pin: game.pin,
+      mode: game.mode,
     },
-    leaderboard: game.currentTask.leaderboard
-      .slice(0, 5)
-      .map(({ position, previousPosition, nickname, score, streaks }) => ({
+    leaderboard: leaderboard.map(
+      ({ position, previousPosition, nickname, score }) => ({
         position,
         previousPosition,
         nickname,
         score,
-        streaks,
-      })),
+      }),
+    ),
     pagination: buildPaginationEventFromGameDocument(game),
   }
 }

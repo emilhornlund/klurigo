@@ -263,7 +263,6 @@ export class GameResultService {
       comebackRankGain,
       unanswered,
       averageResponseTime,
-      longestCorrectStreak,
       score,
     } = playerMetric
     return {
@@ -272,7 +271,6 @@ export class GameResultService {
       comebackRankGain,
       unanswered,
       averageResponseTime,
-      longestCorrectStreak,
       score,
     }
   }
@@ -287,11 +285,12 @@ export class GameResultService {
   private static toClassicModePlayerMetricDto(
     playerMetric: PlayerMetric,
   ): GameResultClassicModePlayerMetricDto {
-    const { correct, incorrect } = playerMetric
+    const { correct, incorrect, longestCorrectStreak } = playerMetric
     return {
       ...GameResultService.toBasePlayerMetricDto(playerMetric),
       correct: correct ?? 0,
       incorrect: incorrect ?? 0,
+      longestCorrectStreak: longestCorrectStreak ?? 0,
     }
   }
 

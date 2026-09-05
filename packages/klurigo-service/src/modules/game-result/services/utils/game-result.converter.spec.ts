@@ -1302,7 +1302,6 @@ describe('Game Result Converter', () => {
             averagePrecision: 0.75,
             unanswered: 1,
             averageResponseTime: 16716,
-            longestCorrectStreak: 3,
             score: 70,
           },
           {
@@ -1313,7 +1312,6 @@ describe('Game Result Converter', () => {
             averagePrecision: 0.7,
             unanswered: 1,
             averageResponseTime: 20650,
-            longestCorrectStreak: 0,
             score: 118,
           },
           {
@@ -1324,7 +1322,6 @@ describe('Game Result Converter', () => {
             averagePrecision: 0.41,
             unanswered: 2,
             averageResponseTime: 36193,
-            longestCorrectStreak: 0,
             score: 236,
           },
         ],

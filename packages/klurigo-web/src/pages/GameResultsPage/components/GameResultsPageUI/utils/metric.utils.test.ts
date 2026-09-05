@@ -175,7 +175,6 @@ describe('buildPlayerSectionMetricDetails', () => {
     const metric = {
       unanswered: 3,
       averageResponseTime: 2500,
-      longestCorrectStreak: 0,
       score: 0,
       averagePrecision: 0.42,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -189,7 +188,6 @@ describe('buildPlayerSectionMetricDetails', () => {
     expect(details.map((d) => d.title)).toEqual([
       'Unanswered',
       'Average response time',
-      'Longest correct streak',
       'Score',
     ])
     expect(details.some((d) => d.title === 'Correct')).toBe(false)

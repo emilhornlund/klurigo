@@ -1,4 +1,4 @@
-import { type GameOverPlayerEvent } from '@klurigo/common'
+import { GameMode, type GameOverPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useCallback, useMemo } from 'react'
 
@@ -30,24 +30,23 @@ export type PlayerGameOverStateProps = {
 /**
  * Renders the player game-over screen after the game reaches the podium stage.
  *
- * Displays the player's final rank, score, streak, comeback info, behind info,
- * quiz title, a rating card, and action buttons for navigating away from the game.
+ * Displays the player's final rank, score, comeback info, behind info, quiz
+ * title, a rating card, and action buttons for navigating away from the game.
+ * Classic mode additionally displays the player's streak.
  */
 const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
   event: {
     game,
     quiz,
-    player: {
-      rank,
-      totalPlayers,
-      score,
-      currentStreak,
-      comebackRankGain,
-      behind,
-    },
+    player,
     rating: { canRateQuiz, stars: initialStars, comment: initialComment },
   },
 }) => {
+  const { rank, totalPlayers, score, comebackRankGain, behind } = player
+  const currentStreak =
+    game.mode === GameMode.Classic && 'currentStreak' in player
+      ? player.currentStreak
+      : undefined
   const { isUserAuthenticated, revokeGame } = useAuthContext()
   const { createOrUpdateGameRating } = useGameContext()
 
@@ -124,7 +123,9 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
 
       <ScoreChip value={score} />
 
-      <StreakBadge streak={currentStreak}>Streak</StreakBadge>
+      {game.mode === GameMode.Classic && (
+        <StreakBadge streak={currentStreak}>Streak</StreakBadge>
+      )}
 
       {comebackRankGain > 0 && (
         <Typography variant="body" width="small" align="center" color="inverse">

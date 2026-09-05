@@ -2094,29 +2094,6 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
                   >
-                    Longest Correct Streak
-                  </p>
-                  <h3
-                    class="typography title3 alignCenter widthFull colorInverse noOpacity"
-                  >
-                    2
-                  </h3>
-                  <div
-                    class="nicknames"
-                  >
-                    <div
-                      class="main subtle"
-                    >
-                      Carol
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="card metric"
-                >
-                  <p
-                    class="typography body2 alignCenter widthFull colorInverse"
-                  >
                     Precision Champion
                   </p>
                   <h3

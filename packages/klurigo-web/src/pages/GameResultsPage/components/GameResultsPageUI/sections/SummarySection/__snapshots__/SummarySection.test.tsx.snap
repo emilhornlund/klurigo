@@ -1009,31 +1009,6 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
           class="body2"
           color="inverse"
         >
-          Longest Correct Streak
-        </p>
-        <h3
-          align="center"
-          class="title3"
-          color="inverse"
-        >
-          3
-        </h3>
-        <div
-          class="nicknames"
-        >
-          <div>
-            Dave
-          </div>
-        </div>
-      </div>
-      <div
-        class="card metric"
-      >
-        <p
-          align="center"
-          class="body2"
-          color="inverse"
-        >
           Precision Champion
         </p>
         <h3

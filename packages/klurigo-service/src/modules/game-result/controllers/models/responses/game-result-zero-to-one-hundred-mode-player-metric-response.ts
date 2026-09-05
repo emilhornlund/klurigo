@@ -6,7 +6,6 @@ import { IsNumber, ValidateNested } from 'class-validator'
 import {
   ApiGameResultPlayerMetricAverageResponseTimeProperty,
   ApiGameResultPlayerMetricComebackRankGainProperty,
-  ApiGameResultPlayerMetricLongestCorrectStreakProperty,
   ApiGameResultPlayerMetricRankProperty,
   ApiGameResultPlayerMetricScoreProperty,
   ApiGameResultPlayerMetricUnansweredProperty,
@@ -67,12 +66,6 @@ export class GameResultZeroToOneHundredModePlayerMetricResponse implements GameR
    */
   @ApiGameResultPlayerMetricAverageResponseTimeProperty()
   averageResponseTime: number
-
-  /**
-   * The longest streak of consecutive correct answers by the player.
-   */
-  @ApiGameResultPlayerMetricLongestCorrectStreakProperty()
-  longestCorrectStreak: number
 
   /**
    * The player's total score at the end of the game.

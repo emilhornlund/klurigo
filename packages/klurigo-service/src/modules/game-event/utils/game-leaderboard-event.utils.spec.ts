@@ -1,6 +1,7 @@
 import {
   GameEventType,
   GameLeaderboardHostEvent,
+  GameMode,
   generateNickname,
 } from '@klurigo/common'
 
@@ -211,7 +212,9 @@ describe('Game Leaderboard Event Utils', () => {
       const actual = buildGameLeaderboardHostEvent(gameDocument as never)
 
       expect(actual.type).toEqual(GameEventType.GameLeaderboardHost)
-      expect(actual.leaderboard[0].streaks).toEqual(0)
+      if ('streaks' in actual.leaderboard[0]) {
+        expect(actual.leaderboard[0].streaks).toEqual(0)
+      }
     })
 
     it('should handle players with no previous position (new players)', () => {
@@ -237,6 +240,35 @@ describe('Game Leaderboard Event Utils', () => {
 
       expect(actual.type).toEqual(GameEventType.GameLeaderboardHost)
       expect(actual.leaderboard[0].previousPosition).toBeUndefined()
+    })
+
+    it('should omit streaks for ZeroToOneHundred leaderboards', () => {
+      const gameDocument = createMockGameDocument({
+        mode: GameMode.ZeroToOneHundred,
+        currentTask: createMockLeaderboardTaskDocument({
+          status: 'active',
+          questionIndex: 0,
+          leaderboard: [
+            createMockLeaderboardTaskItem({
+              position: 1,
+              nickname: 'PrecisePlayer',
+              score: 100,
+              streaks: 9,
+            }),
+          ],
+        }),
+      })
+
+      const actual = buildGameLeaderboardHostEvent(gameDocument as never)
+
+      expect(actual.game.mode).toBe(GameMode.ZeroToOneHundred)
+      expect(actual.leaderboard[0]).toEqual({
+        position: 1,
+        previousPosition: 1,
+        nickname: 'PrecisePlayer',
+        score: 100,
+      })
+      expect(actual.leaderboard[0]).not.toHaveProperty('streaks')
     })
   })
 })

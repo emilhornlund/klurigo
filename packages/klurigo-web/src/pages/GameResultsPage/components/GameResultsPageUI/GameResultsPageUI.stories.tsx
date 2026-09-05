@@ -187,7 +187,6 @@ export const ZeroToOneHundred = {
           averagePrecision: 0.89,
           unanswered: 0,
           averageResponseTime: 2915,
-          longestCorrectStreak: 2,
           score: 13,
         },
         {
@@ -200,7 +199,6 @@ export const ZeroToOneHundred = {
           averagePrecision: 0.87,
           unanswered: 0,
           averageResponseTime: 3082,
-          longestCorrectStreak: 2,
           score: 15,
         },
         {
@@ -213,7 +211,6 @@ export const ZeroToOneHundred = {
           averagePrecision: 0.84,
           unanswered: 0,
           averageResponseTime: 3275,
-          longestCorrectStreak: 2,
           score: 17,
         },
         {
@@ -226,7 +223,6 @@ export const ZeroToOneHundred = {
           averagePrecision: 0.82,
           unanswered: 0,
           averageResponseTime: 3492,
-          longestCorrectStreak: 2,
           score: 18,
         },
         {
@@ -239,7 +235,6 @@ export const ZeroToOneHundred = {
           averagePrecision: 0.79,
           unanswered: 1,
           averageResponseTime: 3768,
-          longestCorrectStreak: 1,
           score: 19,
         },
       ],

@@ -171,7 +171,10 @@ export interface GameResultParticipantDto {
 }
 
 /**
- * Represents a player's final performance metrics in the game.
+ * Represents the final performance metrics shared by all players.
+ *
+ * Streak metrics are intentionally not part of this base contract because
+ * ZeroToOneHundred does not support them.
  */
 export interface GameResultPlayerMetricDto {
   /**
@@ -204,11 +207,6 @@ export interface GameResultPlayerMetricDto {
   readonly averageResponseTime: number
 
   /**
-   * The longest streak of consecutive correct answers by the player.
-   */
-  readonly longestCorrectStreak: number
-
-  /**
    * The player's total score at the end of the game.
    */
   readonly score: number
@@ -227,6 +225,12 @@ export interface GameResultClassicModePlayerMetricDto extends GameResultPlayerMe
    * The total number of questions the player answered incorrectly.
    */
   readonly incorrect: number
+
+  /**
+   * The longest streak of consecutive correct answers by the player.
+   * This metric is available only in Classic mode.
+   */
+  readonly longestCorrectStreak: number
 }
 
 /**

@@ -4,7 +4,8 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNumber, Max, Min } from 'class-validator'
 
 /**
- * Decorator for documenting and validating the `longestCorrectStreak` metric for a player.
+ * Decorator for documenting and validating the Classic-only
+ * `longestCorrectStreak` metric for a player.
  *
  * Applies:
  * - `@ApiProperty` for Swagger documentation.
@@ -17,7 +18,7 @@ export function ApiGameResultPlayerMetricLongestCorrectStreakProperty() {
     ApiProperty({
       title: 'Longest Correct Streak',
       description:
-        'The longest streak of consecutive correct answers by the player.',
+        'The longest streak of consecutive correct answers by the player. This metric is available only in Classic mode.',
       required: true,
       type: Number,
       minimum: QUIZ_QUESTION_MIN,

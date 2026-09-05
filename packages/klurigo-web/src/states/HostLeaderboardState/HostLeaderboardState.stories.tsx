@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { GameEventType, GameMode } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -23,6 +23,7 @@ export const Default = {
       type: GameEventType.GameLeaderboardHost,
       game: {
         pin: '123456',
+        mode: GameMode.Classic,
       },
       leaderboard: [
         {

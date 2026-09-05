@@ -49,7 +49,9 @@ describe('buildGameOverPlayerEvent', () => {
     expect(result.player.nickname).toBe(mockPlayer.nickname)
     expect(result.player.rank).toBe(2)
     expect(result.player.score).toBe(800)
-    expect(result.player.currentStreak).toBe(3)
+    if ('currentStreak' in result.player) {
+      expect(result.player.currentStreak).toBe(3)
+    }
     expect(result.player.totalPlayers).toBe(1)
   })
 
@@ -222,5 +224,18 @@ describe('buildGameOverPlayerEvent', () => {
     const result = buildGameOverPlayerEvent(game as never, playerParticipant)
 
     expect(result.player.totalPlayers).toBe(1)
+  })
+
+  it('should omit currentStreak for ZeroToOneHundred games', () => {
+    const game = createMockGameDocument({
+      mode: GameMode.ZeroToOneHundred,
+      currentTask: createMockPodiumTaskDocument({ status: 'active' }),
+      participants: [mockPlayer],
+    })
+
+    const result = buildGameOverPlayerEvent(game as never, mockPlayer)
+
+    expect(result.game.mode).toBe(GameMode.ZeroToOneHundred)
+    expect(result.player).not.toHaveProperty('currentStreak')
   })
 })
