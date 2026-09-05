@@ -4,6 +4,7 @@ import {
   type AuthResponseDto,
   type CreateGameResponseDto,
   GameEventType,
+  GameMode,
   type GameResultPlayerEvent,
   QuestionType,
 } from '@klurigo/common'
@@ -19,23 +20,31 @@ const API_BASE_URL =
 
 const E2E_HOSTS_BY_PROJECT: Record<
   string,
-  { email: string; quizId: string; lateJoinQuizId: string }[]
+  {
+    email: string
+    quizId: string
+    lateJoinQuizId: string
+    zeroToOneHundredQuizId: string
+  }[]
 > = {
   chromium: [
     {
       email: 'tester02@klurigo.com',
       quizId: 'e2e00002-0000-4000-8000-000000000002',
       lateJoinQuizId: 'e2e10002-0000-4000-8000-000000000002',
+      zeroToOneHundredQuizId: 'e2e20002-0000-4000-8000-000000000002',
     },
     {
       email: 'tester05@klurigo.com',
       quizId: 'e2e00005-0000-4000-8000-000000000005',
       lateJoinQuizId: 'e2e10005-0000-4000-8000-000000000005',
+      zeroToOneHundredQuizId: 'e2e20005-0000-4000-8000-000000000005',
     },
     {
       email: 'tester08@klurigo.com',
       quizId: 'e2e00008-0000-4000-8000-000000000008',
       lateJoinQuizId: 'e2e10008-0000-4000-8000-000000000008',
+      zeroToOneHundredQuizId: 'e2e20008-0000-4000-8000-000000000008',
     },
   ],
   firefox: [
@@ -43,16 +52,19 @@ const E2E_HOSTS_BY_PROJECT: Record<
       email: 'tester03@klurigo.com',
       quizId: 'e2e00003-0000-4000-8000-000000000003',
       lateJoinQuizId: 'e2e10003-0000-4000-8000-000000000003',
+      zeroToOneHundredQuizId: 'e2e20003-0000-4000-8000-000000000003',
     },
     {
       email: 'tester06@klurigo.com',
       quizId: 'e2e00006-0000-4000-8000-000000000006',
       lateJoinQuizId: 'e2e10006-0000-4000-8000-000000000006',
+      zeroToOneHundredQuizId: 'e2e20006-0000-4000-8000-000000000006',
     },
     {
       email: 'tester09@klurigo.com',
       quizId: 'e2e00009-0000-4000-8000-000000000009',
       lateJoinQuizId: 'e2e10009-0000-4000-8000-000000000009',
+      zeroToOneHundredQuizId: 'e2e20009-0000-4000-8000-000000000009',
     },
   ],
   webkit: [
@@ -60,16 +72,19 @@ const E2E_HOSTS_BY_PROJECT: Record<
       email: 'tester04@klurigo.com',
       quizId: 'e2e00004-0000-4000-8000-000000000004',
       lateJoinQuizId: 'e2e10004-0000-4000-8000-000000000004',
+      zeroToOneHundredQuizId: 'e2e20004-0000-4000-8000-000000000004',
     },
     {
       email: 'tester07@klurigo.com',
       quizId: 'e2e00007-0000-4000-8000-000000000007',
       lateJoinQuizId: 'e2e10007-0000-4000-8000-000000000007',
+      zeroToOneHundredQuizId: 'e2e20007-0000-4000-8000-000000000007',
     },
     {
       email: 'tester10@klurigo.com',
       quizId: 'e2e00010-0000-4000-8000-000000000010',
       lateJoinQuizId: 'e2e10010-0000-4000-8000-000000000010',
+      zeroToOneHundredQuizId: 'e2e20010-0000-4000-8000-000000000010',
     },
   ],
 }
@@ -80,6 +95,11 @@ const QUESTION = 'Which color is associated with a clear daytime sky?'
 const CORRECT_ANSWER = 'Blue'
 const INCORRECT_ANSWER = 'Green'
 const SECOND_QUESTION = 'Which planet is known as the Red Planet?'
+const ZERO_TO_ONE_HUNDRED_QUIZ_TITLE = 'E2E Zero to One Hundred Quiz'
+const ZERO_TO_ONE_HUNDRED_QUESTION =
+  'What number is halfway between zero and one hundred?'
+const ZERO_TO_ONE_HUNDRED_EXACT_ANSWER = 50
+const ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER = 75
 
 test.describe.configure({ mode: 'serial' })
 
@@ -360,6 +380,213 @@ test.describe('Game session: host UI with API player', () => {
     } finally {
       correctPlayer.close()
       incorrectPlayer.close()
+    }
+  })
+
+  test('completes one Zero to One Hundred game with two simulated players', async ({
+    page,
+  }, testInfo) => {
+    const e2eHost = getE2EHost(testInfo)
+    const precisePlayerNickname = `ApiPrecise${randomUUID().slice(0, 8)}`
+    const approximatePlayerNickname = `ApiApprox${randomUUID().slice(0, 8)}`
+
+    await test.step('Authenticate the seeded E2E user', async () => {
+      await authenticatePage(
+        page,
+        API_BASE_URL,
+        e2eHost.email,
+        E2E_USER_PASSWORD,
+      )
+      await expect(page).toHaveURL('/')
+    })
+
+    await test.step('Open the seeded Zero to One Hundred quiz', async () => {
+      await page.goto(`/quiz/details/${e2eHost.zeroToOneHundredQuizId}`)
+      await expect(page).toHaveURL(
+        `/quiz/details/${e2eHost.zeroToOneHundredQuizId}`,
+      )
+      await expect(
+        page.getByText(ZERO_TO_ONE_HUNDRED_QUIZ_TITLE, { exact: true }),
+      ).toBeVisible()
+    })
+
+    await test.step('Create and open the host game', async () => {
+      await page.locator('#host-game-button').click()
+      await page.getByRole('button', { name: 'Confirm', exact: true }).click()
+      await expect(page).toHaveURL('/game')
+      await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
+    })
+
+    const gamePINElement = page
+      .getByText('Game PIN', { exact: true })
+      .locator('..')
+      .getByText(/^[1-9]\d{5}$/)
+    await expect(gamePINElement).toBeVisible()
+    const gamePIN = (await gamePINElement.textContent())?.trim()
+    if (!gamePIN) {
+      throw new Error('Host lobby did not expose a game PIN')
+    }
+
+    const precisePlayer = new GamePlayerClient(API_BASE_URL)
+    const approximatePlayer = new GamePlayerClient(API_BASE_URL)
+
+    try {
+      await test.step('Join and connect both simulated players', async () => {
+        const [preciseIdentity, approximateIdentity] = await Promise.all([
+          precisePlayer.authenticateAndJoin({ gamePIN }, precisePlayerNickname),
+          approximatePlayer.authenticateAndJoin(
+            { gamePIN },
+            approximatePlayerNickname,
+          ),
+        ])
+
+        expect(preciseIdentity.gameId).toMatch(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        )
+        expect(approximateIdentity.gameId).toBe(preciseIdentity.gameId)
+
+        await Promise.all([
+          precisePlayer.connect(),
+          approximatePlayer.connect(),
+        ])
+        await expect(
+          page.getByText(precisePlayerNickname, { exact: true }),
+        ).toBeVisible()
+        await expect(
+          page.getByText(approximatePlayerNickname, { exact: true }),
+        ).toBeVisible()
+      })
+
+      await test.step('Start the game and receive both player questions', async () => {
+        const preciseQuestionPromise = precisePlayer.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+        const approximateQuestionPromise = approximatePlayer.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
+        )
+
+        await page.locator('#start-game-button').click()
+        const [preciseQuestion, approximateQuestion] = await Promise.all([
+          preciseQuestionPromise,
+          approximateQuestionPromise,
+        ])
+
+        await expect(
+          page.getByText(ZERO_TO_ONE_HUNDRED_QUESTION, { exact: true }),
+        ).toBeVisible()
+        for (const question of [preciseQuestion, approximateQuestion]) {
+          expect(question.question.type).toBe(QuestionType.Range)
+          if (question.question.type !== QuestionType.Range) {
+            throw new Error(
+              'Expected both simulated players to receive a range question',
+            )
+          }
+          expect(question.question.min).toBe(0)
+          expect(question.question.max).toBe(100)
+          expect(question.question.step).toBe(1)
+        }
+      })
+
+      await test.step('Submit different-precision answers and verify both results', async () => {
+        const preciseResultPromise = precisePlayer.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === precisePlayerNickname,
+        )
+        const approximateResultPromise = approximatePlayer.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 1 &&
+            event.player.nickname === approximatePlayerNickname,
+        )
+
+        await Promise.all([
+          precisePlayer.submitAnswer({
+            type: QuestionType.Range,
+            value: ZERO_TO_ONE_HUNDRED_EXACT_ANSWER,
+          }),
+          approximatePlayer.submitAnswer({
+            type: QuestionType.Range,
+            value: ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER,
+          }),
+        ])
+
+        const [preciseResult, approximateResult] = await Promise.all([
+          preciseResultPromise,
+          approximateResultPromise,
+        ])
+
+        expect(preciseResult.game.mode).toBe(GameMode.ZeroToOneHundred)
+        expect(preciseResult.player.score).toEqual({
+          correct: true,
+          last: -10,
+          total: -10,
+          position: 1,
+        })
+        expect(approximateResult.game.mode).toBe(GameMode.ZeroToOneHundred)
+        expect(approximateResult.player.score).toEqual({
+          correct: true,
+          last: 25,
+          total: 25,
+          position: 2,
+        })
+        expect(preciseResult.player.score.position).toBeLessThan(
+          approximateResult.player.score.position,
+        )
+      })
+
+      await test.step('Verify the host result state reflects both answers', async () => {
+        const questionResults = page.getByTestId('question-results')
+        await expect(questionResults).toBeVisible()
+        await expect(questionResults.locator(':scope > div')).toHaveCount(1)
+        await expect(questionResults.locator(':scope > div > div')).toHaveCount(
+          2,
+        )
+        await expect(questionResults).toContainText(
+          `${ZERO_TO_ONE_HUNDRED_EXACT_ANSWER}`,
+        )
+        await expect(questionResults).toContainText(
+          `${ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER}`,
+        )
+      })
+
+      await test.step('Progress to and verify the final podium ordering', async () => {
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByRole('button', { name: 'View Full Results' }),
+        ).toBeVisible()
+        await expect(
+          page.getByText(ZERO_TO_ONE_HUNDRED_QUIZ_TITLE, { exact: true }),
+        ).toBeVisible()
+
+        const precisePlayerColumn = page
+          .getByText(precisePlayerNickname, { exact: true })
+          .locator('..')
+          .locator('..')
+        const approximatePlayerColumn = page
+          .getByText(approximatePlayerNickname, { exact: true })
+          .locator('..')
+          .locator('..')
+
+        await expect(
+          precisePlayerColumn.getByText('1', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          precisePlayerColumn.getByTestId('score-chip'),
+        ).toContainText('-10')
+        await expect(
+          approximatePlayerColumn.getByText('2', { exact: true }),
+        ).toBeVisible()
+        await expect(
+          approximatePlayerColumn.getByTestId('score-chip'),
+        ).toContainText('25')
+      })
+    } finally {
+      precisePlayer.close()
+      approximatePlayer.close()
     }
   })
 
@@ -688,6 +915,7 @@ function getE2EHost(testInfo: TestInfo): {
   email: string
   quizId: string
   lateJoinQuizId: string
+  zeroToOneHundredQuizId: string
 } {
   const e2eHost =
     E2E_HOSTS_BY_PROJECT[testInfo.project.name]?.[testInfo.repeatEachIndex]
