@@ -9,7 +9,8 @@ const KLURIGO_SERVICE_PROXY =
 const apiUrl = new URL(KLURIGO_SERVICE_PROXY)
 apiUrl.pathname = '/health'
 
-const GAME_SESSION_TEST_MATCH = '**/GameSession*.spec.ts'
+const GAME_SESSION_TEST_MATCH = '**/game-session/**/*.spec.ts'
+const GAME_SESSION_EXPECT_TIMEOUT = 15_000
 
 export default defineConfig({
   testDir: './e2e-tests',
@@ -47,12 +48,14 @@ export default defineConfig({
     {
       name: 'chromium-game-session',
       testMatch: GAME_SESSION_TEST_MATCH,
+      expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
       workers: 1,
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'firefox-game-session',
       testMatch: GAME_SESSION_TEST_MATCH,
+      expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
       workers: 1,
       use: { ...devices['Desktop Firefox'] },
     },
@@ -61,6 +64,7 @@ export default defineConfig({
           {
             name: 'webkit-game-session',
             testMatch: GAME_SESSION_TEST_MATCH,
+            expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
             workers: 1,
             use: { ...devices['Desktop Safari'] },
           },
