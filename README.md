@@ -104,7 +104,9 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 - `yarn test` – Run the complete backend Jest suite.
 - `yarn test:unit` – Run isolated unit tests matching `*.spec.ts`; MongoDB and Redis are not required.
 - `yarn test:e2e` – Run backend e2e tests matching `*.e2e-spec.ts`; real MongoDB and Redis services are required.
-- `yarn test:coverage` – Run the complete backend suite with coverage.
+- `yarn test:unit:coverage` – Run unit tests with coverage in `packages/klurigo-service/coverage/unit`.
+- `yarn test:e2e:coverage` – Run backend e2e tests with coverage in `packages/klurigo-service/coverage/e2e`; real MongoDB and Redis services are required.
+- `yarn test:coverage` – Run both backend coverage suites, retaining the separate unit and e2e reports.
 - `yarn check-circular-deps` – Check for circular imports.
 - `yarn lint` / `lint:fix` – Lint the codebase.
 
@@ -114,6 +116,10 @@ with MongoDB and Redis stopped. Backend e2e tests use `createTestApp` and the
 real services; start them with `docker compose up -d` before running
 `yarn test:e2e`. Use `yarn e2e:setup` and `yarn e2e:teardown` when the e2e
 database needs to be seeded or reset.
+
+The backend coverage reports are written to `coverage/unit` and `coverage/e2e`
+so either suite can be rerun without overwriting the other. CI uploads them to
+Codecov with the `klurigo-service-unit` and `klurigo-service-e2e` flags.
 
 ---
 
