@@ -8,17 +8,17 @@
   ],
   "scripts": {
     "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\"",
-    "build": "concurrently \"yarn workspace @klurigo/klurigo-service build\" \"yarn workspace @klurigo/klurigo-web build\"",
+    "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\"",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
     "klurigo-service:dev": "yarn workspace @klurigo/klurigo-service dev",
     "klurigo-web:dev": "wait-on http://localhost:8080/health && yarn workspace @klurigo/klurigo-web dev",
     "klurigo-web:storybook": "yarn workspace @klurigo/klurigo-web storybook",
     "serve": "concurrently \"yarn workspace @klurigo/klurigo-service serve\" \"yarn workspace @klurigo/klurigo-web serve\"",
-    "lint": "yarn workspaces run lint",
+    "lint": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint\" \"yarn workspace @klurigo/klurigo-service lint\" \"yarn workspace @klurigo/klurigo-web lint\" \"yarn workspace @klurigo/e2e-fixtures lint\" \"yarn workspace mongodb-migrator lint\"",
     "lint:fix": "yarn workspaces run lint:fix",
     "test": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test\" \"yarn workspace @klurigo/klurigo-service test\" \"yarn workspace @klurigo/klurigo-web test\"",
     "test:coverage": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:coverage\" \"yarn workspace @klurigo/klurigo-service test:coverage\" \"yarn workspace @klurigo/klurigo-web test:coverage\"",
-    "check-types": "yarn workspaces run check-types"
+    "check-types": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common check-types\" \"yarn workspace @klurigo/klurigo-service check-types\" \"yarn workspace @klurigo/klurigo-web check-types\" \"yarn workspace @klurigo/e2e-fixtures check-types\" \"yarn workspace mongodb-migrator check-types\""
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

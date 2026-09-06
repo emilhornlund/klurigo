@@ -60,7 +60,7 @@ export class GameEventPublisher {
               context,
             )
 
-          await this.publishParticipantEvent(participant, event)
+          await this.publishParticipantEvent(document._id, participant, event)
         } catch (error) {
           const { message, stack } = error as Error
           this.logger.warn(
@@ -75,18 +75,21 @@ export class GameEventPublisher {
   /**
    * Publishes a game event for a single participant.
    *
+   * @param gameId - The game the event belongs to.
    * @param participant - The participant the event should be delivered to.
    * @param event - The event payload to publish. If omitted, nothing is published.
    *
    * @returns A promise that resolves once the event has been published (or immediately if `event` is undefined).
    */
   public async publishParticipantEvent(
+    gameId: string,
     participant: Participant,
     event?: GameEvent,
   ): Promise<void> {
     if (!event) return Promise.resolve()
 
     return this.publishDistributedEvent({
+      gameId,
       playerId: participant.participantId,
       event,
     })
@@ -97,7 +100,7 @@ export class GameEventPublisher {
    *
    * This message is consumed by subscribers in all running service instances and relayed to local SSE streams.
    *
-   * @param event - The distributed event containing the participant routing key and the game event payload.
+   * @param event - The distributed event containing the game and participant routing keys and the game event payload.
    *
    * @private
    */

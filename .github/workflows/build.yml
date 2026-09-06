@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       run_e2e:
-        description: 'Run Playwright e2e tests'
+        description: "Run Playwright e2e tests"
         required: true
         type: boolean
 
@@ -13,31 +13,22 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-test:
-    name: Build & Test
+  static-build:
+    name: Static Checks & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: '24'
+          node-version: "24"
+          cache: yarn
+          cache-dependency-path: yarn.lock
 
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
-
-      - name: Cache Yarn cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        id: yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-
-      - name: Docker compose up
-        run: docker compose up -d --wait
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -54,30 +45,6 @@ jobs:
       - name: Check Circular Dependencies
         run: yarn workspace @klurigo/klurigo-service check-circular-deps
 
-      - name: Test & Coverage
-        run: yarn test:coverage
-
-      - name: Cache Playwright browsers
-        if: ${{ inputs.run_e2e }}
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install Playwright browsers and system dependencies
-        if: ${{ inputs.run_e2e }}
-        run: yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
-
-      - name: E2E Tests
-        if: ${{ inputs.run_e2e }}
-        env:
-          CI: 'true'
-        run: yarn workspace @klurigo/klurigo-web test:e2e
-
-      - name: Docker compose down
-        if: always()
-        run: docker compose down -v
-
       - name: Upload Klurigo artifacts for Sentry
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -91,6 +58,39 @@ jobs:
         with:
           name: klurigo-service-sentry-artifacts
           path: packages/klurigo-service/dist/**/*.map
+
+  unit-coverage:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build common package
+        run: yarn workspace @klurigo/common build
+
+      - name: Docker compose up
+        run: docker compose up -d --wait mongodb redis
+
+      - name: Test & Coverage
+        run: yarn test:coverage
+
+      - name: Docker compose down
+        if: always()
+        run: docker compose down -v
 
       - name: Upload coverage (common)
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
@@ -121,3 +121,54 @@ jobs:
           disable_search: true
           fail_ci_if_error: true
           verbose: true
+
+  e2e:
+    name: Playwright E2E
+    if: ${{ inputs.run_e2e }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build common package
+        run: yarn workspace @klurigo/common build
+
+      - name: Docker compose up
+        run: docker compose up -d --wait mongodb redis
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: |
+          PLAYWRIGHT_VERSION="$(node -e "const fs = require('node:fs'); const path = require('node:path'); const packageRoot = path.dirname(require.resolve('@playwright/test')); const packageJson = JSON.parse(fs.readFileSync(path.join(packageRoot, 'package.json'), 'utf8')); process.stdout.write(packageJson.version)")"
+          echo "version=${PLAYWRIGHT_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ steps.playwright-version.outputs.version }}
+
+      - name: Install Playwright browsers and system dependencies
+        run: yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
+
+      - name: E2E Tests
+        env:
+          CI: "true"
+        run: yarn workspace @klurigo/klurigo-web test:e2e
+
+      - name: Docker compose down
+        if: always()
+        run: docker compose down -v

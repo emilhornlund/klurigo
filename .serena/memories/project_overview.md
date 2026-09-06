@@ -1,1 +1,0 @@
-Klurigo is a Yarn workspace monorepo with shared `@klurigo/common`, frontend `@klurigo/klurigo-web` (React + Vite + SCSS modules), and backend `@klurigo/klurigo-service` (NestJS). Root scripts are preferred for build, lint, test, and type checking. The backend follows feature-based modules with thin controllers, business-logic services, and repository-based persistence.

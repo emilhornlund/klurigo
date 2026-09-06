@@ -172,8 +172,8 @@ describe('GameEventPublisher', () => {
     )
     expect(payloads).toEqual(
       expect.arrayContaining([
-        { playerId: 'p1', event: { playerInit: true } },
-        { playerId: 'host', event: { hostInit: true } },
+        { gameId: 'game-1', playerId: 'p1', event: { playerInit: true } },
+        { gameId: 'game-1', playerId: 'host', event: { hostInit: true } },
       ]),
     )
 
@@ -260,7 +260,11 @@ describe('GameEventPublisher', () => {
     // Player still published
     expect(redis.publish).toHaveBeenCalledTimes(1)
     const msg = JSON.parse(redis.publish.mock.calls[0][1] as string)
-    expect(msg).toEqual({ playerId: 'p1', event: { ok: true } })
+    expect(msg).toEqual({
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { ok: true },
+    })
   })
 
   it('publishParticipantEvent is a no-op when event is undefined', async () => {
@@ -270,7 +274,11 @@ describe('GameEventPublisher', () => {
       nickname: 'Alice',
     }
 
-    await service.publishParticipantEvent(participant as any, undefined)
+    await service.publishParticipantEvent(
+      'game-1',
+      participant as any,
+      undefined,
+    )
 
     expect(redis.publish).not.toHaveBeenCalled()
     expect(logger.debug).not.toHaveBeenCalled()
@@ -285,12 +293,16 @@ describe('GameEventPublisher', () => {
 
     const event = { some: 'event' } as any
 
-    await service.publishParticipantEvent(participant as any, event)
+    await service.publishParticipantEvent('game-1', participant as any, event)
 
     expect(redis.publish).toHaveBeenCalledTimes(1)
     const [channel, message] = redis.publish.mock.calls[0] as [string, string]
     expect(channel).toBe('events')
-    expect(JSON.parse(message)).toEqual({ playerId: 'p1', event })
+    expect(JSON.parse(message)).toEqual({
+      gameId: 'game-1',
+      playerId: 'p1',
+      event,
+    })
     expect(logger.debug).toHaveBeenCalledWith(
       'Published event for playerId: p1',
     )
@@ -307,7 +319,7 @@ describe('GameEventPublisher', () => {
 
     const event = { x: 1 } as any
 
-    await service.publishParticipantEvent(participant as any, event)
+    await service.publishParticipantEvent('game-1', participant as any, event)
 
     expect(logger.error).toHaveBeenCalledWith(
       'Error publishing event:',
@@ -338,7 +350,11 @@ describe('GameEventPublisher', () => {
 
     expect(redis.publish).toHaveBeenCalledTimes(1)
     const msg = JSON.parse(redis.publish.mock.calls[0][1] as string)
-    expect(msg).toEqual({ playerId: 'p1', event: { ok: true } })
+    expect(msg).toEqual({
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { ok: true },
+    })
   })
 
   it('publish rejects if metadata builder throws before per-participant publishing', async () => {
@@ -356,7 +372,7 @@ describe('GameEventPublisher', () => {
   })
 
   it('publishDistributedEvent logs "Published event for all players" when playerId is undefined', async () => {
-    const event = { event: { type: 'AnyEventType' } } as any
+    const event = { gameId: 'game-1', event: { type: 'AnyEventType' } } as any
 
     await (service as any).publishDistributedEvent(event)
 
