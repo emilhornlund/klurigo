@@ -2,5 +2,7 @@
 module.exports = {
   // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
   ...require('./jest.config.cjs'),
-  testRegex: '.*\\.spec\\.ts$',
+  // Unit tests must not include e2e specs, even though both use the `spec.ts`
+  // suffix.
+  testRegex: '^(?!.*\\.e2e-spec\\.ts$).*\\.spec\\.ts$',
 }
