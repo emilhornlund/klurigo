@@ -60,7 +60,7 @@ jobs:
           path: packages/klurigo-service/dist/**/*.map
 
   unit-coverage:
-    name: Unit Tests & Coverage
+    name: Backend Unit & E2E Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -112,12 +112,22 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
-      - name: Upload coverage (klurigo-service)
+      - name: Upload coverage (klurigo-service unit)
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ./packages/klurigo-service/coverage/lcov.info
-          flags: klurigo-service
-          name: klurigo-service
+          files: ./packages/klurigo-service/coverage/unit/lcov.info
+          flags: klurigo-service-unit
+          name: klurigo-service-unit
+          disable_search: true
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Upload coverage (klurigo-service e2e)
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
+        with:
+          files: ./packages/klurigo-service/coverage/e2e/lcov.info
+          flags: klurigo-service-e2e
+          name: klurigo-service-e2e
           disable_search: true
           fail_ci_if_error: true
           verbose: true
