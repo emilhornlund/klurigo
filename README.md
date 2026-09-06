@@ -102,11 +102,18 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 - `yarn build` – Compile for production.
 - `yarn serve` – Run the compiled app.
 - `yarn test` – Run the complete backend Jest suite.
-- `yarn test:unit` – Run only unit tests matching `*.spec.ts`.
-- `yarn test:e2e` – Run only backend e2e tests matching `*.e2e-spec.ts`.
+- `yarn test:unit` – Run isolated unit tests matching `*.spec.ts`; MongoDB and Redis are not required.
+- `yarn test:e2e` – Run backend e2e tests matching `*.e2e-spec.ts`; real MongoDB and Redis services are required.
 - `yarn test:coverage` – Run the complete backend suite with coverage.
 - `yarn check-circular-deps` – Check for circular imports.
 - `yarn lint` / `lint:fix` – Lint the codebase.
+
+Backend unit tests use focused Nest testing modules and do not bootstrap the full
+application or run database and Redis cleanup helpers. They can therefore run
+with MongoDB and Redis stopped. Backend e2e tests use `createTestApp` and the
+real services; start them with `docker compose up -d` before running
+`yarn test:e2e`. Use `yarn e2e:setup` and `yarn e2e:teardown` when the e2e
+database needs to be seeded or reset.
 
 ---
 
