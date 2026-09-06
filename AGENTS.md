@@ -59,8 +59,10 @@ Use these **only when scoping is required**.
 
 - `yarn workspace @klurigo/klurigo-service dev` – Start NestJS in watch mode
 - `yarn workspace @klurigo/klurigo-service build` – Build NestJS application
-- `yarn workspace @klurigo/klurigo-service test` – Run Jest tests
-- `yarn workspace @klurigo/klurigo-service test:coverage` – Run tests with coverage
+- `yarn workspace @klurigo/klurigo-service test` – Run the complete Jest suite
+- `yarn workspace @klurigo/klurigo-service test:unit` – Run unit tests only
+- `yarn workspace @klurigo/klurigo-service test:e2e` – Run backend e2e tests only
+- `yarn workspace @klurigo/klurigo-service test:coverage` – Run the complete suite with coverage
 - `yarn workspace @klurigo/klurigo-service check-circular-deps` – Check for circular dependencies
 
 ### Running a Single Test File

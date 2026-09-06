@@ -414,11 +414,17 @@ Tests:
 ### Run commands
 
 ```bash
+# Backend unit tests only
+yarn workspace @klurigo/klurigo-service test:unit
+
 # Backend e2e tests only
-yarn workspace @klurigo/klurigo-service jest public-user.controller.e2e-spec.ts
+yarn workspace @klurigo/klurigo-service test:e2e -- public-user.controller.e2e-spec.ts
 
 # All backend tests
 yarn workspace @klurigo/klurigo-service test
+
+# All backend tests with coverage
+yarn workspace @klurigo/klurigo-service test:coverage
 
 # Frontend tests
 yarn workspace @klurigo/klurigo-web test

@@ -101,7 +101,10 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 - `yarn dev` – Start the NestJS app in watch mode.
 - `yarn build` – Compile for production.
 - `yarn serve` – Run the compiled app.
-- `yarn test` / `test:watch` / `test:coverage` – Run backend tests.
+- `yarn test` – Run the complete backend Jest suite.
+- `yarn test:unit` – Run only unit tests matching `*.spec.ts`.
+- `yarn test:e2e` – Run only backend e2e tests matching `*.e2e-spec.ts`.
+- `yarn test:coverage` – Run the complete backend suite with coverage.
 - `yarn check-circular-deps` – Check for circular imports.
 - `yarn lint` / `lint:fix` – Lint the codebase.
 
