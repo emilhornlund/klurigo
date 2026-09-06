@@ -3,10 +3,10 @@ name: Pull-Request
 permissions: {}
 on:
   pull_request:
-    branches: ['**']
+    branches: ["**"]
 
 concurrency:
-  group: pr-${{ github.event.pull_request.number }}
+  group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:

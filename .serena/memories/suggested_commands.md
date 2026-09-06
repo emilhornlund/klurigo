@@ -1,1 +1,0 @@
-Preferred root commands: `yarn build`, `yarn lint`, `yarn test`, `yarn test:coverage`, `yarn check-types`, `yarn dev`, `yarn serve`. Scoped commands when needed: `yarn workspace @klurigo/klurigo-service jest path/to/file.spec.ts`, `yarn workspace @klurigo/klurigo-web vitest run path/to/file.test.ts`, `yarn workspace @klurigo/common vitest run path/to/file.spec.ts`.

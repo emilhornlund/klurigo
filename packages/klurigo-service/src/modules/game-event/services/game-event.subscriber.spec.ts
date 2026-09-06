@@ -169,7 +169,11 @@ describe('GameEventSubscriber', () => {
 
     const emitSpy = jest.spyOn(eventEmitter, 'emit')
 
-    const distributed = { playerId: 'p1', event: { type: 'ANY' } }
+    const distributed = {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'ANY' },
+    }
     onMessage('events', JSON.stringify(distributed))
     expect(emitSpy).toHaveBeenCalledWith('event', distributed)
 
@@ -205,10 +209,10 @@ describe('GameEventSubscriber', () => {
     )?.[1] as Function
     expect(onMessage).toBeDefined()
 
-    onMessage('events', JSON.stringify({ playerId: 'p1' }))
+    onMessage('events', JSON.stringify({ gameId: 'game-1' }))
 
     expect(logger.warn).toHaveBeenCalledWith(
-      'Ignoring malformed distributed event (missing event property).',
+      'Ignoring malformed distributed event (missing gameId or event property).',
     )
   })
 
@@ -331,7 +335,7 @@ describe('GameEventSubscriber', () => {
     )
   })
 
-  it('subscribe (PLAYER) returns initial event and filters subsequent events by playerId', async () => {
+  it('subscribe (PLAYER) returns initial event and filters subsequent events by game and player', async () => {
     const doc = buildGameDoc({
       currentTask: { type: TaskType.Question }, // so player metadata is merged
     })
@@ -349,13 +353,24 @@ describe('GameEventSubscriber', () => {
     expect(received[0]?.data).toBe(JSON.stringify({ initial: 'player' }))
 
     // Emit a matching event for p1 -> should pass
-    eventEmitter.emit('event', { playerId: 'p1', event: { type: 'MATCH' } })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'MATCH' },
+    })
 
     // Emit a non-matching event for host -> should be filtered
-    eventEmitter.emit('event', { playerId: 'host', event: { type: 'NOPE' } })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'host',
+      event: { type: 'NOPE' },
+    })
 
-    // Emit a broadcast event (no playerId) -> passes to everyone
-    eventEmitter.emit('event', { event: { type: 'BROADCAST' } })
+    // Emit a game-scoped broadcast event (no playerId) -> passes to everyone in game-1
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      event: { type: 'BROADCAST' },
+    })
 
     // Unsubscribe -> finalize should remove active player
     sub.unsubscribe()
@@ -388,6 +403,34 @@ describe('GameEventSubscriber', () => {
     )
   })
 
+  it('does not relay another game event for the same participant', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
+
+    const stream$ = await service.subscribe('game-1', 'p1')
+    const received: MessageEvent[] = []
+    const sub = stream$.subscribe((event) => received.push(event))
+
+    eventEmitter.emit('event', {
+      gameId: 'game-2',
+      playerId: 'p1',
+      event: { type: 'WRONG_GAME' },
+    })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'MATCHING_GAME' },
+    })
+
+    sub.unsubscribe()
+
+    expect(received.map((event) => JSON.parse(event.data as string))).toEqual([
+      { initial: 'player' },
+      { type: 'MATCHING_GAME' },
+    ])
+  })
+
   it('subscribe filters out undefined events emitted on the local channel', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
@@ -397,7 +440,11 @@ describe('GameEventSubscriber', () => {
     const resultsPromise = firstValueFrom(stream$.pipe(take(2), toArray()))
 
     eventEmitter.emit('event', undefined)
-    eventEmitter.emit('event', { playerId: 'p1', event: { type: 'OK' } })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'OK' },
+    })
 
     const results = await resultsPromise
     expect(results.map((e) => JSON.parse(e.data as any))).toEqual([
@@ -485,8 +532,15 @@ describe('GameEventSubscriber', () => {
     // Collect next two events we emit ourselves (no initial because builder throws)
     const resultsPromise = firstValueFrom(stream$.pipe(take(3), toArray()))
 
-    eventEmitter.emit('event', { playerId: 'host', event: { type: 'A' } })
-    eventEmitter.emit('event', { event: { type: 'B' } })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'host',
+      event: { type: 'A' },
+    })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      event: { type: 'B' },
+    })
 
     const results = await resultsPromise
     expect(results.map((e) => JSON.parse(e.data as any))).toEqual([

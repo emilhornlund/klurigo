@@ -1,1 +1,0 @@
-Formatting uses Prettier via ESLint with no semicolons, single quotes, and 2-space indentation. Prefer precise, minimal edits that follow existing patterns. After code changes, validate with existing tests and type checks; use root scripts by default unless a scoped package command is more appropriate for the task.

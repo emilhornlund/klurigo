@@ -26,6 +26,14 @@ import { DistributedEvent } from './models/event'
 const REDIS_PUBSUB_CHANNEL = 'events'
 const LOCAL_EVENT_EMITTER_CHANNEL = 'event'
 
+type LocalHeartbeatEvent = {
+  gameId?: never
+  playerId?: never
+  event: { type: GameEventType.GameHeartbeat }
+}
+
+type LocalEvent = DistributedEvent | LocalHeartbeatEvent
+
 /**
  * GameEventSubscriber bridges distributed game events to local SSE connections.
  *
@@ -83,9 +91,15 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   ): void => {
     try {
       const parsed = JSON.parse(message) as DistributedEvent
-      if (!parsed || typeof parsed !== 'object' || !('event' in parsed)) {
+      if (
+        !parsed ||
+        typeof parsed !== 'object' ||
+        !('event' in parsed) ||
+        !('gameId' in parsed) ||
+        typeof parsed.gameId !== 'string'
+      ) {
         this.logger.warn(
-          'Ignoring malformed distributed event (missing event property).',
+          'Ignoring malformed distributed event (missing gameId or event property).',
         )
         return
       }
@@ -161,13 +175,13 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Emits a distributed event onto the local event channel for consumption by active SSE subscriptions.
+   * Emits a local event onto the event channel for consumption by active SSE subscriptions.
    *
-   * @param event - The distributed event to broadcast locally.
+   * @param event - The distributed event or local heartbeat to broadcast.
    *
    * @private
    */
-  private emitEvent(event: DistributedEvent): void {
+  private emitEvent(event: LocalEvent): void {
     this.eventEmitter.emit(LOCAL_EVENT_EMITTER_CHANNEL, event)
   }
 
@@ -250,7 +264,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * - Validates that the game exists and that the participant is part of the game.
    * - Emits a best-effort initial snapshot event describing the current game state for the subscriber.
    *   If snapshot building fails, a heartbeat event is emitted immediately so the client can confirm the stream is alive.
-   * - Relays subsequent events published for the participant (or broadcast events with no specific participant target).
+   * - Relays subsequent events matching both the game and participant (or game-scoped broadcast events).
    * - Manages per-participant connection reference counting to support multiple concurrent connections (e.g. multiple tabs).
    *
    * @param gameId - The game ID to subscribe to.
@@ -284,13 +298,14 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     const source = fromEvent(
       this.eventEmitter,
       LOCAL_EVENT_EMITTER_CHANNEL,
-    ) as Observable<DistributedEvent>
+    ) as Observable<LocalEvent>
 
     // Build initial snapshot (best-effort). If it fails, at least send a heartbeat immediately
     // so clients know the stream is alive.
     const initialEvent = await (async (): Promise<DistributedEvent> => {
       try {
         return {
+          gameId,
           playerId: participantId,
           event: await this.gameParticipantEventBuilder.buildParticipantEvent(
             document,
@@ -305,6 +320,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
         )
 
         return {
+          gameId,
           playerId: participantId,
           event: { type: GameEventType.GameHeartbeat },
         }
@@ -313,8 +329,11 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
 
     return concat(of(initialEvent), source).pipe(
       filter(
-        (event): event is DistributedEvent =>
+        (event): event is LocalEvent =>
           isDefined(event) &&
+          (event.gameId === gameId ||
+            (event.gameId === undefined &&
+              event.event.type === GameEventType.GameHeartbeat)) &&
           (event.playerId === undefined || event.playerId === participantId),
       ),
       map((event) => ({ data: JSON.stringify(event.event) })),

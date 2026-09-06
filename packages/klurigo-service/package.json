@@ -6,8 +6,8 @@
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo",
-    "prebuild": "yarn workspace @klurigo/common build",
-    "build": "yarn clean && nest build",
+    "build": "yarn workspace @klurigo/common build && yarn build:app",
+    "build:app": "yarn clean && nest build",
     "dev": "nest start --watch",
     "dev:e2e": "NODE_ENV=test yarn dev",
     "serve": "node dist/main",
