@@ -62,6 +62,7 @@
     "uuid": "^14.0.2"
   },
   "devDependencies": {
+    "@klurigo/e2e-fixtures": "1.0.0",
     "@nestjs/cli": "^11.0.24",
     "@nestjs/schematics": "^11.1.0",
     "@nestjs/testing": "^11.2.3",

@@ -270,6 +270,9 @@ const GamePage: FC = () => {
   const hasState = !!lastNonLoadingEvent
   const showInitialLoading = !hasState
   const showOverlayLoading = isLoading && hasState
+  const isHostLobbyReady =
+    connectionStatus === ConnectionStatus.CONNECTED &&
+    lastNonLoadingEvent?.type === GameEventType.GameLobbyHost
 
   if (showInitialLoading) {
     return (
@@ -281,6 +284,9 @@ const GamePage: FC = () => {
 
   return (
     <>
+      {isHostLobbyReady && (
+        <span data-testid="game-event-stream-ready" hidden />
+      )}
       {stateComponent}
       {showOverlayLoading && <LoadingOverlay />}
       {blocker.state === 'blocked' && (

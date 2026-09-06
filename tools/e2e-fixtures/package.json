@@ -1,0 +1,18 @@
+{
+  "name": "@klurigo/e2e-fixtures",
+  "version": "1.0.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint --config ../../packages/klurigo-service/eslint.config.mjs .",
+    "check-types": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@klurigo/common": "1.0.0"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

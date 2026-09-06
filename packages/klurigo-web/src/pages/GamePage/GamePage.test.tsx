@@ -186,6 +186,29 @@ describe('GamePage', () => {
     expect(h.setContextMock).toHaveBeenLastCalledWith('game', null)
   })
 
+  it('marks a connected host lobby stream as ready', async () => {
+    h.context.participantType = GameParticipantType.HOST
+    h.control.status = 'CONNECTED'
+    h.control.event = {
+      type: GameEventType.GameLobbyHost,
+      game: {
+        id: 'game-123',
+        pin: '123456',
+        settings: {
+          randomizeQuestionOrder: false,
+          randomizeAnswerOrder: false,
+        },
+      },
+      players: [],
+    }
+
+    renderWithRouter()
+
+    await waitFor(() => {
+      expect(screen.getByTestId('game-event-stream-ready')).toBeInTheDocument()
+    })
+  })
+
   it('revokes game and redirects to "/" on GameQuitEvent', () => {
     h.control.event = { type: GameEventType.GameQuitEvent }
     renderWithRouter()
