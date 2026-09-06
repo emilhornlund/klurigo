@@ -5,6 +5,7 @@ export async function startHostGame(page: Page): Promise<string> {
   await page.getByRole('button', { name: 'Confirm', exact: true }).click()
   await expect(page).toHaveURL('/game')
   await expect(page.getByText('Game PIN', { exact: true })).toBeVisible()
+  await expect(page.getByTestId('game-event-stream-ready')).toBeAttached()
 
   const gamePINElement = page
     .getByText('Game PIN', { exact: true })
