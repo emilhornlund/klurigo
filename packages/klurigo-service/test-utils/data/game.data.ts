@@ -3,11 +3,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import {
   Game,
-  ParticipantBase,
-  ParticipantHost,
-  ParticipantPlayer,
+  ParticipantHostWithBase,
+  ParticipantPlayerWithBase,
 } from '../../src/modules/game-core/repositories/models/schemas'
-import { Quiz } from '../../src/modules/quiz-core/repositories/models/schemas'
 
 import { createMockLobbyTaskDocument } from './game-task.data'
 import {
@@ -16,6 +14,7 @@ import {
   MOCK_DEFAULT_PLAYER_NICKNAME,
 } from './game.constants'
 import { offsetSeconds } from './helpers.utils'
+import { createMockClassicQuiz } from './quiz.data'
 
 export function createMockGameDocument(game?: Partial<Game>): Game {
   return {
@@ -24,7 +23,7 @@ export function createMockGameDocument(game?: Partial<Game>): Game {
     mode: GameMode.Classic,
     status: GameStatus.Active,
     pin: '123456',
-    quiz: { _id: uuidv4() } as Quiz, //TODO: build mock quiz
+    quiz: createMockClassicQuiz(),
     settings: {
       shouldAutoCompleteQuestionResultTask: false,
       shouldAutoCompleteLeaderboardTask: false,
@@ -44,8 +43,8 @@ export function createMockGameDocument(game?: Partial<Game>): Game {
 }
 
 export function createMockGameHostParticipantDocument(
-  participant?: Partial<ParticipantBase & ParticipantHost>,
-): ParticipantBase & ParticipantHost {
+  participant?: Partial<ParticipantHostWithBase>,
+): ParticipantHostWithBase {
   return {
     participantId: MOCK_DEFAULT_PLAYER_ID,
     type: GameParticipantType.HOST,
@@ -56,8 +55,8 @@ export function createMockGameHostParticipantDocument(
 }
 
 export function createMockGamePlayerParticipantDocument(
-  participant?: Partial<ParticipantBase & ParticipantPlayer>,
-): ParticipantBase & ParticipantPlayer {
+  participant?: Partial<ParticipantPlayerWithBase>,
+): ParticipantPlayerWithBase {
   return {
     participantId: MOCK_DEFAULT_PLAYER_ID,
     type: GameParticipantType.PLAYER,
