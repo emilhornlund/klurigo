@@ -17,6 +17,15 @@ This directory is the entry point for repository documentation.
 - [Monorepo organization](./architecture/monorepo.md) - Yarn workspace layout,
   package roles, dependency direction, and workspace tools.
 
+## Development
+
+- [Testing](./development/testing.md) - test layers and links to detailed
+  backend and Playwright guidance.
+- [Backend testing](./development/backend-testing.md) - Jest suites, test
+  infrastructure, lifecycle cleanup, isolation, and coverage.
+- [End-to-end testing](./development/end-to-end-testing.md) - Playwright
+  setup, seeded fixtures, browser projects, GameSession execution, and CI.
+
 ## Plans
 
 The `plans/` directory is the documentation category that exists today. It contains the repository's implementation plans:
