@@ -101,44 +101,67 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 - `yarn dev` – Start the NestJS app in watch mode.
 - `yarn build` – Compile for production.
 - `yarn serve` – Run the compiled app.
-- `yarn test` – Run the complete backend Jest suite.
-- `yarn test:unit` – Run isolated unit tests matching `*.spec.ts`; MongoDB and Redis are not required.
-- `yarn test:e2e` – Run backend e2e tests matching `*.e2e-spec.ts`; real MongoDB and Redis services are required.
-- `yarn test:unit:coverage` – Run unit tests with coverage in `packages/klurigo-service/coverage/unit`.
-- `yarn test:e2e:coverage` – Run backend e2e tests with coverage in `packages/klurigo-service/coverage/e2e`; real MongoDB and Redis services are required.
-- `yarn test:coverage` – Run both backend coverage suites, retaining the separate unit and e2e reports.
 - `yarn check-circular-deps` – Check for circular imports.
 - `yarn lint` / `lint:fix` – Lint the codebase.
 
-Backend unit tests use focused Nest testing modules and do not bootstrap the full
-application or run database and Redis cleanup helpers. They can therefore run
-with MongoDB and Redis stopped, and use Jest's normal worker parallelism. Backend
-e2e tests use `createTestApp`, real MongoDB and Redis services, and are kept
-serial with one Jest worker because their specs reset shared state during their
-lifecycle. Start those services with `docker compose up -d` before running
-`yarn test:e2e`. The recommended lifecycle is to initialize one fully
-configured Nest application per suite, reset all MongoDB collections and flush
-the configured Redis database in `beforeEach`, create that test's fixtures
-after the reset. Reset the shared state once more and close the application
-once in `afterAll`; keep those operations separate with shutdown in a
-`finally` block so it still runs when reset fails. Each operation reports
-failures with its own diagnostic.
+**Backend test structure and lifecycle:**
+
+- Unit specs end in `*.spec.ts`. E2e specs end in `*.e2e-spec.ts`; the unit Jest
+  configuration explicitly excludes e2e specs even though they also contain the
+  `spec.ts` suffix.
+- Unit tests use focused Nest testing modules rather than the fully configured
+  application. They do not require or use real MongoDB or Redis, so they can use
+  Jest's normal worker parallelism.
+- Backend e2e tests use `createTestApp`, real test MongoDB and Redis services,
+  and the serial Jest configuration (`maxWorkers: 1`). Start both services,
+  for example with `docker compose up -d`, before any command that runs e2e
+  tests.
+- Use the shared typed builders in
+  `packages/klurigo-service/test-utils/data`. Prefer their deterministic
+  defaults, apply partial typed overrides for scenario-specific values, and use
+  explicit IDs or date offsets when fixtures must be distinct or have a temporal
+  relationship.
+- For a stateful e2e suite, initialize one fully configured Nest application per
+  suite. Before each stateful test, reset all MongoDB collections and the
+  configured Redis database, then create that test's fixtures. During suite
+  cleanup, reset shared state and close every application resource. Cleanup must
+  still attempt shutdown when reset fails and must preserve actionable
+  diagnostics for MongoDB reset, Redis reset, application, and Redis shutdown
+  failures.
+- Stateful e2e tests must use only the configured test MongoDB and Redis
+  databases. They must not depend on state left by another test or suite.
+
+Run the backend suites from the repository root with these workspace commands:
+
+```sh
+yarn workspace @klurigo/klurigo-service test:unit
+yarn workspace @klurigo/klurigo-service test:e2e
+yarn workspace @klurigo/klurigo-service test
+yarn workspace @klurigo/klurigo-service test:unit:coverage
+yarn workspace @klurigo/klurigo-service test:e2e:coverage
+yarn workspace @klurigo/klurigo-service test:coverage
+```
+
+The complete test and coverage commands include the e2e suite, so they also
+require MongoDB and Redis to be running. Unit and e2e coverage remain separate
+under `packages/klurigo-service/coverage/unit` and
+`packages/klurigo-service/coverage/e2e`; coverage should preserve or improve
+the existing scenario coverage. Use the repository's existing Codecov policy in
+`codecov.yml` rather than introducing a backend-specific threshold. CI uploads
+the reports separately with the `klurigo-service-unit` and
+`klurigo-service-e2e` flags.
+
+Test-infrastructure refactoring must not remove scenarios or weaken existing
+assertions unless there is a deliberate, documented reason. Such a change
+requires review of the affected coverage. Preserve normal Jest termination,
+diagnostics, and resource cleanup; do not suppress open-handle failures or add
+forced process exits. If a test leaves a handle behind, rerun the relevant
+command with `--detectOpenHandles` to identify the resource.
 
 Use `yarn e2e:setup` before frontend Playwright tests when the e2e database
 needs to be reset and seeded, and `yarn e2e:teardown` afterward to clear it.
 These standalone scripts connect directly to the test MongoDB and Redis
 services and do not require a Nest application instance.
-
-The backend coverage reports are written to `coverage/unit` and `coverage/e2e`
-so either suite can be rerun without overwriting the other. CI uploads them to
-Codecov with the `klurigo-service-unit` and `klurigo-service-e2e` flags.
-
-Backend Jest runs are expected to exit normally; they do not use Jest's
-`forceExit` option. E2e cleanup resets MongoDB and Redis before closing the Nest
-application, and always attempts shutdown when reset fails. The cleanup reports
-both reset and shutdown failures when both occur. If a test leaves a handle
-behind, rerun the relevant command with `--detectOpenHandles` to identify the
-resource instead of suppressing the diagnostic.
 
 ---
 
