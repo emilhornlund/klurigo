@@ -131,6 +131,13 @@ The backend coverage reports are written to `coverage/unit` and `coverage/e2e`
 so either suite can be rerun without overwriting the other. CI uploads them to
 Codecov with the `klurigo-service-unit` and `klurigo-service-e2e` flags.
 
+Backend Jest runs are expected to exit normally; they do not use Jest's
+`forceExit` option. E2e cleanup resets MongoDB and Redis before closing the Nest
+application, and always attempts shutdown when reset fails. The cleanup reports
+both reset and shutdown failures when both occur. If a test leaves a handle
+behind, rerun the relevant command with `--detectOpenHandles` to identify the
+resource instead of suppressing the diagnostic.
+
 ---
 
 ## Development

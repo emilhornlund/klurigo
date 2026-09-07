@@ -79,10 +79,23 @@ export async function createTestApp(): Promise<INestApplication> {
     .compile()
 
   const app = moduleFixture.createNestApplication()
-  configureApp(app)
-  await app.init()
-
-  return app
+  try {
+    configureApp(app)
+    await app.init()
+    return app
+  } catch (error) {
+    const closeResult = (await Promise.allSettled([closeTestApp(app)]))[0]
+    if (closeResult.status === 'rejected') {
+      throw new AggregateError(
+        [error, closeResult.reason],
+        'Failed to initialize and close backend e2e application.',
+        { cause: error },
+      )
+    }
+    throw new Error('Failed to initialize backend e2e application.', {
+      cause: error,
+    })
+  }
 }
 
 async function resetMongoState(app: INestApplication): Promise<void> {
@@ -125,11 +138,72 @@ export async function resetTestState(app: INestApplication): Promise<void> {
 }
 
 export async function closeTestApp(app: INestApplication): Promise<void> {
+  let applicationFailure: unknown
+
   try {
     await app.close()
   } catch (error) {
-    throw new Error('Failed to close backend e2e application.', {
+    applicationFailure = new Error('Failed to close backend e2e application.', {
       cause: error,
     })
   }
+
+  let redisFailure: unknown
+  try {
+    const redis = app.get<Redis>(getRedisConnectionToken())
+    if (
+      redis.status !== 'end' &&
+      redis.status !== 'close' &&
+      typeof redis.quit === 'function'
+    ) {
+      await redis.quit()
+    }
+  } catch (error) {
+    if (!(
+      error instanceof Error && error.message === 'Connection is closed.'
+    )) {
+      redisFailure = new Error(
+        'Failed to close backend e2e Redis connection.',
+        { cause: error },
+      )
+    }
+  }
+
+  if (applicationFailure !== undefined && redisFailure !== undefined) {
+    throw new AggregateError(
+      [applicationFailure, redisFailure],
+      'Failed to close backend e2e application resources.',
+      { cause: applicationFailure },
+    )
+  }
+
+  if (applicationFailure !== undefined) throw applicationFailure
+  if (redisFailure !== undefined) throw redisFailure
+}
+
+export async function cleanupTestApp(app: INestApplication): Promise<void> {
+  let resetFailure: unknown
+  let closeFailure: unknown
+
+  try {
+    await resetTestState(app)
+  } catch (error) {
+    resetFailure = error
+  }
+
+  try {
+    await closeTestApp(app)
+  } catch (error) {
+    closeFailure = error
+  }
+
+  if (resetFailure !== undefined && closeFailure !== undefined) {
+    throw new AggregateError(
+      [resetFailure, closeFailure],
+      'Failed to clean up backend e2e application.',
+    )
+  }
+
+  if (resetFailure !== undefined) throw resetFailure
+  if (closeFailure !== undefined) throw closeFailure
 }

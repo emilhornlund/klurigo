@@ -23,7 +23,6 @@ module.exports = {
   testEnvironment: 'node',
   transformIgnorePatterns: ['/node_modules/(?!(klurigo/common|uuid)/)'],
   detectOpenHandles: true,
-  forceExit: true,
   maxWorkers: 1,
   setupFilesAfterEnv: ['jest-extended/all'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],

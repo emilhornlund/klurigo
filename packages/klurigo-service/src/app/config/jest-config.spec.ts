@@ -3,6 +3,7 @@ import { createRequire } from 'node:module'
 type JestConfig = {
   testRegex: string
   coverageDirectory: string
+  forceExit?: boolean
   globalSetup?: string
   globalTeardown?: string
   setupFiles?: string[]
@@ -14,6 +15,7 @@ type ServicePackage = {
 
 const loadConfig = createRequire(__filename)
 const servicePackage = loadConfig('../../../package.json') as ServicePackage
+const completeConfig = loadConfig('../../../jest.config.cjs') as JestConfig
 const unitConfig = loadConfig('../../../jest.unit.config.cjs') as JestConfig
 const e2eConfig = loadConfig('../../../jest.e2e.config.cjs') as JestConfig
 
@@ -35,6 +37,12 @@ describe('backend Jest test boundaries', () => {
   it('writes unit and e2e coverage to separate directories', () => {
     expect(unitConfig.coverageDirectory).toBe('<rootDir>/coverage/unit')
     expect(e2eConfig.coverageDirectory).toBe('<rootDir>/coverage/e2e')
+  })
+
+  it('does not force Jest to exit', () => {
+    expect(completeConfig.forceExit).toBeUndefined()
+    expect(unitConfig.forceExit).toBeUndefined()
+    expect(e2eConfig.forceExit).toBeUndefined()
   })
 
   it('provides separate coverage commands and aggregates both suites', () => {

@@ -9,10 +9,9 @@ import {
   createMockUniqueId,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { DiscoverySnapshotRepository } from '../repositories'
@@ -29,11 +28,7 @@ describe('DiscoveryController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/discover (GET)', () => {

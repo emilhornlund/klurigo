@@ -11,10 +11,9 @@ import {
   createMockGameHostParticipantDocument,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   DEFAULT_GAME_AUTHORITIES,
@@ -36,11 +35,7 @@ describe('GameAuthenticationController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/auth/game (POST)', () => {
