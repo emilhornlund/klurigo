@@ -15,6 +15,14 @@ A full‑stack quiz game platform built with a modern monorepo setup. It feature
 
 See the [documentation index](./docs/README.md) for implementation plans and other repository documentation.
 
+## Architecture
+
+Klurigo consists of a React/Vite web application, a NestJS backend, and a
+shared TypeScript contract package. See the [architecture overview](./docs/architecture/overview.md)
+for system responsibilities and communication paths, and the
+[monorepo organization reference](./docs/architecture/monorepo.md) for package
+boundaries and dependency direction.
+
 ## Quick Start
 
 Install Node.js `>=24 <25`, Yarn Classic `1.22.22`, Git, and Docker with
@@ -33,18 +41,6 @@ For the complete application workflow, see the [development guide](./docs/gettin
 For MongoDB, Redis, ports, Compose inspection, and data cleanup, see the
 [local infrastructure guide](./docs/getting-started/local-infrastructure.md).
 
-## Monorepo Structure
-
-This project uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) to manage multiple packages:
-
-```text
-klurigo/
-├── packages/
-│   ├── common          # Shared models and utilities
-│   └── klurigo-service # Backend service (NestJS)
-│   ├── klurigo-web     # Frontend app (Vite + React)
-```
-
 ## Scripts
 
 The root `package.json` contains orchestration scripts for development, building, and testing:
@@ -53,62 +49,12 @@ The root `package.json` contains orchestration scripts for development, building
 
 - `yarn dev` – Run the frontend and backend in parallel.
 - `yarn serve` – Serve both frontend and backend builds.
-- `yarn build` – Build all packages.
-- `yarn clean` – Clean all packages.
-- `yarn lint` / `yarn lint:fix` – Run linting across all packages.
-- `yarn test` – Run all tests concurrently.
+- `yarn build` – Build the application packages.
+- `yarn clean` – Clean application build artifacts.
+- `yarn lint` / `yarn lint:fix` – Run linting across application packages and workspace tools.
+- `yarn test` – Run application package tests concurrently.
 
-## Packages
-
-### [`@klurigo/common`](./packages/common)
-
-Shared models and validation logic between the backend and frontend.
-
-- Outputs both CommonJS and ESM modules.
-- Consumed by `@klurigo/klurigo-web` and `@klurigo/klurigo-service`.
-
-**Scripts:**
-
-- `yarn build` – Clean and compile.
-- `yarn lint` / `yarn lint:fix` – Lint the codebase.
-
-### [`@klurigo/klurigo-web`](./packages/klurigo-web)
-
-Frontend application built with **React**, **Vite**, and **Storybook**.
-
-**Features:**
-
-- Vite dev server and production builds.
-- Component testing with Vitest.
-- Storybook integration for UI components.
-
-**Scripts:**
-
-- `yarn dev` – Start the Vite dev server.
-- `yarn build` – Production build.
-- `yarn serve` – Preview the built app.
-- `yarn test` / `test:watch` / `test:update` – Run tests.
-- `yarn storybook` / `build-storybook` – Start or build Storybook.
-- `yarn lint` / `lint:fix` – Lint the codebase.
-
-### [`@klurigo/klurigo-service`](./packages/klurigo-service)
-
-Backend API built with **NestJS**, using SSE for real‑time updates.
-
-**Features:**
-
-- Game state and lifecycle management.
-- Shared types from `@klurigo/common`.
-- Jest-based test suite.
-- Circular dependency detection.
-
-**Scripts:**
-
-- `yarn dev` – Start the NestJS app in watch mode.
-- `yarn build` – Compile for production.
-- `yarn serve` – Run the compiled app.
-- `yarn check-circular-deps` – Check for circular imports.
-- `yarn lint` / `lint:fix` – Lint the codebase.
+## Testing
 
 **Backend test structure and lifecycle:**
 
@@ -200,6 +146,7 @@ yarn workspace @klurigo/klurigo-web test:e2e
 ```
 
 This will:
+
 - Start the frontend (Vite dev server)
 - Start the backend in test mode
 - Reset and seed MongoDB and Redis
