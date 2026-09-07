@@ -9,6 +9,7 @@ import {
   buildMockQuizRating,
   buildMockSecondaryUser,
   createMockClassicQuiz,
+  createMockUniqueId,
 } from '../../../../test-utils/data'
 import {
   closeTestApp,
@@ -76,6 +77,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       const user3 = await userModel.create(
         buildMockSecondaryUser({
+          _id: createMockUniqueId(301),
           email: 'smartypants@example.com',
           defaultNickname: 'SmartyPants',
         }),
@@ -83,6 +85,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       const user4 = await userModel.create(
         buildMockSecondaryUser({
+          _id: createMockUniqueId(302),
           email: 'brainiac.bert@example.com',
           defaultNickname: 'BrainiacBert',
         }),
@@ -90,6 +93,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       const user5 = await userModel.create(
         buildMockSecondaryUser({
+          _id: createMockUniqueId(303),
           email: 'guess.machine@example.com',
           defaultNickname: 'GuessMachine',
         }),
@@ -97,6 +101,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       const user6 = await userModel.create(
         buildMockSecondaryUser({
+          _id: createMockUniqueId(304),
           email: 'quiz.whiz@example.com',
           defaultNickname: 'QuizWhiz',
         }),
@@ -113,6 +118,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       publicQuiz = await quizModel.create(
         createMockClassicQuiz({
+          _id: createMockUniqueId(310),
           owner: primaryAuthenticatedUser.user,
           visibility: QuizVisibility.Public,
         }),
@@ -120,6 +126,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       privateQuiz = await quizModel.create(
         createMockClassicQuiz({
+          _id: createMockUniqueId(311),
           owner: primaryAuthenticatedUser.user,
           visibility: QuizVisibility.Private,
         }),
@@ -127,6 +134,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       emptyQuiz = await quizModel.create(
         createMockClassicQuiz({
+          _id: createMockUniqueId(312),
           owner: primaryAuthenticatedUser.user,
           visibility: QuizVisibility.Public,
         }),
@@ -135,11 +143,13 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
       expectedPublicRatings = await seedQuizRatings({
         quizId: publicQuiz._id,
         authors: ratingAuthors,
+        idOffset: 320,
       })
 
       expectedPrivateRatings = await seedQuizRatings({
         quizId: privateQuiz._id,
         authors: ratingAuthors,
+        idOffset: 330,
       })
     })
 
@@ -431,8 +441,9 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     async function seedQuizRatings(params: {
       quizId: string
       authors: User[]
+      idOffset: number
     }): Promise<SeededRatingExpectation[]> {
-      const { quizId, authors } = params
+      const { quizId, authors, idOffset } = params
 
       const base = new Date('2025-01-01T10:00:00.000Z')
 
@@ -482,9 +493,10 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
       ] as const
 
       await Promise.all(
-        rows.map((r) =>
+        rows.map((r, index) =>
           quizRatingModel.create(
             buildMockQuizRating({
+              _id: createMockUniqueId(idOffset + index),
               quizId,
               author: r.author,
               stars: r.stars,

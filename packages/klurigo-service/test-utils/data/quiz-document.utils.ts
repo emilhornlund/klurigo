@@ -1,5 +1,4 @@
 import { QuizRatingAuthorType } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   QuizGameplaySummary,
@@ -8,6 +7,7 @@ import {
 } from '../../src/modules/quiz-core/repositories/models/schemas'
 import { User } from '../../src/modules/user/repositories'
 
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 import { buildMockPrimaryUser } from './user.data'
 
 export function buildMockQuizRating(
@@ -15,7 +15,7 @@ export function buildMockQuizRating(
     author?: User | QuizRatingUserAuthorWithBase
   },
 ): QuizRating {
-  const now = new Date()
+  const now = offsetSeconds(0)
   const rawAuthor = quizRating?.author ?? buildMockPrimaryUser()
   const author: QuizRatingUserAuthorWithBase =
     'type' in rawAuthor
@@ -25,8 +25,8 @@ export function buildMockQuizRating(
           user: rawAuthor,
         }
   return {
-    _id: uuidv4(),
-    quizId: uuidv4(),
+    _id: createMockUniqueId(51),
+    quizId: createMockUniqueId(52),
     stars: 5,
     comment: undefined,
     created: now,
@@ -49,7 +49,7 @@ export function createMockQuizGameplaySummary(
     totalZeroToOneHundredAnsweredCount: 0,
     totalZeroToOneHundredUnansweredCount: 0,
     lastPlayedAt: undefined,
-    updated: new Date(),
+    updated: offsetSeconds(0),
     ...(quizGameplaySummary ?? {}),
   }
 }

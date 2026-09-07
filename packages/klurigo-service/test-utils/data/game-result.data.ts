@@ -1,5 +1,4 @@
 import { QuestionType } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   GameResult,
@@ -12,19 +11,21 @@ import {
   MOCK_DEFAULT_PLAYER_NICKNAME,
 } from './game.constants'
 import { createMockGameDocument } from './game.data'
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 
 export function createMockGameResultDocument(
   gameResult?: Partial<GameResult>,
 ): GameResult {
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(41),
     game: createMockGameDocument(),
     name: 'Trivia Battle',
     hostParticipantId: MOCK_DEFAULT_PLAYER_ID,
     players: [],
     questions: [],
-    hosted: new Date(),
-    completed: new Date(),
+    hosted: now,
+    completed: now,
     ...(gameResult ?? {}),
   }
 }

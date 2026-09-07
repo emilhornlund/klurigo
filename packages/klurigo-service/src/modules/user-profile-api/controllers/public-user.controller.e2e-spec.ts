@@ -3,7 +3,6 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   buildMockQuaternaryUser,
@@ -12,6 +11,7 @@ import {
   createMockClassicQuiz,
   createMockGameResultDocument,
   createMockGameResultPlayerMetric,
+  createMockUniqueId,
 } from '../../../../test-utils/data'
 import {
   closeTestApp,
@@ -74,21 +74,25 @@ describe('PublicUserController (e2e)', () => {
 
       await quizModel.create([
         createMockClassicQuiz({
+          _id: createMockUniqueId(401),
           owner: targetUser,
           title: 'Alpha Astronomy',
           visibility: QuizVisibility.Public,
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(402),
           owner: targetUser,
           title: 'Beta Biology',
           visibility: QuizVisibility.Public,
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(403),
           owner: targetUser,
           title: 'Private Practice',
           visibility: QuizVisibility.Private,
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(404),
           owner: otherUser,
           title: 'Other Public Quiz',
           visibility: QuizVisibility.Public,
@@ -97,12 +101,14 @@ describe('PublicUserController (e2e)', () => {
 
       await gameResultModel.create([
         createMockGameResultDocument({
+          _id: createMockUniqueId(420),
           hostParticipantId: targetUser._id,
           players: [
             createMockGameResultPlayerMetric({ participantId: otherUser._id }),
           ],
         }),
         createMockGameResultDocument({
+          _id: createMockUniqueId(421),
           hostParticipantId: otherUser._id,
           players: [
             createMockGameResultPlayerMetric({
@@ -112,6 +118,7 @@ describe('PublicUserController (e2e)', () => {
           ],
         }),
         createMockGameResultDocument({
+          _id: createMockUniqueId(422),
           hostParticipantId: otherUser._id,
           players: [
             createMockGameResultPlayerMetric({ participantId: otherUser._id }),
@@ -137,7 +144,7 @@ describe('PublicUserController (e2e)', () => {
 
     it('should return 404 when the requested user does not exist', async () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
-      const missingUserId = uuidv4()
+      const missingUserId = createMockUniqueId(430)
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${missingUserId}/profile`)
@@ -196,16 +203,19 @@ describe('PublicUserController (e2e)', () => {
 
       const [publicQuiz] = await quizModel.create([
         createMockClassicQuiz({
+          _id: createMockUniqueId(440),
           owner: targetUser,
           title: 'Astronomy Essentials',
           visibility: QuizVisibility.Public,
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(441),
           owner: targetUser,
           title: 'Private Draft',
           visibility: QuizVisibility.Private,
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(442),
           owner: otherUser,
           title: 'Other User Public Quiz',
           visibility: QuizVisibility.Public,
@@ -256,6 +266,7 @@ describe('PublicUserController (e2e)', () => {
 
       await quizModel.create([
         createMockClassicQuiz({
+          _id: createMockUniqueId(450),
           owner: targetUser,
           title: 'Alpha',
           visibility: QuizVisibility.Public,
@@ -263,6 +274,7 @@ describe('PublicUserController (e2e)', () => {
           updated: new Date('2024-01-01T00:00:00.000Z'),
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(451),
           owner: targetUser,
           title: 'Bravo',
           visibility: QuizVisibility.Public,
@@ -270,6 +282,7 @@ describe('PublicUserController (e2e)', () => {
           updated: new Date('2024-02-01T00:00:00.000Z'),
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(452),
           owner: targetUser,
           title: 'Charlie',
           visibility: QuizVisibility.Public,
@@ -277,6 +290,7 @@ describe('PublicUserController (e2e)', () => {
           updated: new Date('2024-03-01T00:00:00.000Z'),
         }),
         createMockClassicQuiz({
+          _id: createMockUniqueId(453),
           owner: targetUser,
           title: 'Delta',
           visibility: QuizVisibility.Public,
@@ -308,7 +322,7 @@ describe('PublicUserController (e2e)', () => {
 
     it('should return 404 when the requested user does not exist', async () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
-      const missingUserId = uuidv4()
+      const missingUserId = createMockUniqueId(460)
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${missingUserId}/quizzes`)

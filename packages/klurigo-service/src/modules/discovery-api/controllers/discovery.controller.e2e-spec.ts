@@ -2,9 +2,12 @@ import { DiscoverySectionKey } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
-import { v4 as uuidv4 } from 'uuid'
 
-import { createMockClassicQuiz } from '../../../../test-utils/data'
+import {
+  BASE_OFFSET_DATE,
+  createMockClassicQuiz,
+  createMockUniqueId,
+} from '../../../../test-utils/data'
 import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
@@ -92,17 +95,17 @@ describe('DiscoveryController (e2e)', () => {
     it('returns sections in the fixed DISCOVERY_SECTION_ORDER regardless of snapshot order', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
       const quizA = await quizModel.create(
-        createMockClassicQuiz({ owner: user }),
+        createMockClassicQuiz({ owner: user, _id: createMockUniqueId(101) }),
       )
       const quizB = await quizModel.create(
-        createMockClassicQuiz({ owner: user }),
+        createMockClassicQuiz({ owner: user, _id: createMockUniqueId(102) }),
       )
       const quizC = await quizModel.create(
-        createMockClassicQuiz({ owner: user }),
+        createMockClassicQuiz({ owner: user, _id: createMockUniqueId(103) }),
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.MOST_PLAYED,
@@ -138,7 +141,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -164,13 +167,18 @@ describe('DiscoveryController (e2e)', () => {
     it('returns at most DISCOVERY_RAIL_PREVIEW_SIZE (10) quiz cards per section', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
       const quizzes = await Promise.all(
-        Array.from({ length: 15 }, () =>
-          quizModel.create(createMockClassicQuiz({ owner: user })),
+        Array.from({ length: 15 }, (_, index) =>
+          quizModel.create(
+            createMockClassicQuiz({
+              owner: user,
+              _id: createMockUniqueId(110 + index),
+            }),
+          ),
         ),
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -195,7 +203,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -239,10 +247,10 @@ describe('DiscoveryController (e2e)', () => {
       const existingQuiz = await quizModel.create(
         createMockClassicQuiz({ owner: user }),
       )
-      const missingQuizId = uuidv4()
+      const missingQuizId = createMockUniqueId(120)
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -306,7 +314,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -337,7 +345,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -359,14 +367,19 @@ describe('DiscoveryController (e2e)', () => {
     it('returns paginated results respecting custom limit and offset', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
       const quizzes = await Promise.all(
-        Array.from({ length: 30 }, () =>
-          quizModel.create(createMockClassicQuiz({ owner: user })),
+        Array.from({ length: 30 }, (_, index) =>
+          quizModel.create(
+            createMockClassicQuiz({
+              owner: user,
+              _id: createMockUniqueId(130 + index),
+            }),
+          ),
         ),
       )
       const orderedIds = quizzes.map((q) => q._id)
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -395,13 +408,18 @@ describe('DiscoveryController (e2e)', () => {
     it('clamps limit to a maximum of 50', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
       const quizzes = await Promise.all(
-        Array.from({ length: 60 }, () =>
-          quizModel.create(createMockClassicQuiz({ owner: user })),
+        Array.from({ length: 60 }, (_, index) =>
+          quizModel.create(
+            createMockClassicQuiz({
+              owner: user,
+              _id: createMockUniqueId(170 + index),
+            }),
+          ),
         ),
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -427,7 +445,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -452,7 +470,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -474,13 +492,18 @@ describe('DiscoveryController (e2e)', () => {
     it('returns the correct snapshotTotal matching the number of entries in the snapshot', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
       const quizzes = await Promise.all(
-        Array.from({ length: 25 }, () =>
-          quizModel.create(createMockClassicQuiz({ owner: user })),
+        Array.from({ length: 25 }, (_, index) =>
+          quizModel.create(
+            createMockClassicQuiz({
+              owner: user,
+              _id: createMockUniqueId(230 + index),
+            }),
+          ),
         ),
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,
@@ -506,7 +529,7 @@ describe('DiscoveryController (e2e)', () => {
       )
 
       await discoverySnapshotRepository.upsertLatest({
-        generatedAt: new Date(),
+        generatedAt: BASE_OFFSET_DATE,
         sections: [
           {
             key: DiscoverySectionKey.TOP_RATED,

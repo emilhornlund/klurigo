@@ -1,8 +1,6 @@
-import { v4 as uuidv4 } from 'uuid'
-
 export const MOCK_DEFAULT_GAME_NAME = 'Trivia Battle'
 
-export const MOCK_DEFAULT_PLAYER_ID = uuidv4()
+export const MOCK_DEFAULT_PLAYER_ID = '00000000-0000-4000-8000-000000000001'
 export const MOCK_DEFAULT_PLAYER_NICKNAME = 'FrostyBear'
 
 export const MOCK_TYPE_ANSWER_OPTION_VALUE = 'copenhagen'
