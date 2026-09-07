@@ -1083,4 +1083,3 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 | `tools/mongodb-migrator/src/utils/collection.utils.ts`                                               | Update rating indexes for nested author structure                           |
 | `packages/klurigo-web/src/pages/GamePage/GamePage.tsx`                                               | Add `GameOverPlayer` case to rendering switch and navigation blocker        |
 | `packages/klurigo-web/src/api/resources/game.resource.ts`                                            | Add `createOrUpdateGameRating` function                                     |
-
