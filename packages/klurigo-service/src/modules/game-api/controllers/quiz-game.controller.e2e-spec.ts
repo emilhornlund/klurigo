@@ -13,6 +13,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { QuizService } from '../../quiz-api/services'
 import { User, UserModel } from '../../user/repositories'
@@ -29,7 +30,11 @@ describe('QuizGameController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/quizzes/:quizId/games (POST)', () => {

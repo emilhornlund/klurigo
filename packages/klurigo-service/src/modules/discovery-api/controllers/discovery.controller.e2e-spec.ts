@@ -12,6 +12,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { DiscoverySnapshotRepository } from '../repositories'
@@ -28,7 +29,11 @@ describe('DiscoveryController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/discover (GET)', () => {

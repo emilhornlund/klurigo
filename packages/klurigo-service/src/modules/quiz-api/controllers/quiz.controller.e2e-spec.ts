@@ -10,8 +10,12 @@ import {
   createMockClassicQuizRequestDto,
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
-import { createDefaultUserAndAuthenticate } from '../../../../test-utils/utils'
-import { closeTestApp, createTestApp } from '../../../../test-utils/utils'
+import {
+  closeTestApp,
+  createDefaultUserAndAuthenticate,
+  createTestApp,
+  resetTestState,
+} from '../../../../test-utils/utils'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
 import { QuizService } from '../services'
@@ -36,7 +40,11 @@ describe('QuizController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/quizzes (POST)', () => {

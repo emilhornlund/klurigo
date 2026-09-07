@@ -14,6 +14,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   DEFAULT_GAME_AUTHORITIES,
@@ -35,7 +36,11 @@ describe('GameAuthenticationController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/auth/game (POST)', () => {

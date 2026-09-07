@@ -23,6 +23,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import {
@@ -50,7 +51,11 @@ describe(`${GameRatingController.name} (e2e)`, () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/games/:gameID/ratings (PUT)', () => {

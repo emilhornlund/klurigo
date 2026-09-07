@@ -15,6 +15,7 @@ import {
   authenticateGame,
   closeTestApp,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
@@ -37,7 +38,11 @@ describe('GameSettingsController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/games/:gameId/settings (PUT)', () => {

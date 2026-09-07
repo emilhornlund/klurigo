@@ -85,15 +85,45 @@ export async function createTestApp(): Promise<INestApplication> {
   return app
 }
 
+async function resetMongoState(app: INestApplication): Promise<void> {
+  try {
+    const connection = app.get(getConnectionToken()) as Connection
+    const collections = await connection.listCollections()
+    await Promise.all(
+      collections.map(({ name }) => connection.dropCollection(name)),
+    )
+  } catch (error) {
+    throw new Error('Failed to reset MongoDB e2e state.', { cause: error })
+  }
+}
+
+async function resetRedisState(app: INestApplication): Promise<void> {
+  try {
+    const redis = app.get<Redis>(getRedisConnectionToken())
+    await redis.flushdb()
+  } catch (error) {
+    throw new Error('Failed to reset Redis e2e state.', { cause: error })
+  }
+}
+
+export async function resetTestState(app: INestApplication): Promise<void> {
+  const results = await Promise.allSettled([
+    resetMongoState(app),
+    resetRedisState(app),
+  ])
+  const failures = results
+    .filter((result) => result.status === 'rejected')
+    .map((result) => result.reason)
+
+  if (failures.length === 1) {
+    throw failures[0]
+  }
+
+  if (failures.length > 1) {
+    throw new AggregateError(failures, 'Failed to reset backend e2e state.')
+  }
+}
+
 export async function closeTestApp(app: INestApplication): Promise<void> {
-  const connection = app.get(getConnectionToken()) as Connection
-  const collections = await connection.listCollections()
-  await Promise.all(
-    collections.map(({ name }) => connection.dropCollection(name)),
-  )
-
-  const redis = app.get<Redis>(getRedisConnectionToken())
-  await redis.flushdb()
-
   await app.close()
 }

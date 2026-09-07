@@ -15,6 +15,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   Quiz,
@@ -48,7 +49,11 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/quizzes/:quizId/ratings (GET)', () => {
