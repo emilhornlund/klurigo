@@ -16,8 +16,10 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import {
@@ -130,7 +132,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({
           stars,
@@ -171,7 +173,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantHostUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantHostUserAccessToken),
         })
         .send({
           stars,
@@ -212,7 +214,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({
           stars,
@@ -251,20 +253,21 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantHostUserAndQuizOwnerAccessToken}`,
+          ...createBearerAuthHeader(
+            gameParticipantHostUserAndQuizOwnerAccessToken,
+          ),
         })
         .send({
           stars,
           comment,
         })
         .expect(403)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Forbidden',
             status: 403,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
 
       await assertQuizRatingSummary({
         count: 1,
@@ -299,7 +302,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({
           stars: updatedStars,
@@ -353,7 +356,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({
           stars: updatedStars,
@@ -394,18 +397,17 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({
           stars: 0,
           comment: '',
         })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -422,8 +424,8 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
                 property: 'comment',
               },
             ],
-          })
-        })
+          }),
+        )
 
       await assertQuizRatingSummary({
         count: 1,
@@ -446,17 +448,16 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
       await supertest(app.getHttpServer())
         .put(`/api/profile/quizzes/${quizId}/ratings`)
         .set({
-          Authorization: `Bearer ${gameParticipantPlayerUserAccessToken}`,
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
         })
         .send({ stars, comment })
         .expect(404)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: `Quiz was not found by id '${quizId}'`,
             status: 404,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
 
       await assertQuizRatingSummary({
         count: 1,
@@ -478,13 +479,12 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
         .put(`/api/profile/quizzes/${quiz._id}/ratings`)
         .send({ stars, comment })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
 
       await assertQuizRatingSummary({
         count: 1,
@@ -507,13 +507,12 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
         .send({ stars, comment })
         .set({ Authorization: 'Bearer XXX' })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Invalid or expired token',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
 
       await assertQuizRatingSummary({
         count: 1,

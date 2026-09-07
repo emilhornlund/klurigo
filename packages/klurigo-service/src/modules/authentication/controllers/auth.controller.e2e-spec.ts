@@ -26,7 +26,12 @@ import {
   MOCK_GOOGLE_VALID_CODE,
   MOCK_GOOGLE_VALID_CODE_VERIFIER,
 } from '../../../../test-utils/data/google-auth.data'
-import { cleanupTestApp, createTestApp } from '../../../../test-utils/utils'
+import {
+  cleanupTestApp,
+  createBearerAuthHeader,
+  createTestApp,
+  expectErrorResponse,
+} from '../../../../test-utils/utils'
 import {
   DEFAULT_GAME_AUTHORITIES,
   DEFAULT_REFRESH_AUTHORITIES,
@@ -92,13 +97,12 @@ describe('AuthController (e2e)', () => {
           password: MOCK_PRIMARY_PASSWORD,
         })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Bad credentials',
             status: 400,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 bad request when password is invalid', async () => {
@@ -110,13 +114,12 @@ describe('AuthController (e2e)', () => {
           password: MOCK_PRIMARY_INVALID_PASSWORD,
         })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Bad credentials',
             status: 400,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 bad request when validation fails', async () => {
@@ -125,11 +128,10 @@ describe('AuthController (e2e)', () => {
         .set('User-Agent', MOCK_USER_AGENT)
         .send({})
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -153,8 +155,8 @@ describe('AuthController (e2e)', () => {
                 property: 'password',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 bad request when missing user agent', async () => {
@@ -162,11 +164,10 @@ describe('AuthController (e2e)', () => {
         .post('/api/auth/login')
         .send({})
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -175,8 +176,8 @@ describe('AuthController (e2e)', () => {
                 property: 'user-agent',
               },
             ],
-          })
-        })
+          }),
+        )
     })
   })
 
@@ -618,9 +619,7 @@ describe('AuthController (e2e)', () => {
 
         return supertest(app.getHttpServer())
           .patch('/api/auth/password')
-          .set({
-            Authorization: `Bearer ${accessToken}`,
-          })
+          .set(createBearerAuthHeader(accessToken))
           .send({
             oldPassword: MOCK_PRIMARY_PASSWORD,
             newPassword: MOCK_SECONDARY_PASSWORD,
@@ -645,9 +644,7 @@ describe('AuthController (e2e)', () => {
 
         return supertest(app.getHttpServer())
           .patch('/api/auth/password')
-          .set({
-            Authorization: `Bearer ${accessToken}`,
-          })
+          .set(createBearerAuthHeader(accessToken))
           .send({
             oldPassword: MOCK_SECONDARY_PASSWORD,
             newPassword: MOCK_PRIMARY_PASSWORD,
@@ -676,9 +673,7 @@ describe('AuthController (e2e)', () => {
 
         return supertest(app.getHttpServer())
           .patch('/api/auth/password')
-          .set({
-            Authorization: `Bearer ${accessToken}`,
-          })
+          .set(createBearerAuthHeader(accessToken))
           .send({
             oldPassword: MOCK_WEAK_PASSWORD,
             newPassword: MOCK_WEAK_PASSWORD,

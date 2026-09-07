@@ -13,8 +13,10 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 import {
   Quiz,
@@ -156,7 +158,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('returns ratings for public quiz when requester is owner', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -168,7 +170,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('returns ratings for public quiz when requester is not owner', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings`)
-        .set({ Authorization: `Bearer ${secondaryUserAccessToken}` })
+        .set(createBearerAuthHeader(secondaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -180,7 +182,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('returns ratings for private quiz when requester is owner', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${privateQuiz._id}/ratings`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -192,7 +194,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('returns empty results when quiz has no ratings', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${emptyQuiz._id}/ratings`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(buildExpectedPaginatedResponse([]))
@@ -202,7 +204,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('returns empty results when offset exceeds total but keeps total unchanged', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings?limit=5&offset=999`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -217,7 +219,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('filters ratings by commentsOnly=true', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings?commentsOnly=true`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -231,15 +233,14 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('forbids ratings for private quiz when requester is not owner', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${privateQuiz._id}/ratings`)
-        .set({ Authorization: `Bearer ${secondaryUserAccessToken}` })
+        .set(createBearerAuthHeader(secondaryUserAccessToken))
         .expect(403)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Forbidden',
             status: 403,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('supports pagination and sorting: sort=created, order=desc, limit=10, offset=0', async () => {
@@ -247,7 +248,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(
           `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=created&order=desc`,
         )
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -267,7 +268,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(
           `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=updated&order=desc`,
         )
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -285,7 +286,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
     it('supports pagination: limit=5, offset=5', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings?limit=5&offset=5`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject(
@@ -299,13 +300,12 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(
           `/api/quizzes/${publicQuiz._id}/ratings?limit=XXX&offset=XXX&sort=XXX&order=XXX&commentsOnly=XXX`,
         )
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -341,8 +341,8 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
                 property: 'commentsOnly',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('returns 404 when quiz does not exist', async () => {
@@ -350,28 +350,26 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${quizId}/ratings`)
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(404)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: `Quiz was not found by id '${quizId}'`,
             status: 404,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('returns 401 when Authorization header is missing', async () => {
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${publicQuiz._id}/ratings`)
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('returns 401 when bearer token is invalid', async () => {
@@ -379,13 +377,12 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(`/api/quizzes/${publicQuiz._id}/ratings`)
         .set({ Authorization: 'Bearer XXX' })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Invalid or expired token',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('reflects updated user nickname in rating responses', async () => {
@@ -401,7 +398,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(
           `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=created&order=asc`,
         )
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           const rating = res.body.results.find(
@@ -417,7 +414,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
         .get(
           `/api/quizzes/${publicQuiz._id}/ratings?limit=10&offset=0&sort=created&order=asc`,
         )
-        .set({ Authorization: `Bearer ${primaryUserAccessToken}` })
+        .set(createBearerAuthHeader(primaryUserAccessToken))
         .expect(200)
         .expect((res) => {
           const results: Array<{

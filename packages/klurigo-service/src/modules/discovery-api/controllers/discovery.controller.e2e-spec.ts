@@ -10,8 +10,10 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { DiscoverySnapshotRepository } from '../repositories'
@@ -36,20 +38,19 @@ describe('DiscoveryController (e2e)', () => {
       return supertest(app.getHttpServer())
         .get('/api/discover')
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
 
     it('returns 200 with empty sections and null generatedAt when no snapshot exists', async () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({ sections: [], generatedAt: null })
@@ -74,7 +75,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.generatedAt).toBe('2025-01-01T00:00:00.000Z')
@@ -124,7 +125,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.sections).toHaveLength(3)
@@ -156,7 +157,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.sections).toHaveLength(1)
@@ -189,7 +190,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.sections[0].quizzes).toHaveLength(10)
@@ -214,7 +215,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           const card = res.body.sections[0].quizzes[0]
@@ -264,7 +265,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.sections[0].quizzes).toHaveLength(1)
@@ -281,20 +282,19 @@ describe('DiscoveryController (e2e)', () => {
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED')
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
 
     it('returns 200 with empty results when no snapshot exists', async () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?limit=10&offset=20')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -325,7 +325,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TRENDING')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -356,7 +356,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('limit', 20)
@@ -393,7 +393,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?limit=5&offset=10')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.limit).toBe(5)
@@ -430,7 +430,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?limit=100')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.limit).toBe(50)
@@ -456,7 +456,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?limit=0')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.limit).toBe(1)
@@ -481,7 +481,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?offset=-5')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.offset).toBe(0)
@@ -514,7 +514,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED?limit=5')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.snapshotTotal).toBe(25)
@@ -540,7 +540,7 @@ describe('DiscoveryController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/discover/section/TOP_RATED')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           const card = res.body.results[0]

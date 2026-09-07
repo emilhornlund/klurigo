@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 
 describe('MediaController (e2e)', () => {
@@ -28,7 +30,7 @@ describe('MediaController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/media/photos?search=nature&limit=10&offset=0')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -52,13 +54,12 @@ describe('MediaController (e2e)', () => {
       return supertest(app.getHttpServer())
         .get('/api/media/photos')
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
   })
 
@@ -70,7 +71,7 @@ describe('MediaController (e2e)', () => {
 
         await supertest(app.getHttpServer())
           .post('/api/media/uploads/photos')
-          .set({ Authorization: `Bearer ${accessToken}` })
+          .set(createBearerAuthHeader(accessToken))
           .attach(
             'file',
             join(__dirname, `../../../../test-utils/assets/photo.${extension}`),
@@ -98,32 +99,30 @@ describe('MediaController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/media/uploads/photos')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .attach(
           'file',
           join(__dirname, '../../../../test-utils/assets/empty.txt'),
         )
         .expect(422)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Unable to process image file',
             status: 422,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
 
     it('should return a 401 error when the request is unauthorized', async () => {
       return supertest(app.getHttpServer())
         .post('/api/media/uploads/photos')
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
   })
 
@@ -151,7 +150,7 @@ describe('MediaController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .delete(`/api/media/uploads/photos/${photoId}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})
@@ -166,15 +165,14 @@ describe('MediaController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .delete(`/api/media/uploads/photos/${photoId}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: `Uploaded photo was not found by ID '${photoId}'`,
             status: 404,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
 
     it('should return a 401 error when the request is unauthorized', async () => {
@@ -183,13 +181,12 @@ describe('MediaController (e2e)', () => {
       return supertest(app.getHttpServer())
         .delete(`/api/media/uploads/photos/${photoId}`)
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
     })
   })
 })

@@ -15,6 +15,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -40,7 +41,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -67,7 +68,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -104,7 +105,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_SECONDARY_USER_EMAIL,
@@ -136,7 +137,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Google,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -164,7 +165,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -193,7 +194,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL.toUpperCase(),
@@ -222,7 +223,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_SECONDARY_USER_EMAIL.toUpperCase(),
@@ -257,7 +258,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -292,7 +293,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -323,7 +324,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -356,7 +357,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Google,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -384,7 +385,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: MOCK_PRIMARY_USER_EMAIL,
@@ -412,7 +413,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Local,
           email: '',
@@ -475,7 +476,7 @@ describe('UserProfileController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put('/api/profile/user')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({
           authProvider: AuthProvider.Google,
           email: MOCK_PRIMARY_USER_EMAIL,

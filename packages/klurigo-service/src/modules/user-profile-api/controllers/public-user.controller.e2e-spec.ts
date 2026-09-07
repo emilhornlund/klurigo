@@ -15,6 +15,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -128,7 +129,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${targetUser._id}/profile`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -148,7 +149,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${missingUserId}/profile`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -183,7 +184,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${targetUser._id}/profile`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -224,7 +225,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${targetUser._id}/quizzes`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.total).toBe(1)
@@ -307,7 +308,7 @@ describe('PublicUserController (e2e)', () => {
           limit: 5,
           offset: 1,
         })
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.total).toBe(4)
@@ -326,7 +327,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${missingUserId}/quizzes`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -361,7 +362,7 @@ describe('PublicUserController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/users/${targetUser._id}/quizzes`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toEqual({

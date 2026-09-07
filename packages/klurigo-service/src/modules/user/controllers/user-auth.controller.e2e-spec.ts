@@ -15,6 +15,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -53,7 +54,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/auth/email/verify')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(204)
         .expect((res) => {
@@ -78,7 +79,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/auth/email/verify')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(400)
         .expect((res) => {
@@ -115,7 +116,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/auth/email/verify')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(401)
         .expect((res) => {
@@ -163,7 +164,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/auth/email/verify')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(403)
         .expect((res) => {
@@ -184,7 +185,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/auth/email/resend_verification')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(204)
         .expect((res) => {
@@ -273,7 +274,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({ password: MOCK_SECONDARY_PASSWORD })
         .expect(204)
         .expect((res) => {
@@ -304,7 +305,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send({ password: MOCK_SECONDARY_PASSWORD })
         .expect(401)
         .expect((res) => {
@@ -350,7 +351,7 @@ describe('UserAuthController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send()
         .expect(403)
         .expect((res) => {
