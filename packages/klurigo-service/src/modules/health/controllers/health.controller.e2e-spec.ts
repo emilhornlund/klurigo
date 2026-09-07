@@ -1,7 +1,11 @@
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 
-import { closeTestApp, createTestApp } from '../../../../test-utils/utils'
+import {
+  closeTestApp,
+  createTestApp,
+  resetTestState,
+} from '../../../../test-utils/utils'
 
 describe('HealthController (e2e)', () => {
   let app: INestApplication
@@ -11,7 +15,11 @@ describe('HealthController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   it('GET /health returns 200 with mongodb + redis status up', async () => {

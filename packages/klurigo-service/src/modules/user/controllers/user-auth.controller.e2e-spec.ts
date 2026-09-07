@@ -17,6 +17,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { TokenService } from '../../token/services'
 import { LocalUser, UserRepository } from '../repositories'
@@ -35,7 +36,11 @@ describe('UserAuthController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/auth/email/verify (POST)', () => {

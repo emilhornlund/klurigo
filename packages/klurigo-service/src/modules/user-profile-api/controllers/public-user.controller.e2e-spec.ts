@@ -17,6 +17,7 @@ import {
   closeTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import { DEFAULT_ACCESS_TOKEN_EXPIRATION_TIME } from '../../../app/shared/token'
 import {
@@ -42,7 +43,11 @@ describe('PublicUserController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   async function createUserTokenWithoutUserAuthority(

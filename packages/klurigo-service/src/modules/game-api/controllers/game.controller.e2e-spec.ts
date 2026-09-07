@@ -37,6 +37,7 @@ import {
   authenticateGame,
   closeTestApp,
   createTestApp,
+  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   Game,
@@ -79,7 +80,11 @@ describe('GameController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/games/:gameID/players (POST)', () => {

@@ -26,7 +26,11 @@ import {
   MOCK_GOOGLE_VALID_CODE,
   MOCK_GOOGLE_VALID_CODE_VERIFIER,
 } from '../../../../test-utils/data/google-auth.data'
-import { closeTestApp, createTestApp } from '../../../../test-utils/utils'
+import {
+  closeTestApp,
+  createTestApp,
+  resetTestState,
+} from '../../../../test-utils/utils'
 import {
   DEFAULT_GAME_AUTHORITIES,
   DEFAULT_REFRESH_AUTHORITIES,
@@ -63,7 +67,11 @@ describe('AuthController (e2e)', () => {
   })
 
   afterEach(async () => {
-    await closeTestApp(app)
+    try {
+      await resetTestState(app)
+    } finally {
+      await closeTestApp(app)
+    }
   })
 
   describe('/api/auth/login (POST)', () => {
