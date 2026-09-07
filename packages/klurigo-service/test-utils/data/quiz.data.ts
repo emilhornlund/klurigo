@@ -11,7 +11,8 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 
 import { Quiz } from '../../src/modules/quiz-core/repositories/models/schemas'
-import { User } from '../../src/modules/user/repositories'
+
+import { buildMockPrimaryUser } from './user.data'
 
 export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
   return {
@@ -113,7 +114,7 @@ export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
         info: 'This is an info text displayed along the question result.',
       },
     ],
-    owner: { _id: uuidv4() } as User,
+    owner: buildMockPrimaryUser(),
     gameplaySummary: {
       count: 0,
       totalPlayerCount: 0,
@@ -164,7 +165,7 @@ export function createMockZeroToOneHundredQuiz(quiz?: Partial<Quiz>): Quiz {
         info: 'This is an info text displayed along the question result.',
       },
     ],
-    owner: { _id: uuidv4() } as User,
+    owner: buildMockPrimaryUser(),
     gameplaySummary: {
       count: 0,
       totalPlayerCount: 0,

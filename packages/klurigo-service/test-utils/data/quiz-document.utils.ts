@@ -8,20 +8,22 @@ import {
 } from '../../src/modules/quiz-core/repositories/models/schemas'
 import { User } from '../../src/modules/user/repositories'
 
+import { buildMockPrimaryUser } from './user.data'
+
 export function buildMockQuizRating(
   quizRating?: Partial<Omit<QuizRating, 'author'>> & {
     author?: User | QuizRatingUserAuthorWithBase
   },
 ): QuizRating {
   const now = new Date()
-  const rawAuthor = quizRating?.author ?? ({ _id: uuidv4() } as unknown as User)
+  const rawAuthor = quizRating?.author ?? buildMockPrimaryUser()
   const author: QuizRatingUserAuthorWithBase =
     'type' in rawAuthor
-      ? (rawAuthor as QuizRatingUserAuthorWithBase)
-      : ({
+      ? rawAuthor
+      : {
           type: QuizRatingAuthorType.User,
-          user: rawAuthor as User,
-        } as QuizRatingUserAuthorWithBase)
+          user: rawAuthor,
+        }
   return {
     _id: uuidv4(),
     quizId: uuidv4(),

@@ -15,7 +15,6 @@ import {
   QuestionZeroToOneHundredRangeDto,
   QuizCategory,
   QuizClassicModeRequestDto,
-  QuizRequestDto,
   QuizVisibility,
   QuizZeroToOneHundredModeRequestDto,
 } from '@klurigo/common'
@@ -159,7 +158,7 @@ export function createMockQuestionZeroToOneHundredRangeDto(
 
 export function createMockClassicQuizRequestDto(
   dto?: Partial<QuizClassicModeRequestDto>,
-): QuizRequestDto {
+): QuizClassicModeRequestDto {
   return {
     title: 'Trivia Battle',
     description: 'A fun and engaging trivia quiz for all ages.',
@@ -182,7 +181,7 @@ export function createMockClassicQuizRequestDto(
 
 export function createMockZeroToOneHundredQuizRequestDto(
   dto?: Partial<QuizZeroToOneHundredModeRequestDto>,
-): QuizRequestDto {
+): QuizZeroToOneHundredModeRequestDto {
   return {
     title: 'Trivia Battle',
     description: 'A fun and engaging trivia quiz for all ages.',

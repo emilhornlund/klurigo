@@ -1,7 +1,6 @@
 import { QuestionType } from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Game } from '../../src/modules/game-core/repositories/models/schemas'
 import {
   GameResult,
   PlayerMetric,
@@ -12,13 +11,14 @@ import {
   MOCK_DEFAULT_PLAYER_ID,
   MOCK_DEFAULT_PLAYER_NICKNAME,
 } from './game.constants'
+import { createMockGameDocument } from './game.data'
 
 export function createMockGameResultDocument(
   gameResult?: Partial<GameResult>,
 ): GameResult {
   return {
     _id: uuidv4(),
-    game: { _id: uuidv4() } as Game,
+    game: createMockGameDocument(),
     name: 'Trivia Battle',
     hostParticipantId: MOCK_DEFAULT_PLAYER_ID,
     players: [],

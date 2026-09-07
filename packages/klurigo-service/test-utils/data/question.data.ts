@@ -6,21 +6,19 @@ import {
 } from '@klurigo/common'
 
 import {
-  BaseQuestionDao,
-  QuestionDao,
   QuestionMultiChoiceWithBase,
-  QuestionPinDao,
-  QuestionPuzzleDao,
-  QuestionRangeDao,
-  QuestionTrueFalseDao,
-  QuestionTypeAnswerDao,
+  QuestionPinWithBase,
+  QuestionPuzzleWithBase,
+  QuestionRangeWithBase,
+  QuestionTrueFalseWithBase,
+  QuestionTypeAnswerWithBase,
 } from '../../src/modules/quiz-core/repositories/models/schemas'
 
 import { MOCK_TYPE_ANSWER_OPTION_VALUE } from './game.constants'
 
 export function createMockMultiChoiceQuestionDocument(
   question?: Partial<QuestionMultiChoiceWithBase>,
-): QuestionDao {
+): QuestionMultiChoiceWithBase {
   return {
     type: QuestionType.MultiChoice,
     text: 'What is the capital of Sweden?',
@@ -53,8 +51,8 @@ export function createMockMultiChoiceQuestionDocument(
 }
 
 export function createMockRangeQuestionDocument(
-  question?: Partial<BaseQuestionDao & QuestionRangeDao>,
-): QuestionDao {
+  question?: Partial<QuestionRangeWithBase>,
+): QuestionRangeWithBase {
   return {
     type: QuestionType.Range,
     text: 'Guess the temperature of the hottest day ever recorded.',
@@ -74,8 +72,8 @@ export function createMockRangeQuestionDocument(
 }
 
 export function createMockTrueFalseQuestionDocument(
-  question?: Partial<BaseQuestionDao & QuestionTrueFalseDao>,
-): QuestionDao {
+  question?: Partial<QuestionTrueFalseWithBase>,
+): QuestionTrueFalseWithBase {
   return {
     type: QuestionType.TrueFalse,
     text: 'The earth is flat.',
@@ -91,8 +89,8 @@ export function createMockTrueFalseQuestionDocument(
 }
 
 export function createMockTypeAnswerQuestionDocument(
-  question?: Partial<BaseQuestionDao & QuestionTypeAnswerDao>,
-): QuestionDao {
+  question?: Partial<QuestionTypeAnswerWithBase>,
+): QuestionTypeAnswerWithBase {
   return {
     type: QuestionType.TypeAnswer,
     text: 'What is the capital of Denmark?',
@@ -108,8 +106,8 @@ export function createMockTypeAnswerQuestionDocument(
 }
 
 export function createMockPinQuestionDocument(
-  question?: Partial<BaseQuestionDao & QuestionPinDao>,
-): BaseQuestionDao & QuestionPinDao {
+  question?: Partial<QuestionPinWithBase>,
+): QuestionPinWithBase {
   return {
     type: QuestionType.Pin,
     text: 'Where is the Eiffel Tower located in Paris? Pin the answer on a map of Paris',
@@ -124,8 +122,8 @@ export function createMockPinQuestionDocument(
 }
 
 export function createMockPuzzleQuestionDocument(
-  question?: Partial<BaseQuestionDao & QuestionPuzzleDao>,
-): BaseQuestionDao & QuestionPuzzleDao {
+  question?: Partial<QuestionPuzzleWithBase>,
+): QuestionPuzzleWithBase {
   return {
     type: QuestionType.Puzzle,
     text: 'Sort the oldest cities in Europe',

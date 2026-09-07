@@ -2,12 +2,10 @@ import { QuestionType } from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
-  BaseTask,
-  LeaderboardTask,
   LeaderboardTaskItem,
+  LeaderboardTaskWithBase,
   LobbyTaskWithBase,
-  PodiumTask,
-  QuestionResultTask,
+  PodiumTaskWithBase,
   QuestionResultTaskCorrectMultiChoiceAnswerWithBase,
   QuestionResultTaskCorrectPinAnswerWithBase,
   QuestionResultTaskCorrectPuzzleAnswerWithBase,
@@ -15,7 +13,7 @@ import {
   QuestionResultTaskCorrectTrueFalseAnswerWithBase,
   QuestionResultTaskCorrectTypeAnswerWithBase,
   QuestionResultTaskItem,
-  QuestionTask,
+  QuestionResultTaskWithBase,
   QuestionTaskBaseAnswer,
   QuestionTaskMultiChoiceAnswer,
   QuestionTaskPinAnswer,
@@ -23,6 +21,7 @@ import {
   QuestionTaskRangeAnswer,
   QuestionTaskTrueFalseAnswer,
   QuestionTaskTypeAnswerAnswer,
+  QuestionTaskWithBase,
   TaskType,
 } from '../../src/modules/game-core/repositories/models/schemas'
 
@@ -34,8 +33,8 @@ import {
 import { offsetSeconds } from './helpers.utils'
 
 export function createMockQuestionTaskDocument(
-  task?: Partial<BaseTask & QuestionTask>,
-): BaseTask & QuestionTask {
+  task?: Partial<QuestionTaskWithBase>,
+): QuestionTaskWithBase {
   return {
     _id: uuidv4(),
     type: TaskType.Question,
@@ -72,8 +71,8 @@ export function createMockLobbyTaskDocument(
 }
 
 export function createMockQuestionResultTaskDocument(
-  task?: Partial<BaseTask & QuestionResultTask>,
-): BaseTask & QuestionResultTask {
+  task?: Partial<QuestionResultTaskWithBase>,
+): QuestionResultTaskWithBase {
   return {
     _id: uuidv4(),
     type: TaskType.QuestionResult,
@@ -253,8 +252,8 @@ export function createMockLeaderboardTaskItem(
 }
 
 export function createMockLeaderboardTaskDocument(
-  task?: Partial<BaseTask & LeaderboardTask>,
-): BaseTask & LeaderboardTask {
+  task?: Partial<LeaderboardTaskWithBase>,
+): LeaderboardTaskWithBase {
   return {
     _id: uuidv4(),
     type: TaskType.Leaderboard,
@@ -267,8 +266,8 @@ export function createMockLeaderboardTaskDocument(
 }
 
 export function createMockPodiumTaskDocument(
-  task?: Partial<BaseTask & PodiumTask>,
-): BaseTask & PodiumTask {
+  task?: Partial<PodiumTaskWithBase>,
+): PodiumTaskWithBase {
   return {
     _id: uuidv4(),
     type: TaskType.Podium,
