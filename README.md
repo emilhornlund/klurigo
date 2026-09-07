@@ -114,10 +114,13 @@ Backend unit tests use focused Nest testing modules and do not bootstrap the ful
 application or run database and Redis cleanup helpers. They can therefore run
 with MongoDB and Redis stopped. Backend e2e tests use `createTestApp` and the
 real services; start them with `docker compose up -d` before running
-`yarn test:e2e`. Each e2e test resets all MongoDB collections and flushes the
-configured Redis database, then closes the Nest application as a separate
-teardown step. Reset failures and shutdown failures are reported by their own
-cleanup operations.
+`yarn test:e2e`. The recommended lifecycle is to initialize one fully
+configured Nest application per suite, reset all MongoDB collections and flush
+the configured Redis database in `beforeEach`, create that test's fixtures
+after the reset. Reset the shared state once more and close the application
+once in `afterAll`; keep those operations separate with shutdown in a
+`finally` block so it still runs when reset fails. Each operation reports
+failures with its own diagnostic.
 
 Use `yarn e2e:setup` before frontend Playwright tests when the e2e database
 needs to be reset and seeded, and `yarn e2e:teardown` afterward to clear it.

@@ -68,22 +68,49 @@ describe('GameController (e2e)', () => {
   let hostUser: User
   let playerUser: User
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     app = await createTestApp()
     gameService = app.get(GameService)
     gameModel = app.get<GameModel>(getModelToken(Game.name))
     userModel = app.get<UserModel>(getModelToken(User.name))
     quizService = app.get(QuizService)
+  })
 
+  beforeEach(async () => {
+    await resetTestState(app)
     hostUser = await userModel.create(buildMockPrimaryUser())
     playerUser = await userModel.create(buildMockSecondaryUser())
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
+    let resetFailure: unknown
+    let closeFailure: unknown
+
     try {
       await resetTestState(app)
-    } finally {
+    } catch (error) {
+      resetFailure = error
+    }
+
+    try {
       await closeTestApp(app)
+    } catch (error) {
+      closeFailure = error
+    }
+
+    if (closeFailure !== undefined && resetFailure !== undefined) {
+      throw new AggregateError(
+        [resetFailure, closeFailure],
+        'Failed to clean up game controller e2e application.',
+      )
+    }
+
+    if (closeFailure !== undefined) {
+      throw closeFailure
+    }
+
+    if (resetFailure !== undefined) {
+      throw resetFailure
     }
   })
 

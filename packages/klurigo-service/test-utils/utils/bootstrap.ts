@@ -125,5 +125,11 @@ export async function resetTestState(app: INestApplication): Promise<void> {
 }
 
 export async function closeTestApp(app: INestApplication): Promise<void> {
-  await app.close()
+  try {
+    await app.close()
+  } catch (error) {
+    throw new Error('Failed to close backend e2e application.', {
+      cause: error,
+    })
+  }
 }
