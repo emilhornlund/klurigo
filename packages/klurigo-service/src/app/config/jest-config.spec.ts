@@ -4,6 +4,7 @@ type JestConfig = {
   testRegex: string
   coverageDirectory: string
   forceExit?: boolean
+  maxWorkers?: number | string
   globalSetup?: string
   globalTeardown?: string
   setupFiles?: string[]
@@ -39,6 +40,12 @@ describe('backend Jest test boundaries', () => {
     expect(e2eConfig.coverageDirectory).toBe('<rootDir>/coverage/e2e')
   })
 
+  it('uses normal unit parallelism and serial e2e execution', () => {
+    expect(completeConfig.maxWorkers).toBeUndefined()
+    expect(unitConfig.maxWorkers).toBeUndefined()
+    expect(e2eConfig.maxWorkers).toBe(1)
+  })
+
   it('does not force Jest to exit', () => {
     expect(completeConfig.forceExit).toBeUndefined()
     expect(unitConfig.forceExit).toBeUndefined()
@@ -46,6 +53,7 @@ describe('backend Jest test boundaries', () => {
   })
 
   it('provides separate coverage commands and aggregates both suites', () => {
+    expect(servicePackage.scripts.test).toBe('yarn test:unit && yarn test:e2e')
     expect(servicePackage.scripts['test:unit:coverage']).toBe(
       'jest --config jest.unit.config.cjs --coverage',
     )

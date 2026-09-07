@@ -112,8 +112,10 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 
 Backend unit tests use focused Nest testing modules and do not bootstrap the full
 application or run database and Redis cleanup helpers. They can therefore run
-with MongoDB and Redis stopped. Backend e2e tests use `createTestApp` and the
-real services; start them with `docker compose up -d` before running
+with MongoDB and Redis stopped, and use Jest's normal worker parallelism. Backend
+e2e tests use `createTestApp`, real MongoDB and Redis services, and are kept
+serial with one Jest worker because their specs reset shared state during their
+lifecycle. Start those services with `docker compose up -d` before running
 `yarn test:e2e`. The recommended lifecycle is to initialize one fully
 configured Nest application per suite, reset all MongoDB collections and flush
 the configured Redis database in `beforeEach`, create that test's fixtures
