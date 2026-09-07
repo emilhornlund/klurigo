@@ -2,9 +2,14 @@
 
 This directory is the entry point for repository documentation.
 
-## Current Categories
+## Getting Started
 
-### Plans
+- [Local development](./getting-started/development.md) - prerequisites,
+  installation, and application startup.
+- [Local infrastructure](./getting-started/local-infrastructure.md) - MongoDB,
+  Redis, and Docker Compose workflows.
+
+## Plans
 
 The `plans/` directory is the documentation category that exists today. It contains the repository's implementation plans:
 
