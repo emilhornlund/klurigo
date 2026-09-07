@@ -378,9 +378,7 @@ describe(QuizRatingRepository.name, () => {
       const stars = 4
       const comment = 'Nice quiz'
 
-      ;(uuidv4 as unknown as jest.Mock)
-        .mockReturnValueOnce('user-uuid-1') // buildMockPrimaryUser()
-        .mockReturnValueOnce('rating-uuid-1') // createQuizRating()
+      ;(uuidv4 as unknown as jest.Mock).mockReturnValueOnce('rating-uuid-1')
 
       const author = buildMockPrimaryUser()
 
@@ -407,7 +405,7 @@ describe(QuizRatingRepository.name, () => {
         comment,
       )
 
-      expect(uuidv4).toHaveBeenCalledTimes(2)
+      expect(uuidv4).toHaveBeenCalledTimes(1)
       expect(repository.create).toHaveBeenCalledWith({
         _id: 'rating-uuid-1',
         quizId,

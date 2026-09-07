@@ -1,5 +1,4 @@
 import { QuestionType } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   LeaderboardTaskItem,
@@ -30,13 +29,13 @@ import {
   MOCK_DEFAULT_PLAYER_NICKNAME,
   MOCK_TYPE_ANSWER_OPTION_VALUE,
 } from './game.constants'
-import { offsetSeconds } from './helpers.utils'
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 
 export function createMockQuestionTaskDocument(
   task?: Partial<QuestionTaskWithBase>,
 ): QuestionTaskWithBase {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(31),
     type: TaskType.Question,
     status: 'pending',
     questionIndex: 0,
@@ -62,10 +61,10 @@ export function createMockLobbyTaskDocument(
   task?: Partial<LobbyTaskWithBase>,
 ): LobbyTaskWithBase {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(32),
     type: TaskType.Lobby,
     status: 'pending',
-    created: new Date(),
+    created: offsetSeconds(0),
     ...(task ?? {}),
   }
 }
@@ -74,7 +73,7 @@ export function createMockQuestionResultTaskDocument(
   task?: Partial<QuestionResultTaskWithBase>,
 ): QuestionResultTaskWithBase {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(33),
     type: TaskType.QuestionResult,
     status: 'pending',
     questionIndex: 0,
@@ -255,12 +254,12 @@ export function createMockLeaderboardTaskDocument(
   task?: Partial<LeaderboardTaskWithBase>,
 ): LeaderboardTaskWithBase {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(34),
     type: TaskType.Leaderboard,
     status: 'pending',
     questionIndex: 1,
     leaderboard: [],
-    created: new Date(),
+    created: offsetSeconds(0),
     ...(task ?? {}),
   }
 }
@@ -269,7 +268,7 @@ export function createMockPodiumTaskDocument(
   task?: Partial<PodiumTaskWithBase>,
 ): PodiumTaskWithBase {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(35),
     type: TaskType.Podium,
     status: 'pending',
     leaderboard: [],

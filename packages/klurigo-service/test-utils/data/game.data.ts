@@ -1,5 +1,4 @@
 import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   Game,
@@ -13,12 +12,12 @@ import {
   MOCK_DEFAULT_PLAYER_ID,
   MOCK_DEFAULT_PLAYER_NICKNAME,
 } from './game.constants'
-import { offsetSeconds } from './helpers.utils'
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 import { createMockClassicQuiz } from './quiz.data'
 
 export function createMockGameDocument(game?: Partial<Game>): Game {
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(21),
     name: MOCK_DEFAULT_GAME_NAME,
     mode: GameMode.Classic,
     status: GameStatus.Active,

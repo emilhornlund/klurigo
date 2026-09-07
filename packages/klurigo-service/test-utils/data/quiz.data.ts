@@ -8,15 +8,16 @@ import {
   QuizCategory,
   QuizVisibility,
 } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import { Quiz } from '../../src/modules/quiz-core/repositories/models/schemas'
 
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 import { buildMockPrimaryUser } from './user.data'
 
 export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(11),
     title: 'Trivia Battle',
     description: 'A fun and engaging trivia quiz for all ages.',
     mode: GameMode.Classic,
@@ -131,15 +132,16 @@ export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
       stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
       commentCount: 0,
     },
-    created: new Date(),
-    updated: new Date(),
+    created: now,
+    updated: now,
     ...(quiz ?? {}),
   }
 }
 
 export function createMockZeroToOneHundredQuiz(quiz?: Partial<Quiz>): Quiz {
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: createMockUniqueId(12),
     title: 'Trivia Battle',
     description: 'A fun and engaging trivia quiz for all ages.',
     mode: GameMode.ZeroToOneHundred,
@@ -182,8 +184,8 @@ export function createMockZeroToOneHundredQuiz(quiz?: Partial<Quiz>): Quiz {
       stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
       commentCount: 0,
     },
-    created: new Date(),
-    updated: new Date(),
+    created: now,
+    updated: now,
     ...(quiz ?? {}),
   }
 }

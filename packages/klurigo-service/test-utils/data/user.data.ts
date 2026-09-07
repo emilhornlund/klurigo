@@ -1,7 +1,8 @@
 import { AuthProvider } from '@klurigo/common'
-import { v4 as uuidv4 } from 'uuid'
 
 import { GoogleUser, LocalUser } from '../../src/modules/user/repositories'
+
+import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 
 export const MOCK_PRIMARY_USER_EMAIL = 'user@example.com'
 export const MOCK_PRIMARY_USER_GIVEN_NAME = 'John'
@@ -32,10 +33,16 @@ export const MOCK_DEFAULT_HASHED_PASSWORD =
 export const MOCK_SECONDARY_PASSWORD = 'Tr0ub4dor&3NewP@ssw0rd!'
 export const MOCK_WEAK_PASSWORD = 'not-a-strong-password'
 
+const MOCK_PRIMARY_USER_ID = createMockUniqueId(1)
+const MOCK_PRIMARY_GOOGLE_USER_FIXTURE_ID = createMockUniqueId(2)
+const MOCK_SECONDARY_USER_ID = createMockUniqueId(3)
+const MOCK_TERTIARY_USER_ID = createMockUniqueId(4)
+const MOCK_QUATERNARY_USER_ID = createMockUniqueId(5)
+
 export function buildMockPrimaryUser(user?: Partial<LocalUser>): LocalUser {
-  const now = new Date()
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: MOCK_PRIMARY_USER_ID,
     authProvider: AuthProvider.Local,
     email: MOCK_PRIMARY_USER_EMAIL,
     hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
@@ -51,9 +58,9 @@ export function buildMockPrimaryUser(user?: Partial<LocalUser>): LocalUser {
 export function buildMockPrimaryGoogleUser(
   user?: Partial<GoogleUser>,
 ): GoogleUser {
-  const now = new Date()
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: MOCK_PRIMARY_GOOGLE_USER_FIXTURE_ID,
     googleUserId: MOCK_PRIMARY_GOOGLE_USER_ID,
     authProvider: AuthProvider.Google,
     email: MOCK_PRIMARY_USER_EMAIL,
@@ -68,9 +75,9 @@ export function buildMockPrimaryGoogleUser(
 }
 
 export function buildMockSecondaryUser(user?: Partial<LocalUser>): LocalUser {
-  const now = new Date()
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: MOCK_SECONDARY_USER_ID,
     authProvider: AuthProvider.Local,
     email: MOCK_SECONDARY_USER_EMAIL,
     hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
@@ -84,9 +91,9 @@ export function buildMockSecondaryUser(user?: Partial<LocalUser>): LocalUser {
 }
 
 export function buildMockTertiaryUser(user?: Partial<LocalUser>): LocalUser {
-  const now = new Date()
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: MOCK_TERTIARY_USER_ID,
     authProvider: AuthProvider.Local,
     email: MOCK_TERTIARY_USER_EMAIL,
     hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
@@ -100,9 +107,9 @@ export function buildMockTertiaryUser(user?: Partial<LocalUser>): LocalUser {
 }
 
 export function buildMockQuaternaryUser(user?: Partial<LocalUser>): LocalUser {
-  const now = new Date()
+  const now = offsetSeconds(0)
   return {
-    _id: uuidv4(),
+    _id: MOCK_QUATERNARY_USER_ID,
     authProvider: AuthProvider.Local,
     email: MOCK_QUATERNARY_USER_EMAIL,
     hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,

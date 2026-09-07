@@ -2,7 +2,6 @@ import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   createMockGameDocument,
@@ -10,6 +9,7 @@ import {
   createMockGamePlayerParticipantDocument,
   createMockPodiumTaskDocument,
   createMockQuestionTaskDocument,
+  createMockUniqueId,
   offsetSeconds,
 } from '../../../../test-utils/data'
 import {
@@ -104,6 +104,7 @@ describe('ProfileGameController (e2e)', () => {
       await gameModel.insertMany([
         ...buildFirstPageGameDocuments(user),
         createMockGameDocument({
+          _id: createMockUniqueId(506),
           status: GameStatus.Completed,
           participants: [
             createMockGamePlayerParticipantDocument({
@@ -160,7 +161,7 @@ describe('ProfileGameController (e2e)', () => {
     })
 
     it('should return a 401 error when the request is unauthorized', () => {
-      const gameID = uuidv4()
+      const gameID = createMockUniqueId(507)
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${gameID}/results`)
@@ -180,23 +181,27 @@ function buildFirstPageGameDocuments(user: User): Game[] {
   const { _id: participantId } = user
   return [
     createMockGameDocument({
+      _id: createMockUniqueId(500),
       status: GameStatus.Expired,
       participants: [createMockGameHostParticipantDocument({ participantId })],
       created: offsetSeconds(0),
     }),
     createMockGameDocument({
+      _id: createMockUniqueId(501),
       status: GameStatus.Completed,
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(1),
     }),
     createMockGameDocument({
+      _id: createMockUniqueId(502),
       status: GameStatus.Completed,
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(2),
     }),
     createMockGameDocument({
+      _id: createMockUniqueId(503),
       status: GameStatus.Active,
       participants: [
         createMockGamePlayerParticipantDocument({
@@ -209,12 +214,14 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       created: offsetSeconds(3),
     }),
     createMockGameDocument({
+      _id: createMockUniqueId(504),
       status: GameStatus.Active,
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockQuestionTaskDocument(),
       created: offsetSeconds(4),
     }),
     createMockGameDocument({
+      _id: createMockUniqueId(505),
       status: GameStatus.Active,
       participants: [
         createMockGamePlayerParticipantDocument({
