@@ -15,10 +15,9 @@ import {
   createMockGamePlayerParticipantDocument,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import {
@@ -46,11 +45,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/profile/quizzes/:quizId/ratings (PUT)', () => {

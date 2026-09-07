@@ -35,7 +35,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   authenticateGame,
-  closeTestApp,
+  cleanupTestApp,
   createTestApp,
   resetTestState,
 } from '../../../../test-utils/utils'
@@ -83,35 +83,7 @@ describe('GameController (e2e)', () => {
   })
 
   afterAll(async () => {
-    let resetFailure: unknown
-    let closeFailure: unknown
-
-    try {
-      await resetTestState(app)
-    } catch (error) {
-      resetFailure = error
-    }
-
-    try {
-      await closeTestApp(app)
-    } catch (error) {
-      closeFailure = error
-    }
-
-    if (closeFailure !== undefined && resetFailure !== undefined) {
-      throw new AggregateError(
-        [resetFailure, closeFailure],
-        'Failed to clean up game controller e2e application.',
-      )
-    }
-
-    if (closeFailure !== undefined) {
-      throw closeFailure
-    }
-
-    if (resetFailure !== undefined) {
-      throw resetFailure
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/games/:gameID/players (POST)', () => {

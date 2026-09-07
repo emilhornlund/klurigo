@@ -9,11 +9,7 @@ import {
   MOCK_PRIMARY_USER_FAMILY_NAME,
   MOCK_PRIMARY_USER_GIVEN_NAME,
 } from '../../../../test-utils/data'
-import {
-  closeTestApp,
-  createTestApp,
-  resetTestState,
-} from '../../../../test-utils/utils'
+import { cleanupTestApp, createTestApp } from '../../../../test-utils/utils'
 import { UserRepository } from '../repositories'
 
 describe('UserController (e2e)', () => {
@@ -26,11 +22,7 @@ describe('UserController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/users (POST)', () => {

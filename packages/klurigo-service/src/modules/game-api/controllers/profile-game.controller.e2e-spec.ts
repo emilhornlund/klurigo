@@ -13,10 +13,9 @@ import {
   offsetSeconds,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
@@ -31,11 +30,7 @@ describe('ProfileGameController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/profile/games (GET)', () => {

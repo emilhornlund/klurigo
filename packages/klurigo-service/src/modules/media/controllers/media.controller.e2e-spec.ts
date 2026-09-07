@@ -6,10 +6,9 @@ import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 
 describe('MediaController (e2e)', () => {
@@ -20,11 +19,7 @@ describe('MediaController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/media/photos (GET)', () => {

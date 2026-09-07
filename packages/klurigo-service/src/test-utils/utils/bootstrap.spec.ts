@@ -5,6 +5,7 @@ import { Redis } from 'ioredis'
 import { Connection } from 'mongoose'
 
 import {
+  cleanupTestApp,
   closeTestApp,
   resetTestState,
 } from '../../../test-utils/utils/bootstrap'
@@ -15,6 +16,7 @@ type TestDependencies = {
   dropCollection: jest.Mock
   flushdb: jest.Mock
   listCollections: jest.Mock
+  quit: jest.Mock
 }
 
 function createTestDependencies(): TestDependencies {
@@ -28,7 +30,8 @@ function createTestDependencies(): TestDependencies {
     dropCollection,
     listCollections,
   } as unknown as Connection
-  const redis = { flushdb } as unknown as Redis
+  const quit = jest.fn().mockResolvedValue('OK')
+  const redis = { flushdb, quit, status: 'ready' } as unknown as Redis
   const get = jest.fn((token: unknown) =>
     token === getConnectionToken() && token !== getRedisConnectionToken()
       ? connection
@@ -36,7 +39,7 @@ function createTestDependencies(): TestDependencies {
   )
   const app = { close, get } as unknown as INestApplication
 
-  return { app, close, dropCollection, flushdb, listCollections }
+  return { app, close, dropCollection, flushdb, listCollections, quit }
 }
 
 describe('backend e2e lifecycle helpers', () => {
@@ -123,19 +126,35 @@ describe('backend e2e lifecycle helpers', () => {
     const { app, close, listCollections } = createTestDependencies()
     listCollections.mockRejectedValue(new Error('MongoDB unavailable'))
 
-    try {
-      await expect(resetTestState(app)).rejects.toThrow(
-        'Failed to reset MongoDB e2e state.',
-      )
-    } finally {
-      await closeTestApp(app)
-    }
+    await expect(cleanupTestApp(app)).rejects.toThrow(
+      'Failed to reset MongoDB e2e state.',
+    )
 
     expect(close).toHaveBeenCalledTimes(1)
   })
 
+  it('preserves reset and shutdown failures when both cleanup steps fail', async () => {
+    const { app, close, listCollections } = createTestDependencies()
+    const closeError = new Error('Application shutdown failed')
+    listCollections.mockRejectedValue(new Error('MongoDB unavailable'))
+    close.mockRejectedValue(closeError)
+
+    await expect(cleanupTestApp(app)).rejects.toMatchObject({
+      message: 'Failed to clean up backend e2e application.',
+      errors: [
+        expect.objectContaining({
+          message: 'Failed to reset MongoDB e2e state.',
+        }),
+        expect.objectContaining({
+          message: 'Failed to close backend e2e application.',
+          cause: closeError,
+        }),
+      ],
+    })
+  })
+
   it('propagates application shutdown failures independently', async () => {
-    const { app, close } = createTestDependencies()
+    const { app, close, quit } = createTestDependencies()
     const error = new Error('Application shutdown failed')
     close.mockRejectedValue(error)
 
@@ -143,5 +162,14 @@ describe('backend e2e lifecycle helpers', () => {
       message: 'Failed to close backend e2e application.',
       cause: error,
     })
+    expect(quit).toHaveBeenCalledTimes(1)
+  })
+
+  it('closes the primary Redis connection left outside Nest module state', async () => {
+    const { app, quit } = createTestDependencies()
+
+    await closeTestApp(app)
+
+    expect(quit).toHaveBeenCalledTimes(1)
   })
 })

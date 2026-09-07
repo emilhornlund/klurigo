@@ -19,10 +19,9 @@ import {
   createMockZeroToOneHundredQuiz,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   Game,
@@ -58,11 +57,7 @@ describe('GameResultController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/games/:gameID/results (GET)', () => {

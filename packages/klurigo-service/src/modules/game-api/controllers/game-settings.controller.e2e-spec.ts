@@ -13,9 +13,8 @@ import {
 } from '../../../../test-utils/data'
 import {
   authenticateGame,
-  closeTestApp,
+  cleanupTestApp,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
@@ -38,11 +37,7 @@ describe('GameSettingsController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/games/:gameId/settings (PUT)', () => {

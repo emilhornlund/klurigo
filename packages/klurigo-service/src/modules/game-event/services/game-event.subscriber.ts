@@ -139,6 +139,11 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
         `Failed to subscribe to Redis channel "${REDIS_PUBSUB_CHANNEL}": ${message}`,
         stack,
       )
+      try {
+        this.redisSubscriber.disconnect()
+      } catch {
+        // Preserve the subscription failure as the actionable error.
+      }
       throw error
     }
 
@@ -155,22 +160,39 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   async onModuleDestroy(): Promise<void> {
     this.stopHeartbeatIfRunning()
 
+    let shutdownError: unknown
+
     try {
       this.redisSubscriber.off('message', this.onRedisMessage)
       this.redisSubscriber.off('error', this.onRedisError)
       await this.redisSubscriber.unsubscribe(REDIS_PUBSUB_CHANNEL)
-      await this.redisSubscriber.quit()
     } catch (error) {
+      shutdownError = error
       const { message, stack } = error as Error
       this.logger.warn(
-        `Error while shutting down Redis subscriber: ${message}`,
+        `Error while unsubscribing Redis subscriber: ${message}`,
         stack,
       )
+    }
+
+    try {
+      await this.redisSubscriber.quit()
+    } catch (error) {
+      shutdownError ??= error
+      const { message, stack } = error as Error
+      this.logger.warn(
+        `Error while quitting Redis subscriber: ${message}`,
+        stack,
+      )
+    }
+
+    if (shutdownError !== undefined) {
       try {
         this.redisSubscriber.disconnect()
       } catch {
         // ignore
       }
+      throw shutdownError
     }
   }
 

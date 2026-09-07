@@ -225,6 +225,7 @@ describe('GameEventSubscriber', () => {
       'Failed to subscribe to Redis channel "events": subscribe down',
       expect.any(String),
     )
+    expect(redisSubscriber.disconnect).toHaveBeenCalledTimes(1)
   })
 
   it('emits heartbeats while a subscription is active and stops after unsubscribe', async () => {
@@ -306,16 +307,16 @@ describe('GameEventSubscriber', () => {
     expect(redisSubscriber.disconnect).not.toHaveBeenCalled()
   })
 
-  it('onModuleDestroy logs warn and disconnects if Redis shutdown throws', async () => {
+  it('onModuleDestroy logs, disconnects, and rethrows if Redis shutdown throws', async () => {
     await service.onModuleInit()
 
     redisSubscriber.unsubscribe.mockRejectedValueOnce(new Error('unsub fail'))
 
-    await service.onModuleDestroy()
+    await expect(service.onModuleDestroy()).rejects.toThrow('unsub fail')
 
     expect(logger.warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        'Error while shutting down Redis subscriber: unsub fail',
+        'Error while unsubscribing Redis subscriber: unsub fail',
       ),
       expect.any(String),
     )

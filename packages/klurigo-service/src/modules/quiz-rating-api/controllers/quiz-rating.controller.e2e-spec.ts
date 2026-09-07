@@ -12,10 +12,9 @@ import {
   createMockUniqueId,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import {
   Quiz,
@@ -49,11 +48,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/quizzes/:quizId/ratings (GET)', () => {

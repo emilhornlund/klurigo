@@ -10,10 +10,9 @@ import {
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { QuizService } from '../../quiz-api/services'
 import { User, UserModel } from '../../user/repositories'
@@ -30,11 +29,7 @@ describe('QuizGameController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/quizzes/:quizId/games (POST)', () => {

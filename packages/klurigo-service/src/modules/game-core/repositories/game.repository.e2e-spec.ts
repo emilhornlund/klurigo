@@ -3,11 +3,7 @@ import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  closeTestApp,
-  createTestApp,
-  resetTestState,
-} from '../../../../test-utils/utils'
+import { cleanupTestApp, createTestApp } from '../../../../test-utils/utils'
 import { Quiz } from '../../quiz-core/repositories/models/schemas'
 
 import { GameRepository } from './game.repository'
@@ -46,11 +42,7 @@ describe('GameRepository (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('updateCompletedGames', () => {

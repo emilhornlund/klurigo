@@ -14,10 +14,9 @@ import {
   MOCK_SECONDARY_USER_EMAIL,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { TokenService } from '../../token/services'
 import { LocalUser, UserRepository } from '../repositories'
@@ -36,11 +35,7 @@ describe('UserAuthController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/auth/email/verify (POST)', () => {

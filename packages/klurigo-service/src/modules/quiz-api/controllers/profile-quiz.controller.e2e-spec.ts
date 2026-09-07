@@ -9,10 +9,9 @@ import {
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
 import {
-  closeTestApp,
+  cleanupTestApp,
   createDefaultUserAndAuthenticate,
   createTestApp,
-  resetTestState,
 } from '../../../../test-utils/utils'
 import { User, UserModel } from '../../user/repositories'
 import { QuizService } from '../services'
@@ -29,11 +28,7 @@ describe('ProfileQuizController (e2e)', () => {
   })
 
   afterEach(async () => {
-    try {
-      await resetTestState(app)
-    } finally {
-      await closeTestApp(app)
-    }
+    await cleanupTestApp(app)
   })
 
   describe('/api/profile/quizzes (GET)', () => {
