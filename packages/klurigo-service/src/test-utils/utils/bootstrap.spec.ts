@@ -55,12 +55,17 @@ describe('backend e2e lifecycle helpers', () => {
 
   it('supports an explicit reset-then-shutdown lifecycle', async () => {
     const events: string[] = []
-    const { app, close, dropCollection, flushdb } = createTestDependencies()
+    const { app, close, dropCollection, flushdb, listCollections } =
+      createTestDependencies()
+    listCollections.mockImplementation(async () => {
+      events.push('listCollections')
+      return [{ name: 'users' }, { name: 'games' }]
+    })
     dropCollection.mockImplementation(async () => {
-      events.push('mongo')
+      events.push('dropCollection')
     })
     flushdb.mockImplementation(async () => {
-      events.push('redis')
+      events.push('flushdb')
     })
     close.mockImplementation(async () => {
       events.push('close')
@@ -69,7 +74,10 @@ describe('backend e2e lifecycle helpers', () => {
     await resetTestState(app)
     await closeTestApp(app)
 
-    expect(events).toEqual(expect.arrayContaining(['mongo', 'redis']))
+    expect(events).toHaveLength(5)
+    expect(events[0]).toBe('listCollections')
+    expect(events).toContain('dropCollection')
+    expect(events).toContain('flushdb')
     expect(events.at(-1)).toBe('close')
   })
 
@@ -92,11 +100,48 @@ describe('backend e2e lifecycle helpers', () => {
     )
   })
 
+  it('reports both reset failures while attempting both cleanup operations', async () => {
+    const { app, flushdb, listCollections } = createTestDependencies()
+    listCollections.mockRejectedValue(new Error('MongoDB unavailable'))
+    flushdb.mockRejectedValue(new Error('Redis unavailable'))
+
+    await expect(resetTestState(app)).rejects.toMatchObject({
+      message: 'Failed to reset backend e2e state.',
+      errors: [
+        expect.objectContaining({
+          message: 'Failed to reset MongoDB e2e state.',
+        }),
+        expect.objectContaining({
+          message: 'Failed to reset Redis e2e state.',
+        }),
+      ],
+    })
+    expect(flushdb).toHaveBeenCalledTimes(1)
+  })
+
+  it('still closes the app when suite cleanup reset fails', async () => {
+    const { app, close, listCollections } = createTestDependencies()
+    listCollections.mockRejectedValue(new Error('MongoDB unavailable'))
+
+    try {
+      await expect(resetTestState(app)).rejects.toThrow(
+        'Failed to reset MongoDB e2e state.',
+      )
+    } finally {
+      await closeTestApp(app)
+    }
+
+    expect(close).toHaveBeenCalledTimes(1)
+  })
+
   it('propagates application shutdown failures independently', async () => {
     const { app, close } = createTestDependencies()
     const error = new Error('Application shutdown failed')
     close.mockRejectedValue(error)
 
-    await expect(closeTestApp(app)).rejects.toBe(error)
+    await expect(closeTestApp(app)).rejects.toMatchObject({
+      message: 'Failed to close backend e2e application.',
+      cause: error,
+    })
   })
 })
