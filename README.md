@@ -11,6 +11,10 @@ A full‑stack quiz game platform built with a modern monorepo setup. It feature
 
 ---
 
+## Documentation
+
+See the [documentation index](./docs/README.md) for implementation plans and other repository documentation.
+
 ## Prerequisites
 
 Before you get started, make sure you have the following installed on your machine:
