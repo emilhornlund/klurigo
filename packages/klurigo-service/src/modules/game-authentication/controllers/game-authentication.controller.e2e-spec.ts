@@ -12,8 +12,10 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 import {
   DEFAULT_GAME_AUTHORITIES,
@@ -48,7 +50,7 @@ describe('GameAuthenticationController (e2e)', () => {
         .post('/api/auth/game')
         .set({
           'User-Agent': MOCK_USER_AGENT,
-          Authorization: `Bearer ${accessToken}`,
+          ...createBearerAuthHeader(accessToken),
         })
         .send({ gameId: game._id })
         .expect(200)
@@ -66,7 +68,7 @@ describe('GameAuthenticationController (e2e)', () => {
         .post('/api/auth/game')
         .set({
           'User-Agent': MOCK_USER_AGENT,
-          Authorization: `Bearer ${accessToken}`,
+          ...createBearerAuthHeader(accessToken),
         })
         .send({ gamePIN: game.pin })
         .expect(200)
@@ -115,11 +117,10 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({ gameId: 'non-uuid' })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -128,8 +129,8 @@ describe('GameAuthenticationController (e2e)', () => {
                 property: 'gameId',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 error when game PIN validation fails', async () => {
@@ -138,11 +139,10 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({ gamePIN: 'XXXXXX' })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -151,8 +151,8 @@ describe('GameAuthenticationController (e2e)', () => {
                 property: 'gamePIN',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 error when no request payload is provided', async () => {
@@ -161,13 +161,12 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send()
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing request payload',
             status: 400,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 error when no game id or game PIN are provided', async () => {
@@ -176,11 +175,10 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({ gameId: undefined, gamePIN: undefined })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -195,8 +193,8 @@ describe('GameAuthenticationController (e2e)', () => {
                 property: 'gamePIN',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 400 bad request when missing user agent', async () => {
@@ -204,11 +202,10 @@ describe('GameAuthenticationController (e2e)', () => {
         .post('/api/auth/game')
         .send({ gamePIN: '123456' })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -217,8 +214,8 @@ describe('GameAuthenticationController (e2e)', () => {
                 property: 'user-agent',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 401 error when an active game was not found by game id', async () => {
@@ -227,13 +224,12 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({ gameId: uuidv4() })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Unauthorized',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 401 error when an active game was not found by game PIN', async () => {
@@ -242,13 +238,12 @@ describe('GameAuthenticationController (e2e)', () => {
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({ gamePIN: '123456' })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Unauthorized',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
   })
 

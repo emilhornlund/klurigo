@@ -21,8 +21,10 @@ import {
 import {
   authenticateGame,
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
+  expectErrorResponse,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import {
@@ -126,7 +128,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars, comment })
         .expect(200)
         .expect((res) => {
@@ -163,13 +165,13 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars: 3, comment: 'Okay quiz.' })
         .expect(200)
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars: 5, comment: 'Actually fantastic!' })
         .expect(200)
         .expect((res) => {
@@ -202,7 +204,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${anonymousToken}` })
+        .set(createBearerAuthHeader(anonymousToken))
         .send({ stars, comment })
         .expect(200)
         .expect((res) => {
@@ -239,13 +241,13 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${anonymousToken}` })
+        .set(createBearerAuthHeader(anonymousToken))
         .send({ stars: 2, comment: 'Not for me.' })
         .expect(200)
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${anonymousToken}` })
+        .set(createBearerAuthHeader(anonymousToken))
         .send({ stars: 4 })
         .expect(200)
         .expect((res) => {
@@ -274,7 +276,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${ownerToken}` })
+        .set(createBearerAuthHeader(ownerToken))
         .send({ stars, comment })
         .expect(403)
     })
@@ -289,7 +291,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send({ stars, comment })
         .expect(403)
     })
@@ -304,7 +306,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars, comment })
         .expect(403)
     })
@@ -325,17 +327,16 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars, comment })
         .expect(403)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message:
               'Ratings can only be created or updated during the podium task.',
             status: 403,
-            timestamp: expect.anything(),
-          })
-        })
+          }),
+        )
 
       const ratingCount = await quizRatingModel.countDocuments({
         quizId: quiz._id,
@@ -353,14 +354,13 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${completedGame._id}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars: 0, comment: '' })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -377,8 +377,8 @@ describe(`${GameRatingController.name} (e2e)`, () => {
                 property: 'comment',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 401 when Authorization header is missing', async () => {
@@ -386,13 +386,12 @@ describe(`${GameRatingController.name} (e2e)`, () => {
         .put(`/api/games/${completedGame._id}/ratings`)
         .send({ stars, comment })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Missing Authorization header',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 401 when bearer token is invalid', async () => {
@@ -401,13 +400,12 @@ describe(`${GameRatingController.name} (e2e)`, () => {
         .send({ stars, comment })
         .set({ Authorization: 'Bearer INVALID_TOKEN' })
         .expect(401)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Invalid or expired token',
             status: 401,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 404 when the game does not exist', async () => {
@@ -421,7 +419,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${nonExistentGameId}/ratings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send({ stars, comment })
         .expect(404)
     })

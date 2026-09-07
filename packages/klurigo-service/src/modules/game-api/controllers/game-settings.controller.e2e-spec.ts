@@ -14,6 +14,7 @@ import {
 import {
   authenticateGame,
   cleanupTestApp,
+  createBearerAuthHeader,
   createTestApp,
 } from '../../../../test-utils/utils'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
@@ -77,7 +78,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(200)
         .expect((res) => {
@@ -128,7 +129,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(200)
         .expect((res) => {
@@ -179,7 +180,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(400)
         .expect((res) => {
@@ -232,7 +233,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(400)
         .expect((res) => {
@@ -285,7 +286,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(400)
         .expect((res) => {
@@ -377,7 +378,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${playerToken}` })
+        .set(createBearerAuthHeader(playerToken))
         .send(requestBody)
         .expect(403)
         .expect((res) => {
@@ -407,7 +408,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${nonExistentGameId}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(requestBody)
         .expect(404)
         .expect((res) => {
@@ -449,7 +450,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(invalidRequestBody)
         .expect(400)
         .expect((res) => {
@@ -488,7 +489,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(invalidRequestBody)
         .expect(400)
         .expect((res) => {
@@ -527,7 +528,7 @@ describe('GameSettingsController (e2e)', () => {
 
       await supertest(app.getHttpServer())
         .put(`/api/games/${game._id}/settings`)
-        .set({ Authorization: `Bearer ${hostToken}` })
+        .set(createBearerAuthHeader(hostToken))
         .send(invalidRequestBody)
         .expect(400)
         .expect((res) => {

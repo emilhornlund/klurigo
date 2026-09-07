@@ -11,6 +11,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -43,7 +44,7 @@ describe('QuizGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post(`/api/quizzes/${originalQuiz.id}/games`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(201)
         .expect((res) => {
           expect(res.body).toHaveProperty('id')
@@ -60,7 +61,7 @@ describe('QuizGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post(`/api/quizzes/${originalQuiz.id}/games`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(201)
         .expect((res) => {
           expect(res.body).toHaveProperty('id')
@@ -74,7 +75,7 @@ describe('QuizGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post(`/api/quizzes/${quizId}/games`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -98,7 +99,7 @@ describe('QuizGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post(`/api/quizzes/${id}/games`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(201)
         .expect((res) => {
           expect(res.body).toHaveProperty('id')
@@ -119,7 +120,7 @@ describe('QuizGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post(`/api/quizzes/${id}/games`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toHaveProperty('message', 'Forbidden')

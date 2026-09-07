@@ -9,7 +9,11 @@ import {
   MOCK_PRIMARY_USER_FAMILY_NAME,
   MOCK_PRIMARY_USER_GIVEN_NAME,
 } from '../../../../test-utils/data'
-import { cleanupTestApp, createTestApp } from '../../../../test-utils/utils'
+import {
+  cleanupTestApp,
+  createTestApp,
+  expectErrorResponse,
+} from '../../../../test-utils/utils'
 import { UserRepository } from '../repositories'
 
 describe('UserController (e2e)', () => {
@@ -60,11 +64,10 @@ describe('UserController (e2e)', () => {
           defaultNickname: '#',
         })
         .expect(400)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: 'Validation failed',
             status: 400,
-            timestamp: expect.any(String),
             validationErrors: [
               {
                 constraints: {
@@ -111,8 +114,8 @@ describe('UserController (e2e)', () => {
                 property: 'defaultNickname',
               },
             ],
-          })
-        })
+          }),
+        )
     })
 
     it('should return 409 conflict error when user already exists', async () => {
@@ -134,13 +137,12 @@ describe('UserController (e2e)', () => {
           defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
         })
         .expect(409)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: `Email '${MOCK_PRIMARY_USER_EMAIL}' is not unique`,
             status: 409,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should return 409 conflict when the email already exists with different casing', async () => {
@@ -162,13 +164,12 @@ describe('UserController (e2e)', () => {
           defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
         })
         .expect(409)
-        .expect((res) => {
-          expect(res.body).toEqual({
+        .expect((res) =>
+          expectErrorResponse(res, {
             message: `Email '${MOCK_PRIMARY_USER_EMAIL.toUpperCase()}' is not unique`,
             status: 409,
-            timestamp: expect.any(String),
-          })
-        })
+          }),
+        )
     })
 
     it('should normalize the email when creating a new user', async () => {

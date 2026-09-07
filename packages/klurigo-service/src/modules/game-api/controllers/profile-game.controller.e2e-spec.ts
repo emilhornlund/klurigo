@@ -14,6 +14,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -41,7 +42,7 @@ describe('ProfileGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/profile/games')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -120,7 +121,7 @@ describe('ProfileGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/profile/games?offset=5&limit=5')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -148,7 +149,7 @@ describe('ProfileGameController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/profile/games')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({

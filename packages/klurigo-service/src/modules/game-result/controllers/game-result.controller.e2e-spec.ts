@@ -20,6 +20,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -83,7 +84,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -237,7 +238,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -400,7 +401,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -537,7 +538,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -700,7 +701,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.rating).toBeDefined()
@@ -732,7 +733,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body.host.nickname).toEqual('N/A')
@@ -749,7 +750,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -767,7 +768,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${gameID}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -793,7 +794,7 @@ describe('GameResultController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/games/${game._id}/results`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toEqual({

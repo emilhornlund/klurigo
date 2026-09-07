@@ -12,6 +12,7 @@ import {
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
+  createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
@@ -48,7 +49,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .post('/api/quizzes')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send(originalData)
         .expect(201)
         .expect((res) => {
@@ -98,7 +99,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -130,7 +131,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?search=Unique%20Quiz%20Title')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -169,7 +170,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?mode=ZERO_TO_ONE_HUNDRED')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -195,7 +196,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?sort=updated&order=asc')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -222,7 +223,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?limit=5')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -249,7 +250,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?limit=5&offset=5')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -266,7 +267,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -296,7 +297,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get('/api/quizzes?limit=X&offset=X&mode=X&sort=X&order=X')
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(400)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -354,7 +355,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${originalQuiz.id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('id', originalQuiz.id)
@@ -392,7 +393,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${quizId}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -422,7 +423,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -466,7 +467,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toHaveProperty('message', 'Forbidden')
@@ -516,7 +517,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put(`/api/quizzes/${originalQuiz._id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send(updatedData)
         .expect(200)
         .expect((res) => {
@@ -557,7 +558,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put(`/api/quizzes/${quizId}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send(updatedData)
         .expect(404)
         .expect((res) => {
@@ -579,7 +580,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .put(`/api/quizzes/${id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .send(updatedData)
         .expect(403)
         .expect((res) => {
@@ -598,7 +599,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .delete(`/api/quizzes/${originalQuiz.id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})
@@ -612,7 +613,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .delete(`/api/quizzes/${quizId}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -633,7 +634,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .delete(`/api/quizzes/${id}`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toHaveProperty('message', 'Forbidden')
@@ -651,7 +652,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${quiz.id}/questions`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual(originalData.questions)
@@ -665,7 +666,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${quiz.id}/questions`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
           expect(res.body).toEqual(updatedData.questions)
@@ -679,7 +680,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${unknownQuizId}/questions`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -700,7 +701,7 @@ describe('QuizController (e2e)', () => {
 
       return supertest(app.getHttpServer())
         .get(`/api/quizzes/${quiz.id}/questions`)
-        .set({ Authorization: `Bearer ${accessToken}` })
+        .set(createBearerAuthHeader(accessToken))
         .expect(403)
         .expect((res) => {
           expect(res.body).toHaveProperty('message', 'Forbidden')
