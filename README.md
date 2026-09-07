@@ -15,21 +15,23 @@ A full‑stack quiz game platform built with a modern monorepo setup. It feature
 
 See the [documentation index](./docs/README.md) for implementation plans and other repository documentation.
 
-## Prerequisites
+## Quick Start
 
-Before you get started, make sure you have the following installed on your machine:
+Install Node.js `>=24 <25`, Yarn Classic `1.22.22`, Git, and Docker with
+Compose for the local MongoDB and Redis services. Then clone the repository,
+install dependencies, start infrastructure, and start the application:
 
-- **Node.js** v24 (Active LTS) or higher
-  We recommend using [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) to manage your Node versions.
+```sh
+git clone git@github.com:emilhornlund/klurigo.git
+cd klurigo
+yarn install --frozen-lockfile
+docker compose up -d --wait
+yarn dev
+```
 
-- **Yarn** v1.22.22 or higher
-  Install via `npm install --global yarn` if you don’t already have it.
-
-- **Git**
-  To clone and manage the repository.
-
-- **Docker & Docker Compose** (optional)
-  If you prefer to run your database and cache in containers.
+For the complete application workflow, see the [development guide](./docs/getting-started/development.md).
+For MongoDB, Redis, ports, Compose inspection, and data cleanup, see the
+[local infrastructure guide](./docs/getting-started/local-infrastructure.md).
 
 ## Monorepo Structure
 
@@ -49,7 +51,7 @@ The root `package.json` contains orchestration scripts for development, building
 
 **Scripts:**
 
-- `yarn dev` – Run frontend, backend, and Storybook in parallel.
+- `yarn dev` – Run the frontend and backend in parallel.
 - `yarn serve` – Serve both frontend and backend builds.
 - `yarn build` – Build all packages.
 - `yarn clean` – Clean all packages.
@@ -116,10 +118,10 @@ Backend API built with **NestJS**, using SSE for real‑time updates.
 - Unit tests use focused Nest testing modules rather than the fully configured
   application. They do not require or use real MongoDB or Redis, so they can use
   Jest's normal worker parallelism.
-- Backend e2e tests use `createTestApp`, real test MongoDB and Redis services,
-  and the serial Jest configuration (`maxWorkers: 1`). Start both services,
-  for example with `docker compose up -d`, before any command that runs e2e
-  tests.
+- Backend e2e tests use `createTestApp`, the test MongoDB database and Redis
+  database, and the serial Jest configuration (`maxWorkers: 1`). Start both
+  services, for example with `docker compose up -d`, before any command that
+  runs e2e tests.
 - Use the shared typed builders in
   `packages/klurigo-service/test-utils/data`. Prefer their deterministic
   defaults, apply partial typed overrides for scenario-specific values, and use
@@ -162,57 +164,20 @@ diagnostics, and resource cleanup; do not suppress open-handle failures or add
 forced process exits. If a test leaves a handle behind, rerun the relevant
 command with `--detectOpenHandles` to identify the resource.
 
-Use `yarn e2e:setup` before frontend Playwright tests when the e2e database
-needs to be reset and seeded, and `yarn e2e:teardown` afterward to clear it.
+Use `yarn workspace @klurigo/klurigo-service e2e:setup` before frontend
+Playwright tests when the e2e database needs to be reset and seeded, and
+`yarn workspace @klurigo/klurigo-service e2e:teardown` afterward to clear it.
 These standalone scripts connect directly to the test MongoDB and Redis
 services and do not require a Nest application instance.
 
 ---
 
-## Development
-
-Clone the repo and install dependencies:
-
-```sh
-git clone git@github.com:emilhornlund/klurigo.git
-cd klurigo
-yarn install
-```
-
-To start everything in dev mode:
-
-```sh
-yarn dev
-```
-
-### Running individual workspaces
-
-```sh
-# Backend
-yarn workspace @klurigo/klurigo-service dev
-
-# Frontend
-yarn workspace @klurigo/klurigo-web dev
-
-# Storybook
-yarn workspace @klurigo/klurigo-web storybook
-```
-
-### Local infrastructure helpers
-
-Spin up **MongoDB** and **Redis** containers the quick way:
-
-```sh
-docker compose up -d
-```
-
-The default `docker-compose.yml` provides sensible development‑only images with exposed ports matching the backend configuration.
-
----
-
 ## End-to-End Tests (Playwright)
 
-The frontend application includes end-to-end tests written with **Playwright**. These tests run against the real frontend and backend, using a dedicated test database and Redis instance that is automatically reset and seeded before execution.
+The frontend application includes end-to-end tests written with **Playwright**.
+These tests run against the real frontend and backend, using the test MongoDB
+database and Redis database that are automatically reset and seeded before
+execution.
 
 ### Prerequisites
 
@@ -238,7 +203,8 @@ This will:
 - Start the frontend (Vite dev server)
 - Start the backend in test mode
 - Reset and seed MongoDB and Redis
-- Run Playwright tests across Chromium, Firefox, and WebKit
+- Run Playwright tests in the configured browser projects (Chromium and Firefox
+  locally, with WebKit added in CI)
 
 ### CI behavior
 
