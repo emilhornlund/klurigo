@@ -169,23 +169,23 @@ projects.
 
 ## Unit And Aggregate Tests
 
-Run the common package, backend package, and frontend package test commands in
+Run the common package, backend unit, and frontend package unit tests in
 parallel:
 
 ```sh
 yarn test
 ```
 
-The backend package's aggregate `test` command runs unit tests followed by
-backend end-to-end tests. Therefore, the root `yarn test` requires MongoDB and
-Redis even though the common and frontend unit suites do not.
+The root `test` command delegates to `test:unit`, so it does not require
+MongoDB or Redis.
 
-Run individual unit suites:
+Run the explicit root unit command or individual unit suites:
 
 ```sh
-yarn workspace @klurigo/common test
+yarn test:unit
+yarn workspace @klurigo/common test:unit
 yarn workspace @klurigo/klurigo-service test:unit
-yarn workspace @klurigo/klurigo-web test
+yarn workspace @klurigo/klurigo-web test:unit
 ```
 
 The common suite and frontend suite use Vitest. Backend unit tests use Jest and
@@ -261,22 +261,19 @@ Playwright report under `playwright-report/`.
 
 ## Coverage
 
-Run coverage for all test packages:
+Run unit coverage for all test packages:
 
 ```sh
-yarn test:coverage
+yarn test:unit:coverage
 ```
 
-Because the backend coverage command includes backend e2e tests, MongoDB and
-Redis must be running first. Run package-specific coverage when a narrower
-report is needed:
+Run package-specific coverage when a narrower report is needed:
 
 ```sh
-yarn workspace @klurigo/common test:coverage
+yarn workspace @klurigo/common test:unit:coverage
 yarn workspace @klurigo/klurigo-service test:unit:coverage
 yarn workspace @klurigo/klurigo-service test:e2e:coverage
-yarn workspace @klurigo/klurigo-service test:coverage
-yarn workspace @klurigo/klurigo-web test:coverage
+yarn workspace @klurigo/klurigo-web test:unit:coverage
 ```
 
 Common and web coverage is written under their package `coverage/` directory.

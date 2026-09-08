@@ -105,10 +105,8 @@ change in behavior.
 ## Coverage And Diagnostics
 
 The package-specific unit and e2e coverage commands write to `coverage/unit`
-and `coverage/e2e` under the service package. `test:coverage` runs both in
-sequence. The root
-`yarn test:coverage` command also runs common and frontend coverage and, like
-the backend aggregate command, requires MongoDB and Redis for the e2e portion.
+and `coverage/e2e` under the service package. Run those commands separately so
+that unit coverage remains independent of MongoDB and Redis.
 
 CI uploads the service reports separately with Codecov flags
 `klurigo-service-unit` and `klurigo-service-e2e`. The upload paths are the two

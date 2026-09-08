@@ -16,8 +16,9 @@
     "serve": "concurrently \"yarn workspace @klurigo/klurigo-service serve\" \"yarn workspace @klurigo/klurigo-web serve\"",
     "lint": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint\" \"yarn workspace @klurigo/klurigo-service lint\" \"yarn workspace @klurigo/klurigo-web lint\" \"yarn workspace @klurigo/e2e-fixtures lint\" \"yarn workspace mongodb-migrator lint\"",
     "lint:fix": "yarn workspaces run lint:fix",
-    "test": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test\" \"yarn workspace @klurigo/klurigo-service test\" \"yarn workspace @klurigo/klurigo-web test\"",
-    "test:coverage": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:coverage\" \"yarn workspace @klurigo/klurigo-service test:coverage\" \"yarn workspace @klurigo/klurigo-web test:coverage\"",
+    "test": "yarn test:unit",
+    "test:unit": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit\" \"yarn workspace @klurigo/klurigo-service test:unit\" \"yarn workspace @klurigo/klurigo-web test:unit\"",
+    "test:unit:coverage": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit:coverage\" \"yarn workspace @klurigo/klurigo-service test:unit:coverage\" \"yarn workspace @klurigo/klurigo-web test:unit:coverage\"",
     "check-types": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common check-types\" \"yarn workspace @klurigo/klurigo-service check-types\" \"yarn workspace @klurigo/klurigo-web check-types\" \"yarn workspace @klurigo/e2e-fixtures check-types\" \"yarn workspace mongodb-migrator check-types\""
   },
   "devDependencies": {

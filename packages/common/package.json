@@ -21,8 +21,9 @@
     "build": "tsup",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "test": "vitest --run",
-    "test:coverage": "vitest --run --coverage",
+    "test": "yarn test:unit",
+    "test:unit": "vitest --run",
+    "test:unit:coverage": "vitest --run --coverage",
     "check-types": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {

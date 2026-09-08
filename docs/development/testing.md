@@ -13,9 +13,9 @@ Klurigo uses three complementary test layers:
   the run and cover browser-visible workflows, including game sessions.
 
 The [development command reference](./commands.md) lists the root and
-workspace test commands. `yarn test` runs the common package, backend unit and
-e2e suites, and frontend unit tests. The backend e2e portion therefore
-requires the local MongoDB and Redis services.
+workspace test commands. The root `yarn test` runs unit tests for the common
+package, backend, and frontend. Backend and frontend end-to-end suites are
+separate commands and require the local MongoDB and Redis services.
 
 Detailed guidance:
 

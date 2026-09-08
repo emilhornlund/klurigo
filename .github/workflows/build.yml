@@ -82,15 +82,8 @@ jobs:
       - name: Build common package
         run: yarn workspace @klurigo/common build
 
-      - name: Docker compose up
-        run: docker compose up -d --wait mongodb redis
-
-      - name: Test & Coverage
-        run: yarn test:coverage
-
-      - name: Docker compose down
-        if: always()
-        run: docker compose down -v
+      - name: Unit Test & Coverage
+        run: yarn test:unit:coverage
 
       - name: Upload coverage (common)
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
@@ -122,6 +115,39 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
+  backend-e2e-coverage:
+    name: Backend E2E Tests & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build common package
+        run: yarn workspace @klurigo/common build
+
+      - name: Docker compose up
+        run: docker compose up -d --wait mongodb redis
+
+      - name: Backend E2E Tests & Coverage
+        run: yarn workspace @klurigo/klurigo-service test:e2e:coverage
+
+      - name: Docker compose down
+        if: always()
+        run: docker compose down -v
+
       - name: Upload coverage (klurigo-service e2e)
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
@@ -132,8 +158,8 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
-  e2e:
-    name: Playwright E2E
+  frontend-e2e:
+    name: Frontend E2E Tests
     if: ${{ inputs.run_e2e }}
     runs-on: ubuntu-latest
     steps:
