@@ -1,10 +1,9 @@
 ---
 name: 🐛 Bug Report
 about: Report something that’s not working as expected
-title: "[Bug] "
+title: '[Bug] '
 labels: bug
 assignees: ''
-
 ---
 
 ### Description

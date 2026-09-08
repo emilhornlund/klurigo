@@ -7,11 +7,11 @@ procedures that are not checked in here.
 
 ## Workflow Triggers
 
-| Workflow | Trigger | Job order or result |
-| --- | --- | --- |
-| Pull-Request | `pull_request` targeting any branch | `build` |
-| Main | Push to `main` | `build` -> `docker-build-and-push` -> `deploy-beta` -> `sentry-release` |
-| Prod Deploy | Manual `workflow_dispatch` | `build` -> `docker-build-and-push` -> `deploy-production` -> `sentry-release` |
+| Workflow     | Trigger                             | Job order or result                                                           |
+| ------------ | ----------------------------------- | ----------------------------------------------------------------------------- |
+| Pull-Request | `pull_request` targeting any branch | `build`                                                                       |
+| Main         | Push to `main`                      | `build` -> `docker-build-and-push` -> `deploy-beta` -> `sentry-release`       |
+| Prod Deploy  | Manual `workflow_dispatch`          | `build` -> `docker-build-and-push` -> `deploy-production` -> `sentry-release` |
 
 The pull-request workflow uses the concurrency group
 `pr-${{ github.event.pull_request.number || github.ref }}` and cancels an
@@ -39,14 +39,17 @@ The static-build job then runs these root or workspace commands in order:
 1. `yarn build`
 2. `yarn typecheck`
 3. `yarn lint`
-4. `yarn format:check`
+4. `yarn format:check` (the non-mutating repository-wide Prettier check)
 5. `yarn workspace @klurigo/klurigo-service check-circular-deps`
 
 The root build builds `@klurigo/common` before the web and service application
-builds, and builds the MongoDB migrator alongside them. Type checking, linting,
-and formatting include the application packages and workspace tools configured
-by the root `package.json`. The circular-dependency check analyzes the service
-entry point with Madge. These static checks do not start the Compose services.
+builds, and builds the MongoDB migrator alongside them. Type checking and
+linting include the application packages and workspace tools configured by the
+root `package.json`. Formatting uses the root `.prettierrc` and
+`.prettierignore` across the repository; `format:check` reports Prettier
+diagnostics and never modifies checked-out files. The circular-dependency check
+analyzes the service entry point with Madge. These static checks do not start
+the Compose services.
 
 ## Unit Coverage
 
@@ -61,10 +64,10 @@ This covers common, backend unit, and frontend unit tests. It does not start
 MongoDB or Redis. The three following Codecov uploads use explicit files and do
 not search for additional reports:
 
-| Upload | File | Flag and name |
-| --- | --- | --- |
-| Common | `./packages/common/coverage/lcov.info` | `common` |
-| Web | `./packages/klurigo-web/coverage/lcov.info` | `klurigo-web` |
+| Upload       | File                                                 | Flag and name          |
+| ------------ | ---------------------------------------------------- | ---------------------- |
+| Common       | `./packages/common/coverage/lcov.info`               | `common`               |
+| Web          | `./packages/klurigo-web/coverage/lcov.info`          | `klurigo-web`          |
 | Service unit | `./packages/klurigo-service/coverage/unit/lcov.info` | `klurigo-service-unit` |
 
 Each upload has `disable_search: true`, `verbose: true`, and

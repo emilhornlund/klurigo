@@ -15,7 +15,7 @@ on:
         required: true
     outputs:
       short_sha:
-        description: "Short git SHA for this run"
+        description: 'Short git SHA for this run'
         value: ${{ jobs.prepare.outputs.short_sha }}
 
 jobs:

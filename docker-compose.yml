@@ -11,7 +11,7 @@ services:
     volumes:
       - redis:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 2s
       timeout: 2s
       retries: 20
@@ -26,7 +26,7 @@ services:
     volumes:
       - mongodb:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ ping: 1 })']
       interval: 3s
       timeout: 3s
       retries: 30

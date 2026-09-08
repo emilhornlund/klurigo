@@ -147,26 +147,36 @@ yarn workspace @klurigo/e2e-fixtures lint:fix
 yarn workspace mongodb-migrator lint:fix
 ```
 
-Run Prettier across all code-bearing workspaces, or validate formatting without
-writing files:
+Run the repository-wide Prettier commands from the repository root:
 
 ```sh
 yarn format
 yarn format:check
+yarn format:config
 ```
 
-`yarn format` writes formatted files. `yarn format:check` exits nonzero when a
-file needs formatting. Both commands honor the repository `.gitignore`, so
-generated `dist/`, coverage, and test-report files are not formatted. The
-corresponding workspace commands are available for all five workspaces:
+`yarn format` writes formatted files. `yarn format:check` is check-only and
+exits nonzero when a file needs formatting, while preserving Prettier's
+diagnostics in the command output. `yarn format:config` validates the shared
+configuration, root command wiring, workspace cleanup, and representative
+ignore behavior without formatting files.
 
-```sh
-yarn workspace @klurigo/common format
-yarn workspace @klurigo/klurigo-service format:check
-yarn workspace @klurigo/klurigo-web format:check
-yarn workspace @klurigo/e2e-fixtures format:check
-yarn workspace mongodb-migrator format:check
-```
+The authoritative shared style is in the root `.prettierrc`. The web package's
+existing `bracketSameLine` behavior is retained as a root configuration
+override because the current web source is formatted with that setting. The
+root `.prettierignore` combines the repository-level exclusions with the
+package-specific generated paths, including:
+
+- dependencies and package/build output (`node_modules/`, `dist/`, `build/`,
+  and `out/`)
+- coverage, test reports, Storybook output, logs, temporary files, and
+  TypeScript build-info files
+- environment files, IDE metadata, and vendor/package-manager paths
+- service uploads and web Playwright reports, caches, and authentication state
+
+Formatting is intentionally a root command; the five workspaces do not expose
+separate `format` or `format:check` scripts. `.editorconfig` remains aligned
+with Prettier's LF, two-space, and spaces-not-tabs behavior for editors.
 
 ## Type Checking
 
@@ -185,6 +195,9 @@ yarn workspace @klurigo/klurigo-web typecheck
 yarn workspace @klurigo/e2e-fixtures typecheck
 yarn workspace mongodb-migrator typecheck
 ```
+
+The root `yarn check-types` command is an alias for `yarn typecheck` for
+validation environments that use the legacy command name.
 
 The service check covers its application and specification TypeScript
 projects. The web check covers its application and Playwright TypeScript
@@ -392,7 +405,7 @@ suite, before submitting a change:
 
 ```sh
 yarn build
-yarn typecheck
+yarn check-types
 yarn lint
 yarn workspace @klurigo/klurigo-service check-circular-deps
 yarn test

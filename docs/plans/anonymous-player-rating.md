@@ -275,6 +275,7 @@ for the podium-specific data access patterns.
 
 **Current behavior (lines 256–270):** `podiumTaskCompletedCallback` does
 three things:
+
 1. Pushes the podium task into `previousTasks`.
 2. Sets `currentTask = buildQuitTask()`.
 3. Marks `status = GameStatus.Completed` and `completedAt = new Date()`.
@@ -610,7 +611,7 @@ rating-related fields needed for the final player game-over event.
 **The enrichment added here must provide:**
 
 | Metadata field        | Purpose                                                       |
-|-----------------------|---------------------------------------------------------------|
+| --------------------- | ------------------------------------------------------------- |
 | `podiumCanRateQuiz`   | Whether the participant is allowed to rate the quiz           |
 | `podiumRatingStars`   | Existing rating stars, if the participant has already rated   |
 | `podiumRatingComment` | Existing rating comment, if the participant has already rated |
@@ -756,7 +757,7 @@ public async createOrUpdateRating(
      - Build a `QuizRatingAnonymousAuthorWithBase` with `participantId`
        and the nickname.
 5. Delegate to `QuizRatingService.createOrUpdateQuizRating(quizId, author,
-   stars, comment)` and return the result.
+stars, comment)` and return the result.
 
 This pattern mirrors the resolution logic already used by
 `enrichPodiumPlayerMetaData` in the game-event subscriber (§13).
@@ -992,7 +993,7 @@ patterns, and score display. Use SCSS modules (`.module.scss`).
 **Design / UX:**
 
 | Section      | Content                                                                       |
-|--------------|-------------------------------------------------------------------------------|
+| ------------ | ----------------------------------------------------------------------------- |
 | **Header**   | Rank-based celebration message (e.g., "🏆 You won!", "Game Over!")            |
 | **Subtitle** | Quiz title                                                                    |
 | **Confetti** | Triggered on mount; intensity based on final rank                             |
@@ -1051,7 +1052,7 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 ### Backend Tests
 
 | Area                            | Type             | Key Scenarios                                                                        |
-|---------------------------------|------------------|--------------------------------------------------------------------------------------|
+| ------------------------------- | ---------------- | ------------------------------------------------------------------------------------ |
 | SSE subscribe behavior          | Unit/Integration | Completed games can still subscribe successfully                                     |
 | `GameOverPlayerEvent` builder   | Unit             | Produces correct rank, score, behind (with nickname), rating snapshot for all cases  |
 | Podium event dispatch           | Unit             | Active podium: host gets `GamePodiumHostEvent`, player gets `GameOverPlayerEvent`    |
@@ -1071,7 +1072,7 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 ### Frontend Tests
 
 | Area                   | Type      | Key Scenarios                                                                     |
-|------------------------|-----------|-----------------------------------------------------------------------------------|
+| ---------------------- | --------- | --------------------------------------------------------------------------------- |
 | `GamePage` rendering   | Component | `GameOverPlayerEvent` renders `PlayerGameOverState`                               |
 | `GamePage` blocker     | Component | Navigation is allowed when event type is `GameOverPlayer`                         |
 | `PlayerGameOverState`  | Component | Renders rank badge, score, behind info (nickname + points), quiz title from event |
@@ -1089,7 +1090,7 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 ### Common Package Tests
 
 | Area                        | Type | Key Scenarios                                                   |
-|-----------------------------|------|-----------------------------------------------------------------|
+| --------------------------- | ---- | --------------------------------------------------------------- |
 | `GameOverPlayerEvent` types | Unit | Type definitions compile correctly, event shape is valid        |
 | `QuizRatingAuthorType` enum | Unit | Enum values (`USER`, `ANONYMOUS`) are exported and stable       |
 | `GameEventType` enum        | Unit | `GameOverPlayer` value is present and correctly placed in union |
@@ -1101,7 +1102,7 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 ### New Files
 
 | File                                                                                                      | Description                            |
-|-----------------------------------------------------------------------------------------------------------|----------------------------------------|
+| --------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | `packages/common/src/models/quiz-rating-author-type.enum.ts`                                              | Author type enum                       |
 | `packages/klurigo-service/src/modules/quiz-core/repositories/models/schemas/quiz-rating-author.schema.ts` | Author discriminator schemas           |
 | `packages/klurigo-service/src/modules/game-event/utils/game-over-event.utils.ts`                          | `GameOverPlayerEvent` builder function |
@@ -1120,7 +1121,7 @@ new flow, players receive `GameOverPlayerEvent` on the podium — they never see
 ### Modified Files
 
 | File                                                                                                 | Change                                                                      |
-|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `packages/common/src/models/game-event-type.enum.ts`                                                 | Add `GameOverPlayer`                                                        |
 | `packages/common/src/models/game-event.ts`                                                           | Add `GameOverPlayerEvent` and sub-types, update `GameEvent` union           |
 | `packages/common/src/models/index.ts`                                                                | Export new types, enum, and author type                                     |

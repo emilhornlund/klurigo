@@ -9,7 +9,7 @@ on:
         required: true
         type: string
       tag:
-        description: "The Docker image tag (short SHA) to deploy"
+        description: 'The Docker image tag (short SHA) to deploy'
         required: true
         type: string
     secrets:
@@ -74,7 +74,7 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          
+
           ENV="${{ inputs.target_env }}"
           SVC="${{ matrix.service }}"
           TAG="${{ inputs.tag }}"

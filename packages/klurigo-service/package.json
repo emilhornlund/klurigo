@@ -13,8 +13,6 @@
     "serve": "node dist/main",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier --write . --ignore-path ../../.gitignore",
-    "format:check": "prettier --check . --ignore-path ../../.gitignore",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "jest --config jest.unit.config.cjs",
     "test:unit:coverage": "jest --config jest.unit.config.cjs --coverage",

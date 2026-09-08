@@ -19,12 +19,14 @@ This agreement does not transfer ownership of your copyright.
 ## 3. Original Work
 
 You represent that:
+
 - Your contributions are your original work, or
 - You have the right to submit them under these terms.
 
 ## 4. No Obligation
 
 You understand that:
+
 - Contributions are voluntary
 - There is no obligation for Emil Hörnlund to use or include your contribution
 

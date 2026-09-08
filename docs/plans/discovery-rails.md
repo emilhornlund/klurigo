@@ -88,11 +88,14 @@ was to remain functional until the new experience was explicitly cut over.
 ## Phase 1 (PR): Shared Contracts in `@klurigo/common`
 
 ### Goal
+
 Establish the TypeScript contracts (enums + DTOs) that the backend and frontend will
 both depend on. Shipping this first keeps later PRs lean and decoupled.
 
 ### Scope
+
 **Included:**
+
 - `DiscoverySectionKey` enum (one value per rail: `FEATURED`, `TRENDING`, `TOP_RATED`,
   `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT`)
 - `DiscoveryQuizCardDto` — lightweight quiz card payload (`id`, `title`, `description`,
@@ -102,21 +105,24 @@ both depend on. Shipping this first keeps later PRs lean and decoupled.
 - `DiscoveryResponseDto` — `{ sections: DiscoverySectionDto[]; generatedAt: Date | null }`
 - `DiscoverySectionPageResponseDto` — offset-paginated "see all":
   `{ key: DiscoverySectionKey; title: string; results: DiscoveryQuizCardDto[]; snapshotTotal: number; limit: number; offset: number }`
-  *(field named `results` to match `PaginatedQuizResponseDto` convention; `snapshotTotal`
+  _(field named `results` to match `PaginatedQuizResponseDto` convention; `snapshotTotal`
   reflects the number of scored entries stored in the snapshot for that rail — bounded by
   `DISCOVERY_RAIL_CAP_FEATURED` for the `FEATURED` rail and `DISCOVERY_RAIL_CAP_STANDARD`
   for all others (see Phase 3) — it is NOT the total number of eligible quizzes in the
-  database)*
+  database)_
 
 **Excluded:** Any backend or frontend implementation.
 
 ### Backend Changes
+
 None.
 
 ### Frontend Changes
+
 None.
 
 ### Common (`@klurigo/common`) Changes
+
 - `packages/common/src/models/discovery.dto.ts` — new file containing all types listed
   above; every exported type **must** have a JSDoc block comment describing its purpose,
   all fields documented with `@remarks` / `@example` where helpful
@@ -124,34 +130,40 @@ None.
 - Unit tests: `discovery.dto.spec.ts` (enum value guards, DTO field-shape type tests)
 
 ### Documentation Tasks
+
 - [x] JSDoc block on `DiscoverySectionKey` describing the purpose of each enum value
 - [x] JSDoc blocks on all five DTO types (`DiscoveryQuizCardDto`, `DiscoverySectionDto`,
-  `DiscoveryResponseDto`, `DiscoverySectionPageResponseDto`) — fields, constraints, examples;
-  document that `snapshotTotal` in `DiscoverySectionPageResponseDto` is bounded by snapshot
-  capacity constants (`DISCOVERY_RAIL_CAP_FEATURED` / `DISCOVERY_RAIL_CAP_STANDARD`) and
-  is not a database row count
+      `DiscoveryResponseDto`, `DiscoverySectionPageResponseDto`) — fields, constraints, examples;
+      document that `snapshotTotal` in `DiscoverySectionPageResponseDto` is bounded by snapshot
+      capacity constants (`DISCOVERY_RAIL_CAP_FEATURED` / `DISCOVERY_RAIL_CAP_STANDARD`) and
+      is not a database row count
 
 ### Tests
+
 - [x] Vitest unit tests validating enum values and DTO shape type guards
-  (32 tests in `discovery.dto.spec.ts`: enum value guards with exact-count + membership
-  assertions, per-key `it.each` checks, and field-shape tests for all four DTO types)
+      (32 tests in `discovery.dto.spec.ts`: enum value guards with exact-count + membership
+      assertions, per-key `it.each` checks, and field-shape tests for all four DTO types)
 
 ### Migration / Rollout Notes
+
 - Pure additive change; no runtime impact. Safe to merge at any time.
 
 ### Acceptance Criteria
+
 - [x] `DiscoverySectionKey` enum exported from `@klurigo/common` with all six keys
 - [x] `DiscoverySectionPageResponseDto` uses `results`, `snapshotTotal`, `limit`, `offset`
-  (no cursor fields, no database-count `total` field)
+      (no cursor fields, no database-count `total` field)
 - [x] All DTO types exported and importable in both backend and frontend workspaces
 - [x] All public types have JSDoc documentation
 - [x] Unit tests pass (`yarn workspace @klurigo/common test`)
 - [x] No breaking changes to existing exports
 
 ### Risks
+
 - **None.** Pure additions.
 
 ### Implementation Notes (Phase 1)
+
 - `DiscoveryQuizCardDto` reuses `QuizAuthorResponseDto`, `QuizGameplaySummaryDto`, and
   `QuizRatingSummaryDto` from `quiz.dto.ts` to avoid duplicating field definitions.
 - Test approach uses object literals typed as each DTO (`const x: FooDto = { ... }`) to
@@ -164,13 +176,16 @@ None.
 ## Phase 2 (PR): Backend — Discovery Eligibility Predicate & Quality Scoring Utilities
 
 ### Goal
+
 Introduce the pure, well-tested scoring logic that all later rail computation will rely
 on. This phase fixes two issues from the original draft: (a) trending scoring is now
 genuinely activity-based using real recent-play data rather than a simplistic recency
 heuristic, and (b) quality scoring sub-scores are made explicit and comprehensive.
 
 ### Scope
+
 **Included:**
+
 - `isDiscoveryEligible(quiz)` predicate — all thresholds exported as named constants:
   - `visibility === PUBLIC` — note: in this system `PUBLIC` visibility is the only
     published state; drafts are stored as non-public, so this single check excludes
@@ -208,9 +223,10 @@ heuristic, and (b) quality scoring sub-scores are made explicit and comprehensiv
 - `computeTrendingScore(recentStats: RecentActivityStats)` → `number` (0–100):
   Replaced the previous "days since last played" heuristic with a proper
   **recent-window play score**:
+
   ```typescript
   type RecentActivityStats = {
-    readonly recentPlayCount: number   // plays in last TRENDING_WINDOW_DAYS days
+    readonly recentPlayCount: number // plays in last TRENDING_WINDOW_DAYS days
   }
   ```
   - Score = `normalize(recentStats.recentPlayCount * TRENDING_PLAY_WEIGHT)`
@@ -226,9 +242,10 @@ heuristic, and (b) quality scoring sub-scores are made explicit and comprehensiv
 - All placed under `packages/klurigo-service/src/modules/quiz-core/utils/discovery/`
 
 **Excluded:** Scheduler, snapshot schema, API endpoints, frontend, recent-activity
-  aggregation (that is the compute service's job in Phase 4).
+aggregation (that is the compute service's job in Phase 4).
 
 ### Backend Changes
+
 - New file: `discovery-eligibility.utils.ts` + `.spec.ts`
 - New file: `discovery-scoring.utils.ts` + `.spec.ts`
   (exports `computeQualityScore`, `computeBayesianRatingScore`, `computeTrendingScore`,
@@ -236,24 +253,27 @@ heuristic, and (b) quality scoring sub-scores are made explicit and comprehensiv
 - Export from `quiz-core/utils/index.ts`
 
 ### Frontend Changes
+
 None.
 
 ### Documentation Tasks
+
 - [x] JSDoc on `isDiscoveryEligible`: describe every predicate clause, document each
-  threshold constant, add the draft-visibility note
+      threshold constant, add the draft-visibility note
 - [x] JSDoc on `computeQualityScore`: explain why `globalMean` and `minRatingCount` are
-  explicit parameters (Bayesian rating sub-score requires them; keeps the function
-  deterministic and free of hidden global state); list all six sub-scores and their weights;
-  document the normalization formula
+      explicit parameters (Bayesian rating sub-score requires them; keeps the function
+      deterministic and free of hidden global state); list all six sub-scores and their weights;
+      document the normalization formula
 - [x] JSDoc on `computeBayesianRatingScore`: document the formula inline; describe
-  why `minCount` pulls low-rating-count quizzes toward the mean
+      why `minCount` pulls low-rating-count quizzes toward the mean
 - [x] JSDoc on `computeTrendingScore`: document `RecentActivityStats`, the score formula,
-  `TRENDING_PLAY_WEIGHT`, `TRENDING_WINDOW_DAYS`, `TRENDING_SCALE_MAX`, and that
-  stats are provided by the compute service; include the future-enhancement note
-  about unique-player support
+      `TRENDING_PLAY_WEIGHT`, `TRENDING_WINDOW_DAYS`, `TRENDING_SCALE_MAX`, and that
+      stats are provided by the compute service; include the future-enhancement note
+      about unique-player support
 - [x] JSDoc on every exported constant explaining what it controls and its default value
 
 ### Tests
+
 - [x] Jest unit tests covering:
   - `isDiscoveryEligible`: boundary cases (missing cover, short description, 9 vs 10 questions,
     non-public visibility)
@@ -266,20 +286,23 @@ None.
     → score 0; score scales linearly with `TRENDING_PLAY_WEIGHT`
 
 ### Migration / Rollout Notes
+
 - No schema changes. Safe to merge independently.
 
 ### Acceptance Criteria
+
 - [x] `isDiscoveryEligible` returns `false` for any quiz missing cover, with description
-  shorter than 20 chars, or with fewer than **10** questions
+      shorter than 20 chars, or with fewer than **10** questions
 - [x] `MIN_QUESTION_COUNT` constant equals `10`
 - [x] `computeTrendingScore` accepts `RecentActivityStats` with only `recentPlayCount`;
-  does not use "days since last played" and does not reference unique-player counts
+      does not use "days since last played" and does not reference unique-player counts
 - [x] `computeQualityScore` accepts `globalMean` and `minRatingCount` as explicit
-  parameters; computes all six sub-scores; result is within [0, 100]
+      parameters; computes all six sub-scores; result is within [0, 100]
 - [x] All weight/threshold constants are exported with JSDoc
 - [x] All unit tests pass (`yarn workspace @klurigo/klurigo-service test`)
 
 ### Risks
+
 - **Score calibration** — thresholds and weights are conservative for v1; validate against
   real content before enabling the scheduler in Phase 5.
 - **Mitigation:** All thresholds and weights are named exported constants; tuning requires
@@ -309,6 +332,7 @@ None.
 ## Phase 3 (PR): Backend — `discovery-api` Module Schema, Repository, Featured Field & Stub Endpoint
 
 ### Goal
+
 Stand up the Mongoose schema, the singleton-snapshot repository, the quiz
 `discovery.featuredRank` field (enabling real featured curation), and a skeleton
 `GET /discover` endpoint that returns a valid (but empty) response. This is the
@@ -319,10 +343,12 @@ Snapshot capacity constants are declared here (alongside the schema they govern)
 and referenced by all subsequent phases.
 
 ### Scope
+
 **Included:**
 
 **Snapshot capacity constants:**
 Declare in `discovery-api/constants/discovery.constants.ts` (exported from the module):
+
 - `DISCOVERY_RAIL_CAP_FEATURED = 20` — maximum entries stored per snapshot for the
   `FEATURED` rail; FEATURED is manually curated so a smaller cap is appropriate
 - `DISCOVERY_RAIL_CAP_STANDARD = 200` — maximum entries stored per snapshot for all
@@ -331,6 +357,7 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
   populate the rail card row in `GET /discover`
 
 **Quiz schema extension — `discovery.featuredRank`:**
+
 - Add an optional embedded object to the existing Quiz Mongoose schema:
   ```
   discovery?: {
@@ -344,6 +371,7 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
   is available in the current repository.
 
 **Snapshot schema — enriched entries with scores:**
+
 - New NestJS module: `packages/klurigo-service/src/modules/discovery-api/`
   with module file, barrel exports, and registration in `AppModule`
 - Mongoose schema: `DiscoverySnapshotSchema`
@@ -385,6 +413,7 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
 **Excluded:** Compute service, scheduler, section endpoint, frontend.
 
 ### Backend Changes
+
 - `discovery-api/` module skeleton: `discovery-api.module.ts`, `discovery.controller.ts`,
   `discovery-snapshot.repository.ts`, `discovery-snapshot.schema.ts`
 - `discovery-api/constants/discovery.constants.ts` — declares `DISCOVERY_RAIL_CAP_FEATURED`,
@@ -396,27 +425,30 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
 - `quiz-core/repositories/quiz.repository.ts` — add `findManyByIds`
 
 ### Frontend Changes
+
 None.
 
 ### Documentation Tasks
+
 - [x] JSDoc on `DISCOVERY_RAIL_CAP_FEATURED`: value, which rail it applies to, why smaller
-  than the standard cap
+      than the standard cap
 - [x] JSDoc on `DISCOVERY_RAIL_CAP_STANDARD`: value, which rails it applies to
 - [x] JSDoc on `DISCOVERY_RAIL_PREVIEW_SIZE`: value, where it is applied (the rail card row
-  in `GET /discover`)
+      in `GET /discover`)
 - [x] JSDoc on `DiscoverySnapshotRepository`: class-level description + method-level
-  docs for `findLatest` and `upsertLatest`; document that `upsertLatest` replaces the
-  singleton document atomically and preserves `_id: 'latest'`
+      docs for `findLatest` and `upsertLatest`; document that `upsertLatest` replaces the
+      singleton document atomically and preserves `_id: 'latest'`
 - [x] JSDoc on the `DiscoverySnapshotSchema` subdocument `entries`: explain `quizId` +
-  `score` fields, ordering invariant (desc by score), capacity limits expressed via
-  the named constants
+      `score` fields, ordering invariant (desc by score), capacity limits expressed via
+      the named constants
 - [x] JSDoc on `DiscoveryController` class and `GET /discover` stub handler
 - [x] Swagger `@ApiOperation`, `@ApiOkResponse`, `@ApiTags('discovery')` on controller
 - [x] JSDoc on `findManyByIds` in `QuizRepository`
 - [x] JSDoc on `discovery.featuredRank` schema field: what it controls, how it's managed,
-  and that lower values rank higher
+      and that lower values rank higher
 
 ### Tests
+
 - Unit: `DiscoverySnapshotRepository.upsertLatest` — second call replaces first document;
   `_id` remains `'latest'`
 - Unit: `DiscoverySnapshotRepository.findLatest` — returns `null` when collection is empty
@@ -425,17 +457,20 @@ None.
 - e2e: `GET /discover` returns `200` with `{ sections: [], generatedAt: null }` when no snapshot exists
 
 ### Migration / Rollout Notes
+
 - On first deploy, snapshot collection is empty; `GET /discover` returns `sections: []`.
   This is safe — the old `/discover` frontend page is still active.
 - No indexes needed beyond the singleton `_id: 'latest'` (covered by the default `_id` index).
 
 ### MongoDB Migrator Tasks
-*(Phase 3 introduces the transformer; Phase 5 adds tests and README — see Phase 5 for those)*
+
+_(Phase 3 introduces the transformer; Phase 5 adds tests and README — see Phase 5 for those)_
+
 - [x] Register `discovery_snapshots` in the collection manifest of `tools/mongodb-migrator`
-  so it is included in all export/import runs
+      so it is included in all export/import runs
 - [x] Add `transformDiscoverySnapshotDocument` in
-  `tools/mongodb-migrator/src/transformers/discovery-snapshot.transformers.ts` following
-  the pattern of `transformQuizDocument`:
+      `tools/mongodb-migrator/src/transformers/discovery-snapshot.transformers.ts` following
+      the pattern of `transformQuizDocument`:
   - Preserve `_id: 'latest'` sentinel
   - Extract and validate `generatedAt` as `Date`
   - Extract `sections[]` with `key` (string), and `entries[]` with `quizId` (string)
@@ -443,19 +478,21 @@ None.
 - [x] Export new transformer from `tools/mongodb-migrator/src/transformers/index.ts`
 
 ### Acceptance Criteria
+
 - [x] `GET /discover` responds `200` with `DiscoveryResponseDto` shape (empty sections)
 - [x] `DiscoverySnapshotRepository` unit tests pass including the `entries` shape test
 - [x] `DISCOVERY_RAIL_CAP_FEATURED`, `DISCOVERY_RAIL_CAP_STANDARD`, and
-  `DISCOVERY_RAIL_PREVIEW_SIZE` constants are declared, exported, and JSDoc-documented
+      `DISCOVERY_RAIL_PREVIEW_SIZE` constants are declared, exported, and JSDoc-documented
 - [x] Quiz schema contains `discovery.featuredRank?: number` field
 - [ ] `set-featured-rank.ts` script exists and is documented in `scripts/README.md`
-  *(deferred — see Change Notes below)*
+      _(deferred — see Change Notes below)_
 - [x] `discovery_snapshots` collection transformer exists in `mongodb-migrator` and handles
-  `entries: [{ quizId, score }]`
+      `entries: [{ quizId, score }]`
 - [x] Swagger UI shows `GET /discover` with correct operation metadata and response schema
 - [x] All tests pass (`yarn workspace @klurigo/klurigo-service test`)
 
 ### Risks
+
 - **Singleton correctness** — `upsertLatest` must use `{ upsert: true }` with `_id: 'latest'`
   filter. **Mitigation:** covered by repository unit test.
 - **Schema migration on existing environments** — `discovery.featuredRank` is fully optional;
@@ -482,6 +519,7 @@ None.
 - Repository tests use `DiscoverySectionKey.TRENDING` directly (no `'TRENDING' as never` casts).
 
 **Excluded:**
+
 - Admin tooling for managing `discovery.featuredRank` (`scripts/set-featured-rank.ts` +
   `scripts/README.md`) is deferred to a later phase/PR.
 
@@ -490,6 +528,7 @@ None.
 ## Phase 4 (PR): Backend — `DiscoveryComputeService` (Featured, Trending, Dedupe Policy, Snapshot Capacity)
 
 ### Goal
+
 Introduce the compute service that builds a complete snapshot: scoring all rails, applying
 the explicit per-rail dedupe policy, gathering real recent-activity data for trending from
 `GameRepository`, and respecting `discovery.featuredRank` for the featured rail. Stores up
@@ -497,7 +536,9 @@ to `DISCOVERY_RAIL_CAP_STANDARD` scored entries per section (up to `DISCOVERY_RA
 for `FEATURED`) so "see all" can paginate consistently from the snapshot.
 
 ### Scope
+
 **Included:**
+
 - `DiscoveryComputeService.compute(): Promise<void>` — full pipeline:
 
   **Step 1 — Fetch eligible quizzes:**
@@ -566,67 +607,74 @@ for `FEATURED`) so "see all" can paginate consistently from the snapshot.
 **Excluded:** Cron scheduler (Phase 5), REST endpoint hydration changes, frontend.
 
 ### Backend Changes
+
 - `discovery-api/services/discovery-compute.service.ts` + `.spec.ts`
 - `quiz-core/repositories/quiz.repository.ts` — add `findEligiblePublicQuizzes`
 - `game` module repository (exact file path determined by module structure) — add
   `findRecentGameStats`
 
 ### Frontend Changes
+
 None.
 
 ### Documentation Tasks
+
 - [x] JSDoc on `DiscoveryComputeService`: class-level description covering all 6 pipeline
-  steps; document the per-rail dedupe policy and its rationale
+      steps; document the per-rail dedupe policy and its rationale
 - [x] JSDoc on `compute()`: step-by-step description; side effects (upserts snapshot)
 - [x] JSDoc on the `FEATURED` rail logic: document `featuredRank` sort, fallback to
-  quality score, cap at `DISCOVERY_RAIL_CAP_FEATURED`
+      quality score, cap at `DISCOVERY_RAIL_CAP_FEATURED`
 - [x] JSDoc on the trending aggregation: document `TRENDING_WINDOW_DAYS`, the
-  `GameRepository.findRecentGameStats` call, and the O(1) Map lookup pattern; include
-  future-enhancement note about unique-player support matching the note in Phase 2
+      `GameRepository.findRecentGameStats` call, and the O(1) Map lookup pattern; include
+      future-enhancement note about unique-player support matching the note in Phase 2
 - [x] JSDoc on `findEligiblePublicQuizzes`: `offset`, `limit`, which filters are applied
 - [x] JSDoc on `GameRepository.findRecentGameStats`: `windowDays` parameter, aggregation
-  logic (`games` collection grouped by `quizId`), return shape
-  `[{ quizId: string; playCount: number }]`
+      logic (`games` collection grouped by `quizId`), return shape
+      `[{ quizId: string; playCount: number }]`
 
 ### Tests
+
 - [x] Unit: `FEATURED` section — quizzes with `featuredRank` appear first, sorted by rank asc;
-  quizzes without `featuredRank` fill remaining slots by quality score; result capped at
-  `DISCOVERY_RAIL_CAP_FEATURED`
+      quizzes without `featuredRank` fill remaining slots by quality score; result capped at
+      `DISCOVERY_RAIL_CAP_FEATURED`
 - [x] Unit: `FEATURED` section — a quiz with `featuredRank` is not re-assigned to `TRENDING`
-  or any other rail (hard-exclusive)
+      or any other rail (hard-exclusive)
 - [x] Unit: `TRENDING` — higher `recentPlayCount` → higher rank; quiz in `TRENDING` excluded
-  from `MOST_PLAYED` (hard-exclusive)
+      from `MOST_PLAYED` (hard-exclusive)
 - [x] Unit: soft-dedupe — a quiz excluded from `FEATURED`/`TRENDING`/`TOP_RATED` may appear
-  in both `MOST_PLAYED` and `NEW_AND_NOTEWORTHY`; verify this is intentional and correct
+      in both `MOST_PLAYED` and `NEW_AND_NOTEWORTHY`; verify this is intentional and correct
 - [x] Unit: cap — `FEATURED` ≤ `DISCOVERY_RAIL_CAP_FEATURED` entries; all other sections ≤
-  `DISCOVERY_RAIL_CAP_STANDARD` entries
+      `DISCOVERY_RAIL_CAP_STANDARD` entries
 - [x] Unit: `entries` array is ordered descending by `score` within each section
 - [x] Unit: `findEligiblePublicQuizzes` — pagination offset/limit forwarded correctly to query
 - [x] Unit: `GameRepository.findRecentGameStats` — returns empty array for quizzes
-  with no games in the window; compute treats missing as playCount 0
+      with no games in the window; compute treats missing as playCount 0
 
 ### Migration / Rollout Notes
+
 - After deploying Phase 4, run `compute()` once via an admin script or bootstrap flag
   to seed the first snapshot before the scheduler is wired up in Phase 5.
 - If no quizzes have `discovery.featuredRank` set yet, the `FEATURED` rail is populated
   entirely by quality score — this is the graceful fallback and is correct behaviour.
 
 ### Acceptance Criteria
+
 - [x] `DiscoveryComputeService.compute()` produces a snapshot with ≤ `DISCOVERY_RAIL_CAP_FEATURED`
-  entries for `FEATURED` and ≤ `DISCOVERY_RAIL_CAP_STANDARD` entries for all other sections
+      entries for `FEATURED` and ≤ `DISCOVERY_RAIL_CAP_STANDARD` entries for all other sections
 - [x] `FEATURED` rail uses `discovery.featuredRank` (ascending) as primary sort,
-  quality score as fallback
+      quality score as fallback
 - [x] `computeTrendingScore` is called with `RecentActivityStats` (containing only
-  `recentPlayCount`) gathered from `GameRepository.findRecentGameStats` — not from
-  `QuizRepository` and not using "days since last played"
+      `recentPlayCount`) gathered from `GameRepository.findRecentGameStats` — not from
+      `QuizRepository` and not using "days since last played"
 - [x] Hard-exclusive rails (`FEATURED`, `TRENDING`, `TOP_RATED`): a quiz ID does not
-  appear in any other rail once claimed
+      appear in any other rail once claimed
 - [x] Soft-deduped rails (`MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT`):
-  quizzes from exclusive rails are excluded; cross-overlap among the three is permitted
+      quizzes from exclusive rails are excluded; cross-overlap among the three is permitted
 - [x] Each section's `entries` array is ordered descending by `score`
 - [x] All compute service unit tests pass
 
 ### Risks
+
 - **Recent-activity aggregation performance** — querying `games` by date range on every
   compute run. **Mitigation:** query is bounded by `TRENDING_WINDOW_DAYS`; add a compound
   index `{ quizId: 1, completedAt: 1 }` on the `games` collection.
@@ -691,6 +739,7 @@ None.
 ## Phase 5 (PR): Backend — Scheduler + Snapshot Hydration + Section Endpoint + Swagger Finalization
 
 ### Goal
+
 Complete the backend pipeline: wire up the cron scheduler, hydrate `GET /discover`
 with real card payloads from the latest snapshot, and deliver the offset-paginated
 `GET /discover/section/:key` endpoint. Crucially, the section endpoint paginates
@@ -699,7 +748,9 @@ that the "see all" ordering is always consistent with what the rail preview show
 Also finalizes all Swagger documentation and adds the remaining MongoDB migrator tests.
 
 ### Scope
+
 **Included:**
+
 - `DiscoverySchedulerService`:
   - `@Cron('0 0 6,18 * * *')` (06:00 and 18:00 UTC)
   - `@MurLock(30000, 'discovery_snapshot_lock')` — single-instance guard
@@ -744,6 +795,7 @@ Also finalizes all Swagger documentation and adds the remaining MongoDB migrator
 **Excluded:** Frontend.
 
 ### Backend Changes
+
 - `discovery-api/services/discovery-scheduler.service.ts` + `.spec.ts`
 - `discovery-api/controllers/discovery.controller.ts` — hydration + section endpoint
 - `discovery-api/controllers/models/paginated-discovery-section.response.ts` — NestJS
@@ -751,79 +803,87 @@ Also finalizes all Swagger documentation and adds the remaining MongoDB migrator
   decorators on all fields (`results`, `snapshotTotal`, `limit`, `offset`)
 
 ### Frontend Changes
+
 None.
 
 ### Documentation Tasks
+
 - [x] JSDoc on `DiscoverySchedulerService`: class-level description, cron expression,
-  lock key name and timeout purpose
+      lock key name and timeout purpose
 - [x] JSDoc on the `GET /discover` hydration handler: document the
-  `DISCOVERY_RAIL_PREVIEW_SIZE` slice, the fixed section ordering
-  (`FEATURED` → `TRENDING` → `TOP_RATED` → `MOST_PLAYED` → `NEW_AND_NOTEWORTHY` →
-  `CATEGORY_SPOTLIGHT`), batch-fetch pattern, and ordering-preservation guarantee
+      `DISCOVERY_RAIL_PREVIEW_SIZE` slice, the fixed section ordering
+      (`FEATURED` → `TRENDING` → `TOP_RATED` → `MOST_PLAYED` → `NEW_AND_NOTEWORTHY` →
+      `CATEGORY_SPOTLIGHT`), batch-fetch pattern, and ordering-preservation guarantee
 - [x] JSDoc on `GET /discover/section/:key` handler: document snapshot-based pagination,
-  the `snapshotTotal` semantics (bounded by `DISCOVERY_RAIL_CAP_FEATURED` or
-  `DISCOVERY_RAIL_CAP_STANDARD`; not a database row count), the empty-section behaviour
+      the `snapshotTotal` semantics (bounded by `DISCOVERY_RAIL_CAP_FEATURED` or
+      `DISCOVERY_RAIL_CAP_STANDARD`; not a database row count), the empty-section behaviour
 - [x] `@ApiProperty` on all fields of `PaginatedDiscoverySectionResponse` (description,
-  example, `minimum`/`maximum` where applicable) — aligned with `PaginatedQuizResponse`
-  style; `snapshotTotal` property must document that it is bounded by snapshot capacity
-  and is not the total eligible quiz count in the database
+      example, `minimum`/`maximum` where applicable) — aligned with `PaginatedQuizResponse`
+      style; `snapshotTotal` property must document that it is bounded by snapshot capacity
+      and is not the total eligible quiz count in the database
 - [x] Finalize all `@ApiOperation`, `@ApiOkResponse`, `@ApiQuery`, `@ApiParam`
-  decorators on `DiscoveryController`
+      decorators on `DiscoveryController`
 
 ### MongoDB Migrator Tasks
-*(additive only — transformer introduced in Phase 3; this phase adds tests + docs)*
+
+_(additive only — transformer introduced in Phase 3; this phase adds tests + docs)_
+
 - [ ] Add `discovery-snapshot.transformers.spec.ts` with fixture documents:
   - A minimal snapshot: one section, one entry `{ quizId: 'q1', score: 42.5 }`
   - A full snapshot: all six section keys, multiple entries each with `score` values
   - Verify transformer round-trips `generatedAt` as `Date`, preserves `_id: 'latest'`,
     and correctly handles the `entries: [{ quizId, score }]` array
-  *(deferred — see Implementation Notes below)*
+    _(deferred — see Implementation Notes below)_
 - [x] Update `tools/mongodb-migrator/README.md` to list `discovery_snapshots` in the
-  collections table with: collection name, singleton pattern note, entry schema summary
+      collections table with: collection name, singleton pattern note, entry schema summary
 
 ### Tests
+
 - [x] Unit: `DiscoverySchedulerService` — fires `compute()` on cron tick (mock `DiscoveryComputeService`)
 - [x] Unit: `GET /discover` handler — slices `entries[0..DISCOVERY_RAIL_PREVIEW_SIZE - 1]` and
-  calls `findManyByIds` with those IDs (mock repository)
+      calls `findManyByIds` with those IDs (mock repository)
 - [x] Unit: `GET /discover` handler — output `quizzes` array preserves snapshot entry order
 - [x] Unit: `GET /discover` handler — sections are returned in the fixed order `FEATURED`,
-  `TRENDING`, `TOP_RATED`, `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT`;
-  empty sections are skipped
+      `TRENDING`, `TOP_RATED`, `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT`;
+      empty sections are skipped
 - [x] Unit: `GET /discover/section/TOP_RATED?limit=10&offset=0` — slices entries, returns
-  `{ results, snapshotTotal, limit: 10, offset: 0 }`
+      `{ results, snapshotTotal, limit: 10, offset: 0 }`
 - [x] Unit: `GET /discover/section/TOP_RATED?limit=10&offset=10` — offset applied; returns
-  entries 10–19 from snapshot
+      entries 10–19 from snapshot
 - [x] Unit: `GET /discover/section/TOP_RATED` — `snapshotTotal` equals `entries.length` in
-  snapshot (e.g. 150), not the total count of quizzes in the database
+      snapshot (e.g. 150), not the total count of quizzes in the database
 - [x] Unit: unknown section key returns `{ results: [], snapshotTotal: 0, ... }`
 - [x] e2e: `GET /discover/section/TOP_RATED?limit=10&offset=20` — offset applied correctly
 
 ### Migration / Rollout Notes
+
 - Scheduler begins firing within 12 hours of deploy; no manual seeding required
   (Phase 4 seeded the first snapshot).
 - `GET /discover/section/:key` returns data only if the latest snapshot contains
   that section; an empty snapshot returns empty results rather than an error.
 
 ### Acceptance Criteria
+
 - [x] `GET /discover` returns populated `DiscoveryResponseDto` with each section's
-  `quizzes` ordered by snapshot `entries` order (descending by score)
+      `quizzes` ordered by snapshot `entries` order (descending by score)
 - [x] `GET /discover` returns sections in fixed order: `FEATURED`, `TRENDING`,
-  `TOP_RATED`, `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT` (empty sections
-  skipped)
+      `TOP_RATED`, `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, `CATEGORY_SPOTLIGHT` (empty sections
+      skipped)
 - [x] `GET /discover/section/TOP_RATED?limit=10&offset=0` returns
-  `DiscoverySectionPageResponseDto` with `results`, `snapshotTotal`, `limit`, `offset`
+      `DiscoverySectionPageResponseDto` with `results`, `snapshotTotal`, `limit`, `offset`
 - [x] `snapshotTotal` in section response equals the number of stored entries in the
-  snapshot (not the DB count); bounded at ≤ `DISCOVERY_RAIL_CAP_STANDARD` for standard
-  rails, ≤ `DISCOVERY_RAIL_CAP_FEATURED` for `FEATURED`
+      snapshot (not the DB count); bounded at ≤ `DISCOVERY_RAIL_CAP_STANDARD` for standard
+      rails, ≤ `DISCOVERY_RAIL_CAP_FEATURED` for `FEATURED`
 - [x] Section response ordering is consistent with the rail preview ordering (snapshot-based)
 - [x] Scheduler fires at 06:00 and 18:00 UTC (verified via mocked Cron test)
 - [x] Swagger UI shows both endpoints with complete metadata, query-param descriptions,
-  and response schemas; `snapshotTotal` is described in the response schema
-- [ ] Migrator transformer tests pass *(deferred — see Implementation Notes below)*
+      and response schemas; `snapshotTotal` is described in the response schema
+- [ ] Migrator transformer tests pass _(deferred — see Implementation Notes below)_
 - [x] `tools/mongodb-migrator/README.md` lists `discovery_snapshots`
 - [x] All unit and e2e tests pass
 
 ### Risks
+
 - **Stale section data** — users can see "see all" results from the previous compute
   run. **Mitigation:** `generatedAt` is returned in `GET /discover` for transparency;
   the scheduler refreshes every 12 hours.
@@ -874,6 +934,7 @@ None.
   [0, ∞) server-side, avoiding invalid slice arguments.
 
 **Excluded:**
+
 - Migrator transformer tests (`discovery-snapshot.transformers.spec.ts`) are deferred
   (the migrator tool has no test runner configured).
 
@@ -882,12 +943,15 @@ None.
 ## Phase 6 (PR): Frontend — Discovery Rails Page (New Route, No Cutover)
 
 ### Goal
+
 Ship the new horizontal-rails UI at `/discover/rails` so it can be QA'd and reviewed
 without disrupting the current `/discover` experience. Users can navigate to it
 directly but it is not yet the default.
 
 ### Scope
+
 **Included:**
+
 - New route: `/discover/rails` in `main.tsx` (kept behind `ProtectedRoute`)
 - `DiscoverRailsPage` container — React Query `useQuery(['discover'])`, calls new
   `getDiscovery()` API function
@@ -910,6 +974,7 @@ directly but it is not yet the default.
 **Excluded:** Section "see all" page (Phase 7), route cutover (Phase 8).
 
 ### Frontend Changes
+
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/` — new page
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/`
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/components/DiscoveryRailSection`
@@ -919,16 +984,19 @@ directly but it is not yet the default.
 - `packages/klurigo-web/src/main.tsx` — add `/discover/rails` route
 
 ### Backend Changes
+
 None.
 
 ### Documentation Tasks
+
 - [x] TSDoc on `DiscoverRailsPage`: describe props, data flow, query key
 - [x] TSDoc on `DiscoveryRailSection`: describe all props (`key`, `title`, `description`,
-  `quizzes`, `isLoading`), scroll/keyboard accessibility notes
+      `quizzes`, `isLoading`), scroll/keyboard accessibility notes
 - [x] TSDoc on `QuizDiscoveryCard`: describe all props, fallback behaviour for missing cover
 - [x] TSDoc on `getDiscovery()` API resource function: URL, return type, error handling
 
 ### Tests
+
 - Vitest unit: `DiscoverRailsPageUI` renders correct number of sections
 - Vitest unit: `DiscoveryRailSection` renders skeleton when `isLoading`; renders
   cards when data is present
@@ -937,26 +1005,30 @@ None.
 - Snapshot tests for `DiscoverRailsPageUI`
 
 ### Migration / Rollout Notes
+
 - No routing change yet; purely additive.
 - If snapshot has not been seeded (empty sections), the page renders an empty state
   message ("More quizzes coming soon — check back later!").
 
 ### Acceptance Criteria
+
 - [x] `/discover/rails` renders all sections returned by `GET /discover`
 - [x] Each section shows a horizontal scrollable row of quiz cards
 - [x] Skeleton displayed while loading
 - [x] "See all" link visible but navigates to `/discover/section/:key`
-  (may 404 until Phase 7)
+      (may 404 until Phase 7)
 - [x] Empty state renders without error when `sections` is empty
 - [x] All public components and API functions have TSDoc documentation
 - [x] All unit tests pass
 
 ### Risks
+
 - **API shape mismatch** — mitigated by shared `@klurigo/common` DTOs from Phase 1.
 - **Scroll accessibility** — ensure horizontal list is keyboard-navigable
   (tabIndex on cards, overflow-x with visible focus ring).
 
 ### Implementation Notes (Phase 6)
+
 - `QuizDiscoveryCard` renders cover image with `faImage` FontAwesome fallback SVG when
   `imageCoverURL` is absent; cards are keyboard-accessible via `tabIndex={0}` with
   Enter/Space key handlers and visible focus ring via `:focus-visible`.
@@ -980,13 +1052,16 @@ None.
 ## Phase 7 (PR): Frontend — "See All" Section Page
 
 ### Goal
+
 Complete the navigation story by delivering the dedicated per-section page
 (`/discover/section/:key`) that shows the full ordered list of quizzes for a rail,
 with offset-based pagination. Ordering is guaranteed consistent with the rail preview
 because both draw from the same snapshot data (see Phase 5).
 
 ### Scope
+
 **Included:**
+
 - New route: `/discover/section/:key` in `main.tsx`
 - `DiscoverSectionPage` container — reads `:key` from route params; React Query
   `useQuery(['discoverSection', key, limit, offset])`, calls
@@ -1001,45 +1076,53 @@ because both draw from the same snapshot data (see Phase 5).
 **Excluded:** Route cutover (Phase 8).
 
 ### Frontend Changes
+
 - `packages/klurigo-web/src/pages/DiscoverSectionPage/` — new page
 - `packages/klurigo-web/src/api/resources/quiz.resource.ts` — add `getSectionQuizzes()`
 - `packages/klurigo-web/src/main.tsx` — add `/discover/section/:key` route
 
 ### Backend Changes
+
 None (endpoint shipped in Phase 5).
 
 ### Documentation Tasks
+
 - [x] TSDoc on `DiscoverSectionPage`: describe route param `key`, query key structure,
-  pagination state (`limit`, `offset`, `snapshotTotal`); note that ordering matches the
-  rail preview and that `snapshotTotal` is bounded by snapshot capacity (not a DB count)
+      pagination state (`limit`, `offset`, `snapshotTotal`); note that ordering matches the
+      rail preview and that `snapshotTotal` is bounded by snapshot capacity (not a DB count)
 - [x] TSDoc on `getSectionQuizzes()`: document `key`, `limit`, `offset` params, return
-  type; note the `snapshotTotal` field semantics
+      type; note the `snapshotTotal` field semantics
 
 ### Tests
+
 - [x] Vitest unit: `DiscoverSectionPage` renders section title from route key
 - [x] Vitest unit: "Load more" button increments offset and appends results
 - [x] Vitest unit: "Load more" hidden when `offset + results.length >= snapshotTotal`
 - [x] Vitest unit: unknown section key shows graceful empty/error state
 
 ### Migration / Rollout Notes
+
 - "See all" links from Phase 6 now resolve correctly.
 
 ### Acceptance Criteria
+
 - [x] `/discover/section/TOP_RATED` renders the top-rated quiz list in snapshot order
 - [x] Offset pagination ("Load more") works against `GET /discover/section/:key`
 - [x] `getSectionQuizzes` passes `limit` and `offset` as query params (no cursor params)
 - [x] "Load more" visibility is controlled by `snapshotTotal` from the response
 - [x] Ordering on the "see all" page matches the ordering of quizzes shown in the rail
-  preview (both sourced from the same snapshot)
+      preview (both sourced from the same snapshot)
 - [x] Unknown key renders graceful empty/error state
 - [x] Back navigation returns to `/discover/rails`
 - [x] All unit tests pass
 
 ### Risks
+
 - **Section key validation** — `DiscoverySectionKey` enum used for type-checking in
   API layer; unknown keys return empty result from backend (not a 500).
 
 ### Implementation Notes (Phase 7)
+
 - Route `/discover/section/:key` added to `main.tsx` behind `ProtectedRoute`, alongside
   the existing `/discover/rails` route.
 - `getSectionQuizzes(key, { limit, offset })` added to `quiz.resource.ts`; calls
@@ -1064,13 +1147,16 @@ None (endpoint shipped in Phase 5).
 ## Phase 8 (PR): Cutover — `/discover` Replaced by Discovery Rails; Old Page Removed
 
 ### Goal
+
 Make the discovery rails the primary experience by pointing `/discover` at
 `DiscoverRailsPage`, then fully removing the old discover page component,
 its route, all associated API calls, dead styles, and any tests that covered
 it exclusively. No legacy route is preserved.
 
 ### Scope
+
 **Included:**
+
 - Point `/discover` route at `DiscoverRailsPage`
 - Remove the `/discover/rails` shadow route (it was only a staging alias)
 - Delete `QuizDiscoverPage` component and all sub-components
@@ -1087,6 +1173,7 @@ it exclusively. No legacy route is preserved.
 **Excluded:** Any new features; the scope is purely cutover + cleanup.
 
 ### Frontend Changes
+
 - `packages/klurigo-web/src/main.tsx` — remove old discover route; point `/discover`
   at `DiscoverRailsPage`; remove `/discover/rails` alias
 - `packages/klurigo-web/src/pages/QuizDiscoverPage/` — **delete entire directory**
@@ -1098,21 +1185,25 @@ it exclusively. No legacy route is preserved.
   since it is preserved as the canonical path)
 
 ### Backend Changes
+
 None.
 
 ### Tests
+
 - E2E (Playwright): navigate to `/discover`, assert rails are rendered
 - E2E: assert `/discover/search` and `/discover/rails` return 404 or redirect
   (neither legacy route exists)
 - Snapshot update for any nav component tests that render `/discover` links
 
 ### Migration / Rollout Notes
+
 - This is a breaking UX change: users who bookmarked `/discover` now land on
   discovery rails (intended). No legacy fallback is provided.
 - No backend changes; purely a routing flip and dead-code removal.
 - **Rollback plan:** revert this PR alone to restore the old behaviour instantly.
 
 ### Acceptance Criteria
+
 - [x] `/discover` renders `DiscoverRailsPage`
 - [x] `/discover/rails` no longer exists as a separate route
 - [x] `QuizDiscoverPage` directory and all exclusively-associated components deleted
@@ -1124,12 +1215,14 @@ None.
 - [x] `yarn build` and `yarn lint` pass with zero warnings related to removed code
 
 ### Risks
+
 - **Inadvertent deletion of shared code** — review component usage before deleting;
   `QuizDiscoveryCard` introduced in Phase 6 is shared and must be kept.
 - **SEO** — no server-side rendering in this stack, so no HTTP redirect needed;
   the canonical path `/discover` remains unchanged.
 
 ### Implementation Notes (Phase 8)
+
 - `main.tsx`: `/discover` route now renders `DiscoverRailsPage`; `/discover/rails` alias
   removed entirely. `QuizDiscoverPage` import removed.
 - `pages/index.ts`: `QuizDiscoverPage` re-export removed.
@@ -1154,18 +1247,19 @@ None.
 
 ## Phase Sequencing Rationale
 
-| # | Phase                                                    | Why this order                                                                                                                                                                                               |
-|---|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | Common contracts                                         | Both backend and frontend depend on these types. Shipping first ensures all sides agree on the API shape (offset pagination, `snapshotTotal` semantics) before any implementation is written.                |
-| 2 | Scoring utilities (eligibility + quality + trending)     | Pure functions with no infrastructure dependencies. Validates algorithm correctness — including the play-count-based trending model and explicit quality sub-scores — before any data flows through them.    |
-| 3 | Backend schema + repository + quiz featured field + stub | Smallest deployable backend slice. Declares capacity constants. Establishes the `entries: [{quizId, score}]` snapshot schema, the `discovery.featuredRank` quiz field, and the MongoDB migrator transformer. |
-| 4 | Compute service (featured, trending, dedupe policy)      | Adds the algorithm on top of the schema. First real snapshot seeded manually. Trending uses real recent-play data from `GameRepository`; dedupe policy is explicit per rail.                                 |
-| 5 | Scheduler + hydration + section endpoint + Swagger       | Completes the backend. Fixed section ordering guaranteed. Snapshot-based section endpoint guarantees ordering consistency. Swagger finalized. Migrator tests and README updated (additive-only).             |
-| 6 | Rails UI (shadow route)                                  | Completely additive frontend; zero risk to the live UX. QA happens in production before touching `/discover`.                                                                                                |
-| 7 | "See all" page                                           | Completes navigation. Depends on Phase 5 endpoint and Phase 6 card component; ordering consistency and `snapshotTotal` semantics flow naturally from the shared snapshot source.                             |
-| 8 | Cutover + cleanup                                        | Deliberately last. All pieces verified independently. The flip is a route swap; the cleanup removes all dead code so no legacy path or component remains.                                                    |
+| #   | Phase                                                    | Why this order                                                                                                                                                                                               |
+| --- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Common contracts                                         | Both backend and frontend depend on these types. Shipping first ensures all sides agree on the API shape (offset pagination, `snapshotTotal` semantics) before any implementation is written.                |
+| 2   | Scoring utilities (eligibility + quality + trending)     | Pure functions with no infrastructure dependencies. Validates algorithm correctness — including the play-count-based trending model and explicit quality sub-scores — before any data flows through them.    |
+| 3   | Backend schema + repository + quiz featured field + stub | Smallest deployable backend slice. Declares capacity constants. Establishes the `entries: [{quizId, score}]` snapshot schema, the `discovery.featuredRank` quiz field, and the MongoDB migrator transformer. |
+| 4   | Compute service (featured, trending, dedupe policy)      | Adds the algorithm on top of the schema. First real snapshot seeded manually. Trending uses real recent-play data from `GameRepository`; dedupe policy is explicit per rail.                                 |
+| 5   | Scheduler + hydration + section endpoint + Swagger       | Completes the backend. Fixed section ordering guaranteed. Snapshot-based section endpoint guarantees ordering consistency. Swagger finalized. Migrator tests and README updated (additive-only).             |
+| 6   | Rails UI (shadow route)                                  | Completely additive frontend; zero risk to the live UX. QA happens in production before touching `/discover`.                                                                                                |
+| 7   | "See all" page                                           | Completes navigation. Depends on Phase 5 endpoint and Phase 6 card component; ordering consistency and `snapshotTotal` semantics flow naturally from the shared snapshot source.                             |
+| 8   | Cutover + cleanup                                        | Deliberately last. All pieces verified independently. The flip is a route swap; the cleanup removes all dead code so no legacy path or component remains.                                                    |
 
 This ordering ensures:
+
 - **No "big bang" moment** — every intermediate phase ships a working system.
 - **Backend validated before frontend lands** — ops verify snapshot computation and
   real trending data before any user sees the new UI.
@@ -1199,11 +1293,13 @@ without manual intervention or a separate admin script.
 for a single deploy. Remove or set to `false` once the scheduler takes over.
 
 **Files changed:**
+
 - `packages/klurigo-service/src/app/config/environment.ts` — added `DISCOVERY_SEED_ON_INIT: boolean`
 - `packages/klurigo-service/src/modules/discovery-api/services/discovery-scheduler.service.ts` — added `OnModuleInit`, injected `ConfigService`
 - `packages/klurigo-service/src/modules/discovery-api/services/discovery-scheduler.service.spec.ts` — added 2 new tests for `onModuleInit`
 
 **Open considerations:**
+
 - In a multi-instance deployment, `DISCOVERY_SEED_ON_INIT` will trigger compute on
   every pod that starts. If this is a concern, extend `onModuleInit` to acquire the
   same `discovery_snapshot_lock` used by `refreshSnapshot`.
@@ -1224,6 +1320,7 @@ in every API response adds unnecessary payload and creates a dual source of trut
 for UI copy.
 
 **Files changed:**
+
 - `packages/common/src/models/discovery.dto.ts` — removed `title`/`description` from `DiscoverySectionDto`; removed `title` from `DiscoverySectionPageResponseDto`
 - `packages/common/src/models/discovery.dto.spec.ts` — removed corresponding field tests
 - `packages/klurigo-service/src/modules/discovery-api/controllers/models/discovery-section.response.ts` — removed `title`/`description` fields
@@ -1252,6 +1349,7 @@ the criteria are enforced at runtime. Keeping a parallel in-memory utility
 created a dual source of truth with no practical benefit.
 
 **Files changed:**
+
 - `packages/klurigo-service/src/modules/quiz-core/utils/discovery/discovery-eligibility.utils.ts` — deleted
 - `packages/klurigo-service/src/modules/quiz-core/utils/discovery/discovery-eligibility.utils.spec.ts` — deleted
 - `packages/klurigo-service/src/modules/quiz-core/utils/discovery/index.ts` — removed re-export of deleted file
@@ -1278,6 +1376,7 @@ quiz can reach 100/100. All discovery rails therefore still surface complete, hi
 quizzes first while guaranteeing content in every section even when the corpus is small.
 
 **Files changed:**
+
 - `packages/klurigo-service/src/modules/quiz-core/repositories/quiz.repository.ts` —
   removed `imageCoverURL` and `description` filter conditions and `$expr` block;
   updated JSDoc to document the relaxed criteria and explain the score-penalty approach
@@ -1308,6 +1407,7 @@ be missing from every snapshot:
    ratings at all.
 
 **Fix:**
+
 - `scoreTrending`: added `.filter((e) => e.score > 0)` before `.slice()` — quizzes with
   no recent plays are excluded from TRENDING entirely (they should not occupy exclusive
   slots when they have no trending signal).
@@ -1325,6 +1425,7 @@ be missing from every snapshot:
   TRENDING rather than present with score 0).
 
 **Files changed:**
+
 - `packages/klurigo-service/src/modules/discovery-api/services/discovery-compute.service.ts`
   — `scoreTrending` filter, `scoreTopRated` rating filter, `applyDedupePolicy` preview-size
   claim limit, added `DISCOVERY_RAIL_PREVIEW_SIZE` import
@@ -1350,6 +1451,7 @@ The two discovery e2e tests were updated to authenticate with a valid user token
 calling the endpoints.
 
 **Files changed:**
+
 - `packages/common/src/models/authority.enum.ts` — added `Discovery = 'DISCOVERY'` with JSDoc
 - `packages/klurigo-service/src/app/shared/token/token.constants.ts` — added `Authority.Discovery`
   to `DEFAULT_USER_AUTHORITIES`
@@ -1368,6 +1470,7 @@ calling the endpoints.
 The `DiscoverRailsPage` now includes a `QuizTableFilter` bar (search field + category, language, mode, sort filters) at the top of the page. When a filter is active, the curated rails are replaced with a live search-results grid backed by the existing `GET /quizzes` API. A "Back to discovery" button clears the filter and restores the rails view.
 
 **Behaviour:**
+
 - Typing a search term or selecting any filter triggers `GET /quizzes` with the corresponding query params.
 - Results are displayed in a responsive grid identical in layout to the section "See All" page (`DiscoverSectionPageUI`), using `QuizDiscoveryCard` for each result.
 - A "Load more" button appears when `total > currentlyLoaded`, appending the next page.
@@ -1375,6 +1478,7 @@ The `DiscoverRailsPage` now includes a `QuizTableFilter` bar (search field + cat
 - While a filter is active, the rails React Query fetch is disabled to avoid unnecessary backend calls.
 
 **Files changed:**
+
 - `packages/klurigo-web/src/api/resources/quiz.resource.ts` — re-added `getPublicQuizzes` (removed in commit `5a2730e0`) supporting `search`, `mode`, `category`, `languageCode`, `sort`, `order`, `limit`, `offset` params
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/DiscoverRailsPage.tsx` — added `FilterOptions` state, `searchOffset`/`allSearchResults`/`searchTotal` pagination state; conditionally fetches public quizzes when filter is active; passes all filter + search props to UI
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/DiscoverRailsPageUI.tsx` — added `QuizTableFilter`, conditional grid/rails rendering, "Back to discovery" button, and inline "clear" link in empty-state
@@ -1391,13 +1495,14 @@ Each rail now has a lightweight scroll wrapper (`railWrapper`) that tracks scrol
 
 1. **Edge fade shadows** — CSS pseudo-elements (`::before` / `::after`) on the wrapper overlay a short gradient that fades from the page background colour (`$blue-2`) to transparent at both horizontal edges. The left fade is shown only when the rail has scrolled past the start; the right fade is shown only when more content remains to the right. Both fade in/out with a CSS transition keyed on the `.hasScrollLeft` / `.hasScrollRight` classes toggled by React state.
 
-2. **Prev / Next arrow buttons** — Absolutely positioned circle buttons (`.arrowPrev`, `.arrowNext`) sit inside the wrapper at z-index 2, above the fades. They are hidden on mobile and tablet (`display: none`) and invisible by default on desktop (`opacity: 0 / pointer-events: none`). On desktop they become visible (`opacity: 1 / pointer-events: auto`) only while the parent `<section>` is hovered *and* the wrapper carries the corresponding `.hasScrollLeft` or `.hasScrollRight` class — achieved with two targeted CSS descendant rules rather than JS event listeners. Clicking an arrow calls `el.scrollBy({ left: ±clientWidth, behavior: 'smooth' })` to page the rail by one visible viewport width.
+2. **Prev / Next arrow buttons** — Absolutely positioned circle buttons (`.arrowPrev`, `.arrowNext`) sit inside the wrapper at z-index 2, above the fades. They are hidden on mobile and tablet (`display: none`) and invisible by default on desktop (`opacity: 0 / pointer-events: none`). On desktop they become visible (`opacity: 1 / pointer-events: auto`) only while the parent `<section>` is hovered _and_ the wrapper carries the corresponding `.hasScrollLeft` or `.hasScrollRight` class — achieved with two targeted CSS descendant rules rather than JS event listeners. Clicking an arrow calls `el.scrollBy({ left: ±clientWidth, behavior: 'smooth' })` to page the rail by one visible viewport width.
 
 3. **Scroll state tracking** — A `useEffect` attaches a passive `scroll` listener and a `ResizeObserver` to the rail `<div>` (via `railRef`). Both call `updateScrollState` to keep `canScrollLeft` / `canScrollRight` in sync. The effect also re-runs when `quizzes` or `isLoading` change so the state is correct after content loads.
 
 **Accessibility:** Arrow buttons carry descriptive `aria-label` attributes (`"Scroll left"` / `"Scroll right"`) and `tabIndex={-1}` to keep them out of the tab order (the rail itself is natively keyboard-scrollable). All existing card links and keyboard navigation behaviour are unaffected.
 
 **Files changed:**
+
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/components/DiscoveryRailSection/DiscoveryRailSection.tsx` — converted from stateless FC to a hooks-based component; added `railRef`, `canScrollLeft`/`canScrollRight` state, `updateScrollState` callback, `scroll` helper, `railWrapper` div with conditional `hasScrollLeft`/`hasScrollRight` classes, and two arrow `<button>` elements
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/components/DiscoveryRailSection/DiscoveryRailSection.module.scss` — added `.railWrapper` (position: relative, `::before`/`::after` fade pseudo-elements, `.hasScrollLeft`/`.hasScrollRight` opacity transitions), `.arrowButton` (desktop-only, circular, hover-reveal via `.section:hover` descendant selector), `.arrowPrev`/`.arrowNext` positioning
 - `packages/klurigo-web/src/pages/DiscoverRailsPage/components/DiscoverRailsPageUI/components/DiscoveryRailSection/DiscoveryRailSection.test.tsx` — added five new tests: arrow buttons rendered, correct aria-labels, prev/next `scrollBy` calls, and absence of scroll classes when layout is flat (jsdom)
@@ -1418,6 +1523,7 @@ Two issues were identified in the discovery compute pipeline on small corpora (6
    "Most Played" rail (score 0, sorted to the bottom but still present).
 
 **Fix:**
+
 - `applyDedupePolicy`: Removed all inter-rail deduplication. The `claimed` set, the
   `exclusiveKeys` / `softKeys` split, and the preview-size claim logic were deleted. The
   method now simply converts the scored sections map to an ordered `DiscoverySnapshotSection[]`
@@ -1428,7 +1534,7 @@ Two issues were identified in the discovery compute pipeline on small corpora (6
 - Removed the now-unused `DISCOVERY_RAIL_PREVIEW_SIZE` import from the compute service.
 - Updated unit tests:
   - Replaced "exclusive dedupe" describe block (two tests) with "no inter-rail deduplication"
-    (two tests asserting quizzes *can* appear in multiple rails simultaneously).
+    (two tests asserting quizzes _can_ appear in multiple rails simultaneously).
   - Replaced "soft dedupe overlap" describe block with a simplified version of the same idea.
   - Simplified "missing recent stats" and "trending stats influence" tests: removed the
     FEATURED-filler quizzes that were only needed to prevent the test quiz from being claimed
@@ -1437,6 +1543,7 @@ Two issues were identified in the discovery compute pipeline on small corpora (6
     excluded while a played quiz is included.
 
 **Files changed:**
+
 - `packages/klurigo-service/src/modules/discovery-api/services/discovery-compute.service.ts`
   — removed `DISCOVERY_RAIL_PREVIEW_SIZE` import; simplified `applyDedupePolicy`; added
   `.filter((e) => e.score > 0)` in `scoreMostPlayed`; updated JSDoc for `compute()` step 5
@@ -1467,7 +1574,7 @@ existing weights so the maximum total quality score remains **100 pts**.
 **Weight redistribution (total stays 100):**
 
 | Sub-score              | Old weight | New weight |
-|------------------------|------------|------------|
+| ---------------------- | ---------- | ---------- |
 | Questions count        | 15         | 10 (−5)    |
 | Play engagement        | 30         | 25 (−5)    |
 | Unique players         | 15         | 10 (−5)    |
@@ -1486,11 +1593,13 @@ players more engaged than single-type quizzes. These signals are independent of
 engagement or rating data and reward quiz creator effort at authoring time.
 
 **New constants exported:**
+
 - `QUALITY_WEIGHT_QUESTION_MEDIA = 10`
 - `QUALITY_WEIGHT_QUESTION_VARIETY = 10`
 - `TOTAL_QUESTION_TYPES = Object.keys(QuestionType).length` (evaluates to 6)
 
 **Files changed:**
+
 - `packages/klurigo-service/src/modules/quiz-core/utils/discovery/discovery-scoring.utils.ts` —
   added `QuestionType` import; added `QUALITY_WEIGHT_QUESTION_MEDIA`,
   `QUALITY_WEIGHT_QUESTION_VARIETY`, `TOTAL_QUESTION_TYPES` constants with JSDoc;
