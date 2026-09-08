@@ -12,23 +12,28 @@ A CLI tool for parsing, transforming, and rewriting MongoDB `.bson` and `.metada
 
 ## 🛠 Usage
 
+Run these commands from the repository root:
+
 ### Build the CLI
 
 ```bash
-yarn build
+yarn workspace mongodb-migrator build
 ```
 
 ### Run directly with ts-node (for development)
 
 ```bash
-yarn start -- --inputDir ./input --outputDir ./output
+yarn workspace mongodb-migrator start -- --inputDir ./input --outputDir ./output
 ```
 
 > Note: the second `--` passes arguments to the CLI, not to Yarn.
 
 ### Link for global use (optional)
 
+Run the link command from the migrator workspace:
+
 ```bash
+cd tools/mongodb-migrator
 yarn link
 ```
 
@@ -94,6 +99,7 @@ The tool auto-generates metadata for known collections like:
 * `users`
 * `games`
 * `quizzes`
+* `quiz_ratings`
 * `tokens`
 * `game_results`
 * `discovery_snapshots`

@@ -1,8 +1,14 @@
 # Anonymous Player Rating & Player Game Over State
 
+> **Plan boundary:** This file is implementation-plan material. Its proposals,
+> completion markers, and historical notes do not define shipped behavior. Use
+> the [documentation index](../README.md) and the source code for current
+> behavior.
+
 ## Problem Statement
 
-When a game completes, player participants are currently redirected either to
+At the time this plan was drafted, when a game completed, player participants were
+redirected either to
 `/game/results/:gameID` (authenticated users) or `/` (everyone else). This
 means:
 

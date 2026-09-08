@@ -15,11 +15,14 @@ and shared contracts and utilities.
 
 ## Repository Overview
 
-This repository contains three primary workspaces:
+The application is organized into three primary packages:
 
 - `@klurigo/common` - shared TypeScript contracts and utilities.
 - `@klurigo/klurigo-service` - the NestJS backend service.
 - `@klurigo/klurigo-web` - the React/Vite frontend application.
+
+Repository tools, including the end-to-end fixture and MongoDB migrator
+workspaces, are documented in the [monorepo organization guide](./docs/architecture/monorepo.md).
 
 ## Quick Start
 

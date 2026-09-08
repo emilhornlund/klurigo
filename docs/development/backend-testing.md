@@ -63,19 +63,17 @@ The test environment is defined in
 
 The Compose file provides the same MongoDB and Redis containers used for local
 development; the test run selects separate logical databases rather than
-separate containers. Start both services before backend e2e or complete
-backend test commands:
-
-```sh
-docker compose up -d --wait mongodb redis
-```
+separate containers. Use the [canonical backend test commands](./commands.md#backend-end-to-end-tests)
+to start the services and run the suites.
 
 Destructive e2e reset helpers must target test infrastructure only. The
 standalone reset helper in `scripts/e2e/e2e-db.ts` refuses to wipe a MongoDB
 URI whose database name does not contain `_test`, and defaults to
 `klurigo_service_test`. Redis is selected from `REDIS_DB`, defaulting to `1`;
 do not point that setting at the development Redis database or at data that
-must be retained. These helpers do not create separate containers.
+must be retained. These helpers do not create separate containers. The [local
+infrastructure guide](../getting-started/local-infrastructure.md) owns the
+shared development/test database and data-safety details.
 
 ## State And Isolation
 

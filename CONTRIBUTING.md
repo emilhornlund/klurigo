@@ -1,24 +1,28 @@
 # Contributing to Klurigo
 
-First off, thanks for taking the time to contribute! 🎉
+Thanks for taking the time to contribute. This guide covers the contribution
+process and pull request expectations. It does not replace the current
+development documentation or the coding-agent instructions in
+[`AGENTS.md`](./AGENTS.md).
 
-The following is a set of guidelines for contributing to this project. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document.
+## Before You Start
 
-## Table of Contents
+- Read the [local development guide](./docs/getting-started/development.md) for
+  prerequisites and the supported local workflow.
+- Use the [development command reference](./docs/development/commands.md) for
+  canonical build, test, lint, and validation commands.
+- Treat [implementation plans](./docs/plans/) as planning material, not as the
+  authority for shipped behavior.
 
-- [Getting Started](#getting-started)
-- [Code of Conduct](#code-of-conduct)
-- [Contributor License Agreement](#contributor-license-agreement)
-- [Reporting Bugs](#reporting-bugs)
-- [Suggesting Features](#suggesting-features)
-- [Pull Request Process](#pull-request-process)
-- [Style Guide](#style-guide)
+## Contribution Process
 
-## Getting Started
-
-1. Fork the repo and create your branch from `main` or the appropriate feature branch.
-2. If you’ve added code, make sure it’s covered by tests.
-3. If you’ve changed APIs, update the documentation accordingly.
+1. Fork the repository and create a focused branch from `main`.
+2. Keep changes focused and add or update tests for changed behavior.
+3. Update current documentation when the user-facing behavior or contribution
+   process changes.
+4. Run the relevant checks, including the repository validation described in the
+   [command reference](./docs/development/commands.md#repository-validation),
+   before opening a pull request.
 
 ## Code of Conduct
 
@@ -37,7 +41,8 @@ of your original work.
 
 ## Reporting Bugs
 
-Please open an [issue](https://github.com/emilhornlund/klurigo/issues/new) with:
+Use the [bug report template](./.github/ISSUE_TEMPLATE/bug_report.md) and
+include:
 
 - A clear description of the problem
 - Steps to reproduce
@@ -46,7 +51,8 @@ Please open an [issue](https://github.com/emilhornlund/klurigo/issues/new) with:
 
 ## Suggesting Features
 
-We welcome ideas! Submit an [issue](https://github.com/emilhornlund/klurigo/issues/new) labeled `enhancement`, describing:
+Use the [feature request template](./.github/ISSUE_TEMPLATE/feature_request.md)
+and describe:
 
 - The problem you're trying to solve
 - A clear description of the proposed feature
@@ -54,9 +60,11 @@ We welcome ideas! Submit an [issue](https://github.com/emilhornlund/klurigo/issu
 
 ## Pull Request Process
 
-- Ensure your PR has a clear title (consider [Conventional Commits](https://www.conventionalcommits.org/)).
+- Follow the [pull request template](./.github/pull_request_template.md).
+- Give the pull request a clear title; [Conventional Commits](https://www.conventionalcommits.org/)
+  is encouraged.
 - Include a summary of changes and link to any related issues.
-- Make sure your code passes linting and tests.
+- Make sure the relevant checks and tests pass.
 - Keep PRs focused and small if possible.
 - Only submit original work or code you have the legal right to contribute; do not include code from sources with incompatible licenses.
 
@@ -65,5 +73,3 @@ We welcome ideas! Submit an [issue](https://github.com/emilhornlund/klurigo/issu
 - Use consistent formatting. We use Prettier and ESLint across the repo.
 - Prefer descriptive names and comments where helpful.
 - Avoid large formatting-only commits—keep code and formatting changes separate.
-
-Thanks again for your contribution! 🙌

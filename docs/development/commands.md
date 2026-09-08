@@ -338,10 +338,10 @@ docker compose down
 docker compose down -v
 ```
 
-`stop` retains containers and volumes. `down` removes containers and the
-network while retaining named volumes. `down -v` also deletes the named
-MongoDB and Redis volumes and therefore destroys persisted local service data.
-Use it only when that data is disposable.
+The infrastructure guide explains which commands retain or delete local
+service data. In particular, `docker compose down -v` is destructive and must
+only be used when the named MongoDB and Redis volumes are disposable; see the
+[local infrastructure guide](../getting-started/local-infrastructure.md).
 
 ## Repository Validation
 
