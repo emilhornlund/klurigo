@@ -41,7 +41,7 @@
     "jwt-decode": "^4.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-dropzone": "^19.3.0",
+    "react-dropzone": "^20.1.0",
     "react-full-screen": "^1.1.1",
     "react-player": "^3.4.0",
     "react-qr-code": "^2.2.0",

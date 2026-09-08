@@ -11765,10 +11765,10 @@ react-docgen@^8.0.2:
   dependencies:
     scheduler "^0.27.0"
 
-react-dropzone@^19.3.0:
-  version "19.3.0"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-19.3.0.tgz#30b93ac7521ac7912ecbf85dbaef3bfcab84aab5"
-  integrity sha512-H16cE2atFhWleWm/fihusM+FoVM/qjZ7w7WndC+gnCVg0lDKhGlKRwrpWI89divejSUoxBavEzEXmWwX7kRbTg==
+react-dropzone@^20.1.0:
+  version "20.1.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-20.1.0.tgz#16453ee120ea19d111d76015e58b89c2ddbd7c3b"
+  integrity sha512-id1t9JDYNQeFzzIfB5/C6TrpLchy29rTSDxsBH/pcxhILyv/6bSOTJwOlvUsTWXkC2GduuHIldDV6UQXNWfIuA==
   dependencies:
     attr-accept "^2.2.5"
     file-selector "^4.1.0"
