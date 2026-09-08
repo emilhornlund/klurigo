@@ -8,7 +8,7 @@ module.exports = {
     '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleNameMapper: {
-    '^klurigo/common(.*)$': '<rootDir>/../common/src$1',
+    '^@klurigo/common(.*)$': '<rootDir>/../common/src$1',
   },
   collectCoverageFrom: [
     '**/*.{ts,js}',
@@ -20,7 +20,7 @@ module.exports = {
   ],
   coverageDirectory: '<rootDir>/coverage',
   testEnvironment: 'node',
-  transformIgnorePatterns: ['/node_modules/(?!(klurigo/common|uuid)/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(?:@klurigo/common|uuid)/)'],
   detectOpenHandles: true,
   setupFilesAfterEnv: ['jest-extended/all'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],

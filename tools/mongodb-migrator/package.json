@@ -14,15 +14,19 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@klurigo/common": "1.0.0",
     "bson": "^7.3.2",
     "commander": "^15.0.0",
-    "json-diff": "^1.0.6",
-    "uuid": "^14.0.2"
+    "json-diff": "^1.0.6"
   },
   "engines": {
     "node": ">=24 <25"
   },
   "devDependencies": {
-    "@types/json-diff": "^1.0.3"
+    "@types/json-diff": "^1.0.3",
+    "@types/node": "^24.13.3",
+    "eslint": "^9.39.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }

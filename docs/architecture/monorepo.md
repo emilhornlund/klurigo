@@ -91,6 +91,11 @@ connections. The client-facing real-time protocol is SSE, not WebSocket.
 - `mongodb-migrator` provides a command-line tool for transforming MongoDB
   dump data.
 
+The workspace tools may depend on `@klurigo/common` for shared contracts and
+utilities, but do not depend on either application package. The service and web
+packages consume `@klurigo/e2e-fixtures` only for development and end-to-end
+testing; this test-support dependency does not add an application runtime edge.
+
 The root scripts include these workspace tools in the relevant linting and
 type-checking commands. They are separate from the three application packages
 and do not change the application dependency direction described above.
