@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    /* Modules & Resolution (Vite bundler mode) */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+
+    /* Interop & syntax */
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+
+    /* Emit */
+    "noEmit": true, // Vite handles emit
+
+    /* Strictness & checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "erasableSyntaxOnly": true
+  }
+}

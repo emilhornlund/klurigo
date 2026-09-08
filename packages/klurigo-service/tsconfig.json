@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     /* Targets */
     "target": "ES2023",
@@ -13,7 +14,6 @@
     "experimentalDecorators": true,
 
     /* Interop & ergonomics */
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
 
@@ -25,10 +25,11 @@
     "removeComments": true,
 
     /* Strictness & checks */
-    "skipLibCheck": true,
+    // The service retains its existing relaxed checks while strict null checks
+    // remain enabled for the NestJS application.
+    "strict": false,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,

@@ -1,32 +1,12 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     /* Targets */
     "target": "ES2023",
     "lib": ["ES2023"],
 
-    /* Modules & Resolution (bundler mode) */
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "moduleDetection": "force",
-
     /* Node types */
     "types": ["node"],
-
-    /* Interop & syntax */
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-
-    /* Emit */
-    "noEmit": true, // Vite handles emit
-
-    /* Strictness & checks */
-    "strict": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "erasableSyntaxOnly": true,
 
     /* Tooling / Build info */
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"

@@ -177,6 +177,28 @@ The service check covers its application and specification TypeScript
 projects. The web check covers its application and Playwright TypeScript
 projects.
 
+## TypeScript Configuration
+
+All workspace projects inherit shared type-safety, interop, library-checking,
+and casing defaults from the root `tsconfig.base.json`. Runtime-specific
+projects keep their own target, library, module-resolution, emit, and file
+scope settings:
+
+- `packages/common/tsconfig.json` uses NodeNext settings and retains its
+  distributable declaration and source-map output.
+- `packages/klurigo-service/tsconfig.json` is the application base for its
+  build and test projects. Its relaxed strictness is intentional for existing
+  NestJS code; strict null checks remain enabled. The build project inherits
+  application output settings, while the spec project is test-only and
+  non-emitting.
+- `packages/klurigo-web/tsconfig.base.json` contains the shared Vite bundler,
+  syntax, non-emitting, and checking settings. `tsconfig.app.json` adds the
+  browser/React target for the app, e2e, and Storybook projects, while
+  `tsconfig.node.json` separately covers Vite configuration with Node types.
+  The e2e and Storybook projects override only their type scopes and file sets.
+- `tools/*/tsconfig.json` retain NodeNext resolution, Node type libraries, and
+  tool-specific source and output roots.
+
 ## Unit And Aggregate Tests
 
 Run the common package, backend unit, and frontend package unit tests in
