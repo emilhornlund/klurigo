@@ -60,19 +60,19 @@
   &.small {
     @include helpers.mobile {
       .progressText {
-        @include helpers.fontSize(10px)
+        @include helpers.fontSize(10px);
       }
     }
 
     @include helpers.tablet {
       .progressText {
-        @include helpers.fontSize(12px)
+        @include helpers.fontSize(12px);
       }
     }
 
     @include helpers.desktop {
       .progressText {
-        @include helpers.fontSize(14px)
+        @include helpers.fontSize(14px);
       }
     }
   }
@@ -80,19 +80,19 @@
   &.medium {
     @include helpers.mobile {
       .progressText {
-        @include helpers.fontSize(14px)
+        @include helpers.fontSize(14px);
       }
     }
 
     @include helpers.tablet {
       .progressText {
-        @include helpers.fontSize(16px)
+        @include helpers.fontSize(16px);
       }
     }
 
     @include helpers.desktop {
       .progressText {
-        @include helpers.fontSize(18px)
+        @include helpers.fontSize(18px);
       }
     }
   }
@@ -100,19 +100,19 @@
   &.large {
     @include helpers.mobile {
       .progressText {
-        @include helpers.fontSize(18px)
+        @include helpers.fontSize(18px);
       }
     }
 
     @include helpers.tablet {
       .progressText {
-        @include helpers.fontSize(20px)
+        @include helpers.fontSize(20px);
       }
     }
 
     @include helpers.desktop {
       .progressText {
-        @include helpers.fontSize(22px)
+        @include helpers.fontSize(22px);
       }
     }
   }

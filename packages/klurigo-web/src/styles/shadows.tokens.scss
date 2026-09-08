@@ -29,7 +29,8 @@ $shadow-overlay: $shadow-surface-rest;
 $shadow-control-hover: 0 4px 12px colors.$color-shadow-control;
 $shadow-control-active: 0 2px 4px colors.$color-shadow-control;
 
-$shadow-focus-control-default: 0 0 0 3px colors.$color-focus-control-default-ring;
+$shadow-focus-control-default: 0 0 0 3px
+  colors.$color-focus-control-default-ring;
 $shadow-focus-control-muted: 0 0 0 3px colors.$color-focus-control-muted-ring;
 
 /* ==========================================================================
@@ -47,15 +48,17 @@ $shadow-slider-thumb-focus:
    ========================================================================== */
 
 $shadow-status-success: 0 4px 12px colors.$color-shadow-glow-success;
-$shadow-status-success-strong: 0 6px 20px colors.$color-shadow-glow-success-strong;
+$shadow-status-success-strong: 0 6px 20px
+  colors.$color-shadow-glow-success-strong;
 $shadow-status-danger-pulse-rest: 0 0 0 0 colors.$color-shadow-glow-danger;
-$shadow-status-danger-pulse-peak: 0 0 0 4px colors.$color-shadow-glow-danger-soft;
+$shadow-status-danger-pulse-peak: 0 0 0 4px
+  colors.$color-shadow-glow-danger-soft;
 
 /* ==========================================================================
    Insets
    ========================================================================== */
 
-$shadow-inset-side-left:
-  helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0 colors.$color-shadow-subtle inset;
-$shadow-inset-side-right:
-  helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0 colors.$color-shadow-subtle inset;
+$shadow-inset-side-left: helpers.pxToRem(-5px) 0 helpers.pxToRem(5px) 0
+  colors.$color-shadow-subtle inset;
+$shadow-inset-side-right: helpers.pxToRem(5px) 0 helpers.pxToRem(5px) 0
+  colors.$color-shadow-subtle inset;

@@ -8,18 +8,20 @@
   ],
   "scripts": {
     "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\"",
-    "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\"",
+    "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\"",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
     "klurigo-service:dev": "yarn workspace @klurigo/klurigo-service dev",
     "klurigo-web:dev": "wait-on http://localhost:8080/health && yarn workspace @klurigo/klurigo-web dev",
     "klurigo-web:storybook": "yarn workspace @klurigo/klurigo-web storybook",
     "serve": "concurrently \"yarn workspace @klurigo/klurigo-service serve\" \"yarn workspace @klurigo/klurigo-web serve\"",
     "lint": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint\" \"yarn workspace @klurigo/klurigo-service lint\" \"yarn workspace @klurigo/klurigo-web lint\" \"yarn workspace @klurigo/e2e-fixtures lint\" \"yarn workspace mongodb-migrator lint\"",
-    "lint:fix": "yarn workspaces run lint:fix",
+    "lint:fix": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint:fix\" \"yarn workspace @klurigo/klurigo-service lint:fix\" \"yarn workspace @klurigo/klurigo-web lint:fix\" \"yarn workspace @klurigo/e2e-fixtures lint:fix\" \"yarn workspace mongodb-migrator lint:fix\"",
+    "format": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common format\" \"yarn workspace @klurigo/klurigo-service format\" \"yarn workspace @klurigo/klurigo-web format\" \"yarn workspace @klurigo/e2e-fixtures format\" \"yarn workspace mongodb-migrator format\"",
+    "format:check": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common format:check\" \"yarn workspace @klurigo/klurigo-service format:check\" \"yarn workspace @klurigo/klurigo-web format:check\" \"yarn workspace @klurigo/e2e-fixtures format:check\" \"yarn workspace mongodb-migrator format:check\"",
     "test": "yarn test:unit",
     "test:unit": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit\" \"yarn workspace @klurigo/klurigo-service test:unit\" \"yarn workspace @klurigo/klurigo-web test:unit\"",
     "test:unit:coverage": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit:coverage\" \"yarn workspace @klurigo/klurigo-service test:unit:coverage\" \"yarn workspace @klurigo/klurigo-web test:unit:coverage\"",
-    "check-types": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common check-types\" \"yarn workspace @klurigo/klurigo-service check-types\" \"yarn workspace @klurigo/klurigo-web check-types\" \"yarn workspace @klurigo/e2e-fixtures check-types\" \"yarn workspace mongodb-migrator check-types\""
+    "typecheck": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common typecheck\" \"yarn workspace @klurigo/klurigo-service typecheck\" \"yarn workspace @klurigo/klurigo-web typecheck\" \"yarn workspace @klurigo/e2e-fixtures typecheck\" \"yarn workspace mongodb-migrator typecheck\""
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

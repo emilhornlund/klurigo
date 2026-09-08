@@ -27,7 +27,8 @@
     padding: 0 spacing.$space-compact-desktop;
   }
 
-  .bars, .puzzle {
+  .bars,
+  .puzzle {
     display: flex;
     flex-direction: column;
     justify-content: center;

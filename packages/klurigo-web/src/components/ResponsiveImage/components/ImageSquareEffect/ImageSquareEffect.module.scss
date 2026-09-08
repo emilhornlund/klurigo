@@ -16,11 +16,13 @@
     height: 100%;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
       background: colors.$color-surface-default;
-      transition: opacity 220ms ease-out, background 220ms ease-in-out;
+      transition:
+        opacity 220ms ease-out,
+        background 220ms ease-in-out;
       will-change: opacity, background;
       opacity: 1;
       transform: none;

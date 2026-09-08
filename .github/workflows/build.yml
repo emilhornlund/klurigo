@@ -36,11 +36,14 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Check types
-        run: yarn check-types
+      - name: Typecheck
+        run: yarn typecheck
 
       - name: Lint
         run: yarn lint
+
+      - name: Check formatting
+        run: yarn format:check
 
       - name: Check Circular Dependencies
         run: yarn workspace @klurigo/klurigo-service check-circular-deps

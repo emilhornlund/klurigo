@@ -9,11 +9,11 @@
   flex: 1;
 
   @include helpers.mobile {
-    column-gap: spacing.$space-compact-mobile
+    column-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: spacing.$space-compact-tablet
+    column-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
@@ -29,11 +29,11 @@
   height: 100%;
 
   @include helpers.mobile {
-    row-gap: spacing.$space-compact-mobile
+    row-gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: spacing.$space-compact-tablet
+    row-gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {

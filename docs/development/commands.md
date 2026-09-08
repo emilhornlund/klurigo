@@ -68,14 +68,15 @@ Build first so those generated artifacts exist.
 
 ## Building And Cleaning
 
-Build all application packages with the root orchestration command:
+Build all build-capable workspaces with the root orchestration command:
 
 ```sh
 yarn build
 ```
 
-This builds `@klurigo/common`, then builds the service and web applications in
-parallel. The application packages also expose these scoped commands:
+This builds `@klurigo/common`, then builds the service and web applications plus
+the MongoDB migrator in parallel. The build-capable workspaces also expose these
+scoped commands:
 
 ```sh
 yarn workspace @klurigo/common build
@@ -122,45 +123,54 @@ Autofix supported workspace lint rules with:
 yarn lint:fix
 ```
 
-The root autofix command runs each workspace's `lint:fix` script where one is
-defined. The workspace-scoped forms are available for the common, service,
-web, and migrator packages:
+The root autofix command runs each workspace's `lint:fix` script. All five
+workspaces provide that script:
 
 ```sh
 yarn workspace @klurigo/common lint:fix
 yarn workspace @klurigo/klurigo-service lint:fix
 yarn workspace @klurigo/klurigo-web lint:fix
+yarn workspace @klurigo/e2e-fixtures lint:fix
 yarn workspace mongodb-migrator lint:fix
 ```
 
-`@klurigo/e2e-fixtures` has a lint script but no lint autofix script; run its
-lint check directly when needed:
+Run Prettier across all code-bearing workspaces, or validate formatting without
+writing files:
 
 ```sh
-yarn workspace @klurigo/e2e-fixtures lint
+yarn format
+yarn format:check
 ```
 
-There is no repository-wide `format` script. ESLint uses the Prettier plugin in
-the configured source workspaces, so linting checks formatting and lint
-autofix can apply those fixes. Do not substitute an undocumented root format
-command.
+`yarn format` writes formatted files. `yarn format:check` exits nonzero when a
+file needs formatting. Both commands honor the repository `.gitignore`, so
+generated `dist/`, coverage, and test-report files are not formatted. The
+corresponding workspace commands are available for all five workspaces:
+
+```sh
+yarn workspace @klurigo/common format
+yarn workspace @klurigo/klurigo-service format:check
+yarn workspace @klurigo/klurigo-web format:check
+yarn workspace @klurigo/e2e-fixtures format:check
+yarn workspace mongodb-migrator format:check
+```
 
 ## Type Checking
 
-Check TypeScript across the application packages and workspace tools:
+Check TypeScript across all TypeScript workspaces:
 
 ```sh
-yarn check-types
+yarn typecheck
 ```
 
 Run a narrower check with the corresponding workspace command:
 
 ```sh
-yarn workspace @klurigo/common check-types
-yarn workspace @klurigo/klurigo-service check-types
-yarn workspace @klurigo/klurigo-web check-types
-yarn workspace @klurigo/e2e-fixtures check-types
-yarn workspace mongodb-migrator check-types
+yarn workspace @klurigo/common typecheck
+yarn workspace @klurigo/klurigo-service typecheck
+yarn workspace @klurigo/klurigo-web typecheck
+yarn workspace @klurigo/e2e-fixtures typecheck
+yarn workspace mongodb-migrator typecheck
 ```
 
 The service check covers its application and specification TypeScript
@@ -347,7 +357,7 @@ suite, before submitting a change:
 
 ```sh
 yarn build
-yarn check-types
+yarn typecheck
 yarn lint
 yarn workspace @klurigo/klurigo-service check-circular-deps
 yarn test

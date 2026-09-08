@@ -78,7 +78,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       border-width: $normal-question-picker-item-border-width;
     }
 
-    &.questionPickerItemActive, &:hover {
+    &.questionPickerItemActive,
+    &:hover {
       border-color: colors.$color-border-action;
       background-color: colors.$color-action-tint;
       color: colors.$color-text-default;
@@ -100,19 +101,25 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
 
         @include helpers.mobile {
           line-height: helpers.pxToRem(14px);
-          max-height: calc(#{helpers.pxToRem(14px)} * 3 + #{helpers.pxToRem(2px)});
+          max-height: calc(
+            #{helpers.pxToRem(14px)} * 3 + #{helpers.pxToRem(2px)}
+          );
           @include helpers.fontSize(10px);
         }
 
         @include helpers.tablet {
           line-height: helpers.pxToRem(16px);
-          max-height: calc(#{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)});
+          max-height: calc(
+            #{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)}
+          );
           @include helpers.fontSize(12px);
         }
 
         @include helpers.desktop {
           line-height: helpers.pxToRem(16px);
-          max-height: calc(#{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)});
+          max-height: calc(
+            #{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)}
+          );
           @include helpers.fontSize(12px);
         }
       }
@@ -136,7 +143,6 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       @include helpers.desktop {
         @include helpers.fontSize(10px);
       }
-
     }
   }
 
@@ -150,25 +156,36 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     width: 100%;
 
     @include helpers.mobile {
-      height: calc(100% + $small-question-picker-item-indicator-size - $small-question-picker-item-border-width * 2);
+      height: calc(
+        100% + $small-question-picker-item-indicator-size -
+          $small-question-picker-item-border-width * 2
+      );
     }
 
     @include helpers.tablet {
-      height: calc(100% + $normal-question-picker-item-indicator-size - $normal-question-picker-item-border-width * 2);
+      height: calc(
+        100% + $normal-question-picker-item-indicator-size -
+          $normal-question-picker-item-border-width * 2
+      );
     }
 
     @include helpers.desktop {
-      height: calc(100% + $normal-question-picker-item-indicator-size - $normal-question-picker-item-border-width * 2);
+      height: calc(
+        100% + $normal-question-picker-item-indicator-size -
+          $normal-question-picker-item-border-width * 2
+      );
     }
 
-    .questionPickerItemOverlayTop, .questionPickerItemOverlayBottom {
+    .questionPickerItemOverlayTop,
+    .questionPickerItemOverlayBottom {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
       width: 100%;
 
-      div, button {
+      div,
+      button {
         @include button.button-reset;
 
         display: flex;
@@ -219,7 +236,8 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     }
 
     .questionPickerItemOverlayBottom {
-      .cloneButton, .deleteButton {
+      .cloneButton,
+      .deleteButton {
         @include button.button-reset;
 
         outline: none;

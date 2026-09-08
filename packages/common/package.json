@@ -21,10 +21,12 @@
     "build": "tsup",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
+    "format": "prettier --write . --ignore-path ../../.gitignore",
+    "format:check": "prettier --check . --ignore-path ../../.gitignore",
     "test": "yarn test:unit",
     "test:unit": "vitest --run",
     "test:unit:coverage": "vitest --run --coverage",
-    "check-types": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.11",
