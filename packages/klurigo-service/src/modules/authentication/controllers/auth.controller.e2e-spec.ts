@@ -7,7 +7,7 @@ import {
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { getModelToken } from '@nestjs/mongoose'
-import { Response } from 'superagent'
+import type { Response } from 'superagent'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 

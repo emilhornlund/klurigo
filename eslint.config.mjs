@@ -48,7 +48,7 @@ const sharedRules = {
 
 export const sharedConfig = [
   {
-    ignores: ['**/node_modules/**', '**/dist/**'],
+    ignores: ['**/node_modules/**', '**/dist/**', '**/storybook-static/**'],
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

@@ -1,5 +1,5 @@
 import { TokenDto } from '@klurigo/common'
-import { Request } from 'express'
+import type { Request } from 'express'
 
 /**
  * Extended Express Request that includes authentication state populated by guards.

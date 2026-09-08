@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
-import * as jwt from 'jsonwebtoken'
+import type * as jwt from 'jsonwebtoken'
 import { MurLockModule } from 'murlock'
 
 import { EnvironmentVariables } from '../../app/config'

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import * as Sentry from '@sentry/nestjs'
-import { Request } from 'express'
+import type { Request } from 'express'
 
 import {
   AuthGuardRequest,
