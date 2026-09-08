@@ -481,7 +481,8 @@ yarn workspace @klurigo/klurigo-service test:e2e -- public-user.controller.e2e-s
 yarn workspace @klurigo/klurigo-service test
 
 # All backend tests with coverage
-yarn workspace @klurigo/klurigo-service test:coverage
+yarn workspace @klurigo/klurigo-service test:unit:coverage
+yarn workspace @klurigo/klurigo-service test:e2e:coverage
 
 # Frontend tests
 yarn workspace @klurigo/klurigo-web test

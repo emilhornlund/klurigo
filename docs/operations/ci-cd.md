@@ -28,9 +28,10 @@ workflows.
 
 ## Build Checks
 
-The reusable build workflow runs its static-build and coverage jobs on
-`ubuntu-latest`. Each job checks out the repository with a shallow checkout,
-sets up Node.js 24 with Yarn caching, installs Yarn Classic `1.22.22`, and runs
+The reusable build workflow runs its static-build, unit-coverage,
+backend-e2e-coverage, and frontend-e2e jobs on `ubuntu-latest`. Each job checks
+out the repository with a shallow checkout, sets up Node.js 24 with Yarn
+caching, installs Yarn Classic `1.22.22`, and runs
 `yarn install --frozen-lockfile`.
 
 The static-build job then runs these root or workspace commands in order:
@@ -46,45 +47,43 @@ workspace tools configured by the root `package.json`. The circular-dependency
 check analyzes the service entry point with Madge. These static checks do not
 start the Compose services.
 
-## Coverage
+## Unit Coverage
 
 The unit-coverage job uses `ubuntu-latest`, Node.js 24, the frozen Yarn
-lockfile, and first builds `@klurigo/common`. It starts the Compose `mongodb`
-and `redis` services with:
+lockfile, and first builds `@klurigo/common`. It then runs:
 
 ```sh
-docker compose up -d --wait mongodb redis
+yarn test:unit:coverage
 ```
 
-It then runs the root coverage command:
-
-```sh
-yarn test:coverage
-```
-
-That root command runs common, service, and web coverage concurrently. The
-service package's `test:coverage` command runs unit coverage first and backend
-e2e coverage second. Unit coverage uses the unit Jest configuration; backend
-e2e coverage uses the e2e Jest configuration and its single-worker setting.
-The backend e2e portion uses the real Compose MongoDB and Redis services, so
-both services are prerequisites even though the unit tests themselves do not
-need them.
-
-Compose is brought down with `docker compose down -v` in an `always()` cleanup
-step. The four following Codecov uploads use explicit files and do not search
-for additional reports:
+This covers common, backend unit, and frontend unit tests. It does not start
+MongoDB or Redis. The three following Codecov uploads use explicit files and do
+not search for additional reports:
 
 | Upload | File | Flag and name |
 | --- | --- | --- |
 | Common | `./packages/common/coverage/lcov.info` | `common` |
 | Web | `./packages/klurigo-web/coverage/lcov.info` | `klurigo-web` |
 | Service unit | `./packages/klurigo-service/coverage/unit/lcov.info` | `klurigo-service-unit` |
-| Service e2e | `./packages/klurigo-service/coverage/e2e/lcov.info` | `klurigo-service-e2e` |
 
 Each upload has `disable_search: true`, `verbose: true`, and
 `fail_ci_if_error: true`, so a Codecov action error fails the job. The upload
 steps have no `always()` condition; a preceding failed coverage step therefore
 does not proceed to those uploads under the workflow's normal step behavior.
+
+## Backend E2E Coverage
+
+The backend-e2e-coverage job builds `@klurigo/common`, starts the Compose
+`mongodb` and `redis` services, and runs:
+
+```sh
+yarn workspace @klurigo/klurigo-service test:e2e:coverage
+```
+
+It always runs `docker compose down -v` during cleanup, then uploads
+`./packages/klurigo-service/coverage/e2e/lcov.info` with the
+`klurigo-service-e2e` flag. Backend E2E coverage therefore remains separate
+from the unit-coverage job while preserving its Codecov report and flag.
 
 The repository Codecov policy is in [`codecov.yml`](../../codecov.yml). Pull
 requests receive non-informational project and patch statuses: the project
@@ -93,9 +92,10 @@ Both use an automatic base and apply only to pull requests. The Codecov comment
 does not require a coverage change, and the component project and patch
 statuses are informational.
 
-## Playwright
+## Frontend E2E
 
-The Playwright job is conditional on the reusable workflow's `run_e2e` input.
+The Frontend E2E Tests job is conditional on the reusable workflow's
+`run_e2e` input.
 Its current callers all enable it: pull requests, pushes to `main`, and manual
 production deployment. It runs on `ubuntu-latest`, installs dependencies with
 the frozen lockfile, builds `@klurigo/common`, and starts the Compose MongoDB

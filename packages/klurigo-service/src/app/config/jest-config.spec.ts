@@ -52,7 +52,7 @@ describe('backend Jest test boundaries', () => {
     expect(e2eConfig.forceExit).toBeUndefined()
   })
 
-  it('provides separate coverage commands and aggregates both suites', () => {
+  it('provides separate commands for each test suite', () => {
     expect(servicePackage.scripts.test).toBe('yarn test:unit && yarn test:e2e')
     expect(servicePackage.scripts['test:unit:coverage']).toBe(
       'jest --config jest.unit.config.cjs --coverage',
@@ -60,9 +60,7 @@ describe('backend Jest test boundaries', () => {
     expect(servicePackage.scripts['test:e2e:coverage']).toBe(
       'jest --config jest.e2e.config.cjs --coverage',
     )
-    expect(servicePackage.scripts['test:coverage']).toBe(
-      'yarn test:unit:coverage && yarn test:e2e:coverage',
-    )
+    expect(servicePackage.scripts['test:coverage']).toBeUndefined()
   })
 
   it('does not configure global infrastructure setup', () => {
