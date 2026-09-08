@@ -49,6 +49,15 @@ proposals and implementation notes are kept under
 [`plans/`](./plans/) and must not be used as the authority for shipped
 behavior.
 
+## Current-System Documentation Tasks
+
+The following focused tasks identify current feature behavior that is not yet
+covered by a permanent feature page:
+
+- [Anonymous player rating and game-over behavior](./tasks/anonymous-player-rating-documentation.md)
+- [Discovery rails](./tasks/discovery-rails-documentation.md)
+- [User profiles](./tasks/user-profile-documentation.md)
+
 ## Technical Reference
 
 - [MongoDB migrator](../tools/mongodb-migrator/README.md) - CLI usage and

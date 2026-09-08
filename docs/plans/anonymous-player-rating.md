@@ -1,9 +1,61 @@
 # Anonymous Player Rating & Player Game Over State
 
+> **Status:** implemented
+
 > **Plan boundary:** This file is implementation-plan material. Its proposals,
 > completion markers, and historical notes do not define shipped behavior. Use
 > the [documentation index](../README.md) and the source code for current
 > behavior.
+
+## Audit Summary
+
+This plan is retained as an implemented feature's design and implementation
+history. The sections below are historical plan material; `[DONE]` marks a
+completed plan task, not a current API contract.
+
+### Current Shipped Behavior
+
+- During an active or completed podium task, the player event builder emits a
+  `GameOverPlayer` event. The event includes the game and quiz identifiers,
+  player rank and score, the player immediately ahead when applicable, and the
+  rating snapshot used by the game-over UI. Classic-mode events also include
+  `currentStreak`; zero-to-one-hundred events do not.
+- The event is delivered through the game SSE flow. Active and completed games
+  may subscribe, so a player can reconnect while the podium remains the
+  current task. Expired and terminated games still produce a quit event.
+- Players write ratings with `PUT /api/games/:gameID/ratings`, using a
+  game-scoped player token whose game ID matches the route. The request accepts
+  `stars` and an optional `comment`. The endpoint only permits the podium task.
+- A user-authenticated participant is persisted as a `USER` author referencing
+  the user. An anonymous participant is persisted as an `ANONYMOUS` author with
+  the game participant ID and nickname captured from the game. A unique
+  author-per-quiz constraint makes a later request update that participant's
+  existing rating rather than create a second one.
+- Anonymous players may rate. Authenticated quiz owners cannot rate their own
+  quiz. Other authenticated players may rate. These rules are applied both
+  when enriching the event and when handling the write request.
+- The game-over experience is rendered inside `GamePage`; leaving it revokes
+  the game token and may navigate home or, for authenticated users, to full
+  results. There is no separate game-over route.
+
+Relevant implementation and regression coverage includes
+[`game-player-event.utils.ts`](../../packages/klurigo-service/src/modules/game-event/utils/game-player-event.utils.ts),
+[`game-participant-event.builder.ts`](../../packages/klurigo-service/src/modules/game-event/services/game-participant-event.builder.ts),
+[`game-rating.controller.ts`](../../packages/klurigo-service/src/modules/game-api/controllers/game-rating.controller.ts),
+the game-rating controller/service e2e and unit specs, and the game-event
+builder/subscriber specs.
+
+### Historical Corrections
+
+- Rating metadata enrichment is currently orchestrated by
+  `GameParticipantEventBuilder`, not directly by `GameEventSubscriber` as the
+  older task wording suggests.
+- `AuthorizedGame(GameParticipantType.PLAYER)` is the existing authorization
+  mechanism; the file-change table's proposed new rating guard is not a
+  shipped file.
+- Earlier read endpoints for player stats or the current rating were not
+  shipped. The `GameOverPlayer` event supplies the read data needed by the
+  game-over UI.
 
 ## Problem Statement
 
