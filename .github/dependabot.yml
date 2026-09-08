@@ -1,10 +1,10 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: 'npm'
     directories:
-      - "/"
+      - '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     cooldown:
       default-days: 5
       semver-major-days: 30
@@ -14,30 +14,30 @@ updates:
     groups:
       non-major-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
 
     ignore:
-      - dependency-name: "@klurigo/common"
-      - dependency-name: "@types/node"
+      - dependency-name: '@klurigo/common'
+      - dependency-name: '@types/node'
         update-types:
-          - "version-update:semver-major"
+          - 'version-update:semver-major'
 
-    versioning-strategy: "increase"
+    versioning-strategy: 'increase'
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     cooldown:
       default-days: 7
 
     groups:
       non-major-actions:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'

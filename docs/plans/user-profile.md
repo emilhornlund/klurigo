@@ -109,6 +109,7 @@ The feature touches three packages:
 ### Shared DTOs
 
 **`PublicUserProfileResponseDto`**
+
 - `readonly id: string`
 - `readonly nickname: string`
 - `readonly quizzesCount: number`
@@ -117,12 +118,14 @@ The feature touches three packages:
 - `readonly createdAt: Date`
 
 **`UserQuizzesPageFilterDto`**
+
 - `readonly sort?: 'title' | 'created' | 'updated'`
 - `readonly order?: 'asc' | 'desc'`
 - `readonly limit: number`
 - `readonly offset: number`
 
 Defaults:
+
 - `sort` defaults to `'title'`
 - `order` defaults to `'asc'`
 
@@ -159,6 +162,7 @@ Tasks are ordered linearly so each task can be completed once the previous one i
 Add and export the shared DTO definitions used by this feature.
 
 Requirements:
+
 - add `PublicUserProfileResponseDto`
 - add `UserQuizzesPageFilterDto`
 - set `PublicUserProfileResponseDto.createdAt` to `Date`
@@ -168,6 +172,7 @@ Requirements:
   - `order?: 'asc' | 'desc'` with default `'asc'`
 
 **Affected files:**
+
 - `packages/common/src/models/user.ts` (or a new profile DTO file)
 - `packages/common/src/models/quiz.dto.ts`
 - `packages/common/src/index.ts`
@@ -193,6 +198,7 @@ Use MongoDB `countDocuments` with the existing persisted fields:
 For this feature, the user `_id` is the participant id in game results.
 
 **Affected files:**
+
 - `packages/klurigo-service/src/modules/quiz-core/repositories/quiz.repository.ts`
 - `packages/klurigo-service/src/modules/game-result/repositories/game-result.repository.ts`
 - Any related module export file if required
@@ -206,15 +212,18 @@ For this feature, the user `_id` is the participant id in game results.
 Create a dedicated `UserProfileService` inside a new `UserProfileApiModule`.
 
 Add:
+
 - `findPublicUserProfile(userId: string): Promise<PublicUserProfileResponseDto>`
 
 Implementation should:
+
 - load user via `UserService`
 - fetch quiz counts via `QuizRepository`
 - fetch game counts via `GameResultRepository`
 - map the profile result to `PublicUserProfileResponseDto`
 
 The `UserProfileApiModule` should import:
+
 - `UserModule`
 - `QuizCoreModule`
 - `GameResultModule`
@@ -230,12 +239,14 @@ This module is responsible for cross-domain aggregation and avoids circular depe
 Add `findPublicQuizzesByUserId` to `UserProfileService` as a thin wrapper around the existing quiz paging/query logic.
 
 Implementation should:
+
 - query public quizzes for the requested user via quiz-core repository/query layer
 - reuse existing pagination and sorting behavior already used by quiz API
 - return the existing paginated quiz response contract used by quiz API
 - avoid depending on `QuizApiModule` or `QuizService`
 
 Requirements:
+
 - restrict results to the requested user's quizzes
 - hard-code `visibility` to `PUBLIC`
 - support only `sort`, `order`, `limit`, and `offset`
@@ -249,6 +260,7 @@ Requirements:
 - default `order` is `asc`
 
 **Affected files:**
+
 - `packages/klurigo-service/src/modules/user-profile-api/services/user-profile.service.ts`
 
 ---
@@ -260,6 +272,7 @@ Requirements:
 Create the backend transport classes required by the new endpoints.
 
 Requirements:
+
 - add `PublicUserProfileResponse` implementing `PublicUserProfileResponseDto`
 - add `UserQuizzesPageFilter` implementing `UserQuizzesPageFilterDto`
 - add Swagger decorators such as `@ApiProperty` and query-property decorators as appropriate
@@ -275,6 +288,7 @@ Requirements:
   - `order: 'asc'`
 
 **Affected files:**
+
 - `packages/klurigo-service/src/modules/user-profile-api/controllers/responses/public-user-profile.response.ts`
 - `packages/klurigo-service/src/modules/user-profile-api/controllers/filters/user-quizzes-page.filter.ts`
 - Relevant barrel files
@@ -288,6 +302,7 @@ Requirements:
 Create and register the controller for both endpoints.
 
 Controller requirements:
+
 - create `PublicUserController` inside `UserProfileApiModule`
 - register it in `UserProfileApiModule`
 - apply `@RequiresScopes(TokenScope.User)`
@@ -298,6 +313,7 @@ Controller requirements:
 - document the quizzes endpoint with the existing paginated quiz response classes from `paginated-quiz.response.ts`
 
 **Affected files:**
+
 - `packages/klurigo-service/src/modules/user-profile-api/controllers/public-user.controller.ts`
 - `packages/klurigo-service/src/modules/user-profile-api/user-profile-api.module.ts`
 - Relevant barrel files
@@ -311,6 +327,7 @@ Controller requirements:
 Create e2e tests for `PublicUserController` following the existing service test setup.
 
 Coverage should include:
+
 - profile success response with `id`, `nickname`, `quizzesCount`, `hostedGamesCount`, `playedGamesCount`, and `createdAt`
 - quiz list success response with public quizzes only, using the existing paginated quiz response contract
 - pagination behavior for `sort`, `order`, `limit`, and `offset`
@@ -320,6 +337,7 @@ Coverage should include:
 - presence of the expected Swagger-wired DTO/controller behavior where covered by existing test patterns
 
 **Affected files:**
+
 - `packages/klurigo-service/src/modules/user-profile-api/controllers/public-user.controller.e2e-spec.ts`
 
 ---
@@ -331,14 +349,17 @@ Coverage should include:
 Add API client methods for the new backend endpoints and expose them through `useKlurigoServiceClient`.
 
 Methods:
+
 - `getUserPublicProfile(userId: string)`
 - `getUserPublicQuizzes(userId: string, options)` where `options` only includes `sort`, `order`, `limit`, and `offset`
 
 Requirements:
+
 - reuse the existing API resource and error-notification patterns
 - keep the quizzes API contract aligned with the existing backend paginated quiz response shape
 
 **Affected files:**
+
 - `packages/klurigo-web/src/api/resources/user.resource.ts` (new or updated)
 - `packages/klurigo-web/src/api/useKlurigoServiceClient.tsx`
 
@@ -351,11 +372,13 @@ Requirements:
 Create a dedicated mapper/adapter from the backend paginated quiz response items to the `QuizDiscoveryCard` input shape.
 
 Requirements:
+
 - map backend quiz response items to `QuizDiscoveryCard`
 - reuse the mapper in both `UserProfilePage` and `UserQuizzesPage`
 - do not change backend response contracts to fit the card component
 
 **Affected files:**
+
 - `packages/klurigo-web/src/utils/quiz.utils.ts`
 - `packages/klurigo-web/src/utils/quiz.utils.test.ts`
 
@@ -368,6 +391,7 @@ Requirements:
 Create the profile page and register the protected route for it.
 
 Requirements:
+
 - create `UserProfilePage`
 - register the protected route `/users/:userId/profile` alongside the existing authenticated routes in `packages/klurigo-web/src/main.tsx`
 - fetch the public profile by `userId`
@@ -378,11 +402,13 @@ Requirements:
 - include loading, empty, and not-found/error states consistent with existing pages
 
 Tests:
+
 - loading, populated, empty, and not-found/error states
 - rendering of `hostedGamesCount` and `playedGamesCount`
 - correct mapping of backend quiz data to `QuizDiscoveryCard`
 
 **Affected files:**
+
 - `packages/klurigo-web/src/main.tsx`
 - `packages/klurigo-web/src/pages/UserProfilePage/`
 - `packages/klurigo-web/src/pages/index.ts`
@@ -396,6 +422,7 @@ Tests:
 Create the paginated quizzes page for a user and register the protected route for it.
 
 Requirements:
+
 - create `UserQuizzesPage`
 - register the protected route `/users/:userId/quizzes` alongside the existing authenticated routes in `packages/klurigo-web/src/main.tsx`
 - read `userId` from the route
@@ -406,10 +433,12 @@ Requirements:
 - render loading, empty, error, and load-more states consistent with discovery pages
 
 Tests:
+
 - pagination behavior using `sort`, `order`, `limit`, and `offset`
 - loading, empty, error, and load-more states
 
 **Affected files:**
+
 - `packages/klurigo-web/src/main.tsx`
 - `packages/klurigo-web/src/pages/UserQuizzesPage/`
 - `packages/klurigo-web/src/pages/index.ts`
@@ -425,6 +454,7 @@ Update `Page` so the logged-in user can navigate directly to `/users/{currentUse
 Add the item before the existing profile-related entries and use the current authenticated user's id from the existing frontend auth/user state.
 
 **Affected files:**
+
 - `packages/klurigo-web/src/components/Page/Page.tsx`
 
 ---
@@ -436,15 +466,18 @@ Add the item before the existing profile-related entries and use the current aut
 Add profile links where both `userId` and `nickname` are already available and navigation is appropriate.
 
 Initial scope:
+
 - `QuizDiscoveryCard` author name
 - supported nickname surfaces in `GameResultsPage`
 
 Do not add links in editable forms or active gameplay contexts.
 
 Tests:
+
 - verify nickname renders as a link to `/users/:userId/profile` in `QuizDiscoveryCard`
 
 **Affected files:**
+
 - `packages/klurigo-web/src/components/QuizDiscoveryCard/QuizDiscoveryCard.tsx`
 - relevant files under `packages/klurigo-web/src/pages/GameResultsPage/`
 
@@ -523,17 +556,22 @@ yarn typecheck
 ## Risks / Notes
 
 ### Module boundaries and aggregation
+
 Cross-domain aggregation is handled in `UserProfileApiModule` to avoid circular dependencies between `UserModule`, `QuizModule`, and `GameResultModule`.
 This module composes data from multiple domains and should remain the only place where such aggregation occurs.
 
 ### Profile endpoint query cost
+
 The profile endpoint performs one user lookup plus three aggregate counts. That is acceptable for v1. If this becomes hot-path traffic later, the counts can be parallelised or cached without changing the API contract.
 
 ### Nickname link scope
+
 Nickname links are intentionally limited to surfaces where navigation is expected and safe. Keep active gameplay and editable form contexts out of scope for this feature.
 
 ### Authenticated-only access
+
 These endpoints remain authenticated-only in v1. Public profiles are visible to authenticated users with `Authority.User`, not to anonymous sessions.
 
 ### Query parameter scope
+
 The public user quizzes endpoint intentionally excludes search and additional filters in v1. If filtering is needed later, it should be added as a separate follow-up change rather than folded into this implementation.

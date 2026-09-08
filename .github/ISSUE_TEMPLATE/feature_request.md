@@ -1,10 +1,9 @@
 ---
 name: 💡 Feature Request
 about: Suggest an improvement or new feature
-title: "[Feature] "
+title: '[Feature] '
 labels: enhancement
 assignees: ''
-
 ---
 
 ### Summary
