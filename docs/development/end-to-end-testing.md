@@ -5,6 +5,10 @@ Nest backend. The configuration is in
 `packages/klurigo-web/playwright.config.ts`, and tests live in
 `packages/klurigo-web/e2e-tests`.
 
+Use the [development command reference](./commands.md) for the canonical
+browser installation and Playwright commands. This guide explains the browser
+projects, seeded fixtures, lifecycle hooks, and CI differences.
+
 ## Prerequisites
 
 Use Node.js `>=24 <25`, Yarn Classic `1.22.22`, and running MongoDB and Redis
@@ -12,40 +16,11 @@ Compose services. The test environment uses MongoDB database
 `klurigo_service_test` and Redis database `1`, as described in the
 [local infrastructure guide](../getting-started/local-infrastructure.md).
 
-Install the browsers used by the local configuration:
-
-```sh
-yarn workspace @klurigo/klurigo-web test:e2e:install
-```
-
-That package script installs Chromium and Firefox. The equivalent direct
-Playwright command is:
-
-```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox
-```
-
-On Linux, system dependencies can be installed with the Playwright command
-used by CI. This also installs WebKit, which is only configured for the
-regular CI project:
-
-```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
-```
+The local installation command installs Chromium and Firefox. CI also installs
+WebKit and Linux system dependencies; WebKit is only configured for regular CI
+tests.
 
 ## Local Workflow
-
-Start the infrastructure if it is not already running:
-
-```sh
-docker compose up -d --wait mongodb redis
-```
-
-Run the frontend suite from the repository root:
-
-```sh
-yarn workspace @klurigo/klurigo-web test:e2e
-```
 
 Playwright starts both web servers from its `webServer` configuration:
 
@@ -63,12 +38,6 @@ tests and uses two retries; local runs use zero retries.
 
 ## Reset And Seed Lifecycle
 
-Before the browser projects run, `playwright.global-setup.ts` invokes:
-
-```sh
-yarn workspace @klurigo/klurigo-service e2e:setup
-```
-
 The setup script connects directly to the configured test stores, deletes all
 MongoDB collections, flushes Redis database `1`, and seeds the users and quiz
 fixtures from `@klurigo/e2e-fixtures`. The reset helper refuses MongoDB
@@ -76,13 +45,8 @@ databases without `_test` in their name. Treat both the MongoDB and Redis
 targets as disposable test state; do not configure them to contain data that
 must be kept.
 
-After all projects finish, `playwright.global-teardown.ts` invokes:
-
-```sh
-yarn workspace @klurigo/klurigo-service e2e:teardown
-```
-
-This clears the test MongoDB and Redis state. If setup or teardown fails, the
+After all projects finish, teardown clears the test MongoDB and Redis state. If
+setup or teardown fails, the
 hook reports the child command failure; it does not force the test process to
 exit successfully.
 
@@ -138,19 +102,10 @@ current callers enable it for pull requests, pushes to `main`, and the manual
 production deployment workflow.
 
 The CI job runs on Ubuntu with Node.js 24, installs dependencies with the
-frozen Yarn lockfile, builds the common package, and starts MongoDB and Redis
-with:
-
-```sh
-docker compose up -d --wait mongodb redis
-```
+frozen Yarn lockfile, builds the common package, and starts MongoDB and Redis.
 
 It caches Playwright browsers by the installed `@playwright/test` version and
-installs Chromium, Firefox, and WebKit plus Linux system dependencies:
-
-```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
-```
+installs Chromium, Firefox, and WebKit plus Linux system dependencies.
 
 The test step sets `CI=true` and runs `yarn workspace @klurigo/klurigo-web
 test:e2e`. The Playwright configuration then enables two retries, adds the

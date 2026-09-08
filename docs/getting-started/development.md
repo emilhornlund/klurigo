@@ -2,6 +2,8 @@
 
 This guide covers the local application workflow. For MongoDB, Redis, and the
 provided Docker Compose setup, see the [local infrastructure guide](./local-infrastructure.md).
+For the complete root and workspace command inventory, see the
+[development command reference](../development/commands.md).
 
 ## Prerequisites
 
@@ -61,26 +63,10 @@ yarn workspace @klurigo/klurigo-web storybook
 
 ## Run Workspaces Individually
 
-Run each command from the repository root in its own terminal. MongoDB and
-Redis must be running before starting the backend.
-
-Backend:
-
-```sh
-yarn workspace @klurigo/klurigo-service dev
-```
-
-Frontend:
-
-```sh
-yarn workspace @klurigo/klurigo-web dev
-```
-
-Storybook:
-
-```sh
-yarn workspace @klurigo/klurigo-web storybook
-```
+Run workspace-specific development commands from the repository root in their
+own terminals. The command reference lists the backend, frontend, and
+Storybook commands. MongoDB and Redis must be running before starting the
+backend.
 
 The frontend development server uses port 3000 and proxies API requests to the
 backend on port 8080 using the checked-in development environment defaults.

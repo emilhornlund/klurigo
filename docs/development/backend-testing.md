@@ -4,6 +4,11 @@ Backend tests live under `packages/klurigo-service/src` and use Jest with
 `ts-jest`. The package separates isolated unit tests from tests that exercise
 the configured Nest application and its external state.
 
+Use the [development command reference](./commands.md) for the canonical
+backend test, coverage, and database lifecycle commands. This guide explains
+the suite boundaries, state isolation, and infrastructure behavior behind
+those commands.
+
 ## Suites And Naming
 
 - Unit test files use the `*.spec.ts` suffix.
@@ -11,15 +16,8 @@ the configured Nest application and its external state.
 - `jest.config.cjs` includes both patterns. `jest.unit.config.cjs` explicitly
   excludes `*.e2e-spec.ts`, because those files also contain the `spec.ts`
   suffix. `jest.e2e.config.cjs` includes only `*.e2e-spec.ts`.
-- The package scripts define the suite boundaries:
-
-  ```sh
-  yarn workspace @klurigo/klurigo-service test:unit
-  yarn workspace @klurigo/klurigo-service test:e2e
-  yarn workspace @klurigo/klurigo-service test
-  ```
-
-  `test` runs unit tests followed by backend e2e tests.
+- The package scripts define separate unit and e2e suites. The aggregate `test`
+  command runs unit tests followed by backend e2e tests.
 
 ## Unit Tests
 
@@ -108,16 +106,9 @@ change in behavior.
 
 ## Coverage And Diagnostics
 
-Run separate backend coverage reports with:
-
-```sh
-yarn workspace @klurigo/klurigo-service test:unit:coverage
-yarn workspace @klurigo/klurigo-service test:e2e:coverage
-yarn workspace @klurigo/klurigo-service test:coverage
-```
-
-The first two commands write to `coverage/unit` and `coverage/e2e` under the
-service package. `test:coverage` runs both commands in sequence. The root
+The package-specific unit and e2e coverage commands write to `coverage/unit`
+and `coverage/e2e` under the service package. `test:coverage` runs both in
+sequence. The root
 `yarn test:coverage` command also runs common and frontend coverage and, like
 the backend aggregate command, requires MongoDB and Redis for the e2e portion.
 
@@ -134,14 +125,6 @@ with `--detectOpenHandles` and fix the owning resource. Do not hide the issue
 with forced process exits or by suppressing normal Jest termination.
 
 ## Standalone Database Lifecycle
-
-Playwright's global hooks and the standalone scripts use these package
-commands:
-
-```sh
-yarn workspace @klurigo/klurigo-service e2e:setup
-yarn workspace @klurigo/klurigo-service e2e:teardown
-```
 
 `e2e:setup` resets the test MongoDB and Redis databases and seeds the shared
 fixture manifest. `e2e:teardown` clears both databases. The scripts connect

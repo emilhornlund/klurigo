@@ -19,6 +19,8 @@ This directory is the entry point for repository documentation.
 
 ## Development
 
+- [Development commands](./development/commands.md) - canonical root and
+  workspace-scoped command reference, prerequisites, and operational safety.
 - [Testing](./development/testing.md) - test layers and links to detailed
   backend and Playwright guidance.
 - [Backend testing](./development/backend-testing.md) - Jest suites, test
