@@ -117,10 +117,23 @@ yarn lint
 
 The root command covers `@klurigo/common`, `@klurigo/klurigo-service`,
 `@klurigo/klurigo-web`, `@klurigo/e2e-fixtures`, and `mongodb-migrator`.
+It also runs the focused `lint:config` check, which exercises the shared
+foundation, Node/browser/React environments, and the service test override.
+Each workspace owns its local `eslint.config.mjs` entry point; those entry
+points import the shared root foundation. The common package, service,
+e2e-fixtures, and MongoDB migrator use Node globals. The web source and e2e
+tests use browser globals, while its Vite, Vitest, and Playwright configuration
+files use Node globals.
 Autofix supported workspace lint rules with:
 
 ```sh
 yarn lint:fix
+```
+
+Run the configuration check separately when changing ESLint configuration:
+
+```sh
+yarn lint:config
 ```
 
 The root autofix command runs each workspace's `lint:fix` script. All five
