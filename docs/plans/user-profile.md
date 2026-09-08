@@ -1,9 +1,61 @@
 # User Profile Feature Plan
 
+> **Status:** implemented
+
 > **Plan boundary:** This file is implementation-plan material. Its proposed
 > tasks, completion markers, and historical notes do not define shipped
 > behavior. Use the [documentation index](../README.md) and the source code for
 > current behavior.
+
+## Audit Summary
+
+This plan is retained as an implemented feature's design and implementation
+history. Its task checkboxes describe the historical delivery sequence, not a
+replacement for the current API or UI documentation.
+
+### Current Shipped Behavior
+
+- A user-scoped request with `Authority.User` can call
+  `GET /api/users/:userId/profile` and
+  `GET /api/users/:userId/quizzes`. Both endpoints are authenticated; they are
+  not available to anonymous sessions. Unknown users produce a not-found
+  response.
+- The profile response contains `id`, the user's current default nickname,
+  `quizzesCount` for public quizzes, `hostedGamesCount`, `playedGamesCount`,
+  and `createdAt`.
+- The quizzes endpoint returns the existing paginated quiz response shape
+  (`results`, `total`, `limit`, `offset`) and restricts results to public
+  quizzes owned by the requested user. Supported sorting is `title`, `created`,
+  or `updated`, with `asc` or `desc` order. Defaults are `title`, `asc`,
+  `limit=10`, and `offset=0`; search and additional filters are not supported
+  by this endpoint.
+- Protected frontend routes are `/users/:userId/profile` and
+  `/users/:userId/quizzes`. The profile page loads the profile and an initial
+  public-quiz rail; the quizzes page loads more results with offset pagination.
+  Both adapt backend quiz responses through `toDiscoveryQuizCard` before
+  rendering `QuizDiscoveryCard`.
+- The authenticated profile menu has a self-profile entry labeled `Profile`
+  (the plan called this "My Profile") and links to the current user's profile.
+  The supported profile nickname link in game results is the host link. The
+  `QuizDiscoveryCard` author is currently display text, not a profile link, so
+  the plan's broader author-link acceptance claim is not current behavior.
+
+Relevant implementation and coverage includes
+[`public-user.controller.ts`](../../packages/klurigo-service/src/modules/user-profile-api/controllers/public-user.controller.ts),
+[`user-profile.service.ts`](../../packages/klurigo-service/src/modules/user-profile-api/services/user-profile.service.ts),
+the user-profile controller/service specs, the frontend user-profile and
+user-quizzes page tests, and
+[`quiz.utils.ts`](../../packages/klurigo-web/src/utils/quiz.utils.ts).
+
+### Historical Corrections
+
+- "Public profile" means publicly viewable profile data for authenticated
+  users with the required authority; it does not mean an unauthenticated API.
+- The backend deliberately reuses the quiz API pagination response rather than
+  introducing a profile-specific wrapper.
+- Nickname linking is limited to surfaces that currently have an appropriate
+  user ID and link implementation. Do not treat every author or player
+  nickname in the historical plan as a shipped profile link.
 
 ## Overview
 

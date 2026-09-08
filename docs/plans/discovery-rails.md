@@ -1,9 +1,79 @@
 # Discovery Rails — Phased Implementation Plan
 
+> **Status:** implemented
+
 > **Plan boundary:** This file is implementation-plan material. Its phases,
 > proposed changes, completion markers, and historical notes do not define
 > shipped behavior. Use the [documentation index](../README.md) and the source
 > code for current behavior.
+
+## Audit Summary
+
+This plan is retained as an implemented feature's phased design and change
+history. The phases and later change notes below are historical material;
+`[x]` and `[DONE]` markers do not override the current source contracts.
+
+### Current Shipped Behavior
+
+- Authenticated users with a user-scoped token and `Authority.Discovery` call
+  `GET /api/discover` for the latest snapshot or
+  `GET /api/discover/section/:key` for offset pagination. A missing snapshot
+  returns empty sections. Section pagination reads stored snapshot order,
+  returns `results`, `snapshotTotal`, `limit`, and `offset`, and clamps limit to
+  1-50 and offset to zero or greater. `snapshotTotal` is the stored-entry
+  count, not a live database count.
+- The six rail keys, in display order, are `FEATURED`, `TRENDING`,
+  `TOP_RATED`, `MOST_PLAYED`, `NEW_AND_NOTEWORTHY`, and
+  `CATEGORY_SPOTLIGHT`. The API hydrates up to 10 preview entries per rail
+  without re-sorting them. The frontend supplies rail labels and descriptions
+  locally; those fields are not part of the current response contract.
+- Snapshots are computed at 06:00 and 18:00 UTC under the distributed
+  `discovery_snapshot_lock` and stored as a singleton. Setting
+  `DISCOVERY_SEED_ON_INIT=true` performs an additional compute at every service
+  instance startup, so operators should account for repeated startup work in a
+  multi-instance deployment.
+- Runtime eligibility is public quizzes with an owner and at least 10
+  questions. Missing cover images and descriptions do not exclude a quiz;
+  they lower quality scoring. `FEATURED` uses `featuredRank` then quality,
+  `TRENDING` uses completed plays from the last 30 days and excludes zero-score
+  entries, `TOP_RATED` uses Bayesian rating scores for quizzes with at least
+  one rating, `MOST_PLAYED` excludes zero-play quizzes, `NEW_AND_NOTEWORTHY`
+  ranks by creation time with quality as a tie-breaker, and
+  `CATEGORY_SPOTLIGHT` selects the largest eligible category and ranks it by
+  quality. Quality combines cover, description, question count, play and
+  player engagement, Bayesian rating, question-media density, and question-type
+  variety. Rails are independently scored and may contain the same quiz; no
+  inter-rail deduplication is applied.
+- `discovery.featuredRank` is an internal quiz field used by the FEATURED
+  scorer. There is no shipped admin UI or `set-featured-rank` management
+  script.
+- The canonical frontend route is protected `/discover`. It renders rails and
+  uses the section route `/discover/section/:key` for the full list. When a
+  search, category, language, or mode filter is active, the page replaces the
+  rails with paginated results from `GET /api/quizzes`; clearing the filter
+  restores the rails. There is no `/discover/rails` route and no separate
+  `/discover/search` route.
+
+Relevant implementation and coverage includes
+[`discovery.controller.ts`](../../packages/klurigo-service/src/modules/discovery-api/controllers/discovery.controller.ts),
+[`discovery-compute.service.ts`](../../packages/klurigo-service/src/modules/discovery-api/services/discovery-compute.service.ts),
+[`discovery-scheduler.service.ts`](../../packages/klurigo-service/src/modules/discovery-api/services/discovery-scheduler.service.ts),
+the discovery controller/compute/scheduler specs and e2e specs, and
+[`main.tsx`](../../packages/klurigo-web/src/main.tsx).
+
+### Historical Corrections
+
+- The original public discovery endpoint was superseded by user-scope and
+  `DISCOVERY` authority checks.
+- The original hard-exclusive and later soft-deduplication policy was removed;
+  current computation allows overlap between all rails.
+- The staged `/discover/rails` route was removed during cutover. `/discover` is
+  the canonical rails route.
+- Proposed backend `title` and `description` section fields were removed.
+  Current UI copy comes from frontend key mappings.
+- The plan's early cover/description eligibility threshold and seven-day
+  trending references are historical. Runtime behavior uses the current
+  repository predicate and 30-day trending window described above.
 
 ## Problem Statement
 
