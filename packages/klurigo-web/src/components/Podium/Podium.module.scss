@@ -281,9 +281,9 @@
       .stack {
         border-radius: helpers.pxToRem(12px) 0 0 0;
         background: linear-gradient(
-            135deg,
-            celebration.$color-celebration-medal-silver 0%,
-            celebration.$color-celebration-medal-silver-highlight 100%
+          135deg,
+          celebration.$color-celebration-medal-silver 0%,
+          celebration.$color-celebration-medal-silver-highlight 100%
         );
 
         box-shadow: shadows.$shadow-inset-side-left;
@@ -294,9 +294,9 @@
       .stack {
         border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
         background: linear-gradient(
-            135deg,
-            celebration.$color-celebration-medal-gold 0%,
-            celebration.$color-celebration-medal-gold-highlight 100%
+          135deg,
+          celebration.$color-celebration-medal-gold 0%,
+          celebration.$color-celebration-medal-gold-highlight 100%
         );
       }
     }
@@ -305,9 +305,9 @@
       .stack {
         border-radius: 0 helpers.pxToRem(12px) 0 0;
         background: linear-gradient(
-            135deg,
-            celebration.$color-celebration-medal-bronze 0%,
-            celebration.$color-celebration-medal-bronze-highlight 100%
+          135deg,
+          celebration.$color-celebration-medal-bronze 0%,
+          celebration.$color-celebration-medal-bronze-highlight 100%
         );
 
         box-shadow: shadows.$shadow-inset-side-right;

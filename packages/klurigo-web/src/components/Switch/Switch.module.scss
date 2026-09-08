@@ -9,19 +9,23 @@
 $mobile-switch-height: helpers.pxToRem(30px);
 $mobile-switch-padding: helpers.pxToRem(2px);
 $mobile-switch-slider-size: $mobile-switch-height - ($mobile-switch-padding * 2);
-$mobile-switch-width: ($mobile-switch-slider-size * 2) + ($mobile-switch-padding * 2);
+$mobile-switch-width: ($mobile-switch-slider-size * 2) +
+  ($mobile-switch-padding * 2);
 $mobile-switch-visible-border-width: helpers.pxToRem(1px);
 
 $tablet-switch-height: helpers.pxToRem(34px);
 $tablet-switch-padding: helpers.pxToRem(3px);
 $tablet-switch-slider-size: $tablet-switch-height - ($tablet-switch-padding * 2);
-$tablet-switch-width: ($tablet-switch-slider-size * 2) + ($tablet-switch-padding * 2);
+$tablet-switch-width: ($tablet-switch-slider-size * 2) +
+  ($tablet-switch-padding * 2);
 $tablet-switch-visible-border-width: helpers.pxToRem(2px);
 
 $desktop-switch-height: helpers.pxToRem(38px);
 $desktop-switch-padding: helpers.pxToRem(4px);
-$desktop-switch-slider-size: $desktop-switch-height - ($desktop-switch-padding * 2);
-$desktop-switch-width: ($desktop-switch-slider-size * 2) + ($desktop-switch-padding * 2);
+$desktop-switch-slider-size: $desktop-switch-height -
+  ($desktop-switch-padding * 2);
+$desktop-switch-width: ($desktop-switch-slider-size * 2) +
+  ($desktop-switch-padding * 2);
 $desktop-switch-visible-border-width: helpers.pxToRem(3px);
 
 .switchContainer {
@@ -138,8 +142,8 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
       right: 0;
       bottom: 0;
       background-color: colors.$color-surface-control-muted;
-      -webkit-transition: .4s;
-      transition: .4s;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
 
       @include helpers.mobile {
         border-radius: $mobile-switch-height;
@@ -153,11 +157,11 @@ $desktop-switch-visible-border-width: helpers.pxToRem(3px);
 
       &:before {
         position: absolute;
-        content: "";
+        content: '';
         background-color: colors.$color-surface-default;
         border-radius: radius.$radius-circle;
-        -webkit-transition: .4s;
-        transition: .4s;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
 
         @include helpers.mobile {
           height: $mobile-switch-slider-size;

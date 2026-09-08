@@ -24,7 +24,8 @@ $outline-offset: helpers.pxToRem(2px);
     column-gap: spacing.$space-compact-desktop;
   }
 
-  .classic, .zeroToOneHundred {
+  .classic,
+  .zeroToOneHundred {
     @include button.button-reset;
 
     display: flex;

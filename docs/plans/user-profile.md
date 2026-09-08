@@ -491,7 +491,7 @@ yarn workspace @klurigo/klurigo-web test
 yarn test
 
 # Type check
-yarn check-types
+yarn typecheck
 ```
 
 ---
@@ -516,7 +516,7 @@ yarn check-types
 - The `Page` profile dropdown includes a "My Profile" item that navigates to the logged-in user's own profile page
 - Quiz author nicknames in `QuizDiscoveryCard` link to the author's profile page
 - Game result participant nicknames link to profile pages where a user id is available and navigation is appropriate
-- Existing tests continue to pass, and `yarn check-types` plus `yarn lint` pass after implementation
+- Existing tests continue to pass, and `yarn typecheck` plus `yarn lint` pass after implementation
 
 ---
 

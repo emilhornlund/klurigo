@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="project &gt; check-types" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/package.json" />
+  <configuration default="false" name="klurigo-web &gt; typecheck" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/packages/klurigo-web/package.json" />
     <command value="run" />
     <scripts>
-      <script value="check-types" />
+      <script value="typecheck" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

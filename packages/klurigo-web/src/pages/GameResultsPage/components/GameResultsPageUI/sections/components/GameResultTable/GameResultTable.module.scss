@@ -41,7 +41,8 @@
     }
 
     @include helpers.desktop {
-      padding: spacing.$space-content-padding-desktop spacing.$space-page-desktop;
+      padding: spacing.$space-content-padding-desktop
+        spacing.$space-page-desktop;
     }
 
     .main {
@@ -118,19 +119,26 @@
           @include helpers.mobile {
             padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
 
-            @include helpers.fontSize(typography.$font-size-control-small-mobile);
+            @include helpers.fontSize(
+              typography.$font-size-control-small-mobile
+            );
           }
 
           @include helpers.tablet {
             padding: spacing.$space-inline-mobile spacing.$space-compact-mobile;
 
-            @include helpers.fontSize(typography.$font-size-control-small-mobile);
+            @include helpers.fontSize(
+              typography.$font-size-control-small-mobile
+            );
           }
 
           @include helpers.desktop {
-            padding: spacing.$space-inline-desktop spacing.$space-compact-desktop;
+            padding: spacing.$space-inline-desktop
+              spacing.$space-compact-desktop;
 
-            @include helpers.fontSize(typography.$font-size-control-small-desktop);
+            @include helpers.fontSize(
+              typography.$font-size-control-small-desktop
+            );
           }
         }
       }
@@ -262,12 +270,12 @@
       right: 8%;
       height: 1px;
       background: linear-gradient(
-          to right,
-          transparent 0%,
-          rgba(255, 255, 255, 0.4) 15%,
-          rgba(255, 255, 255, 0.7) 50%,
-          rgba(255, 255, 255, 0.4) 85%,
-          transparent 100%
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 15%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.4) 85%,
+        transparent 100%
       );
     }
   }

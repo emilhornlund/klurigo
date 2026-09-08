@@ -118,20 +118,17 @@ $contrast-opacity: 0.8;
       }
 
       @include helpers.mobile {
-        padding: spacing.$space-compact-mobile
-          spacing.$space-page-mobile;
+        padding: spacing.$space-compact-mobile spacing.$space-page-mobile;
         column-gap: spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        padding: spacing.$space-compact-tablet
-          spacing.$space-page-tablet;
+        padding: spacing.$space-compact-tablet spacing.$space-page-tablet;
         column-gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        padding: spacing.$space-compact-desktop
-          spacing.$space-page-desktop;
+        padding: spacing.$space-compact-desktop spacing.$space-page-desktop;
         column-gap: spacing.$space-compact-desktop;
       }
 

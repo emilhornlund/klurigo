@@ -80,13 +80,12 @@ This structure is compatible with:
 mongorestore --dir=output
 ```
 
-
 ## 🔁 Document Transformations
 
 Documents are transformed collection-by-collection. Example:
 
-* Collection `players` → `users`
-* Transformed with default fields like `givenName`, `authProvider`, `createdAt`, etc.
+- Collection `players` → `users`
+- Transformed with default fields like `givenName`, `authProvider`, `createdAt`, etc.
 
 If a collection is not handled explicitly, it will be skipped.
 
@@ -96,13 +95,13 @@ You can extend the `transformOriginalDocument()` function in `src/index.ts` to a
 
 The tool auto-generates metadata for known collections like:
 
-* `users`
-* `games`
-* `quizzes`
-* `quiz_ratings`
-* `tokens`
-* `game_results`
-* `discovery_snapshots`
+- `users`
+- `games`
+- `quizzes`
+- `quiz_ratings`
+- `tokens`
+- `game_results`
+- `discovery_snapshots`
 
 UUIDs and index definitions are embedded in `getMetadata()`.
 
@@ -112,9 +111,9 @@ All core logic lives in `src/index.ts`.
 
 To extend the tool:
 
-* Add collection mappings in `getTargetCollectionName()`
-* Add document transformers in `transformOriginalDocument()`
-* Add metadata in `getMetadata()`
+- Add collection mappings in `getTargetCollectionName()`
+- Add document transformers in `transformOriginalDocument()`
+- Add metadata in `getMetadata()`
 
 ## ❓ Example
 

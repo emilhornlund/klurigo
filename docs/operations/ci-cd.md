@@ -37,15 +37,16 @@ caching, installs Yarn Classic `1.22.22`, and runs
 The static-build job then runs these root or workspace commands in order:
 
 1. `yarn build`
-2. `yarn check-types`
+2. `yarn typecheck`
 3. `yarn lint`
-4. `yarn workspace @klurigo/klurigo-service check-circular-deps`
+4. `yarn format:check`
+5. `yarn workspace @klurigo/klurigo-service check-circular-deps`
 
 The root build builds `@klurigo/common` before the web and service application
-builds. Type checking and linting include the application packages and the
-workspace tools configured by the root `package.json`. The circular-dependency
-check analyzes the service entry point with Madge. These static checks do not
-start the Compose services.
+builds, and builds the MongoDB migrator alongside them. Type checking, linting,
+and formatting include the application packages and workspace tools configured
+by the root `package.json`. The circular-dependency check analyzes the service
+entry point with Madge. These static checks do not start the Compose services.
 
 ## Unit Coverage
 

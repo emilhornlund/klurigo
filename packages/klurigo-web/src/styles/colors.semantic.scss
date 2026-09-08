@@ -134,10 +134,7 @@ $color-focus-control-default-ring: palette.alpha(
   $color-focus-control-default,
   0.4
 );
-$color-focus-control-muted-ring: palette.alpha(
-  $color-focus-control-muted,
-  0.4
-);
+$color-focus-control-muted-ring: palette.alpha($color-focus-control-muted, 0.4);
 $color-focus-success: $color-surface-success;
 
 /* Shadows */

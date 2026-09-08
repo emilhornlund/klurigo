@@ -10,7 +10,8 @@
     position: absolute;
     left: $--loading-spinner-bar-left;
     width: $--loading-spinner-bar-width;
-    animation: #{$unique-name}-loading-spinner-animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    animation: #{$unique-name}-loading-spinner-animation 1.2s
+      cubic-bezier(0, 0.5, 0.5, 1) infinite;
     background: $color;
 
     &:nth-child(1) {
@@ -30,7 +31,8 @@
         top: $--loading-spinner-bar-left;
         height: calc($size - ($--loading-spinner-bar-left * 2));
       }
-      50%, 100% {
+      50%,
+      100% {
         top: calc($--loading-spinner-bar-left * 3);
         height: calc($--loading-spinner-bar-width * 2);
       }
