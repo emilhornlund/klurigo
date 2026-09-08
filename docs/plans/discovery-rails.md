@@ -1,12 +1,17 @@
 # Discovery Rails — Phased Implementation Plan
 
+> **Plan boundary:** This file is implementation-plan material. Its phases,
+> proposed changes, completion markers, and historical notes do not define
+> shipped behavior. Use the [documentation index](../README.md) and the source
+> code for current behavior.
+
 ## Problem Statement
 
-The current `/discover` page is a single vertical paginated table backed by `GET /quizzes`
-with client-side filter/sort controls. The goal is to replace it with multiple **horizontal
-scrollable rails** (sections), each surfacing a curated subset of public quizzes, computed
-server-side on a fixed schedule. The old page remains functional until the new experience
-is explicitly cut over, at which point the old page and all associated code are removed.
+At the time this plan was drafted, the `/discover` page was a single vertical paginated
+table backed by `GET /quizzes` with client-side filter/sort controls. The plan records the
+phased replacement with multiple **horizontal scrollable rails** (sections), each surfacing
+a curated subset of public quizzes, computed server-side on a fixed schedule. The old page
+was to remain functional until the new experience was explicitly cut over.
 
 ---
 
@@ -264,15 +269,9 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
   ```
   This field is intentionally **not** exposed in `QuizResponseDto` / `@klurigo/common`;
   it is an internal compute field only.
-- **Management in v1 (no admin UI):** a lightweight admin script
-  `packages/klurigo-service/scripts/set-featured-rank.ts` is included in this PR.
-  It accepts a quiz ID and a rank value (or `--unset`) and updates the document directly
-  via Mongoose. Example usage:
-  ```
-  ts-node set-featured-rank.ts --quizId <id> --rank 1
-  ts-node set-featured-rank.ts --quizId <id> --unset
-  ```
-  The script is documented in `packages/klurigo-service/scripts/README.md`.
+- **Management in v1 (no admin UI):** an admin script for setting
+  `discovery.featuredRank` was proposed, but it is deferred. No such command
+  is available in the current repository.
 
 **Snapshot schema — enriched entries with scores:**
 - New NestJS module: `packages/klurigo-service/src/modules/discovery-api/`
@@ -303,7 +302,8 @@ Declare in `discovery-api/constants/discovery.constants.ts` (exported from the m
 - `DiscoveryController` (`@Controller('discover')`) — `GET /discover` stub:
   - Loads latest snapshot; if none exists returns `{ sections: [], generatedAt: null }`
   - Hydration and section content left for Phase 5 (stub returns empty sections array)
-  - Endpoint is **public** (no auth required)
+  - Initial phase proposal: the endpoint was public. This was later superseded;
+    the current controller requires a user token with the `DISCOVERY` authority.
 - Swagger/OpenAPI documentation on `DiscoveryController`:
   - `@ApiTags('discovery')`
   - `@ApiOperation` with `summary` and `description` on each handler

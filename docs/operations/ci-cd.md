@@ -28,7 +28,7 @@ workflows.
 
 ## Build Checks
 
-The reusable build workflow runs its static-build and unit-coverage jobs on
+The reusable build workflow runs its static-build and coverage jobs on
 `ubuntu-latest`. Each job checks out the repository with a shallow checkout,
 sets up Node.js 24 with Yarn caching, installs Yarn Classic `1.22.22`, and runs
 `yarn install --frozen-lockfile`.

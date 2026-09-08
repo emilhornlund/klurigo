@@ -1,5 +1,10 @@
 # User Profile Feature Plan
 
+> **Plan boundary:** This file is implementation-plan material. Its proposed
+> tasks, completion markers, and historical notes do not define shipped
+> behavior. Use the [documentation index](../README.md) and the source code for
+> current behavior.
+
 ## Overview
 
 This plan describes the v1 implementation of a public user profile feature across the Klurigo monorepo. Any authenticated user with `Authority.User` can view another user's public profile and public quizzes. The profile includes basic account information plus public quiz, hosted game, and played game counts. The frontend adds dedicated profile and quizzes pages, a "My Profile" menu item, and profile links from supported nickname surfaces.
