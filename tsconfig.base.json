@@ -1,4 +1,6 @@
 {
+  // Shared defaults. Runtime-specific projects override target, module, and
+  // library settings while retaining these type-safety and interop defaults.
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",

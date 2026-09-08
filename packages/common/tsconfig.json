@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     /* Targets */
     "target": "ES2022",
@@ -14,14 +15,8 @@
     "declarationMap": true,
     "sourceMap": true,
 
-    /* Interop & ergonomics */
-    "esModuleInterop": true,
-
     /* Strictness & checks */
-    "strict": true,
     "ignoreDeprecations": "6.0",
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
