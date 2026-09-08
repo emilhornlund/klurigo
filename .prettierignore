@@ -5,9 +5,9 @@ dist/
 build/
 out/
 coverage/
+storybook-static/
 test-results/
 .nyc_output/
-.storybook-static/
 *.tsbuildinfo
 
 logs/
