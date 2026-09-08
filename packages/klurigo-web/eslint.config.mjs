@@ -1,98 +1,41 @@
-import pluginJs from '@eslint/js'
-import pluginImport from 'eslint-plugin-import'
-import prettier from 'eslint-plugin-prettier'
 import pluginReact from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
 
-const browserGlobals = Object.fromEntries(
-  Object.entries(globals.browser).map(([k, v]) => [k.trim(), v]),
-)
+import {
+  browserConfig,
+  nodeConfigFor,
+  sharedConfig,
+} from '../../eslint.config.mjs'
+
+const reactFiles = ['src/**/*.{js,mjs,cjs,ts,jsx,tsx}']
 
 export default [
+  ...sharedConfig,
+  browserConfig,
+  nodeConfigFor(['*.config.{js,mjs,cjs,ts}', 'playwright*.{js,mjs,cjs,ts}']),
   {
-    ignores: ['node_modules', 'dist'],
+    ...pluginReact.configs.flat.recommended,
+    files: reactFiles,
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-  },
-  {
-    languageOptions: {
-      globals: browserGlobals,
-    },
-  },
-  {
+    files: reactFiles,
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      prettier: prettier,
-      import: pluginImport,
     },
-  },
-  {
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
-      'prettier/prettier': 'error',
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      'sort-imports': [
-        'error',
-        {
-          ignoreCase: true,
-          ignoreDeclarationSort: true,
-        },
-      ],
-      'import/order': [
-        'error',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-            'unknown',
-          ],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        },
-      ],
-      'import/extensions': [
-        'error',
-        'ignorePackages',
-        {
-          ts: 'never',
-          tsx: 'never',
-        },
-      ],
-    },
-  },
-  {
-    settings: {
-      react: {
-        version: 'detect',
-      },
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-        },
-      },
-    },
-  },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  // Override react recommended defaults
-  {
-    rules: {
+      // Preserve the frontend's existing React 19 and app-state exceptions.
       'react-hooks/refs': 'off',
       'react-hooks/set-state-in-effect': 'off',
       'react/prop-types': 'off',

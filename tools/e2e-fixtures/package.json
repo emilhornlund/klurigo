@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "lint": "eslint --config ../../packages/klurigo-service/eslint.config.mjs .",
+    "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "format": "prettier --write . --ignore-path ../../.gitignore",
     "format:check": "prettier --check . --ignore-path ../../.gitignore",
