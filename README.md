@@ -56,106 +56,12 @@ The root `package.json` contains orchestration scripts for development, building
 
 ## Testing
 
-**Backend test structure and lifecycle:**
+Detailed testing guidance lives in the [testing overview](./docs/development/testing.md):
 
-- Unit specs end in `*.spec.ts`. E2e specs end in `*.e2e-spec.ts`; the unit Jest
-  configuration explicitly excludes e2e specs even though they also contain the
-  `spec.ts` suffix.
-- Unit tests use focused Nest testing modules rather than the fully configured
-  application. They do not require or use real MongoDB or Redis, so they can use
-  Jest's normal worker parallelism.
-- Backend e2e tests use `createTestApp`, the test MongoDB database and Redis
-  database, and the serial Jest configuration (`maxWorkers: 1`). Start both
-  services, for example with `docker compose up -d`, before any command that
-  runs e2e tests.
-- Use the shared typed builders in
-  `packages/klurigo-service/test-utils/data`. Prefer their deterministic
-  defaults, apply partial typed overrides for scenario-specific values, and use
-  explicit IDs or date offsets when fixtures must be distinct or have a temporal
-  relationship.
-- For a stateful e2e suite, initialize one fully configured Nest application per
-  suite. Before each stateful test, reset all MongoDB collections and the
-  configured Redis database, then create that test's fixtures. During suite
-  cleanup, reset shared state and close every application resource. Cleanup must
-  still attempt shutdown when reset fails and must preserve actionable
-  diagnostics for MongoDB reset, Redis reset, application, and Redis shutdown
-  failures.
-- Stateful e2e tests must use only the configured test MongoDB and Redis
-  databases. They must not depend on state left by another test or suite.
-
-Run the backend suites from the repository root with these workspace commands:
-
-```sh
-yarn workspace @klurigo/klurigo-service test:unit
-yarn workspace @klurigo/klurigo-service test:e2e
-yarn workspace @klurigo/klurigo-service test
-yarn workspace @klurigo/klurigo-service test:unit:coverage
-yarn workspace @klurigo/klurigo-service test:e2e:coverage
-yarn workspace @klurigo/klurigo-service test:coverage
-```
-
-The complete test and coverage commands include the e2e suite, so they also
-require MongoDB and Redis to be running. Unit and e2e coverage remain separate
-under `packages/klurigo-service/coverage/unit` and
-`packages/klurigo-service/coverage/e2e`; coverage should preserve or improve
-the existing scenario coverage. Use the repository's existing Codecov policy in
-`codecov.yml` rather than introducing a backend-specific threshold. CI uploads
-the reports separately with the `klurigo-service-unit` and
-`klurigo-service-e2e` flags.
-
-Test-infrastructure refactoring must not remove scenarios or weaken existing
-assertions unless there is a deliberate, documented reason. Such a change
-requires review of the affected coverage. Preserve normal Jest termination,
-diagnostics, and resource cleanup; do not suppress open-handle failures or add
-forced process exits. If a test leaves a handle behind, rerun the relevant
-command with `--detectOpenHandles` to identify the resource.
-
-Use `yarn workspace @klurigo/klurigo-service e2e:setup` before frontend
-Playwright tests when the e2e database needs to be reset and seeded, and
-`yarn workspace @klurigo/klurigo-service e2e:teardown` afterward to clear it.
-These standalone scripts connect directly to the test MongoDB and Redis
-services and do not require a Nest application instance.
-
----
-
-## End-to-End Tests (Playwright)
-
-The frontend application includes end-to-end tests written with **Playwright**.
-These tests run against the real frontend and backend, using the test MongoDB
-database and Redis database that are automatically reset and seeded before
-execution.
-
-### Prerequisites
-
-Playwright requires browser binaries to be installed once on your machine.
-
-```sh
-yarn workspace @klurigo/klurigo-web playwright install
-```
-
-On Linux (for example in CI), system dependencies may also be required:
-
-```sh
-yarn workspace @klurigo/klurigo-web playwright install --with-deps
-```
-
-### Run locally
-
-```sh
-yarn workspace @klurigo/klurigo-web test:e2e
-```
-
-This will:
-
-- Start the frontend (Vite dev server)
-- Start the backend in test mode
-- Reset and seed MongoDB and Redis
-- Run Playwright tests in the configured browser projects (Chromium and Firefox
-  locally, with WebKit added in CI)
-
-### CI behavior
-
-End-to-end tests are **disabled by default** in CI and are only executed for selected workflows (for example on `main` and production deploys).
+- [Backend testing](./docs/development/backend-testing.md) - Jest suites,
+  test infrastructure, lifecycle cleanup, isolation, and coverage.
+- [End-to-end testing](./docs/development/end-to-end-testing.md) - Playwright
+  setup, seeded fixtures, browser projects, GameSession execution, and CI.
 
 ---
 
