@@ -60,13 +60,10 @@ Detailed testing guidance lives in the [testing overview](./docs/development/tes
 
 ## CI/CD & Deployment
 
-All build, test, release, and deployment steps are now handled automatically by **GitHub Actions**. On every push and pull request the pipeline validates the codebase, and on merges to `main` it:
-
-1. Builds the frontend and backend Docker images.
-2. Runs the test suites.
-3. Tags the images with the current commit SHA and a semver tag (on release).
-4. Pushes artefacts to the configured container registry.
-5. Updates the production environment via the deployment workflow.
+- [CI/CD](./docs/operations/ci-cd.md) - verified workflow triggers, checks,
+  coverage, browser tests, image publishing, and Sentry releases.
+- [Deployment](./docs/operations/deployment.md) - beta and production paths,
+  infrastructure hand-off, image tags, and verified boundaries.
 
 ---
 

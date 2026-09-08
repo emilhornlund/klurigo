@@ -28,6 +28,13 @@ This directory is the entry point for repository documentation.
 - [End-to-end testing](./development/end-to-end-testing.md) - Playwright
   setup, seeded fixtures, browser projects, GameSession execution, and CI.
 
+## Operations
+
+- [CI/CD](./operations/ci-cd.md) - workflow triggers, build checks, coverage,
+  Playwright, image publishing, and Sentry releases.
+- [Deployment](./operations/deployment.md) - beta and production deployment
+  paths, infrastructure hand-off, and verified operational boundaries.
+
 ## Plans
 
 The `plans/` directory is the documentation category that exists today. It contains the repository's implementation plans:
