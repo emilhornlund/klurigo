@@ -2,6 +2,10 @@
 
 A CLI tool for parsing, transforming, and rewriting MongoDB `.bson` and `.metadata.json` dump files. This tool is useful when migrating data between schema versions or renaming collections prior to import with `mongorestore`.
 
+`mongodb-migrator` is a private repository workspace tool, not a published
+package. Building it creates `dist/index.js`, the entry point used by both the
+workspace package and its `mongodb-migrator` command.
+
 ## ✨ Features
 
 - Parses raw `.bson` files from a MongoDB dump

@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\"",
-    "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\"",
+    "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\" && yarn metadata:check",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
     "klurigo-service:dev": "yarn workspace @klurigo/klurigo-service dev",
     "klurigo-web:dev": "wait-on http://localhost:8080/health && yarn workspace @klurigo/klurigo-web dev",
@@ -16,6 +16,7 @@
     "serve": "concurrently \"yarn workspace @klurigo/klurigo-service serve\" \"yarn workspace @klurigo/klurigo-web serve\"",
     "lint": "concurrently --kill-others-on-fail \"yarn lint:config\" \"yarn workspace @klurigo/common lint\" \"yarn workspace @klurigo/klurigo-service lint\" \"yarn workspace @klurigo/klurigo-web lint\" \"yarn workspace @klurigo/e2e-fixtures lint\" \"yarn workspace mongodb-migrator lint\"",
     "lint:config": "node scripts/validate-eslint-config.mjs",
+    "metadata:check": "node scripts/validate-workspace-metadata.mjs",
     "lint:fix": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint:fix\" \"yarn workspace @klurigo/klurigo-service lint:fix\" \"yarn workspace @klurigo/klurigo-web lint:fix\" \"yarn workspace @klurigo/e2e-fixtures lint:fix\" \"yarn workspace mongodb-migrator lint:fix\"",
     "format": "yarn format:config && prettier --write . --ignore-path .prettierignore",
     "format:check": "yarn format:config && prettier --check . --ignore-path .prettierignore",
