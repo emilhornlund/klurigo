@@ -17,50 +17,11 @@ The backend development environment connects to MongoDB at
 
 ## Docker Compose Workflow
 
-Start both services and wait for their health checks:
-
-```sh
-docker compose up -d --wait
-```
-
-The service names can be supplied explicitly when only infrastructure is
-needed:
-
-```sh
-docker compose up -d --wait mongodb redis
-```
-
-Inspect service state and health:
-
-```sh
-docker compose ps
-```
-
-Follow service logs:
-
-```sh
-docker compose logs --follow mongodb redis
-```
-
-Stop the containers while retaining them and their volumes:
-
-```sh
-docker compose stop
-```
-
-Remove the containers and network while retaining the named volumes:
-
-```sh
-docker compose down
-```
-
-Remove the containers, network, and persisted MongoDB and Redis volumes:
-
-```sh
-docker compose down -v
-```
-
-Use `docker compose down -v` only when the local service data can be deleted.
+See the [development command reference](../development/commands.md) for the
+canonical Compose startup, inspection, logging, stop, and cleanup commands.
+Use `docker compose down -v` only when the local service data can be deleted;
+it removes the named MongoDB and Redis volumes as well as the containers and
+network.
 
 ## Development And Test Data
 

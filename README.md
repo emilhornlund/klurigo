@@ -41,18 +41,11 @@ For the complete application workflow, see the [development guide](./docs/gettin
 For MongoDB, Redis, ports, Compose inspection, and data cleanup, see the
 [local infrastructure guide](./docs/getting-started/local-infrastructure.md).
 
-## Scripts
+## Development Commands
 
-The root `package.json` contains orchestration scripts for development, building, and testing:
-
-**Scripts:**
-
-- `yarn dev` – Run the frontend and backend in parallel.
-- `yarn serve` – Serve both frontend and backend builds.
-- `yarn build` – Build the application packages.
-- `yarn clean` – Clean application build artifacts.
-- `yarn lint` / `yarn lint:fix` – Run linting across application packages and workspace tools.
-- `yarn test` – Run application package tests concurrently.
+See the [development command reference](./docs/development/commands.md) for
+the verified root and workspace-scoped commands, prerequisites, test services,
+generated artifacts, and safety constraints.
 
 ## Testing
 
