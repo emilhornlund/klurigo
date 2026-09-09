@@ -9,7 +9,8 @@
     "mongodb-migrator": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist node_modules/.tmp tsconfig.tsbuildinfo",
+    "build": "yarn clean && tsc",
     "start": "ts-node src/index.ts",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",

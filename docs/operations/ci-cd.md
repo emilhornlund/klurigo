@@ -48,9 +48,12 @@ The static-build job then runs these root or workspace commands in order:
 5. `yarn workspace @klurigo/klurigo-service check-circular-deps`
 
 The root build builds `@klurigo/common` before the web and service application
-builds, and builds the MongoDB migrator alongside them. Type checking and
-linting include the application packages and workspace tools configured by the
-root `package.json`. Formatting uses the root `.prettierrc` and
+builds and the MongoDB migrator, which run in parallel after the shared build
+succeeds. Each build-capable workspace cleans generated output and TypeScript
+build metadata before emitting artifacts; the final metadata check therefore
+cannot pass against an artifact left by an earlier or failed build. Type
+checking and linting include the application packages and workspace tools
+configured by the root `package.json`. Formatting uses the root `.prettierrc` and
 `.prettierignore` across the repository; `format:check` reports Prettier
 diagnostics and never modifies checked-out files. The circular-dependency check
 analyzes the service entry point with Madge. These static checks do not start
@@ -64,7 +67,7 @@ sequences and CI-only setup described below.
 ## Unit Coverage
 
 The unit-coverage job uses `ubuntu-latest`, Node.js 24, the frozen Yarn
-lockfile, and first builds `@klurigo/common`. It then runs:
+lockfile, and first builds the clean `@klurigo/common` output. It then runs:
 
 ```sh
 yarn test:unit:coverage
@@ -87,7 +90,7 @@ does not proceed to those uploads under the workflow's normal step behavior.
 
 ## Backend E2E Coverage
 
-The backend-e2e-coverage job builds `@klurigo/common`, starts the Compose
+The backend-e2e-coverage job builds the clean `@klurigo/common` output, starts the Compose
 `mongodb` and `redis` services, and runs:
 
 ```sh
@@ -112,8 +115,8 @@ The Frontend E2E Tests job is conditional on the reusable workflow's
 `run_e2e` input.
 Its current callers all enable it: pull requests, pushes to `main`, and manual
 production deployment. It runs on `ubuntu-latest`, installs dependencies with
-the frozen lockfile, builds `@klurigo/common`, and starts the Compose MongoDB
-and Redis services.
+the frozen lockfile, builds the clean `@klurigo/common` output, and starts the
+Compose MongoDB and Redis services.
 
 The job caches browsers using the installed `@playwright/test` version and the
 runner OS and architecture. It installs Chromium, Firefox, and WebKit with

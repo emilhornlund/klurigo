@@ -7,7 +7,7 @@
     "tools/*"
   ],
   "scripts": {
-    "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\"",
+    "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\" \"yarn workspace mongodb-migrator clean\"",
     "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\" && yarn metadata:check",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
     "klurigo-service:dev": "yarn workspace @klurigo/klurigo-service dev",

@@ -15,7 +15,7 @@ ENV VITE_SENTRY_DSN=$SENTRY_DSN
 ARG SENTRY_RELEASE
 ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 
-RUN yarn workspace @klurigo/klurigo-web build --mode production
+RUN yarn workspace @klurigo/common build && yarn workspace @klurigo/klurigo-web build --mode production
 
 # Production Stage
 FROM nginx:alpine

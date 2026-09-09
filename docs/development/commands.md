@@ -77,19 +77,25 @@ Build all build-capable workspaces with the root orchestration command:
 yarn build
 ```
 
-This builds `@klurigo/common`, then builds the service and web applications plus
-the MongoDB migrator in parallel. It then checks the built package entry points
-and workspace resolution with `yarn metadata:check`. The build-capable
-workspaces also expose these scoped commands:
+This builds `@klurigo/common` first, then builds the service, web, and MongoDB
+migrator workspaces in parallel. The dependent builds start only after the
+shared package succeeds, and the root command checks all required package entry
+points and workspace resolution with `yarn metadata:check`. Each build-capable
+workspace cleans its own generated output and TypeScript metadata before
+emitting new artifacts. The build-capable workspaces expose these scoped
+commands:
 
 ```sh
 yarn workspace @klurigo/common build
 yarn workspace @klurigo/klurigo-service build
-yarn workspace @klurigo/klurigo-service build:app
 yarn workspace @klurigo/klurigo-web build
-yarn workspace @klurigo/klurigo-web build:app
 yarn workspace mongodb-migrator build
 ```
+
+The service and web workspace builds build common first when invoked directly.
+The root command builds common once, then invokes the consumer-only build steps
+in parallel. The Dockerfiles likewise build common explicitly before invoking
+the package build.
 
 After the artifacts exist, run the entry-point and workspace-resolution check
 directly with:
@@ -98,10 +104,6 @@ directly with:
 yarn metadata:check
 ```
 
-The service and web `build` commands build the common package first. Their
-internal `build:app` commands skip that dependency build and are used by the
-root `build` command after common has been built.
-
 Remove application build artifacts:
 
 ```sh
@@ -109,14 +111,20 @@ yarn clean
 yarn workspace @klurigo/common clean
 yarn workspace @klurigo/klurigo-service clean
 yarn workspace @klurigo/klurigo-web clean
+yarn workspace mongodb-migrator clean
 ```
 
-The root clean command removes the common, service, and web artifacts. It does
-not build or clean the workspace tools.
+The root clean command removes generated artifacts for every build-capable
+workspace. It removes `dist/` output, service TypeScript build-info files, and
+the `node_modules/.tmp/` TypeScript metadata used by common and web. The
+e2e-fixtures workspace is intentionally excluded because it exposes its source
+entry directly and does not emit build artifacts.
 
-Build output is written to package `dist/` directories. The service clean also
-removes its TypeScript build-info files. Test coverage and Playwright reports
-are generated separately as described below.
+Build output is written to package `dist/` directories: common emits CommonJS,
+ESM, declarations, and source maps; the service emits `dist/main.js` and source
+maps; the web emits the Vite site and source maps; and the migrator emits
+`dist/index.js`. Test coverage and Playwright reports are generated separately
+as described below.
 
 ## Linting And Formatting
 

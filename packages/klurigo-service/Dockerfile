@@ -9,7 +9,7 @@ RUN corepack enable && yarn toolchain:check
 
 RUN yarn install --ignore-scripts --frozen-lockfile --modules-folder ./node_modules
 
-RUN yarn workspace @klurigo/klurigo-service build
+RUN yarn workspace @klurigo/common build && yarn workspace @klurigo/klurigo-service build
 
 # Optimize Stage
 FROM node:24-alpine AS optimize

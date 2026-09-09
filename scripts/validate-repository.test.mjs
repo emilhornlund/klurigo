@@ -12,6 +12,8 @@ const workspacePackages = new Map(
     '../packages/common/package.json',
     '../packages/klurigo-service/package.json',
     '../packages/klurigo-web/package.json',
+    '../tools/e2e-fixtures/package.json',
+    '../tools/mongodb-migrator/package.json',
   ].map((packagePath) => {
     const packageJson = JSON.parse(
       readFileSync(new URL(packagePath, import.meta.url), 'utf8'),
@@ -21,6 +23,10 @@ const workspacePackages = new Map(
 )
 const buildWorkflow = readFileSync(
   new URL('../.github/workflows/build.yml', import.meta.url),
+  'utf8',
+)
+const metadataCheck = readFileSync(
+  new URL('./validate-workspace-metadata.mjs', import.meta.url),
   'utf8',
 )
 
@@ -96,6 +102,98 @@ test('wires the root validation command to the validation runner', () => {
   assert.equal(
     rootPackage.scripts.validate,
     'node scripts/validate-repository.mjs',
+  )
+})
+
+test('orders the dependency build and validates only completed outputs', () => {
+  const build = rootPackage.scripts.build
+  const commonBuild = build.indexOf('yarn workspace @klurigo/common build')
+  const parallelBuild = build.indexOf('concurrently')
+  const metadataValidation = build.indexOf('yarn metadata:check')
+
+  assert.ok(commonBuild >= 0)
+  assert.ok(parallelBuild > commonBuild)
+  assert.ok(metadataValidation > parallelBuild)
+  assert.match(build, /common build && concurrently --kill-others-on-fail/)
+  assert.match(build, /klurigo-service build:app/)
+  assert.match(build, /klurigo-web build:app/)
+  assert.match(build, /mongodb-migrator build/)
+
+  for (const packageName of [
+    '@klurigo/common',
+    '@klurigo/klurigo-service',
+    '@klurigo/klurigo-web',
+    'mongodb-migrator',
+  ]) {
+    const packageJson = workspacePackages.get(packageName)
+    assert.ok(packageJson.scripts.clean, `${packageName} must have clean`)
+    assert.ok(packageJson.scripts.build, `${packageName} must have build`)
+    assert.ok(
+      /^yarn clean &&/.test(packageJson.scripts.build) ||
+        /workspace @klurigo\/common build/.test(packageJson.scripts.build),
+      `${packageName} build must clean before emitting artifacts`,
+    )
+  }
+
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-service').scripts['build:app'],
+    /^yarn clean &&/,
+  )
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-web').scripts['build:app'],
+    /^yarn clean &&/,
+  )
+
+  assert.match(rootPackage.scripts.clean, /workspace mongodb-migrator clean/)
+  assert.match(workspacePackages.get('@klurigo/common').scripts.clean, /dist/)
+  assert.match(
+    workspacePackages.get('@klurigo/common').scripts.clean,
+    /node_modules\/\.tmp/,
+  )
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-service').scripts.clean,
+    /tsconfig\.build\.tsbuildinfo/,
+  )
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-web').scripts.clean,
+    /node_modules\/\.tmp/,
+  )
+  assert.match(workspacePackages.get('mongodb-migrator').scripts.clean, /dist/)
+})
+
+test('checks every required build output, including stale-output-sensitive consumers', () => {
+  for (const output of [
+    'packages/common/dist/index.js',
+    'packages/common/dist/index.mjs',
+    'packages/common/dist/index.d.ts',
+    'packages/klurigo-service/dist/main.js',
+    'packages/klurigo-web/dist/index.html',
+    'tools/mongodb-migrator/dist/index.js',
+  ]) {
+    assert.match(
+      metadataCheck,
+      new RegExp(output.replaceAll('/', '\\/')),
+      `metadata validation must check ${output}`,
+    )
+  }
+
+  // The shared output is removed before it is rebuilt. This prevents a failed
+  // common build from leaving an old artifact for a consumer to use.
+  assert.match(
+    workspacePackages.get('@klurigo/common').scripts.build,
+    /^yarn clean && tsup$/,
+  )
+  assert.match(
+    rootPackage.scripts.build,
+    /common build && concurrently --kill-others-on-fail/,
+  )
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-service').scripts.build,
+    /workspace @klurigo\/common build && yarn build:app/,
+  )
+  assert.match(
+    workspacePackages.get('@klurigo/klurigo-web').scripts.build,
+    /workspace @klurigo\/common build && yarn build:app/,
   )
 })
 
