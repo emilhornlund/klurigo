@@ -75,8 +75,9 @@ yarn build
 ```
 
 This builds `@klurigo/common`, then builds the service and web applications plus
-the MongoDB migrator in parallel. The build-capable workspaces also expose these
-scoped commands:
+the MongoDB migrator in parallel. It then checks the built package entry points
+and workspace resolution with `yarn metadata:check`. The build-capable
+workspaces also expose these scoped commands:
 
 ```sh
 yarn workspace @klurigo/common build
@@ -85,6 +86,13 @@ yarn workspace @klurigo/klurigo-service build:app
 yarn workspace @klurigo/klurigo-web build
 yarn workspace @klurigo/klurigo-web build:app
 yarn workspace mongodb-migrator build
+```
+
+After the artifacts exist, run the entry-point and workspace-resolution check
+directly with:
+
+```sh
+yarn metadata:check
 ```
 
 The service and web `build` commands build the common package first. Their

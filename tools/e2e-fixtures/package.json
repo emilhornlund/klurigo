@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
+  "type": "commonjs",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {

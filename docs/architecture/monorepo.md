@@ -87,9 +87,12 @@ connections. The client-facing real-time protocol is SSE, not WebSocket.
 
 `tools/*` contains workspace members that support repository workflows:
 
-- `@klurigo/e2e-fixtures` provides shared typed test fixture helpers.
-- `mongodb-migrator` provides a command-line tool for transforming MongoDB
-  dump data.
+- `@klurigo/e2e-fixtures` provides shared typed test fixture helpers. It is
+  private and its `src/index.ts` entry point is consumed directly by the web
+  and service test tooling.
+- `mongodb-migrator` is a private repository CLI for transforming MongoDB dump
+  data. Its build produces `dist/index.js`, which is both its package entry
+  point and its `mongodb-migrator` command.
 
 The workspace tools may depend on `@klurigo/common` for shared contracts and
 utilities, but do not depend on either application package. The service and web
