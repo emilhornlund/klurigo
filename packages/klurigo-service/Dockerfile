@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY ../../ ./
 
+RUN corepack enable && yarn toolchain:check
+
 RUN yarn install --ignore-scripts --frozen-lockfile --modules-folder ./node_modules
 
 RUN yarn workspace @klurigo/klurigo-service build
@@ -42,8 +44,13 @@ ENV SENTRY_DSN=$SENTRY_DSN
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
-COPY --from=optimize /app/packages/klurigo-service/ ./
+COPY --from=optimize /app/package.json ./package.json
+COPY --from=optimize /app/packages/klurigo-service ./packages/klurigo-service
 COPY --from=optimize /app/node_modules ./node_modules
+
+WORKDIR /app/packages/klurigo-service
+
+RUN corepack enable && yarn --version
 
 CMD ["yarn", "serve"]
 

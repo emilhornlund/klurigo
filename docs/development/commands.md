@@ -6,16 +6,19 @@ workspace name.
 
 ## Prerequisites And Installation
 
-The repository requires Node.js `>=24 <25` (`.nvmrc` selects Node.js `v24`)
-and Yarn Classic `1.22.22`. The CI workflow installs that exact Yarn version.
+The repository requires Node.js `>=24 <25` (`.nvmrc` selects Node.js `v24`).
+The root `package.json` declares Yarn Classic `1.22.22` through its
+`packageManager` field. Corepack uses that declaration for local and CI
+commands. Docker build stages use the same declaration.
 Docker with Compose is also required for the MongoDB and Redis services used by
 the backend development and end-to-end workflows.
 
-Install the supported Yarn version, then install the locked workspace
-dependencies:
+Enable Corepack, verify the declared toolchain, then install the locked
+workspace dependencies:
 
 ```sh
-npm install --global yarn@1.22.22
+corepack enable
+yarn toolchain:check
 yarn install --frozen-lockfile
 ```
 

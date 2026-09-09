@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY ../../ ./
 
+RUN corepack enable && yarn toolchain:check
+
 RUN yarn install --ignore-scripts --frozen-lockfile --modules-folder ./node_modules
 
 ARG SENTRY_DSN
