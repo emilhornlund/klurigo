@@ -42,8 +42,9 @@ tests and uses two retries; local runs use zero retries.
 The setup script connects directly to the configured test stores, deletes all
 MongoDB collections, flushes Redis database `1`, and seeds the users and quiz
 fixtures from `@klurigo/e2e-fixtures`. Each GameSession fixture slot includes
-the existing Classic, late-join, and Zero to One Hundred quizzes plus a
-dedicated one-question Classic True/False quiz. The reset helper refuses MongoDB
+the existing Classic, late-join, and Zero to One Hundred quizzes plus
+dedicated one-question Classic True/False and Type Answer quizzes. The reset
+helper refuses MongoDB
 databases without `_test` in their name. Treat both the MongoDB and Redis
 targets as disposable test state; do not configure them to contain data that
 must be kept.
@@ -95,9 +96,9 @@ The fixture resolver fails when a project and repeat index do not have a
 configured fixture. Stateful tests must create their own game data and must
 not rely on another test's mutations. The shared fixture manifest is seeded
 before the run and is the source for the deterministic users, passwords, and
-quizzes used by the browser tests. The GameSession suite covers the dedicated
-True/False flow through the host UI, typed player SSE events, answer submission,
-result evaluation, response distribution, and final podium.
+quizzes used by the browser tests. The GameSession suite covers dedicated
+True/False and Type Answer flows through the host UI, typed player SSE events,
+answer submission, result evaluation, response distribution, and final podium.
 
 ## CI
 
