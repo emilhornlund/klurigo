@@ -1,9 +1,12 @@
 <img src="https://github.com/emilhornlund/klurigo/blob/main/.github/screenshot.png" alt="klurigo banner" align="center" />
 
-# Klurigo – formerly “Quiz”
+# Klurigo
 
 [![Main](https://github.com/emilhornlund/klurigo/actions/workflows/main.yml/badge.svg)](https://github.com/emilhornlund/klurigo/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/emilhornlund/klurigo/graph/badge.svg?token=TO2S69Y1MZ)](https://codecov.io/gh/emilhornlund/klurigo)
+[![License](https://img.shields.io/badge/License-Source--Available-blue.svg)](LICENSE)
+[![Node.js 24](https://img.shields.io/badge/Node.js-24-339933?logo=node.js&logoColor=white)](docs/getting-started/development.md)
+[![Yarn 1.22.22](https://img.shields.io/badge/Yarn-1.22.22-2C8EBB?logo=yarn&logoColor=white)](package.json)
 
 > • **Website:** [https://klurigo.com](https://klurigo.com) | **Public Beta:** [https://beta.klurigo.com](https://beta.klurigo.com)
 
