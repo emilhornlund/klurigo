@@ -56,6 +56,11 @@ diagnostics and never modifies checked-out files. The circular-dependency check
 analyzes the service entry point with Madge. These static checks do not start
 the Compose services.
 
+The command references used by this workflow are covered by the lightweight
+`yarn test:validate` repository check. It resolves root and workspace Yarn
+commands against their package scripts while preserving the independent job
+sequences and CI-only setup described below.
+
 ## Unit Coverage
 
 The unit-coverage job uses `ubuntu-latest`, Node.js 24, the frozen Yarn

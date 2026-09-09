@@ -434,6 +434,16 @@ dependencies. Run `corepack enable`, `yarn toolchain:check`, and
 MongoDB, Redis, or Playwright browsers. Each stage is labelled in the output;
 the underlying command output is retained and a failed child status is returned.
 
+Run the lightweight command-wiring checks separately when changing root scripts
+or GitHub Actions commands:
+
+```sh
+yarn test:validate
+```
+
+These checks verify the validation runner and the reusable build workflow's
+root/workspace script references without running the build or test suites.
+
 Backend and frontend end-to-end tests remain separate because they require
 additional infrastructure. Run the backend suite with MongoDB and Redis:
 
