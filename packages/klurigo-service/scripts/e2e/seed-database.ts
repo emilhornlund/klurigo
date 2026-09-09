@@ -47,6 +47,13 @@ type QuizQuestionDoc =
       options: string[]
     }
   | {
+      type: QuestionType.Puzzle
+      text: string
+      points: number
+      duration: number
+      values: string[]
+    }
+  | {
       type: QuestionType.Pin
       text: string
       points: number
@@ -156,6 +163,16 @@ function createQuizQuestionDoc(
       points: question.points,
       duration: question.duration,
       options: [...question.options],
+    }
+  }
+
+  if (question.type === QuestionType.Puzzle) {
+    return {
+      type: question.type,
+      text: question.text,
+      points: question.points,
+      duration: question.duration,
+      values: [...question.values],
     }
   }
 
