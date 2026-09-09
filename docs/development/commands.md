@@ -411,17 +411,45 @@ only be used when the named MongoDB and Redis volumes are disposable; see the
 
 ## Repository Validation
 
-Run the checks used by the repository's static CI job, plus the aggregate test
-suite, before submitting a change:
+Run the repository's standard static and unit validation path before submitting
+a change:
 
 ```sh
-yarn build
-yarn check-types
-yarn lint
-yarn workspace @klurigo/klurigo-service check-circular-deps
-yarn test
+yarn validate
 ```
 
-The circular-dependency check analyzes the service entry point with Madge. The
-aggregate test command requires MongoDB and Redis because it includes backend
-e2e tests.
+`yarn validate` runs these existing commands in order and stops at the first
+failure:
+
+1. `yarn build`, including the workspace metadata and entry-point check
+2. `yarn check-types`
+3. `yarn lint`
+4. `yarn format:check`
+5. `yarn workspace @klurigo/klurigo-service check-circular-deps`
+6. `yarn test`, which is the aggregate unit-test suite
+
+The command requires the supported Node.js and Yarn toolchain and locked
+dependencies. Run `corepack enable`, `yarn toolchain:check`, and
+`yarn install --frozen-lockfile` first as described above. It does not require
+MongoDB, Redis, or Playwright browsers. Each stage is labelled in the output;
+the underlying command output is retained and a failed child status is returned.
+
+Backend and frontend end-to-end tests remain separate because they require
+additional infrastructure. Run the backend suite with MongoDB and Redis:
+
+```sh
+docker compose up -d --wait mongodb redis
+yarn workspace @klurigo/klurigo-service test:e2e
+```
+
+Install frontend Playwright browsers and run the frontend suite separately:
+
+```sh
+yarn workspace @klurigo/klurigo-web test:e2e:install
+docker compose up -d --wait mongodb redis
+yarn workspace @klurigo/klurigo-web test:e2e
+```
+
+See [Backend End-To-End Tests](#backend-end-to-end-tests) and
+[Playwright Browser Tests](#playwright-browser-tests) for the infrastructure,
+database, and browser requirements.
