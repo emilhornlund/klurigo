@@ -39,6 +39,13 @@ type QuizQuestionDoc =
       correct: boolean
     }
   | {
+      type: QuestionType.TypeAnswer
+      text: string
+      points: number
+      duration: number
+      options: string[]
+    }
+  | {
       type: QuestionType.Range
       text: string
       points: number
@@ -128,6 +135,16 @@ function createQuizQuestionDoc(
       points: question.points,
       duration: question.duration,
       correct: question.correct,
+    }
+  }
+
+  if (question.type === QuestionType.TypeAnswer) {
+    return {
+      type: question.type,
+      text: question.text,
+      points: question.points,
+      duration: question.duration,
+      options: [...question.options],
     }
   }
 
