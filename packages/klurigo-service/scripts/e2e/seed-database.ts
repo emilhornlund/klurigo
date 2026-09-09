@@ -1,6 +1,7 @@
 import {
   GameMode,
   LanguageCode,
+  QuestionPinTolerance,
   QuestionRangeAnswerMargin,
   QuestionType,
   QuizCategory,
@@ -44,6 +45,16 @@ type QuizQuestionDoc =
       points: number
       duration: number
       options: string[]
+    }
+  | {
+      type: QuestionType.Pin
+      text: string
+      points: number
+      duration: number
+      imageURL: string
+      positionX: number
+      positionY: number
+      tolerance: QuestionPinTolerance
     }
   | {
       type: QuestionType.Range
@@ -145,6 +156,19 @@ function createQuizQuestionDoc(
       points: question.points,
       duration: question.duration,
       options: [...question.options],
+    }
+  }
+
+  if (question.type === QuestionType.Pin) {
+    return {
+      type: question.type,
+      text: question.text,
+      points: question.points,
+      duration: question.duration,
+      imageURL: question.imageURL,
+      positionX: question.positionX,
+      positionY: question.positionY,
+      tolerance: question.tolerance,
     }
   }
 

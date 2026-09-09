@@ -1,5 +1,6 @@
 import {
   GameMode,
+  QuestionPinTolerance,
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
@@ -30,6 +31,16 @@ export type GameSessionQuestionFixture =
       readonly options: readonly string[]
     }
   | {
+      readonly type: QuestionType.Pin
+      readonly text: string
+      readonly points: number
+      readonly duration: number
+      readonly imageURL: string
+      readonly positionX: number
+      readonly positionY: number
+      readonly tolerance: QuestionPinTolerance
+    }
+  | {
       readonly type: QuestionType.Range
       readonly text: string
       readonly points: number
@@ -52,6 +63,7 @@ export type GameSessionQuizzes = {
   readonly classic: GameSessionQuizFixture
   readonly classicTrueFalse: GameSessionQuizFixture
   readonly classicTypeAnswer: GameSessionQuizFixture
+  readonly classicPin: GameSessionQuizFixture
   readonly classicLateJoin: GameSessionQuizFixture
   readonly zeroToOneHundred: GameSessionQuizFixture
   readonly zeroToOneHundredLateJoin: GameSessionQuizFixture
@@ -93,6 +105,17 @@ export const E2E_GAME_SESSION_QUESTIONS = {
     duration: 30,
     options: ['Paris'],
   },
+  coordinatesOfEiffelTower: {
+    type: QuestionType.Pin,
+    text: 'Where is the Eiffel Tower located?',
+    points: 1000,
+    duration: 30,
+    imageURL:
+      'https://images.pexels.com/photos/247599/pexels-photo-247599.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    positionX: 0.25,
+    positionY: 0.75,
+    tolerance: QuestionPinTolerance.Medium,
+  },
   redPlanet: {
     type: QuestionType.MultiChoice,
     text: 'Which planet is known as the Red Planet?',
@@ -132,6 +155,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00002-0000-4000-8000-000000000002',
     classicTrueFalse: 'e2e40002-0000-4000-8000-000000000002',
     classicTypeAnswer: 'e2e50002-0000-4000-8000-000000000002',
+    classicPin: 'e2e60002-0000-4000-8000-000000000002',
     classicLateJoin: 'e2e10002-0000-4000-8000-000000000002',
     zeroToOneHundred: 'e2e20002-0000-4000-8000-000000000002',
     zeroToOneHundredLateJoin: 'e2e30002-0000-4000-8000-000000000002',
@@ -140,6 +164,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00003-0000-4000-8000-000000000003',
     classicTrueFalse: 'e2e40003-0000-4000-8000-000000000003',
     classicTypeAnswer: 'e2e50003-0000-4000-8000-000000000003',
+    classicPin: 'e2e60003-0000-4000-8000-000000000003',
     classicLateJoin: 'e2e10003-0000-4000-8000-000000000003',
     zeroToOneHundred: 'e2e20003-0000-4000-8000-000000000003',
     zeroToOneHundredLateJoin: 'e2e30003-0000-4000-8000-000000000003',
@@ -148,6 +173,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00004-0000-4000-8000-000000000004',
     classicTrueFalse: 'e2e40004-0000-4000-8000-000000000004',
     classicTypeAnswer: 'e2e50004-0000-4000-8000-000000000004',
+    classicPin: 'e2e60004-0000-4000-8000-000000000004',
     classicLateJoin: 'e2e10004-0000-4000-8000-000000000004',
     zeroToOneHundred: 'e2e20004-0000-4000-8000-000000000004',
     zeroToOneHundredLateJoin: 'e2e30004-0000-4000-8000-000000000004',
@@ -156,6 +182,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00005-0000-4000-8000-000000000005',
     classicTrueFalse: 'e2e40005-0000-4000-8000-000000000005',
     classicTypeAnswer: 'e2e50005-0000-4000-8000-000000000005',
+    classicPin: 'e2e60005-0000-4000-8000-000000000005',
     classicLateJoin: 'e2e10005-0000-4000-8000-000000000005',
     zeroToOneHundred: 'e2e20005-0000-4000-8000-000000000005',
     zeroToOneHundredLateJoin: 'e2e30005-0000-4000-8000-000000000005',
@@ -164,6 +191,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00006-0000-4000-8000-000000000006',
     classicTrueFalse: 'e2e40006-0000-4000-8000-000000000006',
     classicTypeAnswer: 'e2e50006-0000-4000-8000-000000000006',
+    classicPin: 'e2e60006-0000-4000-8000-000000000006',
     classicLateJoin: 'e2e10006-0000-4000-8000-000000000006',
     zeroToOneHundred: 'e2e20006-0000-4000-8000-000000000006',
     zeroToOneHundredLateJoin: 'e2e30006-0000-4000-8000-000000000006',
@@ -172,6 +200,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00007-0000-4000-8000-000000000007',
     classicTrueFalse: 'e2e40007-0000-4000-8000-000000000007',
     classicTypeAnswer: 'e2e50007-0000-4000-8000-000000000007',
+    classicPin: 'e2e60007-0000-4000-8000-000000000007',
     classicLateJoin: 'e2e10007-0000-4000-8000-000000000007',
     zeroToOneHundred: 'e2e20007-0000-4000-8000-000000000007',
     zeroToOneHundredLateJoin: 'e2e30007-0000-4000-8000-000000000007',
@@ -180,6 +209,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00008-0000-4000-8000-000000000008',
     classicTrueFalse: 'e2e40008-0000-4000-8000-000000000008',
     classicTypeAnswer: 'e2e50008-0000-4000-8000-000000000008',
+    classicPin: 'e2e60008-0000-4000-8000-000000000008',
     classicLateJoin: 'e2e10008-0000-4000-8000-000000000008',
     zeroToOneHundred: 'e2e20008-0000-4000-8000-000000000008',
     zeroToOneHundredLateJoin: 'e2e30008-0000-4000-8000-000000000008',
@@ -188,6 +218,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00009-0000-4000-8000-000000000009',
     classicTrueFalse: 'e2e40009-0000-4000-8000-000000000009',
     classicTypeAnswer: 'e2e50009-0000-4000-8000-000000000009',
+    classicPin: 'e2e60009-0000-4000-8000-000000000009',
     classicLateJoin: 'e2e10009-0000-4000-8000-000000000009',
     zeroToOneHundred: 'e2e20009-0000-4000-8000-000000000009',
     zeroToOneHundredLateJoin: 'e2e30009-0000-4000-8000-000000000009',
@@ -196,6 +227,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classic: 'e2e00010-0000-4000-8000-000000000010',
     classicTrueFalse: 'e2e40010-0000-4000-8000-000000000010',
     classicTypeAnswer: 'e2e50010-0000-4000-8000-000000000010',
+    classicPin: 'e2e60010-0000-4000-8000-000000000010',
     classicLateJoin: 'e2e10010-0000-4000-8000-000000000010',
     zeroToOneHundred: 'e2e20010-0000-4000-8000-000000000010',
     zeroToOneHundredLateJoin: 'e2e30010-0000-4000-8000-000000000010',
@@ -223,6 +255,12 @@ function createGameSessionQuizzes(
       title: 'E2E Type Answer Quiz',
       mode: GameMode.Classic,
       questions: [E2E_GAME_SESSION_QUESTIONS.capitalOfFrance],
+    },
+    classicPin: {
+      id: ids.classicPin,
+      title: 'E2E Pin Quiz',
+      mode: GameMode.Classic,
+      questions: [E2E_GAME_SESSION_QUESTIONS.coordinatesOfEiffelTower],
     },
     classicLateJoin: {
       id: ids.classicLateJoin,
