@@ -68,6 +68,7 @@ export type GameSessionQuizFixture = {
 
 export type GameSessionQuizzes = {
   readonly classic: GameSessionQuizFixture
+  readonly classicMixed: GameSessionQuizFixture
   readonly classicTrueFalse: GameSessionQuizFixture
   readonly classicTypeAnswer: GameSessionQuizFixture
   readonly classicPuzzle: GameSessionQuizFixture
@@ -168,6 +169,7 @@ export const E2E_GAME_SESSION_QUESTIONS = {
 const E2E_GAME_SESSION_QUIZ_IDS = {
   tester02: {
     classic: 'e2e00002-0000-4000-8000-000000000002',
+    classicMixed: 'e2e80002-0000-4000-8000-000000000002',
     classicTrueFalse: 'e2e40002-0000-4000-8000-000000000002',
     classicTypeAnswer: 'e2e50002-0000-4000-8000-000000000002',
     classicPuzzle: 'e2e70002-0000-4000-8000-000000000002',
@@ -178,6 +180,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester03: {
     classic: 'e2e00003-0000-4000-8000-000000000003',
+    classicMixed: 'e2e80003-0000-4000-8000-000000000003',
     classicTrueFalse: 'e2e40003-0000-4000-8000-000000000003',
     classicTypeAnswer: 'e2e50003-0000-4000-8000-000000000003',
     classicPuzzle: 'e2e70003-0000-4000-8000-000000000003',
@@ -188,6 +191,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester04: {
     classic: 'e2e00004-0000-4000-8000-000000000004',
+    classicMixed: 'e2e80004-0000-4000-8000-000000000004',
     classicTrueFalse: 'e2e40004-0000-4000-8000-000000000004',
     classicTypeAnswer: 'e2e50004-0000-4000-8000-000000000004',
     classicPuzzle: 'e2e70004-0000-4000-8000-000000000004',
@@ -198,6 +202,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester05: {
     classic: 'e2e00005-0000-4000-8000-000000000005',
+    classicMixed: 'e2e80005-0000-4000-8000-000000000005',
     classicTrueFalse: 'e2e40005-0000-4000-8000-000000000005',
     classicTypeAnswer: 'e2e50005-0000-4000-8000-000000000005',
     classicPuzzle: 'e2e70005-0000-4000-8000-000000000005',
@@ -208,6 +213,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester06: {
     classic: 'e2e00006-0000-4000-8000-000000000006',
+    classicMixed: 'e2e80006-0000-4000-8000-000000000006',
     classicTrueFalse: 'e2e40006-0000-4000-8000-000000000006',
     classicTypeAnswer: 'e2e50006-0000-4000-8000-000000000006',
     classicPuzzle: 'e2e70006-0000-4000-8000-000000000006',
@@ -218,6 +224,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester07: {
     classic: 'e2e00007-0000-4000-8000-000000000007',
+    classicMixed: 'e2e80007-0000-4000-8000-000000000007',
     classicTrueFalse: 'e2e40007-0000-4000-8000-000000000007',
     classicTypeAnswer: 'e2e50007-0000-4000-8000-000000000007',
     classicPuzzle: 'e2e70007-0000-4000-8000-000000000007',
@@ -228,6 +235,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester08: {
     classic: 'e2e00008-0000-4000-8000-000000000008',
+    classicMixed: 'e2e80008-0000-4000-8000-000000000008',
     classicTrueFalse: 'e2e40008-0000-4000-8000-000000000008',
     classicTypeAnswer: 'e2e50008-0000-4000-8000-000000000008',
     classicPuzzle: 'e2e70008-0000-4000-8000-000000000008',
@@ -238,6 +246,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester09: {
     classic: 'e2e00009-0000-4000-8000-000000000009',
+    classicMixed: 'e2e80009-0000-4000-8000-000000000009',
     classicTrueFalse: 'e2e40009-0000-4000-8000-000000000009',
     classicTypeAnswer: 'e2e50009-0000-4000-8000-000000000009',
     classicPuzzle: 'e2e70009-0000-4000-8000-000000000009',
@@ -248,6 +257,7 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
   },
   tester10: {
     classic: 'e2e00010-0000-4000-8000-000000000010',
+    classicMixed: 'e2e80010-0000-4000-8000-000000000010',
     classicTrueFalse: 'e2e40010-0000-4000-8000-000000000010',
     classicTypeAnswer: 'e2e50010-0000-4000-8000-000000000010',
     classicPuzzle: 'e2e70010-0000-4000-8000-000000000010',
@@ -267,6 +277,19 @@ function createGameSessionQuizzes(
       title: 'E2E Game Session Quiz',
       mode: GameMode.Classic,
       questions: [E2E_GAME_SESSION_QUESTIONS.clearDaytimeSky],
+    },
+    classicMixed: {
+      id: ids.classicMixed,
+      title: 'E2E Mixed Question Types Quiz',
+      mode: GameMode.Classic,
+      questions: [
+        E2E_GAME_SESSION_QUESTIONS.clearDaytimeSky,
+        E2E_GAME_SESSION_QUESTIONS.halfwayToOneHundred,
+        E2E_GAME_SESSION_QUESTIONS.moonIsLargerThanEarth,
+        E2E_GAME_SESSION_QUESTIONS.capitalOfFrance,
+        E2E_GAME_SESSION_QUESTIONS.coordinatesOfEiffelTower,
+        E2E_GAME_SESSION_QUESTIONS.europeanCapitals,
+      ],
     },
     classicTrueFalse: {
       id: ids.classicTrueFalse,
