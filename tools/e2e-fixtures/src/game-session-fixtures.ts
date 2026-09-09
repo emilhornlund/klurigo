@@ -16,6 +16,13 @@ export type GameSessionQuestionFixture =
       }[]
     }
   | {
+      readonly type: QuestionType.TrueFalse
+      readonly text: string
+      readonly points: number
+      readonly duration: number
+      readonly correct: boolean
+    }
+  | {
       readonly type: QuestionType.Range
       readonly text: string
       readonly points: number
@@ -36,6 +43,7 @@ export type GameSessionQuizFixture = {
 
 export type GameSessionQuizzes = {
   readonly classic: GameSessionQuizFixture
+  readonly classicTrueFalse: GameSessionQuizFixture
   readonly classicLateJoin: GameSessionQuizFixture
   readonly zeroToOneHundred: GameSessionQuizFixture
   readonly zeroToOneHundredLateJoin: GameSessionQuizFixture
@@ -62,6 +70,13 @@ export const E2E_GAME_SESSION_QUESTIONS = {
       { value: 'Blue', correct: true },
       { value: 'Green', correct: false },
     ],
+  },
+  moonIsLargerThanEarth: {
+    type: QuestionType.TrueFalse,
+    text: 'The Moon is larger than the Earth.',
+    points: 1000,
+    duration: 30,
+    correct: false,
   },
   redPlanet: {
     type: QuestionType.MultiChoice,
@@ -100,54 +115,63 @@ export const E2E_GAME_SESSION_QUESTIONS = {
 const E2E_GAME_SESSION_QUIZ_IDS = {
   tester02: {
     classic: 'e2e00002-0000-4000-8000-000000000002',
+    classicTrueFalse: 'e2e40002-0000-4000-8000-000000000002',
     classicLateJoin: 'e2e10002-0000-4000-8000-000000000002',
     zeroToOneHundred: 'e2e20002-0000-4000-8000-000000000002',
     zeroToOneHundredLateJoin: 'e2e30002-0000-4000-8000-000000000002',
   },
   tester03: {
     classic: 'e2e00003-0000-4000-8000-000000000003',
+    classicTrueFalse: 'e2e40003-0000-4000-8000-000000000003',
     classicLateJoin: 'e2e10003-0000-4000-8000-000000000003',
     zeroToOneHundred: 'e2e20003-0000-4000-8000-000000000003',
     zeroToOneHundredLateJoin: 'e2e30003-0000-4000-8000-000000000003',
   },
   tester04: {
     classic: 'e2e00004-0000-4000-8000-000000000004',
+    classicTrueFalse: 'e2e40004-0000-4000-8000-000000000004',
     classicLateJoin: 'e2e10004-0000-4000-8000-000000000004',
     zeroToOneHundred: 'e2e20004-0000-4000-8000-000000000004',
     zeroToOneHundredLateJoin: 'e2e30004-0000-4000-8000-000000000004',
   },
   tester05: {
     classic: 'e2e00005-0000-4000-8000-000000000005',
+    classicTrueFalse: 'e2e40005-0000-4000-8000-000000000005',
     classicLateJoin: 'e2e10005-0000-4000-8000-000000000005',
     zeroToOneHundred: 'e2e20005-0000-4000-8000-000000000005',
     zeroToOneHundredLateJoin: 'e2e30005-0000-4000-8000-000000000005',
   },
   tester06: {
     classic: 'e2e00006-0000-4000-8000-000000000006',
+    classicTrueFalse: 'e2e40006-0000-4000-8000-000000000006',
     classicLateJoin: 'e2e10006-0000-4000-8000-000000000006',
     zeroToOneHundred: 'e2e20006-0000-4000-8000-000000000006',
     zeroToOneHundredLateJoin: 'e2e30006-0000-4000-8000-000000000006',
   },
   tester07: {
     classic: 'e2e00007-0000-4000-8000-000000000007',
+    classicTrueFalse: 'e2e40007-0000-4000-8000-000000000007',
     classicLateJoin: 'e2e10007-0000-4000-8000-000000000007',
     zeroToOneHundred: 'e2e20007-0000-4000-8000-000000000007',
     zeroToOneHundredLateJoin: 'e2e30007-0000-4000-8000-000000000007',
   },
   tester08: {
     classic: 'e2e00008-0000-4000-8000-000000000008',
+    classicTrueFalse: 'e2e40008-0000-4000-8000-000000000008',
     classicLateJoin: 'e2e10008-0000-4000-8000-000000000008',
     zeroToOneHundred: 'e2e20008-0000-4000-8000-000000000008',
     zeroToOneHundredLateJoin: 'e2e30008-0000-4000-8000-000000000008',
   },
   tester09: {
     classic: 'e2e00009-0000-4000-8000-000000000009',
+    classicTrueFalse: 'e2e40009-0000-4000-8000-000000000009',
     classicLateJoin: 'e2e10009-0000-4000-8000-000000000009',
     zeroToOneHundred: 'e2e20009-0000-4000-8000-000000000009',
     zeroToOneHundredLateJoin: 'e2e30009-0000-4000-8000-000000000009',
   },
   tester10: {
     classic: 'e2e00010-0000-4000-8000-000000000010',
+    classicTrueFalse: 'e2e40010-0000-4000-8000-000000000010',
     classicLateJoin: 'e2e10010-0000-4000-8000-000000000010',
     zeroToOneHundred: 'e2e20010-0000-4000-8000-000000000010',
     zeroToOneHundredLateJoin: 'e2e30010-0000-4000-8000-000000000010',
@@ -163,6 +187,12 @@ function createGameSessionQuizzes(
       title: 'E2E Game Session Quiz',
       mode: GameMode.Classic,
       questions: [E2E_GAME_SESSION_QUESTIONS.clearDaytimeSky],
+    },
+    classicTrueFalse: {
+      id: ids.classicTrueFalse,
+      title: 'E2E True/False Quiz',
+      mode: GameMode.Classic,
+      questions: [E2E_GAME_SESSION_QUESTIONS.moonIsLargerThanEarth],
     },
     classicLateJoin: {
       id: ids.classicLateJoin,
