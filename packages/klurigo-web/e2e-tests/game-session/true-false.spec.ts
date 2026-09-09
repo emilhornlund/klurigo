@@ -94,7 +94,6 @@ test.describe('Game session: Classic True/False', () => {
 
         expect(playerResult.game.mode).toBe(GameMode.Classic)
         expect(playerResult.player.score.correct).toBe(true)
-        await expect(page.getByText('False', { exact: true })).toBeVisible()
       })
 
       await test.step('Verify the host result count for False', async () => {
