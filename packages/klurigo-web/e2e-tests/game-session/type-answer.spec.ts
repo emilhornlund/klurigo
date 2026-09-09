@@ -22,7 +22,7 @@ test.describe('Game session: Classic Type Answer', () => {
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
-    const playerNickname = `ApiTypeAnswer${randomUUID().slice(0, 8)}`
+    const playerNickname = `ApiTypeAns${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
       await authenticatePageThroughApi(page, e2eHost.email)
