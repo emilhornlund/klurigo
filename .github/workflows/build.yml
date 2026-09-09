@@ -218,6 +218,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ steps.playwright-version.outputs.version }}
 
+      - name: Remove unused Google Chrome apt source
+        run: sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+
       - name: Install Playwright browsers and system dependencies
         run: yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
 
