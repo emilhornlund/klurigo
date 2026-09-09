@@ -4,7 +4,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist node_modules/.tmp",
     "build": "yarn workspace @klurigo/common build && yarn build:app",
     "build:app": "yarn clean && tsc -b && vite build",
     "dev": "vite",

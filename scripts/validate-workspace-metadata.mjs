@@ -80,6 +80,8 @@ for (const output of [
   'packages/common/dist/index.mjs',
   'packages/common/dist/index.d.ts',
   'packages/klurigo-service/dist/main.js',
+  'packages/klurigo-web/dist/index.html',
+  'tools/mongodb-migrator/dist/index.js',
 ]) {
   assertField(output, 'exists', existsSync(workspacePath(output)), true)
 }

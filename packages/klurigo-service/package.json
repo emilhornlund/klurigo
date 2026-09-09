@@ -6,7 +6,7 @@
   "type": "commonjs",
   "main": "dist/main.js",
   "scripts": {
-    "clean": "rimraf dist tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo",
+    "clean": "rimraf dist node_modules/.tmp tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo",
     "build": "yarn workspace @klurigo/common build && yarn build:app",
     "build:app": "yarn clean && nest build",
     "dev": "nest start --watch",

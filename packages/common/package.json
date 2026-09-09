@@ -17,8 +17,8 @@
     }
   },
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "tsup",
+    "clean": "rimraf dist node_modules/.tmp",
+    "build": "yarn clean && tsup",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "test": "yarn test:unit",
