@@ -10,8 +10,8 @@ For the complete root and workspace command inventory, see the
 Install the following before starting development:
 
 - Node.js matching the repository engine constraint: `>=24 <25`.
-- Yarn Classic `1.22.22`. Install the repository's supported version with
-  `npm install --global yarn@1.22.22`.
+- Corepack, which is included with the supported Node.js line and reads the
+  exact Yarn Classic version from the root `package.json`.
 - Git, to clone the repository.
 - MongoDB and Redis. Docker and Docker Compose can provide both services using
   the workflow in the [local infrastructure guide](./local-infrastructure.md).
@@ -24,6 +24,8 @@ root:
 ```sh
 git clone git@github.com:emilhornlund/klurigo.git
 cd klurigo
+corepack enable
+yarn toolchain:check
 yarn install --frozen-lockfile
 ```
 

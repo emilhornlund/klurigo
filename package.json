@@ -17,6 +17,7 @@
     "lint": "concurrently --kill-others-on-fail \"yarn lint:config\" \"yarn workspace @klurigo/common lint\" \"yarn workspace @klurigo/klurigo-service lint\" \"yarn workspace @klurigo/klurigo-web lint\" \"yarn workspace @klurigo/e2e-fixtures lint\" \"yarn workspace mongodb-migrator lint\"",
     "lint:config": "node scripts/validate-eslint-config.mjs",
     "metadata:check": "node scripts/validate-workspace-metadata.mjs",
+    "toolchain:check": "node scripts/validate-toolchain.mjs",
     "lint:fix": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common lint:fix\" \"yarn workspace @klurigo/klurigo-service lint:fix\" \"yarn workspace @klurigo/klurigo-web lint:fix\" \"yarn workspace @klurigo/e2e-fixtures lint:fix\" \"yarn workspace mongodb-migrator lint:fix\"",
     "format": "yarn format:config && prettier --write . --ignore-path .prettierignore",
     "format:check": "yarn format:config && prettier --check . --ignore-path .prettierignore",
@@ -42,5 +43,6 @@
   },
   "engines": {
     "node": ">=24 <25"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }

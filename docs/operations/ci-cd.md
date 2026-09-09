@@ -5,6 +5,11 @@ This page describes the automation currently defined in
 verified checks and hand-offs; it does not prescribe infrastructure or release
 procedures that are not checked in here.
 
+All workflows that use repository Node.js tooling read `.nvmrc` with
+`actions/setup-node`, enable Corepack, and run `yarn toolchain:check`. The root
+`package.json` is the authoritative source for the exact Yarn Classic version;
+workflows do not install a separate global Yarn version.
+
 ## Workflow Triggers
 
 | Workflow     | Trigger                             | Job order or result                                                           |
@@ -30,9 +35,9 @@ workflows.
 
 The reusable build workflow runs its static-build, unit-coverage,
 backend-e2e-coverage, and frontend-e2e jobs on `ubuntu-latest`. Each job checks
-out the repository with a shallow checkout, sets up Node.js 24 with Yarn
-caching, installs Yarn Classic `1.22.22`, and runs
-`yarn install --frozen-lockfile`.
+out the repository with a shallow checkout, sets up the Node.js version from
+`.nvmrc` with Yarn caching, enables Corepack, verifies the declared Yarn Classic
+`1.22.22`, and runs `yarn install --frozen-lockfile`.
 
 The static-build job then runs these root or workspace commands in order:
 
@@ -158,9 +163,13 @@ passes these Sentry arguments:
   `SENTRY_KLURIGO_SERVICE_DSN` for the service project.
 - `SENTRY_RELEASE`, set to `<sentry-project>@<full-github-sha>`.
 
-The checked-in Dockerfiles wire these arguments to the corresponding web
-`VITE_SENTRY_*` or service `SENTRY_*` environment variables. No other image
-tag or registry is configured by this workflow.
+The checked-in Dockerfiles use Node.js 24 Alpine for applicable build and
+service stages, enable Corepack from the root `package.json`, and use Yarn
+Classic for dependency installation and service startup. The web image keeps
+its nginx runtime stage and does not run Node.js in production. The Dockerfiles
+wire these arguments to the corresponding web `VITE_SENTRY_*` or service
+`SENTRY_*` environment variables. No other image tag or registry is configured
+by this workflow.
 
 ## Releases
 

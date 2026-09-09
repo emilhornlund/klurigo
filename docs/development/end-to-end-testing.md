@@ -11,8 +11,9 @@ projects, seeded fixtures, lifecycle hooks, and CI differences.
 
 ## Prerequisites
 
-Use Node.js `>=24 <25`, Yarn Classic `1.22.22`, and running MongoDB and Redis
-Compose services. The test environment uses MongoDB database
+Use Node.js `>=24 <25` and the repository-declared Yarn Classic `1.22.22`.
+Run `corepack enable` and `yarn toolchain:check` before installing dependencies.
+The test environment uses MongoDB database
 `klurigo_service_test` and Redis database `1`, as described in the
 [local infrastructure guide](../getting-started/local-infrastructure.md).
 
@@ -101,8 +102,10 @@ The reusable workflow `.github/workflows/build.yml` accepts a required boolean
 current callers enable it for pull requests, pushes to `main`, and the manual
 production deployment workflow.
 
-The CI job runs on Ubuntu with Node.js 24, installs dependencies with the
-frozen Yarn lockfile, builds the common package, and starts MongoDB and Redis.
+The CI job runs on Ubuntu with the Node.js version from `.nvmrc`, enables
+Corepack, verifies the repository-declared Yarn version, installs dependencies
+with the frozen Yarn lockfile, builds the common package, and starts MongoDB and
+Redis.
 
 It caches Playwright browsers by the installed `@playwright/test` version and
 installs Chromium, Firefox, and WebKit plus Linux system dependencies.

@@ -26,13 +26,16 @@ workspaces, are documented in the [monorepo organization guide](./docs/architect
 
 ## Quick Start
 
-Install the documented prerequisites first: Node.js `>=24 <25`, Yarn Classic
-`1.22.22`, Git, and Docker with Compose. The Compose services provide the local
+Install the documented prerequisites first: Node.js `>=24 <25` (selected by
+`.nvmrc`), Corepack, Git, and Docker with Compose. The repository declares Yarn
+Classic `1.22.22` in `package.json`; the Compose services provide the local
 MongoDB and Redis dependencies. Then run:
 
 ```sh
 git clone git@github.com:emilhornlund/klurigo.git
 cd klurigo
+corepack enable
+yarn toolchain:check
 yarn install --frozen-lockfile
 docker compose up -d --wait
 yarn dev
