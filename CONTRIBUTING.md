@@ -26,7 +26,7 @@ development documentation or the coding-agent instructions in
 
 ## Code of Conduct
 
-This project follows a [Code of Conduct](./.github/CODE_OF_CONDUCT.md).  
+This project follows a [Code of Conduct](./.github/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code.
 
 ## Contributor License Agreement

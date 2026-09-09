@@ -6,7 +6,7 @@ Briefly explain the purpose of this PR. What does it change or fix?
 
 ## Related Issues
 
-Closes #<issue-number>  
+Closes #<issue-number>
 Relates to #<issue-number>
 
 ## Checklist

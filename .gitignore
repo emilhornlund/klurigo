@@ -51,12 +51,6 @@ lerna-debug.log*
 #
 .idea/*
 !.idea/.gitignore
-!.idea/misc.xml
-!.idea/vcs.xml
-!.idea/codeStyles/
-!.idea/codeStyles/**
-!.idea/inspectionProfiles/
-!.idea/inspectionProfiles/**
 !.idea/runConfigurations/
 !.idea/runConfigurations/**
 *.iml

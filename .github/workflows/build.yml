@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Validate repository safeguards
+        run: yarn test:validate
+
       - name: Check dependency hygiene
         run: yarn dependency:hygiene
 

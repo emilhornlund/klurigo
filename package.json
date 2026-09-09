@@ -24,7 +24,7 @@
     "format": "yarn format:config && prettier --write . --ignore-path .prettierignore",
     "format:check": "yarn format:config && prettier --check . --ignore-path .prettierignore",
     "format:config": "node scripts/validate-prettier-config.mjs",
-    "test:validate": "node --test scripts/validate-repository.test.mjs scripts/dependency-hygiene.test.mjs",
+    "test:validate": "node --test scripts/validate-repository.test.mjs scripts/validate-repository-hygiene.test.mjs scripts/dependency-hygiene.test.mjs",
     "test": "yarn test:unit",
     "test:unit": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit\" \"yarn workspace @klurigo/klurigo-service test:unit\" \"yarn workspace @klurigo/klurigo-web test:unit\"",
     "test:unit:coverage": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common test:unit:coverage\" \"yarn workspace @klurigo/klurigo-service test:unit:coverage\" \"yarn workspace @klurigo/klurigo-web test:unit:coverage\"",
