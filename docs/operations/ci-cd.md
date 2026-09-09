@@ -41,11 +41,19 @@ out the repository with a shallow checkout, sets up the Node.js version from
 
 The static-build job then runs these root or workspace commands in order:
 
-1. `yarn build`
-2. `yarn typecheck`
-3. `yarn lint`
-4. `yarn format:check` (the non-mutating repository-wide Prettier check)
-5. `yarn workspace @klurigo/klurigo-service check-circular-deps`
+1. `yarn dependency:hygiene`
+2. `yarn build`
+3. `yarn typecheck`
+4. `yarn lint`
+5. `yarn format:check` (the non-mutating repository-wide Prettier check)
+6. `yarn workspace @klurigo/klurigo-service check-circular-deps`
+
+The dependency hygiene check uses the checked-in Knip configuration to inspect
+all five workspaces for unused, missing, and unlisted dependencies and binaries.
+It also checks direct dependency version skew against `yarn.lock`; transitive
+duplicate versions and npm deprecation metadata are intentionally not CI
+failures. See the [dependency hygiene audit](../development/dependency-hygiene.md)
+for the entry-point evidence and named exclusion.
 
 The root build builds `@klurigo/common` before the web and service application
 builds and the MongoDB migrator, which run in parallel after the shared build

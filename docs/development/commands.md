@@ -419,6 +419,44 @@ only be used when the named MongoDB and Redis volumes are disposable; see the
 
 ## Repository Validation
 
+### Dependency Hygiene
+
+Run the evidence-based dependency hygiene check from the repository root:
+
+```sh
+yarn dependency:hygiene
+```
+
+It covers `@klurigo/common`, `@klurigo/klurigo-service`,
+`@klurigo/klurigo-web`, `@klurigo/e2e-fixtures`, and `mongodb-migrator`. The
+check reports unused dependencies, missing or unlisted dependencies, unlisted
+binaries, and direct dependency version skew in `yarn.lock`. It understands the
+built common and application entry points, the direct-source e2e-fixtures entry,
+the MongoDB migrator CLI, NestJS bootstrap and test discovery, and web
+Storybook, Vitest, and Playwright configuration.
+
+Install with `yarn install --frozen-lockfile` first. The check is deterministic
+and offline after installation; it does not inspect npm deprecation metadata or
+general outdated-package status. Transitive duplicate versions are reported in
+the audit documentation but are not failures unless multiple workspace manifests
+directly resolve the same dependency to different versions.
+
+Expected successful output ends with:
+
+```text
+[dependency-hygiene] category=duplicate-versions direct dependency versions are consistent
+```
+
+The root metadata script's intentional use of `@klurigo/common` is the only
+named Knip exclusion. Unused exports and unused files are audit-only because
+the baseline showed expected NestJS runtime, barrel, Jest, Storybook, and
+configuration entry points that static analysis cannot reliably distinguish.
+See the [dependency hygiene audit](./dependency-hygiene.md) for the findings,
+scope, and confirmation rules.
+
+The reusable CI static-build job enforces this command after frozen-lockfile
+installation. It does not replace the standard validation sequence below.
+
 Run the repository's standard static and unit validation path before submitting
 a change:
 
