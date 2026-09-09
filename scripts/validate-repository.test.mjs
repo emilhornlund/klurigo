@@ -103,6 +103,10 @@ test('wires the root validation command to the validation runner', () => {
     rootPackage.scripts.validate,
     'node scripts/validate-repository.mjs',
   )
+  assert.equal(
+    rootPackage.scripts['test:validate'],
+    'node --test scripts/validate-repository.test.mjs scripts/dependency-hygiene.test.mjs',
+  )
 })
 
 test('orders the dependency build and validates only completed outputs', () => {
@@ -264,6 +268,7 @@ test('keeps static, unit coverage, backend e2e, and frontend e2e commands separa
   const frontendE2eJob = workflowJob('frontend-e2e')
 
   assertCommandsInOrder(staticJob, [
+    'yarn dependency:hygiene',
     'yarn build',
     'yarn typecheck',
     'yarn lint',

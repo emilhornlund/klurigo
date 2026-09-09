@@ -91,11 +91,8 @@
     "superagent": "^10.3.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.12",
-    "ts-loader": "^9.6.2",
-    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.23.13",
-    "typescript": "^6.0.3",
-    "webpack": "^5.106.2"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=24 <25"

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/**/*.mjs"],
+      "project": ["scripts/**/*.mjs"],
+      // The metadata check intentionally resolves the built shared workspace
+      // from a root script. The root package does not ship that dependency.
+      "ignoreDependencies": ["@klurigo/common"],
+    },
+    "packages/common": {
+      "entry": [
+        "src/index.ts",
+        "src/**/*.{spec,test}.ts",
+        "tsup.config.ts",
+        "vitest.config.ts",
+      ],
+      "project": ["src/**/*.ts", "*.config.ts", "tsconfig.json"],
+    },
+    "packages/klurigo-service": {
+      "entry": [
+        "src/main.ts",
+        "src/**/*.{spec,e2e-spec}.ts",
+        "scripts/**/*.ts",
+        "jest*.cjs",
+        "nest-cli.json",
+      ],
+      "project": [
+        "src/**/*.ts",
+        "test-utils/**/*.ts",
+        "scripts/**/*.ts",
+        "*.cjs",
+        "*.json",
+      ],
+    },
+    "packages/klurigo-web": {
+      "entry": [
+        "src/main.tsx",
+        "src/**/*.{test,spec,stories}.?(c|m)[jt]s?(x)",
+        "src/setupTests.ts",
+        "e2e-tests/**/*.spec.ts",
+        ".storybook/**/*.{ts,tsx}",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "playwright*.ts",
+        "tsconfig*.json",
+      ],
+      "project": [
+        "src/**/*.{ts,tsx}",
+        "e2e-tests/**/*.ts",
+        ".storybook/**/*.{ts,tsx}",
+        "*.config.ts",
+        "playwright*.ts",
+        "tsconfig*.json",
+      ],
+    },
+    "tools/e2e-fixtures": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts", "tsconfig.json"],
+    },
+    "tools/mongodb-migrator": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts", "tsconfig.json"],
+    },
+  },
+}
