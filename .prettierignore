@@ -27,16 +27,7 @@ lerna-debug.log*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-.idea/*
-!.idea/.gitignore
-!.idea/misc.xml
-!.idea/vcs.xml
-!.idea/codeStyles/
-!.idea/codeStyles/**
-!.idea/inspectionProfiles/
-!.idea/inspectionProfiles/**
-!.idea/runConfigurations/
-!.idea/runConfigurations/**
+.idea/
 *.iml
 
 .DS_Store

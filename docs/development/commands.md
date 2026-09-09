@@ -166,6 +166,38 @@ yarn workspace @klurigo/e2e-fixtures lint:fix
 yarn workspace mongodb-migrator lint:fix
 ```
 
+## Repository Text And Generated Files
+
+Repository-managed text uses LF line endings, UTF-8, spaces, trimmed trailing
+whitespace, and a final newline. `.gitattributes` applies that policy to
+detected text while explicitly keeping images, fonts, archives, and other
+binary assets out of text normalization. `.editorconfig` exposes the same
+defaults to editors for every file type; it is repository-shared configuration,
+not an application runtime setting.
+
+Generated output and local state must remain untracked. The root `.gitignore`
+covers workspace dependencies, build output, coverage, reports, Storybook
+output, TypeScript metadata, logs, temporary files, and local environment
+overrides. Workspace `.gitignore` files retain only workspace-specific paths:
+service uploads and the web Playwright reports, cache, and authentication state.
+The root `.prettierignore` mirrors these non-source paths because Prettier does
+not consume workspace ignore files when run with the root ignore path.
+
+The committed `.idea/runConfigurations/` files are retained because they invoke
+documented package scripts shared by the project. Other IntelliJ project state
+is local and ignored. The checked-in environment files contain development or
+test defaults only; local overrides use the ignored `.env.local` patterns.
+
+Run the deterministic safeguard checks after installing dependencies:
+
+```sh
+yarn test:validate
+```
+
+They identify the affected path when text normalization, binary attributes,
+ignored generated paths, source visibility, generated-file tracking, or command
+wiring is incorrect. These checks do not modify files or the dependency lockfile.
+
 Run the repository-wide Prettier commands from the repository root:
 
 ```sh
@@ -180,11 +212,10 @@ diagnostics in the command output. `yarn format:config` validates the shared
 configuration, root command wiring, workspace cleanup, and representative
 ignore behavior without formatting files.
 
-The authoritative shared style is in the root `.prettierrc`. The web package's
-existing `bracketSameLine` behavior is retained as a root configuration
-override because the current web source is formatted with that setting. The
-root `.prettierignore` combines the repository-level exclusions with the
-package-specific generated paths, including:
+The authoritative formatting style is in the root `.prettierrc`. The web
+package's existing `bracketSameLine` behavior is retained as a root
+configuration override because the current web source is formatted with that
+setting. The root `.prettierignore` excludes:
 
 - dependencies and package/build output (`node_modules/`, `dist/`, `build/`,
   and `out/`)
@@ -194,8 +225,9 @@ package-specific generated paths, including:
 - service uploads and web Playwright reports, caches, and authentication state
 
 Formatting is intentionally a root command; the five workspaces do not expose
-separate `format` or `format:check` scripts. `.editorconfig` remains aligned
-with Prettier's LF, two-space, and spaces-not-tabs behavior for editors.
+separate `format` or `format:check` scripts. `.editorconfig` and
+`.gitattributes` remain aligned with Prettier's LF, two-space, and
+spaces-not-tabs behavior for editors and Git checkouts.
 
 ## Type Checking
 
@@ -488,7 +520,8 @@ yarn test:validate
 ```
 
 These checks verify the validation runner and the reusable build workflow's
-root/workspace script references without running the build or test suites.
+root/workspace script references and repository safeguards without running the
+build or application test suites.
 
 Backend and frontend end-to-end tests remain separate because they require
 additional infrastructure. Run the backend suite with MongoDB and Redis:

@@ -1,0 +1,27 @@
+* text=auto eol=lf
+
+# Keep binary assets out of text normalization and diffs.
+*.7z binary
+*.avif binary
+*.bmp binary
+*.eot binary
+*.gif binary
+*.gz binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.mov binary
+*.mp3 binary
+*.mp4 binary
+*.otf binary
+*.pdf binary
+*.png binary
+*.tar binary
+*.tif binary
+*.ttf binary
+*.wasm binary
+*.webm binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.zip binary
