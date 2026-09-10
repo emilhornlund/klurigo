@@ -1,11 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import {
-  GameEventType,
-  type GameResultPlayerEvent,
-  QuestionType,
-} from '@klurigo/common'
-import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
+import { GameEventType, QuestionType } from '@klurigo/common'
 import { expect, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -18,19 +13,24 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: Classic late joining', () => {
-  const LATE_JOIN_QUIZ_TITLE =
-    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicLateJoin.title
-  const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
-  const CORRECT_ANSWER =
-    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
-  const INCORRECT_ANSWER =
-    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
-  const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.moonIsLargerThanEarth
-
   test('keeps a late Classic joiner behind a scored player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicLateJoin
+    const firstQuestion = quiz.questions[0]
+    const secondQuestion = quiz.questions[1]
+    if (
+      firstQuestion?.type !== QuestionType.MultiChoice ||
+      secondQuestion?.type !== QuestionType.TrueFalse
+    ) {
+      throw new Error('Expected the seeded late-join questions')
+    }
+    const correctAnswer = firstQuestion.options[0]?.value
+    const incorrectAnswer = firstQuestion.options[1]?.value
+    if (!correctAnswer || !incorrectAnswer) {
+      throw new Error('Expected two seeded multi-choice answers')
+    }
     const playerANickname = `ApiEarly${randomUUID().slice(0, 8)}`
     const playerBNickname = `ApiLate${randomUUID().slice(0, 8)}`
 
@@ -40,13 +40,9 @@ test.describe('Game session: Classic late joining', () => {
     })
 
     await test.step('Open the seeded two-question Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classicLateJoin.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classicLateJoin.id}`,
-      )
-      await expect(
-        page.getByText(LATE_JOIN_QUIZ_TITLE, { exact: true }),
-      ).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -55,41 +51,41 @@ test.describe('Game session: Classic late joining', () => {
     const playerA = new GamePlayerClient(E2E_API_BASE_URL)
     const playerB = new GamePlayerClient(E2E_API_BASE_URL)
     const gameHost = new GameHostClient(E2E_API_BASE_URL)
-    let playerAGameId: string | undefined
-    let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
 
     try {
-      await test.step('Join Player A before the game starts', async () => {
-        const hostIdentity = await gameHost.authenticate(
-          { email: e2eHost.email, password: E2E_USER_PASSWORD },
-          { gamePIN },
-        )
-        await gameHost.connect()
-        await gameHost.waitForEvent(
-          GameEventType.GameLobbyHost,
-          (event) => event.game.pin === gamePIN && event.players.length === 0,
-        )
-        const joinedLobbyPromise = gameHost.waitForEvent(
-          GameEventType.GameLobbyHost,
-          (event) =>
-            event.players.some(({ nickname }) => nickname === playerANickname),
-        )
-        const identity = await playerA.authenticateAndJoin(
-          { gamePIN },
-          playerANickname,
-        )
-        expect(identity.gameId).toBe(hostIdentity.gameId)
-        expect(identity.gameId).toMatch(
-          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-        )
-        playerAGameId = identity.gameId
-
-        await playerA.connect()
-        await joinedLobbyPromise
-        await expect(
-          page.getByText(playerANickname, { exact: true }),
-        ).toBeVisible()
-      })
+      const playerAGameId =
+        await test.step('Join Player A before the game starts', async () => {
+          const hostIdentity = await gameHost.authenticate(
+            { email: e2eHost.email, password: E2E_USER_PASSWORD },
+            { gamePIN },
+          )
+          await gameHost.connect()
+          await gameHost.waitForEvent(
+            GameEventType.GameLobbyHost,
+            (event) => event.game.pin === gamePIN && event.players.length === 0,
+          )
+          const joinedLobbyPromise = gameHost.waitForEvent(
+            GameEventType.GameLobbyHost,
+            (event) =>
+              event.players.some(
+                ({ nickname }) => nickname === playerANickname,
+              ),
+          )
+          const identity = await playerA.authenticateAndJoin(
+            { gamePIN },
+            playerANickname,
+          )
+          expect(identity.gameId).toBe(hostIdentity.gameId)
+          expect(identity.gameId).toMatch(
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+          )
+          await playerA.connect()
+          await joinedLobbyPromise
+          await expect(
+            page.getByText(playerANickname, { exact: true }),
+          ).toBeVisible()
+          return identity.gameId
+        })
 
       await test.step('Start the game and receive question 1', async () => {
         const hostBeginPromise = gameHost.waitForEvent(
@@ -117,25 +113,27 @@ test.describe('Game session: Classic late joining', () => {
         expect(hostPreview.pagination).toEqual({ current: 1, total: 2 })
         expect(hostPreview.question).toEqual({
           type: QuestionType.MultiChoice,
-          question: QUESTION,
-          points: 1000,
+          question: firstQuestion.text,
+          points: firstQuestion.points,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
         expect(hostQuestion.pagination).toEqual({ current: 1, total: 2 })
         expect(hostQuestion.question).toEqual({
           type: QuestionType.MultiChoice,
-          question: QUESTION,
-          answers: [{ value: CORRECT_ANSWER }, { value: INCORRECT_ANSWER }],
-          duration: 30,
+          question: firstQuestion.text,
+          answers: [{ value: correctAnswer }, { value: incorrectAnswer }],
+          duration: firstQuestion.duration,
         })
-        await expect(page.getByText(QUESTION, { exact: true })).toBeVisible()
+        await expect(
+          page.getByText(firstQuestion.text, { exact: true }),
+        ).toBeVisible()
         expect(question.pagination.total).toBe(2)
         if (question.question.type !== QuestionType.MultiChoice) {
           throw new Error('Expected question 1 to be multi-choice')
         }
         expect(question.question.answers).toEqual([
-          { value: CORRECT_ANSWER },
-          { value: INCORRECT_ANSWER },
+          { value: correctAnswer },
+          { value: incorrectAnswer },
         ])
       })
 
@@ -163,34 +161,32 @@ test.describe('Game session: Classic late joining', () => {
         expect(hostResult.results).toEqual({
           type: QuestionType.MultiChoice,
           distribution: [
-            { index: 0, value: CORRECT_ANSWER, count: 1, correct: true },
+            { index: 0, value: correctAnswer, count: 1, correct: true },
           ],
         })
         expect(result.player.score.correct).toBe(true)
         await expect(page.getByTestId('question-results')).toBeVisible()
       })
 
-      await test.step('Connect Player B after question 1 and verify the late join', async () => {
-        const identity = await playerB.authenticateAndJoin(
-          { gamePIN },
-          playerBNickname,
-        )
-        expect(identity.gameId).toBe(playerAGameId)
+      const lateJoin =
+        await test.step('Connect Player B after question 1 and register the late-join result', async () => {
+          const identity = await playerB.authenticateAndJoin(
+            { gamePIN },
+            playerBNickname,
+          )
+          expect(identity.gameId).toBe(playerAGameId)
 
-        await playerB.connect()
-        lateJoinResultPromise = playerB.waitForEvent(
-          GameEventType.GameResultPlayer,
-          (event) =>
-            event.pagination.current === 1 &&
-            event.player.nickname === playerBNickname,
-        )
-      })
+          await playerB.connect()
+          return playerB.waitForEvent(
+            GameEventType.GameResultPlayer,
+            (event) =>
+              event.pagination.current === 1 &&
+              event.player.nickname === playerBNickname,
+          )
+        })
 
       await test.step('Assert Player B starts with zero points in second place', async () => {
-        if (!lateJoinResultPromise) {
-          throw new Error('Player B result event was not registered')
-        }
-        const lateJoinResult = await lateJoinResultPromise
+        const lateJoinResult = await lateJoin
 
         expect(lateJoinResult.player.score).toEqual({
           correct: false,
@@ -273,19 +269,19 @@ test.describe('Game session: Classic late joining', () => {
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 2 })
         expect(hostQuestion.question).toEqual({
           type: QuestionType.TrueFalse,
-          question: SECOND_QUESTION.text,
-          duration: SECOND_QUESTION.duration,
+          question: secondQuestion.text,
+          duration: secondQuestion.duration,
         })
 
         await expect(
-          page.getByText(SECOND_QUESTION.text, { exact: true }),
+          page.getByText(secondQuestion.text, { exact: true }),
         ).toBeVisible()
         for (const question of [playerAQuestion, playerBQuestion]) {
           expect(question.pagination).toEqual({ current: 2, total: 2 })
           expect(question.question).toEqual({
             type: QuestionType.TrueFalse,
-            question: SECOND_QUESTION.text,
-            duration: SECOND_QUESTION.duration,
+            question: secondQuestion.text,
+            duration: secondQuestion.duration,
           })
         }
 
@@ -314,8 +310,10 @@ test.describe('Game session: Classic late joining', () => {
         ])
 
         expect(hostResult.results).toEqual({
-          type: QuestionType.TrueFalse,
-          distribution: [{ value: false, count: 0, correct: true }],
+          type: secondQuestion.type,
+          distribution: [
+            { value: secondQuestion.correct, count: 0, correct: true },
+          ],
         })
         expect(playerAResult.player.score).toEqual(
           expect.objectContaining({ correct: false, last: 0 }),
@@ -331,6 +329,7 @@ test.describe('Game session: Classic late joining', () => {
 
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
         const playerAGameOverPromise = playerA.waitForEvent(
           GameEventType.GameOverPlayer,
@@ -346,7 +345,7 @@ test.describe('Game session: Classic late joining', () => {
           playerBGameOverPromise,
           podiumPromise,
         ])
-        expect(podium.game.name).toBe(LATE_JOIN_QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({ nickname: playerANickname, position: 1 }),
           expect.objectContaining({ nickname: playerBNickname, position: 2 }),

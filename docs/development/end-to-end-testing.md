@@ -96,8 +96,12 @@ browser fixture slots and selects by `testInfo.repeatEachIndex`:
 The fixture resolver fails when a project and repeat index do not have a
 configured fixture. Stateful tests must create their own game data and must
 not rely on another test's mutations. The shared fixture manifest is seeded
-before the run and is the source for the deterministic users, passwords, and
-quizzes used by the browser tests. The GameSession suite covers the six supported
+before the run and is the source for the deterministic users, passwords,
+quizzes, and question expectations used by the browser tests. Each GameSession
+test reads its selected user's quiz and question data from the fixture returned
+for the current project and `testInfo.repeatEachIndex`; it does not assume the
+`tester02` slot. The GameSession directory contains 11 logical Playwright tests
+and covers the six supported
 `QuestionType` values as follows:
 
 | Scenario                    | Mode and question types                                            | Behavioral coverage                                                                                        |

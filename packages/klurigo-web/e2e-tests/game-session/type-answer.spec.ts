@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
-import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -14,15 +13,19 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: Classic Type Answer', () => {
-  const QUIZ_TITLE =
-    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicTypeAnswer.title
-  const QUESTION = E2E_FIXTURE_MANIFEST.questions.capitalOfFrance
-  const ANSWER = QUESTION.options[0]
-
   test('completes a Classic Type Answer game with one simulated player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicTypeAnswer
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.TypeAnswer) {
+      throw new Error('Expected the seeded question to be type-answer')
+    }
+    const answer = question.options[0]
+    if (!answer) {
+      throw new Error('Expected a seeded type-answer option')
+    }
     const playerNickname = `ApiTypeAns${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
@@ -31,11 +34,9 @@ test.describe('Game session: Classic Type Answer', () => {
     })
 
     await test.step('Open the seeded Type Answer Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classicTypeAnswer.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classicTypeAnswer.id}`,
-      )
-      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -106,17 +107,17 @@ test.describe('Game session: Classic Type Answer', () => {
         )
         expect(hostPreview.question).toEqual({
           type: QuestionType.TypeAnswer,
-          question: QUESTION.text,
-          points: QUESTION.points,
+          question: question.text,
+          points: question.points,
         })
         expect(hostQuestion.question).toEqual({
           type: QuestionType.TypeAnswer,
-          question: QUESTION.text,
-          duration: QUESTION.duration,
+          question: question.text,
+          duration: question.duration,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
         await expect(
-          page.getByText(QUESTION.text, { exact: true }),
+          page.getByText(question.text, { exact: true }),
         ).toBeVisible()
         expect(playerQuestion.pagination).toEqual({ current: 1, total: 1 })
         expect(playerQuestion.player).toEqual({
@@ -126,8 +127,8 @@ test.describe('Game session: Classic Type Answer', () => {
         expect(playerQuestion.question).toEqual(
           expect.objectContaining({
             type: QuestionType.TypeAnswer,
-            question: QUESTION.text,
-            duration: QUESTION.duration,
+            question: question.text,
+            duration: question.duration,
           }),
         )
       })
@@ -146,7 +147,7 @@ test.describe('Game session: Classic Type Answer', () => {
 
         await gamePlayer.submitAnswer({
           type: QuestionType.TypeAnswer,
-          value: ANSWER,
+          value: answer,
         })
         const [playerResult, hostResult] = await Promise.all([
           playerResultPromise,
@@ -158,7 +159,7 @@ test.describe('Game session: Classic Type Answer', () => {
             game: { pin: gamePIN },
             question: expect.objectContaining({
               type: QuestionType.TypeAnswer,
-              question: QUESTION.text,
+              question: question.text,
             }),
             pagination: { current: 1, total: 1 },
           }),
@@ -166,7 +167,7 @@ test.describe('Game session: Classic Type Answer', () => {
         expect(hostResult.results).toEqual({
           type: QuestionType.TypeAnswer,
           distribution: [
-            { value: ANSWER.toLowerCase(), count: 1, correct: true },
+            { value: answer.toLowerCase(), count: 1, correct: true },
           ],
         })
         expect(playerResult.game.mode).toBe(GameMode.Classic)
@@ -185,16 +186,18 @@ test.describe('Game session: Classic Type Answer', () => {
         const questionResults = page.getByTestId('question-results')
         await expect(questionResults).toBeVisible()
         await expect(questionResults.locator(':scope > div')).toHaveCount(1)
-        await expect(questionResults).toContainText(ANSWER.toLowerCase())
+        await expect(questionResults).toContainText(answer.toLowerCase())
         await expect(questionResults).toContainText('1')
       })
 
       await test.step('Progress to and verify the final podium', async () => {
         const gameOverPromise = gamePlayer.waitForEvent(
           GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerNickname,
         )
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
 
         await page.locator('#next-button').click()
@@ -203,14 +206,14 @@ test.describe('Game session: Classic Type Answer', () => {
           podiumPromise,
         ])
 
-        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({ position: 1, nickname: playerNickname }),
         ])
         expect(gameOver.game.mode).toBe(GameMode.Classic)
         expect(gameOver.quiz).toEqual({
-          id: e2eHost.quizzes.classicTypeAnswer.id,
-          title: QUIZ_TITLE,
+          id: quiz.id,
+          title: quiz.title,
         })
         expect(gameOver.player).toEqual(
           expect.objectContaining({
@@ -222,7 +225,7 @@ test.describe('Game session: Classic Type Answer', () => {
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
-        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText(playerNickname, { exact: true }),
         ).toBeVisible()

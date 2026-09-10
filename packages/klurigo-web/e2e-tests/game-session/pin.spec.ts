@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
-import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -14,14 +13,15 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: Classic Pin', () => {
-  const QUIZ_TITLE =
-    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicPin.title
-  const QUESTION = E2E_FIXTURE_MANIFEST.questions.coordinatesOfEiffelTower
-
   test('completes a Classic Pin game with one simulated player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicPin
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.Pin) {
+      throw new Error('Expected the seeded question to be Pin')
+    }
     const playerNickname = `ApiPin${randomUUID().slice(0, 8)}`
     const gamePlayer = new GamePlayerClient(E2E_API_BASE_URL)
 
@@ -31,11 +31,9 @@ test.describe('Game session: Classic Pin', () => {
     })
 
     await test.step('Open the seeded Pin Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classicPin.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classicPin.id}`,
-      )
-      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -105,18 +103,18 @@ test.describe('Game session: Classic Pin', () => {
         )
         expect(hostPreview.question).toEqual({
           type: QuestionType.Pin,
-          question: QUESTION.text,
-          points: QUESTION.points,
+          question: question.text,
+          points: question.points,
         })
         expect(hostQuestion.question).toEqual({
           type: QuestionType.Pin,
-          question: QUESTION.text,
-          imageURL: QUESTION.imageURL,
-          duration: QUESTION.duration,
+          question: question.text,
+          imageURL: question.imageURL,
+          duration: question.duration,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
         await expect(
-          page.getByText(QUESTION.text, { exact: true }),
+          page.getByText(question.text, { exact: true }),
         ).toBeVisible()
         expect(playerQuestion.pagination).toEqual({ current: 1, total: 1 })
         expect(playerQuestion.player).toEqual({
@@ -125,9 +123,9 @@ test.describe('Game session: Classic Pin', () => {
         })
         expect(playerQuestion.question).toEqual({
           type: QuestionType.Pin,
-          question: QUESTION.text,
-          imageURL: QUESTION.imageURL,
-          duration: QUESTION.duration,
+          question: question.text,
+          imageURL: question.imageURL,
+          duration: question.duration,
         })
       })
 
@@ -145,8 +143,8 @@ test.describe('Game session: Classic Pin', () => {
 
         await gamePlayer.submitAnswer({
           type: QuestionType.Pin,
-          positionX: QUESTION.positionX,
-          positionY: QUESTION.positionY,
+          positionX: question.positionX,
+          positionY: question.positionY,
         })
         const [playerResult, hostResult] = await Promise.all([
           playerResultPromise,
@@ -158,7 +156,7 @@ test.describe('Game session: Classic Pin', () => {
             game: { pin: gamePIN },
             question: expect.objectContaining({
               type: QuestionType.Pin,
-              question: QUESTION.text,
+              question: question.text,
             }),
             pagination: { current: 1, total: 1 },
           }),
@@ -169,10 +167,10 @@ test.describe('Game session: Classic Pin', () => {
         expect(hostResult.results).toEqual(
           expect.objectContaining({
             type: QuestionType.Pin,
-            imageURL: QUESTION.imageURL,
-            positionX: QUESTION.positionX,
-            positionY: QUESTION.positionY,
-            tolerance: QUESTION.tolerance,
+            imageURL: question.imageURL,
+            positionX: question.positionX,
+            positionY: question.positionY,
+            tolerance: question.tolerance,
           }),
         )
         expect(hostResult.results.distribution).toEqual([
@@ -195,7 +193,7 @@ test.describe('Game session: Classic Pin', () => {
         await expect(pinResults).toBeVisible()
         await expect(pinResults.locator('img')).toHaveAttribute(
           'src',
-          QUESTION.imageURL,
+          question.imageURL,
         )
         await expect(pinResults.locator('svg')).toHaveCount(2)
         await expect(pinResults.locator('[class*="tolerance"]')).toHaveCount(1)
@@ -204,9 +202,11 @@ test.describe('Game session: Classic Pin', () => {
       await test.step('Progress to and verify the final podium', async () => {
         const gameOverPromise = gamePlayer.waitForEvent(
           GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerNickname,
         )
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
 
         await page.locator('#next-button').click()
@@ -215,14 +215,14 @@ test.describe('Game session: Classic Pin', () => {
           podiumPromise,
         ])
 
-        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({ position: 1, nickname: playerNickname }),
         ])
         expect(gameOver.game.mode).toBe(GameMode.Classic)
         expect(gameOver.quiz).toEqual({
-          id: e2eHost.quizzes.classicPin.id,
-          title: QUIZ_TITLE,
+          id: quiz.id,
+          title: quiz.title,
         })
         expect(gameOver.player).toEqual(
           expect.objectContaining({
@@ -234,7 +234,7 @@ test.describe('Game session: Classic Pin', () => {
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
-        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText(playerNickname, { exact: true }),
         ).toBeVisible()

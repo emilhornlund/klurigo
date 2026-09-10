@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
 import { GameEventType, QuestionType } from '@klurigo/common'
-import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -14,17 +13,20 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: host UI with simulated players', () => {
-  const QUIZ_TITLE = E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classic.title
-  const QUESTION = E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.text
-  const CORRECT_ANSWER =
-    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
-  const INCORRECT_ANSWER =
-    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
-
   test('completes a Classic game with one simulated player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classic
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.MultiChoice) {
+      throw new Error('Expected the seeded question to be multi-choice')
+    }
+    const correctAnswer = question.options[0]?.value
+    const incorrectAnswer = question.options[1]?.value
+    if (!correctAnswer || !incorrectAnswer) {
+      throw new Error('Expected two seeded multi-choice answers')
+    }
     const playerNickname = `ApiPlayer${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
@@ -33,11 +35,9 @@ test.describe('Game session: host UI with simulated players', () => {
     })
 
     await test.step('Open the seeded private Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classic.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classic.id}`,
-      )
-      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -91,6 +91,7 @@ test.describe('Game session: host UI with simulated players', () => {
         )
         const playerQuestionPromise = gamePlayer.waitForEvent(
           GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 1,
         )
 
         await page.locator('#start-game-button').click()
@@ -105,27 +106,29 @@ test.describe('Game session: host UI with simulated players', () => {
           score: { total: 0 },
         })
         expect(hostPreview.question).toEqual({
-          type: QuestionType.MultiChoice,
-          question: QUESTION,
-          points: 1000,
+          type: question.type,
+          question: question.text,
+          points: question.points,
         })
         expect(hostPreview.pagination).toEqual({ current: 1, total: 1 })
         expect(hostQuestion.question).toEqual({
-          type: QuestionType.MultiChoice,
-          question: QUESTION,
-          answers: [{ value: CORRECT_ANSWER }, { value: INCORRECT_ANSWER }],
-          duration: 30,
+          type: question.type,
+          question: question.text,
+          answers: [{ value: correctAnswer }, { value: incorrectAnswer }],
+          duration: question.duration,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
-        await expect(page.getByText(QUESTION, { exact: true })).toBeVisible()
+        await expect(
+          page.getByText(question.text, { exact: true }),
+        ).toBeVisible()
         if (playerQuestion.question.type !== QuestionType.MultiChoice) {
           throw new Error(
             'Expected the simulated player to receive multi-choice',
           )
         }
         expect(playerQuestion.question.answers).toEqual([
-          { value: CORRECT_ANSWER },
-          { value: INCORRECT_ANSWER },
+          { value: correctAnswer },
+          { value: incorrectAnswer },
         ])
       })
 
@@ -153,13 +156,13 @@ test.describe('Game session: host UI with simulated players', () => {
         expect(hostResult.results).toEqual({
           type: QuestionType.MultiChoice,
           distribution: [
-            { index: 0, value: CORRECT_ANSWER, count: 1, correct: true },
+            { index: 0, value: correctAnswer, count: 1, correct: true },
           ],
         })
 
         const questionResults = page.getByTestId('question-results')
         await expect(questionResults).toBeVisible()
-        await expect(questionResults).toContainText(CORRECT_ANSWER)
+        await expect(questionResults).toContainText(correctAnswer)
       })
 
       await test.step('Progress to and verify the final podium', async () => {
@@ -169,13 +172,14 @@ test.describe('Game session: host UI with simulated players', () => {
         )
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
         await page.locator('#next-button').click()
         const [gameOver, podium] = await Promise.all([
           gameOverPromise,
           podiumPromise,
         ])
-        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({ position: 1, nickname: playerNickname }),
         ])
@@ -189,7 +193,7 @@ test.describe('Game session: host UI with simulated players', () => {
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
-        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText(playerNickname, { exact: true }),
         ).toBeVisible()
@@ -204,6 +208,16 @@ test.describe('Game session: host UI with simulated players', () => {
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classic
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.MultiChoice) {
+      throw new Error('Expected the seeded question to be multi-choice')
+    }
+    const correctAnswer = question.options[0]?.value
+    const incorrectAnswer = question.options[1]?.value
+    if (!correctAnswer || !incorrectAnswer) {
+      throw new Error('Expected two seeded multi-choice answers')
+    }
     const correctPlayerNickname = `ApiCorrect${randomUUID().slice(0, 8)}`
     const incorrectPlayerNickname = `ApiIncorrect${randomUUID().slice(0, 8)}`
 
@@ -213,11 +227,9 @@ test.describe('Game session: host UI with simulated players', () => {
     })
 
     await test.step('Open the seeded private Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classic.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classic.id}`,
-      )
-      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -310,18 +322,20 @@ test.describe('Game session: host UI with simulated players', () => {
           score: { total: 0 },
         })
         expect(hostPreview.question).toEqual({
-          type: QuestionType.MultiChoice,
-          question: QUESTION,
-          points: 1000,
+          type: question.type,
+          question: question.text,
+          points: question.points,
         })
         expect(hostQuestion.question).toEqual({
-          type: QuestionType.MultiChoice,
-          question: QUESTION,
-          answers: [{ value: CORRECT_ANSWER }, { value: INCORRECT_ANSWER }],
-          duration: 30,
+          type: question.type,
+          question: question.text,
+          answers: [{ value: correctAnswer }, { value: incorrectAnswer }],
+          duration: question.duration,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 2 })
-        await expect(page.getByText(QUESTION, { exact: true })).toBeVisible()
+        await expect(
+          page.getByText(question.text, { exact: true }),
+        ).toBeVisible()
         for (const question of [correctQuestion, incorrectQuestion]) {
           if (question.question.type !== QuestionType.MultiChoice) {
             throw new Error(
@@ -329,8 +343,8 @@ test.describe('Game session: host UI with simulated players', () => {
             )
           }
           expect(question.question.answers).toEqual([
-            { value: CORRECT_ANSWER },
-            { value: INCORRECT_ANSWER },
+            { value: correctAnswer },
+            { value: incorrectAnswer },
           ])
         }
       })
@@ -376,13 +390,13 @@ test.describe('Game session: host UI with simulated players', () => {
           distribution: [
             {
               index: 0,
-              value: CORRECT_ANSWER,
+              value: correctAnswer,
               count: 1,
               correct: true,
             },
             {
               index: 1,
-              value: INCORRECT_ANSWER,
+              value: incorrectAnswer,
               count: 1,
               correct: false,
             },
@@ -396,9 +410,9 @@ test.describe('Game session: host UI with simulated players', () => {
 
         const resultGroups = questionResults.locator(':scope > div')
         await expect(resultGroups).toHaveCount(2)
-        await expect(resultGroups.nth(0)).toContainText(CORRECT_ANSWER)
+        await expect(resultGroups.nth(0)).toContainText(correctAnswer)
         await expect(resultGroups.nth(0)).toContainText('1')
-        await expect(resultGroups.nth(1)).toContainText(INCORRECT_ANSWER)
+        await expect(resultGroups.nth(1)).toContainText(incorrectAnswer)
         await expect(resultGroups.nth(1)).toContainText('1')
       })
 
@@ -413,6 +427,7 @@ test.describe('Game session: host UI with simulated players', () => {
         )
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
         await page.locator('#next-button').click()
         const [correctGameOver, incorrectGameOver, podium] = await Promise.all([
@@ -420,7 +435,7 @@ test.describe('Game session: host UI with simulated players', () => {
           incorrectGameOverPromise,
           podiumPromise,
         ])
-        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(
           podium.leaderboard.map(({ nickname, position }) => ({
             nickname,
@@ -447,7 +462,7 @@ test.describe('Game session: host UI with simulated players', () => {
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
-        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
 
         const correctPlayerColumn = page
           .getByText(correctPlayerNickname, { exact: true })

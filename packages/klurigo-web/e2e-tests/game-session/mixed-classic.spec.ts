@@ -1,16 +1,14 @@
 import { randomUUID } from 'node:crypto'
 
 import {
+  type GameEventQuestionResults,
   GameEventType,
   GameMode,
   type GameQuestionPlayerEvent,
   QuestionType,
   type SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
-import {
-  E2E_FIXTURE_MANIFEST,
-  type GameSessionQuestionFixture,
-} from '@klurigo/e2e-fixtures'
+import { type GameSessionQuestionFixture } from '@klurigo/e2e-fixtures'
 import { expect, type Page, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -23,21 +21,12 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: mixed Classic question types', () => {
-  const MIXED_QUIZ_TITLE =
-    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicMixed.title
-  const MIXED_QUESTIONS = [
-    E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky,
-    E2E_FIXTURE_MANIFEST.questions.classicRange,
-    E2E_FIXTURE_MANIFEST.questions.moonIsLargerThanEarth,
-    E2E_FIXTURE_MANIFEST.questions.capitalOfFrance,
-    E2E_FIXTURE_MANIFEST.questions.coordinatesOfEiffelTower,
-    E2E_FIXTURE_MANIFEST.questions.europeanCapitals,
-  ] as const
-
   test('completes one deterministic question of every Classic type', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicMixed
+    const questions = quiz.questions
     const playerNickname = `ApiMixed${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
@@ -46,13 +35,9 @@ test.describe('Game session: mixed Classic question types', () => {
     })
 
     await test.step('Open the seeded mixed Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classicMixed.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classicMixed.id}`,
-      )
-      await expect(
-        page.getByText(MIXED_QUIZ_TITLE, { exact: true }),
-      ).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -117,16 +102,16 @@ test.describe('Game session: mixed Classic question types', () => {
       expect(hostPreview.game.mode).toBe(GameMode.Classic)
       expect(hostPreview.question).toEqual(
         expect.objectContaining({
-          type: MIXED_QUESTIONS[0].type,
-          question: MIXED_QUESTIONS[0].text,
-          points: MIXED_QUESTIONS[0].points,
+          type: questions[0].type,
+          question: questions[0].text,
+          points: questions[0].points,
         }),
       )
       expect(hostPreview.pagination).toEqual({ current: 1, total: 6 })
       let hostQuestion = await hostQuestionPromise
       let playerQuestion = await playerQuestionPromise
 
-      for (const [index, expectedQuestion] of MIXED_QUESTIONS.entries()) {
+      for (const [index, expectedQuestion] of questions.entries()) {
         const paginationPosition = index + 1
 
         await test.step(`Verify question ${paginationPosition} and submit its answer`, async () => {
@@ -137,12 +122,12 @@ test.describe('Game session: mixed Classic question types', () => {
           expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
           expect(hostQuestion.pagination).toEqual({
             current: paginationPosition,
-            total: MIXED_QUESTIONS.length,
+            total: questions.length,
           })
           assertQuestionPayload(hostQuestion.question, expectedQuestion)
           expect(playerQuestion.pagination).toEqual({
             current: paginationPosition,
-            total: MIXED_QUESTIONS.length,
+            total: questions.length,
           })
           expect(playerQuestion.player.nickname).toBe(playerNickname)
 
@@ -174,22 +159,20 @@ test.describe('Game session: mixed Classic question types', () => {
           )
           expect(hostResult.pagination).toEqual({
             current: paginationPosition,
-            total: MIXED_QUESTIONS.length,
+            total: questions.length,
           })
           expect(hostResult.results.type).toBe(expectedQuestion.type)
-          expect(
-            hostResult.results.distribution.some(({ count }) => count === 1),
-          ).toBe(true)
+          assertCorrectAnswerDistribution(hostResult.results, expectedQuestion)
           expect(playerResult.pagination).toEqual({
             current: paginationPosition,
-            total: MIXED_QUESTIONS.length,
+            total: questions.length,
           })
           expect(playerResult.game.mode).toBe(GameMode.Classic)
           expect(playerResult.player.score.correct).toBe(true)
           expect(playerResult.player.score.total).toBeGreaterThan(0)
         })
 
-        if (paginationPosition < MIXED_QUESTIONS.length) {
+        if (paginationPosition < questions.length) {
           await expectResultState(page, expectedQuestion)
 
           const leaderboardPromise = gameHost.waitForEvent(
@@ -207,7 +190,7 @@ test.describe('Game session: mixed Classic question types', () => {
           })
           expect(leaderboard.pagination).toEqual({
             current: paginationPosition,
-            total: MIXED_QUESTIONS.length,
+            total: questions.length,
           })
           expect(leaderboard.leaderboard).toEqual([
             expect.objectContaining({
@@ -236,6 +219,7 @@ test.describe('Game session: mixed Classic question types', () => {
           )
           const podiumPromise = gameHost.waitForEvent(
             GameEventType.GamePodiumHost,
+            (event) => event.game.name === quiz.title,
           )
           await page.locator('#next-button').click()
           const [gameOver, podium] = await Promise.all([
@@ -243,7 +227,7 @@ test.describe('Game session: mixed Classic question types', () => {
             podiumPromise,
           ])
 
-          expect(podium.game.name).toBe(MIXED_QUIZ_TITLE)
+          expect(podium.game.name).toBe(quiz.title)
           expect(podium.leaderboard).toEqual([
             expect.objectContaining({
               position: 1,
@@ -252,8 +236,8 @@ test.describe('Game session: mixed Classic question types', () => {
           ])
           expect(gameOver.game.mode).toBe(GameMode.Classic)
           expect(gameOver.quiz).toEqual({
-            id: e2eHost.quizzes.classicMixed.id,
-            title: MIXED_QUIZ_TITLE,
+            id: quiz.id,
+            title: quiz.title,
           })
           expect(gameOver.player).toEqual(
             expect.objectContaining({
@@ -266,7 +250,7 @@ test.describe('Game session: mixed Classic question types', () => {
             page.getByRole('button', { name: 'View Full Results' }),
           ).toBeVisible()
           await expect(
-            page.getByText(MIXED_QUIZ_TITLE, { exact: true }),
+            page.getByText(quiz.title, { exact: true }),
           ).toBeVisible()
           await expect(
             page.getByText(playerNickname, { exact: true }),
@@ -391,6 +375,80 @@ function getCorrectAnswer(
   }
 
   return { type: question.type, values: [...question.values] }
+}
+
+function assertCorrectAnswerDistribution(
+  results: GameEventQuestionResults,
+  question: GameSessionQuestionFixture,
+): void {
+  if (question.type === QuestionType.MultiChoice) {
+    if (results.type !== QuestionType.MultiChoice) {
+      throw new Error('Expected a multi-choice result')
+    }
+    const correctIndex = question.options.findIndex(({ correct }) => correct)
+    const correctOption = question.options[correctIndex]
+    if (correctIndex < 0 || !correctOption) {
+      throw new Error(
+        'Mixed Classic multi-choice fixture has no correct answer',
+      )
+    }
+    expect(results.distribution).toEqual([
+      {
+        index: correctIndex,
+        value: correctOption.value,
+        count: 1,
+        correct: true,
+      },
+    ])
+    return
+  }
+
+  if (question.type === QuestionType.Range) {
+    if (results.type !== QuestionType.Range) {
+      throw new Error('Expected a range result')
+    }
+    expect(results.distribution).toEqual([
+      { value: question.correct, count: 1, correct: true },
+    ])
+    return
+  }
+
+  if (question.type === QuestionType.TrueFalse) {
+    if (results.type !== QuestionType.TrueFalse) {
+      throw new Error('Expected a true/false result')
+    }
+    expect(results.distribution).toEqual([
+      { value: question.correct, count: 1, correct: true },
+    ])
+    return
+  }
+
+  if (question.type === QuestionType.TypeAnswer) {
+    if (results.type !== QuestionType.TypeAnswer) {
+      throw new Error('Expected a type-answer result')
+    }
+    expect(results.distribution).toEqual([
+      { value: question.options[0]?.toLowerCase(), count: 1, correct: true },
+    ])
+    return
+  }
+
+  if (question.type === QuestionType.Pin) {
+    if (results.type !== QuestionType.Pin) {
+      throw new Error('Expected a Pin result')
+    }
+    expect(results.distribution).toContainEqual(
+      expect.objectContaining({ count: 1, correct: true }),
+    )
+    return
+  }
+
+  if (results.type !== QuestionType.Puzzle) {
+    throw new Error('Expected a Puzzle result')
+  }
+  expect(results.distribution).toEqual([
+    { value: [...question.values], count: 1, correct: true },
+  ])
 }
 
 async function expectResultState(
