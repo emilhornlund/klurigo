@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import { GameEventType, QuestionType } from '@klurigo/common'
+import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
 import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
@@ -53,6 +53,7 @@ test.describe('Game session: player UI with simulated host', () => {
           ))
       const gamePIN = lobbyEvent.game.pin
       expect(gamePIN).toMatch(/^[1-9]\d{5}$/)
+      expect(lobbyEvent.players).toEqual([])
 
       await test.step('Join the game through the real player UI', async () => {
         const joinedPlayerPromise = gameHost.waitForEvent(
@@ -76,14 +77,43 @@ test.describe('Game session: player UI with simulated host', () => {
       })
 
       await test.step('Start the game through the public host progression endpoint', async () => {
+        const hostBeginPromise = gameHost.waitForEvent(
+          GameEventType.GameBeginHost,
+        )
+        const hostPreviewPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionPreviewHost,
+          (event) => event.pagination.current === 1,
+        )
         const hostQuestionPromise = gameHost.waitForEvent(
           GameEventType.GameQuestionHost,
           (event) => event.pagination.current === 1,
         )
 
         await gameHost.completeCurrentTask()
+        await hostBeginPromise
+        const hostPreview = await hostPreviewPromise
         const hostQuestion = await hostQuestionPromise
 
+        expect(hostPreview).toEqual(
+          expect.objectContaining({
+            game: { mode: GameMode.Classic, pin: gamePIN },
+            question: {
+              type: QuestionType.MultiChoice,
+              question: QUESTION,
+              points: 1000,
+            },
+            pagination: { current: 1, total: 1 },
+          }),
+        )
+        expect(hostQuestion.game.pin).toBe(gamePIN)
+        expect(hostQuestion.pagination).toEqual({ current: 1, total: 1 })
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
+        expect(hostQuestion.question).toEqual({
+          type: QuestionType.MultiChoice,
+          question: QUESTION,
+          answers: [{ value: CORRECT_ANSWER }, { value: INCORRECT_ANSWER }],
+          duration: 30,
+        })
         if (hostQuestion.question.type !== QuestionType.MultiChoice) {
           throw new Error('Expected the seeded question to be multi-choice')
         }
@@ -105,7 +135,28 @@ test.describe('Game session: player UI with simulated host', () => {
 
         await correctAnswer.click()
         await expect(correctAnswer).toBeDisabled()
-        await hostResultPromise
+        const hostResult = await hostResultPromise
+        expect(hostResult).toEqual(
+          expect.objectContaining({
+            game: { pin: gamePIN },
+            question: expect.objectContaining({
+              type: QuestionType.MultiChoice,
+              question: QUESTION,
+            }),
+            pagination: { current: 1, total: 1 },
+            results: {
+              type: QuestionType.MultiChoice,
+              distribution: [
+                {
+                  index: 0,
+                  value: CORRECT_ANSWER,
+                  count: 1,
+                  correct: true,
+                },
+              ],
+            },
+          }),
+        )
       })
 
       await test.step('Verify the player result and ranking state', async () => {
@@ -126,6 +177,9 @@ test.describe('Game session: player UI with simulated host', () => {
         const podium = await podiumPromise
 
         expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.leaderboard).toEqual([
+          expect.objectContaining({ position: 1, nickname: playerNickname }),
+        ])
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({
             position: 1,

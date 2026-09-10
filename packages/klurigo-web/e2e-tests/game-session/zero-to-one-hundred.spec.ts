@@ -9,10 +9,11 @@ import {
 import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
+import { GameHostClient } from '../support/api/game-host-client'
 import { GamePlayerClient } from '../support/api/game-player-client'
 import { authenticatePageThroughApi } from '../support/browser/authenticate-page-through-api'
 import { startHostGame } from '../support/browser/start-host-game'
-import { E2E_API_BASE_URL } from '../support/e2e-runtime'
+import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures'
 
 test.describe.configure({ mode: 'serial' })
@@ -62,9 +63,23 @@ test.describe('Game session: Zero to One Hundred', () => {
 
     const precisePlayer = new GamePlayerClient(E2E_API_BASE_URL)
     const approximatePlayer = new GamePlayerClient(E2E_API_BASE_URL)
+    const gameHost = new GameHostClient(E2E_API_BASE_URL)
 
     try {
       await test.step('Join and connect both simulated players', async () => {
+        const hostIdentity = await gameHost.authenticate(
+          { email: e2eHost.email, password: E2E_USER_PASSWORD },
+          { gamePIN },
+        )
+        await gameHost.connect()
+        await gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) => event.game.pin === gamePIN && event.players.length === 0,
+        )
+        const joinedLobbyPromise = gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) => event.players.length === 2,
+        )
         const [preciseIdentity, approximateIdentity] = await Promise.all([
           precisePlayer.authenticateAndJoin({ gamePIN }, precisePlayerNickname),
           approximatePlayer.authenticateAndJoin(
@@ -72,6 +87,7 @@ test.describe('Game session: Zero to One Hundred', () => {
             approximatePlayerNickname,
           ),
         ])
+        expect(preciseIdentity.gameId).toBe(hostIdentity.gameId)
 
         expect(preciseIdentity.gameId).toMatch(
           /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
@@ -82,6 +98,10 @@ test.describe('Game session: Zero to One Hundred', () => {
           precisePlayer.connect(),
           approximatePlayer.connect(),
         ])
+        const joinedLobby = await joinedLobbyPromise
+        expect(
+          joinedLobby.players.map(({ nickname }) => nickname).sort(),
+        ).toEqual([precisePlayerNickname, approximatePlayerNickname].sort())
         await expect(
           page.getByText(precisePlayerNickname, { exact: true }),
         ).toBeVisible()
@@ -91,6 +111,17 @@ test.describe('Game session: Zero to One Hundred', () => {
       })
 
       await test.step('Start the game and receive both player questions', async () => {
+        const hostBeginPromise = gameHost.waitForEvent(
+          GameEventType.GameBeginHost,
+        )
+        const hostPreviewPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionPreviewHost,
+          (event) => event.pagination.current === 1,
+        )
+        const hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === 1,
+        )
         const preciseQuestionPromise = precisePlayer.waitForEvent(
           GameEventType.GameQuestionPlayer,
           (event) => event.pagination.current === 1,
@@ -101,11 +132,28 @@ test.describe('Game session: Zero to One Hundred', () => {
         )
 
         await page.locator('#start-game-button').click()
+        await hostBeginPromise
+        const hostPreview = await hostPreviewPromise
+        const hostQuestion = await hostQuestionPromise
         const [preciseQuestion, approximateQuestion] = await Promise.all([
           preciseQuestionPromise,
           approximateQuestionPromise,
         ])
 
+        expect(hostPreview.question).toEqual({
+          type: QuestionType.Range,
+          question: ZERO_TO_ONE_HUNDRED_QUESTION,
+          points: 0,
+        })
+        expect(hostQuestion.question).toEqual({
+          type: QuestionType.Range,
+          question: ZERO_TO_ONE_HUNDRED_QUESTION,
+          min: 0,
+          max: 100,
+          step: 1,
+          duration: 30,
+        })
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 2 })
         await expect(
           page.getByText(ZERO_TO_ONE_HUNDRED_QUESTION, { exact: true }),
         ).toBeVisible()
@@ -135,6 +183,10 @@ test.describe('Game session: Zero to One Hundred', () => {
             event.pagination.current === 1 &&
             event.player.nickname === approximatePlayerNickname,
         )
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === 1,
+        )
 
         await Promise.all([
           precisePlayer.submitAnswer({
@@ -147,11 +199,28 @@ test.describe('Game session: Zero to One Hundred', () => {
           }),
         ])
 
-        const [preciseResult, approximateResult] = await Promise.all([
-          preciseResultPromise,
-          approximateResultPromise,
-        ])
+        const [preciseResult, approximateResult, hostResult] =
+          await Promise.all([
+            preciseResultPromise,
+            approximateResultPromise,
+            hostResultPromise,
+          ])
 
+        expect(hostResult.results).toEqual({
+          type: QuestionType.Range,
+          distribution: [
+            {
+              value: ZERO_TO_ONE_HUNDRED_EXACT_ANSWER,
+              count: 1,
+              correct: true,
+            },
+            {
+              value: ZERO_TO_ONE_HUNDRED_APPROXIMATE_ANSWER,
+              count: 1,
+              correct: true,
+            },
+          ],
+        })
         expect(preciseResult.game.mode).toBe(GameMode.ZeroToOneHundred)
         expect(preciseResult.player.score).toEqual({
           correct: true,
@@ -187,7 +256,51 @@ test.describe('Game session: Zero to One Hundred', () => {
       })
 
       await test.step('Progress to and verify the final podium ordering', async () => {
+        const preciseGameOverPromise = precisePlayer.waitForEvent(
+          GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === precisePlayerNickname,
+        )
+        const approximateGameOverPromise = approximatePlayer.waitForEvent(
+          GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === approximatePlayerNickname,
+        )
+        const podiumPromise = gameHost.waitForEvent(
+          GameEventType.GamePodiumHost,
+        )
         await page.locator('#next-button').click()
+        const [preciseGameOver, approximateGameOver, podium] =
+          await Promise.all([
+            preciseGameOverPromise,
+            approximateGameOverPromise,
+            podiumPromise,
+          ])
+        expect(podium.game.name).toBe(ZERO_TO_ONE_HUNDRED_QUIZ_TITLE)
+        expect(podium.leaderboard).toEqual([
+          expect.objectContaining({
+            position: 1,
+            nickname: precisePlayerNickname,
+            score: -10,
+          }),
+          expect.objectContaining({
+            position: 2,
+            nickname: approximatePlayerNickname,
+            score: 25,
+          }),
+        ])
+        expect(preciseGameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: precisePlayerNickname,
+            rank: 1,
+            totalPlayers: 2,
+          }),
+        )
+        expect(approximateGameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: approximatePlayerNickname,
+            rank: 2,
+            totalPlayers: 2,
+          }),
+        )
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
@@ -218,6 +331,7 @@ test.describe('Game session: Zero to One Hundred', () => {
         ).toContainText('25')
       })
     } finally {
+      gameHost.close()
       precisePlayer.close()
       approximatePlayer.close()
     }
@@ -254,36 +368,82 @@ test.describe('Game session: Zero to One Hundred', () => {
 
     const playerA = new GamePlayerClient(E2E_API_BASE_URL)
     const playerB = new GamePlayerClient(E2E_API_BASE_URL)
+    const gameHost = new GameHostClient(E2E_API_BASE_URL)
     const playerACompletedQuestionScores: number[] = []
     let playerAGameId: string | undefined
     let lateJoinResultPromise: Promise<GameResultPlayerEvent> | undefined
 
     try {
       await test.step('Join and connect Player A before the game starts', async () => {
+        const hostIdentity = await gameHost.authenticate(
+          { email: e2eHost.email, password: E2E_USER_PASSWORD },
+          { gamePIN },
+        )
+        await gameHost.connect()
+        await gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) => event.game.pin === gamePIN && event.players.length === 0,
+        )
+        const joinedLobbyPromise = gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) =>
+            event.players.some(({ nickname }) => nickname === playerANickname),
+        )
         const identity = await playerA.authenticateAndJoin(
           { gamePIN },
           playerANickname,
         )
+        expect(identity.gameId).toBe(hostIdentity.gameId)
         expect(identity.gameId).toMatch(
           /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
         )
         playerAGameId = identity.gameId
 
         await playerA.connect()
+        await joinedLobbyPromise
         await expect(
           page.getByText(playerANickname, { exact: true }),
         ).toBeVisible()
       })
 
       await test.step('Start the game and receive question 1', async () => {
+        const hostBeginPromise = gameHost.waitForEvent(
+          GameEventType.GameBeginHost,
+        )
+        const hostPreviewPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionPreviewHost,
+          (event) => event.pagination.current === 1,
+        )
+        const hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === 1,
+        )
         const questionPromise = playerA.waitForEvent(
           GameEventType.GameQuestionPlayer,
           (event) => event.pagination.current === 1,
         )
 
         await page.locator('#start-game-button').click()
+        await hostBeginPromise
+        const hostPreview = await hostPreviewPromise
+        const hostQuestion = await hostQuestionPromise
         const question = await questionPromise
 
+        expect(hostPreview.question).toEqual({
+          type: QuestionType.Range,
+          question: ZERO_TO_ONE_HUNDRED_QUESTION,
+          points: 0,
+        })
+        expect(hostQuestion.pagination).toEqual({ current: 1, total: 2 })
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
+        expect(hostQuestion.question).toEqual({
+          type: QuestionType.Range,
+          question: ZERO_TO_ONE_HUNDRED_QUESTION,
+          min: 0,
+          max: 100,
+          step: 1,
+          duration: 30,
+        })
         await expect(
           page.getByText(ZERO_TO_ONE_HUNDRED_QUESTION, { exact: true }),
         ).toBeVisible()
@@ -304,12 +464,19 @@ test.describe('Game session: Zero to One Hundred', () => {
             event.pagination.current === 1 &&
             event.player.nickname === playerANickname,
         )
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === 1,
+        )
 
         await playerA.submitAnswer({
           type: QuestionType.Range,
           value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER,
         })
-        const result = await resultPromise
+        const [result, hostResult] = await Promise.all([
+          resultPromise,
+          hostResultPromise,
+        ])
         const expectedQuestionScore = Math.abs(
           ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER -
             ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER,
@@ -319,12 +486,39 @@ test.describe('Game session: Zero to One Hundred', () => {
         expect(result.player.score.correct).toBe(true)
         expect(result.player.score.last).toBe(expectedQuestionScore)
         expect(result.player.score.total).toBe(expectedQuestionScore)
+        expect(hostResult.results).toEqual({
+          type: QuestionType.Range,
+          distribution: [
+            {
+              value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_FRACTIONAL_ANSWER,
+              count: 1,
+              correct: true,
+            },
+            {
+              value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_FIRST_CORRECT_ANSWER,
+              count: 0,
+              correct: true,
+            },
+          ],
+        })
         playerACompletedQuestionScores.push(result.player.score.last)
         await expect(page.getByTestId('question-results')).toBeVisible()
       })
 
       await test.step('Advance to the active leaderboard after question 1', async () => {
+        const leaderboardPromise = gameHost.waitForEvent(
+          GameEventType.GameLeaderboardHost,
+          (event) => event.pagination.current === 1,
+        )
         await page.locator('#next-button').click()
+        const leaderboard = await leaderboardPromise
+        expect(leaderboard.game).toEqual({
+          mode: GameMode.ZeroToOneHundred,
+          pin: gamePIN,
+        })
+        expect(leaderboard.leaderboard).toEqual([
+          expect.objectContaining({ nickname: playerANickname, position: 1 }),
+        ])
         await expect(
           page.getByText('Leaderboard', { exact: true }),
         ).toBeVisible()
@@ -372,6 +566,10 @@ test.describe('Game session: Zero to One Hundred', () => {
       })
 
       await test.step('Complete question 2 and preserve the final podium ordering', async () => {
+        const hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === 2,
+        )
         const playerAQuestionPromise = playerA.waitForEvent(
           GameEventType.GameQuestionPlayer,
           (event) => event.pagination.current === 2,
@@ -382,10 +580,21 @@ test.describe('Game session: Zero to One Hundred', () => {
         )
 
         await page.locator('#next-button').click()
+        const hostQuestion = await hostQuestionPromise
         const [playerAQuestion, playerBQuestion] = await Promise.all([
           playerAQuestionPromise,
           playerBQuestionPromise,
         ])
+        expect(hostQuestion.pagination).toEqual({ current: 2, total: 2 })
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 2 })
+        expect(hostQuestion.question).toEqual({
+          type: QuestionType.Range,
+          question: ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION,
+          min: 0,
+          max: 100,
+          step: 1,
+          duration: 30,
+        })
 
         await expect(
           page.getByText(ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_QUESTION, {
@@ -408,6 +617,10 @@ test.describe('Game session: Zero to One Hundred', () => {
             event.pagination.current === 2 &&
             event.player.nickname === playerBNickname,
         )
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === 2,
+        )
 
         await playerA.submitAnswer({
           type: QuestionType.Range,
@@ -416,9 +629,10 @@ test.describe('Game session: Zero to One Hundred', () => {
         await expect(page.locator('#skip-button')).toBeVisible()
         await page.locator('#skip-button').click()
 
-        const [playerAResult, playerBResult] = await Promise.all([
+        const [playerAResult, playerBResult, hostResult] = await Promise.all([
           playerAResultPromise,
           playerBResultPromise,
+          hostResultPromise,
         ])
         const playerAFinalScore = playerACompletedQuestionScores[0] - 10
 
@@ -428,10 +642,55 @@ test.describe('Game session: Zero to One Hundred', () => {
         expect(playerBResult.player.score.total).toBe(
           Math.round(playerACompletedQuestionScores[0]) + 100,
         )
+        expect(hostResult.results).toEqual({
+          type: QuestionType.Range,
+          distribution: [
+            {
+              value: ZERO_TO_ONE_HUNDRED_LATE_JOIN_SECOND_EXACT_ANSWER,
+              count: 1,
+              correct: true,
+            },
+          ],
+        })
         playerACompletedQuestionScores.push(playerAResult.player.score.last)
         await expect(page.getByTestId('question-results')).toBeVisible()
 
+        const podiumPromise = gameHost.waitForEvent(
+          GameEventType.GamePodiumHost,
+        )
+        const playerAGameOverPromise = playerA.waitForEvent(
+          GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerANickname,
+        )
+        const playerBGameOverPromise = playerB.waitForEvent(
+          GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerBNickname,
+        )
         await page.locator('#next-button').click()
+        const [playerAGameOver, playerBGameOver, podium] = await Promise.all([
+          playerAGameOverPromise,
+          playerBGameOverPromise,
+          podiumPromise,
+        ])
+        expect(podium.game.name).toBe(ZERO_TO_ONE_HUNDRED_LATE_JOIN_QUIZ_TITLE)
+        expect(podium.leaderboard).toEqual([
+          expect.objectContaining({ nickname: playerANickname, position: 1 }),
+          expect.objectContaining({ nickname: playerBNickname, position: 2 }),
+        ])
+        expect(playerAGameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: playerANickname,
+            rank: 1,
+            totalPlayers: 2,
+          }),
+        )
+        expect(playerBGameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: playerBNickname,
+            rank: 2,
+            totalPlayers: 2,
+          }),
+        )
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
@@ -455,6 +714,7 @@ test.describe('Game session: Zero to One Hundred', () => {
         ).toBeVisible()
       })
     } finally {
+      gameHost.close()
       playerA.close()
       playerB.close()
     }
