@@ -2,10 +2,11 @@ import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
 import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
+import { GameHostClient } from '../support/api/game-host-client'
 import { GamePlayerClient } from '../support/api/game-player-client'
 import { authenticatePageThroughApi } from '../support/browser/authenticate-page-through-api'
 import { startHostGame } from '../support/browser/start-host-game'
-import { E2E_API_BASE_URL } from '../support/e2e-runtime'
+import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures'
 
 test.describe.configure({ mode: 'serial' })
@@ -39,9 +40,23 @@ test.describe('Game session: Classic Puzzle', () => {
 
     const gamePIN = await test.step('Create and open the host game', () =>
       startHostGame(page))
+    const gameHost = new GameHostClient(E2E_API_BASE_URL)
 
     try {
       await test.step('Join and connect both simulated players', async () => {
+        const hostIdentity = await gameHost.authenticate(
+          { email: e2eHost.email, password: E2E_USER_PASSWORD },
+          { gamePIN },
+        )
+        await gameHost.connect()
+        await gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) => event.game.pin === gamePIN && event.players.length === 0,
+        )
+        const joinedLobbyPromise = gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) => event.players.length === 2,
+        )
         const [correctIdentity, incorrectIdentity] = await Promise.all([
           correctPlayer.authenticateAndJoin({ gamePIN }, correctPlayerNickname),
           incorrectPlayer.authenticateAndJoin(
@@ -49,12 +64,17 @@ test.describe('Game session: Classic Puzzle', () => {
             incorrectPlayerNickname,
           ),
         ])
+        expect(correctIdentity.gameId).toBe(hostIdentity.gameId)
         expect(correctIdentity.gameId).toMatch(
           /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
         )
         expect(incorrectIdentity.gameId).toBe(correctIdentity.gameId)
 
         await Promise.all([correctPlayer.connect(), incorrectPlayer.connect()])
+        const joinedLobby = await joinedLobbyPromise
+        expect(
+          joinedLobby.players.map(({ nickname }) => nickname).sort(),
+        ).toEqual([correctPlayerNickname, incorrectPlayerNickname].sort())
         await expect(
           page.getByText(correctPlayerNickname, { exact: true }),
         ).toBeVisible()
@@ -64,6 +84,17 @@ test.describe('Game session: Classic Puzzle', () => {
       })
 
       await test.step('Start the game and verify the randomized player question', async () => {
+        const hostBeginPromise = gameHost.waitForEvent(
+          GameEventType.GameBeginHost,
+        )
+        const hostPreviewPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionPreviewHost,
+          (event) => event.pagination.current === 1,
+        )
+        const hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === 1,
+        )
         const correctQuestionPromise = correctPlayer.waitForEvent(
           GameEventType.GameQuestionPlayer,
           (event) => event.pagination.current === 1,
@@ -74,11 +105,39 @@ test.describe('Game session: Classic Puzzle', () => {
         )
 
         await page.locator('#start-game-button').click()
+        await hostBeginPromise
+        const hostPreview = await hostPreviewPromise
+        const hostQuestion = await hostQuestionPromise
         const [correctQuestion, incorrectQuestion] = await Promise.all([
           correctQuestionPromise,
           incorrectQuestionPromise,
         ])
 
+        expect(hostPreview).toEqual(
+          expect.objectContaining({
+            game: { mode: GameMode.Classic, pin: gamePIN },
+            question: {
+              type: QuestionType.Puzzle,
+              question: QUESTION.text,
+              points: QUESTION.points,
+            },
+            pagination: { current: 1, total: 1 },
+          }),
+        )
+        expect(hostQuestion.question).toEqual(
+          expect.objectContaining({
+            type: QuestionType.Puzzle,
+            question: QUESTION.text,
+            duration: QUESTION.duration,
+          }),
+        )
+        if (hostQuestion.question.type !== QuestionType.Puzzle) {
+          throw new Error('Expected the host question to be a Puzzle')
+        }
+        expect([...hostQuestion.question.values].sort()).toEqual(
+          [...QUESTION.values].sort(),
+        )
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 2 })
         await expect(
           page.getByText(QUESTION.text, { exact: true }),
         ).toBeVisible()
@@ -115,6 +174,10 @@ test.describe('Game session: Classic Puzzle', () => {
             event.pagination.current === 1 &&
             event.player.nickname === incorrectPlayerNickname,
         )
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === 1,
+        )
 
         await Promise.all([
           correctPlayer.submitAnswer({
@@ -126,11 +189,34 @@ test.describe('Game session: Classic Puzzle', () => {
             values: [...QUESTION.values].reverse(),
           }),
         ])
-        const [correctResult, incorrectResult] = await Promise.all([
+        const [correctResult, incorrectResult, hostResult] = await Promise.all([
           correctResultPromise,
           incorrectResultPromise,
+          hostResultPromise,
         ])
 
+        expect(hostResult).toEqual(
+          expect.objectContaining({
+            game: { pin: gamePIN },
+            question: expect.objectContaining({
+              type: QuestionType.Puzzle,
+              question: QUESTION.text,
+            }),
+            pagination: { current: 1, total: 1 },
+          }),
+        )
+        if (hostResult.results.type !== QuestionType.Puzzle) {
+          throw new Error('Expected the host result to be a Puzzle')
+        }
+        expect(hostResult.results.values).toEqual(QUESTION.values)
+        expect(hostResult.results.distribution).toEqual([
+          expect.objectContaining({
+            value: QUESTION.values,
+            count: 1,
+            correct: true,
+          }),
+          expect.objectContaining({ count: 1, correct: false }),
+        ])
         expect(correctResult.game.mode).toBe(GameMode.Classic)
         expect(correctResult.player.score).toEqual(
           expect.objectContaining({
@@ -166,10 +252,31 @@ test.describe('Game session: Classic Puzzle', () => {
         const gameOverPromise = correctPlayer.waitForEvent(
           GameEventType.GameOverPlayer,
         )
+        const incorrectGameOverPromise = incorrectPlayer.waitForEvent(
+          GameEventType.GameOverPlayer,
+        )
+        const podiumPromise = gameHost.waitForEvent(
+          GameEventType.GamePodiumHost,
+        )
 
         await page.locator('#next-button').click()
-        const gameOver = await gameOverPromise
+        const [gameOver, incorrectGameOver, podium] = await Promise.all([
+          gameOverPromise,
+          incorrectGameOverPromise,
+          podiumPromise,
+        ])
 
+        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.leaderboard).toEqual([
+          expect.objectContaining({
+            position: 1,
+            nickname: correctPlayerNickname,
+          }),
+          expect.objectContaining({
+            position: 2,
+            nickname: incorrectPlayerNickname,
+          }),
+        ])
         expect(gameOver.game.mode).toBe(GameMode.Classic)
         expect(gameOver.quiz).toEqual({
           id: e2eHost.quizzes.classicPuzzle.id,
@@ -179,6 +286,13 @@ test.describe('Game session: Classic Puzzle', () => {
           expect.objectContaining({
             nickname: correctPlayerNickname,
             rank: 1,
+            totalPlayers: 2,
+          }),
+        )
+        expect(incorrectGameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: incorrectPlayerNickname,
+            rank: 2,
             totalPlayers: 2,
           }),
         )
@@ -208,6 +322,7 @@ test.describe('Game session: Classic Puzzle', () => {
         ).toBeVisible()
       })
     } finally {
+      gameHost.close()
       correctPlayer.close()
       incorrectPlayer.close()
     }
