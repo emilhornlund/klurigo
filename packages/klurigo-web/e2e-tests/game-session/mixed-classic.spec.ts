@@ -26,7 +26,7 @@ test.describe('Game session: mixed Classic question types', () => {
     E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicMixed.title
   const MIXED_QUESTIONS = [
     E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky,
-    E2E_FIXTURE_MANIFEST.questions.halfwayToOneHundred,
+    E2E_FIXTURE_MANIFEST.questions.classicRange,
     E2E_FIXTURE_MANIFEST.questions.moonIsLargerThanEarth,
     E2E_FIXTURE_MANIFEST.questions.capitalOfFrance,
     E2E_FIXTURE_MANIFEST.questions.coordinatesOfEiffelTower,
@@ -112,6 +112,7 @@ test.describe('Game session: mixed Classic question types', () => {
           })
           expect(playerResult.game.mode).toBe(GameMode.Classic)
           expect(playerResult.player.score.correct).toBe(true)
+          expect(playerResult.player.score.total).toBeGreaterThan(0)
         })
 
         if (paginationPosition < MIXED_QUESTIONS.length) {
@@ -203,6 +204,30 @@ function assertQuestionPayload(
     return
   }
 
+  if (expected.type === QuestionType.TrueFalse) {
+    if (event.question.type !== QuestionType.TrueFalse) {
+      throw new Error('Expected a true/false question')
+    }
+    expect(event.question).toEqual({
+      type: QuestionType.TrueFalse,
+      question: expected.text,
+      duration: expected.duration,
+    })
+    return
+  }
+
+  if (expected.type === QuestionType.TypeAnswer) {
+    if (event.question.type !== QuestionType.TypeAnswer) {
+      throw new Error('Expected a type-answer question')
+    }
+    expect(event.question).toEqual({
+      type: QuestionType.TypeAnswer,
+      question: expected.text,
+      duration: expected.duration,
+    })
+    return
+  }
+
   if (expected.type === QuestionType.Pin) {
     if (event.question.type !== QuestionType.Pin) {
       throw new Error('Expected a Pin question')
@@ -218,6 +243,7 @@ function assertQuestionPayload(
     expect([...event.question.values].sort()).toEqual(
       [...expected.values].sort(),
     )
+    return
   }
 }
 
@@ -264,14 +290,57 @@ async function expectResultState(
   await expect(page.getByText(question.text, { exact: true })).toBeVisible()
 
   if (question.type === QuestionType.Pin) {
-    await expect(page.getByTestId('pin-question-results')).toBeVisible()
+    const pinResults = page.getByTestId('pin-question-results')
+    await expect(pinResults).toBeVisible()
+    await expect(pinResults.locator('img')).toHaveAttribute(
+      'src',
+      question.imageURL,
+    )
+    await expect(pinResults.locator('svg')).toHaveCount(2)
+    await expect(pinResults.locator('[class*="tolerance"]')).toHaveCount(1)
     return
   }
 
   if (question.type === QuestionType.Puzzle) {
-    await expect(page.locator('[class*="puzzleQuestionResults"]')).toBeVisible()
+    const puzzleResults = page.locator('[class*="puzzleQuestionResults"]')
+    await expect(puzzleResults).toBeVisible()
+    await expect(puzzleResults.locator('[class*="green"]')).toContainText('1')
+    await expect(puzzleResults.locator('[class*="red"]')).toContainText('0')
+    const resultValues = puzzleResults.locator(
+      '[class*="sortableTable"] [class*="item"]',
+    )
+    await expect(resultValues).toHaveCount(question.values.length)
+    expect(
+      (await resultValues.allTextContents()).map((value) => value.trim()),
+    ).toEqual(question.values)
     return
   }
 
-  await expect(page.getByTestId('question-results')).toBeVisible()
+  const questionResults = page.getByTestId('question-results')
+  await expect(questionResults).toBeVisible()
+
+  if (question.type === QuestionType.MultiChoice) {
+    const correctOption = question.options.find((option) => option.correct)
+    if (!correctOption)
+      throw new Error('Mixed Classic answer is not configured')
+    await expect(questionResults).toContainText(correctOption.value)
+  }
+
+  if (question.type === QuestionType.Range) {
+    await expect(questionResults).toContainText(`${question.correct}`)
+  }
+
+  if (question.type === QuestionType.TrueFalse) {
+    await expect(questionResults).toContainText(
+      question.correct ? 'True' : 'False',
+    )
+  }
+
+  if (question.type === QuestionType.TypeAnswer) {
+    await expect(questionResults).toContainText(
+      question.options[0]?.toLowerCase() ?? '',
+    )
+  }
+
+  await expect(questionResults).toContainText('1')
 }
