@@ -16,12 +16,13 @@ const GAME_SESSION_PROJECT_TO_FIXTURE_PROJECT: Record<string, string> = {
 export function getGameSessionFixture(
   testInfo: TestInfo,
 ): GameSessionUserFixture {
-  const fixtureSlots: Record<string, readonly GameSessionUserFixture[]> =
-    E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots
   const fixtureProject =
     GAME_SESSION_PROJECT_TO_FIXTURE_PROJECT[testInfo.project.name] ??
     testInfo.project.name
-  const fixture = fixtureSlots[fixtureProject]?.[testInfo.repeatEachIndex]
+  const fixture =
+    E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots[
+      fixtureProject as keyof typeof E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots
+    ]?.[testInfo.repeatEachIndex]
 
   if (!fixture) {
     throw new Error(

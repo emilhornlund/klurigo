@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
-import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
 
 import { GameHostClient } from '../support/api/game-host-client'
@@ -14,14 +13,15 @@ import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: Classic True/False', () => {
-  const QUIZ_TITLE =
-    E2E_FIXTURE_MANIFEST.users.tester02.quizzes.classicTrueFalse.title
-  const QUESTION = E2E_FIXTURE_MANIFEST.questions.moonIsLargerThanEarth
-
   test('completes a Classic True/False game with one simulated player', async ({
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicTrueFalse
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.TrueFalse) {
+      throw new Error('Expected the seeded question to be true/false')
+    }
     const playerNickname = `ApiTrueFalse${randomUUID().slice(0, 8)}`
 
     await test.step('Authenticate the seeded E2E user', async () => {
@@ -30,11 +30,9 @@ test.describe('Game session: Classic True/False', () => {
     })
 
     await test.step('Open the seeded True/False Classic quiz', async () => {
-      await page.goto(`/quiz/details/${e2eHost.quizzes.classicTrueFalse.id}`)
-      await expect(page).toHaveURL(
-        `/quiz/details/${e2eHost.quizzes.classicTrueFalse.id}`,
-      )
-      await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+      await page.goto(`/quiz/details/${quiz.id}`)
+      await expect(page).toHaveURL(`/quiz/details/${quiz.id}`)
+      await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
     })
 
     const gamePIN = await test.step('Create and open the host game', () =>
@@ -105,17 +103,17 @@ test.describe('Game session: Classic True/False', () => {
         )
         expect(hostPreview.question).toEqual({
           type: QuestionType.TrueFalse,
-          question: QUESTION.text,
-          points: QUESTION.points,
+          question: question.text,
+          points: question.points,
         })
         expect(hostQuestion.question).toEqual({
           type: QuestionType.TrueFalse,
-          question: QUESTION.text,
-          duration: QUESTION.duration,
+          question: question.text,
+          duration: question.duration,
         })
         expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
         await expect(
-          page.getByText(QUESTION.text, { exact: true }),
+          page.getByText(question.text, { exact: true }),
         ).toBeVisible()
         expect(playerQuestion.pagination).toEqual({ current: 1, total: 1 })
         expect(playerQuestion.player).toEqual({
@@ -125,13 +123,13 @@ test.describe('Game session: Classic True/False', () => {
         expect(playerQuestion.question).toEqual(
           expect.objectContaining({
             type: QuestionType.TrueFalse,
-            question: QUESTION.text,
-            duration: QUESTION.duration,
+            question: question.text,
+            duration: question.duration,
           }),
         )
       })
 
-      await test.step('Submit False and verify the typed player result', async () => {
+      await test.step('Submit the seeded True/False answer and verify the player result', async () => {
         const playerResultPromise = gamePlayer.waitForEvent(
           GameEventType.GameResultPlayer,
           (event) =>
@@ -145,7 +143,7 @@ test.describe('Game session: Classic True/False', () => {
 
         await gamePlayer.submitAnswer({
           type: QuestionType.TrueFalse,
-          value: QUESTION.correct,
+          value: question.correct,
         })
         const [playerResult, hostResult] = await Promise.all([
           playerResultPromise,
@@ -157,14 +155,14 @@ test.describe('Game session: Classic True/False', () => {
             game: { pin: gamePIN },
             question: expect.objectContaining({
               type: QuestionType.TrueFalse,
-              question: QUESTION.text,
+              question: question.text,
             }),
             pagination: { current: 1, total: 1 },
           }),
         )
         expect(hostResult.results).toEqual({
           type: QuestionType.TrueFalse,
-          distribution: [{ value: QUESTION.correct, count: 1, correct: true }],
+          distribution: [{ value: question.correct, count: 1, correct: true }],
         })
         expect(playerResult.game.mode).toBe(GameMode.Classic)
         expect(playerResult.player.score).toEqual(
@@ -189,9 +187,11 @@ test.describe('Game session: Classic True/False', () => {
       await test.step('Progress to and verify the final podium', async () => {
         const gameOverPromise = gamePlayer.waitForEvent(
           GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerNickname,
         )
         const podiumPromise = gameHost.waitForEvent(
           GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
         )
 
         await page.locator('#next-button').click()
@@ -200,14 +200,14 @@ test.describe('Game session: Classic True/False', () => {
           podiumPromise,
         ])
 
-        expect(podium.game.name).toBe(QUIZ_TITLE)
+        expect(podium.game.name).toBe(quiz.title)
         expect(podium.leaderboard).toEqual([
           expect.objectContaining({ position: 1, nickname: playerNickname }),
         ])
         expect(gameOver.game.mode).toBe(GameMode.Classic)
         expect(gameOver.quiz).toEqual({
-          id: e2eHost.quizzes.classicTrueFalse.id,
-          title: QUIZ_TITLE,
+          id: quiz.id,
+          title: quiz.title,
         })
         expect(gameOver.player).toEqual(
           expect.objectContaining({
@@ -219,7 +219,7 @@ test.describe('Game session: Classic True/False', () => {
         await expect(
           page.getByRole('button', { name: 'View Full Results' }),
         ).toBeVisible()
-        await expect(page.getByText(QUIZ_TITLE, { exact: true })).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText(playerNickname, { exact: true }),
         ).toBeVisible()
