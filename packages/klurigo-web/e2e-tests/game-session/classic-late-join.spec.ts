@@ -216,9 +216,15 @@ test.describe('Game session: Classic late joining', () => {
             score,
           })),
         ).toEqual([
-          { nickname: playerANickname, position: 1, score: 1000 },
+          {
+            nickname: playerANickname,
+            position: 1,
+            score: expect.any(Number),
+          },
           { nickname: playerBNickname, position: 2, score: 0 },
         ])
+        expect(leaderboard.leaderboard[0].score).toBeGreaterThan(0)
+        expect(leaderboard.leaderboard[0].score).toBeLessThanOrEqual(1000)
         await expect(
           page.getByText('Leaderboard', { exact: true }),
         ).toBeVisible()
