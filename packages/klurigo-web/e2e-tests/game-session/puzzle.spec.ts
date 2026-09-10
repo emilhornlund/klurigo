@@ -1,5 +1,3 @@
-import { randomUUID } from 'node:crypto'
-
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
 import { E2E_FIXTURE_MANIFEST } from '@klurigo/e2e-fixtures'
 import { expect, test } from '@playwright/test'
@@ -21,8 +19,8 @@ test.describe('Game session: Classic Puzzle', () => {
     page,
   }, testInfo) => {
     const e2eHost = getGameSessionFixture(testInfo)
-    const correctPlayerNickname = `ApiPuzzleCorrect${randomUUID().slice(0, 8)}`
-    const incorrectPlayerNickname = `ApiPuzzleIncorrect${randomUUID().slice(0, 8)}`
+    const correctPlayerNickname = 'PuzzleCorrect'
+    const incorrectPlayerNickname = 'PuzzleIncorrect'
     const correctPlayer = new GamePlayerClient(E2E_API_BASE_URL)
     const incorrectPlayer = new GamePlayerClient(E2E_API_BASE_URL)
 
