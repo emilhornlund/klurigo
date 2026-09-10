@@ -97,15 +97,22 @@ The fixture resolver fails when a project and repeat index do not have a
 configured fixture. Stateful tests must create their own game data and must
 not rely on another test's mutations. The shared fixture manifest is seeded
 before the run and is the source for the deterministic users, passwords, and
-quizzes used by the browser tests. The GameSession suite covers mixed
-six-question Classic progression and dedicated True/False, Type Answer, Pin, and
-Puzzle flows through the host UI, typed player SSE
-events, answer submission, result evaluation, response distribution, and final
-podium. The Pin fixture uses a reachable image URL, normalized correct
-coordinates, and a seeded tolerance; its scenario also verifies Pin-specific
-question delivery and result rendering. The Puzzle fixture uses distinct seeded
-values; its scenario verifies randomized delivery, canonical ordering submission,
-and order-sensitive result rendering.
+quizzes used by the browser tests. The GameSession suite covers the six supported
+`QuestionType` values as follows:
+
+| Scenario                    | Mode and question types                                            | Behavioral coverage                                                                                        |
+| --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| Mixed Classic               | `MultiChoice`, `Range`, `TrueFalse`, `TypeAnswer`, `Pin`, `Puzzle` | Sequential typed delivery, correct submissions, per-type result distributions, leaderboards, and game-over |
+| Host/player Classic         | `MultiChoice`                                                      | Real host/player UI boundaries and correct/incorrect scoring distribution                                  |
+| Classic late join           | `MultiChoice`, `TrueFalse`                                         | Scored early player, zero-score late joiner, unanswered progression, and rank preservation                 |
+| Dedicated Classic scenarios | `TrueFalse`, `TypeAnswer`, `Pin`, `Puzzle`                         | Type-specific payload, answer submission, result rendering, and final podium                               |
+| Zero to One Hundred         | `Range`                                                            | Exact and approximate precision scores plus fractional late-join rounding and ranking                      |
+
+The Pin fixture uses a reachable image URL, normalized correct coordinates, and a
+seeded tolerance; its scenario also verifies Pin-specific question delivery and
+result rendering. The Puzzle fixture uses distinct seeded values; its scenario
+verifies randomized delivery, canonical and reversed order submissions, and
+order-sensitive result rendering.
 
 ## CI
 

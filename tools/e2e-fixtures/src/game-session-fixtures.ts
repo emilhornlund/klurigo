@@ -153,6 +153,17 @@ export const E2E_GAME_SESSION_QUESTIONS = {
     margin: QuestionRangeAnswerMargin.None,
     correct: 50,
   },
+  classicRange: {
+    type: QuestionType.Range,
+    text: 'What number is halfway between zero and one hundred?',
+    points: 1000,
+    duration: 30,
+    min: 0,
+    max: 100,
+    step: 1,
+    margin: QuestionRangeAnswerMargin.None,
+    correct: 50,
+  },
   quarterOfOneHundred: {
     type: QuestionType.Range,
     text: 'What number is one quarter of one hundred?',
@@ -284,7 +295,7 @@ function createGameSessionQuizzes(
       mode: GameMode.Classic,
       questions: [
         E2E_GAME_SESSION_QUESTIONS.clearDaytimeSky,
-        E2E_GAME_SESSION_QUESTIONS.halfwayToOneHundred,
+        E2E_GAME_SESSION_QUESTIONS.classicRange,
         E2E_GAME_SESSION_QUESTIONS.moonIsLargerThanEarth,
         E2E_GAME_SESSION_QUESTIONS.capitalOfFrance,
         E2E_GAME_SESSION_QUESTIONS.coordinatesOfEiffelTower,
@@ -321,7 +332,7 @@ function createGameSessionQuizzes(
       mode: GameMode.Classic,
       questions: [
         E2E_GAME_SESSION_QUESTIONS.clearDaytimeSky,
-        E2E_GAME_SESSION_QUESTIONS.redPlanet,
+        E2E_GAME_SESSION_QUESTIONS.moonIsLargerThanEarth,
       ],
     },
     zeroToOneHundred: {

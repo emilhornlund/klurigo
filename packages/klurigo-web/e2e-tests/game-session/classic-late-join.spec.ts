@@ -24,7 +24,7 @@ test.describe('Game session: Classic late joining', () => {
     E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[0].value
   const INCORRECT_ANSWER =
     E2E_FIXTURE_MANIFEST.questions.clearDaytimeSky.options[1].value
-  const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.redPlanet.text
+  const SECOND_QUESTION = E2E_FIXTURE_MANIFEST.questions.moonIsLargerThanEarth
 
   test('keeps a late Classic joiner behind a scored player', async ({
     page,
@@ -169,13 +169,63 @@ test.describe('Game session: Classic late joining', () => {
         ).toBeVisible()
       })
 
-      await test.step('Progress question 2 to the final podium', async () => {
+      await test.step('Progress the True/False question 2 to the final podium', async () => {
+        const playerAQuestionPromise = playerA.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 2,
+        )
+        const playerBQuestionPromise = playerB.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === 2,
+        )
+
         await page.locator('#next-button').click()
+        const [playerAQuestion, playerBQuestion] = await Promise.all([
+          playerAQuestionPromise,
+          playerBQuestionPromise,
+        ])
+
         await expect(
-          page.getByText(SECOND_QUESTION, { exact: true }),
+          page.getByText(SECOND_QUESTION.text, { exact: true }),
         ).toBeVisible()
+        for (const question of [playerAQuestion, playerBQuestion]) {
+          expect(question.pagination).toEqual({ current: 2, total: 2 })
+          expect(question.question).toEqual({
+            type: QuestionType.TrueFalse,
+            question: SECOND_QUESTION.text,
+            duration: SECOND_QUESTION.duration,
+          })
+        }
+
+        const playerAResultPromise = playerA.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 2 &&
+            event.player.nickname === playerANickname,
+        )
+        const playerBResultPromise = playerB.waitForEvent(
+          GameEventType.GameResultPlayer,
+          (event) =>
+            event.pagination.current === 2 &&
+            event.player.nickname === playerBNickname,
+        )
         await expect(page.locator('#skip-button')).toBeVisible()
         await page.locator('#skip-button').click()
+        const [playerAResult, playerBResult] = await Promise.all([
+          playerAResultPromise,
+          playerBResultPromise,
+        ])
+
+        expect(playerAResult.player.score).toEqual(
+          expect.objectContaining({ correct: false, last: 0 }),
+        )
+        expect(playerBResult.player.score).toEqual({
+          correct: false,
+          last: 0,
+          total: 0,
+          position: 2,
+          streak: 0,
+        })
         await expect(page.getByTestId('question-results')).toBeVisible()
 
         await page.locator('#next-button').click()
