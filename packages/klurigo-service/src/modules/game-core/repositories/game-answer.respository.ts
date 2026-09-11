@@ -9,9 +9,9 @@ import { QuestionTaskAnswer } from './models/schemas'
  * Repository for storing and retrieving current-question answers for a game in Redis.
  *
  * Storage model:
- * - Redis List per game (key: `${gameId}-player-participant-answers`)
- * - Each list entry is a JSON-serialized `QuestionTaskAnswer`
- * - Redis Set per game (key: `${gameId}-player-participant-answered`) tracking which players have answered
+ * - Redis Hash per question task (key: `${gameId}-${taskId}-player-participant-answers-v2`)
+ * - Each field is a player ID and each value is a JSON-serialized `QuestionTaskAnswer`
+ * - `HSETNX` atomically claims the player field and persists the answer together
  */
 @Injectable()
 export class GameAnswerRepository {
@@ -22,7 +22,7 @@ export class GameAnswerRepository {
   private readonly logger = new Logger(GameAnswerRepository.name)
 
   /**
-   * Sliding expiration (in seconds) for the per-game answer keys.
+   * Sliding expiration (in seconds) for the per-task answer keys.
    *
    * The TTL is refreshed on each accepted submission to ensure stale games/rounds do not leave
    * orphaned keys in Redis while still keeping active games alive.
@@ -41,15 +41,18 @@ export class GameAnswerRepository {
   /**
    * Submits an answer if the player has not already answered for the current question.
    *
-   * Uses a Redis Set to enforce one answer per player:
-   * - `SADD` returns `1` only for the first submission by the given `playerId`.
-   * - If the player has already submitted, the method returns `{ accepted: false }` without writing to the answer list.
+   * Uses a Redis Hash to enforce one answer per player:
+   * - `HSETNX` returns `1` only for the first submission by the given `playerId`.
+   * - The claim and answer value are one Redis operation, so a failed retry cannot
+   *   leave a submission marker without its answer (or append a second answer).
    *
-   * On acceptance, the answer is appended to the Redis List and both keys have their TTL refreshed.
+   * On acceptance, the answer count is the hash field count and the answer key's
+   * TTL is refreshed. A committed answer remains the source of truth if a later
+   * Redis operation or the HTTP response fails, so retries are safely rejected.
    *
    * @param gameId - Game identifier used to resolve Redis keys.
    * @param answer - Answer payload to persist.
-   * @param playerCount - Current number of players in the game. Used to cap the answer list length.
+   * @param playerCount - Current number of players in the game. Retained for the service boundary.
    * @returns `{ accepted: false }` if the player already answered, otherwise `{ accepted: true, answerCount }`.
    */
   public async submitOnce(
@@ -59,64 +62,42 @@ export class GameAnswerRepository {
     taskId?: string,
   ): Promise<{ accepted: true; answerCount: number } | { accepted: false }> {
     const answersKey = this.getAnswerKey(gameId, taskId)
-    const answeredKey = this.getAnsweredKey(gameId, taskId)
 
     const serialized = this.serialize(answer)
+    // The participant count is enforced by game authorization.
+    void playerCount
 
-    const added = await this.redis.sadd(answeredKey, answer.playerId)
-    if (added === 0) {
-      return { accepted: false }
-    }
+    try {
+      const added = await this.redis.hsetnx(
+        answersKey,
+        answer.playerId,
+        serialized,
+      )
+      if (added === 0) {
+        return { accepted: false }
+      }
 
-    const results = await this.redis
-      .multi()
-      .rpush(answersKey, serialized)
-      .ltrim(answersKey, 0, Math.max(playerCount - 1, 0))
-      .expire(answersKey, GameAnswerRepository.ANSWER_TTL_SECONDS)
-      .expire(answeredKey, GameAnswerRepository.ANSWER_TTL_SECONDS)
-      .exec()
+      const answerCount = await this.redis.hlen(answersKey)
+      await this.redis.expire(
+        answersKey,
+        GameAnswerRepository.ANSWER_TTL_SECONDS,
+      )
 
-    if (!results) {
-      // Rollback: remove player from answered set to allow retry
-      await this.redis.srem(answeredKey, answer.playerId)
-      this.logger.error(`Redis transaction returned null for game ${gameId}.`)
-      throw new Error(`Redis transaction returned null for game ${gameId}.`)
+      return { accepted: true, answerCount }
+    } catch (error) {
+      this.logger.error(
+        `Failed to persist question answer for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
+        error,
+      )
+      throw error
     }
-
-    const rpushRes = results[0]
-    const ltrimRes = results[1]
-    const expAnswersRes = results[2]
-    const expAnsweredRes = results[3]
-
-    if (rpushRes[0]) {
-      // Rollback: remove player from answered set to allow retry
-      await this.redis.srem(answeredKey, answer.playerId)
-      throw rpushRes[0]
-    }
-    if (ltrimRes[0]) {
-      // Rollback: remove player from answered set to allow retry
-      await this.redis.srem(answeredKey, answer.playerId)
-      throw ltrimRes[0]
-    }
-    if (expAnswersRes[0]) {
-      // Rollback: remove player from answered set to allow retry
-      await this.redis.srem(answeredKey, answer.playerId)
-      throw expAnswersRes[0]
-    }
-    if (expAnsweredRes[0]) {
-      // Rollback: remove player from answered set to allow retry
-      await this.redis.srem(answeredKey, answer.playerId)
-      throw expAnsweredRes[0]
-    }
-
-    return { accepted: true, answerCount: rpushRes[1] as number }
   }
 
   /**
    * Returns all answers currently stored for the game's active question.
    *
    * @param gameId - Game identifier used to resolve the Redis key.
-   * @returns Answers in insertion order.
+   * @returns The stored answers for each player in the task.
    */
   public async findAllAnswersByGameId(
     gameId: string,
@@ -125,7 +106,7 @@ export class GameAnswerRepository {
     const key = this.getAnswerKey(gameId, taskId)
 
     try {
-      const values = await this.redis.lrange(key, 0, -1)
+      const values = await this.redis.hvals(key)
       return values.map((value) => this.deserialize(value, gameId))
     } catch (error) {
       this.logger.error(
@@ -137,16 +118,23 @@ export class GameAnswerRepository {
   }
 
   /**
-   * Clears all stored answers for the game's active question and resets the per-player submission state.
+   * Clears all stored answers for the game's question task and legacy
+   * per-game submission state.
    *
    * @param gameId - Game identifier used to resolve Redis keys.
    */
   public async clear(gameId: string, taskId?: string): Promise<void> {
     const answersKey = this.getAnswerKey(gameId, taskId)
+    const legacyAnswersKey = this.getLegacyAnswerKey(gameId, taskId)
     const answeredKey = this.getAnsweredKey(gameId, taskId)
 
     try {
-      await this.redis.multi().del(answersKey).del(answeredKey).exec()
+      await this.redis
+        .multi()
+        .del(answersKey)
+        .del(legacyAnswersKey)
+        .del(answeredKey)
+        .exec()
     } catch (error) {
       this.logger.error(
         `Failed to clear question answers for game ${gameId}.`,
@@ -160,10 +148,24 @@ export class GameAnswerRepository {
    * Builds the Redis key used to store the game's current-question answers.
    *
    * @param gameId - Game identifier used as the key prefix.
-   * @returns The Redis list key for the game's answer storage.
+   * @returns The versioned Redis hash key for the game's answer storage.
    * @private
    */
   private getAnswerKey(gameId: string, taskId?: string): string {
+    return `${gameId}${taskId ? `-${taskId}` : ''}-player-participant-answers-v2`
+  }
+
+  /**
+   * Builds the pre-hash Redis key used by older service versions.
+   *
+   * Keeping this key separate prevents a hash command from being sent to a
+   * legacy list while allowing task cleanup to remove data left by that list.
+   *
+   * @param gameId - Game identifier used as the key prefix.
+   * @returns The legacy Redis list key for the game's answer storage.
+   * @private
+   */
+  private getLegacyAnswerKey(gameId: string, taskId?: string): string {
     return `${gameId}${taskId ? `-${taskId}` : ''}-player-participant-answers`
   }
 
@@ -172,7 +174,7 @@ export class GameAnswerRepository {
    * for the game's current question.
    *
    * @param gameId - Game identifier used as the key prefix.
-   * @returns The Redis set key used for per-player submission tracking.
+   * @returns The legacy Redis set key used for per-player submission tracking.
    * @private
    */
   private getAnsweredKey(gameId: string, taskId?: string): string {

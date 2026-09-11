@@ -13,10 +13,11 @@ describe('GameAnswerRepository', () => {
     logger = { error: jest.fn() }
 
     redis = {
-      sadd: jest.fn(),
-      srem: jest.fn(),
+      hsetnx: jest.fn(),
+      hlen: jest.fn(),
+      hvals: jest.fn(),
+      expire: jest.fn(),
       multi: jest.fn(),
-      lrange: jest.fn(),
       del: jest.fn(),
     } as any
 
@@ -37,38 +38,30 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(1) // First time adding this player
+      redis.hsetnx.mockResolvedValue(1)
+      redis.hlen.mockResolvedValue(1)
+      redis.expire.mockResolvedValue(1)
 
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 1], // rpush result: 1 answer in list
-          [null, 'OK'], // ltrim result
-          [null, 1], // expire answersKey
-          [null, 1], // expire answeredKey
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      const result = await repository.submitOnce('game-123', answer, 3)
+      const result = await repository.submitOnce(
+        'game-123',
+        answer,
+        3,
+        'task-1',
+      )
 
       expect(result).toEqual({ accepted: true, answerCount: 1 })
-      expect(redis.sadd).toHaveBeenCalledWith(
-        'game-123-player-participant-answered',
+      expect(redis.hsetnx).toHaveBeenCalledWith(
+        'game-123-task-1-player-participant-answers-v2',
         'player1',
-      )
-      expect(mockMulti.rpush).toHaveBeenCalledWith(
-        'game-123-player-participant-answers',
         JSON.stringify(answer),
       )
-      expect(mockMulti.ltrim).toHaveBeenCalledWith(
-        'game-123-player-participant-answers',
-        0,
-        2, // playerCount - 1
+      expect(redis.hlen).toHaveBeenCalledWith(
+        'game-123-task-1-player-participant-answers-v2',
       )
-      expect(mockMulti.expire).toHaveBeenCalledTimes(2)
+      expect(redis.expire).toHaveBeenCalledWith(
+        'game-123-task-1-player-participant-answers-v2',
+        3600,
+      )
     })
 
     it('rejects duplicate submission from same player', async () => {
@@ -79,19 +72,26 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(0) // Player already in set
+      redis.hsetnx.mockResolvedValue(0) // Player already has a hash field
 
-      const result = await repository.submitOnce('game-123', answer, 3)
+      const result = await repository.submitOnce(
+        'game-123',
+        answer,
+        3,
+        'task-1',
+      )
 
       expect(result).toEqual({ accepted: false })
-      expect(redis.sadd).toHaveBeenCalledWith(
-        'game-123-player-participant-answered',
+      expect(redis.hsetnx).toHaveBeenCalledWith(
+        'game-123-task-1-player-participant-answers-v2',
         'player1',
+        JSON.stringify(answer),
       )
-      expect(redis.multi).not.toHaveBeenCalled()
+      expect(redis.hlen).not.toHaveBeenCalled()
+      expect(redis.expire).not.toHaveBeenCalled()
     })
 
-    it('handles MultiChoice answer type correctly', async () => {
+    it('allows concurrent submissions by different players and counts each field', async () => {
       const answer: QuestionTaskAnswer = {
         playerId: 'player2',
         type: QuestionType.MultiChoice,
@@ -99,130 +99,85 @@ describe('GameAnswerRepository', () => {
         created: new Date('2026-02-07T10:00:00Z'),
       }
 
-      redis.sadd.mockResolvedValue(1)
+      redis.hsetnx.mockResolvedValue(1)
+      redis.hlen.mockResolvedValue(2)
+      redis.expire.mockResolvedValue(1)
 
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 2],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      const result = await repository.submitOnce('game-456', answer, 4)
+      const result = await repository.submitOnce(
+        'game-456',
+        answer,
+        4,
+        'task-2',
+      )
 
       expect(result).toEqual({ accepted: true, answerCount: 2 })
-      expect(mockMulti.rpush).toHaveBeenCalledWith(
-        'game-456-player-participant-answers',
-        JSON.stringify({
-          playerId: 'player2',
-          type: QuestionType.MultiChoice,
-          answer: 0,
-          created: '2026-02-07T10:00:00.000Z',
-        }),
+      expect(redis.hsetnx).toHaveBeenCalledWith(
+        'game-456-task-2-player-participant-answers-v2',
+        'player2',
+        expect.stringContaining('"answer":0'),
       )
     })
 
-    it('handles TypeAnswer answer type correctly', async () => {
+    it('does not create duplicate answers for concurrent attempts by one player', async () => {
       const answer: QuestionTaskAnswer = {
         playerId: 'player3',
+        type: QuestionType.TrueFalse,
+        answer: true,
+        created: new Date(),
+      }
+
+      redis.hsetnx.mockResolvedValueOnce(1).mockResolvedValueOnce(0)
+      redis.hlen.mockResolvedValue(1)
+      redis.expire.mockResolvedValue(1)
+
+      const results = await Promise.all([
+        repository.submitOnce('game-789', answer, 2, 'task-3'),
+        repository.submitOnce(
+          'game-789',
+          { ...answer, answer: false },
+          2,
+          'task-3',
+        ),
+      ])
+
+      expect(results).toEqual([
+        { accepted: true, answerCount: 1 },
+        { accepted: false },
+      ])
+      expect(redis.hsetnx).toHaveBeenCalledTimes(2)
+      expect(redis.hlen).toHaveBeenCalledTimes(1)
+    })
+
+    it('keeps answer state isolated by question task', async () => {
+      const answer: QuestionTaskAnswer = {
+        playerId: 'player4',
         type: QuestionType.TypeAnswer,
         answer: 'Stockholm',
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(1)
+      redis.hsetnx.mockResolvedValue(1)
+      redis.hlen.mockResolvedValue(1)
+      redis.expire.mockResolvedValue(1)
 
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 1],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
+      await repository.submitOnce('game-abc', answer, 5, 'question-a')
+      await repository.submitOnce('game-abc', answer, 5, 'question-b')
 
-      await repository.submitOnce('game-789', answer, 2)
-
-      expect(mockMulti.rpush).toHaveBeenCalledWith(
-        'game-789-player-participant-answers',
-        expect.stringContaining('"answer":"Stockholm"'),
+      expect(redis.hsetnx).toHaveBeenNthCalledWith(
+        1,
+        'game-abc-question-a-player-participant-answers-v2',
+        'player4',
+        JSON.stringify(answer),
+      )
+      expect(redis.hsetnx).toHaveBeenNthCalledWith(
+        2,
+        'game-abc-question-b-player-participant-answers-v2',
+        'player4',
+        JSON.stringify(answer),
       )
     })
 
-    it('handles Puzzle answer type correctly', async () => {
-      const answer: QuestionTaskAnswer = {
-        playerId: 'player4',
-        type: QuestionType.Puzzle,
-        answer: ['piece1', 'piece2', 'piece3'],
-        created: new Date(),
-      }
-
-      redis.sadd.mockResolvedValue(1)
-
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 1],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      await repository.submitOnce('game-abc', answer, 5)
-
-      expect(mockMulti.rpush).toHaveBeenCalledWith(
-        'game-abc-player-participant-answers',
-        expect.stringContaining('"answer":["piece1","piece2","piece3"]'),
-      )
-    })
-
-    it('caps list size based on playerCount', async () => {
-      const answer: QuestionTaskAnswer = {
-        playerId: 'player5',
-        type: QuestionType.Range,
-        answer: 75,
-        created: new Date(),
-      }
-
-      redis.sadd.mockResolvedValue(1)
-
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 10],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      await repository.submitOnce('game-xyz', answer, 8)
-
-      expect(mockMulti.ltrim).toHaveBeenCalledWith(
-        'game-xyz-player-participant-answers',
-        0,
-        7, // playerCount - 1 = 8 - 1
-      )
-    })
-
-    it('throws error when Redis transaction returns null and rolls back answered set', async () => {
+    it('does not leave a duplicate marker when the atomic claim fails', async () => {
       const answer: QuestionTaskAnswer = {
         playerId: 'player6',
         type: QuestionType.Pin,
@@ -230,144 +185,70 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(1)
-      redis.srem.mockResolvedValue(1)
-
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue(null),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
+      redis.hsetnx.mockRejectedValue(new Error('Redis unavailable'))
 
       await expect(
-        repository.submitOnce('game-fail', answer, 3),
-      ).rejects.toThrow('Redis transaction returned null for game game-fail.')
+        repository.submitOnce('game-fail', answer, 3, 'task-fail'),
+      ).rejects.toThrow('Redis unavailable')
 
-      // Verify rollback: player should be removed from answered set
-      expect(redis.srem).toHaveBeenCalledWith(
-        'game-fail-player-participant-answered',
-        'player6',
+      expect(redis.hlen).not.toHaveBeenCalled()
+      expect(logger.error).toHaveBeenCalledWith(
+        'Failed to persist question answer for game game-fail task task-fail.',
+        expect.any(Error),
       )
     })
 
-    it('throws error when rpush fails in transaction and rolls back answered set', async () => {
+    it('allows a retry after a failure before the atomic claim', async () => {
       const answer: QuestionTaskAnswer = {
-        playerId: 'player7',
-        type: QuestionType.TrueFalse,
-        answer: false,
-        created: new Date(),
-      }
-
-      redis.sadd.mockResolvedValue(1)
-      redis.srem.mockResolvedValue(1)
-
-      const rpushError = new Error('rpush failed')
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [rpushError, null],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      await expect(
-        repository.submitOnce('game-err', answer, 3),
-      ).rejects.toThrow('rpush failed')
-
-      // Verify rollback: player should be removed from answered set
-      expect(redis.srem).toHaveBeenCalledWith(
-        'game-err-player-participant-answered',
-        'player7',
-      )
-    })
-
-    it('caps list size at 0 when playerCount is 0', async () => {
-      const answer: QuestionTaskAnswer = {
-        playerId: 'player8',
+        playerId: 'player10',
         type: QuestionType.MultiChoice,
         answer: 1,
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(1)
+      redis.hsetnx
+        .mockRejectedValueOnce(new Error('Redis unavailable'))
+        .mockResolvedValueOnce(1)
+      redis.hlen.mockResolvedValue(1)
+      redis.expire.mockResolvedValue(1)
 
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 1],
-          [null, 'OK'],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
-
-      await repository.submitOnce('game-zero', answer, 0)
-
-      expect(mockMulti.ltrim).toHaveBeenCalledWith(
-        'game-zero-player-participant-answers',
-        0,
-        0,
-      )
+      await expect(
+        repository.submitOnce('game-retry', answer, 3, 'task-retry'),
+      ).rejects.toThrow('Redis unavailable')
+      await expect(
+        repository.submitOnce('game-retry', answer, 3, 'task-retry'),
+      ).resolves.toEqual({ accepted: true, answerCount: 1 })
     })
 
-    it('throws error when ltrim fails in transaction and rolls back answered set', async () => {
+    it('reports a committed answer as a duplicate when a later persistence step fails', async () => {
       const answer: QuestionTaskAnswer = {
-        playerId: 'player9',
+        playerId: 'player11',
         type: QuestionType.MultiChoice,
-        answer: 2,
+        answer: 1,
         created: new Date(),
       }
 
-      redis.sadd.mockResolvedValue(1)
-      redis.srem.mockResolvedValue(1)
-
-      const ltrimError = new Error('ltrim failed')
-      const mockMulti = {
-        rpush: jest.fn().mockReturnThis(),
-        ltrim: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue([
-          [null, 1],
-          [ltrimError, null],
-          [null, 1],
-          [null, 1],
-        ]),
-      }
-      redis.multi.mockReturnValue(mockMulti as any)
+      redis.hsetnx.mockResolvedValueOnce(1).mockResolvedValueOnce(0)
+      redis.hlen.mockRejectedValueOnce(new Error('Redis unavailable'))
 
       await expect(
-        repository.submitOnce('game-ltrim-err', answer, 3),
-      ).rejects.toThrow('ltrim failed')
-
-      // Verify rollback: player should be removed from answered set
-      expect(redis.srem).toHaveBeenCalledWith(
-        'game-ltrim-err-player-participant-answered',
-        'player9',
-      )
+        repository.submitOnce('game-committed', answer, 3, 'task-committed'),
+      ).rejects.toThrow('Redis unavailable')
+      await expect(
+        repository.submitOnce('game-committed', answer, 3, 'task-committed'),
+      ).resolves.toEqual({ accepted: false })
     })
   })
 
   describe('findAllAnswersByGameId', () => {
     it('returns empty array when no answers exist', async () => {
-      redis.lrange.mockResolvedValue([])
+      redis.hvals.mockResolvedValue([])
 
       const result = await repository.findAllAnswersByGameId('game-empty')
 
       expect(result).toEqual([])
-      expect(redis.lrange).toHaveBeenCalledWith(
-        'game-empty-player-participant-answers',
-        0,
-        -1,
+      expect(redis.hvals).toHaveBeenCalledWith(
+        'game-empty-player-participant-answers-v2',
       )
     })
 
@@ -393,7 +274,7 @@ describe('GameAnswerRepository', () => {
         }),
       ]
 
-      redis.lrange.mockResolvedValue(serializedAnswers)
+      redis.hvals.mockResolvedValue(serializedAnswers)
 
       const result = await repository.findAllAnswersByGameId('game-123')
 
@@ -428,7 +309,7 @@ describe('GameAnswerRepository', () => {
         }),
       ]
 
-      redis.lrange.mockResolvedValue(serializedAnswers)
+      redis.hvals.mockResolvedValue(serializedAnswers)
 
       const result = await repository.findAllAnswersByGameId('game-puzzle')
 
@@ -441,7 +322,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('throws error when stored value is not valid JSON', async () => {
-      redis.lrange.mockResolvedValue(['{invalid json'])
+      redis.hvals.mockResolvedValue(['{invalid json'])
 
       await expect(
         repository.findAllAnswersByGameId('game-bad'),
@@ -451,7 +332,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('throws error when stored value has invalid shape', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({ playerId: 'p1', wrongField: 'data' }),
       ])
 
@@ -464,7 +345,7 @@ describe('GameAnswerRepository', () => {
 
     it('throws error when answer type does not match question type', async () => {
       // MultiChoice should have number answer, not string
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.MultiChoice,
@@ -480,7 +361,7 @@ describe('GameAnswerRepository', () => {
 
     it('logs and rethrows error on Redis failure', async () => {
       const redisError = new Error('Redis connection lost')
-      redis.lrange.mockRejectedValue(redisError)
+      redis.hvals.mockRejectedValue(redisError)
 
       await expect(
         repository.findAllAnswersByGameId('game-redis-fail'),
@@ -506,6 +387,9 @@ describe('GameAnswerRepository', () => {
 
       await repository.clear('game-clear')
 
+      expect(mockMulti.del).toHaveBeenCalledWith(
+        'game-clear-player-participant-answers-v2',
+      )
       expect(mockMulti.del).toHaveBeenCalledWith(
         'game-clear-player-participant-answers',
       )
@@ -536,7 +420,7 @@ describe('GameAnswerRepository', () => {
 
   describe('type validation', () => {
     it('validates Range answer must be number', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.Range,
@@ -551,7 +435,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('validates TrueFalse answer must be boolean', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.TrueFalse,
@@ -566,7 +450,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('validates Pin answer must be string', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.Pin,
@@ -581,7 +465,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('validates Puzzle answer must be string array', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.Puzzle,
@@ -596,7 +480,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('validates created field is valid date', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: QuestionType.MultiChoice,
@@ -611,7 +495,7 @@ describe('GameAnswerRepository', () => {
     })
 
     it('rejects unknown question type', async () => {
-      redis.lrange.mockResolvedValue([
+      redis.hvals.mockResolvedValue([
         JSON.stringify({
           playerId: 'p1',
           type: 'UnknownType',
