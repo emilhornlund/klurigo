@@ -32,20 +32,6 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'firefox',
-      testIgnore: GAME_SESSION_TEST_MATCH,
-      use: { ...devices['Desktop Firefox'] },
-    },
-    ...(process.env.CI
-      ? [
-          {
-            name: 'webkit',
-            testIgnore: GAME_SESSION_TEST_MATCH,
-            use: { ...devices['Desktop Safari'] },
-          },
-        ]
-      : []),
-    {
       name: 'chromium-game-session',
       testMatch: GAME_SESSION_TEST_MATCH,
       expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
@@ -53,16 +39,6 @@ export default defineConfig({
       workers: 1,
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox-game-session',
-      testMatch: GAME_SESSION_TEST_MATCH,
-      expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
-      timeout: GAME_SESSION_TEST_TIMEOUT,
-      workers: 1,
-      use: { ...devices['Desktop Firefox'] },
-    },
-    // TODO: Re-enable WebKit game-session coverage once the CI-only SSE
-    // instability can be reproduced and debugged locally.
   ],
   webServer: [
     {

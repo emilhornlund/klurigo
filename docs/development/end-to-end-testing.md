@@ -17,9 +17,8 @@ The test environment uses MongoDB database
 `klurigo_service_test` and Redis database `1`, as described in the
 [local infrastructure guide](../getting-started/local-infrastructure.md).
 
-The local installation command installs Chromium and Firefox. CI also installs
-WebKit and Linux system dependencies; WebKit is only configured for regular CI
-tests.
+The local installation command installs Chromium. CI installs Chromium with
+Linux system dependencies.
 
 ## Local Workflow
 
@@ -58,40 +57,25 @@ exit successfully.
 ## Browser Projects
 
 The configuration sets `fullyParallel: true` for ordinary tests and defines
-these projects:
+these Chromium-only projects:
 
 - `chromium` runs non-GameSession tests with Desktop Chrome.
-- `firefox` runs non-GameSession tests with Desktop Firefox.
-- `webkit` runs non-GameSession tests with Desktop Safari only when `CI` is
-  set.
 - `chromium-game-session` runs GameSession tests with Desktop Chrome, a
   15-second expect timeout, a 90-second test timeout, and one worker.
-- `firefox-game-session` has the same GameSession settings with Desktop
-  Firefox and one worker.
 
-The ordinary projects exclude `**/game-session/**/*.spec.ts`; the two
-dedicated GameSession projects include that pattern. GameSession files also
-use Playwright's `test.describe.configure({ mode: 'serial' })` because the
-flows exercise shared real-time game state. This project split and the worker
-limit are the current isolation behavior; do not merge GameSession tests back
-into fully parallel browser projects without changing the underlying
+The ordinary project excludes `**/game-session/**/*.spec.ts`; the dedicated
+GameSession project includes that pattern. GameSession files also use
+Playwright's `test.describe.configure({ mode: 'serial' })` because the flows
+exercise shared real-time game state. This project split and the worker limit
+are the current isolation behavior; do not merge GameSession tests back into
+the fully parallel ordinary project without changing the underlying
 constraints.
 
-There is currently no `webkit-game-session` project. The configuration has a
-TODO to re-enable it after the CI-only Server-Sent Events instability can be
-reproduced and debugged locally. WebKit coverage in the current setup is
-therefore limited to non-GameSession tests in CI.
+GameSession fixture lookup maps both Chromium projects to the `chromium` slot
+and selects by `testInfo.repeatEachIndex`:
 
-GameSession fixture lookup maps the two dedicated projects to the matching
-browser fixture slots and selects by `testInfo.repeatEachIndex`:
-
-- Chromium projects use the `chromium` slot: `tester02`, `tester05`, and
-  `tester08`.
-- Firefox projects use the `firefox` slot: `tester03`, `tester06`, and
-  `tester09`.
-- WebKit projects map to the `webkit` slot: `tester04`, `tester07`, and
-  `tester10`; the current configuration only uses that mapping for regular
-  WebKit tests because WebKit GameSession execution is not enabled.
+- Chromium projects use the three supported `chromium` entries: `tester02`,
+  `tester05`, and `tester08`.
 
 The fixture resolver fails when a project and repeat index do not have a
 configured fixture. Stateful tests must create their own game data and must
@@ -152,10 +136,9 @@ with the frozen Yarn lockfile, builds the common package, and starts MongoDB and
 Redis.
 
 It caches Playwright browsers by the installed `@playwright/test` version and
-installs Chromium, Firefox, and WebKit plus Linux system dependencies.
+installs Chromium plus Linux system dependencies.
 
 The test step sets `CI=true` and runs `yarn workspace @klurigo/klurigo-web
-test:e2e`. The Playwright configuration then enables two retries, adds the
-regular WebKit project, and keeps the dedicated Chromium and Firefox
-GameSession projects at one worker. Docker Compose is brought down with
-`-v` in an `always()` cleanup step.
+test:e2e`. The Playwright configuration then enables two retries and keeps the
+dedicated Chromium GameSession project at one worker. Docker Compose is brought
+down with `-v` in an `always()` cleanup step.

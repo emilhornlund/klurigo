@@ -189,28 +189,6 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     zeroToOneHundred: 'e2e20002-0000-4000-8000-000000000002',
     zeroToOneHundredLateJoin: 'e2e30002-0000-4000-8000-000000000002',
   },
-  tester03: {
-    classic: 'e2e00003-0000-4000-8000-000000000003',
-    classicMixed: 'e2e80003-0000-4000-8000-000000000003',
-    classicTrueFalse: 'e2e40003-0000-4000-8000-000000000003',
-    classicTypeAnswer: 'e2e50003-0000-4000-8000-000000000003',
-    classicPuzzle: 'e2e70003-0000-4000-8000-000000000003',
-    classicPin: 'e2e60003-0000-4000-8000-000000000003',
-    classicLateJoin: 'e2e10003-0000-4000-8000-000000000003',
-    zeroToOneHundred: 'e2e20003-0000-4000-8000-000000000003',
-    zeroToOneHundredLateJoin: 'e2e30003-0000-4000-8000-000000000003',
-  },
-  tester04: {
-    classic: 'e2e00004-0000-4000-8000-000000000004',
-    classicMixed: 'e2e80004-0000-4000-8000-000000000004',
-    classicTrueFalse: 'e2e40004-0000-4000-8000-000000000004',
-    classicTypeAnswer: 'e2e50004-0000-4000-8000-000000000004',
-    classicPuzzle: 'e2e70004-0000-4000-8000-000000000004',
-    classicPin: 'e2e60004-0000-4000-8000-000000000004',
-    classicLateJoin: 'e2e10004-0000-4000-8000-000000000004',
-    zeroToOneHundred: 'e2e20004-0000-4000-8000-000000000004',
-    zeroToOneHundredLateJoin: 'e2e30004-0000-4000-8000-000000000004',
-  },
   tester05: {
     classic: 'e2e00005-0000-4000-8000-000000000005',
     classicMixed: 'e2e80005-0000-4000-8000-000000000005',
@@ -222,28 +200,6 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     zeroToOneHundred: 'e2e20005-0000-4000-8000-000000000005',
     zeroToOneHundredLateJoin: 'e2e30005-0000-4000-8000-000000000005',
   },
-  tester06: {
-    classic: 'e2e00006-0000-4000-8000-000000000006',
-    classicMixed: 'e2e80006-0000-4000-8000-000000000006',
-    classicTrueFalse: 'e2e40006-0000-4000-8000-000000000006',
-    classicTypeAnswer: 'e2e50006-0000-4000-8000-000000000006',
-    classicPuzzle: 'e2e70006-0000-4000-8000-000000000006',
-    classicPin: 'e2e60006-0000-4000-8000-000000000006',
-    classicLateJoin: 'e2e10006-0000-4000-8000-000000000006',
-    zeroToOneHundred: 'e2e20006-0000-4000-8000-000000000006',
-    zeroToOneHundredLateJoin: 'e2e30006-0000-4000-8000-000000000006',
-  },
-  tester07: {
-    classic: 'e2e00007-0000-4000-8000-000000000007',
-    classicMixed: 'e2e80007-0000-4000-8000-000000000007',
-    classicTrueFalse: 'e2e40007-0000-4000-8000-000000000007',
-    classicTypeAnswer: 'e2e50007-0000-4000-8000-000000000007',
-    classicPuzzle: 'e2e70007-0000-4000-8000-000000000007',
-    classicPin: 'e2e60007-0000-4000-8000-000000000007',
-    classicLateJoin: 'e2e10007-0000-4000-8000-000000000007',
-    zeroToOneHundred: 'e2e20007-0000-4000-8000-000000000007',
-    zeroToOneHundredLateJoin: 'e2e30007-0000-4000-8000-000000000007',
-  },
   tester08: {
     classic: 'e2e00008-0000-4000-8000-000000000008',
     classicMixed: 'e2e80008-0000-4000-8000-000000000008',
@@ -254,28 +210,6 @@ const E2E_GAME_SESSION_QUIZ_IDS = {
     classicLateJoin: 'e2e10008-0000-4000-8000-000000000008',
     zeroToOneHundred: 'e2e20008-0000-4000-8000-000000000008',
     zeroToOneHundredLateJoin: 'e2e30008-0000-4000-8000-000000000008',
-  },
-  tester09: {
-    classic: 'e2e00009-0000-4000-8000-000000000009',
-    classicMixed: 'e2e80009-0000-4000-8000-000000000009',
-    classicTrueFalse: 'e2e40009-0000-4000-8000-000000000009',
-    classicTypeAnswer: 'e2e50009-0000-4000-8000-000000000009',
-    classicPuzzle: 'e2e70009-0000-4000-8000-000000000009',
-    classicPin: 'e2e60009-0000-4000-8000-000000000009',
-    classicLateJoin: 'e2e10009-0000-4000-8000-000000000009',
-    zeroToOneHundred: 'e2e20009-0000-4000-8000-000000000009',
-    zeroToOneHundredLateJoin: 'e2e30009-0000-4000-8000-000000000009',
-  },
-  tester10: {
-    classic: 'e2e00010-0000-4000-8000-000000000010',
-    classicMixed: 'e2e80010-0000-4000-8000-000000000010',
-    classicTrueFalse: 'e2e40010-0000-4000-8000-000000000010',
-    classicTypeAnswer: 'e2e50010-0000-4000-8000-000000000010',
-    classicPuzzle: 'e2e70010-0000-4000-8000-000000000010',
-    classicPin: 'e2e60010-0000-4000-8000-000000000010',
-    classicLateJoin: 'e2e10010-0000-4000-8000-000000000010',
-    zeroToOneHundred: 'e2e20010-0000-4000-8000-000000000010',
-    zeroToOneHundredLateJoin: 'e2e30010-0000-4000-8000-000000000010',
   },
 } as const
 
@@ -366,35 +300,11 @@ export const E2E_USERS = {
     email: 'tester02@klurigo.com',
     quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester02),
   },
-  tester03: {
-    id: '3c5d45b7-bf7c-4e6d-a32e-6760f8256e0c',
-    nickname: 'tester03',
-    email: 'tester03@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester03),
-  },
-  tester04: {
-    id: 'ca21dc5c-4e74-4427-b7b8-06a1d46c2f60',
-    nickname: 'tester04',
-    email: 'tester04@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester04),
-  },
   tester05: {
     id: '6e2e1b12-1a48-47a9-9a95-11b8b3c2e7fd',
     nickname: 'tester05',
     email: 'tester05@klurigo.com',
     quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester05),
-  },
-  tester06: {
-    id: 'f2db3a6f-6a0c-4f3e-8e02-24b6b5e4f901',
-    nickname: 'tester06',
-    email: 'tester06@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester06),
-  },
-  tester07: {
-    id: 'a4f7d9c8-24b5-4d67-b8c1-35e6f7a80912',
-    nickname: 'tester07',
-    email: 'tester07@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester07),
   },
   tester08: {
     id: 'b7c8d9e0-35f6-4a78-c9d2-46f708b91a23',
@@ -402,26 +312,12 @@ export const E2E_USERS = {
     email: 'tester08@klurigo.com',
     quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester08),
   },
-  tester09: {
-    id: 'c8d9e0f1-46a7-4b89-d0e3-57a819c02b34',
-    nickname: 'tester09',
-    email: 'tester09@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester09),
-  },
-  tester10: {
-    id: 'd9e0f1a2-57b8-4c90-e1f4-68b92ad13c45',
-    nickname: 'tester10',
-    email: 'tester10@klurigo.com',
-    quizzes: createGameSessionQuizzes(E2E_GAME_SESSION_QUIZ_IDS.tester10),
-  },
 } as const satisfies Record<string, E2eUserFixture>
 
 export const E2E_PLAINTEXT_PASSWORD = 'Super$ecretPassw0rd123#'
 
 export const E2E_GAME_SESSION_FIXTURE_SLOTS = {
   chromium: [E2E_USERS.tester02, E2E_USERS.tester05, E2E_USERS.tester08],
-  firefox: [E2E_USERS.tester03, E2E_USERS.tester06, E2E_USERS.tester09],
-  webkit: [E2E_USERS.tester04, E2E_USERS.tester07, E2E_USERS.tester10],
 } as const satisfies Record<string, readonly GameSessionUserFixture[]>
 
 export const E2E_FIXTURE_MANIFEST = {

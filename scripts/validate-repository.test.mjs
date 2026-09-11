@@ -295,7 +295,7 @@ test('keeps static, unit coverage, backend e2e, and frontend e2e commands separa
   )
   assert.match(
     frontendE2eJob,
-    /run: docker compose up -d --wait mongodb redis[\s\S]*run: yarn workspace @klurigo\/klurigo-web playwright install chromium firefox webkit --with-deps[\s\S]*env:\n          CI: 'true'[\s\S]*run: yarn workspace @klurigo\/klurigo-web test:e2e[\s\S]*if: always\(\)[\s\S]*run: docker compose down -v/,
+    /run: docker compose up -d --wait mongodb redis[\s\S]*run: yarn workspace @klurigo\/klurigo-web playwright install chromium --with-deps[\s\S]*env:\n          CI: 'true'[\s\S]*run: yarn workspace @klurigo\/klurigo-web test:e2e[\s\S]*if: always\(\)[\s\S]*run: docker compose down -v/,
   )
 
   assert.match(frontendE2eJob, /if: \$\{\{ inputs\.run_e2e \}\}/)

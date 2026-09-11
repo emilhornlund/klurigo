@@ -127,11 +127,11 @@ the frozen lockfile, builds the clean `@klurigo/common` output, and starts the
 Compose MongoDB and Redis services.
 
 The job caches browsers using the installed `@playwright/test` version and the
-runner OS and architecture. It installs Chromium, Firefox, and WebKit with
-Linux system dependencies:
+runner OS and architecture. It installs Chromium with Linux system
+dependencies:
 
 ```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
+yarn workspace @klurigo/klurigo-web playwright install chromium --with-deps
 ```
 
 The test step sets `CI=true` and runs
@@ -140,20 +140,15 @@ retries, does not reuse existing web servers, and records a trace on the first
 retry. Compose is cleaned up with `docker compose down -v` in an `always()`
 step.
 
-The Playwright configuration separates ordinary browser tests from
-GameSession tests:
+The Chromium-only Playwright configuration separates ordinary browser tests
+from GameSession tests:
 
-- Chromium and Firefox run ordinary tests and exclude
+- `chromium` runs ordinary tests and excludes
   `**/game-session/**/*.spec.ts`.
-- WebKit is added only when `CI` is set and runs ordinary tests only.
-- `chromium-game-session` and `firefox-game-session` include the GameSession
-  pattern, use one worker, a 15-second expect timeout, and a 90-second test
-  timeout.
+- `chromium-game-session` includes the GameSession pattern, uses one worker, a
+  15-second expect timeout, and a 90-second test timeout.
 - Ordinary tests are fully parallel; GameSession tests use the dedicated
   single-worker projects because they exercise shared real-time state.
-
-There is no WebKit GameSession project. WebKit coverage in CI is therefore
-currently limited to non-GameSession tests.
 
 ## Docker Images
 
