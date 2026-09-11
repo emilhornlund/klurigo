@@ -34,7 +34,11 @@ import {
   GameRepository,
 } from '../../game-core/repositories'
 import { TaskType } from '../../game-core/repositories/models/schemas'
-import { isParticipantHost, isParticipantPlayer } from '../../game-core/utils'
+import {
+  getTaskIdentity,
+  isParticipantHost,
+  isParticipantPlayer,
+} from '../../game-core/utils'
 import { GameEventPublisher } from '../../game-event/services'
 import {
   buildGameQuitEvent,
@@ -213,24 +217,38 @@ export class GameService {
     participantId: string,
     nickname: string,
   ): Promise<void> {
-    const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameId)
-
-    if (isGameFull(gameDocument.participants)) {
-      throw new GameFullException()
-    }
-
-    if (!isPlayerUnique(gameDocument.participants, participantId)) {
-      throw new PlayerNotUniqueException()
-    }
-
-    if (!isNicknameUnique(gameDocument.participants, nickname)) {
-      throw new NicknameNotUniqueException(nickname)
-    }
+    await this.gameRepository.findGameByIDOrThrow(gameId)
 
     const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
       gameId,
-      async (currentDocument) =>
-        addPlayerParticipantToGame(currentDocument, participantId, nickname),
+      async (currentDocument) => {
+        if (
+          currentDocument.status !== undefined &&
+          currentDocument.status !== GameStatus.Active
+        ) {
+          throw new BadRequestException(
+            `Cannot join game ${gameId} while it is ${currentDocument.status}`,
+          )
+        }
+
+        if (isGameFull(currentDocument.participants)) {
+          throw new GameFullException()
+        }
+
+        if (!isPlayerUnique(currentDocument.participants, participantId)) {
+          throw new PlayerNotUniqueException()
+        }
+
+        if (!isNicknameUnique(currentDocument.participants, nickname)) {
+          throw new NicknameNotUniqueException(nickname)
+        }
+
+        return addPlayerParticipantToGame(
+          currentDocument,
+          participantId,
+          nickname,
+        )
+      },
     )
 
     await this.gameEventPublisher.publish(savedGameDocument)
@@ -362,7 +380,12 @@ export class GameService {
   public async completeCurrentTask(gameID: string): Promise<void> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
 
-    if (gameDocument.currentTask.status !== 'active') {
+    if (
+      (gameDocument.status !== undefined &&
+        gameDocument.status !== GameStatus.Active) ||
+      !Object.values(TaskType).includes(gameDocument.currentTask.type) ||
+      gameDocument.currentTask.status !== 'active'
+    ) {
       throw new BadRequestException('Current task not in active status')
     }
 
@@ -383,11 +406,11 @@ export class GameService {
     playerId: string,
     submitQuestionAnswerRequest: SubmitQuestionAnswerRequestDto,
   ): Promise<void> {
-    const answer = toQuestionTaskAnswer(playerId, submitQuestionAnswerRequest)
-
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
 
     if (
+      (gameDocument.status !== undefined &&
+        gameDocument.status !== GameStatus.Active) ||
       gameDocument.currentTask.type !== TaskType.Question ||
       gameDocument.currentTask.status !== 'active'
     ) {
@@ -396,27 +419,58 @@ export class GameService {
       )
     }
 
-    const playerCount = gameDocument.participants.filter(
-      (participant) => participant.type === GameParticipantType.PLAYER,
-    ).length
+    const expectedTask = getTaskIdentity(gameDocument)
+    const answer = toQuestionTaskAnswer(playerId, submitQuestionAnswerRequest)
+    let result:
+      Awaited<ReturnType<GameAnswerRepository['submitOnce']>> | undefined
+    let playerCount = 0
 
-    const result = await this.gameAnswerRepository.submitOnce(
+    const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
       gameID,
-      answer,
-      playerCount,
+      async (currentDocument) => {
+        if (
+          (currentDocument.status !== undefined &&
+            currentDocument.status !== GameStatus.Active) ||
+          currentDocument.currentTask._id !== expectedTask.id ||
+          currentDocument.currentTask.type !== TaskType.Question ||
+          currentDocument.currentTask.status !== 'active'
+        ) {
+          throw new BadRequestException(
+            `Cannot submit an answer because the current task changed for game ${gameID}`,
+          )
+        }
+
+        playerCount = currentDocument.participants.filter(
+          (participant) => participant.type === GameParticipantType.PLAYER,
+        ).length
+
+        result = currentDocument.currentTask._id
+          ? await this.gameAnswerRepository.submitOnce(
+              gameID,
+              answer,
+              playerCount,
+              currentDocument.currentTask._id,
+            )
+          : await this.gameAnswerRepository.submitOnce(
+              gameID,
+              answer,
+              playerCount,
+            )
+        return currentDocument
+      },
     )
 
-    if (!result.accepted) {
+    if (!result || !result.accepted) {
       throw new BadRequestException('Answer already provided')
     }
 
     // determine if all players have submitted an answer after accepting the current submission
     if (result.answerCount === playerCount) {
       await this.gameTaskTransitionScheduler.scheduleTaskTransition(
-        gameDocument,
+        savedGameDocument,
       )
     } else {
-      await this.gameEventPublisher.publish(gameDocument)
+      await this.gameEventPublisher.publish(savedGameDocument)
     }
   }
 
@@ -443,11 +497,12 @@ export class GameService {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
 
     if (
+      gameDocument.status === GameStatus.Active &&
       isQuestionResultTask(gameDocument) &&
       gameDocument.currentTask.status === 'active'
     ) {
-      gameDocument.currentTask.correctAnswers = [
-        ...gameDocument.currentTask.correctAnswers,
+      const expectedTask = getTaskIdentity(gameDocument)
+      const correctAnswersToAdd = [
         ...(correctAnswerRequest.type === QuestionType.MultiChoice
           ? [
               {
@@ -498,12 +553,26 @@ export class GameService {
           : []),
       ]
 
-      const updatedQuestionResultTask = rebuildQuestionResultTask(gameDocument)
-
       const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
         gameID,
         async (currentDocument) => {
-          currentDocument.currentTask = updatedQuestionResultTask
+          if (
+            currentDocument.status !== GameStatus.Active ||
+            currentDocument.currentTask._id !== expectedTask.id ||
+            !isQuestionResultTask(currentDocument) ||
+            currentDocument.currentTask.status !== 'active'
+          ) {
+            throw new BadRequestException(
+              `Cannot add a correct answer because the current task changed for game ${gameID}`,
+            )
+          }
+
+          currentDocument.currentTask.correctAnswers = [
+            ...currentDocument.currentTask.correctAnswers,
+            ...correctAnswersToAdd,
+          ]
+          currentDocument.currentTask =
+            rebuildQuestionResultTask(currentDocument)
           return currentDocument
         },
       )
@@ -539,58 +608,73 @@ export class GameService {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
 
     if (
+      gameDocument.status === GameStatus.Active &&
       isQuestionResultTask(gameDocument) &&
       gameDocument.currentTask.status === 'active'
     ) {
-      gameDocument.currentTask.correctAnswers =
-        gameDocument.currentTask.correctAnswers.filter((correctAnswer) => {
-          const isExistingCorrectMultiChoiceAnswer =
-            isMultiChoiceCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.MultiChoice &&
-            correctAnswer.index === correctAnswerRequest.index
-
-          const isExistingCorrectRangeAnswer =
-            isRangeCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.Range &&
-            correctAnswer.value === correctAnswerRequest.value
-
-          const isExistingCorrectTrueFalseAnswer =
-            isTrueFalseCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.TrueFalse &&
-            correctAnswer.value === correctAnswerRequest.value
-
-          const isExistingCorrectTypeAnswer =
-            isTypeAnswerCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.TypeAnswer &&
-            correctAnswer.value === correctAnswerRequest.value
-
-          const isExistingCorrectPinAnswer =
-            isPinCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.Pin &&
-            correctAnswer.value ===
-              `${correctAnswerRequest.positionX},${correctAnswerRequest.positionY}`
-
-          const isExistingCorrectPuzzleAnswer =
-            isPuzzleCorrectAnswer(correctAnswer) &&
-            correctAnswerRequest.type === QuestionType.Puzzle &&
-            correctAnswer.value === correctAnswerRequest.values
-
-          return !(
-            isExistingCorrectMultiChoiceAnswer ||
-            isExistingCorrectRangeAnswer ||
-            isExistingCorrectTrueFalseAnswer ||
-            isExistingCorrectTypeAnswer ||
-            isExistingCorrectPinAnswer ||
-            isExistingCorrectPuzzleAnswer
-          )
-        })
-
-      const updatedQuestionResultTask = rebuildQuestionResultTask(gameDocument)
+      const expectedTask = getTaskIdentity(gameDocument)
 
       const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
         gameID,
         async (currentDocument) => {
-          currentDocument.currentTask = updatedQuestionResultTask
+          if (
+            currentDocument.status !== GameStatus.Active ||
+            currentDocument.currentTask._id !== expectedTask.id ||
+            !isQuestionResultTask(currentDocument) ||
+            currentDocument.currentTask.status !== 'active'
+          ) {
+            throw new BadRequestException(
+              `Cannot delete a correct answer because the current task changed for game ${gameID}`,
+            )
+          }
+
+          currentDocument.currentTask.correctAnswers =
+            currentDocument.currentTask.correctAnswers.filter(
+              (correctAnswer) => {
+                const isExistingCorrectMultiChoiceAnswer =
+                  isMultiChoiceCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.MultiChoice &&
+                  correctAnswer.index === correctAnswerRequest.index
+
+                const isExistingCorrectRangeAnswer =
+                  isRangeCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.Range &&
+                  correctAnswer.value === correctAnswerRequest.value
+
+                const isExistingCorrectTrueFalseAnswer =
+                  isTrueFalseCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.TrueFalse &&
+                  correctAnswer.value === correctAnswerRequest.value
+
+                const isExistingCorrectTypeAnswer =
+                  isTypeAnswerCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.TypeAnswer &&
+                  correctAnswer.value === correctAnswerRequest.value
+
+                const isExistingCorrectPinAnswer =
+                  isPinCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.Pin &&
+                  correctAnswer.value ===
+                    `${correctAnswerRequest.positionX},${correctAnswerRequest.positionY}`
+
+                const isExistingCorrectPuzzleAnswer =
+                  isPuzzleCorrectAnswer(correctAnswer) &&
+                  correctAnswerRequest.type === QuestionType.Puzzle &&
+                  correctAnswer.value === correctAnswerRequest.values
+
+                return !(
+                  isExistingCorrectMultiChoiceAnswer ||
+                  isExistingCorrectRangeAnswer ||
+                  isExistingCorrectTrueFalseAnswer ||
+                  isExistingCorrectTypeAnswer ||
+                  isExistingCorrectPinAnswer ||
+                  isExistingCorrectPuzzleAnswer
+                )
+              },
+            )
+
+          currentDocument.currentTask =
+            rebuildQuestionResultTask(currentDocument)
           return currentDocument
         },
       )
@@ -639,12 +723,17 @@ export class GameService {
    * @param gameId - The game ID to terminate.
    */
   public async quitGame(gameId: string): Promise<void> {
+    await this.gameRepository.findGameByIDOrThrow(gameId)
+
     const savedGame = await this.gameRepository.findAndSaveWithLock(
       gameId,
       async (game) => {
-        if (game.status !== GameStatus.Terminated) {
-          game.status = GameStatus.Terminated
+        if (game.status !== GameStatus.Active) {
+          throw new BadRequestException(
+            `Cannot quit game ${gameId} while it is ${game.status}`,
+          )
         }
+        game.status = GameStatus.Terminated
         return game
       },
     )

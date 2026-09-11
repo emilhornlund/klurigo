@@ -524,6 +524,10 @@ describe(GameService.name, () => {
       gameEventPublisher = {
         publish: jest.fn().mockResolvedValue(undefined),
       }
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (gameId: string, callback: (game: any) => Promise<any>) =>
+          callback(await gameRepository.findGameByIDOrThrow(gameId)),
+      )
       ;(
         service as unknown as {
           gameTaskTransitionScheduler: { scheduleTaskTransition: jest.Mock }

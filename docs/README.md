@@ -32,6 +32,8 @@ contributor or application documentation.
   links to detailed backend and Playwright guidance.
 - [Backend testing](./development/backend-testing.md) - Jest suites, test
   infrastructure, lifecycle cleanup, isolation, and coverage.
+- [Backend game lifecycle](./development/game-lifecycle.md) - supported task
+  progression, guarded commands, and client-visible conflict behavior.
 - [End-to-end testing](./development/end-to-end-testing.md) - Playwright
   setup, seeded fixtures, browser projects, GameSession execution, and CI.
 

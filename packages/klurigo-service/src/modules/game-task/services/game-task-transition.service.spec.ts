@@ -478,8 +478,12 @@ describe('GameTaskTransitionService', () => {
 
       expect(gameAnswerRepository.findAllAnswersByGameId).toHaveBeenCalledWith(
         'game-1',
+        task._id,
       )
-      expect(gameAnswerRepository.clear).toHaveBeenCalledWith('game-1')
+      expect(gameAnswerRepository.clear).toHaveBeenCalledWith(
+        'game-1',
+        task._id,
+      )
 
       expect((task as any).answers).toEqual(parsedAnswers)
       expect(gameDoc.previousTasks).toContain(task)

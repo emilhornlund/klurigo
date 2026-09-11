@@ -56,9 +56,10 @@ export class GameAnswerRepository {
     gameId: string,
     answer: QuestionTaskAnswer,
     playerCount: number,
+    taskId?: string,
   ): Promise<{ accepted: true; answerCount: number } | { accepted: false }> {
-    const answersKey = this.getAnswerKey(gameId)
-    const answeredKey = this.getAnsweredKey(gameId)
+    const answersKey = this.getAnswerKey(gameId, taskId)
+    const answeredKey = this.getAnsweredKey(gameId, taskId)
 
     const serialized = this.serialize(answer)
 
@@ -119,8 +120,9 @@ export class GameAnswerRepository {
    */
   public async findAllAnswersByGameId(
     gameId: string,
+    taskId?: string,
   ): Promise<QuestionTaskAnswer[]> {
-    const key = this.getAnswerKey(gameId)
+    const key = this.getAnswerKey(gameId, taskId)
 
     try {
       const values = await this.redis.lrange(key, 0, -1)
@@ -139,9 +141,9 @@ export class GameAnswerRepository {
    *
    * @param gameId - Game identifier used to resolve Redis keys.
    */
-  public async clear(gameId: string): Promise<void> {
-    const answersKey = this.getAnswerKey(gameId)
-    const answeredKey = this.getAnsweredKey(gameId)
+  public async clear(gameId: string, taskId?: string): Promise<void> {
+    const answersKey = this.getAnswerKey(gameId, taskId)
+    const answeredKey = this.getAnsweredKey(gameId, taskId)
 
     try {
       await this.redis.multi().del(answersKey).del(answeredKey).exec()
@@ -161,8 +163,8 @@ export class GameAnswerRepository {
    * @returns The Redis list key for the game's answer storage.
    * @private
    */
-  private getAnswerKey(gameId: string): string {
-    return `${gameId}-player-participant-answers`
+  private getAnswerKey(gameId: string, taskId?: string): string {
+    return `${gameId}${taskId ? `-${taskId}` : ''}-player-participant-answers`
   }
 
   /**
@@ -173,8 +175,8 @@ export class GameAnswerRepository {
    * @returns The Redis set key used for per-player submission tracking.
    * @private
    */
-  private getAnsweredKey(gameId: string): string {
-    return `${gameId}-player-participant-answered`
+  private getAnsweredKey(gameId: string, taskId?: string): string {
+    return `${gameId}${taskId ? `-${taskId}` : ''}-player-participant-answered`
   }
 
   /**

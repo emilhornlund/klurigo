@@ -56,7 +56,7 @@ describe('GameTaskTransitionScheduler', () => {
       },
       currentTask: {
         _id: 'task-1',
-        type: 'Lobby' as unknown as TaskType,
+        type: TaskType.Lobby,
         status: 'pending',
         currentTransitionInitiated: undefined,
         currentTransitionExpires: undefined,
@@ -424,11 +424,13 @@ describe('GameTaskTransitionScheduler', () => {
       expect((opts as any).jobId).toContain('transition-')
     })
 
-    it('logs and swallows errors when queue.add fails', async () => {
+    it('propagates queue failures instead of reporting a scheduled transition', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
       taskQueue.add.mockRejectedValue(new Error('boom'))
 
-      await (scheduler as any).scheduleDeferredTransition(game, 1_000, 'active')
+      await expect(
+        (scheduler as any).scheduleDeferredTransition(game, 1_000, 'active'),
+      ).rejects.toThrow('boom')
 
       expect(logger.error).toHaveBeenCalledTimes(1)
     })
@@ -522,14 +524,14 @@ describe('GameTaskTransitionScheduler', () => {
       expect(logger.warn).toHaveBeenCalledTimes(1)
     })
 
-    it('logs errors and does not throw when repository update fails', async () => {
+    it('propagates repository update failures instead of reporting success', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
 
       gameRepository.findAndSaveWithLock.mockRejectedValue(new Error('db-fail'))
 
       await expect(
         (scheduler as any).performTransition(game, 'active'),
-      ).resolves.toBeUndefined()
+      ).rejects.toThrow('db-fail')
 
       expect(logger.error).toHaveBeenCalledTimes(1)
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
@@ -1150,7 +1152,7 @@ describe('GameTaskTransitionScheduler', () => {
   })
 
   describe('process', () => {
-    it('executes deferred transition when latest game task type/status match and removes the job first', async () => {
+    it('executes deferred transition when latest game task type/status match', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
       const callback = jest.fn().mockResolvedValue(undefined)
 
@@ -1182,8 +1184,7 @@ describe('GameTaskTransitionScheduler', () => {
       expect(
         gameRepository.findGameByIDWithStatusesOrThrow,
       ).toHaveBeenCalledTimes(1)
-      expect(taskQueue.remove).toHaveBeenCalledTimes(1)
-      expect(taskQueue.remove).toHaveBeenCalledWith(job.id)
+      expect(taskQueue.remove).not.toHaveBeenCalled()
 
       expect(performSpy).toHaveBeenCalledTimes(1)
       expect(performSpy).toHaveBeenCalledWith(game, 'active', callback)
@@ -1220,7 +1221,40 @@ describe('GameTaskTransitionScheduler', () => {
       expect(logger.warn).toHaveBeenCalledTimes(1)
     })
 
-    it('removes job (if exists) and logs error when handler throws', async () => {
+    it('skips a deferred transition when only the task identity changed', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      const job: Job<GameDocument, void, string> = {
+        id: 'transition-job-identity',
+        name: TASK_TRANSITION_JOB_NAME,
+        data: game,
+      } as any
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
+        buildGameDocument(
+          { _id: game._id },
+          {
+            _id: 'replacement-task',
+            type: game.currentTask.type,
+            status: game.currentTask.status,
+          },
+        ),
+      )
+      taskQueue.getJob.mockResolvedValue({ id: job.id } as any)
+
+      const performSpy = jest
+        .spyOn(scheduler as any, 'performTransition')
+        .mockResolvedValue(undefined)
+
+      await scheduler.process(job)
+
+      expect(performSpy).not.toHaveBeenCalled()
+      expect(taskQueue.remove).toHaveBeenCalledWith(job.id)
+    })
+
+    it('propagates handler failures so BullMQ can retry the job', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
 
       const job: Job<GameDocument, void, string> = {
@@ -1237,10 +1271,30 @@ describe('GameTaskTransitionScheduler', () => {
 
       taskQueue.getJob.mockResolvedValue({ id: job.id } as any)
 
-      await expect(scheduler.process(job)).resolves.toBeUndefined()
+      await expect(scheduler.process(job)).rejects.toThrow('callback-fail')
 
-      expect(taskQueue.remove).toHaveBeenCalledTimes(1)
+      expect(taskQueue.remove).not.toHaveBeenCalled()
       expect(logger.error).toHaveBeenCalledTimes(1)
+    })
+
+    it('propagates persistence failures without removing the job', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      const job: Job<GameDocument, void, string> = {
+        id: 'transition-job-1',
+        name: TASK_TRANSITION_JOB_NAME,
+        data: game,
+      } as any
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      gameRepository.findAndSaveWithLock.mockRejectedValue(new Error('db-fail'))
+
+      await expect(scheduler.process(job)).rejects.toThrow('db-fail')
+
+      expect(taskQueue.remove).not.toHaveBeenCalled()
+      expect(logger.error).toHaveBeenCalled()
     })
 
     it('throws "Method not implemented." even for unrelated job names', async () => {

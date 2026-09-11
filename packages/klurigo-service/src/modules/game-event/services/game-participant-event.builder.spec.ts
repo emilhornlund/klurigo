@@ -116,6 +116,19 @@ describe('GameParticipantEventBuilder', () => {
     })
   })
 
+  it('loads answers using the current task identity', async () => {
+    const doc = buildGameDoc({
+      currentTask: { _id: 'task-1', type: TaskType.Question },
+    })
+
+    await service.createContext(doc as any)
+
+    expect(gameAnswerRepository.findAllAnswersByGameId).toHaveBeenCalledWith(
+      'game-1',
+      'task-1',
+    )
+  })
+
   it('buildParticipantEvent uses the shared context for host events', async () => {
     const doc = buildGameDoc()
     const context = {

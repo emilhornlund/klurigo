@@ -9,13 +9,20 @@ import {
   GameSettings,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
-import { isGameEnded } from '../../game-core/utils'
+import {
+  getTaskIdentity,
+  isGameEnded,
+  isSupportedTaskStatusTransition,
+  isSupportedTaskTypeProgression,
+} from '../../game-core/utils'
 import { GameEventPublisher } from '../../game-event/services'
 
 import { GameTaskTransitionService } from './game-task-transition.service'
 
 export const TASK_QUEUE_NAME = 'task'
 const TASK_TRANSITION_JOB_NAME = TASK_QUEUE_NAME + 'transition'
+
+class StaleGameTaskTransitionError extends Error {}
 
 /**
  * Service responsible for managing task transitions within a game.
@@ -78,6 +85,15 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       this.gameTaskTransitionService.getTaskTransitionCallback(gameDocument)
     const nextStatus = GameTaskTransitionScheduler.getNextTaskStatus(status)
 
+    if (!isSupportedTaskStatusTransition(type, status, nextStatus)) {
+      this.logger.warn(
+        `Skipping unsupported transition for task ${type} from ${status} for Game ID: ${gameID}`,
+      )
+      return
+    }
+
+    const expectedTask = getTaskIdentity(gameDocument)
+
     this.logger.log(
       `Scheduling ${type} task transition from ${status} to ${nextStatus} for Game ID: ${gameDocument._id}`,
     )
@@ -102,13 +118,40 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       const delay =
         this.gameTaskTransitionService.getTaskTransitionDelay(gameDocument)
 
-      const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
-        gameID,
-        async (doc) => {
-          this.setTransitionTiming(doc, delay)
-          return doc
-        },
-      )
+      let savedGameDocument: GameDocument
+      try {
+        savedGameDocument = await this.gameRepository.findAndSaveWithLock(
+          gameID,
+          async (doc) => {
+            if (
+              (doc.status !== undefined && doc.status !== GameStatus.Active) ||
+              doc.currentTask._id !== expectedTask.id ||
+              doc.currentTask.type !== expectedTask.type ||
+              doc.currentTask.status !== expectedTask.status
+            ) {
+              throw new StaleGameTaskTransitionError(
+                `Task ${expectedTask.id} is no longer current for game ${gameID}`,
+              )
+            }
+            if (
+              expectedTask.status === 'pending' &&
+              doc.currentTask.currentTransitionExpires
+            ) {
+              throw new StaleGameTaskTransitionError(
+                `Task ${expectedTask.id} already has a scheduled transition for game ${gameID}`,
+              )
+            }
+            this.setTransitionTiming(doc, delay)
+            return doc
+          },
+        )
+      } catch (error) {
+        if (error instanceof StaleGameTaskTransitionError) {
+          this.logger.warn(error.message)
+          return
+        }
+        throw error
+      }
 
       await this.gameEventPublisher.publish(savedGameDocument)
 
@@ -155,6 +198,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         `Failed to schedule deferred transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${_id}`,
         error,
       )
+      throw error
     }
   }
 
@@ -180,12 +224,29 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       `Performing transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${_id}`,
     )
 
-    let updatedGameDocument: GameDocument | null = null
+    let updatedGameDocument: GameDocument
 
     try {
       updatedGameDocument = await this.gameRepository.findAndSaveWithLock(
         _id,
         async (doc) => {
+          if (
+            (doc.status !== undefined && doc.status !== GameStatus.Active) ||
+            doc.currentTask._id !== currentTask._id ||
+            doc.currentTask.type !== type ||
+            doc.currentTask.status !== status
+          ) {
+            throw new StaleGameTaskTransitionError(
+              `Skipping transition for stale task ${currentTask._id} in game ${_id}`,
+            )
+          }
+
+          if (!isSupportedTaskStatusTransition(type, status, nextStatus)) {
+            throw new StaleGameTaskTransitionError(
+              `Skipping unsupported transition for task ${type} from ${status} in game ${_id}`,
+            )
+          }
+
           const taskTypeBefore = doc.currentTask.type
 
           if (nextStatus) {
@@ -198,6 +259,20 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           // If callback changed the task type, we need to set timing fields for the new task
           const taskTypeAfter = doc.currentTask.type
           if (taskTypeBefore !== taskTypeAfter) {
+            if (
+              !isSupportedTaskTypeProgression(
+                taskTypeBefore,
+                taskTypeAfter,
+                Array.isArray(doc.questions) &&
+                  typeof doc.nextQuestion === 'number'
+                  ? doc.nextQuestion < doc.questions.length
+                  : true,
+              )
+            ) {
+              throw new StaleGameTaskTransitionError(
+                `Skipping unsupported task progression from ${taskTypeBefore} to ${taskTypeAfter} in game ${_id}`,
+              )
+            }
             const delay =
               this.gameTaskTransitionService.getTaskTransitionDelay(doc)
             this.setTransitionTiming(doc, delay)
@@ -213,10 +288,15 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         `Successfully performed transition for task ${type} to status ${nextStatus} for Game ID: ${_id}`,
       )
     } catch (error) {
+      if (error instanceof StaleGameTaskTransitionError) {
+        this.logger.warn(error.message)
+        return
+      }
       this.logger.error(
         `Failed to perform transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${_id}`,
         error,
       )
+      throw error
     }
 
     if (updatedGameDocument) {
@@ -318,32 +398,30 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           )
 
         if (
+          (latestGameDocument.status === GameStatus.Active ||
+            latestGameDocument.status === undefined) &&
+          latestGameDocument.currentTask._id === currentTask._id &&
           latestGameDocument.currentTask.type === type &&
           latestGameDocument.currentTask.status === status
         ) {
+          await this.performTransition(gameDocument, nextStatus, callback)
+        } else {
+          this.logger.warn(
+            `Skipping timeout handler since game status or task identity has changed for Game ID: ${gameDocument._id}`,
+          )
           if (job.id) {
             const existingTransitionJob = await this.taskQueue.getJob(job.id)
             if (isDefined(existingTransitionJob)) {
               await this.taskQueue.remove(job.id)
             }
           }
-          await this.performTransition(gameDocument, nextStatus, callback)
-        } else {
-          this.logger.warn(
-            `Skipping timeout handler since task type or status has changed for Game ID: ${gameDocument._id}`,
-          )
         }
       } catch (error) {
-        if (job.id) {
-          const existingTransitionJob = await this.taskQueue.getJob(job.id)
-          if (isDefined(existingTransitionJob)) {
-            await this.taskQueue.remove(job.id)
-          }
-        }
         this.logger.error(
           `Error during scheduled deferred transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${gameDocument._id}`,
           error,
         )
+        throw error
       }
     } else {
       throw new Error('Method not implemented.')
