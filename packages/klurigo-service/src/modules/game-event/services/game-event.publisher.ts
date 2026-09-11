@@ -60,7 +60,12 @@ export class GameEventPublisher {
               context,
             )
 
-          await this.publishParticipantEvent(document._id, participant, event)
+          await this.publishParticipantEvent(
+            document._id,
+            participant,
+            event,
+            document.version,
+          )
         } catch (error) {
           const { message, stack } = error as Error
           this.logger.warn(
@@ -85,12 +90,14 @@ export class GameEventPublisher {
     gameId: string,
     participant: Participant,
     event?: GameEvent,
+    version?: number,
   ): Promise<void> {
     if (!event) return Promise.resolve()
 
     return this.publishDistributedEvent({
       gameId,
       playerId: participant.participantId,
+      version,
       event,
     })
   }

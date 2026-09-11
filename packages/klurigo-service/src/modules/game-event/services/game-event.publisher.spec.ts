@@ -186,6 +186,24 @@ describe('GameEventPublisher', () => {
     )
   })
 
+  it('publishes the persisted game version with every participant event', async () => {
+    const doc = buildGameDoc({ version: 7 })
+    ;(buildHostGameEvent as jest.Mock).mockReturnValue({ host: true })
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ player: true })
+
+    await service.publish(doc as GameDocument)
+
+    const payloads = redis.publish.mock.calls.map((call) =>
+      JSON.parse(call[1] as string),
+    )
+    expect(payloads).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ version: 7 }),
+        expect.objectContaining({ version: 7 }),
+      ]),
+    )
+  })
+
   it('publish (Question task) merges player question metadata', async () => {
     const doc = buildGameDoc({ currentTask: { type: TaskType.Question } })
     ;(buildHostGameEvent as jest.Mock).mockReturnValue({

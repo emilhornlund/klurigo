@@ -29,6 +29,7 @@ const isRetryableClosedError = (event: unknown): boolean => {
  * - Opens an `EventSource` to the game event endpoint with a unique connection ID.
  * - Sends `Authorization: Bearer <token>` via headers (using `EventSourcePolyfill`).
  * - Filters out `GameEventType.GameHeartbeat` messages (they do not update `gameEvent`).
+ * - Ignores repeated or older SSE revisions, using the backend's persisted game version.
  * - Reports `CONNECTED` only after the stream has delivered its first
  *   non-heartbeat snapshot.
  * - On error, retries with exponential backoff (1s, 2s, 4s, ... capped at 30s) up to 10 attempts.
@@ -56,6 +57,7 @@ export const useEventSource = (
   const instanceIdRef = useRef(0)
   const isShuttingDownRef = useRef(false)
   const lastEventRef = useRef<GameEvent | undefined>(undefined)
+  const lastEventVersionRef = useRef<number | undefined>(undefined)
 
   const clearReconnectTimeout = () => {
     if (reconnectTimeoutRef.current !== null) {
@@ -92,6 +94,7 @@ export const useEventSource = (
         )
         cleanupEventSource()
         lastEventRef.current = undefined
+        lastEventVersionRef.current = undefined
         setGameEvent(undefined)
         setConnectionStatus(ConnectionStatusValue.RECONNECTING_FAILED)
         return
@@ -103,6 +106,7 @@ export const useEventSource = (
       cleanupEventSource()
       const instanceId = ++instanceIdRef.current
       lastEventRef.current = undefined
+      lastEventVersionRef.current = undefined
       const connectionId = window.crypto.randomUUID()
       window.sessionStorage.setItem(
         GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
@@ -131,6 +135,25 @@ export const useEventSource = (
 
         const data = JSON.parse(event.data) as GameEvent
         if (data.type !== GameEventType.GameHeartbeat) {
+          const rawVersion = event.lastEventId
+          const version = rawVersion ? Number(rawVersion) : undefined
+          if (
+            version !== undefined &&
+            (!Number.isSafeInteger(version) || version < 0)
+          ) {
+            return
+          }
+          if (
+            version !== undefined &&
+            lastEventVersionRef.current !== undefined &&
+            version <= lastEventVersionRef.current
+          ) {
+            return
+          }
+          if (version !== undefined) {
+            lastEventVersionRef.current = version
+          }
+
           // Only update state if the event has actually changed
           if (!deepEqual(data, lastEventRef.current)) {
             lastEventRef.current = data
@@ -165,6 +188,7 @@ export const useEventSource = (
         ) {
           instanceIdRef.current += 1
           lastEventRef.current = undefined
+          lastEventVersionRef.current = undefined
           setGameEvent(undefined)
           console.error(
             'Game event stream closed before recovery could complete.',
@@ -200,11 +224,13 @@ export const useEventSource = (
       isShuttingDownRef.current = false
       setGameEvent(undefined)
       lastEventRef.current = undefined
+      lastEventVersionRef.current = undefined
       setConnectionStatus(ConnectionStatusValue.INITIALIZED)
       createEventSource(gameID, token)
     } else {
       setGameEvent(undefined)
       lastEventRef.current = undefined
+      lastEventVersionRef.current = undefined
     }
 
     return () => {

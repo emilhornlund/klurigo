@@ -151,6 +151,23 @@ test.describe('Game session: host UI with simulated players', () => {
             page.getByText(question.text, { exact: true }),
           ).toBeVisible()
         })
+
+        await test.step('Recovers cleanly from a second stream interruption', async () => {
+          const replacementStreamResponse = page.waitForResponse(
+            (response) =>
+              response.request().method() === 'GET' &&
+              new URL(response.url()).pathname.endsWith('/events') &&
+              response.status() === 200,
+          )
+          await interruptActiveGameEventStream(page)
+          await replacementStreamResponse
+          await expect(
+            page.getByText('Connected', { exact: true }),
+          ).toBeVisible()
+          await expect(
+            page.getByText(question.text, { exact: true }),
+          ).toBeVisible()
+        })
       })
 
       await test.step('Submit the deterministic answer and verify the result', async () => {

@@ -195,6 +195,7 @@ export class GameRepository extends BaseRepository<Game> {
 
     const updatedGameDocument = await callback(gameDocument)
     updatedGameDocument.updated = new Date()
+    updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
     return await updatedGameDocument.save()
   }
 

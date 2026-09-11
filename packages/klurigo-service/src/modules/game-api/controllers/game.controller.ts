@@ -232,7 +232,8 @@ export class GameController {
    * @param participantId - The authenticated participant ID requesting the stream.
    * @param gameId - The ID of the game to subscribe to.
    *
-   * @returns An observable SSE stream where each message `data` contains JSON-encoded game event payloads.
+   * @returns An observable SSE stream where each message `data` contains JSON-encoded game event payloads and
+   *          the SSE `id` contains the persisted game revision when available.
    */
   @NoTimeout()
   @Sse('/:gameID/events')

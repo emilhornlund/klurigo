@@ -50,6 +50,7 @@ export function buildGameModel(
     currentTask: lobbyTask,
     previousTasks: [],
     updated: new Date(now),
+    version: 0,
     created: new Date(now),
   }
 }
