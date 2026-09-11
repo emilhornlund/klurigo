@@ -6,8 +6,8 @@ import {
 } from '../../../game-core/repositories/models/schemas'
 import { isParticipantPlayer } from '../../../game-core/utils'
 import {
-  compareClassicModeQuestionResultTaskItemByScoreThenTime,
-  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime,
+  compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime,
+  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime,
 } from '../../../game-task/utils/task-sorting.utils'
 import {
   isLeaderboardTask,
@@ -18,7 +18,7 @@ import {
 
 type QuestionResultRankingData = Pick<
   QuestionResultTaskItem,
-  'totalScore' | 'totalResponseTime'
+  'totalScore' | 'totalResponseTime' | 'responseCount'
 >
 
 /**
@@ -88,6 +88,7 @@ function calculateRank(game: GameDocument, totalScore: number): number {
     const joiningPlayer: QuestionResultRankingData = {
       totalScore,
       totalResponseTime: 0,
+      responseCount: 0,
     }
 
     const ranking = [...currentRanking, joiningPlayer].sort(
@@ -136,9 +137,10 @@ function getCurrentRanking(
     isQuestionTask(game) &&
     players.every(({ rank }) => typeof rank === 'number' && rank > 0)
   ) {
-    return players.map(({ totalScore, totalResponseTime }) => ({
+    return players.map(({ totalScore, totalResponseTime, responseCount }) => ({
       totalScore,
       totalResponseTime,
+      responseCount,
     }))
   }
 
@@ -151,6 +153,7 @@ function getCurrentRanking(
       return {
         totalScore: leaderboardItem?.score ?? participant.totalScore,
         totalResponseTime: participant.totalResponseTime,
+        responseCount: participant.responseCount,
       }
     })
   }
@@ -162,8 +165,8 @@ function compareRankingData(
   game: GameDocument,
 ): (lhs: QuestionResultRankingData, rhs: QuestionResultRankingData) => number {
   return game.mode === GameMode.Classic
-    ? compareClassicModeQuestionResultTaskItemByScoreThenTime
-    : compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime
+    ? compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime
+    : compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime
 }
 
 /**

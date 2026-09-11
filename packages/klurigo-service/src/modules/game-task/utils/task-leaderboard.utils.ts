@@ -11,8 +11,8 @@ import { isParticipantPlayer } from '../../game-core/utils'
 import { IllegalTaskTypeException } from '../exceptions'
 
 import {
-  compareClassicModeQuestionResultTaskItemByScoreThenTime,
-  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime,
+  compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime,
+  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime,
 } from './task-sorting.utils'
 import { isQuestionResultTask } from './task-type-guards'
 
@@ -78,8 +78,8 @@ export function updateParticipantsAndBuildLeaderboard(
 
   const compare =
     gameDocument.mode === GameMode.Classic
-      ? compareClassicModeQuestionResultTaskItemByScoreThenTime
-      : compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime
+      ? compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime
+      : compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime
 
   return rankedParticipants
     .sort((a, b) =>

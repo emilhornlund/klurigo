@@ -110,6 +110,27 @@ describe('scoring-engine', () => {
       expect(score).toBe(100)
     })
 
+    it('returns 0 for a Classic answer when the question duration is not positive', () => {
+      const question = {
+        ...buildClassicMultiChoiceQuestion(),
+        duration: 0,
+      }
+      const answer = buildMultiChoiceAnswer(
+        0,
+        new Date('2025-01-01T00:00:01.000Z'),
+      )
+
+      const score = calculateQuestionScoreForParticipant(
+        GameMode.Classic,
+        new Date('2025-01-01T00:00:00.000Z'),
+        question,
+        [buildMultiChoiceCorrect('c1', 0)],
+        answer,
+      )
+
+      expect(score).toBe(0)
+    })
+
     it('throws for unsupported game mode when answer is missing', () => {
       const question = buildClassicMultiChoiceQuestion()
 

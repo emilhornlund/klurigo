@@ -4,7 +4,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { QuestionResultTaskItem } from '../../game-core/repositories/models/schemas'
 
 import {
+  compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime,
   compareClassicModeQuestionResultTaskItemByScoreThenTime,
+  compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime,
   compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime,
 } from './task-sorting.utils'
 
@@ -103,6 +105,27 @@ describe('Task Sorting Utils', () => {
         { playerId: 'p4', totalScore: 0, totalResponseTime: 1 },
       ])
     })
+
+    it('puts established zero-score players ahead of late joiners before using response time', () => {
+      const established = buildItem({
+        playerId: 'established',
+        totalScore: 0,
+        totalResponseTime: 30000,
+        responseCount: 3,
+      })
+      const lateJoiner = buildItem({
+        playerId: 'late-joiner',
+        totalScore: 0,
+        totalResponseTime: 10000,
+        responseCount: 1,
+      })
+
+      expect(
+        [lateJoiner, established].sort(
+          compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime,
+        ),
+      ).toEqual([established, lateJoiner])
+    })
   })
 
   describe('compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime', () => {
@@ -195,6 +218,27 @@ describe('Task Sorting Utils', () => {
         { playerId: 'p1', totalScore: 10, totalResponseTime: 3000 },
         { playerId: 'p4', totalScore: 50, totalResponseTime: 1 },
       ])
+    })
+
+    it('puts established tied-penalty players ahead of late joiners', () => {
+      const established = buildItem({
+        playerId: 'established',
+        totalScore: 50,
+        totalResponseTime: 30000,
+        responseCount: 3,
+      })
+      const lateJoiner = buildItem({
+        playerId: 'late-joiner',
+        totalScore: 50,
+        totalResponseTime: 10000,
+        responseCount: 1,
+      })
+
+      expect(
+        [lateJoiner, established].sort(
+          compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime,
+        ),
+      ).toEqual([established, lateJoiner])
     })
   })
 })

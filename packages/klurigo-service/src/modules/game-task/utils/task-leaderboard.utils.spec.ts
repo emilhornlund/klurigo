@@ -287,6 +287,55 @@ describe('Task Leaderboard Utils', () => {
       expect(latePlayer.rank).toBe(3)
     })
 
+    it('keeps a zero-score player who joined several questions later below established players', () => {
+      const establishedPlayerId = uuidv4()
+      const latePlayerId = uuidv4()
+
+      const establishedPlayer = buildPlayerParticipant({
+        participantId: establishedPlayerId,
+        rank: 1,
+        totalScore: 0,
+        totalResponseTime: 90000,
+        responseCount: 3,
+      })
+      const latePlayer = buildPlayerParticipant({
+        participantId: latePlayerId,
+        rank: 2,
+        totalScore: 0,
+        totalResponseTime: 30000,
+        responseCount: 1,
+      })
+
+      const game = buildGameDocument({
+        participants: [latePlayer, establishedPlayer],
+        currentTask: buildQuestionResultTask({
+          results: [
+            buildQuestionResultTaskItem({
+              playerId: establishedPlayerId,
+              totalScore: 0,
+              totalResponseTime: 90000,
+              responseCount: 3,
+            }),
+            buildQuestionResultTaskItem({
+              playerId: latePlayerId,
+              totalScore: 0,
+              totalResponseTime: 30000,
+              responseCount: 1,
+            }),
+          ],
+        }),
+      })
+
+      const leaderboard = updateParticipantsAndBuildLeaderboard(game)
+
+      expect(leaderboard.map(({ playerId }) => playerId)).toEqual([
+        establishedPlayerId,
+        latePlayerId,
+      ])
+      expect(establishedPlayer.rank).toBe(1)
+      expect(latePlayer.rank).toBe(2)
+    })
+
     it('places a late ZeroToOneHundred player using the initialized score', () => {
       const firstPlayerId = uuidv4()
       const secondPlayerId = uuidv4()

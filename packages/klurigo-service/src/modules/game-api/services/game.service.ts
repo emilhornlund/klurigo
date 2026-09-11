@@ -231,6 +231,12 @@ export class GameService {
           )
         }
 
+        if (currentDocument.currentTask.type === TaskType.Podium) {
+          throw new BadRequestException(
+            `Cannot join game ${gameId} while its final leaderboard is active`,
+          )
+        }
+
         if (isGameFull(currentDocument.participants)) {
           throw new GameFullException()
         }

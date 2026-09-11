@@ -405,7 +405,10 @@ function calculateAverageResponseTimeByQuestion(
     0,
   )
 
-  const totalUnanswered = playerParticipants.length - answers.length
+  const totalUnanswered = Math.max(
+    0,
+    playerParticipants.length - answers.length,
+  )
   const totalUnansweredResponseTime =
     totalUnanswered * questions[questionIndex].duration * 1000
 

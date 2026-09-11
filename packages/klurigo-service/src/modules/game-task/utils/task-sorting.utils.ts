@@ -5,6 +5,9 @@ type QuestionResultRankingData = Pick<
   'totalScore' | 'totalResponseTime'
 >
 
+type ParticipationRankingData = QuestionResultRankingData &
+  Pick<QuestionResultTaskItem, 'responseCount'>
+
 /**
  * Compares two numeric values for sorting in descending order.
  *
@@ -71,6 +74,33 @@ export function compareClassicModeQuestionResultTaskItemByScoreThenTime(
 }
 
 /**
+ * Compares Classic results while keeping players with more completed rounds
+ * ahead of late joiners when their scores are tied.
+ *
+ * Participation is only consulted for equal scores. The existing response-time
+ * tie-breaker remains the final rule, so this does not alter score calculation.
+ */
+export function compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime(
+  lhs: ParticipationRankingData,
+  rhs: ParticipationRankingData,
+): number {
+  const scoreCmp = compareNumbersDesc(lhs.totalScore, rhs.totalScore)
+  if (scoreCmp !== 0) {
+    return scoreCmp
+  }
+
+  const responseCountCmp = compareNumbersDesc(
+    lhs.responseCount ?? 0,
+    rhs.responseCount ?? 0,
+  )
+  if (responseCountCmp !== 0) {
+    return responseCountCmp
+  }
+
+  return compareNumbersAsc(lhs.totalResponseTime, rhs.totalResponseTime)
+}
+
+/**
  * Compares two question result task items for ranking in ZeroToOneHundred mode.
  *
  * Sorting rules:
@@ -95,6 +125,30 @@ export function compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenTime
   const scoreCmp = compareNumbersAsc(lhs.totalScore, rhs.totalScore)
   if (scoreCmp !== 0) {
     return scoreCmp
+  }
+
+  return compareNumbersAsc(lhs.totalResponseTime, rhs.totalResponseTime)
+}
+
+/**
+ * Compares ZeroToOneHundred results while keeping players with more completed
+ * rounds ahead of late joiners when their penalties are tied.
+ */
+export function compareZeroToOneHundredModeQuestionResultTaskItemByScoreThenParticipationThenTime(
+  lhs: ParticipationRankingData,
+  rhs: ParticipationRankingData,
+): number {
+  const scoreCmp = compareNumbersAsc(lhs.totalScore, rhs.totalScore)
+  if (scoreCmp !== 0) {
+    return scoreCmp
+  }
+
+  const responseCountCmp = compareNumbersDesc(
+    lhs.responseCount ?? 0,
+    rhs.responseCount ?? 0,
+  )
+  if (responseCountCmp !== 0) {
+    return responseCountCmp
   }
 
   return compareNumbersAsc(lhs.totalResponseTime, rhs.totalResponseTime)

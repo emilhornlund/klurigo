@@ -1359,5 +1359,112 @@ describe('Game Result Converter', () => {
         completed: new Date('2025-04-11T15:25:11.915Z'),
       })
     })
+
+    it('does not produce a negative unanswered count when a player leaves after answering', () => {
+      const presented = new Date('2026-02-01T10:00:00.000Z')
+      const gameDocument = {
+        _id: 'game-with-leaver',
+        name: 'Game with leaver',
+        mode: GameMode.Classic,
+        quiz: { _id: 'quiz-1' },
+        questions: [
+          {
+            type: QuestionType.MultiChoice,
+            text: 'Question',
+            points: 1000,
+            duration: 30,
+            options: [{ value: 'Correct', correct: true }],
+          },
+        ],
+        participants: [
+          {
+            participantId: 'host-1',
+            type: GameParticipantType.HOST,
+            created: presented,
+            updated: presented,
+          },
+          {
+            participantId: 'remaining-player',
+            type: GameParticipantType.PLAYER,
+            nickname: 'Remaining',
+            rank: 1,
+            worstRank: 1,
+            totalScore: 900,
+            currentStreak: 1,
+            totalResponseTime: 1000,
+            responseCount: 1,
+            created: presented,
+            updated: presented,
+          },
+        ],
+        currentTask: {
+          type: TaskType.Podium,
+          status: 'completed',
+          created: new Date('2026-02-01T10:00:10.000Z'),
+          leaderboard: [
+            {
+              playerId: 'remaining-player',
+              position: 1,
+              nickname: 'Remaining',
+              score: 900,
+              streaks: 1,
+            },
+          ],
+        },
+        previousTasks: [
+          {
+            type: TaskType.Question,
+            questionIndex: 0,
+            presented,
+            created: presented,
+            answers: [
+              {
+                type: QuestionType.MultiChoice,
+                playerId: 'remaining-player',
+                answer: 0,
+                created: new Date(presented.getTime() + 1000),
+              },
+              {
+                type: QuestionType.MultiChoice,
+                playerId: 'removed-player',
+                answer: 0,
+                created: new Date(presented.getTime() + 2000),
+              },
+            ],
+          },
+          {
+            type: TaskType.QuestionResult,
+            questionIndex: 0,
+            results: [
+              {
+                type: QuestionType.MultiChoice,
+                playerId: 'remaining-player',
+                correct: true,
+                answer: {
+                  type: QuestionType.MultiChoice,
+                  playerId: 'remaining-player',
+                  answer: 0,
+                  created: new Date(presented.getTime() + 1000),
+                },
+                lastScore: 900,
+                totalScore: 900,
+                position: 1,
+                streak: 1,
+                lastResponseTime: 1000,
+                totalResponseTime: 1000,
+                responseCount: 1,
+              },
+            ],
+          },
+        ],
+        created: presented,
+        updated: presented,
+      } as unknown as GameDocument
+
+      const result = buildGameResultModel(gameDocument)
+
+      expect(result.questions[0].averageResponseTime).toBe(1500)
+      expect(result.questions[0].unanswered).toBe(0)
+    })
   })
 })
