@@ -13,10 +13,9 @@ type EventSourceErrorEvent = { status?: number }
 const isRetryableClosedError = (event: unknown): boolean => {
   const status = (event as EventSourceErrorEvent | null)?.status
 
-  return (
-    status !== undefined &&
-    (status === 408 || status === 425 || status === 429 || status >= 500)
-  )
+  if (status === undefined || status === 0) return true
+
+  return status === 408 || status === 425 || status === 429 || status >= 500
 }
 
 /**

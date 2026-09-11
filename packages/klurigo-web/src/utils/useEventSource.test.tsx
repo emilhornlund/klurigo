@@ -242,6 +242,23 @@ describe('useEventSource', () => {
     expect(instances().length).toBe(2)
   })
 
+  it('retries a closed stream after a transport interruption without an HTTP status', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    const current = last()
+
+    ;(current as { readyState: number }).readyState = (
+      ESP as unknown as { EventSourcePolyfill: { CLOSED: number } }
+    ).EventSourcePolyfill.CLOSED
+
+    act(() => current.onerror?.(new Event('error')))
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+
+    act(() => vi.advanceTimersByTime(1000))
+
+    expect(instances().length).toBe(2)
+  })
+
   it('stops after MAX_RETRIES and sets RECONNECTING_FAILED', () => {
     vi.useFakeTimers()
 
