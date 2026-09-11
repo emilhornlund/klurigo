@@ -342,7 +342,7 @@ export class GameController {
   @ApiOperation({
     summary: 'Add a correct answer to the current question result task',
     description:
-      'Adds a new correct answer for the current question. Only applicable when the current task is of type "QuestionResult" and in active status. Multiple correct answers can be defined for supported question types.',
+      'Adds a new correct answer for the current question. Only applicable when the current task is of type "QuestionResult" and in active status. A stale or replaced task is rejected with a client error.',
   })
   @ApiBody({
     description: 'Request body for adding a correct answer.',
@@ -397,7 +397,7 @@ export class GameController {
   @ApiOperation({
     summary: 'Delete a correct answer from the current question result task',
     description:
-      'Deletes an existing correct answer from the current question result task. Only applicable when the current task is of type "QuestionResult" and in active status. Removes a matching entry from the list of accepted correct answers.',
+      'Deletes an existing correct answer from the current question result task. Only applicable when the current task is of type "QuestionResult" and in active status. A stale or replaced task is rejected with a client error.',
   })
   @ApiBody({
     description: 'Request body for deleting a correct answer.',
@@ -502,7 +502,8 @@ export class GameController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Ends the active game.',
-    description: 'Ends the active game and marks it as terminated.',
+    description:
+      'Ends an active game and marks it as terminated. Completed, expired, terminated, and repeated quit requests are rejected without another lifecycle event.',
   })
   @ApiNoContentResponse({
     description: 'The game was ended successfully.',

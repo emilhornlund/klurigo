@@ -71,9 +71,12 @@ export class GameParticipantEventBuilder {
   public async createContext(
     document: GameDocument,
   ): Promise<GameParticipantEventBuildContext> {
-    const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
-      document._id,
-    )
+    const answers = document.currentTask._id
+      ? await this.gameAnswerRepository.findAllAnswersByGameId(
+          document._id,
+          document.currentTask._id,
+        )
+      : await this.gameAnswerRepository.findAllAnswersByGameId(document._id)
 
     return {
       answers,

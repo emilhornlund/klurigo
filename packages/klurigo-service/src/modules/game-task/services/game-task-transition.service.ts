@@ -171,9 +171,13 @@ export class GameTaskTransitionService {
 
     const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
       gameDocument._id,
+      gameDocument.currentTask._id,
     )
 
-    await this.gameAnswerRepository.clear(gameDocument._id)
+    await this.gameAnswerRepository.clear(
+      gameDocument._id,
+      gameDocument.currentTask._id,
+    )
 
     gameDocument.currentTask.answers = answers
     gameDocument.previousTasks.push(gameDocument.currentTask)
