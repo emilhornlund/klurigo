@@ -334,11 +334,10 @@ Install the browsers used by local Playwright projects:
 yarn workspace @klurigo/klurigo-web test:e2e:install
 ```
 
-This installs Chromium and Firefox. The equivalent package-local Playwright
-command is:
+This installs Chromium. The equivalent package-local Playwright command is:
 
 ```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox
+yarn workspace @klurigo/klurigo-web playwright install chromium
 ```
 
 Run the frontend browser suite from the repository root:
@@ -354,19 +353,21 @@ test-mode backend with
 the backend `e2e:setup` command to reset and seed test databases, and its global
 teardown invokes `e2e:teardown` to clear them.
 
-Local runs use Chromium and Firefox, zero retries, and reuse already-running
-servers. The WebKit project is CI-only. CI sets `CI=true`, enables two retries,
-does not reuse servers, and installs all configured browsers plus Linux system
-dependencies with:
+Local and CI runs use Chromium only. Local runs use zero retries and reuse
+already-running servers. CI sets `CI=true`, enables two retries, does not reuse
+servers, and installs Chromium with Linux system dependencies using:
 
 ```sh
-yarn workspace @klurigo/klurigo-web playwright install chromium firefox webkit --with-deps
+yarn workspace @klurigo/klurigo-web playwright install chromium --with-deps
 ```
 
-The CI workflow then runs the same `test:e2e` package script. Do not assume
-WebKit or its system dependencies are available on a local machine after the
-local browser installation command. The configured HTML reporter writes a
-Playwright report under `playwright-report/`.
+The CI workflow then runs the same `test:e2e` package script. Ordinary tests
+exclude `**/game-session/**/*.spec.ts`, while the dedicated
+`chromium-game-session` project runs those files with one worker, a 15-second
+expect timeout, and a 90-second test timeout. Its fixture resolver maps
+`repeatEachIndex` values `0`, `1`, and `2` to the three configured Chromium
+fixture users. The configured HTML reporter writes a Playwright report under
+`playwright-report/`.
 
 ## Coverage
 

@@ -14,7 +14,7 @@
     "test": "yarn test:unit",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "test:e2e:install": "yarn playwright install chromium firefox",
+    "test:e2e:install": "yarn playwright install chromium",
     "test:e2e": "yarn playwright test",
     "test:watch": "vitest watch",
     "test:update": "vitest --update",

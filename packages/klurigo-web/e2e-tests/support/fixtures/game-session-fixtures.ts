@@ -7,10 +7,6 @@ import type { TestInfo } from '@playwright/test'
 const GAME_SESSION_PROJECT_TO_FIXTURE_PROJECT: Record<string, string> = {
   chromium: 'chromium',
   'chromium-game-session': 'chromium',
-  firefox: 'firefox',
-  'firefox-game-session': 'firefox',
-  webkit: 'webkit',
-  'webkit-game-session': 'webkit',
 }
 
 export function getGameSessionFixture(
