@@ -511,6 +511,26 @@ describe(GameService.name, () => {
 
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
     })
+
+    it('rejects joining while the final Podium leaderboard is active', async () => {
+      const gameDoc = {
+        _id: 'game-123',
+        status: GameStatus.Active,
+        currentTask: { type: TaskType.Podium },
+        participants: [],
+      }
+      gameRepository.findGameByIDOrThrow.mockResolvedValueOnce(gameDoc)
+      gameRepository.findAndSaveWithLock.mockImplementationOnce(
+        async (_gameId: string, callback: (game: typeof gameDoc) => unknown) =>
+          callback(gameDoc),
+      )
+
+      await expect(
+        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+      ).rejects.toThrow('final leaderboard is active')
+
+      expect(eventEmitter.emit).not.toHaveBeenCalled()
+    })
   })
 
   describe('submitQuestionAnswer', () => {

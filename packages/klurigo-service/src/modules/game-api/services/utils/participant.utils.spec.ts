@@ -240,6 +240,28 @@ describe('Participant Utils', () => {
       expect(added.rank).toBe(2)
     })
 
+    it('keeps a zero-score player joining several questions later below established players', () => {
+      const game = createMockGameDocument({
+        mode: GameMode.Classic,
+        currentTask: createMockQuestionTaskDocument(),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'established-player',
+            rank: 1,
+            totalScore: 0,
+            totalResponseTime: 90000,
+            responseCount: 3,
+          }),
+        ],
+      })
+
+      addPlayerParticipantToGame(game as never, 'late-player', 'Late Player')
+
+      const added = game.participants[1] as any
+      expect(added.totalScore).toBe(0)
+      expect(added.rank).toBe(2)
+    })
+
     it('uses the current leaderboard snapshot when assigning a late-join rank', () => {
       const game = createMockGameDocument({
         mode: GameMode.Classic,

@@ -127,12 +127,21 @@ export abstract class BaseClassicScoringStrategy<
     duration: number,
     points: number,
   ): number {
-    if (!Number.isFinite(points) || points <= 0) {
+    if (
+      !Number.isFinite(points) ||
+      points <= 0 ||
+      !Number.isFinite(duration) ||
+      duration <= 0
+    ) {
       return 0
     }
 
     const start = presented.getTime()
     const at = answered.getTime()
+
+    if (!Number.isFinite(start) || !Number.isFinite(at)) {
+      return 0
+    }
 
     // Seconds between present and answer, clamped to [0, duration]
     const responseSec = Math.min(Math.max((at - start) / 1000, 0), duration)
