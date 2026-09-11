@@ -128,10 +128,12 @@ question-result, host leaderboard, and normal completed-game states. Player
 snapshots include an already submitted answer when the backend has one; host
 snapshots include current submission counts and rankings.
 
-Use Playwright's deterministic browser connection controls for interruption and
-`page.reload()` while the persisted Game-scope token is still valid. Assert the
-visible state after recovery and then continue the same game progression. Keep
-these checks in the existing serial GameSession files and project isolation.
+Use the authenticated test-only stream interruption control for interruption and
+`page.reload()` while the persisted Game-scope token is still valid. The control
+closes the active server-side SSE observable, allowing the browser to receive a
+real transport error and retry. Assert the replacement stream and visible state
+after recovery, then continue the same game progression. Keep these checks in
+the existing serial GameSession files and project isolation.
 The frontend displays reconnecting and reconnect-failed diagnostics while a
 retry is pending or exhausted. Expired, unavailable, and host-terminated games
 remain negative cases: they must follow existing authorization, quit, or

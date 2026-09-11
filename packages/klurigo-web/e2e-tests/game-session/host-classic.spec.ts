@@ -6,6 +6,7 @@ import { expect, test } from '@playwright/test'
 import { GameHostClient } from '../support/api/game-host-client'
 import { GamePlayerClient } from '../support/api/game-player-client'
 import { authenticatePageThroughApi } from '../support/browser/authenticate-page-through-api'
+import { interruptActiveGameEventStream } from '../support/browser/interrupt-active-game-event-stream'
 import { startHostGame } from '../support/browser/start-host-game'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures'
@@ -132,11 +133,20 @@ test.describe('Game session: host UI with simulated players', () => {
         ])
 
         await test.step('Recover the host question after a connection interruption', async () => {
-          await page.context().setOffline(true)
+          const replacementStreamResponse = page.waitForResponse(
+            (response) =>
+              response.request().method() === 'GET' &&
+              new URL(response.url()).pathname.endsWith('/events') &&
+              response.status() === 200,
+          )
+          await interruptActiveGameEventStream(page)
           await expect(
             page.getByText('Reconnecting', { exact: true }),
           ).toBeVisible()
-          await page.context().setOffline(false)
+          await replacementStreamResponse
+          await expect(
+            page.getByText('Connected', { exact: true }),
+          ).toBeVisible()
           await expect(
             page.getByText(question.text, { exact: true }),
           ).toBeVisible()

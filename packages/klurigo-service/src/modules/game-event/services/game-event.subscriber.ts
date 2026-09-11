@@ -14,8 +14,16 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import type { Redis } from 'ioredis'
-import { concat, finalize, fromEvent, Observable, of } from 'rxjs'
-import { filter, map } from 'rxjs/operators'
+import {
+  concat,
+  finalize,
+  fromEvent,
+  Observable,
+  of,
+  ReplaySubject,
+  Subject,
+} from 'rxjs'
+import { filter, map, takeUntil } from 'rxjs/operators'
 
 import { PlayerNotFoundException } from '../../game-core/exceptions'
 import { GameRepository } from '../../game-core/repositories'
@@ -58,6 +66,10 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * Needed because the same participant can have multiple concurrent connections (tabs, refresh race, etc).
    */
   private readonly connectionCountsByParticipantId = new Map<string, number>()
+  private readonly connectionClosersByGameParticipant = new Map<
+    string,
+    Set<Subject<void>>
+  >()
 
   /**
    * Creates a new GameEventSubscriber.
@@ -280,6 +292,24 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
+   * Closes all active streams for a game participant.
+   *
+   * This is used by the test-only interruption endpoint to exercise the
+   * frontend's transport recovery path against a real server-side stream.
+   */
+  public closeConnections(gameId: string, participantId: string): void {
+    const closers = this.connectionClosersByGameParticipant.get(
+      this.connectionKey(gameId, participantId),
+    )
+
+    for (const closer of closers ?? []) closer.next()
+  }
+
+  private connectionKey(gameId: string, participantId: string): string {
+    return `${gameId}:${participantId}`
+  }
+
+  /**
    * Creates an SSE-compatible observable stream for a specific game and participant.
    *
    * Behavior:
@@ -302,22 +332,68 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     gameId: string,
     participantId: string,
   ): Promise<Observable<MessageEvent>> {
-    const document = await this.gameRepository.findGameByIDWithStatusesOrThrow(
-      gameId,
-      [GameStatus.Active, GameStatus.Completed],
-    )
+    this.incrementConnections(participantId)
+    this.startHeartbeatIfNeeded()
 
-    const participant = document.participants.find(
-      (p) => p.participantId === participantId,
-    )
+    const closeSignal = new Subject<void>()
+    const connectionKey = this.connectionKey(gameId, participantId)
+    const closers =
+      this.connectionClosersByGameParticipant.get(connectionKey) ?? new Set()
+    closers.add(closeSignal)
+    this.connectionClosersByGameParticipant.set(connectionKey, closers)
 
-    if (!participant) {
-      throw new PlayerNotFoundException(participantId)
+    const source = fromEvent(
+      this.eventEmitter,
+      LOCAL_EVENT_EMITTER_CHANNEL,
+    ) as Observable<LocalEvent>
+    const bufferedEvents = new ReplaySubject<LocalEvent>()
+    const sourceSubscription = source
+      .pipe(
+        takeUntil(closeSignal),
+        filter(
+          (event): event is LocalEvent =>
+            isDefined(event) &&
+            (event.gameId === gameId ||
+              (event.gameId === undefined &&
+                event.event.type === GameEventType.GameHeartbeat)) &&
+            (event.playerId === undefined || event.playerId === participantId),
+        ),
+      )
+      .subscribe({
+        next: (event) => bufferedEvents.next(event),
+        complete: () => bufferedEvents.complete(),
+      })
+
+    const cleanup = (): void => {
+      sourceSubscription.unsubscribe()
+      bufferedEvents.complete()
+      closeSignal.complete()
+      closers.delete(closeSignal)
+      if (closers.size === 0) {
+        this.connectionClosersByGameParticipant.delete(connectionKey)
+      }
+      this.decrementConnections(participantId)
+      if (this.getTotalConnectionCount() === 0) {
+        this.stopHeartbeatIfRunning()
+      }
     }
 
-    let initialEvent: DistributedEvent
     try {
-      initialEvent = {
+      const document =
+        await this.gameRepository.findGameByIDWithStatusesOrThrow(gameId, [
+          GameStatus.Active,
+          GameStatus.Completed,
+        ])
+
+      const participant = document.participants.find(
+        (p) => p.participantId === participantId,
+      )
+
+      if (!participant) {
+        throw new PlayerNotFoundException(participantId)
+      }
+
+      const initialEvent: DistributedEvent = {
         gameId,
         playerId: participantId,
         event: await this.gameParticipantEventBuilder.buildParticipantEvent(
@@ -325,39 +401,19 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
           participant,
         ),
       }
+
+      return concat(of(initialEvent), bufferedEvents).pipe(
+        map((event) => ({ data: JSON.stringify(event.event) })),
+        finalize(cleanup),
+      )
     } catch (error) {
       const { message, stack } = error as Error
       this.logger.warn(
         `Error building initial event for participant ${participantId}: ${message}`,
         stack,
       )
+      cleanup()
       throw error
     }
-
-    this.incrementConnections(participantId)
-    this.startHeartbeatIfNeeded()
-
-    const source = fromEvent(
-      this.eventEmitter,
-      LOCAL_EVENT_EMITTER_CHANNEL,
-    ) as Observable<LocalEvent>
-
-    return concat(of(initialEvent), source).pipe(
-      filter(
-        (event): event is LocalEvent =>
-          isDefined(event) &&
-          (event.gameId === gameId ||
-            (event.gameId === undefined &&
-              event.event.type === GameEventType.GameHeartbeat)) &&
-          (event.playerId === undefined || event.playerId === participantId),
-      ),
-      map((event) => ({ data: JSON.stringify(event.event) })),
-      finalize(() => {
-        this.decrementConnections(participantId)
-        if (this.getTotalConnectionCount() === 0) {
-          this.stopHeartbeatIfRunning()
-        }
-      }),
-    )
   }
 }

@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
   MessageEvent,
+  NotFoundException,
   Post,
   Sse,
 } from '@nestjs/common'
@@ -14,6 +15,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiExcludeEndpoint,
   ApiExtraModels,
   ApiForbiddenResponse,
   ApiNoContentResponse,
@@ -268,6 +270,20 @@ export class GameController {
     return from(this.gameEventSubscriber.subscribe(gameId, participantId)).pipe(
       mergeMap((stream) => stream),
     )
+  }
+
+  @Post('/:gameID/events/interrupt')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiExcludeEndpoint()
+  @AuthorizedGame()
+  @ApiGameIdParam()
+  public interruptEventStream(
+    @PrincipalId() participantId: string,
+    @RouteGameIdParam() gameId: string,
+  ): void {
+    if (process.env.NODE_ENV !== 'test') throw new NotFoundException()
+
+    this.gameEventSubscriber.closeConnections(gameId, participantId)
   }
 
   /**

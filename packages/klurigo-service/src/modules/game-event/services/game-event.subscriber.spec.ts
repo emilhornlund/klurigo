@@ -1,4 +1,5 @@
 import {
+  GameEvent,
   GameEventType,
   GameParticipantType,
   GameStatus,
@@ -287,6 +288,65 @@ describe('GameEventSubscriber', () => {
     emitSpy.mockClear()
     jest.advanceTimersByTime(HEARTBEAT_INTERVAL)
     expect(emitSpy).not.toHaveBeenCalled()
+  })
+
+  it('closes active streams for a game participant', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
+
+    const stream$ = await service.subscribe('game-1', 'p1')
+    const received: MessageEvent[] = []
+    const sub = stream$.subscribe((event) => received.push(event))
+
+    service.closeConnections('game-1', 'p1')
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'AFTER_CLOSE' },
+    })
+
+    expect(received.map((event) => JSON.parse(event.data as string))).toEqual([
+      { initial: 'player' },
+    ])
+    expect((service as any).connectionCountsByParticipantId.has('p1')).toBe(
+      false,
+    )
+    sub.unsubscribe()
+  })
+
+  it('does not lose events published while building the initial snapshot', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+
+    let resolveSnapshot!: (event: GameEvent) => void
+    const snapshot = new Promise<GameEvent>((resolve) => {
+      resolveSnapshot = resolve
+    })
+    jest
+      .spyOn(gameParticipantEventBuilder, 'buildParticipantEvent')
+      .mockImplementation(async () => {
+        eventEmitter.emit('event', {
+          gameId: 'game-1',
+          playerId: 'p1',
+          event: { type: 'DURING_SNAPSHOT' },
+        })
+        return snapshot
+      })
+
+    const streamPromise = service.subscribe('game-1', 'p1')
+    await Promise.resolve()
+    resolveSnapshot({ type: GameEventType.GameLoading })
+
+    const stream$ = await streamPromise
+    const received: MessageEvent[] = []
+    const sub = stream$.subscribe((event) => received.push(event))
+
+    expect(received.map((event) => JSON.parse(event.data as string))).toEqual([
+      { type: GameEventType.GameLoading },
+      { type: 'DURING_SNAPSHOT' },
+    ])
+    sub.unsubscribe()
   })
 
   it('onModuleDestroy unsubscribes, quits, and removes Redis listeners', async () => {
