@@ -40,6 +40,7 @@ import {
   createTestApp,
   resetTestState,
 } from '../../../../test-utils/utils'
+import { GameAnswerRepository } from '../../game-core/repositories'
 import {
   Game,
   GameModel,
@@ -53,6 +54,7 @@ import {
   QuestionTaskRangeAnswer,
   QuestionTaskTrueFalseAnswer,
   QuestionTaskTypeAnswerAnswer,
+  QuestionTaskWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
 import { QuizService } from '../../quiz-api/services'
@@ -1191,6 +1193,16 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/answers (POST)', () => {
+    const submitAnswer = (
+      accessToken: string,
+      gameId: string,
+      optionIndex = 0,
+    ) =>
+      supertest(app.getHttpServer())
+        .post(`/api/games/${gameId}/answers`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ type: QuestionType.MultiChoice, optionIndex })
+
     it('should submit a valid multi-choice answer successfully', async () => {
       const { id: quizId } = await quizService.createQuiz(
         createMockClassicQuizRequestDto(),
@@ -1274,6 +1286,241 @@ describe('GameController (e2e)', () => {
           expect(res.body).toHaveProperty('status', 403)
           expect(res.body).toHaveProperty('timestamp')
         })
+    })
+
+    it('should reject a retry and concurrent duplicate without storing another answer', async () => {
+      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      const responses = await Promise.all([
+        submitAnswer(accessToken, game._id),
+        submitAnswer(accessToken, game._id, 1),
+      ])
+
+      expect(responses.map((response) => response.status).sort()).toEqual([
+        204, 400,
+      ])
+
+      const answerRepository = app.get(GameAnswerRepository)
+      const storedAnswers = await answerRepository.findAllAnswersByGameId(
+        game._id,
+        task._id,
+      )
+      expect(storedAnswers).toHaveLength(1)
+      expect(storedAnswers[0]).toEqual(
+        expect.objectContaining({ playerId: playerUser._id }),
+      )
+      expect([0, 1]).toContain(storedAnswers[0].answer)
+
+      await submitAnswer(accessToken, game._id)
+        .expect(400)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('message', 'Answer already provided')
+        })
+    })
+
+    it('should accept concurrent players once each and score both answers when the question closes', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const task = createMockQuestionTaskDocument({
+        status: 'active',
+        presented: new Date(),
+      })
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument({ duration: 30 })],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: secondPlayerUser._id,
+              nickname: MOCK_TERTIARY_USER_DEFAULT_NICKNAME,
+            }),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      const firstToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const secondToken = await authenticateGame(
+        app,
+        game._id,
+        secondPlayerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const hostToken = await authenticateGame(
+        app,
+        game._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      const responses = await Promise.all([
+        submitAnswer(firstToken, game._id),
+        submitAnswer(secondToken, game._id),
+      ])
+
+      expect(responses.map((response) => response.status)).toEqual([204, 204])
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/tasks/current/complete`)
+        .set(createBearerAuthHeader(hostToken))
+        .expect(204)
+
+      const updated = await gameModel.findById(game._id).exec()
+      expect(updated?.currentTask.type).toBe(TaskType.QuestionResult)
+      const previousQuestion = updated?.previousTasks.find(
+        (previousTask) => previousTask._id === task._id,
+      ) as QuestionTaskWithBase
+      expect(previousQuestion.answers).toHaveLength(2)
+      expect(previousQuestion.answers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+          expect.objectContaining({
+            playerId: secondPlayerUser._id,
+            answer: 0,
+          }),
+        ]),
+      )
+      if (updated?.currentTask.type === TaskType.QuestionResult) {
+        expect(updated.currentTask.results).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              playerId: playerUser._id,
+              correct: true,
+            }),
+            expect.objectContaining({
+              playerId: secondPlayerUser._id,
+              correct: true,
+            }),
+          ]),
+        )
+        updated.currentTask.results
+          .filter((result) => result.correct)
+          .forEach((result) => expect(result.totalScore).toBeGreaterThan(0))
+      }
+    })
+
+    it('should reject a submission after question closure without persisting it', async () => {
+      const task = createMockQuestionTaskDocument({ status: 'completed' })
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await submitAnswer(accessToken, game._id)
+        .expect(400)
+        .expect((res) => {
+          expect(res.body).toHaveProperty(
+            'message',
+            'Current task is either not of question type or not in active status',
+          )
+        })
+
+      await expect(
+        app
+          .get(GameAnswerRepository)
+          .findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([])
+    })
+
+    it('should resolve a submission racing with closure to either the closed question or a late rejection', async () => {
+      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument({ duration: 0 })],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      const playerToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const hostToken = await authenticateGame(
+        app,
+        game._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      const [answerResponse, closeResponse] = await Promise.all([
+        submitAnswer(playerToken, game._id),
+        supertest(app.getHttpServer())
+          .post(`/api/games/${game._id}/tasks/current/complete`)
+          .set(createBearerAuthHeader(hostToken)),
+      ])
+
+      expect(closeResponse.status).toBe(204)
+      expect([204, 400]).toContain(answerResponse.status)
+
+      const updated = await gameModel.findById(game._id).exec()
+      expect(updated?.currentTask.type).toBe(TaskType.QuestionResult)
+      const previousQuestion = updated?.previousTasks.find(
+        (previousTask) => previousTask._id === task._id,
+      ) as QuestionTaskWithBase
+
+      if (answerResponse.status === 204) {
+        expect(previousQuestion.answers).toHaveLength(1)
+        expect(previousQuestion.answers[0].playerId).toBe(playerUser._id)
+      } else {
+        expect(previousQuestion.answers).toHaveLength(0)
+      }
     })
 
     it('should return BadRequest for invalid task status', async () => {

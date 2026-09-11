@@ -27,6 +27,24 @@ avoid importing the fully configured `AppModule` when the behavior does not
 require it. This keeps unit tests independent of MongoDB and Redis and allows
 Jest's normal worker parallelism.
 
+## Answer Submission Semantics
+
+`POST /api/games/:gameID/answers` accepts at most one answer per player for the
+current question task. The Redis answer repository scopes state by the task ID
+and atomically claims a player field with the stored answer. A repeated or
+concurrent submission therefore receives the established duplicate error and
+does not replace the answer, increment the count, award points, or schedule a
+second transition.
+
+The game lock coordinates answer acceptance with question closure. A submission
+that wins the race while the question is active is included in the question
+result; a submission observed after the task changes or closes receives the
+established invalid-task error and is not persisted. If a request's response is
+lost after its answer is committed, retrying is safe and receives the duplicate
+error. A Redis failure before the atomic claim does not leave a marker, so a
+later retry can be accepted; failures after a commit leave the committed answer
+as the source of truth rather than allowing a second answer.
+
 ## End-To-End Infrastructure
 
 Backend e2e tests use `createTestApp` from

@@ -452,7 +452,7 @@ export class GameController {
   @ApiOperation({
     summary: 'Submit an answer for the current question',
     description:
-      'Allows a player to submit their answer for the current active question in the game.',
+      'Allows a player to submit one answer for the current active question in the game. Duplicate, retried, or late submissions are rejected; a duplicate never changes the stored answer or score.',
   })
   @ApiBody({
     description: 'Request body for submitting an answer.',
@@ -468,7 +468,8 @@ export class GameController {
     },
   })
   @ApiNoContentResponse({
-    description: 'The answer has been successfully submitted.',
+    description:
+      'The answer has been successfully submitted. If the response is lost, retrying is safe but the retry is reported as a duplicate.',
   })
   @AuthorizedGame(GameParticipantType.PLAYER)
   @ApiGameIdParam()
