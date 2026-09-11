@@ -8,6 +8,38 @@ import {
 } from '../../game-core/repositories/models/schemas'
 import { GameEventPublisher } from '../../game-event/services'
 
+// The scheduler tests exercise business logic directly and do not need Redis.
+// Keep the decorator's serialization behavior for concurrency tests.
+jest.mock('murlock', () => {
+  let lock = Promise.resolve()
+
+  return {
+    MurLock:
+      () =>
+      (
+        _target: unknown,
+        _propertyKey: string,
+        descriptor: PropertyDescriptor,
+      ) => {
+        const originalMethod = descriptor.value
+        descriptor.value = async function (...args: unknown[]) {
+          const previous = lock
+          let release: () => void = () => undefined
+          lock = new Promise<void>((resolve) => {
+            release = resolve
+          })
+          await previous
+          try {
+            return await originalMethod.apply(this, args)
+          } finally {
+            release()
+          }
+        }
+        return descriptor
+      },
+  }
+})
+
 import {
   GameTaskTransitionScheduler,
   TASK_QUEUE_NAME,
@@ -228,7 +260,11 @@ describe('GameTaskTransitionScheduler', () => {
     })
 
     it('skips scheduling when an existing transition job exists and status is not active', async () => {
-      const game = buildGameDocument(undefined, { status: 'pending' })
+      const game = buildGameDocument(undefined, {
+        status: 'pending',
+        currentTransitionInitiated: new Date('2026-09-11T12:00:00Z'),
+        currentTransitionExpires: new Date('2026-09-11T12:00:05Z'),
+      })
 
       gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
         jest.fn().mockResolvedValue(undefined),
@@ -251,6 +287,129 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledTimes(1)
+    })
+
+    it('schedules a pending task when timing exists but its transition job is missing', async () => {
+      const game = buildGameDocument(undefined, {
+        status: 'pending',
+        currentTransitionInitiated: new Date('2026-09-11T12:00:00Z'),
+        currentTransitionExpires: new Date('2026-09-11T12:00:05Z'),
+      })
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          return (await mutator(doc)) as GameDocument
+        },
+      )
+
+      await scheduler.scheduleTaskTransition(game)
+
+      expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(taskQueue.add.mock.calls[0][2]).toMatchObject({ delay: 5_000 })
+    })
+
+    it('serializes concurrent recovery scheduling for the same pending task', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      let hasJob = false
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockImplementation(async () =>
+        hasJob ? ({ id: 'job-1' } as any) : undefined,
+      )
+      taskQueue.add.mockImplementation(async () => {
+        hasJob = true
+        return undefined as any
+      })
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          return (await mutator(doc)) as GameDocument
+        },
+      )
+
+      await Promise.all([
+        scheduler.scheduleTaskTransition(game),
+        scheduler.scheduleTaskTransition(game),
+      ])
+
+      expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not schedule when the task becomes stale while acquiring the lock', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const staleDocument = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask, status: 'active' },
+          )
+          return (await mutator(staleDocument)) as GameDocument
+        },
+      )
+
+      await scheduler.scheduleTaskTransition(game)
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(taskQueue.add).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('is no longer current'),
+      )
+    })
+
+    it('skips an unsupported task status before querying the queue', async () => {
+      const game = buildGameDocument(undefined, {
+        status: 'invalid' as any,
+      })
+
+      await scheduler.scheduleTaskTransition(game)
+
+      expect(taskQueue.getJob).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('unsupported transition'),
+      )
+    })
+
+    it('propagates scheduling persistence failures without publishing or enqueueing', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameRepository.findAndSaveWithLock.mockRejectedValue(new Error('db-fail'))
+
+      await expect(scheduler.scheduleTaskTransition(game)).rejects.toThrow(
+        'db-fail',
+      )
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(taskQueue.add).not.toHaveBeenCalled()
     })
 
     it('calls setTransitionTiming with correct delay when scheduling new transition', async () => {
@@ -535,6 +694,159 @@ describe('GameTaskTransitionScheduler', () => {
 
       expect(logger.error).toHaveBeenCalledTimes(1)
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('skips a transition when the task becomes stale while acquiring the lock', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const staleDocument = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask, status: 'active' },
+          )
+          return (await mutator(staleDocument)) as GameDocument
+        },
+      )
+      const postSpy = jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await (scheduler as any).performTransition(game, 'active')
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(postSpy).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('stale task'),
+      )
+    })
+
+    it('skips an unsupported status transition while holding the lock', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          return (await mutator(doc)) as GameDocument
+        },
+      )
+      const postSpy = jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await (scheduler as any).performTransition(game, 'completed')
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(postSpy).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('unsupported transition'),
+      )
+    })
+
+    it('skips an unsupported task type progression from a transition callback', async () => {
+      const game = buildGameDocument(undefined, {
+        type: TaskType.Question,
+        status: 'completed',
+      })
+      const callback = jest.fn(async (doc: any) => {
+        doc.currentTask = {
+          _id: 'invalid-task-id',
+          type: TaskType.Lobby,
+          status: 'pending',
+        }
+      })
+
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          return (await mutator(doc)) as GameDocument
+        },
+      )
+
+      await (scheduler as any).performTransition(game, undefined, callback)
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('unsupported task progression'),
+      )
+    })
+
+    it('creates one deferred transition for a newly created pending task and processes it', async () => {
+      const game = buildGameDocument(undefined, {
+        type: TaskType.Lobby,
+        status: 'completed',
+      })
+      const nextTask = {
+        _id: 'question-task',
+        type: TaskType.Question,
+        status: 'pending' as const,
+        questionIndex: 0,
+        answers: [],
+        metadata: {},
+        created: new Date(),
+      }
+      const createNextTask = jest.fn(async (doc: GameDocument) => {
+        doc.currentTask = nextTask as any
+      })
+      const storedGame = { ...game }
+
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockImplementation(
+        (doc) => (doc.currentTask.status === 'pending' ? 5_000 : 0),
+      )
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: storedGame._id },
+            { ...storedGame.currentTask },
+          )
+          const updated = (await mutator(doc)) as GameDocument
+          Object.assign(storedGame, updated)
+          return updated
+        },
+      )
+
+      await (scheduler as any).performTransition(
+        game,
+        undefined,
+        createNextTask,
+      )
+
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      const [, jobData, jobOptions] = taskQueue.add.mock.calls[0]
+      expect(jobData.currentTask).toMatchObject({
+        _id: nextTask._id,
+        type: TaskType.Question,
+        status: 'pending',
+        currentTransitionInitiated: expect.any(Date),
+        currentTransitionExpires: expect.any(Date),
+      })
+
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
+        storedGame as GameDocument,
+      )
+
+      await scheduler.process({
+        id: (jobOptions as any).jobId,
+        name: TASK_TRANSITION_JOB_NAME,
+        data: jobData,
+      } as any)
+
+      expect(storedGame.currentTask).toMatchObject({
+        _id: nextTask._id,
+        type: TaskType.Question,
+        status: 'active',
+      })
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
     })
 
     it('preserves transition timing fields during status transition for event publishing', async () => {
