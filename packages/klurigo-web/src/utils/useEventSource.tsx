@@ -26,7 +26,8 @@ const isRetryableClosedError = (event: unknown): boolean => {
  * the most recent **non-heartbeat** `GameEvent` and the current connection status.
  *
  * Behavior:
- * - Opens an `EventSource` to the game event endpoint with a unique connection ID.
+ * - Opens an `EventSource` to the game event endpoint with a connection ID that
+ *   remains stable across retries.
  * - Sends `Authorization: Bearer <token>` via headers (using `EventSourcePolyfill`).
  * - Filters out `GameEventType.GameHeartbeat` messages (they do not update `gameEvent`).
  * - Ignores repeated or older SSE revisions, using the backend's persisted game version.
@@ -87,7 +88,12 @@ export const useEventSource = (
     Math.min(1000 * 2 ** retryCount, 30000)
 
   const createEventSource = useCallback(
-    (gameIdValue: string, tokenValue: string, retryCount = 0) => {
+    (
+      gameIdValue: string,
+      tokenValue: string,
+      retryCount = 0,
+      connectionId = window.crypto.randomUUID(),
+    ) => {
       if (retryCount >= MAX_RETRIES) {
         console.error(
           'Max retry attempts reached. Stopping reconnection attempts.',
@@ -107,7 +113,6 @@ export const useEventSource = (
       const instanceId = ++instanceIdRef.current
       lastEventRef.current = undefined
       lastEventVersionRef.current = undefined
-      const connectionId = window.crypto.randomUUID()
       window.sessionStorage.setItem(
         GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
         connectionId,
@@ -212,7 +217,12 @@ export const useEventSource = (
         reconnectTimeoutRef.current = window.setTimeout(() => {
           if (isShuttingDownRef.current) return
           // eslint-disable-next-line react-hooks/immutability
-          createEventSource(gameIdValue, tokenValue, currentRetryCount + 1)
+          createEventSource(
+            gameIdValue,
+            tokenValue,
+            currentRetryCount + 1,
+            connectionId,
+          )
         }, delay)
       }
     },

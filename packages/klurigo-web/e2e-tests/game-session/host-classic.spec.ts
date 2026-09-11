@@ -162,7 +162,7 @@ test.describe('Game session: host UI with simulated players', () => {
           await interruptActiveGameEventStream(page)
           await replacementStreamResponse
           await expect(
-            page.getByText('Connected', { exact: true }),
+            page.getByText('Connected', { exact: true }).last(),
           ).toBeVisible()
           await expect(
             page.getByText(question.text, { exact: true }),

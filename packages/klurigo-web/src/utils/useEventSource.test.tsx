@@ -168,6 +168,22 @@ describe('useEventSource', () => {
     expect(instances().length).toBe(3)
   })
 
+  it('reuses the connection ID across retries', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    const first = last()
+    const firstConnectionId = new URL(first.url).searchParams.get(
+      'connectionId',
+    )
+
+    act(() => first.onerror?.(new Event('error')))
+    act(() => vi.advanceTimersByTime(1000))
+
+    expect(new URL(last().url).searchParams.get('connectionId')).toBe(
+      firstConnectionId,
+    )
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+  })
+
   it('keeps reconnecting until the replacement stream delivers a snapshot', () => {
     const { result } = renderHook(() => useEventSource('g1', 't1'))
     const first = last()
