@@ -11,6 +11,9 @@ type StoredGameAuth = {
   }
 }
 
+const GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY =
+  'klurigo.game-event-stream-connection-id'
+
 export async function interruptActiveGameEventStream(
   page: Page,
 ): Promise<void> {
@@ -22,9 +25,13 @@ export async function interruptActiveGameEventStream(
     if (!gameAuth?.gameId || !gameAuth.token) {
       throw new Error('Active game auth state is missing')
     }
+    const connectionId = window.sessionStorage.getItem(
+      GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
+    )
+    if (!connectionId) throw new Error('Active game event stream is missing')
 
     const response = await fetch(
-      `${apiBaseUrl.replace(/\/+$/, '')}/games/${encodeURIComponent(gameAuth.gameId)}/events/interrupt`,
+      `${apiBaseUrl.replace(/\/+$/, '')}/games/${encodeURIComponent(gameAuth.gameId)}/events/interrupt?connectionId=${encodeURIComponent(connectionId)}`,
       {
         method: 'POST',
         headers: { Authorization: `Bearer ${gameAuth.token}` },

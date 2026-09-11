@@ -3,7 +3,10 @@ import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ConnectionStatus } from './event-source.types'
-import { useEventSource } from './useEventSource'
+import {
+  GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
+  useEventSource,
+} from './useEventSource'
 
 vi.mock('../config', () => ({
   default: { klurigoServiceUrl: 'http://klurigo-service.local' },
@@ -98,7 +101,13 @@ describe('useEventSource', () => {
     })
 
     expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
-    expect(last().url).toBe('http://klurigo-service.local/games/g1/events')
+    const streamUrl = new URL(last().url)
+    expect(streamUrl.pathname).toBe('/games/g1/events')
+    expect(streamUrl.searchParams.get('connectionId')).toBe(
+      window.sessionStorage.getItem(
+        GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
+      ),
+    )
     expect(last().init).toMatchObject({
       headers: {
         Authorization: 'Bearer t1',

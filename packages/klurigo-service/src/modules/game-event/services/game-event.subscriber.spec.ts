@@ -290,29 +290,40 @@ describe('GameEventSubscriber', () => {
     expect(emitSpy).not.toHaveBeenCalled()
   })
 
-  it('closes active streams for a game participant', async () => {
+  it('closes only the targeted concurrent stream for a game participant', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
 
-    const stream$ = await service.subscribe('game-1', 'p1')
-    const received: MessageEvent[] = []
-    const sub = stream$.subscribe((event) => received.push(event))
+    const firstStream$ = await service.subscribe('game-1', 'p1', 'first')
+    const secondStream$ = await service.subscribe('game-1', 'p1', 'second')
+    const firstReceived: MessageEvent[] = []
+    const secondReceived: MessageEvent[] = []
+    const firstSub = firstStream$.subscribe((event) =>
+      firstReceived.push(event),
+    )
+    const secondSub = secondStream$.subscribe((event) =>
+      secondReceived.push(event),
+    )
 
-    service.closeConnections('game-1', 'p1')
+    service.closeConnection('game-1', 'p1', 'first')
     eventEmitter.emit('event', {
       gameId: 'game-1',
       playerId: 'p1',
       event: { type: 'AFTER_CLOSE' },
     })
 
-    expect(received.map((event) => JSON.parse(event.data as string))).toEqual([
-      { initial: 'player' },
-    ])
+    expect(
+      firstReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }])
+    expect(
+      secondReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }, { type: 'AFTER_CLOSE' }])
     expect((service as any).connectionCountsByParticipantId.has('p1')).toBe(
-      false,
+      true,
     )
-    sub.unsubscribe()
+    firstSub.unsubscribe()
+    secondSub.unsubscribe()
   })
 
   it('does not lose events published while building the initial snapshot', async () => {

@@ -1,5 +1,6 @@
 import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,6 +10,7 @@ import {
   MessageEvent,
   NotFoundException,
   Post,
+  Query,
   Sse,
 } from '@nestjs/common'
 import {
@@ -266,10 +268,11 @@ export class GameController {
   public getEventStream(
     @PrincipalId() participantId: string,
     @RouteGameIdParam() gameId: string,
+    @Query('connectionId') connectionId?: string,
   ): Observable<MessageEvent> {
-    return from(this.gameEventSubscriber.subscribe(gameId, participantId)).pipe(
-      mergeMap((stream) => stream),
-    )
+    return from(
+      this.gameEventSubscriber.subscribe(gameId, participantId, connectionId),
+    ).pipe(mergeMap((stream) => stream))
   }
 
   @Post('/:gameID/events/interrupt')
@@ -280,10 +283,17 @@ export class GameController {
   public interruptEventStream(
     @PrincipalId() participantId: string,
     @RouteGameIdParam() gameId: string,
+    @Query('connectionId') connectionId?: string,
   ): void {
     if (process.env.NODE_ENV !== 'test') throw new NotFoundException()
+    if (!connectionId)
+      throw new BadRequestException('Connection ID is required')
 
-    this.gameEventSubscriber.closeConnections(gameId, participantId)
+    this.gameEventSubscriber.closeConnection(
+      gameId,
+      participantId,
+      connectionId,
+    )
   }
 
   /**

@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto'
+
 import {
   GameEventType,
   GameStatus,
@@ -66,9 +68,9 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * Needed because the same participant can have multiple concurrent connections (tabs, refresh race, etc).
    */
   private readonly connectionCountsByParticipantId = new Map<string, number>()
-  private readonly connectionClosersByGameParticipant = new Map<
+  private readonly connectionClosersByConnection = new Map<
     string,
-    Set<Subject<void>>
+    Subject<void>
   >()
 
   /**
@@ -292,21 +294,27 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Closes all active streams for a game participant.
+   * Closes one active stream for a game participant.
    *
    * This is used by the test-only interruption endpoint to exercise the
    * frontend's transport recovery path against a real server-side stream.
    */
-  public closeConnections(gameId: string, participantId: string): void {
-    const closers = this.connectionClosersByGameParticipant.get(
-      this.connectionKey(gameId, participantId),
-    )
-
-    for (const closer of closers ?? []) closer.next()
+  public closeConnection(
+    gameId: string,
+    participantId: string,
+    connectionId: string,
+  ): void {
+    this.connectionClosersByConnection
+      .get(this.connectionKey(gameId, participantId, connectionId))
+      ?.next()
   }
 
-  private connectionKey(gameId: string, participantId: string): string {
-    return `${gameId}:${participantId}`
+  private connectionKey(
+    gameId: string,
+    participantId: string,
+    connectionId: string,
+  ): string {
+    return `${gameId}:${participantId}:${connectionId}`
   }
 
   /**
@@ -322,6 +330,8 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    *
    * @param gameId - The game ID to subscribe to.
    * @param participantId - The participant ID subscribing to events.
+   * @param connectionId - The client-provided connection ID, or a generated ID
+   * for clients that do not provide one.
    *
    * @returns An observable of {@link MessageEvent} where `data` is a JSON-encoded game event payload.
    *
@@ -331,16 +341,18 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   public async subscribe(
     gameId: string,
     participantId: string,
+    connectionId: string = randomUUID(),
   ): Promise<Observable<MessageEvent>> {
     this.incrementConnections(participantId)
     this.startHeartbeatIfNeeded()
 
     const closeSignal = new Subject<void>()
-    const connectionKey = this.connectionKey(gameId, participantId)
-    const closers =
-      this.connectionClosersByGameParticipant.get(connectionKey) ?? new Set()
-    closers.add(closeSignal)
-    this.connectionClosersByGameParticipant.set(connectionKey, closers)
+    const connectionKey = this.connectionKey(
+      gameId,
+      participantId,
+      connectionId,
+    )
+    this.connectionClosersByConnection.set(connectionKey, closeSignal)
 
     const source = fromEvent(
       this.eventEmitter,
@@ -368,10 +380,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       sourceSubscription.unsubscribe()
       bufferedEvents.complete()
       closeSignal.complete()
-      closers.delete(closeSignal)
-      if (closers.size === 0) {
-        this.connectionClosersByGameParticipant.delete(connectionKey)
-      }
+      this.connectionClosersByConnection.delete(connectionKey)
       this.decrementConnections(participantId)
       if (this.getTotalConnectionCount() === 0) {
         this.stopHeartbeatIfRunning()

@@ -10,6 +10,9 @@ import { ConnectionStatus as ConnectionStatusValue } from './event-source.types'
 
 type EventSourceErrorEvent = { status?: number }
 
+export const GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY =
+  'klurigo.game-event-stream-connection-id'
+
 const isRetryableClosedError = (event: unknown): boolean => {
   const status = (event as EventSourceErrorEvent | null)?.status
 
@@ -23,7 +26,7 @@ const isRetryableClosedError = (event: unknown): boolean => {
  * the most recent **non-heartbeat** `GameEvent` and the current connection status.
  *
  * Behavior:
- * - Opens an `EventSource` to: `${config.klurigoServiceUrl}/games/${gameID}/events`.
+ * - Opens an `EventSource` to the game event endpoint with a unique connection ID.
  * - Sends `Authorization: Bearer <token>` via headers (using `EventSourcePolyfill`).
  * - Filters out `GameEventType.GameHeartbeat` messages (they do not update `gameEvent`).
  * - Reports `CONNECTED` only after the stream has delivered its first
@@ -100,9 +103,14 @@ export const useEventSource = (
       cleanupEventSource()
       const instanceId = ++instanceIdRef.current
       lastEventRef.current = undefined
+      const connectionId = window.crypto.randomUUID()
+      window.sessionStorage.setItem(
+        GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
+        connectionId,
+      )
 
       const eventSource = new EventSourcePolyfill(
-        `${config.klurigoServiceUrl}/games/${gameIdValue}/events`,
+        `${config.klurigoServiceUrl}/games/${gameIdValue}/events?connectionId=${encodeURIComponent(connectionId)}`,
         {
           headers: {
             Authorization: `Bearer ${tokenValue}`,
