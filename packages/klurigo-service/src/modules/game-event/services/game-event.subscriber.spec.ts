@@ -1,4 +1,5 @@
 import {
+  GameEvent,
   GameEventType,
   GameParticipantType,
   GameStatus,
@@ -289,6 +290,76 @@ describe('GameEventSubscriber', () => {
     expect(emitSpy).not.toHaveBeenCalled()
   })
 
+  it('closes only the targeted concurrent stream for a game participant', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
+
+    const firstStream$ = await service.subscribe('game-1', 'p1', 'first')
+    const secondStream$ = await service.subscribe('game-1', 'p1', 'second')
+    const firstReceived: MessageEvent[] = []
+    const secondReceived: MessageEvent[] = []
+    const firstSub = firstStream$.subscribe((event) =>
+      firstReceived.push(event),
+    )
+    const secondSub = secondStream$.subscribe((event) =>
+      secondReceived.push(event),
+    )
+
+    service.closeConnection('game-1', 'p1', 'first')
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      event: { type: 'AFTER_CLOSE' },
+    })
+
+    expect(
+      firstReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }])
+    expect(
+      secondReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }, { type: 'AFTER_CLOSE' }])
+    expect((service as any).connectionCountsByParticipantId.has('p1')).toBe(
+      true,
+    )
+    firstSub.unsubscribe()
+    secondSub.unsubscribe()
+  })
+
+  it('does not lose events published while building the initial snapshot', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+
+    let resolveSnapshot!: (event: GameEvent) => void
+    const snapshot = new Promise<GameEvent>((resolve) => {
+      resolveSnapshot = resolve
+    })
+    jest
+      .spyOn(gameParticipantEventBuilder, 'buildParticipantEvent')
+      .mockImplementation(async () => {
+        eventEmitter.emit('event', {
+          gameId: 'game-1',
+          playerId: 'p1',
+          event: { type: 'DURING_SNAPSHOT' },
+        })
+        return snapshot
+      })
+
+    const streamPromise = service.subscribe('game-1', 'p1')
+    await Promise.resolve()
+    resolveSnapshot({ type: GameEventType.GameLoading })
+
+    const stream$ = await streamPromise
+    const received: MessageEvent[] = []
+    const sub = stream$.subscribe((event) => received.push(event))
+
+    expect(received.map((event) => JSON.parse(event.data as string))).toEqual([
+      { type: GameEventType.GameLoading },
+      { type: 'DURING_SNAPSHOT' },
+    ])
+    sub.unsubscribe()
+  })
+
   it('onModuleDestroy unsubscribes, quits, and removes Redis listeners', async () => {
     await service.onModuleInit()
 
@@ -521,51 +592,34 @@ describe('GameEventSubscriber', () => {
     )
   })
 
-  it('subscribe tolerates build* error and still relays future events', async () => {
+  it('rejects stream establishment when the authoritative snapshot cannot be built', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildHostGameEvent as jest.Mock).mockImplementation(() => {
       throw new Error('boom in builder')
     })
 
-    const stream$ = await service.subscribe('game-1', 'host')
+    await expect(service.subscribe('game-1', 'host')).rejects.toThrow(
+      'boom in builder',
+    )
 
-    // Collect next two events we emit ourselves (no initial because builder throws)
-    const resultsPromise = firstValueFrom(stream$.pipe(take(3), toArray()))
-
-    eventEmitter.emit('event', {
-      gameId: 'game-1',
-      playerId: 'host',
-      event: { type: 'A' },
-    })
-    eventEmitter.emit('event', {
-      gameId: 'game-1',
-      event: { type: 'B' },
-    })
-
-    const results = await resultsPromise
-    expect(results.map((e) => JSON.parse(e.data as any))).toEqual([
-      { type: GameEventType.GameHeartbeat },
-      { type: 'A' },
-      { type: 'B' },
-    ])
-    expect(logger.warn).toHaveBeenCalled()
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining('Error building initial event for participant'),
+      expect.any(String),
+    )
+    expect((service as any).connectionCountsByParticipantId.size).toBe(0)
   })
 
-  it('subscribe falls back to heartbeat when gameAnswerRepository.findAllAnswersByGameId fails during initial snapshot', async () => {
+  it('rejects stream establishment when answer state cannot be loaded for the initial snapshot', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     gameAnswerRepository.findAllAnswersByGameId.mockRejectedValue(
       new Error('Repository failed'),
     )
 
-    const stream$ = await service.subscribe('game-1', 'host')
-    const resultsPromise = firstValueFrom(stream$.pipe(take(1)))
-
-    const result = await resultsPromise
-    expect(JSON.parse(result.data as any)).toEqual({
-      type: GameEventType.GameHeartbeat,
-    })
+    await expect(service.subscribe('game-1', 'host')).rejects.toThrow(
+      'Repository failed',
+    )
 
     expect(gameAnswerRepository.findAllAnswersByGameId).toHaveBeenCalledWith(
       'game-1',
@@ -574,6 +628,7 @@ describe('GameEventSubscriber', () => {
       expect.stringContaining('Error building initial event for participant'),
       expect.any(String),
     )
+    expect((service as any).connectionCountsByParticipantId.size).toBe(0)
   })
 
   describe('podium enrichment', () => {

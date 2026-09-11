@@ -1,5 +1,6 @@
 import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,13 +8,16 @@ import {
   HttpCode,
   HttpStatus,
   MessageEvent,
+  NotFoundException,
   Post,
+  Query,
   Sse,
 } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiExcludeEndpoint,
   ApiExtraModels,
   ApiForbiddenResponse,
   ApiNoContentResponse,
@@ -221,7 +225,7 @@ export class GameController {
    * Retrieves a Server-Sent Events (SSE) stream of game events for the specified game.
    *
    * The stream includes:
-   * - A best-effort initial snapshot event describing the current game state for the participant.
+   * - An authoritative initial snapshot event describing the current game state for the participant.
    * - Subsequent real-time updates published by the game event system.
    * - Heartbeat events to keep the connection alive and help clients/proxies detect stale connections.
    *
@@ -264,9 +268,31 @@ export class GameController {
   public getEventStream(
     @PrincipalId() participantId: string,
     @RouteGameIdParam() gameId: string,
+    @Query('connectionId') connectionId?: string,
   ): Observable<MessageEvent> {
-    return from(this.gameEventSubscriber.subscribe(gameId, participantId)).pipe(
-      mergeMap((stream) => stream),
+    return from(
+      this.gameEventSubscriber.subscribe(gameId, participantId, connectionId),
+    ).pipe(mergeMap((stream) => stream))
+  }
+
+  @Post('/:gameID/events/interrupt')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiExcludeEndpoint()
+  @AuthorizedGame()
+  @ApiGameIdParam()
+  public interruptEventStream(
+    @PrincipalId() participantId: string,
+    @RouteGameIdParam() gameId: string,
+    @Query('connectionId') connectionId?: string,
+  ): void {
+    if (process.env.NODE_ENV !== 'test') throw new NotFoundException()
+    if (!connectionId)
+      throw new BadRequestException('Connection ID is required')
+
+    this.gameEventSubscriber.closeConnection(
+      gameId,
+      participantId,
+      connectionId,
     )
   }
 

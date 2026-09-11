@@ -16,7 +16,7 @@ export const ConnectionStatus = {
  *
  * Possible values:
  * - `INITIALIZED` – Hook is set up or reconnect has just started.
- * - `CONNECTED` – The SSE connection is open.
+ * - `CONNECTED` – The SSE connection has delivered its authoritative snapshot.
  * - `RECONNECTING` – A transient error occurred; an automatic retry is scheduled.
  * - `RECONNECTING_FAILED` – Retries exhausted; no further attempts will be made.
  */

@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test'
 
 import { createGameThroughPublicApi } from '../support/api/create-game-through-public-api'
 import { GameHostClient } from '../support/api/game-host-client'
+import { interruptActiveGameEventStream } from '../support/browser/interrupt-active-game-event-stream'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures'
 
@@ -128,6 +129,27 @@ test.describe('Game session: player UI with simulated host', () => {
           page.getByText(question.text, { exact: true }),
         ).toBeVisible()
         await expect(page.locator(`[id="0_${correctAnswer}"]`)).toBeVisible()
+
+        await test.step('Recover the player question after a connection interruption', async () => {
+          const replacementStreamResponse = page.waitForResponse(
+            (response) =>
+              response.request().method() === 'GET' &&
+              new URL(response.url()).pathname.endsWith('/events') &&
+              response.status() === 200,
+          )
+          await interruptActiveGameEventStream(page)
+          await expect(
+            page.getByText('Reconnecting', { exact: true }),
+          ).toBeVisible()
+          await replacementStreamResponse
+          await expect(
+            page.getByText('Connected', { exact: true }),
+          ).toBeVisible()
+          await expect(
+            page.getByText(question.text, { exact: true }),
+          ).toBeVisible()
+          await expect(page.locator(`[id="0_${correctAnswer}"]`)).toBeVisible()
+        })
       })
 
       await test.step('Submit the correct answer through the real player UI', async () => {
@@ -170,6 +192,10 @@ test.describe('Game session: player UI with simulated host', () => {
           'opacity',
           '1',
         )
+
+        await page.reload()
+        await expect(page.getByText('Correct', { exact: true })).toBeVisible()
+        await expect(page.getByTestId('score-chip')).toBeVisible()
       })
 
       await test.step('Progress to and verify the final game-over state', async () => {
@@ -189,6 +215,13 @@ test.describe('Game session: player UI with simulated host', () => {
           }),
         ])
 
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
+        await expect(
+          page.getByText('out of 1 players', { exact: true }),
+        ).toBeVisible()
+        await expect(page.locator('#home-button')).toBeVisible()
+
+        await page.reload()
         await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText('out of 1 players', { exact: true }),
