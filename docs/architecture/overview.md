@@ -116,10 +116,21 @@ SSE connections. A game client therefore receives real-time updates from the
 service instance holding its connection, even when the state change was
 handled by another instance.
 
-The service sends an initial participant snapshot when an SSE subscription is
-opened and emits heartbeats while connections are active. The frontend uses
-those heartbeats to keep the long-lived stream healthy; they are not game
-state updates.
+The service builds an authoritative participant-specific snapshot from the
+current game document and transient answer state whenever an SSE subscription
+is opened, including after a client retry or page refresh. The snapshot uses the
+existing `GameEvent` shapes, so it includes the current question and submitted
+answer where applicable, result distributions, scores, leaderboards, podium, or
+completed-game state. Snapshot construction must succeed before the stream is
+considered established; a heartbeat is not a recovery substitute. The frontend
+treats the first non-heartbeat event as the recovery boundary and keeps the
+previous rendered state only while a transient retry is pending.
+
+Heartbeats keep long-lived connections healthy but are not game state updates.
+Active and normally completed sessions can be recovered while the persisted
+game token remains valid. Expired or host-terminated sessions continue to return
+their existing authorization/unavailable behavior and are not made resumable by
+client state.
 
 ## Scope
 

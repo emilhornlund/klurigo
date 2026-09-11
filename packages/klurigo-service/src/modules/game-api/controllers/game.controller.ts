@@ -221,7 +221,7 @@ export class GameController {
    * Retrieves a Server-Sent Events (SSE) stream of game events for the specified game.
    *
    * The stream includes:
-   * - A best-effort initial snapshot event describing the current game state for the participant.
+   * - An authoritative initial snapshot event describing the current game state for the participant.
    * - Subsequent real-time updates published by the game event system.
    * - Heartbeat events to keep the connection alive and help clients/proxies detect stale connections.
    *

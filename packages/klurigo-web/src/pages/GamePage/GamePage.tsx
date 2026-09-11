@@ -75,6 +75,18 @@ const GamePage: FC = () => {
 
   const loadingTimeoutRef = useRef<number | null>(null)
 
+  // A token refresh or game change creates a new authenticated stream. Do not
+  // render the previous session while that stream obtains its snapshot.
+  useEffect(() => {
+    if (loadingTimeoutRef.current !== null) {
+      clearTimeout(loadingTimeoutRef.current)
+      loadingTimeoutRef.current = null
+    }
+    lastNonLoadingEventRef.current = undefined
+    setLastNonLoadingEvent(undefined)
+    setIsLoading(false)
+  }, [gameID, gameToken, participantId, participantType])
+
   useEffect(() => {
     if (!event) return
 
@@ -102,6 +114,18 @@ const GamePage: FC = () => {
       setLastNonLoadingEvent(event)
     }
   }, [event])
+
+  useEffect(() => {
+    if (connectionStatus !== ConnectionStatus.RECONNECTING_FAILED) return
+
+    if (loadingTimeoutRef.current !== null) {
+      clearTimeout(loadingTimeoutRef.current)
+      loadingTimeoutRef.current = null
+    }
+    lastNonLoadingEventRef.current = undefined
+    setLastNonLoadingEvent(undefined)
+    setIsLoading(false)
+  }, [connectionStatus])
 
   const statusNotifyTimeoutRef = useRef<number | null>(null)
   const lastNotifiedStatusRef = useRef<ConnectionStatus | null>(null)

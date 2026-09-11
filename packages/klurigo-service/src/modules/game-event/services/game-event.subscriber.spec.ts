@@ -521,51 +521,34 @@ describe('GameEventSubscriber', () => {
     )
   })
 
-  it('subscribe tolerates build* error and still relays future events', async () => {
+  it('rejects stream establishment when the authoritative snapshot cannot be built', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     ;(buildHostGameEvent as jest.Mock).mockImplementation(() => {
       throw new Error('boom in builder')
     })
 
-    const stream$ = await service.subscribe('game-1', 'host')
+    await expect(service.subscribe('game-1', 'host')).rejects.toThrow(
+      'boom in builder',
+    )
 
-    // Collect next two events we emit ourselves (no initial because builder throws)
-    const resultsPromise = firstValueFrom(stream$.pipe(take(3), toArray()))
-
-    eventEmitter.emit('event', {
-      gameId: 'game-1',
-      playerId: 'host',
-      event: { type: 'A' },
-    })
-    eventEmitter.emit('event', {
-      gameId: 'game-1',
-      event: { type: 'B' },
-    })
-
-    const results = await resultsPromise
-    expect(results.map((e) => JSON.parse(e.data as any))).toEqual([
-      { type: GameEventType.GameHeartbeat },
-      { type: 'A' },
-      { type: 'B' },
-    ])
-    expect(logger.warn).toHaveBeenCalled()
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining('Error building initial event for participant'),
+      expect.any(String),
+    )
+    expect((service as any).connectionCountsByParticipantId.size).toBe(0)
   })
 
-  it('subscribe falls back to heartbeat when gameAnswerRepository.findAllAnswersByGameId fails during initial snapshot', async () => {
+  it('rejects stream establishment when answer state cannot be loaded for the initial snapshot', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
     gameAnswerRepository.findAllAnswersByGameId.mockRejectedValue(
       new Error('Repository failed'),
     )
 
-    const stream$ = await service.subscribe('game-1', 'host')
-    const resultsPromise = firstValueFrom(stream$.pipe(take(1)))
-
-    const result = await resultsPromise
-    expect(JSON.parse(result.data as any)).toEqual({
-      type: GameEventType.GameHeartbeat,
-    })
+    await expect(service.subscribe('game-1', 'host')).rejects.toThrow(
+      'Repository failed',
+    )
 
     expect(gameAnswerRepository.findAllAnswersByGameId).toHaveBeenCalledWith(
       'game-1',
@@ -574,6 +557,7 @@ describe('GameEventSubscriber', () => {
       expect.stringContaining('Error building initial event for participant'),
       expect.any(String),
     )
+    expect((service as any).connectionCountsByParticipantId.size).toBe(0)
   })
 
   describe('podium enrichment', () => {

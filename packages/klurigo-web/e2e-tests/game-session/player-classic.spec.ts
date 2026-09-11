@@ -128,6 +128,18 @@ test.describe('Game session: player UI with simulated host', () => {
           page.getByText(question.text, { exact: true }),
         ).toBeVisible()
         await expect(page.locator(`[id="0_${correctAnswer}"]`)).toBeVisible()
+
+        await test.step('Recover the player question after a connection interruption', async () => {
+          await page.context().setOffline(true)
+          await expect(
+            page.getByText('Reconnecting', { exact: true }),
+          ).toBeVisible()
+          await page.context().setOffline(false)
+          await expect(
+            page.getByText(question.text, { exact: true }),
+          ).toBeVisible()
+          await expect(page.locator(`[id="0_${correctAnswer}"]`)).toBeVisible()
+        })
       })
 
       await test.step('Submit the correct answer through the real player UI', async () => {
@@ -170,6 +182,10 @@ test.describe('Game session: player UI with simulated host', () => {
           'opacity',
           '1',
         )
+
+        await page.reload()
+        await expect(page.getByText('Correct', { exact: true })).toBeVisible()
+        await expect(page.getByTestId('score-chip')).toBeVisible()
       })
 
       await test.step('Progress to and verify the final game-over state', async () => {
@@ -189,6 +205,13 @@ test.describe('Game session: player UI with simulated host', () => {
           }),
         ])
 
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
+        await expect(
+          page.getByText('out of 1 players', { exact: true }),
+        ).toBeVisible()
+        await expect(page.locator('#home-button')).toBeVisible()
+
+        await page.reload()
         await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText('out of 1 players', { exact: true }),

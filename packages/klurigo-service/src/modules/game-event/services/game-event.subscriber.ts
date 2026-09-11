@@ -284,8 +284,9 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    *
    * Behavior:
    * - Validates that the game exists and that the participant is part of the game.
-   * - Emits a best-effort initial snapshot event describing the current game state for the subscriber.
-   *   If snapshot building fails, a heartbeat event is emitted immediately so the client can confirm the stream is alive.
+   * - Emits an initial authoritative snapshot event describing the current game state for the subscriber.
+   *   Snapshot construction errors reject stream establishment so clients do not treat an incomplete
+   *   recovery as a connected session.
    * - Relays subsequent events matching both the game and participant (or game-scoped broadcast events).
    * - Manages per-participant connection reference counting to support multiple concurrent connections (e.g. multiple tabs).
    *
@@ -314,6 +315,25 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       throw new PlayerNotFoundException(participantId)
     }
 
+    let initialEvent: DistributedEvent
+    try {
+      initialEvent = {
+        gameId,
+        playerId: participantId,
+        event: await this.gameParticipantEventBuilder.buildParticipantEvent(
+          document,
+          participant,
+        ),
+      }
+    } catch (error) {
+      const { message, stack } = error as Error
+      this.logger.warn(
+        `Error building initial event for participant ${participantId}: ${message}`,
+        stack,
+      )
+      throw error
+    }
+
     this.incrementConnections(participantId)
     this.startHeartbeatIfNeeded()
 
@@ -321,33 +341,6 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       this.eventEmitter,
       LOCAL_EVENT_EMITTER_CHANNEL,
     ) as Observable<LocalEvent>
-
-    // Build initial snapshot (best-effort). If it fails, at least send a heartbeat immediately
-    // so clients know the stream is alive.
-    const initialEvent = await (async (): Promise<DistributedEvent> => {
-      try {
-        return {
-          gameId,
-          playerId: participantId,
-          event: await this.gameParticipantEventBuilder.buildParticipantEvent(
-            document,
-            participant,
-          ),
-        }
-      } catch (error) {
-        const { message, stack } = error as Error
-        this.logger.warn(
-          `Error building initial event for participant ${participantId}: ${message}`,
-          stack,
-        )
-
-        return {
-          gameId,
-          playerId: participantId,
-          event: { type: GameEventType.GameHeartbeat },
-        }
-      }
-    })()
 
     return concat(of(initialEvent), source).pipe(
       filter(

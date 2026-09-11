@@ -656,6 +656,62 @@ describe('GamePage', () => {
     expect(screen.getByText('Correct')).toBeInTheDocument()
   })
 
+  it('replaces stale rendered state when a recovered snapshot arrives', async () => {
+    const staleResult = {
+      type: GameEventType.GameResultPlayer,
+      game: { mode: GameMode.Classic },
+      player: {
+        nickname: 'TestPlayer',
+        score: { correct: true, last: 100, total: 100, position: 1, streak: 1 },
+      },
+      pagination: { current: 1, total: 10 },
+    }
+    const recoveredResult = {
+      ...staleResult,
+      player: {
+        ...staleResult.player,
+        score: { ...staleResult.player.score, correct: false, last: 0 },
+      },
+    }
+
+    h.control.event = staleResult
+    const { router } = renderWithRouter()
+    expect(screen.getByText('Correct')).toBeInTheDocument()
+
+    h.control.event = recoveredResult
+    await act(async () => {
+      await pokeRouter(router)
+    })
+
+    expect(screen.getByText('Incorrect')).toBeInTheDocument()
+    expect(screen.queryByText('Correct')).not.toBeInTheDocument()
+  })
+
+  it('clears the rendered state when stream recovery fails', async () => {
+    h.control.status = 'CONNECTED'
+    h.control.event = {
+      type: GameEventType.GameResultPlayer,
+      game: { mode: GameMode.Classic },
+      player: {
+        nickname: 'TestPlayer',
+        score: { correct: true, last: 100, total: 100, position: 1, streak: 1 },
+      },
+      pagination: { current: 1, total: 10 },
+    }
+
+    const { router } = renderWithRouter()
+    expect(screen.getByText('Correct')).toBeInTheDocument()
+
+    h.control.event = null
+    h.control.status = 'RECONNECTING_FAILED'
+    await act(async () => {
+      await pokeRouter(router)
+    })
+
+    expect(screen.queryByText('Correct')).not.toBeInTheDocument()
+    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+  })
+
   it('renders HostGameBeginState for GameBeginHost event', () => {
     h.control.event = {
       type: GameEventType.GameBeginHost,

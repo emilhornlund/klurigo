@@ -130,6 +130,17 @@ test.describe('Game session: host UI with simulated players', () => {
           { value: correctAnswer },
           { value: incorrectAnswer },
         ])
+
+        await test.step('Recover the host question after a connection interruption', async () => {
+          await page.context().setOffline(true)
+          await expect(
+            page.getByText('Reconnecting', { exact: true }),
+          ).toBeVisible()
+          await page.context().setOffline(false)
+          await expect(
+            page.getByText(question.text, { exact: true }),
+          ).toBeVisible()
+        })
       })
 
       await test.step('Submit the deterministic answer and verify the result', async () => {
@@ -163,6 +174,14 @@ test.describe('Game session: host UI with simulated players', () => {
         const questionResults = page.getByTestId('question-results')
         await expect(questionResults).toBeVisible()
         await expect(questionResults).toContainText(correctAnswer)
+
+        await test.step('Refresh the host on the authoritative result snapshot', async () => {
+          await page.reload()
+          await expect(page.getByTestId('question-results')).toBeVisible()
+          await expect(page.getByTestId('question-results')).toContainText(
+            correctAnswer,
+          )
+        })
       })
 
       await test.step('Progress to and verify the final podium', async () => {

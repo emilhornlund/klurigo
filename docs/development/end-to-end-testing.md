@@ -118,6 +118,25 @@ result rendering. The Puzzle fixture uses distinct seeded values; its scenario
 verifies randomized delivery, canonical and reversed order submissions, and
 order-sensitive result rendering.
 
+## Game Session Recovery
+
+GameSession scenarios should exercise recovery through the real authenticated
+SSE stream rather than replaying browser-side events. A newly opened or retried
+stream first receives the current participant-specific snapshot, so refresh and
+temporary connection interruption are supported during the lobby, question,
+question-result, host leaderboard, and normal completed-game states. Player
+snapshots include an already submitted answer when the backend has one; host
+snapshots include current submission counts and rankings.
+
+Use Playwright's deterministic browser connection controls for interruption and
+`page.reload()` while the persisted Game-scope token is still valid. Assert the
+visible state after recovery and then continue the same game progression. Keep
+these checks in the existing serial GameSession files and project isolation.
+The frontend displays reconnecting and reconnect-failed diagnostics while a
+retry is pending or exhausted. Expired, unavailable, and host-terminated games
+remain negative cases: they must follow existing authorization, quit, or
+unavailable-session handling rather than resume from stale browser state.
+
 ## CI
 
 The reusable workflow `.github/workflows/build.yml` accepts a required boolean

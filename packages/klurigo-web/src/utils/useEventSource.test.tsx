@@ -83,11 +83,19 @@ describe('useEventSource', () => {
     expect(instances().length).toBe(0)
   })
 
-  it('opens EventSource and moves to CONNECTED on onopen', () => {
+  it('opens EventSource and moves to CONNECTED after the authoritative snapshot', () => {
     const { result } = renderHook(() => useEventSource('g1', 't1'))
     expect(instances().length).toBe(1)
 
     act(() => last().onopen?.(new Event('open')))
+
+    expect(result.current[1]).toBe(ConnectionStatus.INITIALIZED)
+
+    act(() => {
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'GAME_LOBBY_PLAYER' }),
+      } as MessageEvent)
+    })
 
     expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
     expect(last().url).toBe('http://klurigo-service.local/games/g1/events')
@@ -151,7 +159,71 @@ describe('useEventSource', () => {
     expect(instances().length).toBe(3)
   })
 
-  it('does not attempt reconnect when readyState is CLOSED', () => {
+  it('keeps reconnecting until the replacement stream delivers a snapshot', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    const first = last()
+
+    act(() => first.onopen?.(new Event('open')))
+    act(() => {
+      first.onmessage?.({
+        data: JSON.stringify({ type: 'OLD_STATE' }),
+      } as MessageEvent)
+    })
+    expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
+
+    act(() => first.onerror?.(new Event('error')))
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+
+    act(() => vi.advanceTimersByTime(1000))
+    const replacement = last()
+    act(() => replacement.onopen?.(new Event('open')))
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+
+    act(() => {
+      replacement.onmessage?.({
+        data: JSON.stringify({ type: 'AUTHORITATIVE_STATE' }),
+      } as MessageEvent)
+    })
+
+    expect(result.current[0]).toEqual({ type: 'AUTHORITATIVE_STATE' })
+    expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
+  })
+
+  it('reports a terminal failure when the stream is closed before reconnecting', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    const current = last()
+
+    act(() => {
+      current.onmessage?.({
+        data: JSON.stringify({ type: 'STALE_STATE' }),
+      } as MessageEvent)
+    })
+    expect(result.current[0]).toEqual({ type: 'STALE_STATE' })
+
+    ;(current as { readyState: number }).readyState = (
+      ESP as unknown as { EventSourcePolyfill: { CLOSED: number } }
+    ).EventSourcePolyfill.CLOSED
+
+    act(() => {
+      current.onerror?.(Object.assign(new Event('error'), { status: 401 }))
+    })
+    act(() => vi.runAllTimers())
+
+    expect(instances().length).toBe(1)
+    expect(result.current[0]).toBeUndefined()
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING_FAILED)
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Game event stream closed before recovery could complete.',
+    )
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('retries a closed stream after a transient snapshot failure', () => {
     const { result } = renderHook(() => useEventSource('g1', 't1'))
     const current = last()
 
@@ -159,11 +231,15 @@ describe('useEventSource', () => {
       ESP as unknown as { EventSourcePolyfill: { CLOSED: number } }
     ).EventSourcePolyfill.CLOSED
 
-    act(() => current.onerror?.(new Event('error')))
-    act(() => vi.runAllTimers())
+    act(() => {
+      current.onerror?.(Object.assign(new Event('error'), { status: 500 }))
+    })
 
-    expect(instances().length).toBe(1)
-    expect(result.current[1]).toBe(ConnectionStatus.INITIALIZED)
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+
+    act(() => vi.advanceTimersByTime(1000))
+
+    expect(instances().length).toBe(2)
   })
 
   it('stops after MAX_RETRIES and sets RECONNECTING_FAILED', () => {
@@ -235,6 +311,25 @@ describe('useEventSource', () => {
 
     rerender({ gid: 'g2', tkn: 't2' })
     expect(instances().length).toBe(3)
+  })
+
+  it('clears the event when the authenticated session changes', () => {
+    const { result, rerender } = renderHook(
+      ({ gid, tkn }) => useEventSource(gid, tkn),
+      { initialProps: { gid: 'g1', tkn: 't1' } },
+    )
+
+    act(() => {
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'OLD_SESSION_STATE' }),
+      } as MessageEvent)
+    })
+    expect(result.current[0]).toEqual({ type: 'OLD_SESSION_STATE' })
+
+    rerender({ gid: 'g2', tkn: 't2' })
+
+    expect(result.current[0]).toBeUndefined()
+    expect(instances().length).toBe(2)
   })
 
   it('closes EventSource on pagehide and does not reconnect on subsequent errors', () => {
@@ -318,15 +413,28 @@ describe('useEventSource', () => {
   it('ignores events from stale instances after reconnect', () => {
     const { result } = renderHook(() => useEventSource('g1', 't1'))
     const first = last()
+    const staleMessage = first.onmessage
 
     act(() => first.onerror?.(new Event('error')))
     act(() => vi.advanceTimersByTime(1000))
     const second = last()
 
+    act(() => {
+      staleMessage?.({
+        data: JSON.stringify({ type: 'STALE_STATE' }),
+      } as MessageEvent)
+    })
+    expect(result.current[0]).toBeUndefined()
+
     act(() => first.onopen?.(new Event('open')))
     expect(result.current[1]).not.toBe(ConnectionStatus.CONNECTED)
 
     act(() => second.onopen?.(new Event('open')))
+    act(() => {
+      second.onmessage?.({
+        data: JSON.stringify({ type: 'CURRENT_STATE' }),
+      } as MessageEvent)
+    })
     expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
   })
 
