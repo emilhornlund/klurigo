@@ -126,6 +126,10 @@ considered established; a heartbeat is not a recovery substitute. The frontend
 treats the first non-heartbeat event as the recovery boundary and keeps the
 previous rendered state only while a transient retry is pending.
 
+Each persisted game update increments a game revision. The revision is carried
+in the SSE event ID and Redis event metadata, allowing subscribers to discard
+duplicate or delayed state without changing the existing event payload shapes.
+
 Heartbeats keep long-lived connections healthy but are not game state updates.
 Active and normally completed sessions can be recovered while the persisted
 game token remains valid. Expired or host-terminated sessions continue to return

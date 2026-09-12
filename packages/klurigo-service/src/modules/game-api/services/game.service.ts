@@ -370,6 +370,7 @@ export class GameService {
         gameId,
         participantToRemove,
         buildGameQuitEvent(savedGameDocument.status),
+        savedGameDocument.version,
       )
     }
   }

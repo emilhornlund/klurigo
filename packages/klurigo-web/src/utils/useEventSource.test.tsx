@@ -168,6 +168,22 @@ describe('useEventSource', () => {
     expect(instances().length).toBe(3)
   })
 
+  it('reuses the connection ID across retries', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    const first = last()
+    const firstConnectionId = new URL(first.url).searchParams.get(
+      'connectionId',
+    )
+
+    act(() => first.onerror?.(new Event('error')))
+    act(() => vi.advanceTimersByTime(1000))
+
+    expect(new URL(last().url).searchParams.get('connectionId')).toBe(
+      firstConnectionId,
+    )
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+  })
+
   it('keeps reconnecting until the replacement stream delivers a snapshot', () => {
     const { result } = renderHook(() => useEventSource('g1', 't1'))
     const first = last()
@@ -481,5 +497,40 @@ describe('useEventSource', () => {
     })
 
     expect(result.current[0]).toBe(firstEventRef)
+  })
+
+  it('ignores duplicate and stale SSE revisions', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+    act(() => last().onopen?.(new Event('open')))
+
+    act(() => {
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'CURRENT', value: 2 }),
+        lastEventId: '2',
+      } as MessageEvent)
+    })
+    const currentEventRef = result.current[0]
+
+    act(() => {
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'STALE', value: 1 }),
+        lastEventId: '1',
+      } as MessageEvent)
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'DUPLICATE', value: 2 }),
+        lastEventId: '2',
+      } as MessageEvent)
+    })
+
+    expect(result.current[0]).toBe(currentEventRef)
+
+    act(() => {
+      last().onmessage?.({
+        data: JSON.stringify({ type: 'NEWER', value: 3 }),
+        lastEventId: '3',
+      } as MessageEvent)
+    })
+
+    expect(result.current[0]).toEqual({ type: 'NEWER', value: 3 })
   })
 })

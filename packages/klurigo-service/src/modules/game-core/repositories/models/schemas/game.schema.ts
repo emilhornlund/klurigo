@@ -108,6 +108,14 @@ export class Game {
   @Prop({ type: Date, required: true })
   updated: Date
 
+  /**
+   * Monotonically increases for every persisted game state change that can
+   * produce an event. Unlike `updated`, this is not affected by clock
+   * resolution and can therefore order events reliably.
+   */
+  @Prop({ type: Number, required: true, default: 0 })
+  version?: number
+
   @Prop({ type: Date, required: true })
   created: Date
 

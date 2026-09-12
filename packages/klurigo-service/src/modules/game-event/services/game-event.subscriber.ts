@@ -18,6 +18,8 @@ import { InjectRedis } from '@nestjs-modules/ioredis'
 import type { Redis } from 'ioredis'
 import {
   concat,
+  defer,
+  EMPTY,
   finalize,
   fromEvent,
   Observable,
@@ -44,6 +46,33 @@ type LocalHeartbeatEvent = {
 
 type LocalEvent = DistributedEvent | LocalHeartbeatEvent
 
+type Connection = {
+  close: () => void
+}
+
+const isDistributedEvent = (value: unknown): value is DistributedEvent => {
+  if (typeof value !== 'object' || value === null) return false
+
+  const candidate = value as Record<string, unknown>
+  const event = candidate.event
+
+  return (
+    typeof candidate.gameId === 'string' &&
+    typeof event === 'object' &&
+    event !== null &&
+    typeof (event as Record<string, unknown>).type === 'string' &&
+    (candidate.playerId === undefined ||
+      typeof candidate.playerId === 'string') &&
+    (candidate.version === undefined ||
+      (typeof candidate.version === 'number' &&
+        Number.isSafeInteger(candidate.version) &&
+        candidate.version >= 0))
+  )
+}
+
+const getEventVersion = (event: LocalEvent): number | undefined =>
+  'version' in event ? event.version : undefined
+
 /**
  * GameEventSubscriber bridges distributed game events to local SSE connections.
  *
@@ -68,10 +97,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * Needed because the same participant can have multiple concurrent connections (tabs, refresh race, etc).
    */
   private readonly connectionCountsByParticipantId = new Map<string, number>()
-  private readonly connectionClosersByConnection = new Map<
-    string,
-    Subject<void>
-  >()
+  private readonly connectionClosersByConnection = new Map<string, Connection>()
 
   /**
    * Creates a new GameEventSubscriber.
@@ -104,14 +130,8 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     message: string,
   ): void => {
     try {
-      const parsed = JSON.parse(message) as DistributedEvent
-      if (
-        !parsed ||
-        typeof parsed !== 'object' ||
-        !('event' in parsed) ||
-        !('gameId' in parsed) ||
-        typeof parsed.gameId !== 'string'
-      ) {
+      const parsed: unknown = JSON.parse(message)
+      if (!isDistributedEvent(parsed)) {
         this.logger.warn(
           'Ignoring malformed distributed event (missing gameId or event property).',
         )
@@ -172,6 +192,9 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * or active heartbeat intervals.
    */
   async onModuleDestroy(): Promise<void> {
+    for (const connection of this.connectionClosersByConnection.values()) {
+      connection.close()
+    }
     this.stopHeartbeatIfRunning()
 
     let shutdownError: unknown
@@ -306,7 +329,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   ): void {
     this.connectionClosersByConnection
       .get(this.connectionKey(gameId, participantId, connectionId))
-      ?.next()
+      ?.close()
   }
 
   private connectionKey(
@@ -343,16 +366,19 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     participantId: string,
     connectionId: string = randomUUID(),
   ): Promise<Observable<MessageEvent>> {
-    this.incrementConnections(participantId)
-    this.startHeartbeatIfNeeded()
-
-    const closeSignal = new Subject<void>()
     const connectionKey = this.connectionKey(
       gameId,
       participantId,
       connectionId,
     )
-    this.connectionClosersByConnection.set(connectionKey, closeSignal)
+    // A reconnect that reuses an ID must replace, rather than stack on top of,
+    // the existing stream. This also makes cleanup safe if both streams race.
+    this.connectionClosersByConnection.get(connectionKey)?.close()
+
+    this.incrementConnections(participantId)
+    this.startHeartbeatIfNeeded()
+
+    const closeSignal = new Subject<void>()
 
     const source = fromEvent(
       this.eventEmitter,
@@ -375,17 +401,33 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
         next: (event) => bufferedEvents.next(event),
         complete: () => bufferedEvents.complete(),
       })
+    let isCleanedUp = false
 
     const cleanup = (): void => {
-      sourceSubscription.unsubscribe()
+      if (isCleanedUp) return
+      isCleanedUp = true
+
+      sourceSubscription?.unsubscribe()
       bufferedEvents.complete()
       closeSignal.complete()
-      this.connectionClosersByConnection.delete(connectionKey)
+      if (
+        this.connectionClosersByConnection.get(connectionKey) === connection
+      ) {
+        this.connectionClosersByConnection.delete(connectionKey)
+      }
       this.decrementConnections(participantId)
       if (this.getTotalConnectionCount() === 0) {
         this.stopHeartbeatIfRunning()
       }
     }
+
+    const connection: Connection = {
+      close: () => {
+        closeSignal.next()
+        cleanup()
+      },
+    }
+    this.connectionClosersByConnection.set(connectionKey, connection)
 
     try {
       const document =
@@ -405,16 +447,35 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       const initialEvent: DistributedEvent = {
         gameId,
         playerId: participantId,
+        version: document.version,
         event: await this.gameParticipantEventBuilder.buildParticipantEvent(
           document,
           participant,
         ),
       }
 
-      return concat(of(initialEvent), bufferedEvents).pipe(
-        map((event) => ({ data: JSON.stringify(event.event) })),
-        finalize(cleanup),
-      )
+      return defer(() => {
+        if (isCleanedUp) return EMPTY
+
+        let lastVersion = -1
+
+        return concat(of(initialEvent), bufferedEvents).pipe(
+          filter((event) => {
+            const version = getEventVersion(event)
+            if (version === undefined) return true
+            if (version <= lastVersion) return false
+
+            lastVersion = version
+            return true
+          }),
+          map((event) => ({
+            data: JSON.stringify(event.event),
+            ...(getEventVersion(event) !== undefined
+              ? { id: String(getEventVersion(event)) }
+              : {}),
+          })),
+        )
+      }).pipe(finalize(cleanup))
     } catch (error) {
       const { message, stack } = error as Error
       this.logger.warn(

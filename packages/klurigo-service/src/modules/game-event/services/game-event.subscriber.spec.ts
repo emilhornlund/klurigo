@@ -217,6 +217,22 @@ describe('GameEventSubscriber', () => {
     )
   })
 
+  it('onModuleInit ignores malformed events with a null payload', async () => {
+    await service.onModuleInit()
+
+    const onMessage = redisSubscriber.on.mock.calls.find(
+      (c) => c[0] === 'message',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    )?.[1] as Function
+
+    expect(() =>
+      onMessage('events', JSON.stringify({ gameId: 'game-1', event: null })),
+    ).not.toThrow()
+    expect(logger.warn).toHaveBeenCalledWith(
+      'Ignoring malformed distributed event (missing gameId or event property).',
+    )
+  })
+
   it('onModuleInit logs error and rethrows when Redis subscribe fails', async () => {
     redisSubscriber.subscribe.mockRejectedValueOnce(new Error('subscribe down'))
 
@@ -326,6 +342,42 @@ describe('GameEventSubscriber', () => {
     secondSub.unsubscribe()
   })
 
+  it('replaces a stream when its connection ID is reused', async () => {
+    const doc = buildGameDoc({ version: 2 })
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'player' })
+
+    const firstStream$ = await service.subscribe('game-1', 'p1', 'reused')
+    const firstReceived: MessageEvent[] = []
+    const firstSub = firstStream$.subscribe((event) =>
+      firstReceived.push(event),
+    )
+
+    const secondStream$ = await service.subscribe('game-1', 'p1', 'reused')
+    const secondReceived: MessageEvent[] = []
+    const secondSub = secondStream$.subscribe((event) =>
+      secondReceived.push(event),
+    )
+
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      version: 3,
+      event: { type: 'CURRENT' },
+    })
+
+    expect(
+      firstReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }])
+    expect(
+      secondReceived.map((event) => JSON.parse(event.data as string)),
+    ).toEqual([{ initial: 'player' }, { type: 'CURRENT' }])
+    expect((service as any).connectionCountsByParticipantId.get('p1')).toBe(1)
+
+    firstSub.unsubscribe()
+    secondSub.unsubscribe()
+  })
+
   it('does not lose events published while building the initial snapshot', async () => {
     const doc = buildGameDoc()
     gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
@@ -358,6 +410,40 @@ describe('GameEventSubscriber', () => {
       { type: 'DURING_SNAPSHOT' },
     ])
     sub.unsubscribe()
+  })
+
+  it('does not relay duplicate or stale versions after the initial snapshot', async () => {
+    const doc = buildGameDoc({ version: 2 })
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: 'v2' })
+
+    const stream$ = await service.subscribe('game-1', 'p1')
+
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      version: 1,
+      event: { type: 'STALE' },
+    })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      version: 2,
+      event: { type: 'DUPLICATE_VERSION' },
+    })
+    eventEmitter.emit('event', {
+      gameId: 'game-1',
+      playerId: 'p1',
+      version: 3,
+      event: { type: 'CURRENT' },
+    })
+
+    const received = await firstValueFrom(stream$.pipe(take(2), toArray()))
+
+    expect(received).toEqual([
+      { data: JSON.stringify({ initial: 'v2' }), id: '2' },
+      { data: JSON.stringify({ type: 'CURRENT' }), id: '3' },
+    ])
   })
 
   it('onModuleDestroy unsubscribes, quits, and removes Redis listeners', async () => {
