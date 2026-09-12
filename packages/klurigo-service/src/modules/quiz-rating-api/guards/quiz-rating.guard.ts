@@ -20,7 +20,7 @@ import { User } from '../../user/repositories'
  *
  * A user is allowed to rate a quiz only if:
  * - they are not the owner of the quiz, and
- * - they have participated in at least one completed game that used that quiz.
+ * - they have participated in at least one completed game or active podium game that used that quiz.
  */
 @Injectable()
 export class QuizRatingGuard implements CanActivate {
@@ -28,8 +28,8 @@ export class QuizRatingGuard implements CanActivate {
    * Creates an instance of QuizRatingGuard.
    *
    * @param quizRepository - Repository used to load the requested quiz and ensure the authenticated user is not the owner.
-   * @param gameRepository - Repository used to verify whether the authenticated user has completed at least one
-   * game for the requested quiz.
+   * @param gameRepository - Repository used to verify whether the authenticated user has a rateable game for the
+   * requested quiz.
    *
    * @constructor
    */
@@ -45,7 +45,7 @@ export class QuizRatingGuard implements CanActivate {
    * - the request is authenticated and contains a user id
    * - the `quizId` route parameter is present
    * - the authenticated user is not the owner of the quiz
-   * - the authenticated user has participated in at least one completed game for the given quiz
+   * - the authenticated user has participated in at least one completed game or active podium game for the given quiz
    *
    * @param context - The execution context for the incoming request.
    *
@@ -53,7 +53,7 @@ export class QuizRatingGuard implements CanActivate {
    *
    * @throws UnauthorizedException If the request is missing an authenticated user id.
    * @throws BadRequestException If the `quizId` route parameter is missing.
-   * @throws ForbiddenException If the authenticated user is the quiz owner or has not participated in any completed games for the quiz.
+   * @throws ForbiddenException If the authenticated user is the quiz owner or has not participated in any rateable games for the quiz.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context
@@ -76,7 +76,7 @@ export class QuizRatingGuard implements CanActivate {
     }
 
     const hasGames =
-      await this.gameRepository.hasCompletedGamesByQuizIdAndParticipantId(
+      await this.gameRepository.hasRateableGamesByQuizIdAndParticipantId(
         quizId,
         request.user._id,
       )

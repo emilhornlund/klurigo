@@ -97,7 +97,7 @@ describe('GameRepository.findGameByIDWithStatusesOrThrow', () => {
   })
 })
 
-describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
+describe('GameRepository.hasRateableGamesByQuizIdAndParticipantId', () => {
   let repository: GameRepository
   let existsMock: jest.MockedFunction<
     (filter: QueryFilter<Game>) => Promise<boolean>
@@ -119,14 +119,17 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     existsMock.mockResolvedValueOnce(true)
 
     await expect(
-      repository.hasCompletedGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
+      repository.hasRateableGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
     ).resolves.toBe(true)
 
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
-      status: { $in: [GameStatus.Completed] },
       quiz: 'quiz-1',
       'participants.participantId': 'user-1',
+      $or: [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ],
     })
   })
 
@@ -134,14 +137,17 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     existsMock.mockResolvedValueOnce(false)
 
     await expect(
-      repository.hasCompletedGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
+      repository.hasRateableGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
     ).resolves.toBe(false)
 
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
-      status: { $in: [GameStatus.Completed] },
       quiz: 'quiz-1',
       'participants.participantId': 'user-1',
+      $or: [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ],
     })
   })
 
@@ -149,14 +155,17 @@ describe('GameRepository.hasCompletedGamesByQuizIdAndParticipantId', () => {
     existsMock.mockRejectedValueOnce(new Error('db failed'))
 
     await expect(
-      repository.hasCompletedGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
+      repository.hasRateableGamesByQuizIdAndParticipantId('quiz-1', 'user-1'),
     ).rejects.toThrow('db failed')
 
     expect(existsMock).toHaveBeenCalledTimes(1)
     expect(existsMock).toHaveBeenCalledWith({
-      status: { $in: [GameStatus.Completed] },
       quiz: 'quiz-1',
       'participants.participantId': 'user-1',
+      $or: [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ],
     })
   })
 })

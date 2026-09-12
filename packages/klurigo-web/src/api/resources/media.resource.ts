@@ -62,9 +62,16 @@ export const createMediaResource = (
   const searchPhotos = (
     search?: string,
   ): Promise<PaginatedMediaPhotoSearchDto> =>
-    api.apiGet<PaginatedMediaPhotoSearchDto>(
-      `/media/photos${parseQueryParams({ search, offset: 0, limit: 50 })}`,
-    )
+    api
+      .apiGet<PaginatedMediaPhotoSearchDto>(
+        `/media/photos${parseQueryParams({ search, offset: 0, limit: 50 })}`,
+      )
+      .catch((error) => {
+        deps.notifyError(
+          'We couldn’t search for images right now. Please try again.',
+        )
+        throw error
+      })
 
   /**
    * Uploads an image file and reports progress as a percentage.
@@ -104,7 +111,12 @@ export const createMediaResource = (
    * @returns A promise that resolves when the uploaded photo has been successfully deleted.
    */
   const deleteUploadedImage = (photoId: string): Promise<void> =>
-    api.apiDelete<void>(`/media/uploads/photos/${photoId}`)
+    api.apiDelete<void>(`/media/uploads/photos/${photoId}`).catch((error) => {
+      deps.notifyError(
+        'We couldn’t delete that image right now. Please try again.',
+      )
+      throw error
+    })
 
   return {
     searchPhotos,

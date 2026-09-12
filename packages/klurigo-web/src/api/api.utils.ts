@@ -1,7 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 
 import config from '../config'
-import { notifyError } from '../utils/notification'
 
 /**
  * Represents the structure of a POST body for API requests.
@@ -47,7 +46,7 @@ export const resolveUrl = (path: string): string => {
 }
 
 /**
- * Parses an API response and handles errors if the response indicates a failure.
+ * Parses an API response and throws an error if the response indicates a failure.
  *
  * @template T - The expected type of the parsed JSON response.
  * @param response - The response object from the fetch call.
@@ -64,8 +63,7 @@ export const parseResponseAndHandleError = async <T extends object | void>(
   } else {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { message } = (await response.json()) as Record<string, any>
-    notifyError(message ?? 'Unknown error')
-    throw new ApiError(message, response.status)
+    throw new ApiError(message ?? 'Unknown error', response.status)
   }
 }
 

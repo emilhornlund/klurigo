@@ -13,6 +13,8 @@ import {
   createMockGameDocument,
   createMockGameHostParticipantDocument,
   createMockGamePlayerParticipantDocument,
+  createMockLobbyTaskDocument,
+  createMockPodiumTaskDocument,
 } from '../../../../test-utils/data'
 import {
   cleanupTestApp,
@@ -58,6 +60,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
     let gameParticipantPlayerUserAccessToken: string
 
     let gameParticipantHostUserAndQuizOwnerAccessToken: string
+    let gameParticipantQuizOwnerUser: User
 
     let quiz: Quiz
 
@@ -86,6 +89,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
         app,
         buildMockTertiaryUser(),
       )
+      gameParticipantQuizOwnerUser = tertiaryAuthenticatedUser.user
       gameParticipantHostUserAndQuizOwnerAccessToken =
         tertiaryAuthenticatedUser.accessToken
 
@@ -126,6 +130,82 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
           status: GameStatus.Completed,
         }),
       )
+    })
+
+    it('should create a rating for an active game on the podium task', async () => {
+      const activeQuiz = await quizModel.create(
+        createMockClassicQuiz({
+          _id: uuidv4(),
+          owner: gameParticipantQuizOwnerUser,
+        }),
+      )
+      const activeGame = await gameModel.create(
+        createMockGameDocument({
+          _id: uuidv4(),
+          quiz: activeQuiz,
+          status: GameStatus.Active,
+          currentTask: createMockPodiumTaskDocument({ status: 'active' }),
+          participants: [
+            createMockGamePlayerParticipantDocument({
+              participantId: gameParticipantPlayerUser._id,
+              nickname: gameParticipantPlayerUser.defaultNickname,
+            }),
+          ],
+        }),
+      )
+
+      await supertest(app.getHttpServer())
+        .put(`/api/profile/quizzes/${activeQuiz._id}/ratings`)
+        .set({
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
+        })
+        .send({ stars, comment })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            quizId: activeQuiz._id,
+            stars,
+            comment,
+          })
+        })
+
+      expect(activeGame.status).toBe(GameStatus.Active)
+    })
+
+    it('should reject an active game that has not reached the podium task', async () => {
+      const activeQuiz = await quizModel.create(
+        createMockClassicQuiz({
+          _id: uuidv4(),
+          owner: gameParticipantQuizOwnerUser,
+        }),
+      )
+      const activeGame = await gameModel.create(
+        createMockGameDocument({
+          _id: uuidv4(),
+          quiz: activeQuiz,
+          status: GameStatus.Active,
+          currentTask: createMockLobbyTaskDocument(),
+          participants: [
+            createMockGamePlayerParticipantDocument({
+              participantId: gameParticipantPlayerUser._id,
+              nickname: gameParticipantPlayerUser.defaultNickname,
+            }),
+          ],
+        }),
+      )
+
+      await supertest(app.getHttpServer())
+        .put(`/api/profile/quizzes/${activeQuiz._id}/ratings`)
+        .set({
+          ...createBearerAuthHeader(gameParticipantPlayerUserAccessToken),
+        })
+        .send({ stars, comment })
+        .expect(403)
+
+      expect(activeGame.status).toBe(GameStatus.Active)
+      await expect(
+        quizRatingModel.countDocuments({ quizId: activeQuiz._id }),
+      ).resolves.toBe(0)
     })
 
     it('should create a rating when caller is a player participant', async () => {
