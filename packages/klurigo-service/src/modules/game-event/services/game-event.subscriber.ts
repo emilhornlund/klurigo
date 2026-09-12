@@ -13,6 +13,7 @@ import {
   MessageEvent,
   OnModuleDestroy,
   OnModuleInit,
+  ServiceUnavailableException,
 } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { InjectRedis } from '@nestjs-modules/ioredis'
@@ -93,6 +94,7 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
   private readonly redisSubscriber: Redis
 
   private heartbeatIntervalId: NodeJS.Timeout | undefined
+  private isShuttingDown = false
 
   /**
    * Tracks active SSE connections per participantId.
@@ -200,9 +202,14 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * or active heartbeat intervals.
    */
   async onModuleDestroy(): Promise<void> {
-    for (const connection of this.connectionClosersByConnection.values()) {
+    if (this.isShuttingDown) return
+    this.isShuttingDown = true
+
+    for (const connection of [...this.connectionClosersByConnection.values()]) {
       connection.close()
     }
+    this.connectionClosersByConnection.clear()
+    this.connectionCountsByParticipantId.clear()
     this.stopHeartbeatIfRunning()
 
     let shutdownError: unknown
@@ -377,6 +384,10 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     participantId: string,
     connectionId: string = randomUUID(),
   ): Promise<Observable<MessageEvent>> {
+    if (this.isShuttingDown) {
+      throw new ServiceUnavailableException('Service is shutting down')
+    }
+
     const connectionKey = this.connectionKey(
       gameId,
       participantId,
@@ -462,6 +473,10 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
 
       if (!participant) {
         throw new PlayerNotFoundException(participantId)
+      }
+
+      if (this.isShuttingDown) {
+        throw new ServiceUnavailableException('Service is shutting down')
       }
 
       const initialEvent: DistributedEvent = {
