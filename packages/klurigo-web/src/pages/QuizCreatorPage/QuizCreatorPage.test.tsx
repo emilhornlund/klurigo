@@ -90,6 +90,7 @@ const getQuizMock = vi.fn<(quizId: string) => Promise<QuizSummary>>()
 const getQuizQuestionsMock = vi.fn<(quizId: string) => Promise<unknown[]>>()
 
 const setGameModeMock = vi.fn<(mode: GameMode) => void>()
+const setGameModeWithoutResetMock = vi.fn<(mode: GameMode) => void>()
 const moveSelectedQuestionToMock = vi.fn<(index: number) => void>()
 const addQuestionMock = vi.fn<(type: QuestionType) => void>()
 const duplicateQuestionMock = vi.fn<(index: number) => void>()
@@ -217,10 +218,27 @@ vi.mock('./utils/QuestionDataSource', async () => {
         setGameModeMock(mode)
         setGameMode(mode)
       }, [])
+      const setGameModeWithoutResetWrapped = React.useCallback(
+        (mode: GameMode) => {
+          mockGameMode = mode
+          setGameModeWithoutResetMock(mode)
+          setGameMode(mode)
+        },
+        [],
+      )
       const setQuestionsWrapped = React.useCallback((next: unknown[]) => {
         mockQuestions = next
         setQuestions(next)
       }, [])
+      const setQuestionsAndSelectWrapped = React.useCallback(
+        (next: unknown[]) => {
+          mockQuestions = next
+          mockSelectedQuestionIndex = next.length > 0 ? 0 : -1
+          setQuestions(next)
+          setSelectedQuestionIndex(next.length > 0 ? 0 : -1)
+        },
+        [],
+      )
       const selectQuestionWrapped = React.useCallback((index: number) => {
         mockSelectedQuestionIndex = index
         setSelectedQuestionIndex(index)
@@ -229,8 +247,10 @@ vi.mock('./utils/QuestionDataSource', async () => {
       return {
         gameMode,
         setGameMode: setGameModeWrapped,
+        setGameModeWithoutReset: setGameModeWithoutResetWrapped,
         questions,
         setQuestions: setQuestionsWrapped,
+        setQuestionsAndSelect: setQuestionsAndSelectWrapped,
         questionValidations: mockQuestionValidations,
         allQuestionsValid: mockAllQuestionsValid,
         selectedQuestion: questions[selectedQuestionIndex],
@@ -351,7 +371,7 @@ describe('QuizCreatorPage', () => {
       data: undefined,
       isLoading: false,
       isError: false,
-      isFetchedAfterMount: false,
+      isFetchedAfterMount: true,
     }
 
     createQuizMock.mockResolvedValue({ id: 'new-quiz-id' })
@@ -419,6 +439,9 @@ describe('QuizCreatorPage', () => {
 
     expect(latestUIProps?.canSaveQuiz).toBe(false)
     expect(latestShouldBlock?.({} as never)).toBe(false)
+    expect(setGameModeWithoutResetMock).toHaveBeenCalledWith(GameMode.Classic)
+    expect(setGameModeMock).not.toHaveBeenCalled()
+    expect(latestUIProps?.questions).toEqual([question])
 
     act(() => {
       latestUIProps?.onQuizSettingsValueChange('title', 'Updated quiz title')
@@ -428,6 +451,211 @@ describe('QuizCreatorPage', () => {
 
     expect(latestUIProps?.canSaveQuiz).toBe(true)
     expect(latestShouldBlock?.({} as never)).toBe(true)
+  })
+
+  it('does not rehydrate a dirty draft when either quiz query receives new data', async () => {
+    const initialQuestion = makeQuizQuestion('q-1')
+    const localQuestion = {
+      ...initialQuestion,
+      question: 'Local question edit',
+    }
+    const serverQuestion = makeQuizQuestion('q-2')
+
+    mockQuizId = 'quiz-123'
+    mockQuizQueryState = {
+      data: makeQuizSummary(),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [initialQuestion],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    const { rerender } = render(<QuizCreatorPage />)
+    await flushPromises()
+
+    act(() => {
+      latestUIProps?.onSetQuestions([localQuestion])
+      latestUIProps?.onQuizSettingsValueChange('title', 'Local title edit')
+      latestUIProps?.onQuizSettingsValueChange(
+        'description',
+        'Local description edit',
+      )
+      latestUIProps?.onQuizSettingsValueChange(
+        'imageCoverURL',
+        'https://example.com/local-cover.png',
+      )
+      latestUIProps?.onQuizSettingsValueChange(
+        'visibility',
+        QuizVisibility.Private,
+      )
+      latestUIProps?.onQuizSettingsValueChange('category', QuizCategory.Science)
+      latestUIProps?.onQuizSettingsValueChange(
+        'languageCode',
+        LanguageCode.Swedish,
+      )
+    })
+    await flushPromises()
+
+    mockQuizQueryState = {
+      data: makeQuizSummary({
+        title: 'Server title update',
+        description: 'Server description update',
+      }),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [serverQuestion],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    rerender(<QuizCreatorPage />)
+    await flushPromises()
+
+    expect(latestUIProps?.questions).toEqual([localQuestion])
+    expect(latestUIProps?.quizSettings).toMatchObject({
+      title: 'Local title edit',
+      description: 'Local description edit',
+      imageCoverURL: 'https://example.com/local-cover.png',
+      visibility: QuizVisibility.Private,
+      category: QuizCategory.Science,
+      languageCode: LanguageCode.Swedish,
+    })
+    expect(setGameModeWithoutResetMock).toHaveBeenCalledTimes(1)
+    expect(setGameModeMock).not.toHaveBeenCalled()
+    expect(latestUIProps?.canSaveQuiz).toBe(true)
+  })
+
+  it('keeps the original saved snapshot when server metadata changes', async () => {
+    const question = makeQuizQuestion('q-1')
+
+    mockQuizId = 'quiz-123'
+    mockQuizQueryState = {
+      data: makeQuizSummary(),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [question],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    const { rerender } = render(<QuizCreatorPage />)
+    await flushPromises()
+
+    act(() => {
+      latestUIProps?.onQuizSettingsValueChange('title', 'Local title edit')
+    })
+    await flushPromises()
+
+    mockQuizQueryState = {
+      data: makeQuizSummary({ title: 'Server title update' }),
+      isLoading: false,
+      isError: false,
+    }
+
+    rerender(<QuizCreatorPage />)
+    await flushPromises()
+
+    expect(latestUIProps?.quizSettings.title).toBe('Local title edit')
+
+    act(() => {
+      latestUIProps?.onQuizSettingsValueChange('title', 'Server title update')
+    })
+    await flushPromises()
+
+    expect(latestUIProps?.canSaveQuiz).toBe(true)
+  })
+
+  it('anchors the saved snapshot to metadata used before question hydration', async () => {
+    const question = makeQuizQuestion('q-1')
+
+    mockQuizId = 'quiz-123'
+    mockQuizQueryState = {
+      data: makeQuizSummary(),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: undefined,
+      isLoading: true,
+      isError: false,
+      isFetchedAfterMount: false,
+    }
+
+    const { rerender } = render(<QuizCreatorPage />)
+    await flushPromises()
+
+    mockQuizQueryState = {
+      data: makeQuizSummary({ title: 'Refreshed server title' }),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [question],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    rerender(<QuizCreatorPage />)
+    await flushPromises()
+
+    expect(latestUIProps?.quizSettings.title).toBe('Existing quiz')
+    expect(latestUIProps?.canSaveQuiz).toBe(false)
+  })
+
+  it('hydrates a different quiz when quizId changes', async () => {
+    const firstQuestion = makeQuizQuestion('q-1')
+    const secondQuestion = makeQuizQuestion('q-2')
+
+    mockQuizId = 'quiz-123'
+    mockQuizQueryState = {
+      data: makeQuizSummary({ title: 'First quiz' }),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [firstQuestion],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    const { rerender } = render(<QuizCreatorPage />)
+    await flushPromises()
+
+    mockQuizId = 'quiz-456'
+    mockQuizQueryState = {
+      data: makeQuizSummary({
+        title: 'Second quiz',
+        mode: GameMode.ZeroToOneHundred,
+      }),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [secondQuestion],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
+
+    rerender(<QuizCreatorPage />)
+    await flushPromises()
+
+    expect(latestUIProps?.gameMode).toBe(GameMode.ZeroToOneHundred)
+    expect(latestUIProps?.quizSettings.title).toBe('Second quiz')
+    expect(latestUIProps?.questions).toEqual([secondQuestion])
+    expect(setGameModeWithoutResetMock).toHaveBeenCalledTimes(2)
   })
 
   it('shows the exit modal when navigation is blocked and staying resets the blocker', async () => {
@@ -607,8 +835,20 @@ describe('QuizCreatorPage', () => {
 
   it('invalidates myProfileQuizzes and exits to the quiz details page for an existing quiz', async () => {
     mockQuizId = 'quiz-123'
+    mockQuizQueryState = {
+      data: makeQuizSummary(),
+      isLoading: false,
+      isError: false,
+    }
+    mockQuestionsQueryState = {
+      data: [],
+      isLoading: false,
+      isError: false,
+      isFetchedAfterMount: true,
+    }
 
     render(<QuizCreatorPage />)
+    await flushPromises()
 
     act(() => {
       latestUIProps?.onExit()

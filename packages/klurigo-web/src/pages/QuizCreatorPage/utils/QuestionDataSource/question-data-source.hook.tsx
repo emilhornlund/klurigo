@@ -380,12 +380,44 @@ export const useQuestionDataSource = () => {
     setSelectedIndex(0)
   }, [])
 
+  /**
+   * Sets the active game mode without changing the questions.
+   *
+   * This is used when server data hydrates an existing editor. User-initiated
+   * mode changes should use `setGameMode`, which intentionally starts a new
+   * question collection.
+   *
+   * @param gameMode - The mode to activate for the editor.
+   */
+  const setGameModeWithoutReset = useCallback((gameMode: GameMode): void => {
+    setMode(gameMode)
+  }, [])
+
+  /**
+   * Replaces the question collection and selects its first question.
+   *
+   * Selection is updated together with the replacement because a separate
+   * `selectQuestion` call would still see the previous collection during the
+   * same event.
+   *
+   * @param nextQuestions - The question collection to make editable.
+   */
+  const setQuestionsAndSelect = useCallback(
+    (nextQuestions: QuizQuestionModel[]): void => {
+      setQuestions(nextQuestions)
+      setSelectedIndex(nextQuestions.length > 0 ? 0 : -1)
+    },
+    [],
+  )
+
   return {
     gameMode: mode,
     setGameMode,
+    setGameModeWithoutReset,
 
     questions,
     setQuestions,
+    setQuestionsAndSelect,
 
     questionValidations,
     allQuestionsValid,

@@ -65,8 +65,10 @@ const QuizCreatorPage: FC = () => {
   const {
     gameMode,
     setGameMode,
+    setGameModeWithoutReset,
     questions,
     setQuestions,
+    setQuestionsAndSelect,
     questionValidations,
     allQuestionsValid,
     selectedQuestion,
@@ -83,67 +85,13 @@ const QuizCreatorPage: FC = () => {
   const {
     data: originalQuiz,
     isLoading: isQuizLoading,
+    isFetching: isQuizFetching,
     isError: isQuizError,
   } = useQuery({
     queryKey: ['quiz', quizId],
     queryFn: () => getQuiz(quizId as string),
     enabled: !!quizId,
   })
-
-  useEffect(() => {
-    if (originalQuiz && !isQuizLoading && !isQuizError) {
-      setGameMode(originalQuiz.mode)
-      setQuizSettings({
-        title: originalQuiz.title,
-        description: originalQuiz.description,
-        imageCoverURL: originalQuiz.imageCoverURL,
-        visibility: originalQuiz.visibility,
-        category: originalQuiz.category,
-        languageCode: originalQuiz.languageCode,
-      })
-    }
-  }, [originalQuiz, isQuizLoading, isQuizError, setQuizSettings, setGameMode])
-
-  const {
-    data: originalQuizQuestions,
-    isLoading: isQuizQuestionsLoading,
-    isError: isQuizQuestionsError,
-    isFetchedAfterMount,
-  } = useQuery({
-    queryKey: ['quiz_questions', quizId],
-    queryFn: () => getQuizQuestions(quizId as string),
-    enabled: !!quizId && !!gameMode,
-    refetchOnMount: 'always',
-  })
-
-  const didHydrateQuestionsRef = useRef(false)
-
-  useEffect(() => {
-    if (!quizId) return
-    if (!gameMode) return
-    if (!originalQuizQuestions) return
-    if (isQuizQuestionsLoading || isQuizQuestionsError) return
-
-    // Key part: do not hydrate from old cached data
-    if (!isFetchedAfterMount) return
-
-    if (didHydrateQuestionsRef.current) return
-
-    didHydrateQuestionsRef.current = true
-    setQuestions(originalQuizQuestions)
-    selectQuestion(0)
-  }, [
-    quizId,
-    gameMode,
-    originalQuizQuestions,
-    isQuizQuestionsLoading,
-    isQuizQuestionsError,
-    isFetchedAfterMount,
-    setQuestions,
-    selectQuestion,
-  ])
-
-  const [isSavingQuiz, setIsSavingQuiz] = useState(false)
 
   type SavedQuizSnapshot = {
     gameMode: GameMode | null
@@ -158,8 +106,114 @@ const QuizCreatorPage: FC = () => {
     questions: typeof questions
   }
 
+  const hydratedMetadataRef = useRef<
+    | {
+        quizId: string
+        gameMode: GameMode
+        quizSettings: SavedQuizSnapshot['quizSettings']
+      }
+    | undefined
+  >(undefined)
+  const didHydrateQuestionsRef = useRef<string | undefined>(undefined)
+  const didSetSavedQuizSnapshotRef = useRef<string | undefined>(undefined)
+
   const [savedQuizSnapshot, setSavedQuizSnapshot] =
     useState<SavedQuizSnapshot | null>(null)
+  const [hydratedQuestionsQuizId, setHydratedQuestionsQuizId] = useState<
+    string | undefined
+  >(undefined)
+
+  useEffect(() => {
+    if (!quizId) {
+      hydratedMetadataRef.current = undefined
+      didHydrateQuestionsRef.current = undefined
+    }
+
+    setHydratedQuestionsQuizId((currentQuizId) =>
+      currentQuizId === quizId ? currentQuizId : undefined,
+    )
+
+    if (didSetSavedQuizSnapshotRef.current !== quizId) {
+      didSetSavedQuizSnapshotRef.current = undefined
+      setSavedQuizSnapshot(null)
+    }
+  }, [quizId])
+
+  useEffect(() => {
+    if (!quizId) return
+    if (!originalQuiz) return
+    if (isQuizLoading || isQuizFetching || isQuizError) return
+    if (hydratedMetadataRef.current?.quizId === quizId) return
+
+    const hydratedQuizSettings: SavedQuizSnapshot['quizSettings'] = {
+      title: originalQuiz.title ?? '',
+      description: originalQuiz.description ?? '',
+      imageCoverURL: originalQuiz.imageCoverURL,
+      visibility: originalQuiz.visibility,
+      category: originalQuiz.category,
+      languageCode: originalQuiz.languageCode,
+    }
+
+    hydratedMetadataRef.current = {
+      quizId,
+      gameMode: originalQuiz.mode,
+      quizSettings: hydratedQuizSettings,
+    }
+    setGameModeWithoutReset(originalQuiz.mode)
+    setQuizSettings({
+      ...hydratedQuizSettings,
+      description: originalQuiz.description,
+    })
+  }, [
+    quizId,
+    originalQuiz,
+    isQuizLoading,
+    isQuizFetching,
+    isQuizError,
+    setQuizSettings,
+    setGameModeWithoutReset,
+  ])
+
+  const {
+    data: originalQuizQuestions,
+    isLoading: isQuizQuestionsLoading,
+    isError: isQuizQuestionsError,
+    isFetchedAfterMount,
+  } = useQuery({
+    queryKey: ['quiz_questions', quizId],
+    queryFn: () => getQuizQuestions(quizId as string),
+    enabled: !!quizId && !!gameMode,
+    refetchOnMount: 'always',
+  })
+
+  useEffect(() => {
+    if (!quizId) return
+    if (!gameMode) return
+    if (!originalQuiz) return
+    if (gameMode !== originalQuiz.mode) return
+    if (!originalQuizQuestions) return
+    if (isQuizQuestionsLoading || isQuizQuestionsError) return
+
+    // Key part: do not hydrate from old cached data
+    if (!isFetchedAfterMount) return
+
+    if (didHydrateQuestionsRef.current === quizId) return
+
+    didHydrateQuestionsRef.current = quizId
+    setQuestionsAndSelect(structuredClone(originalQuizQuestions))
+    setHydratedQuestionsQuizId(quizId)
+  }, [
+    quizId,
+    gameMode,
+    originalQuiz,
+    originalQuizQuestions,
+    isQuizQuestionsLoading,
+    isQuizQuestionsError,
+    isFetchedAfterMount,
+    setQuestionsAndSelect,
+  ])
+
+  const [isSavingQuiz, setIsSavingQuiz] = useState(false)
 
   useEffect(() => {
     if (!quizId) return
@@ -168,17 +222,13 @@ const QuizCreatorPage: FC = () => {
     if (isQuizLoading || isQuizError) return
     if (isQuizQuestionsLoading || isQuizQuestionsError) return
     if (!isFetchedAfterMount) return
+    if (didSetSavedQuizSnapshotRef.current === quizId) return
+    if (hydratedMetadataRef.current?.quizId !== quizId) return
 
+    didSetSavedQuizSnapshotRef.current = quizId
     setSavedQuizSnapshot({
-      gameMode: originalQuiz.mode,
-      quizSettings: {
-        title: originalQuiz.title ?? '',
-        description: originalQuiz.description ?? '',
-        imageCoverURL: originalQuiz.imageCoverURL,
-        visibility: originalQuiz.visibility,
-        category: originalQuiz.category,
-        languageCode: originalQuiz.languageCode,
-      },
+      gameMode: hydratedMetadataRef.current.gameMode,
+      quizSettings: hydratedMetadataRef.current.quizSettings,
       questions: structuredClone(originalQuizQuestions),
     })
   }, [
@@ -191,10 +241,6 @@ const QuizCreatorPage: FC = () => {
     isQuizQuestionsError,
     isFetchedAfterMount,
   ])
-
-  useEffect(() => {
-    didHydrateQuestionsRef.current = false
-  }, [quizId])
 
   const handleAddQuestion = (): void => {
     if (gameMode === GameMode.Classic) {
@@ -375,6 +421,8 @@ const QuizCreatorPage: FC = () => {
     quizId &&
     (isQuizLoading ||
       isQuizQuestionsLoading ||
+      !isFetchedAfterMount ||
+      hydratedQuestionsQuizId !== quizId ||
       isQuizError ||
       isQuizQuestionsError)
   ) {
