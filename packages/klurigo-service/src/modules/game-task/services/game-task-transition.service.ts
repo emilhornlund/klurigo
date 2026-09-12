@@ -1,6 +1,7 @@
 import { GameStatus, shuffleArray } from '@klurigo/common'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { GameAnswerRepository } from '../../game-core/repositories'
 import {
   GameDocument,
@@ -25,6 +26,8 @@ import {
  */
 @Injectable()
 export class GameTaskTransitionService {
+  private readonly logger = new Logger(GameTaskTransitionService.name)
+
   private static AVERAGE_WPM = 220 // Average reading speed in words per minute
   private static MILLISECONDS_PER_MINUTE = 60000
   private static RATIO = 100 // Fallback character-based ratio (milliseconds per character)
@@ -315,7 +318,23 @@ export class GameTaskTransitionService {
 
     const questionIndex = gameDocument.currentTask.questionIndex
     if (questionIndex < 0 || questionIndex >= gameDocument.questions.length) {
-      throw new Error('Invalid question index')
+      const error = new Error('Invalid question index')
+      this.logger.error(
+        structuredLog(
+          'Invalid question index while calculating transition delay.',
+          {
+            operation: 'getQuestionTaskPendingDuration',
+            gameId: gameDocument._id,
+            taskId: gameDocument.currentTask._id,
+            taskType: gameDocument.currentTask.type,
+            taskStatus: gameDocument.currentTask.status,
+            questionIndex,
+            gameState: gameDocument.status,
+          },
+        ),
+        getErrorStack(error),
+      )
+      throw error
     }
 
     const questionText = gameDocument.questions[questionIndex].text
@@ -354,7 +373,23 @@ export class GameTaskTransitionService {
 
     const questionIndex = gameDocument.currentTask.questionIndex
     if (questionIndex < 0 || questionIndex >= gameDocument.questions.length) {
-      throw new Error('Invalid question index')
+      const error = new Error('Invalid question index')
+      this.logger.error(
+        structuredLog(
+          'Invalid question index while calculating transition delay.',
+          {
+            operation: 'getQuestionTaskActiveDuration',
+            gameId: gameDocument._id,
+            taskId: gameDocument.currentTask._id,
+            taskType: gameDocument.currentTask.type,
+            taskStatus: gameDocument.currentTask.status,
+            questionIndex,
+            gameState: gameDocument.status,
+          },
+        ),
+        getErrorStack(error),
+      )
+      throw error
     }
 
     const durationInSeconds = gameDocument.questions[questionIndex].duration

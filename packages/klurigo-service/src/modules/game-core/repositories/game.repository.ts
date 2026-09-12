@@ -5,6 +5,7 @@ import { Model, QueryFilter } from 'mongoose'
 import { MurLock } from 'murlock'
 
 import { BaseRepository } from '../../../app/shared/repository'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { buildLobbyTask } from '../../game-task/utils'
 import { Quiz } from '../../quiz-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
@@ -58,9 +59,21 @@ export class GameRepository extends BaseRepository<Game> {
       ...(active ? { status: { $eq: GameStatus.Active } } : {}),
     }
 
-    return this.gameModel
-      .findOne(filter)
-      .populate('quiz') as Promise<GameDocument | null>
+    try {
+      return (await this.gameModel
+        .findOne(filter)
+        .populate('quiz')) as GameDocument | null
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find game by ID.', {
+          operation: 'findGameByID',
+          gameId: gameID,
+          active,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**
@@ -101,12 +114,24 @@ export class GameRepository extends BaseRepository<Game> {
     gameID: string,
     statuses: GameStatus[],
   ): Promise<GameDocument | null> {
-    return this.gameModel
-      .findOne({
-        _id: { $eq: gameID },
-        status: { $in: statuses },
-      })
-      .populate('quiz') as Promise<GameDocument | null>
+    try {
+      return (await this.gameModel
+        .findOne({
+          _id: { $eq: gameID },
+          status: { $in: statuses },
+        })
+        .populate('quiz')) as GameDocument | null
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find game by statuses.', {
+          operation: 'findGameByIDWithStatuses',
+          gameId: gameID,
+          statuses,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**
@@ -140,12 +165,22 @@ export class GameRepository extends BaseRepository<Game> {
   public async findGamesWithPendingTransitionOperations(): Promise<
     GameDocument[]
   > {
-    return this.gameModel
-      .find({
-        status: { $in: [GameStatus.Active, GameStatus.Completed] },
-        'pendingTransitionOperations.0': { $exists: true },
-      })
-      .populate('quiz') as Promise<GameDocument[]>
+    try {
+      return (await this.gameModel
+        .find({
+          status: { $in: [GameStatus.Active, GameStatus.Completed] },
+          'pendingTransitionOperations.0': { $exists: true },
+        })
+        .populate('quiz')) as GameDocument[]
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find games with pending transitions.', {
+          operation: 'findGamesWithPendingTransitionOperations',
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**
@@ -186,9 +221,20 @@ export class GameRepository extends BaseRepository<Game> {
       ...(active ? { status: { $eq: GameStatus.Active } } : {}),
     }
 
-    return this.gameModel
-      .findOne(filter)
-      .populate('quiz') as Promise<GameDocument | null>
+    try {
+      return (await this.gameModel
+        .findOne(filter)
+        .populate('quiz')) as GameDocument | null
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find game by PIN.', {
+          operation: 'findGameByPIN',
+          active,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**
@@ -488,7 +534,16 @@ export class GameRepository extends BaseRepository<Game> {
           },
         )
       } catch (error) {
-        this.logger.error(`Error cleaning up game '${candidate._id}':`, error)
+        this.logger.error(
+          structuredLog('Failed to update stale game.', {
+            operation: 'updateStaleGames',
+            gameId: candidate._id,
+            gameState: candidate.status,
+            taskType: candidate.currentTask.type,
+            taskStatus: candidate.currentTask.status,
+          }),
+          getErrorStack(error),
+        )
         continue
       }
 

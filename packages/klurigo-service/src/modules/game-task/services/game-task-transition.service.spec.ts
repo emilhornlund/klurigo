@@ -826,6 +826,16 @@ describe('GameTaskTransitionService', () => {
       expect(() =>
         (service as any).getQuestionTaskPendingDuration(gameDoc as never),
       ).toThrow('Invalid question index')
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Invalid question index while calculating transition delay.',
+          operation: 'getQuestionTaskPendingDuration',
+          gameId: gameDoc._id,
+          taskId: gameDoc.currentTask._id,
+          questionIndex: 5,
+        }),
+        expect.any(String),
+      )
     })
 
     it('throws Error for invalid question index (negative)', () => {
@@ -886,6 +896,16 @@ describe('GameTaskTransitionService', () => {
       expect(() =>
         (service as any).getQuestionTaskActiveDuration(gameDoc as never),
       ).toThrow('Invalid question index')
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Invalid question index while calculating transition delay.',
+          operation: 'getQuestionTaskActiveDuration',
+          gameId: gameDoc._id,
+          taskId: gameDoc.currentTask._id,
+          questionIndex: 5,
+        }),
+        expect.any(String),
+      )
     })
 
     it('throws Error for invalid question index (negative)', () => {

@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { GameResultService } from '../services'
 
 /**
@@ -32,8 +33,11 @@ export class GameResultListener {
       await this.gameResultService.deleteByGameId(gameId)
     } catch (error) {
       this.logger.error(
-        `Failed to delete game results for deleted game '${gameId}'.`,
-        error instanceof Error ? error.stack : String(error),
+        structuredLog('Failed to delete game results for deleted game.', {
+          operation: 'handleGameDeleted',
+          gameId,
+        }),
+        getErrorStack(error),
       )
     }
   }

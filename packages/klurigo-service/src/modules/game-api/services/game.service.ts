@@ -28,6 +28,7 @@ import {
   GamePlayerJoinEvent,
   GamePlayerJoinEventKey,
 } from '../../../app/shared/event/game-join.event'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { PlayerNotFoundException } from '../../game-core/exceptions'
 import {
   GameAnswerRepository,
@@ -304,11 +305,15 @@ export class GameService {
       this.logger.debug(`Emitting player join event for game '${gameId}'`)
       const event: GamePlayerJoinEvent = { gameId, participantId, nickname }
       this.eventEmitter.emit(GamePlayerJoinEventKey, event)
-    } catch (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      error
-    ) {
-      //suppress error (logged by repository)
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to emit player join event.', {
+          operation: 'emitGamePlayerJoinEvent',
+          gameId,
+          playerId: participantId,
+        }),
+        getErrorStack(error),
+      )
     }
   }
 
@@ -734,11 +739,18 @@ export class GameService {
           this.logger.debug(`Emitting deleted event for game '${game._id}'`)
           this.eventEmitter.emit('game.deleted', { gameId: game._id })
         }
-      } catch (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        error
-      ) {
-        //suppress error (logged by repository)
+      } catch (error) {
+        this.logger.error(
+          structuredLog('Failed to delete game during quiz cleanup.', {
+            operation: 'deleteQuiz',
+            quizId,
+            gameId: game._id,
+            gameState: game.status,
+            taskType: game.currentTask?.type,
+            taskStatus: game.currentTask?.status,
+          }),
+          getErrorStack(error),
+        )
       }
     }
   }

@@ -21,6 +21,7 @@ describe(GameExpirySchedulerService.name, () => {
   let service: GameExpirySchedulerService
   let gameRepository: jest.Mocked<GameRepository>
   let gameAnswerRepository: jest.Mocked<GameAnswerRepository>
+  let errorSpy: jest.SpyInstance
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -45,6 +46,13 @@ describe(GameExpirySchedulerService.name, () => {
     gameRepository = moduleRef.get(GameRepository)
     gameAnswerRepository = moduleRef.get(GameAnswerRepository)
     gameRepository.find.mockResolvedValue([])
+    errorSpy = jest
+      .spyOn(Logger.prototype, 'error')
+      .mockImplementation(() => undefined)
+  })
+
+  afterEach(() => {
+    errorSpy.mockRestore()
   })
 
   it('updates completed games and expired games, and logs counts', async () => {
@@ -158,6 +166,16 @@ describe(GameExpirySchedulerService.name, () => {
     expect(gameAnswerRepository.clear).toHaveBeenLastCalledWith(
       'remaining',
       'task-2',
+    )
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to clear transient answer state.',
+        operation: 'clearTerminalAnswerState',
+        gameId: 'failed',
+        gameState: 'EXPIRED',
+        taskId: 'task-1',
+      }),
+      expect.any(String),
     )
   })
 

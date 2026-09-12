@@ -4,6 +4,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
 import { RedisUnavailableException } from '../../../app/exceptions'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 
 import { QuestionTaskAnswer } from './models/schemas'
 
@@ -65,11 +66,11 @@ export class GameAnswerRepository {
   ): Promise<{ accepted: true; answerCount: number } | { accepted: false }> {
     const answersKey = this.getAnswerKey(gameId, taskId)
 
-    const serialized = this.serialize(answer)
     // The participant count is enforced by game authorization.
     void playerCount
 
     try {
+      const serialized = this.serialize(answer)
       const added = await this.redis.hsetnx(
         answersKey,
         answer.playerId,
@@ -88,8 +89,13 @@ export class GameAnswerRepository {
       return { accepted: true, answerCount }
     } catch (error) {
       this.logger.error(
-        `Failed to persist question answer for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
-        error,
+        structuredLog('Failed to persist question answer.', {
+          operation: 'submitOnce',
+          gameId,
+          playerId: answer.playerId,
+          questionTaskId: taskId,
+        }),
+        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'persisting a question answer',
@@ -116,8 +122,12 @@ export class GameAnswerRepository {
       values = await this.redis.hvals(key)
     } catch (error) {
       this.logger.error(
-        `Failed to retrieve question answers for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
-        error,
+        structuredLog('Failed to retrieve question answers.', {
+          operation: 'findAllAnswersByGameId',
+          gameId,
+          questionTaskId: taskId,
+        }),
+        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'retrieving question answers',
@@ -126,7 +136,19 @@ export class GameAnswerRepository {
       )
     }
 
-    return values.map((value) => this.deserialize(value, gameId))
+    try {
+      return values.map((value) => this.deserialize(value, gameId))
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to deserialize stored question answers.', {
+          operation: 'deserializeQuestionAnswers',
+          gameId,
+          questionTaskId: taskId,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**
@@ -159,8 +181,12 @@ export class GameAnswerRepository {
       }
     } catch (error) {
       this.logger.error(
-        `Failed to clear question answers for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
-        error,
+        structuredLog('Failed to clear question answers.', {
+          operation: 'clear',
+          gameId,
+          questionTaskId: taskId,
+        }),
+        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'clearing question answers',
@@ -238,14 +264,12 @@ export class GameAnswerRepository {
     try {
       parsed = JSON.parse(serialized)
     } catch {
-      throw new Error(
-        `Invalid JSON stored for game ${gameIdForError} answers: '${serialized}'`,
-      )
+      throw new Error(`Invalid JSON stored for game ${gameIdForError} answers`)
     }
 
     if (!this.isQuestionTaskAnswer(parsed)) {
       throw new Error(
-        `Invalid QuestionTaskAnswer shape stored for game ${gameIdForError}: '${serialized}'`,
+        `Invalid QuestionTaskAnswer shape stored for game ${gameIdForError}`,
       )
     }
 

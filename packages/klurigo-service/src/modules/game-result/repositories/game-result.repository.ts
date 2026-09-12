@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 
 import { BaseRepository } from '../../../app/shared/repository'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 
 import { GameResult } from './models/schemas'
 import type { GameResultModel } from './models/schemas'
@@ -30,25 +31,36 @@ export class GameResultRepository extends BaseRepository<GameResult> {
    * @returns The game result if found, otherwise null.
    */
   public async findGameResult(gameID: string): Promise<GameResult | null> {
-    return this.gameResultModel
-      .findOne({
-        game: gameID as never,
-      })
-      .populate([
-        {
-          path: 'game',
-          populate: [
-            {
-              path: 'quiz',
-              populate: [
-                {
-                  path: 'owner',
-                },
-              ],
-            },
-          ],
-        },
-      ])
+    try {
+      return await this.gameResultModel
+        .findOne({
+          game: gameID as never,
+        })
+        .populate([
+          {
+            path: 'game',
+            populate: [
+              {
+                path: 'quiz',
+                populate: [
+                  {
+                    path: 'owner',
+                  },
+                ],
+              },
+            ],
+          },
+        ])
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find game result.', {
+          operation: 'findGameResult',
+          gameId: gameID,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**

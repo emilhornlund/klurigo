@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { MurLock } from 'murlock'
 
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import {
   GameAnswerRepository,
   GameRepository,
@@ -69,8 +70,14 @@ export class GameExpirySchedulerService {
       this.logger.log(`Updated ${count} ${state} games.`)
     } catch (error) {
       this.logger.error(
-        `Failed to update ${state} games during scheduled cleanup.`,
-        error instanceof Error ? error.stack : String(error),
+        structuredLog(
+          `Failed to update ${state} games during scheduled cleanup.`,
+          {
+            operation: 'runUpdate',
+            targetState: state,
+          },
+        ),
+        getErrorStack(error),
       )
     }
   }
@@ -87,8 +94,13 @@ export class GameExpirySchedulerService {
       })
     } catch (error) {
       this.logger.error(
-        'Failed to find terminal games during scheduled cleanup.',
-        error instanceof Error ? error.stack : String(error),
+        structuredLog(
+          'Failed to find terminal games during scheduled cleanup.',
+          {
+            operation: 'findTerminalGames',
+          },
+        ),
+        getErrorStack(error),
       )
       return
     }
@@ -102,8 +114,13 @@ export class GameExpirySchedulerService {
         await this.gameAnswerRepository.clear(game._id, game.currentTask._id)
       } catch (error) {
         this.logger.error(
-          `Failed to clear transient answer state for terminal game '${game._id}'.`,
-          error instanceof Error ? error.stack : String(error),
+          structuredLog('Failed to clear transient answer state.', {
+            operation: 'clearTerminalAnswerState',
+            gameId: game._id,
+            gameState: game.status,
+            taskId: game.currentTask._id,
+          }),
+          getErrorStack(error),
         )
       }
     }

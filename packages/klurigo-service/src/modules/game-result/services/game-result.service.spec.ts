@@ -35,6 +35,7 @@ describe(GameResultService.name, () => {
   let quizRatingRepository: jest.Mocked<QuizRatingRepository>
   let quizRepository: jest.Mocked<QuizRepository>
   let userRepository: jest.Mocked<UserRepository>
+  let errorSpy: jest.SpyInstance
 
   const asPlayerMetric = (overrides: Partial<PlayerMetric>): PlayerMetric =>
     ({
@@ -154,7 +155,14 @@ describe(GameResultService.name, () => {
       UserRepository,
     ) as jest.Mocked<UserRepository>
 
+    errorSpy = jest
+      .spyOn(Logger.prototype, 'error')
+      .mockImplementation(() => undefined)
     jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    errorSpy.mockRestore()
   })
 
   describe('getGameResult', () => {
@@ -196,6 +204,12 @@ describe(GameResultService.name, () => {
         doc.game._id,
       )
       expect(userRepository.findUserById).not.toHaveBeenCalled()
+      expect(errorSpy).toHaveBeenCalledWith({
+        message: 'Game result is missing its quiz.',
+        operation: 'getGameResult',
+        gameId: doc.game._id,
+        playerId: 'p-xyz',
+      })
     })
 
     it('throws GameResultsNotFoundException using the requested gameID when quiz is missing', async () => {
@@ -894,6 +908,15 @@ describe(GameResultService.name, () => {
       expect(quizRepository.findQuizByIdOrThrow).not.toHaveBeenCalled()
       expect(aggregateQuizGameplaySummary).not.toHaveBeenCalled()
       expect(quizRepository.replaceQuiz).not.toHaveBeenCalled()
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to create game result.',
+          operation: 'createGameResult',
+          gameId: 'game-1',
+          quizId: 'quiz-1',
+        }),
+        err.stack,
+      )
     })
 
     it('propagates errors from findQuizByIdOrThrow and does not call aggregate or replace', async () => {
