@@ -1272,6 +1272,110 @@ describe('GameController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .send({ type: QuestionType.MultiChoice, optionIndex })
 
+    it('should return 400 when a required answer field is missing', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/answers`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ type: QuestionType.MultiChoice })
+        .expect(400)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('status', 400)
+          expect(res.body).toHaveProperty('timestamp')
+          expect(res.body.message).toContain('Validation failed')
+        })
+    })
+
+    it('should return 400 when a multi-choice option index is fractional', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/answers`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ type: QuestionType.MultiChoice, optionIndex: 0.5 })
+        .expect(400)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('status', 400)
+          expect(res.body).toHaveProperty('timestamp')
+          expect(res.body.message).toContain('Validation failed')
+        })
+    })
+
+    it('should return 403 when the player no longer belongs to the game', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/answers`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ type: QuestionType.MultiChoice, optionIndex: 0 })
+        .expect(403)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message: 'Forbidden',
+            status: 403,
+            timestamp: expect.anything(),
+          })
+        })
+    })
+
     it('should submit a valid multi-choice answer successfully', async () => {
       const { id: quizId } = await quizService.createQuiz(
         createMockClassicQuizRequestDto(),

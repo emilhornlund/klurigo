@@ -170,11 +170,15 @@ describe(GameAuthGuard.name, () => {
         ;(reflector.getAllAndOverride as jest.Mock).mockReturnValue(
           'Host' as unknown as GameParticipantType,
         )
+        gameRepository.findGameByIDOrThrow.mockResolvedValueOnce({
+          participants: [{ participantId: 'participant-1', type: 'Host' }],
+        })
         const request = createRequest({
           payload: {
             scope: TokenScope.Game,
             gameId: 'game-1',
             participantType: 'Host',
+            sub: 'participant-1',
           },
         })
         const context = createExecutionContext(request)
@@ -183,6 +187,28 @@ describe(GameAuthGuard.name, () => {
         expect(gameRepository.findGameByIDOrThrow).toHaveBeenCalledWith(
           'game-1',
           false,
+        )
+      })
+
+      it('throws ForbiddenException when the token participant no longer exists', async () => {
+        ;(reflector.getAllAndOverride as jest.Mock).mockReturnValue(
+          GameParticipantType.PLAYER,
+        )
+        gameRepository.findGameByIDOrThrow.mockResolvedValueOnce({
+          participants: [],
+        })
+        const request = createRequest({
+          payload: {
+            scope: TokenScope.Game,
+            gameId: 'game-1',
+            participantType: GameParticipantType.PLAYER,
+            sub: 'removed-player',
+          },
+        })
+        const context = createExecutionContext(request)
+
+        await expect(guard.canActivate(context)).rejects.toBeInstanceOf(
+          ForbiddenException,
         )
       })
 

@@ -71,6 +71,7 @@ export class GameAuthGuard implements CanActivate {
     if (request.payload.scope === TokenScope.Game) {
       await this.verifyGameScopeOrThrow(
         gameID,
+        game,
         request,
         requiredParticipantType,
       )
@@ -96,6 +97,7 @@ export class GameAuthGuard implements CanActivate {
    */
   private async verifyGameScopeOrThrow(
     gameID: string,
+    game: GameDocument,
     request: AuthGuardRequest<GameTokenDto, User>,
     requiredParticipantType?: GameParticipantType,
   ): Promise<void> {
@@ -106,6 +108,23 @@ export class GameAuthGuard implements CanActivate {
     if (
       requiredParticipantType &&
       requiredParticipantType !== request.payload.participantType
+    ) {
+      throw new ForbiddenException()
+    }
+
+    const participant = requiredParticipantType
+      ? game?.participants?.find(
+          (candidate) => candidate.participantId === request.payload.sub,
+        )
+      : undefined
+
+    if (requiredParticipantType && !participant) {
+      throw new ForbiddenException()
+    }
+
+    if (
+      requiredParticipantType &&
+      participant?.type !== requiredParticipantType
     ) {
       throw new ForbiddenException()
     }

@@ -42,19 +42,23 @@ export class ParseSubmitQuestionAnswerRequestPipe implements PipeTransform<
     | SubmitPinQuestionAnswerRequest
     | SubmitPuzzleQuestionAnswerRequest
   > {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      throw new BadRequestException('Validation failed')
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let object: any
-    if (value['type'] == QuestionType.MultiChoice) {
+    if (value.type === QuestionType.MultiChoice) {
       object = plainToInstance(SubmitMultiChoiceQuestionAnswerRequest, value)
-    } else if (value['type'] == QuestionType.Range) {
+    } else if (value.type === QuestionType.Range) {
       object = plainToInstance(SubmitRangeQuestionAnswerRequest, value)
-    } else if (value['type'] == QuestionType.TrueFalse) {
+    } else if (value.type === QuestionType.TrueFalse) {
       object = plainToInstance(SubmitTrueFalseQuestionAnswerRequest, value)
-    } else if (value['type'] == QuestionType.TypeAnswer) {
+    } else if (value.type === QuestionType.TypeAnswer) {
       object = plainToInstance(SubmitTypeAnswerQuestionAnswerRequest, value)
-    } else if (value['type'] == QuestionType.Pin) {
+    } else if (value.type === QuestionType.Pin) {
       object = plainToInstance(SubmitPinQuestionAnswerRequest, value)
-    } else if (value['type'] == QuestionType.Puzzle) {
+    } else if (value.type === QuestionType.Puzzle) {
       object = plainToInstance(SubmitPuzzleQuestionAnswerRequest, value)
     } else {
       throw new BadRequestException('Validation failed')
