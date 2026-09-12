@@ -64,6 +64,11 @@ describe('GameRepository (e2e)', () => {
       expect(expected).toBeDefined()
       expect(expected!.status).toEqual(GameStatus.Completed)
       expect(expected!.currentTask.type).toEqual(TaskType.Podium)
+      expect(expected!.completedAt).toBeInstanceOf(Date)
+      expect(expected!.updated.getTime()).toBeGreaterThan(
+        expected!.created.getTime(),
+      )
+      expect(expected!.version).toBe(1)
     })
 
     it('should not mark active podium games not older than 1 hour as completed', async () => {
@@ -124,6 +129,13 @@ describe('GameRepository (e2e)', () => {
       expect(expected).toBeDefined()
       expect(expected!.status).toEqual(GameStatus.Expired)
       expect(expected!.currentTask.type).toEqual(TaskType.Leaderboard)
+      expect(expected!.updated.getTime()).toBeGreaterThan(
+        expected!.created.getTime(),
+      )
+      expect(expected!.version).toBe(1)
+
+      const repeatedExpiredCount = await gameRepository.updateExpiredGames()
+      expect(repeatedExpiredCount).toEqual(0)
     })
 
     it('should not update active games not older than 1 hour', async () => {

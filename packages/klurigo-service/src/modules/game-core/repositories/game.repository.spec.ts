@@ -3,7 +3,7 @@ import type { QueryFilter } from 'mongoose'
 
 import { GameRepository } from './game.repository'
 import type { Game } from './models/schemas'
-import { GameSchema } from './models/schemas'
+import { GameSchema, TaskType } from './models/schemas'
 
 describe('GameRepository.findGameByIDWithStatuses', () => {
   let repository: GameRepository
@@ -259,5 +259,111 @@ describe('GameSchema compound index', () => {
         fields.completedAt === 1,
     )
     expect(match).toBeDefined()
+  })
+})
+
+describe('GameRepository stale cleanup', () => {
+  const staleDate = new Date('2026-01-01T00:00:00.000Z')
+
+  function createRepository(): {
+    repository: GameRepository
+    find: jest.Mock
+    findAndSaveWithLockIfChanged: jest.Mock
+    logger: { error: jest.Mock }
+  } {
+    const repository = Object.create(GameRepository.prototype) as GameRepository
+    const find = jest.fn()
+    const findAndSaveWithLockIfChanged = jest.fn()
+    const logger = { error: jest.fn() }
+
+    ;(
+      repository as unknown as {
+        find: jest.Mock
+        findAndSaveWithLockIfChanged: jest.Mock
+        logger: { error: jest.Mock }
+      }
+    ).find = find
+    ;(
+      repository as unknown as {
+        findAndSaveWithLockIfChanged: jest.Mock
+      }
+    ).findAndSaveWithLockIfChanged = findAndSaveWithLockIfChanged
+    ;(repository as unknown as { logger: { error: jest.Mock } }).logger = logger
+
+    return { repository, find, findAndSaveWithLockIfChanged, logger }
+  }
+
+  it('revalidates a stale candidate under the game lock', async () => {
+    const { repository, find, findAndSaveWithLockIfChanged } =
+      createRepository()
+    const candidate = {
+      _id: 'game-1',
+      status: GameStatus.Active,
+      updated: staleDate,
+      currentTask: { type: TaskType.Leaderboard },
+    }
+    find.mockResolvedValueOnce([candidate])
+    findAndSaveWithLockIfChanged.mockImplementationOnce(
+      async (_id: string, callback: (game: Game) => Promise<unknown>) =>
+        callback({
+          ...candidate,
+          updated: new Date(),
+        } as Game),
+    )
+
+    await expect(repository.updateExpiredGames()).resolves.toBe(0)
+
+    expect(findAndSaveWithLockIfChanged).toHaveBeenCalledTimes(1)
+    expect(candidate.status).toBe(GameStatus.Active)
+  })
+
+  it('continues processing candidates when one locked update fails', async () => {
+    const { repository, find, findAndSaveWithLockIfChanged, logger } =
+      createRepository()
+    const candidates = [
+      {
+        _id: 'failed',
+        status: GameStatus.Active,
+        updated: staleDate,
+        currentTask: { type: TaskType.Leaderboard },
+      },
+      {
+        _id: 'updated',
+        status: GameStatus.Active,
+        updated: staleDate,
+        currentTask: { type: TaskType.Leaderboard },
+      },
+    ]
+    find.mockResolvedValueOnce(candidates)
+    findAndSaveWithLockIfChanged
+      .mockRejectedValueOnce(new Error('game disappeared'))
+      .mockImplementationOnce(
+        async (_id: string, callback: (game: Game) => Promise<unknown>) =>
+          callback(candidates[1] as Game),
+      )
+
+    await expect(repository.updateExpiredGames()).resolves.toBe(1)
+
+    expect(findAndSaveWithLockIfChanged).toHaveBeenCalledTimes(2)
+    expect(candidates[1].status).toBe(GameStatus.Expired)
+    expect(logger.error).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not update already-missing candidates', async () => {
+    const { repository, find, findAndSaveWithLockIfChanged } =
+      createRepository()
+    find.mockResolvedValueOnce([
+      {
+        _id: 'missing',
+        status: GameStatus.Active,
+        updated: staleDate,
+        currentTask: { type: TaskType.Leaderboard },
+      },
+    ])
+    findAndSaveWithLockIfChanged.mockRejectedValueOnce(
+      new Error("Game not found by id 'missing'"),
+    )
+
+    await expect(repository.updateExpiredGames()).resolves.toBe(0)
   })
 })

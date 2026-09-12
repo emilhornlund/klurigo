@@ -381,6 +381,7 @@ describe('GameAnswerRepository', () => {
         exec: jest.fn().mockResolvedValue([
           [null, 1],
           [null, 1],
+          [null, 1],
         ]),
       }
       redis.multi.mockReturnValue(mockMulti as any)
@@ -397,6 +398,47 @@ describe('GameAnswerRepository', () => {
         'game-clear-player-participant-answered',
       )
       expect(mockMulti.exec).toHaveBeenCalled()
+    })
+
+    it('removes unscoped legacy keys when clearing a task', async () => {
+      const mockMulti = {
+        del: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue([
+          [null, 1],
+          [null, 1],
+          [null, 1],
+        ]),
+      }
+      redis.multi.mockReturnValue(mockMulti as any)
+
+      await repository.clear('game-clear-task', 'task-1')
+
+      expect(mockMulti.del).toHaveBeenCalledWith(
+        'game-clear-task-task-1-player-participant-answers-v2',
+      )
+      expect(mockMulti.del).toHaveBeenCalledWith(
+        'game-clear-task-player-participant-answers',
+      )
+      expect(mockMulti.del).toHaveBeenCalledWith(
+        'game-clear-task-player-participant-answered',
+      )
+    })
+
+    it('rethrows a per-command transaction error', async () => {
+      const redisError = new Error('delete failed')
+      const mockMulti = {
+        del: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue([
+          [null, 1],
+          [redisError, null],
+          [null, 1],
+        ]),
+      }
+      redis.multi.mockReturnValue(mockMulti as any)
+
+      await expect(repository.clear('game-clear-partial')).rejects.toThrow(
+        'delete failed',
+      )
     })
 
     it('logs and rethrows error on Redis failure', async () => {
