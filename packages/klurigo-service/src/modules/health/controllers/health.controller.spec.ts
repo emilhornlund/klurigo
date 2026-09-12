@@ -86,4 +86,35 @@ describe('HealthController', () => {
     await expect(controller.check()).rejects.toThrow('boom')
     expect(healthCheckService.check).toHaveBeenCalledTimes(1)
   })
+
+  it('uses the same dependency checks for the explicit readiness endpoint', async () => {
+    const expected: HealthCheckResult = {
+      status: 'ok',
+      info: {
+        mongodb: { status: 'up' },
+        redis: { status: 'up' },
+      },
+      error: {},
+      details: {
+        mongodb: { status: 'up' },
+        redis: { status: 'up' },
+      },
+    }
+    healthCheckService.check.mockResolvedValue(expected)
+
+    await expect(controller.readiness()).resolves.toBe(expected)
+    expect(healthCheckService.check).toHaveBeenCalledTimes(1)
+  })
+
+  it('reports liveness without checking external dependencies', () => {
+    expect(controller.liveness()).toEqual({
+      status: 'ok',
+      info: {},
+      error: {},
+      details: {},
+    })
+    expect(healthCheckService.check).not.toHaveBeenCalled()
+    expect(mongooseHealthIndicator.pingCheck).not.toHaveBeenCalled()
+    expect(redisHealthIndicator.pingCheck).not.toHaveBeenCalled()
+  })
 })

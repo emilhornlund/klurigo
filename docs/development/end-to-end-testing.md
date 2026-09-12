@@ -29,7 +29,7 @@ Playwright starts both web servers from its `webServer` configuration:
 - `yarn workspace @klurigo/klurigo-service dev:e2e` starts the backend with
   `NODE_ENV=test`. Its health URL is derived from `KLURIGO_SERVICE_PROXY`,
   which defaults to `http://localhost:8080/api`, with the path changed to
-  `/health`.
+  `/health` (the dependency readiness endpoint).
 
 Existing servers are reused locally and not reused in CI. Each server has a
 30-second startup timeout. The Playwright base URL is the Vite URL. The
