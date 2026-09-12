@@ -258,6 +258,43 @@ describe('GamePage', () => {
     })
   })
 
+  it('uses the existing notification for connection failures over a lobby', async () => {
+    h.context.participantType = GameParticipantType.HOST
+    h.control.status = 'CONNECTED'
+    h.control.event = {
+      type: GameEventType.GameLobbyHost,
+      game: {
+        id: 'game-123',
+        pin: '123456',
+        settings: {
+          randomizeQuestionOrder: false,
+          randomizeAnswerOrder: false,
+        },
+      },
+      players: [],
+    }
+
+    const { router } = renderWithRouter()
+    await waitFor(() => {
+      expect(screen.getByTestId('game-event-stream-ready')).toBeInTheDocument()
+    })
+
+    h.control.status = 'RECONNECTING_FAILED'
+    h.control.failure = { reason: 'SERVER_ERROR', status: 500 }
+    await act(async () => {
+      await pokeRouter(router)
+    })
+
+    expect(screen.getByText('123456')).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('game-connection-notice'),
+    ).not.toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(h.notifyError).toHaveBeenCalledWith('Reconnecting failed')
+    })
+  })
+
   it('revokes game and redirects to "/" on GameQuitEvent', () => {
     h.control.event = { type: GameEventType.GameQuitEvent }
     renderWithRouter()
@@ -736,7 +773,7 @@ describe('GamePage', () => {
     expect(screen.queryByText('Correct')).not.toBeInTheDocument()
   })
 
-  it('shows a terminal connection notice when recovery fails', async () => {
+  it('keeps the active game state when recovery fails', async () => {
     h.control.status = 'CONNECTED'
     h.control.event = {
       type: GameEventType.GameResultPlayer,
@@ -762,10 +799,9 @@ describe('GamePage', () => {
     })
 
     expect(screen.getByText('Correct')).toBeInTheDocument()
-    expect(screen.getByTestId('game-connection-notice')).toBeInTheDocument()
     expect(
-      screen.getByTestId('test-retry-game-connection-button'),
-    ).toBeInTheDocument()
+      screen.queryByTestId('game-connection-notice'),
+    ).not.toBeInTheDocument()
   })
 
   it('does not render stale game state for an unavailable game', async () => {

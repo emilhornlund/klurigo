@@ -143,7 +143,7 @@ test.describe('Game session: player UI with simulated host', () => {
           ).toBeVisible()
           await expect(
             page.getByTestId('game-connection-notice'),
-          ).toContainText('Connection lost')
+          ).not.toBeVisible()
           await replacementStreamResponse
           await expect(
             page.getByText('Connected', { exact: true }),
