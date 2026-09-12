@@ -116,6 +116,39 @@ describe('useEventSource', () => {
     })
   })
 
+  it('falls back to getRandomValues when randomUUID is unavailable', () => {
+    const randomUUIDDescriptor = Object.getOwnPropertyDescriptor(
+      window.crypto,
+      'randomUUID',
+    )
+    Object.defineProperty(window.crypto, 'randomUUID', {
+      configurable: true,
+      value: undefined,
+    })
+    const getRandomValuesSpy = vi
+      .spyOn(window.crypto, 'getRandomValues')
+      .mockImplementation((bytes) => {
+        new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength).fill(0)
+        return bytes
+      })
+
+    try {
+      renderHook(() => useEventSource('g1', 't1'))
+
+      expect(new URL(last().url).searchParams.get('connectionId')).toBe(
+        '00000000-0000-4000-8000-000000000000',
+      )
+      expect(getRandomValuesSpy).toHaveBeenCalledOnce()
+    } finally {
+      if (randomUUIDDescriptor) {
+        Object.defineProperty(window.crypto, 'randomUUID', randomUUIDDescriptor)
+      } else {
+        Reflect.deleteProperty(window.crypto, 'randomUUID')
+      }
+      getRandomValuesSpy.mockRestore()
+    }
+  })
+
   it('passes heartbeatTimeout based on HEARTBEAT_INTERVAL', () => {
     renderHook(() => useEventSource('g1', 't1'))
 
