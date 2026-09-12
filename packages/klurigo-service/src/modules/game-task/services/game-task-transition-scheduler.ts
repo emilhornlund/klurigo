@@ -1,12 +1,18 @@
 import { GameStatus, isDefined } from '@klurigo/common'
 import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq'
 import { Injectable, Logger } from '@nestjs/common'
+import { Cron } from '@nestjs/schedule'
 import { Job, Queue } from 'bullmq'
 import { MurLock } from 'murlock'
 
-import { GameRepository } from '../../game-core/repositories'
+import { RedisUnavailableException } from '../../../app/exceptions'
+import {
+  GameAnswerRepository,
+  GameRepository,
+} from '../../game-core/repositories'
 import {
   GameSettings,
+  PendingGameTransitionOperation,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
 import type { GameDocument } from '../../game-core/repositories/models/schemas'
@@ -47,6 +53,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     @InjectQueue(TASK_QUEUE_NAME)
     private taskQueue: Queue<GameDocument, void, string>,
     private gameRepository: GameRepository,
+    private gameAnswerRepository: GameAnswerRepository,
     private gameTaskTransitionService: GameTaskTransitionService,
     private gameEventPublisher: GameEventPublisher,
   ) {
@@ -67,6 +74,25 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     gameDocument.currentTask.currentTransitionExpires = new Date(
       now.getTime() + delay,
     )
+  }
+
+  private addPendingOperation(
+    gameDocument: GameDocument,
+    operation: PendingGameTransitionOperation,
+  ): void {
+    const pendingOperations = gameDocument.pendingTransitionOperations ?? []
+    if (!pendingOperations.some(({ id }) => id === operation.id)) {
+      pendingOperations.push(operation)
+    }
+    gameDocument.pendingTransitionOperations = pendingOperations
+  }
+
+  private static getOperationId(
+    gameDocument: GameDocument,
+    operation: PendingGameTransitionOperation['operation'],
+  ): string {
+    const { _id, currentTask } = gameDocument
+    return `${operation}-${_id}-${currentTask._id}-${currentTask.type}-${currentTask.status}`
   }
 
   /**
@@ -109,6 +135,12 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         transition.nextStatus,
         transition.callback,
       )
+      if (transition.recoveryOperationId) {
+        await this.gameRepository.clearPendingTransitionOperation(
+          gameID,
+          transition.recoveryOperationId,
+        )
+      }
     }
   }
 
@@ -121,6 +153,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     | {
         callback?: (gameDocument: GameDocument) => Promise<void>
         nextStatus: 'active' | 'completed' | undefined
+        recoveryOperationId?: string
       }
     | undefined
   > {
@@ -129,13 +162,39 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     const expectedTask = getTaskIdentity(gameDocument)
     const jobId = GameTaskTransitionScheduler.getTransitionJobId(gameDocument)
 
-    const existingTransitionJob = await this.taskQueue.getJob(jobId)
+    let existingTransitionJob: Job<GameDocument, void, string> | undefined
+    try {
+      existingTransitionJob = await this.taskQueue.getJob(jobId)
+    } catch (error) {
+      this.logger.error(
+        `Failed to inspect transition queue for task ${type} and status ${status} for Game ID: ${gameID}`,
+        error,
+      )
+      throw new RedisUnavailableException(
+        'inspecting the task transition queue',
+        `game ${gameID}`,
+        error,
+      )
+    }
+
     if (existingTransitionJob) {
       if (status === 'active') {
         this.logger.debug(
           `Deleting existing timeout for task type ${type} and status ${status} for Game ID: ${gameDocument._id}`,
         )
-        await this.taskQueue.remove(jobId)
+        try {
+          await this.taskQueue.remove(jobId)
+        } catch (error) {
+          this.logger.error(
+            `Failed to remove the existing transition for task ${type} and status ${status} for Game ID: ${gameID}`,
+            error,
+          )
+          throw new RedisUnavailableException(
+            'removing the task transition queue job',
+            `game ${gameID}`,
+            error,
+          )
+        }
         return { nextStatus, callback }
       } else {
         this.logger.warn(
@@ -146,6 +205,10 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     } else {
       const delay =
         this.gameTaskTransitionService.getTaskTransitionDelay(gameDocument)
+      const recoveryOperationId = GameTaskTransitionScheduler.getOperationId(
+        gameDocument,
+        'schedule',
+      )
 
       let savedGameDocument: GameDocument
       try {
@@ -163,6 +226,13 @@ export class GameTaskTransitionScheduler extends WorkerHost {
               )
             }
             this.setTransitionTiming(doc, delay)
+            this.addPendingOperation(doc, {
+              id: recoveryOperationId,
+              operation: 'schedule',
+              taskId: currentTask._id,
+              taskType: type,
+              taskStatus: status,
+            })
             return doc
           },
         )
@@ -178,8 +248,12 @@ export class GameTaskTransitionScheduler extends WorkerHost {
 
       if (delay > 0) {
         await this.scheduleDeferredTransition(gameDocument, delay, nextStatus)
+        await this.gameRepository.clearPendingTransitionOperation(
+          gameID,
+          recoveryOperationId,
+        )
       } else {
-        return { nextStatus, callback }
+        return { nextStatus, callback, recoveryOperationId }
       }
     }
   }
@@ -219,7 +293,11 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         `Failed to schedule deferred transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${_id}`,
         error,
       )
-      throw error
+      throw new RedisUnavailableException(
+        'scheduling a deferred task transition',
+        `game ${_id}`,
+        error,
+      )
     }
   }
 
@@ -240,6 +318,10 @@ export class GameTaskTransitionScheduler extends WorkerHost {
   ): Promise<void> {
     const { _id, currentTask } = gameDocument
     const { type, status } = currentTask
+    const recoveryOperationId = GameTaskTransitionScheduler.getOperationId(
+      gameDocument,
+      'transition',
+    )
 
     this.logger.debug(
       `Performing transition for task ${type} from status ${status} to ${nextStatus} for Game ID: ${_id}`,
@@ -299,9 +381,25 @@ export class GameTaskTransitionScheduler extends WorkerHost {
             this.setTransitionTiming(doc, delay)
           }
 
+          this.addPendingOperation(doc, {
+            id: recoveryOperationId,
+            operation: 'transition',
+            taskId: currentTask._id,
+            taskType: type,
+            taskStatus: status,
+          })
+
           return doc
         },
       )
+
+      if (
+        type === TaskType.Question &&
+        nextStatus === 'completed' &&
+        updatedGameDocument.currentTask.type !== TaskType.Question
+      ) {
+        await this.gameAnswerRepository.clear(_id, currentTask._id)
+      }
 
       await this.gameEventPublisher.publish(updatedGameDocument)
 
@@ -328,15 +426,27 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         this.logger.warn(
           `Skipping post-transition actions since current status ${updatedGameDocument.currentTask.status} does not match expected status ${nextStatus} for Game ID: ${_id}`,
         )
+        await this.gameRepository.clearPendingTransitionOperation(
+          _id,
+          recoveryOperationId,
+        )
         return
       }
       if (isGameEnded(updatedGameDocument)) {
         this.logger.warn(
           `Skipping post-transition actions since game has ended with status ${updatedGameDocument.status} for Game ID: ${_id}`,
         )
+        await this.gameRepository.clearPendingTransitionOperation(
+          _id,
+          recoveryOperationId,
+        )
         return
       }
       await this.performPostTransition(updatedGameDocument)
+      await this.gameRepository.clearPendingTransitionOperation(
+        _id,
+        recoveryOperationId,
+      )
     }
   }
 
@@ -393,6 +503,76 @@ export class GameTaskTransitionScheduler extends WorkerHost {
   }
 
   /**
+   * Retries Redis side effects recorded with a persisted game transition. This
+   * also covers immediate transitions, which do not have a BullMQ job to retry.
+   */
+  @Cron('*/5 * * * * *')
+  @MurLock(5000, 'pending_game_transition_recovery')
+  public async recoverPendingTransitionOperations(): Promise<void> {
+    let games: GameDocument[]
+    try {
+      games =
+        await this.gameRepository.findGamesWithPendingTransitionOperations()
+    } catch (error) {
+      this.logger.error(
+        'Failed to find pending game transition operations for recovery.',
+        error,
+      )
+      return
+    }
+
+    for (const game of games) {
+      try {
+        await this.recoverPendingTransitionOperationsForGame(game)
+      } catch (error) {
+        this.logger.error(
+          `Failed to recover pending game transition operations for Game ID: ${game._id}`,
+          error,
+        )
+      }
+    }
+  }
+
+  private async recoverPendingTransitionOperationsForGame(
+    gameDocument: GameDocument,
+  ): Promise<void> {
+    for (const operation of gameDocument.pendingTransitionOperations ?? []) {
+      const latestGameDocument =
+        await this.gameRepository.findGameByIDWithStatusesOrThrow(
+          gameDocument._id,
+          [GameStatus.Active, GameStatus.Completed],
+        )
+      const pendingOperation = (
+        latestGameDocument.pendingTransitionOperations ?? []
+      ).find(({ id }) => id === operation.id)
+
+      if (!pendingOperation) continue
+
+      if (pendingOperation.operation === 'schedule') {
+        await this.scheduleTaskTransition(latestGameDocument)
+      } else {
+        if (
+          pendingOperation.taskType === TaskType.Question &&
+          pendingOperation.taskStatus === 'active'
+        ) {
+          await this.gameAnswerRepository.clear(
+            latestGameDocument._id,
+            pendingOperation.taskId,
+          )
+        }
+
+        await this.gameEventPublisher.publish(latestGameDocument)
+        await this.performPostTransition(latestGameDocument)
+      }
+
+      await this.gameRepository.clearPendingTransitionOperation(
+        latestGameDocument._id,
+        pendingOperation.id,
+      )
+    }
+  }
+
+  /**
    * A job consumer for scheduled deferred transitions.
    *
    * @param job - The scheduled transition job.
@@ -430,10 +610,35 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           this.logger.warn(
             `Skipping timeout handler since game status or task identity has changed for Game ID: ${gameDocument._id}`,
           )
+          if (latestGameDocument.pendingTransitionOperations?.length) {
+            await this.recoverPendingTransitionOperationsForGame(
+              latestGameDocument,
+            )
+            return
+          }
           if (job.id) {
-            const existingTransitionJob = await this.taskQueue.getJob(job.id)
+            let existingTransitionJob: Awaited<
+              ReturnType<typeof this.taskQueue.getJob>
+            >
+            try {
+              existingTransitionJob = await this.taskQueue.getJob(job.id)
+            } catch (error) {
+              throw new RedisUnavailableException(
+                'inspecting the task transition queue',
+                `game ${gameDocument._id}`,
+                error,
+              )
+            }
             if (isDefined(existingTransitionJob)) {
-              await this.taskQueue.remove(job.id)
+              try {
+                await this.taskQueue.remove(job.id)
+              } catch (error) {
+                throw new RedisUnavailableException(
+                  'removing the task transition queue job',
+                  `game ${gameDocument._id}`,
+                  error,
+                )
+              }
             }
           }
         }

@@ -30,6 +30,7 @@ import {
 } from 'rxjs'
 import { filter, map, takeUntil } from 'rxjs/operators'
 
+import { RedisUnavailableException } from '../../../app/exceptions'
 import { PlayerNotFoundException } from '../../game-core/exceptions'
 import { GameRepository } from '../../game-core/repositories'
 
@@ -165,6 +166,8 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * to ensure the service does not run without the ability to consume distributed events.
    */
   async onModuleInit(): Promise<void> {
+    this.redisSubscriber.on('error', this.onRedisError)
+
     try {
       const count = await this.redisSubscriber.subscribe(REDIS_PUBSUB_CHANNEL)
       this.logger.log(`Subscribed to ${count} channels.`)
@@ -179,11 +182,15 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       } catch {
         // Preserve the subscription failure as the actionable error.
       }
-      throw error
+      this.redisSubscriber.off('error', this.onRedisError)
+      throw new RedisUnavailableException(
+        `subscribing to Redis channel "${REDIS_PUBSUB_CHANNEL}"`,
+        'game event sessions',
+        error,
+      )
     }
 
     this.redisSubscriber.on('message', this.onRedisMessage)
-    this.redisSubscriber.on('error', this.onRedisError)
   }
 
   /**
@@ -202,7 +209,6 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
 
     try {
       this.redisSubscriber.off('message', this.onRedisMessage)
-      this.redisSubscriber.off('error', this.onRedisError)
       await this.redisSubscriber.unsubscribe(REDIS_PUBSUB_CHANNEL)
     } catch (error) {
       shutdownError = error
@@ -230,8 +236,11 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       } catch {
         // ignore
       }
+      this.redisSubscriber.off('error', this.onRedisError)
       throw shutdownError
     }
+
+    this.redisSubscriber.off('error', this.onRedisError)
   }
 
   /**

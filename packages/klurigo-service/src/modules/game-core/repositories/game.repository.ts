@@ -15,7 +15,12 @@ import {
 } from '../exceptions'
 import { buildGameModel } from '../utils'
 
-import { Game, GameDocument, TaskType } from './models/schemas'
+import {
+  Game,
+  GameDocument,
+  PendingGameTransitionOperation,
+  TaskType,
+} from './models/schemas'
 
 /**
  * Repository for interacting with the Game collection in the database.
@@ -126,6 +131,42 @@ export class GameRepository extends BaseRepository<Game> {
     }
 
     return gameDocument
+  }
+
+  /**
+   * Finds live games with Redis work that was recorded alongside a persisted
+   * transition but has not completed yet.
+   */
+  public async findGamesWithPendingTransitionOperations(): Promise<
+    GameDocument[]
+  > {
+    return this.gameModel
+      .find({
+        status: { $in: [GameStatus.Active, GameStatus.Completed] },
+        'pendingTransitionOperations.0': { $exists: true },
+      })
+      .populate('quiz') as Promise<GameDocument[]>
+  }
+
+  /**
+   * Removes one outbox entry without touching a newer operation for the same
+   * game.
+   */
+  public async clearPendingTransitionOperation(
+    gameID: string,
+    operationId: PendingGameTransitionOperation['id'],
+  ): Promise<void> {
+    await this.findAndSaveWithLockIfChanged(gameID, async (gameDocument) => {
+      const pendingOperations = gameDocument.pendingTransitionOperations ?? []
+      if (!pendingOperations.some(({ id }) => id === operationId)) {
+        return undefined
+      }
+
+      gameDocument.pendingTransitionOperations = pendingOperations.filter(
+        ({ id }) => id !== operationId,
+      )
+      return gameDocument
+    })
   }
 
   /**

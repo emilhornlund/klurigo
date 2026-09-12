@@ -444,7 +444,7 @@ describe('GameTaskTransitionService', () => {
       ).toBeUndefined()
     })
 
-    it('question completed reads answers from repository, clears answers, stores them, and transitions to question result task', async () => {
+    it('question completed reads answers, stores them, and transitions to question result task', async () => {
       const task = createMockQuestionTaskDocument({
         status: 'completed',
         questionIndex: 0,
@@ -480,10 +480,7 @@ describe('GameTaskTransitionService', () => {
         'game-1',
         task._id,
       )
-      expect(gameAnswerRepository.clear).toHaveBeenCalledWith(
-        'game-1',
-        task._id,
-      )
+      expect(gameAnswerRepository.clear).not.toHaveBeenCalled()
 
       expect((task as any).answers).toEqual(parsedAnswers)
       expect(gameDoc.previousTasks).toContain(task)
@@ -934,7 +931,7 @@ describe('GameTaskTransitionService', () => {
       expect(gameDoc.previousTasks).not.toContain(task)
     })
 
-    it('question completed: propagates repository clear failure and does not transition task', async () => {
+    it('question completed does not clear Redis state before the game transition is persisted', async () => {
       const task = createMockQuestionTaskDocument({
         status: 'completed',
         questionIndex: 0,
@@ -948,19 +945,20 @@ describe('GameTaskTransitionService', () => {
       gameAnswerRepository.findAllAnswersByGameId.mockResolvedValue([
         { participantId: 'p1' } as any,
       ])
-      gameAnswerRepository.clear.mockRejectedValue(
-        new Error('Repository clear failed'),
-      )
-
+      const nextTask = createMockQuestionResultTaskDocument({
+        status: 'pending',
+      })
+      ;(buildQuestionResultTask as jest.Mock)
+        .mockReset()
+        .mockReturnValue(nextTask as never)
       const callback = service.getTaskTransitionCallback(gameDoc as never)
       expect(callback).toBeDefined()
 
-      await expect(callback!(gameDoc as never)).rejects.toThrow(
-        'Repository clear failed',
-      )
+      await expect(callback!(gameDoc as never)).resolves.toBeUndefined()
 
-      expect(buildQuestionResultTask).not.toHaveBeenCalled()
-      expect(gameDoc.previousTasks).not.toContain(task)
+      expect(buildQuestionResultTask).toHaveBeenCalledWith(gameDoc as never)
+      expect(gameDoc.currentTask).toBe(nextTask)
+      expect(gameAnswerRepository.clear).not.toHaveBeenCalled()
     })
 
     it('question completed: propagates deserialization failure from repository and does not clear or transition', async () => {

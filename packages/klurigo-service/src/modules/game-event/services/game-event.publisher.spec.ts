@@ -326,8 +326,9 @@ describe('GameEventPublisher', () => {
     )
   })
 
-  it('publish logs error if redis.publish rejects', async () => {
-    redis.publish.mockRejectedValueOnce(new Error('redis down'))
+  it('publish rejects with a controlled error if redis.publish rejects', async () => {
+    const redisError = new Error('redis down')
+    redis.publish.mockRejectedValueOnce(redisError)
 
     const participant = {
       participantId: 'p1',
@@ -337,11 +338,16 @@ describe('GameEventPublisher', () => {
 
     const event = { x: 1 } as any
 
-    await service.publishParticipantEvent('game-1', participant as any, event)
+    await expect(
+      service.publishParticipantEvent('game-1', participant as any, event),
+    ).rejects.toMatchObject({
+      message:
+        'Redis unavailable while publishing a game event for game game-1 participant p1',
+    })
 
     expect(logger.error).toHaveBeenCalledWith(
-      'Error publishing event:',
-      expect.any(Error),
+      'Failed to publish event for game game-1 participant p1.',
+      redisError,
     )
   })
 
