@@ -17,10 +17,10 @@ export class RedisHealthIndicator extends HealthIndicator {
     try {
       await this.redis.ping()
       return this.getStatus(key, true)
-    } catch (error) {
+    } catch {
       throw new HealthCheckError(
         'Redis check failed',
-        this.getStatus(key, false, { message: (error as Error).message }),
+        this.getStatus(key, false),
       )
     }
   }

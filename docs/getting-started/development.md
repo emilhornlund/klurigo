@@ -49,13 +49,14 @@ yarn dev
 ```
 
 The root `yarn dev` script starts only the backend and frontend. It waits for
-the backend health endpoint before starting the frontend; it does not start
+the backend readiness endpoint before starting the frontend; it does not start
 Storybook.
 
 With the default development environment, the applications are available at:
 
 - Frontend: <http://localhost:3000>
-- Backend health endpoint: <http://localhost:8080/health>
+- Backend readiness endpoint: <http://localhost:8080/health>
+- Backend liveness endpoint: <http://localhost:8080/health/live>
 
 Start Storybook separately when needed. It listens on port 6006:
 

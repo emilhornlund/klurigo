@@ -7,7 +7,7 @@ const KLURIGO_SERVICE_PROXY =
   env.KLURIGO_SERVICE_PROXY || 'http://localhost:8080/api'
 
 const apiUrl = new URL(KLURIGO_SERVICE_PROXY)
-apiUrl.pathname = '/health'
+apiUrl.pathname = '/health/ready'
 
 const GAME_SESSION_TEST_MATCH = '**/game-session/**/*.spec.ts'
 const GAME_SESSION_EXPECT_TIMEOUT = 15_000

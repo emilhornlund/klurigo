@@ -11,7 +11,7 @@
     "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\" && yarn metadata:check",
     "dev": "concurrently \"yarn klurigo-service:dev\" \"yarn klurigo-web:dev\"",
     "klurigo-service:dev": "yarn workspace @klurigo/klurigo-service dev",
-    "klurigo-web:dev": "wait-on http://localhost:8080/health && yarn workspace @klurigo/klurigo-web dev",
+    "klurigo-web:dev": "wait-on http://localhost:8080/health/ready && yarn workspace @klurigo/klurigo-web dev",
     "klurigo-web:storybook": "yarn workspace @klurigo/klurigo-web storybook",
     "serve": "concurrently \"yarn workspace @klurigo/klurigo-service serve\" \"yarn workspace @klurigo/klurigo-web serve\"",
     "validate": "node scripts/validate-repository.mjs",

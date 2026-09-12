@@ -25,8 +25,10 @@ describe('RedisHealthIndicator', () => {
     expect(redis.ping).toHaveBeenCalledTimes(1)
   })
 
-  it('throws HealthCheckError with status down and message when redis.ping fails', async () => {
-    ;(redis.ping as jest.Mock).mockRejectedValue(new Error('timeout'))
+  it('throws HealthCheckError with status down without exposing the redis error', async () => {
+    ;(redis.ping as jest.Mock).mockRejectedValue(
+      new Error('redis://:secret-password@redis:6379 connection timeout'),
+    )
 
     try {
       await indicator.pingCheck('redis')
@@ -39,9 +41,9 @@ describe('RedisHealthIndicator', () => {
       expect(hcErr.causes).toEqual({
         redis: {
           status: 'down',
-          message: 'timeout',
         },
       })
+      expect(JSON.stringify(hcErr.causes)).not.toContain('secret-password')
     }
 
     expect(redis.ping).toHaveBeenCalledTimes(1)

@@ -6,7 +6,7 @@ import { EnvironmentVariables } from '../config'
 
 export function configureApp(app: INestApplication) {
   app.enableShutdownHooks()
-  app.setGlobalPrefix('/api', { exclude: ['/health'] })
+  app.setGlobalPrefix('/api', { exclude: ['/health', '/health/*path'] })
   app.use(helmet())
 
   const configService = app.get(ConfigService<EnvironmentVariables>)

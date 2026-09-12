@@ -40,8 +40,8 @@ yarn dev
 ```
 
 The root development command runs the backend and frontend concurrently. The
-frontend startup waits for `http://localhost:8080/health`; it does not start
-Storybook. With the checked-in development environment, the frontend is at
+frontend startup waits for `http://localhost:8080/health/ready`; it does not
+start Storybook. With the checked-in development environment, the frontend is at
 `http://localhost:3000` and the backend health endpoint is at
 `http://localhost:8080/health`.
 
@@ -55,7 +55,8 @@ yarn workspace @klurigo/klurigo-web dev
 The backend requires MongoDB and Redis. The workspace frontend command starts
 Vite directly and does not perform the root command's backend health wait. The
 root aliases `yarn klurigo-service:dev` and `yarn klurigo-web:dev` are the two
-commands used by `yarn dev`.
+commands used by `yarn dev`. `/health` and `/health/ready` report dependency
+readiness; `/health/live` reports only that the process is running.
 
 Serve built applications:
 
