@@ -467,6 +467,39 @@ describe('GameEventSubscriber', () => {
     expect(redisSubscriber.disconnect).not.toHaveBeenCalled()
   })
 
+  it('closes active SSE streams and clears their shutdown state', async () => {
+    const doc = buildGameDoc()
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(doc)
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ initial: true })
+    await service.onModuleInit()
+
+    const stream$ = await service.subscribe('game-1', 'p1', 'active')
+    const streamSubscription = stream$.subscribe()
+    const emitSpy = jest.spyOn(eventEmitter, 'emit')
+
+    await service.onModuleDestroy()
+    await service.onModuleDestroy()
+
+    expect(streamSubscription.closed).toBe(true)
+    expect((service as any).connectionClosersByConnection.size).toBe(0)
+    expect((service as any).connectionCountsByParticipantId.size).toBe(0)
+    expect(redisSubscriber.quit).toHaveBeenCalledTimes(1)
+    emitSpy.mockClear()
+    jest.advanceTimersByTime(HEARTBEAT_INTERVAL)
+    expect(emitSpy).not.toHaveBeenCalled()
+  })
+
+  it('rejects new SSE streams once shutdown has started', async () => {
+    await service.onModuleDestroy()
+
+    await expect(service.subscribe('game-1', 'p1')).rejects.toThrow(
+      'Service is shutting down',
+    )
+    expect(
+      gameRepository.findGameByIDWithStatusesOrThrow,
+    ).not.toHaveBeenCalled()
+  })
+
   it('onModuleDestroy logs, disconnects, and rethrows if Redis shutdown throws', async () => {
     await service.onModuleInit()
 
