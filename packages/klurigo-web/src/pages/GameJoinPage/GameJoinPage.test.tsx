@@ -15,11 +15,13 @@ vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({ joinGame: mockJoinGame }),
 }))
 
+const mockRevokeGame = vi.fn()
 let providedIsUserAuthenticated = true
 
 vi.mock('../../context/auth', () => ({
   useAuthContext: () => ({
     isUserAuthenticated: providedIsUserAuthenticated,
+    revokeGame: mockRevokeGame,
   }),
 }))
 
@@ -109,6 +111,7 @@ beforeEach(() => {
   providedDefaultNickname = undefined
   providedIsUserAuthenticated = true
   mockJoinGame.mockResolvedValue(undefined)
+  mockRevokeGame.mockResolvedValue(undefined)
 })
 
 describe('GameJoinPage', () => {
@@ -125,7 +128,7 @@ describe('GameJoinPage', () => {
     const { container } = renderWithRouter(<GameJoinPage />)
 
     fireEvent.click(screen.getByRole('button', { name: /back/i }))
-    expect(mockNavigate).toHaveBeenCalledWith(-1)
+    expect(mockRevokeGame).toHaveBeenCalledWith({ redirectTo: '/' })
 
     expect(container).toMatchSnapshot()
   })
