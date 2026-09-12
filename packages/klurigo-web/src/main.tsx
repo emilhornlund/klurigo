@@ -231,7 +231,13 @@ const router = createBrowserRouter([
         ),
       },
     ],
-    errorElement: <ErrorPage />,
+    errorElement: (
+      <UserContextProvider>
+        <AuthContextProvider>
+          <ErrorPage />
+        </AuthContextProvider>
+      </UserContextProvider>
+    ),
   },
 ])
 
