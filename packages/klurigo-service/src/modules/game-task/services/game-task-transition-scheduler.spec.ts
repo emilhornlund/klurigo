@@ -1,7 +1,10 @@
 import { GameStatus } from '@klurigo/common'
 import { Job, Queue } from 'bullmq'
 
-import { GameRepository } from '../../game-core/repositories'
+import {
+  GameAnswerRepository,
+  GameRepository,
+} from '../../game-core/repositories'
 import {
   GameDocument,
   TaskType,
@@ -11,11 +14,11 @@ import { GameEventPublisher } from '../../game-event/services'
 // The scheduler tests exercise business logic directly and do not need Redis.
 // Keep the decorator's serialization behavior for concurrency tests.
 jest.mock('murlock', () => {
-  let lock = Promise.resolve()
+  const locks = new Map<string, Promise<void>>()
 
   return {
     MurLock:
-      () =>
+      (...lockArgs: unknown[]) =>
       (
         _target: unknown,
         _propertyKey: string,
@@ -23,16 +26,19 @@ jest.mock('murlock', () => {
       ) => {
         const originalMethod = descriptor.value
         descriptor.value = async function (...args: unknown[]) {
-          const previous = lock
+          const lockKey = String(lockArgs[1] ?? 'default')
+          const previous = locks.get(lockKey) ?? Promise.resolve()
           let release: () => void = () => undefined
-          lock = new Promise<void>((resolve) => {
+          const current = new Promise<void>((resolve) => {
             release = resolve
           })
+          locks.set(lockKey, current)
           await previous
           try {
             return await originalMethod.apply(this, args)
           } finally {
             release()
+            if (locks.get(lockKey) === current) locks.delete(lockKey)
           }
         }
         return descriptor
@@ -57,9 +63,13 @@ describe('GameTaskTransitionScheduler', () => {
   let gameRepository: jest.Mocked<
     Pick<
       GameRepository,
-      'findAndSaveWithLock' | 'findGameByIDWithStatusesOrThrow'
+      | 'findAndSaveWithLock'
+      | 'findGameByIDWithStatusesOrThrow'
+      | 'findGamesWithPendingTransitionOperations'
+      | 'clearPendingTransitionOperation'
     >
   >
+  let gameAnswerRepository: jest.Mocked<Pick<GameAnswerRepository, 'clear'>>
   let gameTaskTransitionService: jest.Mocked<
     Pick<
       GameTaskTransitionService,
@@ -115,6 +125,12 @@ describe('GameTaskTransitionScheduler', () => {
     gameRepository = {
       findAndSaveWithLock: jest.fn(),
       findGameByIDWithStatusesOrThrow: jest.fn(),
+      findGamesWithPendingTransitionOperations: jest.fn(),
+      clearPendingTransitionOperation: jest.fn().mockResolvedValue(undefined),
+    }
+
+    gameAnswerRepository = {
+      clear: jest.fn().mockResolvedValue(undefined),
     }
 
     gameTaskTransitionService = {
@@ -129,6 +145,7 @@ describe('GameTaskTransitionScheduler', () => {
     scheduler = new GameTaskTransitionScheduler(
       taskQueue as unknown as Queue<GameDocument, void, string>,
       gameRepository as unknown as GameRepository,
+      gameAnswerRepository as unknown as GameAnswerRepository,
       gameTaskTransitionService as unknown as GameTaskTransitionService,
       gameEventPublisher as unknown as GameEventPublisher,
     )
@@ -589,13 +606,167 @@ describe('GameTaskTransitionScheduler', () => {
 
       await expect(
         (scheduler as any).scheduleDeferredTransition(game, 1_000, 'active'),
-      ).rejects.toThrow('boom')
+      ).rejects.toMatchObject({
+        message:
+          'Redis unavailable while scheduling a deferred task transition for game game-1',
+      })
 
       expect(logger.error).toHaveBeenCalledTimes(1)
     })
   })
 
+  describe('recoverPendingTransitionOperations', () => {
+    it('recovers a schedule after Mongo persistence succeeded but queue insertion failed', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      const pendingOperation = {
+        id: 'schedule-game-1-task-1-LOBBY-pending',
+        operation: 'schedule' as const,
+        taskId: game.currentTask._id,
+        taskType: game.currentTask.type,
+        taskStatus: game.currentTask.status,
+      }
+      game.pendingTransitionOperations = [pendingOperation]
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [game],
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => (await mutator(game)) as GameDocument,
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(
+        gameRepository.clearPendingTransitionOperation,
+      ).toHaveBeenCalledWith(game._id, pendingOperation.id)
+    })
+
+    it('retries answer cleanup and post-transition work for a committed transition', async () => {
+      const game = buildGameDocument(undefined, {
+        type: TaskType.QuestionResult,
+        status: 'pending',
+      })
+      const pendingOperation = {
+        id: 'transition-game-1-task-1-QUESTION-active',
+        operation: 'transition' as const,
+        taskId: 'task-1',
+        taskType: TaskType.Question,
+        taskStatus: 'active' as const,
+      }
+      game.pendingTransitionOperations = [pendingOperation]
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [game],
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      const postTransitionSpy = jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(gameAnswerRepository.clear).toHaveBeenCalledWith(
+        game._id,
+        pendingOperation.taskId,
+      )
+      expect(gameEventPublisher.publish).toHaveBeenCalledWith(game)
+      expect(postTransitionSpy).toHaveBeenCalledWith(game)
+      expect(
+        gameRepository.clearPendingTransitionOperation,
+      ).toHaveBeenCalledWith(game._id, pendingOperation.id)
+    })
+  })
+
   describe('performTransition', () => {
+    it('clears question answers after persistence and before publishing', async () => {
+      const game = buildGameDocument(undefined, {
+        type: TaskType.Question,
+        status: 'active',
+      })
+      const order: string[] = []
+      const callback = jest.fn(async (document: GameDocument) => {
+        document.currentTask = {
+          ...document.currentTask,
+          type: TaskType.QuestionResult,
+        } as GameDocument['currentTask']
+      })
+
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(undefined, {
+            type: TaskType.Question,
+            status: 'active',
+          })
+          const updated = (await mutator(doc)) as GameDocument
+          updated.currentTask.status = 'completed'
+          order.push('persist')
+          return updated
+        },
+      )
+      gameAnswerRepository.clear.mockImplementation(async () => {
+        order.push('clear')
+      })
+      gameEventPublisher.publish.mockImplementation(async () => {
+        order.push('publish')
+      })
+      jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await (scheduler as any).performTransition(game, 'completed', callback)
+
+      expect(gameAnswerRepository.clear).toHaveBeenCalledWith(
+        game._id,
+        game.currentTask._id,
+      )
+      expect(order).toEqual(['persist', 'clear', 'publish'])
+    })
+
+    it('does not publish a transitioned game when Redis answer cleanup fails', async () => {
+      const game = buildGameDocument(undefined, {
+        type: TaskType.Question,
+        status: 'active',
+      })
+      const cleanupError = new Error('redis unavailable')
+      const callback = jest.fn(async (document: GameDocument) => {
+        document.currentTask = {
+          ...document.currentTask,
+          type: TaskType.QuestionResult,
+        } as GameDocument['currentTask']
+      })
+
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(undefined, {
+            type: TaskType.Question,
+            status: 'active',
+          })
+          const updated = (await mutator(doc)) as GameDocument
+          updated.currentTask.status = 'completed'
+          return updated
+        },
+      )
+      gameAnswerRepository.clear.mockRejectedValue(cleanupError)
+      jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await expect(
+        (scheduler as any).performTransition(game, 'completed', callback),
+      ).rejects.toThrow('redis unavailable')
+
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.stringContaining('Failed to perform transition'),
+        cleanupError,
+      )
+    })
+
     it('updates status (when nextStatus provided), executes callback, publishes, and performs post-transition', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
       const callback = jest.fn(async (doc: any) => {

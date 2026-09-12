@@ -126,6 +126,11 @@ const isTestEnv = process.env.NODE_ENV === 'test'
           db: Number(config.get('REDIS_DB')),
         },
         defaultJobOptions: {
+          attempts: 5,
+          backoff: {
+            type: 'exponential',
+            delay: 1000,
+          },
           removeOnComplete: { count: 0 },
           removeOnFail: { count: 50 },
         },

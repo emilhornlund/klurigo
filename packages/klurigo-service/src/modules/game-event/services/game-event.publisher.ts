@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
+import { RedisUnavailableException } from '../../../app/exceptions'
 import {
   GameDocument,
   Participant,
@@ -52,19 +53,12 @@ export class GameEventPublisher {
 
     await Promise.all(
       document.participants.map(async (participant) => {
+        let event: GameEvent | undefined
         try {
-          const event =
-            await this.gameParticipantEventBuilder.buildParticipantEvent(
-              document,
-              participant,
-              context,
-            )
-
-          await this.publishParticipantEvent(
-            document._id,
+          event = await this.gameParticipantEventBuilder.buildParticipantEvent(
+            document,
             participant,
-            event,
-            document.version,
+            context,
           )
         } catch (error) {
           const { message, stack } = error as Error
@@ -72,7 +66,15 @@ export class GameEventPublisher {
             `Error publishing event for participant ${participant.participantId}: ${message}`,
             stack,
           )
+          return
         }
+
+        await this.publishParticipantEvent(
+          document._id,
+          participant,
+          event,
+          document.version,
+        )
       }),
     )
   }
@@ -114,8 +116,9 @@ export class GameEventPublisher {
   private async publishDistributedEvent(
     event: DistributedEvent,
   ): Promise<void> {
+    const message = JSON.stringify(event)
+
     try {
-      const message = JSON.stringify(event)
       await this.redis.publish(REDIS_PUBSUB_CHANNEL, message)
       if (event.playerId) {
         this.logger.debug(`Published event for playerId: ${event.playerId}`)
@@ -123,7 +126,15 @@ export class GameEventPublisher {
         this.logger.debug('Published event for all players')
       }
     } catch (error) {
-      this.logger.error('Error publishing event:', error)
+      this.logger.error(
+        `Failed to publish event for game ${event.gameId}${event.playerId ? ` participant ${event.playerId}` : ''}.`,
+        error,
+      )
+      throw new RedisUnavailableException(
+        'publishing a game event',
+        `game ${event.gameId}${event.playerId ? ` participant ${event.playerId}` : ''}`,
+        error,
+      )
     }
   }
 }

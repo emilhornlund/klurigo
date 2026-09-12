@@ -1,6 +1,8 @@
 import { QuestionType } from '@klurigo/common'
 import type { Redis } from 'ioredis'
 
+import { RedisUnavailableException } from '../../../app/exceptions'
+
 import { GameAnswerRepository } from './game-answer.respository'
 import { QuestionTaskAnswer } from './models/schemas'
 
@@ -189,7 +191,7 @@ describe('GameAnswerRepository', () => {
 
       await expect(
         repository.submitOnce('game-fail', answer, 3, 'task-fail'),
-      ).rejects.toThrow('Redis unavailable')
+      ).rejects.toBeInstanceOf(RedisUnavailableException)
 
       expect(redis.hlen).not.toHaveBeenCalled()
       expect(logger.error).toHaveBeenCalledWith(
@@ -214,7 +216,10 @@ describe('GameAnswerRepository', () => {
 
       await expect(
         repository.submitOnce('game-retry', answer, 3, 'task-retry'),
-      ).rejects.toThrow('Redis unavailable')
+      ).rejects.toMatchObject({
+        message:
+          'Redis unavailable while persisting a question answer for game game-retry task task-retry',
+      })
       await expect(
         repository.submitOnce('game-retry', answer, 3, 'task-retry'),
       ).resolves.toEqual({ accepted: true, answerCount: 1 })
@@ -233,7 +238,10 @@ describe('GameAnswerRepository', () => {
 
       await expect(
         repository.submitOnce('game-committed', answer, 3, 'task-committed'),
-      ).rejects.toThrow('Redis unavailable')
+      ).rejects.toMatchObject({
+        message:
+          'Redis unavailable while persisting a question answer for game game-committed task task-committed',
+      })
       await expect(
         repository.submitOnce('game-committed', answer, 3, 'task-committed'),
       ).resolves.toEqual({ accepted: false })
@@ -365,7 +373,10 @@ describe('GameAnswerRepository', () => {
 
       await expect(
         repository.findAllAnswersByGameId('game-redis-fail'),
-      ).rejects.toThrow('Redis connection lost')
+      ).rejects.toMatchObject({
+        message:
+          'Redis unavailable while retrieving question answers for game game-redis-fail',
+      })
 
       expect(logger.error).toHaveBeenCalledWith(
         'Failed to retrieve question answers for game game-redis-fail.',
@@ -436,9 +447,12 @@ describe('GameAnswerRepository', () => {
       }
       redis.multi.mockReturnValue(mockMulti as any)
 
-      await expect(repository.clear('game-clear-partial')).rejects.toThrow(
-        'delete failed',
-      )
+      await expect(
+        repository.clear('game-clear-partial'),
+      ).rejects.toMatchObject({
+        message:
+          'Redis unavailable while clearing question answers for game game-clear-partial',
+      })
     })
 
     it('logs and rethrows error on Redis failure', async () => {
@@ -449,9 +463,10 @@ describe('GameAnswerRepository', () => {
       }
       redis.multi.mockReturnValue(mockMulti as any)
 
-      await expect(repository.clear('game-fail-clear')).rejects.toThrow(
-        'Clear failed',
-      )
+      await expect(repository.clear('game-fail-clear')).rejects.toMatchObject({
+        message:
+          'Redis unavailable while clearing question answers for game game-fail-clear',
+      })
 
       expect(logger.error).toHaveBeenCalledWith(
         'Failed to clear question answers for game game-fail-clear.',

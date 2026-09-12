@@ -236,7 +236,10 @@ describe('GameEventSubscriber', () => {
   it('onModuleInit logs error and rethrows when Redis subscribe fails', async () => {
     redisSubscriber.subscribe.mockRejectedValueOnce(new Error('subscribe down'))
 
-    await expect(service.onModuleInit()).rejects.toThrow('subscribe down')
+    await expect(service.onModuleInit()).rejects.toMatchObject({
+      message:
+        'Redis unavailable while subscribing to Redis channel "events" for game event sessions',
+    })
 
     expect(logger.error).toHaveBeenCalledWith(
       'Failed to subscribe to Redis channel "events": subscribe down',

@@ -44,6 +44,14 @@ import {
 
 export type GameDocument = HydratedDocument<Game>
 
+export type PendingGameTransitionOperation = {
+  id: string
+  operation: 'schedule' | 'transition'
+  taskId: string
+  taskType: TaskType
+  taskStatus: 'pending' | 'active' | 'completed'
+}
+
 @Schema({ _id: true, collection: 'games' })
 export class Game {
   @Prop({ type: String, required: true })
@@ -104,6 +112,13 @@ export class Game {
       | LeaderboardTask
       | PodiumTask
     ))[]
+
+  /**
+   * Mongo-backed outbox entries for Redis work that must be retried after a
+   * game state change has been persisted.
+   */
+  @Prop({ type: [MongooseSchema.Types.Mixed], required: false, default: [] })
+  pendingTransitionOperations?: PendingGameTransitionOperation[]
 
   @Prop({ type: Date, required: true })
   updated: Date

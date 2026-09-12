@@ -21,7 +21,7 @@ import {
 /**
  * Service responsible for determining the appropriate transition delay and callback
  * function for each game task, based on its type and status. Handles Redis-backed
- * state transitions and supports lifecycle management of tasks in the game flow.
+ * answer reads and supports lifecycle management of tasks in the game flow.
  */
 @Injectable()
 export class GameTaskTransitionService {
@@ -33,7 +33,7 @@ export class GameTaskTransitionService {
   /**
    * Constructs the GameTaskTransitionService.
    *
-   * @param gameAnswerRepository - Repository responsible for reading and clearing current-question answers from Redis.
+   * @param gameAnswerRepository - Repository responsible for reading current-question answers from Redis.
    * @param gameResultService - Service responsible for creating and retrieving persisted game results.
    */
   constructor(
@@ -170,11 +170,6 @@ export class GameTaskTransitionService {
     }
 
     const answers = await this.gameAnswerRepository.findAllAnswersByGameId(
-      gameDocument._id,
-      gameDocument.currentTask._id,
-    )
-
-    await this.gameAnswerRepository.clear(
       gameDocument._id,
       gameDocument.currentTask._id,
     )

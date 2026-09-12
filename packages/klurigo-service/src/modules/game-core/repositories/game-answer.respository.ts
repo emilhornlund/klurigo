@@ -3,6 +3,8 @@ import { Injectable, Logger } from '@nestjs/common'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
+import { RedisUnavailableException } from '../../../app/exceptions'
+
 import { QuestionTaskAnswer } from './models/schemas'
 
 /**
@@ -89,7 +91,11 @@ export class GameAnswerRepository {
         `Failed to persist question answer for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
         error,
       )
-      throw error
+      throw new RedisUnavailableException(
+        'persisting a question answer',
+        `game ${gameId}${taskId ? ` task ${taskId}` : ''}`,
+        error,
+      )
     }
   }
 
@@ -105,16 +111,22 @@ export class GameAnswerRepository {
   ): Promise<QuestionTaskAnswer[]> {
     const key = this.getAnswerKey(gameId, taskId)
 
+    let values: string[]
     try {
-      const values = await this.redis.hvals(key)
-      return values.map((value) => this.deserialize(value, gameId))
+      values = await this.redis.hvals(key)
     } catch (error) {
       this.logger.error(
-        `Failed to retrieve question answers for game ${gameId}.`,
+        `Failed to retrieve question answers for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
         error,
       )
-      throw error
+      throw new RedisUnavailableException(
+        'retrieving question answers',
+        `game ${gameId}${taskId ? ` task ${taskId}` : ''}`,
+        error,
+      )
     }
+
+    return values.map((value) => this.deserialize(value, gameId))
   }
 
   /**
@@ -147,10 +159,14 @@ export class GameAnswerRepository {
       }
     } catch (error) {
       this.logger.error(
-        `Failed to clear question answers for game ${gameId}.`,
+        `Failed to clear question answers for game ${gameId}${taskId ? ` task ${taskId}` : ''}.`,
         error,
       )
-      throw error
+      throw new RedisUnavailableException(
+        'clearing question answers',
+        `game ${gameId}${taskId ? ` task ${taskId}` : ''}`,
+        error,
+      )
     }
   }
 
