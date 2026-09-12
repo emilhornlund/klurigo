@@ -65,6 +65,21 @@ describe('createMediaResource', () => {
     expect(apiGet).toHaveBeenCalledWith(
       '/media/photos?search=cat&offset=0&limit=50',
     )
+    expect(deps.notifyError).not.toHaveBeenCalled()
+  })
+
+  it('searchPhotos notifies error and rethrows when apiGet rejects', async () => {
+    const { api, apiGet } = makeApi()
+    const deps = makeDeps()
+
+    const media = createMediaResource(api, deps)
+    const err = new Error('Search failed')
+    apiGet.mockRejectedValue(err)
+
+    await expect(media.searchPhotos('cat')).rejects.toBe(err)
+    expect(deps.notifyError).toHaveBeenCalledWith(
+      'We couldn’t search for images right now. Please try again.',
+    )
   })
 
   it('deleteUploadedImage calls apiDelete with the correct path', async () => {
@@ -77,6 +92,21 @@ describe('createMediaResource', () => {
     await expect(media.deleteUploadedImage('p1')).resolves.toBeUndefined()
 
     expect(apiDelete).toHaveBeenCalledWith('/media/uploads/photos/p1')
+    expect(deps.notifyError).not.toHaveBeenCalled()
+  })
+
+  it('deleteUploadedImage notifies error and rethrows when apiDelete rejects', async () => {
+    const { api, apiDelete } = makeApi()
+    const deps = makeDeps()
+
+    const media = createMediaResource(api, deps)
+    const err = new Error('Delete failed')
+    apiDelete.mockRejectedValue(err)
+
+    await expect(media.deleteUploadedImage('p1')).rejects.toBe(err)
+    expect(deps.notifyError).toHaveBeenCalledWith(
+      'We couldn’t delete that image right now. Please try again.',
+    )
   })
 
   it('uploadImage calls apiUpload with correct path, forwards onProgress, and builds FormData with the file', async () => {

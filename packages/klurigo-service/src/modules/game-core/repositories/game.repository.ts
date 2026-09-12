@@ -345,24 +345,27 @@ export class GameRepository extends BaseRepository<Game> {
   }
 
   /**
-   * Checks whether a participant has played at least one completed game for a specific quiz.
+   * Checks whether a participant has a game for a specific quiz that permits quiz rating.
    *
-   * This is used to enforce authorization rules for quiz-related operations (for example, allowing a user
-   * to rate a quiz only after they have participated in a completed game that used that quiz).
+   * Completed games and active games on the podium task are rateable. Other active games
+   * are still in progress and must not authorize profile-scoped quiz rating.
    *
    * @param quizId - The quiz id stored in the `game.quiz` reference field.
    * @param participantId - The participant id to match against `participants.participantId`.
    *
-   * @returns `true` if at least one completed game exists for the given quiz and participant; otherwise `false`.
+   * @returns `true` if at least one rateable game exists for the given quiz and participant; otherwise `false`.
    */
-  public async hasCompletedGamesByQuizIdAndParticipantId(
+  public async hasRateableGamesByQuizIdAndParticipantId(
     quizId: string,
     participantId: string,
   ): Promise<boolean> {
     const filter: QueryFilter<Game> = {
-      status: { $in: [GameStatus.Completed] },
       quiz: quizId as never,
       'participants.participantId': participantId,
+      $or: [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ],
     }
 
     return this.exists(filter)

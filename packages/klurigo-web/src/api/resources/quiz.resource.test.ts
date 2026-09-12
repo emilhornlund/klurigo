@@ -430,6 +430,7 @@ describe('createQuizResource', () => {
     expect(deps.notifyError).toHaveBeenCalledWith(
       'We couldn’t save your rating right now. Please try again.',
     )
+    expect(deps.notifyError).toHaveBeenCalledTimes(1)
     expect(deps.notifySuccess).not.toHaveBeenCalled()
   })
 

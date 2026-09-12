@@ -14,18 +14,18 @@ import { QuizRatingGuard } from './quiz-rating.guard'
 describe('QuizRatingGuard', () => {
   let guard: QuizRatingGuard
 
-  type HasCompletedFn =
-    GameRepository['hasCompletedGamesByQuizIdAndParticipantId']
+  type HasRateableGamesFn =
+    GameRepository['hasRateableGamesByQuizIdAndParticipantId']
 
-  const hasCompletedGamesByQuizIdAndParticipantId: jest.MockedFunction<HasCompletedFn> =
+  const hasRateableGamesByQuizIdAndParticipantId: jest.MockedFunction<HasRateableGamesFn> =
     jest.fn()
 
   const gameRepository: Pick<
     GameRepository,
-    'hasCompletedGamesByQuizIdAndParticipantId'
+    'hasRateableGamesByQuizIdAndParticipantId'
   > = {
-    hasCompletedGamesByQuizIdAndParticipantId:
-      hasCompletedGamesByQuizIdAndParticipantId,
+    hasRateableGamesByQuizIdAndParticipantId:
+      hasRateableGamesByQuizIdAndParticipantId,
   }
 
   type FindQuizByIdOrThrowFn = QuizRepository['findQuizByIdOrThrow']
@@ -75,7 +75,7 @@ describe('QuizRatingGuard', () => {
     )
 
     expect(findQuizByIdOrThrow).not.toHaveBeenCalled()
-    expect(hasCompletedGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
+    expect(hasRateableGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
   })
 
   it('throws BadRequestException when quizId route param is missing', async () => {
@@ -89,7 +89,7 @@ describe('QuizRatingGuard', () => {
     )
 
     expect(findQuizByIdOrThrow).not.toHaveBeenCalled()
-    expect(hasCompletedGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
+    expect(hasRateableGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
   })
 
   it('throws ForbiddenException when user is the quiz owner', async () => {
@@ -109,14 +109,14 @@ describe('QuizRatingGuard', () => {
     expect(findQuizByIdOrThrow).toHaveBeenCalledTimes(1)
     expect(findQuizByIdOrThrow).toHaveBeenCalledWith('quiz-1')
 
-    expect(hasCompletedGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
+    expect(hasRateableGamesByQuizIdAndParticipantId).not.toHaveBeenCalled()
   })
 
-  it('throws ForbiddenException when user has no completed games for the quiz', async () => {
+  it('throws ForbiddenException when user has no rateable games for the quiz', async () => {
     findQuizByIdOrThrow.mockResolvedValueOnce({
       owner: { _id: 'owner-1' },
     } as never)
-    hasCompletedGamesByQuizIdAndParticipantId.mockResolvedValueOnce(false)
+    hasRateableGamesByQuizIdAndParticipantId.mockResolvedValueOnce(false)
 
     const context = buildContext({
       user: { _id: 'user-1' },
@@ -130,18 +130,18 @@ describe('QuizRatingGuard', () => {
     expect(findQuizByIdOrThrow).toHaveBeenCalledTimes(1)
     expect(findQuizByIdOrThrow).toHaveBeenCalledWith('quiz-1')
 
-    expect(hasCompletedGamesByQuizIdAndParticipantId).toHaveBeenCalledTimes(1)
-    expect(hasCompletedGamesByQuizIdAndParticipantId).toHaveBeenCalledWith(
+    expect(hasRateableGamesByQuizIdAndParticipantId).toHaveBeenCalledTimes(1)
+    expect(hasRateableGamesByQuizIdAndParticipantId).toHaveBeenCalledWith(
       'quiz-1',
       'user-1',
     )
   })
 
-  it('returns true when user has completed games for the quiz', async () => {
+  it('returns true when user has rateable games for the quiz', async () => {
     findQuizByIdOrThrow.mockResolvedValueOnce({
       owner: { _id: 'owner-1' },
     } as never)
-    hasCompletedGamesByQuizIdAndParticipantId.mockResolvedValueOnce(true)
+    hasRateableGamesByQuizIdAndParticipantId.mockResolvedValueOnce(true)
 
     const context = buildContext({
       user: { _id: 'user-1' },
@@ -153,8 +153,8 @@ describe('QuizRatingGuard', () => {
     expect(findQuizByIdOrThrow).toHaveBeenCalledTimes(1)
     expect(findQuizByIdOrThrow).toHaveBeenCalledWith('quiz-1')
 
-    expect(hasCompletedGamesByQuizIdAndParticipantId).toHaveBeenCalledTimes(1)
-    expect(hasCompletedGamesByQuizIdAndParticipantId).toHaveBeenCalledWith(
+    expect(hasRateableGamesByQuizIdAndParticipantId).toHaveBeenCalledTimes(1)
+    expect(hasRateableGamesByQuizIdAndParticipantId).toHaveBeenCalledWith(
       'quiz-1',
       'user-1',
     )

@@ -5,9 +5,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 vi.mock('jwt-decode', () => ({
   jwtDecode: vi.fn(),
 }))
-vi.mock('../utils/notification', () => ({
-  notifyError: vi.fn(),
-}))
 vi.mock('../config', () => ({
   default: { klurigoServiceUrl: 'https://api.example.com' },
 }))
@@ -16,7 +13,6 @@ vi.mock('../config', () => ({
 import { jwtDecode } from 'jwt-decode'
 
 import config from '../config'
-import { notifyError } from '../utils/notification'
 
 import {
   ApiError,
@@ -83,7 +79,7 @@ describe('parseResponseAndHandleError', () => {
     expect(result).toEqual(payload)
   })
 
-  it('notifies and throws ApiError when response is not ok', async () => {
+  it('throws ApiError without a UI side effect when response is not ok', async () => {
     const res = makeResponse({
       ok: false,
       status: 400,
@@ -93,9 +89,6 @@ describe('parseResponseAndHandleError', () => {
     await expect(parseResponseAndHandleError(res)).rejects.toBeInstanceOf(
       ApiError,
     )
-
-    // Verify notifyError called with server message
-    expect(notifyError).toHaveBeenCalledWith('Bad Request')
 
     // Verify thrown error has status/message
     try {
