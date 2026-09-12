@@ -32,6 +32,7 @@ import {
 import { filter, map, takeUntil } from 'rxjs/operators'
 
 import { RedisUnavailableException } from '../../../app/exceptions'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { PlayerNotFoundException } from '../../game-core/exceptions'
 import { GameRepository } from '../../game-core/repositories'
 
@@ -48,6 +49,27 @@ type LocalHeartbeatEvent = {
 }
 
 type LocalEvent = DistributedEvent | LocalHeartbeatEvent
+
+const getEventContext = (value: unknown): Record<string, unknown> => {
+  if (typeof value !== 'object' || value === null) return {}
+
+  const candidate = value as Record<string, unknown>
+  const event = candidate.event
+  const eventType =
+    typeof event === 'object' && event !== null
+      ? (event as Record<string, unknown>).type
+      : undefined
+
+  return {
+    ...(typeof candidate.gameId === 'string'
+      ? { gameId: candidate.gameId }
+      : {}),
+    ...(typeof candidate.playerId === 'string'
+      ? { playerId: candidate.playerId }
+      : {}),
+    ...(typeof eventType === 'string' ? { eventType } : {}),
+  }
+}
 
 type Connection = {
   close: () => void
@@ -133,20 +155,40 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
     _channel: string,
     message: string,
   ): void => {
+    let parsed: unknown
     try {
-      const parsed: unknown = JSON.parse(message)
-      if (!isDistributedEvent(parsed)) {
-        this.logger.warn(
-          'Ignoring malformed distributed event (missing gameId or event property).',
-        )
-        return
-      }
+      parsed = JSON.parse(message)
+    } catch (error) {
+      this.logger.warn(
+        structuredLog('Ignoring invalid JSON from Redis Pub/Sub.', {
+          operation: 'parseDistributedEvent',
+          channel: REDIS_PUBSUB_CHANNEL,
+        }),
+        getErrorStack(error),
+      )
+      return
+    }
+
+    if (!isDistributedEvent(parsed)) {
+      this.logger.warn(
+        structuredLog('Ignoring malformed distributed game event.', {
+          operation: 'validateDistributedEvent',
+          channel: REDIS_PUBSUB_CHANNEL,
+          ...getEventContext(parsed),
+        }),
+      )
+      return
+    }
+
+    try {
       this.emitEvent(parsed)
     } catch (error) {
-      const { message: errorMessage, stack } = error as Error
-      this.logger.warn(
-        `Ignoring invalid JSON on Redis Pub/Sub channel: ${errorMessage}`,
-        stack,
+      this.logger.error(
+        structuredLog('Failed to emit distributed game event locally.', {
+          operation: 'emitEvent',
+          ...getEventContext(parsed),
+        }),
+        getErrorStack(error),
       )
     }
   }
@@ -157,8 +199,13 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * @param error - The error emitted by the Redis subscriber client.
    */
   private readonly onRedisError = (error: unknown): void => {
-    const { message, stack } = error as Error
-    this.logger.error(`Redis subscriber error: ${message}`, stack)
+    this.logger.error(
+      structuredLog('Redis subscriber error.', {
+        operation: 'redisSubscriber',
+        channel: REDIS_PUBSUB_CHANNEL,
+      }),
+      getErrorStack(error),
+    )
   }
 
   /**
@@ -174,10 +221,12 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       const count = await this.redisSubscriber.subscribe(REDIS_PUBSUB_CHANNEL)
       this.logger.log(`Subscribed to ${count} channels.`)
     } catch (error) {
-      const { message, stack } = error as Error
       this.logger.error(
-        `Failed to subscribe to Redis channel "${REDIS_PUBSUB_CHANNEL}": ${message}`,
-        stack,
+        structuredLog('Failed to subscribe to Redis game events.', {
+          operation: 'subscribe',
+          channel: REDIS_PUBSUB_CHANNEL,
+        }),
+        getErrorStack(error),
       )
       try {
         this.redisSubscriber.disconnect()
@@ -219,10 +268,12 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       await this.redisSubscriber.unsubscribe(REDIS_PUBSUB_CHANNEL)
     } catch (error) {
       shutdownError = error
-      const { message, stack } = error as Error
       this.logger.warn(
-        `Error while unsubscribing Redis subscriber: ${message}`,
-        stack,
+        structuredLog('Failed to unsubscribe Redis game events.', {
+          operation: 'unsubscribe',
+          channel: REDIS_PUBSUB_CHANNEL,
+        }),
+        getErrorStack(error),
       )
     }
 
@@ -230,10 +281,12 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
       await this.redisSubscriber.quit()
     } catch (error) {
       shutdownError ??= error
-      const { message, stack } = error as Error
       this.logger.warn(
-        `Error while quitting Redis subscriber: ${message}`,
-        stack,
+        structuredLog('Failed to quit Redis game event subscriber.', {
+          operation: 'quitSubscriber',
+          channel: REDIS_PUBSUB_CHANNEL,
+        }),
+        getErrorStack(error),
       )
     }
 
@@ -512,10 +565,13 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
         )
       }).pipe(finalize(cleanup))
     } catch (error) {
-      const { message, stack } = error as Error
       this.logger.warn(
-        `Error building initial event for participant ${participantId}: ${message}`,
-        stack,
+        structuredLog('Failed to build initial game event.', {
+          operation: 'buildInitialEvent',
+          gameId,
+          playerId: participantId,
+        }),
+        getErrorStack(error),
       )
       cleanup()
       throw error

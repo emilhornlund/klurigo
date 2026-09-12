@@ -12,6 +12,7 @@ import {
 } from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { GameDocument } from '../../game-core/repositories/models/schemas'
 import {
   QuizRatingRepository,
@@ -69,6 +70,27 @@ export class GameResultService {
     gameID: string,
     participantId: string,
   ): Promise<GameResultDto> {
+    try {
+      return await this.getGameResultInternal(gameID, participantId)
+    } catch (error) {
+      if (error instanceof GameResultsNotFoundException) throw error
+
+      this.logger.error(
+        structuredLog('Failed to retrieve game result.', {
+          operation: 'getGameResult',
+          gameId: gameID,
+          playerId: participantId,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
+  }
+
+  private async getGameResultInternal(
+    gameID: string,
+    participantId: string,
+  ): Promise<GameResultDto> {
     const gameResultDocument =
       await this.gameResultRepository.findGameResult(gameID)
 
@@ -86,6 +108,13 @@ export class GameResultService {
     } = gameResultDocument
 
     if (!quiz) {
+      this.logger.error(
+        structuredLog('Game result is missing its quiz.', {
+          operation: 'getGameResult',
+          gameId: gameID,
+          playerId: participantId,
+        }),
+      )
       throw new GameResultsNotFoundException(gameID)
     }
 
@@ -152,25 +181,40 @@ export class GameResultService {
    * @returns The persisted game result document.
    */
   public async createGameResult(game: GameDocument): Promise<GameResult> {
-    const gameResult = await this.gameResultRepository.createGameResult(
-      buildGameResultModel(game),
-    )
+    try {
+      const gameResult = await this.gameResultRepository.createGameResult(
+        buildGameResultModel(game),
+      )
 
-    const quiz = await this.quizRepository.findQuizByIdOrThrow(game.quiz._id)
+      const quiz = await this.quizRepository.findQuizByIdOrThrow(game.quiz._id)
 
-    const updatedGameplaySummary = aggregateQuizGameplaySummary(
-      quiz.gameplaySummary,
-      gameResult,
-      game.mode,
-      gameResult.completed,
-    )
+      const updatedGameplaySummary = aggregateQuizGameplaySummary(
+        quiz.gameplaySummary,
+        gameResult,
+        game.mode,
+        gameResult.completed,
+      )
 
-    await this.quizRepository.replaceQuiz(game.quiz._id, {
-      ...quiz,
-      gameplaySummary: updatedGameplaySummary,
-    })
+      await this.quizRepository.replaceQuiz(game.quiz._id, {
+        ...quiz,
+        gameplaySummary: updatedGameplaySummary,
+      })
 
-    return gameResult
+      return gameResult
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to create game result.', {
+          operation: 'createGameResult',
+          gameId: game._id,
+          quizId: game.quiz?._id,
+          gameState: game.status,
+          taskType: game.currentTask?.type,
+          taskStatus: game.currentTask?.status,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
   }
 
   /**

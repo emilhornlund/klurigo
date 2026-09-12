@@ -195,8 +195,14 @@ describe('GameAnswerRepository', () => {
 
       expect(redis.hlen).not.toHaveBeenCalled()
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to persist question answer for game game-fail task task-fail.',
-        expect.any(Error),
+        expect.objectContaining({
+          message: 'Failed to persist question answer.',
+          operation: 'submitOnce',
+          gameId: 'game-fail',
+          playerId: 'player6',
+          questionTaskId: 'task-fail',
+        }),
+        expect.any(String),
       )
     })
 
@@ -334,9 +340,7 @@ describe('GameAnswerRepository', () => {
 
       await expect(
         repository.findAllAnswersByGameId('game-bad'),
-      ).rejects.toThrow(
-        "Invalid JSON stored for game game-bad answers: '{invalid json'",
-      )
+      ).rejects.toThrow('Invalid JSON stored for game game-bad answers')
     })
 
     it('throws error when stored value has invalid shape', async () => {
@@ -379,8 +383,12 @@ describe('GameAnswerRepository', () => {
       })
 
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to retrieve question answers for game game-redis-fail.',
-        redisError,
+        expect.objectContaining({
+          message: 'Failed to retrieve question answers.',
+          operation: 'findAllAnswersByGameId',
+          gameId: 'game-redis-fail',
+        }),
+        redisError.stack,
       )
     })
   })
@@ -469,8 +477,12 @@ describe('GameAnswerRepository', () => {
       })
 
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to clear question answers for game game-fail-clear.',
-        clearError,
+        expect.objectContaining({
+          message: 'Failed to clear question answers.',
+          operation: 'clear',
+          gameId: 'game-fail-clear',
+        }),
+        clearError.stack,
       )
     })
   })

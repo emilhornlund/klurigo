@@ -346,8 +346,13 @@ describe('GameEventPublisher', () => {
     })
 
     expect(logger.error).toHaveBeenCalledWith(
-      'Failed to publish event for game game-1 participant p1.',
-      redisError,
+      expect.objectContaining({
+        message: 'Failed to publish distributed game event.',
+        operation: 'publishDistributedEvent',
+        gameId: 'game-1',
+        playerId: 'p1',
+      }),
+      redisError.stack,
     )
   })
 

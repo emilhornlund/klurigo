@@ -394,7 +394,14 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(taskQueue.add).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('is no longer current'),
+        expect.objectContaining({
+          message: 'Skipping stale task transition scheduling.',
+          operation: 'scheduleTaskTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
       )
     })
 
@@ -407,7 +414,14 @@ describe('GameTaskTransitionScheduler', () => {
 
       expect(taskQueue.getJob).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('unsupported transition'),
+        expect.objectContaining({
+          message: 'Skipping unsupported task transition.',
+          operation: 'scheduleTaskTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
       )
     })
 
@@ -762,8 +776,16 @@ describe('GameTaskTransitionScheduler', () => {
 
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(logger.error).toHaveBeenCalledWith(
-        expect.stringContaining('Failed to perform transition'),
-        cleanupError,
+        expect.objectContaining({
+          message: 'Failed to perform game task transition.',
+          operation: 'performTransition',
+          gameId: 'game-1',
+          taskId: 'task-1',
+          taskType: TaskType.Question,
+          taskStatus: 'active',
+          nextStatus: 'completed',
+        }),
+        cleanupError.stack,
       )
     })
 
@@ -888,7 +910,14 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(postSpy).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('stale task'),
+        expect.objectContaining({
+          message: 'Skipping stale game task transition.',
+          operation: 'performTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
       )
     })
 
@@ -913,7 +942,14 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(postSpy).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('unsupported transition'),
+        expect.objectContaining({
+          message: 'Skipping stale game task transition.',
+          operation: 'performTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
       )
     })
 
@@ -944,7 +980,14 @@ describe('GameTaskTransitionScheduler', () => {
 
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
       expect(logger.warn).toHaveBeenCalledWith(
-        expect.stringContaining('unsupported task progression'),
+        expect.objectContaining({
+          message: 'Skipping stale game task transition.',
+          operation: 'performTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
       )
     })
 

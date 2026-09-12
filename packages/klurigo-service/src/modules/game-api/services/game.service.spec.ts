@@ -39,6 +39,7 @@ describe(GameService.name, () => {
   }
 
   let debugSpy: jest.SpyInstance
+  let errorSpy: jest.SpyInstance
 
   beforeEach(async () => {
     gameRepository = {
@@ -77,12 +78,14 @@ describe(GameService.name, () => {
 
     const logger = (service as unknown as { logger: Logger }).logger
     debugSpy = jest.spyOn(logger, 'debug').mockImplementation(() => undefined)
+    errorSpy = jest.spyOn(logger, 'error').mockImplementation(() => undefined)
 
     jest.clearAllMocks()
   })
 
   afterEach(() => {
     debugSpy.mockRestore()
+    errorSpy.mockRestore()
   })
 
   describe('findGamesByParticipantId', () => {
@@ -442,8 +445,9 @@ describe(GameService.name, () => {
         { _id: 'g-3' },
       ])
 
+      const deleteError = new Error('db down')
       gameRepository.delete
-        .mockRejectedValueOnce(new Error('db down'))
+        .mockRejectedValueOnce(deleteError)
         .mockResolvedValueOnce(true)
         .mockResolvedValueOnce(true)
 
@@ -461,6 +465,15 @@ describe(GameService.name, () => {
       expect(eventEmitter.emit).toHaveBeenNthCalledWith(2, 'game.deleted', {
         gameId: 'g-3',
       })
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to delete game during quiz cleanup.',
+          operation: 'deleteQuiz',
+          quizId: 'q-1',
+          gameId: 'g-1',
+        }),
+        deleteError.stack,
+      )
     })
 
     it('does nothing when no games are found', async () => {
@@ -523,6 +536,15 @@ describe(GameService.name, () => {
       ).resolves.toBeUndefined()
 
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to emit player join event.',
+          operation: 'emitGamePlayerJoinEvent',
+          gameId: 'game-123',
+          playerId: 'participant-456',
+        }),
+        expect.any(String),
+      )
     })
 
     it('treats a repeated join with the same nickname as a no-op', async () => {

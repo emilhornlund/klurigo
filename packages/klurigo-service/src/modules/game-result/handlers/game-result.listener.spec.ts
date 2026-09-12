@@ -59,7 +59,11 @@ describe('GameResultListener', () => {
     expect(gameResultService.deleteByGameId).toHaveBeenCalledWith(gameId)
     expect(loggerErrorSpy).toHaveBeenCalledTimes(1)
     expect(loggerErrorSpy).toHaveBeenCalledWith(
-      `Failed to delete game results for deleted game '${gameId}'.`,
+      {
+        message: 'Failed to delete game results for deleted game.',
+        operation: 'handleGameDeleted',
+        gameId,
+      },
       'stack-trace',
     )
   })
@@ -73,7 +77,11 @@ describe('GameResultListener', () => {
     expect(gameResultService.deleteByGameId).toHaveBeenCalledWith(gameId)
     expect(loggerErrorSpy).toHaveBeenCalledTimes(1)
     expect(loggerErrorSpy).toHaveBeenCalledWith(
-      `Failed to delete game results for deleted game '${gameId}'.`,
+      {
+        message: 'Failed to delete game results for deleted game.',
+        operation: 'handleGameDeleted',
+        gameId,
+      },
       'nope',
     )
   })

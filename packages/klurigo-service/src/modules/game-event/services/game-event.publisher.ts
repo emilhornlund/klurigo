@@ -4,6 +4,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
 import { RedisUnavailableException } from '../../../app/exceptions'
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import {
   GameDocument,
   Participant,
@@ -48,8 +49,22 @@ export class GameEventPublisher {
    * @returns A promise that resolves once events for all participants have been published.
    */
   public async publish(document: GameDocument): Promise<void> {
-    const context =
-      await this.gameParticipantEventBuilder.createContext(document)
+    let context
+    try {
+      context = await this.gameParticipantEventBuilder.createContext(document)
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to build game event context.', {
+          operation: 'createContext',
+          gameId: document._id,
+          gameState: document.status,
+          taskType: document.currentTask.type,
+          taskStatus: document.currentTask.status,
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
 
     await Promise.all(
       document.participants.map(async (participant) => {
@@ -61,10 +76,16 @@ export class GameEventPublisher {
             context,
           )
         } catch (error) {
-          const { message, stack } = error as Error
           this.logger.warn(
-            `Error publishing event for participant ${participant.participantId}: ${message}`,
-            stack,
+            structuredLog('Failed to build participant game event.', {
+              operation: 'buildParticipantEvent',
+              gameId: document._id,
+              playerId: participant.participantId,
+              gameState: document.status,
+              taskType: document.currentTask.type,
+              taskStatus: document.currentTask.status,
+            }),
+            getErrorStack(error),
           )
           return
         }
@@ -116,9 +137,8 @@ export class GameEventPublisher {
   private async publishDistributedEvent(
     event: DistributedEvent,
   ): Promise<void> {
-    const message = JSON.stringify(event)
-
     try {
+      const message = JSON.stringify(event)
       await this.redis.publish(REDIS_PUBSUB_CHANNEL, message)
       if (event.playerId) {
         this.logger.debug(`Published event for playerId: ${event.playerId}`)
@@ -127,8 +147,13 @@ export class GameEventPublisher {
       }
     } catch (error) {
       this.logger.error(
-        `Failed to publish event for game ${event.gameId}${event.playerId ? ` participant ${event.playerId}` : ''}.`,
-        error,
+        structuredLog('Failed to publish distributed game event.', {
+          operation: 'publishDistributedEvent',
+          gameId: event.gameId,
+          playerId: event.playerId,
+          eventType: event.event.type,
+        }),
+        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'publishing a game event',

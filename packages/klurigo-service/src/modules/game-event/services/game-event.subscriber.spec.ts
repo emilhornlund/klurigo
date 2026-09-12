@@ -194,9 +194,11 @@ describe('GameEventSubscriber', () => {
     onMessage('events', '{not valid json')
 
     expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'Ignoring invalid JSON on Redis Pub/Sub channel:',
-      ),
+      expect.objectContaining({
+        message: 'Ignoring invalid JSON from Redis Pub/Sub.',
+        operation: 'parseDistributedEvent',
+        channel: 'events',
+      }),
       expect.any(String),
     )
   })
@@ -213,7 +215,12 @@ describe('GameEventSubscriber', () => {
     onMessage('events', JSON.stringify({ gameId: 'game-1' }))
 
     expect(logger.warn).toHaveBeenCalledWith(
-      'Ignoring malformed distributed event (missing gameId or event property).',
+      expect.objectContaining({
+        message: 'Ignoring malformed distributed game event.',
+        operation: 'validateDistributedEvent',
+        channel: 'events',
+        gameId: 'game-1',
+      }),
     )
   })
 
@@ -229,7 +236,12 @@ describe('GameEventSubscriber', () => {
       onMessage('events', JSON.stringify({ gameId: 'game-1', event: null })),
     ).not.toThrow()
     expect(logger.warn).toHaveBeenCalledWith(
-      'Ignoring malformed distributed event (missing gameId or event property).',
+      expect.objectContaining({
+        message: 'Ignoring malformed distributed game event.',
+        operation: 'validateDistributedEvent',
+        channel: 'events',
+        gameId: 'game-1',
+      }),
     )
   })
 
@@ -242,7 +254,11 @@ describe('GameEventSubscriber', () => {
     })
 
     expect(logger.error).toHaveBeenCalledWith(
-      'Failed to subscribe to Redis channel "events": subscribe down',
+      expect.objectContaining({
+        message: 'Failed to subscribe to Redis game events.',
+        operation: 'subscribe',
+        channel: 'events',
+      }),
       expect.any(String),
     )
     expect(redisSubscriber.disconnect).toHaveBeenCalledTimes(1)
@@ -508,9 +524,11 @@ describe('GameEventSubscriber', () => {
     await expect(service.onModuleDestroy()).rejects.toThrow('unsub fail')
 
     expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'Error while unsubscribing Redis subscriber: unsub fail',
-      ),
+      expect.objectContaining({
+        message: 'Failed to unsubscribe Redis game events.',
+        operation: 'unsubscribe',
+        channel: 'events',
+      }),
       expect.any(String),
     )
     expect(redisSubscriber.disconnect).toHaveBeenCalled()
@@ -761,7 +779,12 @@ describe('GameEventSubscriber', () => {
     )
 
     expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining('Error building initial event for participant'),
+      expect.objectContaining({
+        message: 'Failed to build initial game event.',
+        operation: 'buildInitialEvent',
+        gameId: 'game-1',
+        playerId: 'host',
+      }),
       expect.any(String),
     )
     expect((service as any).connectionCountsByParticipantId.size).toBe(0)
@@ -782,7 +805,12 @@ describe('GameEventSubscriber', () => {
       'game-1',
     )
     expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining('Error building initial event for participant'),
+      expect.objectContaining({
+        message: 'Failed to build initial game event.',
+        operation: 'buildInitialEvent',
+        gameId: 'game-1',
+        playerId: 'host',
+      }),
       expect.any(String),
     )
     expect((service as any).connectionCountsByParticipantId.size).toBe(0)

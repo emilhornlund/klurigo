@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 
+import { getErrorStack, structuredLog } from '../../../app/utils'
 import { GameService } from '../services'
 
 /**
@@ -8,6 +9,8 @@ import { GameService } from '../services'
  */
 @Injectable()
 export class GameListener {
+  private readonly logger = new Logger(GameListener.name)
+
   /**
    * Initializes the GameListener.
    *
@@ -28,6 +31,16 @@ export class GameListener {
   }: {
     quizId: string
   }): Promise<void> {
-    await this.gameService.deleteQuiz(quizId)
+    try {
+      await this.gameService.deleteQuiz(quizId)
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to clean up games after quiz deletion.', {
+          operation: 'handleQuizDeleted',
+          quizId,
+        }),
+        getErrorStack(error),
+      )
+    }
   }
 }
