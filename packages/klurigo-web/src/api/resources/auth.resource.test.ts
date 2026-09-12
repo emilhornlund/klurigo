@@ -1,4 +1,4 @@
-import { TokenScope } from '@klurigo/common'
+import { TokenScope, TokenType } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
@@ -201,6 +201,31 @@ describe('createAuthResource', () => {
     await expect(auth.authenticateGame(req)).rejects.toBe(err)
     expect(notifyError).toHaveBeenCalledWith(
       'That game code didn’t match anything. Double-check it and try again.',
+    )
+  })
+
+  it('reuses an existing anonymous game token when re-authenticating', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps } = makeDeps()
+    deps.getToken = (scope, type) =>
+      scope === TokenScope.Game && type === TokenType.Access
+        ? 'existing.game.access'
+        : undefined
+    apiPost.mockResolvedValue({
+      accessToken: 'new.game.access',
+      refreshToken: 'new.game.refresh',
+    })
+
+    const auth = createAuthResource(api, deps)
+
+    await auth.authenticateGame({ gameId: 'G123' })
+
+    expect(apiPost).toHaveBeenCalledWith(
+      '/auth/game',
+      { gameId: 'G123' },
+      {
+        scope: TokenScope.Game,
+      },
     )
   })
 

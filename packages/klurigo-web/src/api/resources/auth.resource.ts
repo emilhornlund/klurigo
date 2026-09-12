@@ -14,7 +14,7 @@ import type {
   UpdateLocalUserProfileRequestDto,
   UserProfileResponseDto,
 } from '@klurigo/common'
-import { TokenScope } from '@klurigo/common'
+import { TokenScope, TokenType } from '@klurigo/common'
 
 import type { ApiClientCore } from '../api-client-core'
 
@@ -25,6 +25,14 @@ import type { ApiClientCore } from '../api-client-core'
  * to these injected callbacks.
  */
 export type AuthResourceDeps = {
+  /**
+   * Returns a currently stored token for a scope, when one exists.
+   */
+  getToken?: (
+    scope: TokenScope,
+    type: TokenType.Access | TokenType.Refresh,
+  ) => string | undefined
+
   /**
    * Persists the latest access/refresh token pair for the provided scope.
    */
@@ -136,7 +144,14 @@ export const createAuthResource = (
     request: AuthGameRequestDto,
   ): Promise<AuthResponseDto> =>
     api
-      .apiPost<AuthResponseDto>(`/auth/game`, request, { refresh: false })
+      .apiPost<AuthResponseDto>(
+        `/auth/game`,
+        request,
+        deps.getToken?.(TokenScope.Game, TokenType.Access) &&
+          !deps.getToken?.(TokenScope.User, TokenType.Access)
+          ? { scope: TokenScope.Game }
+          : { refresh: false },
+      )
       .then((res) => {
         deps.setTokenPair(TokenScope.Game, res.accessToken, res.refreshToken)
         return res

@@ -61,6 +61,7 @@ export const useKlurigoServiceClient = () => {
   })
 
   const auth = createAuthResource(api, {
+    getToken,
     setTokenPair,
     fetchCurrentUser,
     clearCurrentUser,

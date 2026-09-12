@@ -151,6 +151,7 @@ describe('useKlurigoServiceClient', () => {
     renderHook(() => useKlurigoServiceClient())
 
     expect(createAuthResource).toHaveBeenCalledWith(apiCore, {
+      getToken: expect.any(Function),
       setTokenPair,
       fetchCurrentUser,
       clearCurrentUser,
