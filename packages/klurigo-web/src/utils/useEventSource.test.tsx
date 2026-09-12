@@ -2,7 +2,7 @@ import { GameEventType, HEARTBEAT_INTERVAL } from '@klurigo/common'
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ConnectionStatus } from './event-source.types'
+import { ConnectionFailureReason, ConnectionStatus } from './event-source.types'
 import {
   GAME_EVENT_STREAM_CONNECTION_ID_STORAGE_KEY,
   useEventSource,
@@ -214,7 +214,7 @@ describe('useEventSource', () => {
     expect(result.current[1]).toBe(ConnectionStatus.CONNECTED)
   })
 
-  it('reports a terminal failure when the stream is closed before reconnecting', () => {
+  it('reports an authentication failure without discarding the last event', () => {
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {})
@@ -239,13 +239,31 @@ describe('useEventSource', () => {
     act(() => vi.runAllTimers())
 
     expect(instances().length).toBe(1)
-    expect(result.current[0]).toBeUndefined()
+    expect(result.current[0]).toEqual({ type: 'STALE_STATE' })
     expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING_FAILED)
+    expect(result.current[2]).toEqual({
+      reason: ConnectionFailureReason.SESSION_EXPIRED,
+      status: 401,
+    })
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Game event stream closed before recovery could complete.',
     )
 
     consoleErrorSpy.mockRestore()
+  })
+
+  it.each([
+    [404, ConnectionFailureReason.GAME_NOT_FOUND],
+    [410, ConnectionFailureReason.GAME_ENDED],
+  ] as const)('reports terminal status %s as %s', (status, reason) => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+
+    act(() => {
+      last().onerror?.(Object.assign(new Event('error'), { status }))
+    })
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING_FAILED)
+    expect(result.current[2]).toEqual({ reason, status })
   })
 
   it('retries a closed stream after a transient snapshot failure', () => {
@@ -265,6 +283,48 @@ describe('useEventSource', () => {
     act(() => vi.advanceTimersByTime(1000))
 
     expect(instances().length).toBe(2)
+  })
+
+  it('reports a server failure after retries are exhausted and supports manual retry', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+
+    for (let i = 0; i < 10; i++) {
+      act(() => {
+        last().onerror?.(Object.assign(new Event('error'), { status: 503 }))
+      })
+      act(() => vi.advanceTimersByTime(30_000))
+    }
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING_FAILED)
+    expect(result.current[2]).toEqual({
+      reason: ConnectionFailureReason.SERVER_ERROR,
+      status: 503,
+    })
+
+    act(() => result.current[3]())
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+    expect(instances().length).toBe(11)
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('recovers from malformed server events through the normal retry path', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+
+    act(() => {
+      last().onmessage?.({ data: '{not-json' } as MessageEvent)
+    })
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING)
+    act(() => vi.advanceTimersByTime(1000))
+    expect(instances().length).toBe(2)
+    consoleErrorSpy.mockRestore()
   })
 
   it('retries a closed stream after a transport interruption without an HTTP status', () => {

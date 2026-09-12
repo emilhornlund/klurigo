@@ -5,8 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import config from '../config'
 
-import type { ConnectionStatus } from './event-source.types'
-import { ConnectionStatus as ConnectionStatusValue } from './event-source.types'
+import type { ConnectionFailure, ConnectionStatus } from './event-source.types'
+import {
+  ConnectionFailureReason,
+  ConnectionStatus as ConnectionStatusValue,
+} from './event-source.types'
 
 type EventSourceErrorEvent = { status?: number }
 
@@ -19,6 +22,27 @@ const isRetryableClosedError = (event: unknown): boolean => {
   if (status === undefined || status === 0) return true
 
   return status === 408 || status === 425 || status === 429 || status >= 500
+}
+
+const MAX_RETRIES = 10
+
+const getConnectionFailure = (event: unknown): ConnectionFailure => {
+  const status = (event as EventSourceErrorEvent | null)?.status
+
+  if (status === 401 || status === 403) {
+    return { reason: ConnectionFailureReason.SESSION_EXPIRED, status }
+  }
+  if (status === 404) {
+    return { reason: ConnectionFailureReason.GAME_NOT_FOUND, status }
+  }
+  if (status === 410) {
+    return { reason: ConnectionFailureReason.GAME_ENDED, status }
+  }
+  if (status !== undefined && status >= 500) {
+    return { reason: ConnectionFailureReason.SERVER_ERROR, status }
+  }
+
+  return { reason: ConnectionFailureReason.UNKNOWN, status }
 }
 
 /**
@@ -38,18 +62,23 @@ const isRetryableClosedError = (event: unknown): boolean => {
  *
  * @param gameID Game identifier to subscribe to (required to connect).
  * @param token  Bearer token for authentication (required to connect).
- * @returns A tuple: `[latestNonHeartbeatEvent, connectionStatus]`.
+ * @returns A tuple: `[latestNonHeartbeatEvent, connectionStatus, failure, retry]`.
  */
 export const useEventSource = (
   gameID?: string,
   token?: string,
-): [GameEvent | undefined, ConnectionStatus] => {
+): [
+  GameEvent | undefined,
+  ConnectionStatus,
+  ConnectionFailure | undefined,
+  () => void,
+] => {
   const [gameEvent, setGameEvent] = useState<GameEvent>()
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
     ConnectionStatusValue.INITIALIZED,
   )
-
-  const MAX_RETRIES = 10
+  const [connectionFailure, setConnectionFailure] =
+    useState<ConnectionFailure>()
 
   const eventSourceRef = useRef<InstanceType<
     typeof EventSourcePolyfill
@@ -59,6 +88,9 @@ export const useEventSource = (
   const isShuttingDownRef = useRef(false)
   const lastEventRef = useRef<GameEvent | undefined>(undefined)
   const lastEventVersionRef = useRef<number | undefined>(undefined)
+  const lastConnectionFailureRef = useRef<ConnectionFailure | undefined>(
+    undefined,
+  )
 
   const clearReconnectTimeout = () => {
     if (reconnectTimeoutRef.current !== null) {
@@ -99,9 +131,10 @@ export const useEventSource = (
           'Max retry attempts reached. Stopping reconnection attempts.',
         )
         cleanupEventSource()
-        lastEventRef.current = undefined
-        lastEventVersionRef.current = undefined
-        setGameEvent(undefined)
+        const failure = lastConnectionFailureRef.current ?? {
+          reason: ConnectionFailureReason.UNKNOWN,
+        }
+        setConnectionFailure(failure)
         setConnectionStatus(ConnectionStatusValue.RECONNECTING_FAILED)
         return
       }
@@ -138,7 +171,16 @@ export const useEventSource = (
       eventSource.onmessage = (event) => {
         if (instanceId !== instanceIdRef.current) return
 
-        const data = JSON.parse(event.data) as GameEvent
+        let data: GameEvent
+        try {
+          data = JSON.parse(event.data) as GameEvent
+        } catch {
+          console.error('Invalid game event received from the server.')
+          eventSource.onerror?.(
+            Object.assign(new Event('error'), { status: 500 }),
+          )
+          return
+        }
         if (data.type !== GameEventType.GameHeartbeat) {
           const rawVersion = event.lastEventId
           const version = rawVersion ? Number(rawVersion) : undefined
@@ -171,6 +213,8 @@ export const useEventSource = (
           if (!hasReceivedSnapshot) {
             hasReceivedSnapshot = true
             currentRetryCount = 0
+            lastConnectionFailureRef.current = undefined
+            setConnectionFailure(undefined)
             setConnectionStatus(ConnectionStatusValue.CONNECTED)
           }
         }
@@ -187,14 +231,13 @@ export const useEventSource = (
           return
         }
 
-        if (
-          eventSource.readyState === EventSourcePolyfill.CLOSED &&
-          !isRetryableClosedError(error)
-        ) {
+        const failure = getConnectionFailure(error)
+        lastConnectionFailureRef.current = failure
+
+        if (!isRetryableClosedError(error)) {
           instanceIdRef.current += 1
           lastEventRef.current = undefined
-          lastEventVersionRef.current = undefined
-          setGameEvent(undefined)
+          setConnectionFailure(failure)
           console.error(
             'Game event stream closed before recovery could complete.',
           )
@@ -203,6 +246,7 @@ export const useEventSource = (
         }
 
         console.error('Connection error, retrying...')
+        setConnectionFailure(failure)
         setConnectionStatus(ConnectionStatusValue.RECONNECTING)
         instanceIdRef.current += 1
 
@@ -229,18 +273,33 @@ export const useEventSource = (
     [cleanupEventSource],
   )
 
+  const retryConnection = useCallback(() => {
+    if (!gameID || !token) return
+
+    isShuttingDownRef.current = false
+    lastConnectionFailureRef.current = undefined
+    setConnectionFailure(undefined)
+    setConnectionStatus(ConnectionStatusValue.RECONNECTING)
+    createEventSource(gameID, token)
+  }, [createEventSource, gameID, token])
+
   useEffect(() => {
     if (gameID && token) {
       isShuttingDownRef.current = false
       setGameEvent(undefined)
       lastEventRef.current = undefined
       lastEventVersionRef.current = undefined
+      lastConnectionFailureRef.current = undefined
       setConnectionStatus(ConnectionStatusValue.INITIALIZED)
+      setConnectionFailure(undefined)
       createEventSource(gameID, token)
     } else {
       setGameEvent(undefined)
       lastEventRef.current = undefined
       lastEventVersionRef.current = undefined
+      lastConnectionFailureRef.current = undefined
+      setConnectionStatus(ConnectionStatusValue.INITIALIZED)
+      setConnectionFailure(undefined)
     }
 
     return () => {
@@ -265,5 +324,5 @@ export const useEventSource = (
     }
   }, [cleanupEventSource])
 
-  return [gameEvent, connectionStatus]
+  return [gameEvent, connectionStatus, connectionFailure, retryConnection]
 }

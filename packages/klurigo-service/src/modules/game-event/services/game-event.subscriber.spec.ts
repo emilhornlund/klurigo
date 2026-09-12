@@ -5,7 +5,7 @@ import {
   GameStatus,
   HEARTBEAT_INTERVAL,
 } from '@klurigo/common'
-import { MessageEvent } from '@nestjs/common'
+import { GoneException, MessageEvent } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import type { Redis } from 'ioredis'
 import { firstValueFrom, take, toArray } from 'rxjs'
@@ -489,7 +489,12 @@ describe('GameEventSubscriber', () => {
     )
     expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
       'game-1',
-      [GameStatus.Active, GameStatus.Completed],
+      [
+        GameStatus.Active,
+        GameStatus.Completed,
+        GameStatus.Expired,
+        GameStatus.Terminated,
+      ],
     )
   })
 
@@ -550,7 +555,12 @@ describe('GameEventSubscriber', () => {
     )
     expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
       'game-1',
-      [GameStatus.Active, GameStatus.Completed],
+      [
+        GameStatus.Active,
+        GameStatus.Completed,
+        GameStatus.Expired,
+        GameStatus.Terminated,
+      ],
     )
     expect(toGameEventMetaData).toHaveBeenCalled()
     expect(toPlayerQuestionPlayerEventMetaData).toHaveBeenCalled()
@@ -629,7 +639,12 @@ describe('GameEventSubscriber', () => {
     )
     expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
       'game-1',
-      [GameStatus.Active, GameStatus.Completed],
+      [
+        GameStatus.Active,
+        GameStatus.Completed,
+        GameStatus.Expired,
+        GameStatus.Terminated,
+      ],
     )
     expect(buildPlayerGameEvent).not.toHaveBeenCalled()
   })
@@ -656,7 +671,12 @@ describe('GameEventSubscriber', () => {
     })
     expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
       'game-1',
-      [GameStatus.Active, GameStatus.Completed],
+      [
+        GameStatus.Active,
+        GameStatus.Completed,
+        GameStatus.Expired,
+        GameStatus.Terminated,
+      ],
     )
     expect(buildPlayerGameEvent).toHaveBeenCalledWith(
       doc,
@@ -674,7 +694,22 @@ describe('GameEventSubscriber', () => {
 
     expect(gameRepository.findGameByIDWithStatusesOrThrow).toHaveBeenCalledWith(
       'game-1',
-      [GameStatus.Active, GameStatus.Completed],
+      [
+        GameStatus.Active,
+        GameStatus.Completed,
+        GameStatus.Expired,
+        GameStatus.Terminated,
+      ],
+    )
+  })
+
+  it('rejects expired and terminated games as already ended', async () => {
+    gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
+      buildGameDoc({ status: GameStatus.Terminated }),
+    )
+
+    await expect(service.subscribe('game-1', 'p1')).rejects.toBeInstanceOf(
+      GoneException,
     )
   })
 

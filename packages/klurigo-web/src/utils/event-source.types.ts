@@ -12,6 +12,25 @@ export const ConnectionStatus = {
 } as const
 
 /**
+ * Describes why an authenticated game stream could not be established.
+ */
+export const ConnectionFailureReason = {
+  GAME_NOT_FOUND: 'GAME_NOT_FOUND',
+  GAME_ENDED: 'GAME_ENDED',
+  SESSION_EXPIRED: 'SESSION_EXPIRED',
+  SERVER_ERROR: 'SERVER_ERROR',
+  UNKNOWN: 'UNKNOWN',
+} as const
+
+export type ConnectionFailureReason =
+  (typeof ConnectionFailureReason)[keyof typeof ConnectionFailureReason]
+
+export type ConnectionFailure = {
+  reason: ConnectionFailureReason
+  status?: number
+}
+
+/**
  * Connection lifecycle status for the EventSource stream.
  *
  * Possible values:

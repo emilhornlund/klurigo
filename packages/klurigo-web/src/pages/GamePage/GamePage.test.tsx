@@ -54,6 +54,8 @@ const h = vi.hoisted(() => {
       event: null as unknown,
       status: 'INITIALIZED' as
         'INITIALIZED' | 'CONNECTED' | 'RECONNECTING' | 'RECONNECTING_FAILED',
+      failure: undefined as unknown,
+      retry: vi.fn(),
     },
     ConnectionStatus: {
       INITIALIZED: 'INITIALIZED',
@@ -82,7 +84,12 @@ vi.mock('../../context/game', () => ({
 
 vi.mock('../../utils/useEventSource', () => ({
   ConnectionStatus: h.ConnectionStatus,
-  useEventSource: vi.fn(() => [h.control.event, h.control.status]),
+  useEventSource: vi.fn(() => [
+    h.control.event,
+    h.control.status,
+    h.control.failure,
+    h.control.retry,
+  ]),
 }))
 
 vi.mock('react-router-dom', async () => {
@@ -126,6 +133,8 @@ const pokeRouter = async (router: ReturnType<typeof createMemoryRouter>) => {
 beforeEach(() => {
   h.control.event = null
   h.control.status = 'INITIALIZED'
+  h.control.failure = undefined
+  h.control.retry.mockReset()
   h.navigateMock.mockReset()
   h.proceedMock.mockReset()
   h.resetMock.mockReset()
@@ -184,6 +193,46 @@ describe('GamePage', () => {
     h.context.gameToken = ''
     renderWithRouter()
     expect(h.setContextMock).toHaveBeenLastCalledWith('game', null)
+  })
+
+  it('replaces an indefinitely pending initial load with a retry action', async () => {
+    vi.useFakeTimers()
+    try {
+      renderWithRouter()
+
+      await act(async () => {
+        vi.advanceTimersByTime(10000)
+      })
+
+      expect(screen.getByTestId('game-connection-notice')).toHaveTextContent(
+        'taking longer than expected',
+      )
+      fireEvent.click(screen.getByTestId('test-retry-game-connection-button'))
+      expect(h.control.retry).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.clearAllTimers()
+      vi.useRealTimers()
+    }
+  })
+
+  it('does not render blank content when GAME_LOADING is the initial snapshot', async () => {
+    vi.useFakeTimers()
+    try {
+      h.control.status = 'CONNECTED'
+      h.control.event = { type: GameEventType.GameLoading }
+      renderWithRouter()
+
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+
+      await act(async () => {
+        vi.advanceTimersByTime(10000)
+      })
+
+      expect(screen.getByTestId('game-connection-notice')).toBeInTheDocument()
+    } finally {
+      vi.clearAllTimers()
+      vi.useRealTimers()
+    }
   })
 
   it('marks a connected host lobby stream as ready', async () => {
@@ -687,7 +736,7 @@ describe('GamePage', () => {
     expect(screen.queryByText('Correct')).not.toBeInTheDocument()
   })
 
-  it('clears the rendered state when stream recovery fails', async () => {
+  it('shows a terminal connection notice when recovery fails', async () => {
     h.control.status = 'CONNECTED'
     h.control.event = {
       type: GameEventType.GameResultPlayer,
@@ -704,12 +753,51 @@ describe('GamePage', () => {
 
     h.control.event = null
     h.control.status = 'RECONNECTING_FAILED'
+    h.control.failure = {
+      reason: 'SERVER_ERROR',
+      status: 500,
+    }
     await act(async () => {
       await pokeRouter(router)
     })
 
-    expect(screen.queryByText('Correct')).not.toBeInTheDocument()
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    expect(screen.getByText('Correct')).toBeInTheDocument()
+    expect(screen.getByTestId('game-connection-notice')).toBeInTheDocument()
+    expect(
+      screen.getByTestId('test-retry-game-connection-button'),
+    ).toBeInTheDocument()
+  })
+
+  it('does not render stale game state for an unavailable game', async () => {
+    h.control.event = {
+      type: GameEventType.GameLobbyPlayer,
+      player: { nickname: 'TestPlayer' },
+      players: [],
+    }
+    const { router } = renderWithRouter()
+
+    h.control.event = null
+    h.control.status = 'RECONNECTING_FAILED'
+    h.control.failure = { reason: 'GAME_NOT_FOUND', status: 404 }
+    await act(async () => {
+      await pokeRouter(router)
+    })
+
+    expect(screen.queryByText('TestPlayer')).not.toBeInTheDocument()
+    expect(screen.getByText('Game not found')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Return home' }),
+    ).toBeInTheDocument()
+  })
+
+  it('offers a return-home action for an expired session', async () => {
+    h.control.status = 'RECONNECTING_FAILED'
+    h.control.failure = { reason: 'SESSION_EXPIRED', status: 401 }
+    renderWithRouter()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Return home' }))
+
+    expect(h.revokeGameMock).toHaveBeenCalledWith({ redirectTo: '/' })
   })
 
   it('renders HostGameBeginState for GameBeginHost event', () => {
