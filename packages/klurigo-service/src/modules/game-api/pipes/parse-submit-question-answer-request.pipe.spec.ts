@@ -169,6 +169,18 @@ describe('ParseSubmitQuestionAnswerRequestPipe', () => {
       expect(validateMock).not.toHaveBeenCalled()
     })
 
+    it.each([null, [], undefined])(
+      'should throw BadRequestException for a non-object request body (%p)',
+      async (value) => {
+        await expect(
+          pipe.transform(value as any, {} as any),
+        ).rejects.toBeInstanceOf(BadRequestException)
+
+        expect(plainToInstanceMock).not.toHaveBeenCalled()
+        expect(validateMock).not.toHaveBeenCalled()
+      },
+    )
+
     it('should throw ValidationException when validation fails', async () => {
       const value = { type: QuestionType.MultiChoice, foo: 'bar' }
       const instance = { __type: 'multi' }

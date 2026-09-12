@@ -82,6 +82,12 @@ describe('ParseGamePINPipe', () => {
       )
     })
 
+    it('should throw BadRequestException for a numeric PIN value', () => {
+      expect(() => pipe.transform(123456 as any, {} as any)).toThrow(
+        BadRequestException,
+      )
+    })
+
     it('should throw BadRequestException for a null value', () => {
       expect(() => pipe.transform(null as any, {} as any)).toThrow(
         BadRequestException,

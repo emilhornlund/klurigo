@@ -10,7 +10,7 @@ import {
 export class ParseGamePINPipe implements PipeTransform<string, string> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transform(value: string, metadata: ArgumentMetadata): string {
-    if (!GAME_PIN_REGEX.test(value)) {
+    if (typeof value !== 'string' || !GAME_PIN_REGEX.test(value)) {
       throw new BadRequestException('Validation failed')
     }
     return value
