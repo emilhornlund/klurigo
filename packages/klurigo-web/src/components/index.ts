@@ -13,6 +13,7 @@ export {
 } from './Confetti'
 export type { ConfirmDialogProps } from './ConfirmDialog'
 export type { DropzoneProps } from './Dropzone'
+export { default as GameSessionErrorBoundary } from './GameSessionErrorBoundary'
 export type { HorizontalRailProps } from './HorizontalRail'
 export type { IconTooltipProps } from './IconTooltip'
 export {
