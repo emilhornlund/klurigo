@@ -172,6 +172,52 @@ describe('useQuestionDataSource', () => {
       expect(result.current.selectedQuestionIndex).toBe(0)
       expect(result.current.selectedQuestion).toBeDefined()
     })
+
+    it('can reapply a mode without resetting the current questions', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+      const questions = [
+        makeValidClassicMultiChoice(),
+        makeValidClassicTrueFalse(),
+      ]
+
+      act(() => result.current.setGameMode(GameMode.Classic))
+      act(() => result.current.setQuestions(questions))
+
+      act(() => result.current.setGameModeWithoutReset(GameMode.Classic))
+
+      expect(result.current.questions).toEqual(questions)
+      expect(result.current.selectedQuestionIndex).toBe(0)
+    })
+
+    it('resets questions when the user intentionally selects a mode', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+
+      act(() => result.current.setGameMode(GameMode.Classic))
+      act(() =>
+        result.current.setQuestions([
+          makeValidClassicMultiChoice(),
+          makeValidClassicTrueFalse(),
+        ]),
+      )
+
+      act(() => result.current.setGameMode(GameMode.ZeroToOneHundred))
+
+      expect(result.current.gameMode).toBe(GameMode.ZeroToOneHundred)
+      expect(result.current.questions).toHaveLength(1)
+      expect(result.current.questions[0]?.type).toBe(QuestionType.Range)
+      expect(result.current.selectedQuestionIndex).toBe(0)
+    })
+
+    it('replaces questions and selects the first item atomically', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+      const questions = [makeValidClassicMultiChoice()]
+
+      act(() => result.current.setGameModeWithoutReset(GameMode.Classic))
+      act(() => result.current.setQuestionsAndSelect(questions))
+
+      expect(result.current.questions).toEqual(questions)
+      expect(result.current.selectedQuestionIndex).toBe(0)
+    })
   })
 
   describe('selectQuestion', () => {
