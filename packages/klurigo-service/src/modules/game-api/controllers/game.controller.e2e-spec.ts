@@ -150,7 +150,7 @@ describe('GameController (e2e)', () => {
       expect(updatedDocument!.participants).toHaveLength(2)
     })
 
-    it('should fail in joining when a player has already joined', async () => {
+    it('should safely repeat a join for a player that has already joined', async () => {
       const { id: quizId } = await quizService.createQuiz(
         createMockClassicQuizRequestDto(),
         hostUser,
@@ -181,18 +181,87 @@ describe('GameController (e2e)', () => {
         GameParticipantType.PLAYER,
       )
 
-      return supertest(app.getHttpServer())
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${gameId}/players`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ nickname: playerUser.defaultNickname })
+        .expect(204)
+
+      const updatedGame = await gameModel.findById(gameId)
+      expect(
+        updatedGame?.participants.filter(
+          (participant) => participant.participantId === playerUser._id,
+        ),
+      ).toHaveLength(1)
+    })
+
+    it('should reject a repeated join with a different nickname', async () => {
+      const { id: quizId } = await quizService.createQuiz(
+        createMockClassicQuizRequestDto(),
+        hostUser,
+      )
+
+      const { id: gameId } = await gameService.createGame(quizId, hostUser)
+
+      const accessToken = await authenticateGame(
+        app,
+        gameId,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
         .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .expect(204)
+
+      return supertest(app.getHttpServer())
+        .post(`/api/games/${gameId}/players`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ nickname: 'OtherNickname' })
         .expect(409)
         .expect((res) => {
-          expect(res.body).toEqual({
-            message: 'Player has already joined this game',
-            status: 409,
-            timestamp: expect.anything(),
-          })
+          expect(res.body).toHaveProperty(
+            'message',
+            'Player has already joined this game',
+          )
         })
+    })
+
+    it('should accept concurrent join attempts once for the same player', async () => {
+      const { id: quizId } = await quizService.createQuiz(
+        createMockClassicQuizRequestDto(),
+        hostUser,
+      )
+
+      const { id: gameId } = await gameService.createGame(quizId, hostUser)
+
+      const accessToken = await authenticateGame(
+        app,
+        gameId,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      const responses = await Promise.all([
+        supertest(app.getHttpServer())
+          .post(`/api/games/${gameId}/players`)
+          .set(createBearerAuthHeader(accessToken))
+          .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME }),
+        supertest(app.getHttpServer())
+          .post(`/api/games/${gameId}/players`)
+          .set(createBearerAuthHeader(accessToken))
+          .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME }),
+      ])
+
+      expect(responses.map((response) => response.status)).toEqual([204, 204])
+      const updatedGame = await gameModel.findById(gameId)
+      expect(
+        updatedGame?.participants.filter(
+          (participant) => participant.participantId === playerUser._id,
+        ),
+      ).toHaveLength(1)
     })
 
     it('should fail in joining when nickname already taken', async () => {

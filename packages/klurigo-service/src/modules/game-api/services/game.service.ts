@@ -219,43 +219,65 @@ export class GameService {
   ): Promise<void> {
     await this.gameRepository.findGameByIDOrThrow(gameId)
 
-    const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
-      gameId,
-      async (currentDocument) => {
-        if (
-          currentDocument.status !== undefined &&
-          currentDocument.status !== GameStatus.Active
-        ) {
-          throw new BadRequestException(
-            `Cannot join game ${gameId} while it is ${currentDocument.status}`,
+    let joined = false
+    const savedGameDocument =
+      await this.gameRepository.findAndSaveWithLockIfChanged(
+        gameId,
+        async (currentDocument) => {
+          const existingParticipant = currentDocument.participants.find(
+            (participant) => participant.participantId === participantId,
           )
-        }
 
-        if (currentDocument.currentTask.type === TaskType.Podium) {
-          throw new BadRequestException(
-            `Cannot join game ${gameId} while its final leaderboard is active`,
+          // A retried request for the same player and nickname is already complete.
+          // Returning undefined also prevents a duplicate game event and revision.
+          if (
+            existingParticipant &&
+            isParticipantPlayer(existingParticipant) &&
+            existingParticipant.nickname.trim() === nickname.trim()
+          ) {
+            return undefined
+          }
+
+          if (
+            currentDocument.status !== undefined &&
+            currentDocument.status !== GameStatus.Active
+          ) {
+            throw new BadRequestException(
+              `Cannot join game ${gameId} while it is ${currentDocument.status}`,
+            )
+          }
+
+          if (currentDocument.currentTask.type === TaskType.Podium) {
+            throw new BadRequestException(
+              `Cannot join game ${gameId} while its final leaderboard is active`,
+            )
+          }
+
+          if (isGameFull(currentDocument.participants)) {
+            throw new GameFullException()
+          }
+
+          if (
+            existingParticipant ||
+            !isPlayerUnique(currentDocument.participants, participantId)
+          ) {
+            throw new PlayerNotUniqueException()
+          }
+
+          if (!isNicknameUnique(currentDocument.participants, nickname)) {
+            throw new NicknameNotUniqueException(nickname)
+          }
+
+          joined = true
+          return addPlayerParticipantToGame(
+            currentDocument,
+            participantId,
+            nickname,
           )
-        }
+        },
+      )
 
-        if (isGameFull(currentDocument.participants)) {
-          throw new GameFullException()
-        }
-
-        if (!isPlayerUnique(currentDocument.participants, participantId)) {
-          throw new PlayerNotUniqueException()
-        }
-
-        if (!isNicknameUnique(currentDocument.participants, nickname)) {
-          throw new NicknameNotUniqueException(nickname)
-        }
-
-        return addPlayerParticipantToGame(
-          currentDocument,
-          participantId,
-          nickname,
-        )
-      },
-    )
+    if (!joined) return
 
     await this.gameEventPublisher.publish(savedGameDocument)
 

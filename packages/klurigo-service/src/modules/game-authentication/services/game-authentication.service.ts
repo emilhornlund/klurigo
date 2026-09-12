@@ -2,6 +2,7 @@ import {
   AuthGameRequestDto,
   AuthResponseDto,
   GameParticipantType,
+  GameTokenDto,
   TokenScope,
 } from '@klurigo/common'
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
@@ -50,6 +51,7 @@ export class GameAuthenticationService {
     ipAddress: string,
     userAgent: string,
     userId?: string,
+    gameToken?: Pick<GameTokenDto, 'gameId' | 'sub'>,
   ): Promise<AuthResponseDto> {
     let game: GameDocument | undefined = undefined
     try {
@@ -80,7 +82,10 @@ export class GameAuthenticationService {
 
     const gameId = game._id
 
-    const participantId = userId || uuidv4()
+    const participantId =
+      userId ||
+      (gameToken?.gameId === gameId ? gameToken.sub : undefined) ||
+      uuidv4()
 
     const existingParticipant = game.participants.find(
       (participant) => participant.participantId === participantId,

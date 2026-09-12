@@ -25,6 +25,7 @@ describe(GameService.name, () => {
     findGamesByParticipantId: jest.Mock
     findGameByIDOrThrow: jest.Mock
     findAndSaveWithLock: jest.Mock
+    findAndSaveWithLockIfChanged: jest.Mock
   }
 
   let gameAnswerRepository: {
@@ -46,6 +47,7 @@ describe(GameService.name, () => {
       findGamesByParticipantId: jest.fn(),
       findGameByIDOrThrow: jest.fn(),
       findAndSaveWithLock: jest.fn(),
+      findAndSaveWithLockIfChanged: jest.fn(),
     }
 
     gameAnswerRepository = {
@@ -474,14 +476,25 @@ describe(GameService.name, () => {
 
   describe('joinGame', () => {
     beforeEach(() => {
-      gameRepository.findGameByIDOrThrow = jest.fn().mockResolvedValue({
+      const gameDocument = {
         _id: 'game-123',
+        status: GameStatus.Active,
+        currentTask: { type: TaskType.Lobby },
         participants: [],
-      })
-      gameRepository.findAndSaveWithLock = jest.fn().mockResolvedValue({
-        _id: 'game-123',
-        participants: [],
-      })
+      }
+      gameRepository.findGameByIDOrThrow = jest
+        .fn()
+        .mockResolvedValue(gameDocument)
+      gameRepository.findAndSaveWithLockIfChanged = jest
+        .fn()
+        .mockImplementation(
+          async (
+            _gameId: string,
+            callback: (
+              game: typeof gameDocument,
+            ) => Promise<typeof gameDocument | undefined>,
+          ) => (await callback(gameDocument)) ?? gameDocument,
+        )
       ;(
         service as unknown as { gameEventPublisher: { publish: jest.Mock } }
       ).gameEventPublisher = {
@@ -512,6 +525,45 @@ describe(GameService.name, () => {
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
     })
 
+    it('treats a repeated join with the same nickname as a no-op', async () => {
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+
+      expect(gameRepository.findGameByIDOrThrow.mock.results).toHaveLength(2)
+      expect(
+        (await gameRepository.findGameByIDOrThrow.mock.results[0]!.value)
+          .participants,
+      ).toHaveLength(1)
+      expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
+      expect(
+        (
+          service as unknown as {
+            gameEventPublisher: { publish: jest.Mock }
+          }
+        ).gameEventPublisher.publish,
+      ).toHaveBeenCalledTimes(1)
+    })
+
+    it('serializes concurrent joins for the same identity into one player', async () => {
+      await Promise.all([
+        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+      ])
+
+      const game =
+        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
+      expect(game.participants).toHaveLength(1)
+      expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
+    })
+
+    it('rejects a repeated join that changes the player nickname', async () => {
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+
+      await expect(
+        service.joinGame('game-123', 'participant-456', 'OtherNickname'),
+      ).rejects.toThrow('Player has already joined this game')
+    })
+
     it('rejects joining while the final Podium leaderboard is active', async () => {
       const gameDoc = {
         _id: 'game-123',
@@ -520,7 +572,7 @@ describe(GameService.name, () => {
         participants: [],
       }
       gameRepository.findGameByIDOrThrow.mockResolvedValueOnce(gameDoc)
-      gameRepository.findAndSaveWithLock.mockImplementationOnce(
+      gameRepository.findAndSaveWithLockIfChanged.mockImplementationOnce(
         async (_gameId: string, callback: (game: typeof gameDoc) => unknown) =>
           callback(gameDoc),
       )

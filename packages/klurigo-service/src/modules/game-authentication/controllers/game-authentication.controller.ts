@@ -1,4 +1,4 @@
-import { Authority, TokenScope } from '@klurigo/common'
+import { Authority, GameTokenDto, TokenScope } from '@klurigo/common'
 import {
   Body,
   Controller,
@@ -41,7 +41,7 @@ export class GameAuthenticationController {
    * Creates a new GameAuthenticationController.
    *
    * @param gameAuthenticationService - Service responsible for game participant authentication.
-   * @param tokenService - Service used to verify and validate existing user tokens.
+   * @param tokenService - Service used to verify and validate existing tokens.
    */
   constructor(
     private readonly gameAuthenticationService: GameAuthenticationService,
@@ -87,14 +87,15 @@ export class GameAuthenticationController {
     @UserAgent() userAgent: string,
     @Headers('Authorization') authorization?: string,
   ): Promise<AuthResponse> {
-    const optionalUserId =
-      await this.extractUserIdFromAuthorizationHeader(authorization)
+    const identity =
+      await this.extractIdentityFromAuthorizationHeader(authorization)
 
     return this.gameAuthenticationService.authenticateGame(
       authGameRequest,
       ipAddress,
       userAgent,
-      optionalUserId,
+      identity?.scope === TokenScope.User ? identity.sub : undefined,
+      identity?.scope === TokenScope.Game ? identity : undefined,
     )
   }
 
@@ -107,9 +108,13 @@ export class GameAuthenticationController {
    * @throws UnauthorizedException when the token is invalid or expired.
    * @private
    */
-  private async extractUserIdFromAuthorizationHeader(
+  private async extractIdentityFromAuthorizationHeader(
     authorization?: string,
-  ): Promise<string | undefined> {
+  ): Promise<
+    | (Pick<GameTokenDto, 'gameId' | 'sub'> & { scope: TokenScope.Game })
+    | { sub: string; scope: TokenScope.User }
+    | undefined
+  > {
     if (!authorization) {
       return undefined
     }
@@ -121,11 +126,26 @@ export class GameAuthenticationController {
         throw new UnauthorizedException('Missing access token')
       }
       const payload = await this.tokenService.verifyToken(accessToken)
-      if (
-        payload.scope === TokenScope.User &&
-        payload.authorities.includes(Authority.Game)
-      ) {
-        return payload.sub
+      if (payload.scope === TokenScope.User) {
+        if (payload.authorities.includes(Authority.Game)) {
+          return { scope: TokenScope.User, sub: payload.sub }
+        }
+      } else if (payload.scope === TokenScope.Game) {
+        if (
+          !payload.authorities.includes(Authority.Game) ||
+          typeof payload.gameId !== 'string' ||
+          typeof payload.sub !== 'string'
+        ) {
+          throw new UnauthorizedException('Invalid game token')
+        }
+
+        await this.tokenService.tokenExistsOrThrow(payload.jti)
+
+        return {
+          scope: TokenScope.Game,
+          gameId: payload.gameId,
+          sub: payload.sub,
+        }
       }
     } catch {
       throw new UnauthorizedException('Invalid or expired token')

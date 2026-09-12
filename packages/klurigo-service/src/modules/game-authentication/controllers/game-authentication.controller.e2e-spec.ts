@@ -22,6 +22,7 @@ import {
   DEFAULT_REFRESH_AUTHORITIES,
 } from '../../../app/shared/token'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
+import { TokenService } from '../../token/services'
 
 const MOCK_USER_AGENT = 'mock-user-agent'
 
@@ -29,11 +30,13 @@ describe('GameAuthenticationController (e2e)', () => {
   let app: INestApplication
   let jwtService: JwtService
   let gameModel: GameModel
+  let tokenService: TokenService
 
   beforeEach(async () => {
     app = await createTestApp()
     jwtService = app.get(JwtService)
     gameModel = app.get<GameModel>(getModelToken(Game.name))
+    tokenService = app.get(TokenService)
   })
 
   afterEach(async () => {
@@ -92,6 +95,90 @@ describe('GameAuthenticationController (e2e)', () => {
         .expect((res) => {
           expectGameTokenPair(game._id, GameParticipantType.PLAYER, res)
         })
+    })
+
+    it('should preserve an anonymous participant identity when re-authenticating', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [createMockGameHostParticipantDocument()],
+        }),
+      )
+
+      const initialResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ gameId: game._id })
+        .expect(200)
+
+      const initialToken = jwtService.verify<GameTokenDto>(
+        initialResponse.body.accessToken,
+      )
+
+      return supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({
+          'User-Agent': MOCK_USER_AGENT,
+          ...createBearerAuthHeader(initialResponse.body.accessToken),
+        })
+        .send({ gameId: game._id })
+        .expect(200)
+        .expect((res) => {
+          const reauthenticatedToken = jwtService.verify<GameTokenDto>(
+            res.body.accessToken,
+          )
+          expect(reauthenticatedToken.sub).toBe(initialToken.sub)
+          expect(reauthenticatedToken.participantType).toBe(
+            GameParticipantType.PLAYER,
+          )
+        })
+    })
+
+    it('should reject a game refresh token used as an identity token', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [createMockGameHostParticipantDocument()],
+        }),
+      )
+
+      const authenticationResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ gameId: game._id })
+        .expect(200)
+
+      return supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({
+          'User-Agent': MOCK_USER_AGENT,
+          ...createBearerAuthHeader(authenticationResponse.body.refreshToken),
+        })
+        .send({ gameId: game._id })
+        .expect(401)
+    })
+
+    it('should reject a revoked game access token used as an identity token', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [createMockGameHostParticipantDocument()],
+        }),
+      )
+
+      const authenticationResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ gameId: game._id })
+        .expect(200)
+
+      await tokenService.revoke(authenticationResponse.body.refreshToken)
+
+      return supertest(app.getHttpServer())
+        .post('/api/auth/game')
+        .set({
+          'User-Agent': MOCK_USER_AGENT,
+          ...createBearerAuthHeader(authenticationResponse.body.accessToken),
+        })
+        .send({ gameId: game._id })
+        .expect(401)
     })
 
     it('should succeed in authenticating an anonymous participant using a game PIN', async () => {

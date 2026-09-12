@@ -188,12 +188,36 @@ export class GameRepository extends BaseRepository<Game> {
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument>,
   ): Promise<GameDocument> {
+    return this.findAndSaveLocked(gameID, callback)
+  }
+
+  /**
+   * Finds and updates a game while holding the game lock. Returning undefined
+   * from the callback leaves the document untouched, which is useful for
+   * idempotent operations that have already completed.
+   */
+  @MurLock(5000, 'game', 'gameID')
+  public async findAndSaveWithLockIfChanged(
+    gameID: string,
+    callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+  ): Promise<GameDocument> {
+    return this.findAndSaveLocked(gameID, callback)
+  }
+
+  private async findAndSaveLocked(
+    gameID: string,
+    callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+  ): Promise<GameDocument> {
     const gameDocument = await this.findGameByIDWithStatusesOrThrow(gameID, [
       GameStatus.Active,
       GameStatus.Completed,
     ])
 
     const updatedGameDocument = await callback(gameDocument)
+    if (!updatedGameDocument) {
+      return gameDocument
+    }
+
     updatedGameDocument.updated = new Date()
     updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
     return await updatedGameDocument.save()
