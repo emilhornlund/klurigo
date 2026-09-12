@@ -7,6 +7,7 @@ import {
   isDefined,
 } from '@klurigo/common'
 import {
+  GoneException,
   Injectable,
   Logger,
   MessageEvent,
@@ -359,7 +360,8 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
    * @returns An observable of {@link MessageEvent} where `data` is a JSON-encoded game event payload.
    *
    * @throws {PlayerNotFoundException} If the participant does not exist in the game.
-   * @throws {GameNotFoundException} If the game does not exist or is not active/completed.
+   * @throws {GameNotFoundException} If the game does not exist.
+   * @throws {GoneException} If the game has expired or was terminated.
    */
   public async subscribe(
     gameId: string,
@@ -434,7 +436,16 @@ export class GameEventSubscriber implements OnModuleInit, OnModuleDestroy {
         await this.gameRepository.findGameByIDWithStatusesOrThrow(gameId, [
           GameStatus.Active,
           GameStatus.Completed,
+          GameStatus.Expired,
+          GameStatus.Terminated,
         ])
+
+      if (
+        document.status === GameStatus.Expired ||
+        document.status === GameStatus.Terminated
+      ) {
+        throw new GoneException('Game has already ended')
+      }
 
       const participant = document.participants.find(
         (p) => p.participantId === participantId,

@@ -20,6 +20,7 @@ import {
   ApiExcludeEndpoint,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiGoneResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -259,6 +260,9 @@ export class GameController {
   })
   @ApiNotFoundResponse({
     description: 'No active game found with the specified game ID.',
+  })
+  @ApiGoneResponse({
+    description: 'The game has already ended.',
   })
   @ApiBadRequestResponse({
     description: 'Invalid game ID format or missing authorization token.',
