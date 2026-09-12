@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { Bounce, ToastContainer } from 'react-toastify'
 
-import { ProtectedRoute } from './components'
+import { GameSessionErrorBoundary, ProtectedRoute } from './components'
 import config from './config'
 import AuthContextProvider from './context/auth'
 import GameContextProvider from './context/game'
@@ -136,7 +136,9 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute scope={TokenScope.Game}>
             <GameContextProvider>
-              <GamePage />
+              <GameSessionErrorBoundary>
+                <GamePage />
+              </GameSessionErrorBoundary>
             </GameContextProvider>
           </ProtectedRoute>
         ),

@@ -1,0 +1,38 @@
+@use '../../styles/helpers' as helpers;
+@use '../../styles/spacing.semantic' as spacing;
+
+.fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 36rem);
+  gap: spacing.$space-inline-mobile;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacing.$space-inline-mobile;
+}
+
+@include helpers.tablet {
+  .fallback {
+    gap: spacing.$space-inline-tablet;
+  }
+
+  .actions {
+    gap: spacing.$space-inline-tablet;
+  }
+}
+
+@include helpers.desktop {
+  .fallback {
+    gap: spacing.$space-inline-desktop;
+  }
+
+  .actions {
+    gap: spacing.$space-inline-desktop;
+  }
+}
