@@ -1,0 +1,53 @@
+@use '../../../../styles/breakpoints.tokens' as breakpoints;
+@use '../../../../styles/helpers' as helpers;
+@use '../../../../styles/spacing.semantic' as spacing;
+
+.connectionNotice {
+  position: fixed;
+  top: spacing.$space-compact-mobile;
+  left: 50%;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(calc(100% - #{spacing.$space-page-mobile * 2}), 32rem);
+  padding: spacing.$space-compact-mobile spacing.$space-page-mobile;
+  gap: spacing.$space-inline-mobile;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.connectionNoticeActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacing.$space-inline-mobile;
+}
+
+@include helpers.tablet {
+  .connectionNotice {
+    top: spacing.$space-compact-tablet;
+    width: min(calc(100% - #{spacing.$space-page-tablet * 2}), 34rem);
+    padding: spacing.$space-compact-tablet spacing.$space-page-tablet;
+    gap: spacing.$space-inline-tablet;
+  }
+
+  .connectionNoticeActions {
+    gap: spacing.$space-inline-tablet;
+  }
+}
+
+@include helpers.desktop {
+  .connectionNotice {
+    top: spacing.$space-compact-desktop;
+    width: min(calc(100% - #{spacing.$space-page-desktop * 2}), 36rem);
+    padding: spacing.$space-compact-desktop spacing.$space-page-desktop;
+    gap: spacing.$space-inline-desktop;
+  }
+
+  .connectionNoticeActions {
+    gap: spacing.$space-inline-desktop;
+  }
+}
