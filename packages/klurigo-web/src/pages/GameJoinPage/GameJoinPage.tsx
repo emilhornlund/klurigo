@@ -1,5 +1,5 @@
 import type { FC, FormEvent } from 'react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
@@ -24,7 +24,7 @@ import { MESSAGES, TITLES } from './text.utils'
 const GameJoinPage: FC = () => {
   const navigate = useNavigate()
 
-  const { isUserAuthenticated } = useAuthContext()
+  const { isUserAuthenticated, revokeGame } = useAuthContext()
 
   const { currentUser } = useUserContext()
 
@@ -38,6 +38,10 @@ const GameJoinPage: FC = () => {
   const [nicknameValid, setNicknameValid] = useState<boolean>(false)
 
   const [isJoiningGame, setIsJoiningGame] = useState(false)
+
+  const handleBack = useCallback(() => {
+    void revokeGame({ redirectTo: '/' })
+  }, [revokeGame])
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -61,7 +65,7 @@ const GameJoinPage: FC = () => {
           kind="call-to-action"
           size="small"
           value="Back"
-          onClick={() => navigate(-1)}
+          onClick={handleBack}
         />
       }
       hideLogin>
