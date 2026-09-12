@@ -376,20 +376,20 @@ export class GameRepository extends BaseRepository<Game> {
    * @returns Number of games successfully updated to 'Completed'
    */
   public async updateCompletedGames(): Promise<number> {
+    const cutoff = new Date(Date.now() - 60 * 60 * 1000)
     const filter = {
       status: GameStatus.Active,
       'currentTask.type': TaskType.Podium,
-      updated: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
+      updated: { $lt: cutoff },
     }
 
-    return this.updateMany(filter, [
-      {
-        $set: {
-          status: GameStatus.Completed,
-          completedAt: '$$NOW',
-        },
-      },
-    ])
+    return this.updateStaleGames(filter, cutoff, (gameDocument) => {
+      if (gameDocument.currentTask.type !== TaskType.Podium) return false
+
+      gameDocument.status = GameStatus.Completed
+      gameDocument.completedAt = new Date()
+      return true
+    })
   }
 
   /**
@@ -401,18 +401,59 @@ export class GameRepository extends BaseRepository<Game> {
    * @returns Number of games successfully updated to 'Expired'
    */
   public async updateExpiredGames(): Promise<number> {
+    const cutoff = new Date(Date.now() - 60 * 60 * 1000)
     const filter = {
       status: GameStatus.Active,
       'currentTask.type': { $nin: [TaskType.Podium] },
-      updated: { $lt: new Date(Date.now() - 60 * 60 * 1000) },
+      updated: { $lt: cutoff },
     }
 
-    return this.updateMany(filter, [
-      {
-        $set: {
-          status: GameStatus.Expired,
-        },
-      },
-    ])
+    return this.updateStaleGames(filter, cutoff, (gameDocument) => {
+      if (gameDocument.currentTask.type === TaskType.Podium) return false
+
+      gameDocument.status = GameStatus.Expired
+      return true
+    })
+  }
+
+  /**
+   * Updates stale games one at a time while holding the same per-game lock used
+   * by gameplay writes. The candidate is re-read and the timestamp/state check
+   * is repeated under that lock, so a concurrent session update wins safely.
+   */
+  private async updateStaleGames(
+    filter: QueryFilter<Game>,
+    cutoff: Date,
+    update: (gameDocument: GameDocument) => boolean,
+  ): Promise<number> {
+    const candidates = await this.find(filter)
+    let updatedCount = 0
+
+    for (const candidate of candidates) {
+      let updated = false
+      try {
+        await this.findAndSaveWithLockIfChanged(
+          candidate._id,
+          async (gameDocument) => {
+            if (
+              gameDocument.status !== GameStatus.Active ||
+              gameDocument.updated >= cutoff
+            ) {
+              return undefined
+            }
+
+            updated = update(gameDocument)
+            return updated ? gameDocument : undefined
+          },
+        )
+      } catch (error) {
+        this.logger.error(`Error cleaning up game '${candidate._id}':`, error)
+        continue
+      }
+
+      if (updated) updatedCount += 1
+    }
+
+    return updatedCount
   }
 }

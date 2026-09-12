@@ -125,16 +125,26 @@ export class GameAnswerRepository {
    */
   public async clear(gameId: string, taskId?: string): Promise<void> {
     const answersKey = this.getAnswerKey(gameId, taskId)
-    const legacyAnswersKey = this.getLegacyAnswerKey(gameId, taskId)
-    const answeredKey = this.getAnsweredKey(gameId, taskId)
+    // Legacy answer state was scoped only by game, even when the caller has a task id.
+    const legacyAnswersKey = this.getLegacyAnswerKey(gameId)
+    const answeredKey = this.getAnsweredKey(gameId)
 
     try {
-      await this.redis
+      const results = await this.redis
         .multi()
         .del(answersKey)
         .del(legacyAnswersKey)
         .del(answeredKey)
         .exec()
+
+      const failedCommand = results?.find(([error]) => error)
+      if (failedCommand?.[0]) {
+        throw failedCommand[0]
+      }
+
+      if (!results) {
+        throw new Error('Redis transaction returned no result')
+      }
     } catch (error) {
       this.logger.error(
         `Failed to clear question answers for game ${gameId}.`,
