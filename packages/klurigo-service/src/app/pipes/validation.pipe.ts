@@ -43,8 +43,9 @@ export class ValidationPipe implements PipeTransform<any> {
    * 2. Otherwise, the value is converted to an instance of `metatype` using
    *    `plainToInstance()`.
    * 3. If the resulting object is not a plain object, throws `BadRequestException`.
-   * 4. Runs `class-validator`’s `validate()`. If any errors are found,
-   *    throws a `ValidationException` containing the error details.
+   * 4. Runs `class-validator`’s `validate()` with strict property validation.
+   *    If any errors are found, throws a `ValidationException` containing the
+   *    error details.
    *
    * @param value      The original value to transform (e.g., request body).
    * @param metadata   The argument metadata, containing the `metatype`.
@@ -67,7 +68,10 @@ export class ValidationPipe implements PipeTransform<any> {
       throw new BadRequestException('Missing request payload')
     }
 
-    const errors = await validate(object)
+    const errors = await validate(object, {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    })
     if (errors.length > 0) {
       throw new ValidationException(errors)
     }
