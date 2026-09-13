@@ -52,8 +52,6 @@ import { RouteGameIdParam, RoutePlayerIdParam } from './decorators/params'
 import {
   JoinGameRequest,
   MultiChoiceQuestionCorrectAnswerRequest,
-  PinQuestionCorrectAnswerRequest,
-  PuzzleQuestionCorrectAnswerRequest,
   RangeQuestionCorrectAnswerRequest,
   SubmitMultiChoiceQuestionAnswerRequest,
   SubmitPinQuestionAnswerRequest,
@@ -84,8 +82,6 @@ import { GameParticipantPlayerResponse } from './models/response/game-participan
   RangeQuestionCorrectAnswerRequest,
   TrueFalseQuestionCorrectAnswerRequest,
   TypeAnswerQuestionCorrectAnswerRequest,
-  PinQuestionCorrectAnswerRequest,
-  PuzzleQuestionCorrectAnswerRequest,
 )
 @ApiTags('game')
 @RequiresScopes(TokenScope.Game)
@@ -335,9 +331,9 @@ export class GameController {
   /**
    * Adds a correct answer to the current question result task.
    *
-   * Supports multiple correct answers for a single question by appending the provided answer
-   * to the list of accepted answers for the current question result.
-   * Only allowed when the current task is of type `QuestionResult` and not in an active state.
+   * Supports multiple accepted answers where the question model permits them.
+   * Range and true-false requests atomically set their singleton correct value.
+   * Only allowed when the current task is an active `QuestionResult`.
    *
    * @param gameId - The unique identifier of the game.
    * @param correctAnswerRequest - The correct answer to add. Type must match the question type.
@@ -357,8 +353,6 @@ export class GameController {
         { $ref: getSchemaPath(RangeQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TrueFalseQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TypeAnswerQuestionCorrectAnswerRequest) },
-        { $ref: getSchemaPath(PinQuestionCorrectAnswerRequest) },
-        { $ref: getSchemaPath(PuzzleQuestionCorrectAnswerRequest) },
       ],
     },
   })
@@ -381,9 +375,7 @@ export class GameController {
       | MultiChoiceQuestionCorrectAnswerRequest
       | RangeQuestionCorrectAnswerRequest
       | TrueFalseQuestionCorrectAnswerRequest
-      | TypeAnswerQuestionCorrectAnswerRequest
-      | PinQuestionCorrectAnswerRequest
-      | PuzzleQuestionCorrectAnswerRequest,
+      | TypeAnswerQuestionCorrectAnswerRequest,
   ): Promise<void> {
     return this.gameService.addCorrectAnswer(gameId, correctAnswerRequest)
   }
@@ -391,8 +383,9 @@ export class GameController {
   /**
    * Deletes a previously added correct answer from the current question result task.
    *
-   * This operation removes a matching correct answer entry from the result task's list of correct answers.
-   * Only allowed when the current task is of type `QuestionResult` and not in an active state.
+   * This operation removes a matching multi-choice or type-answer entry.
+   * Range and true-false answers must instead be replaced through the add operation.
+   * Only allowed when the current task is an active `QuestionResult`.
    *
    * @param gameId - The unique identifier of the game.
    * @param correctAnswerRequest - The correct answer to delete. Type must match the question type.
@@ -412,8 +405,6 @@ export class GameController {
         { $ref: getSchemaPath(RangeQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TrueFalseQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TypeAnswerQuestionCorrectAnswerRequest) },
-        { $ref: getSchemaPath(PinQuestionCorrectAnswerRequest) },
-        { $ref: getSchemaPath(PuzzleQuestionCorrectAnswerRequest) },
       ],
     },
   })
@@ -436,9 +427,7 @@ export class GameController {
       | MultiChoiceQuestionCorrectAnswerRequest
       | RangeQuestionCorrectAnswerRequest
       | TrueFalseQuestionCorrectAnswerRequest
-      | TypeAnswerQuestionCorrectAnswerRequest
-      | PinQuestionCorrectAnswerRequest
-      | PuzzleQuestionCorrectAnswerRequest,
+      | TypeAnswerQuestionCorrectAnswerRequest,
   ): Promise<void> {
     return this.gameService.deleteCorrectAnswer(gameId, correctAnswerRequest)
   }

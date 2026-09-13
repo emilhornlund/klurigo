@@ -4,6 +4,15 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Test } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
+import {
+  createMockGameDocument,
+  createMockMultiChoiceQuestionDocument,
+  createMockQuestionResultTaskDocument,
+  createMockQuestionTaskDocument,
+  createMockRangeQuestionDocument,
+  createMockTrueFalseQuestionDocument,
+  createMockTypeAnswerQuestionDocument,
+} from '../../../../test-utils/data'
 import { GamePlayerJoinEventKey } from '../../../app/shared/event/game-join.event'
 import {
   GameAnswerRepository,
@@ -725,6 +734,315 @@ describe(GameService.name, () => {
       expect(
         gameTaskTransitionScheduler.scheduleTaskTransition,
       ).not.toHaveBeenCalled()
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('correct answers', () => {
+    let gameEventPublisher: { publish: jest.Mock }
+
+    beforeEach(() => {
+      gameEventPublisher = { publish: jest.fn().mockResolvedValue(undefined) }
+      ;(
+        service as unknown as { gameEventPublisher: { publish: jest.Mock } }
+      ).gameEventPublisher = gameEventPublisher
+      gameRepository.findAndSaveWithLockIfChanged.mockImplementation(
+        async (gameId: string, callback: (game: any) => Promise<any>) => {
+          const game = await gameRepository.findGameByIDOrThrow(gameId)
+          return (await callback(game)) ?? game
+        },
+      )
+    })
+
+    function buildGame(question: any, correctAnswers: any[]) {
+      return createMockGameDocument({
+        questions: [question],
+        currentTask: createMockQuestionResultTaskDocument({
+          status: 'active',
+          questionIndex: 0,
+          correctAnswers,
+          results: [],
+        }),
+        previousTasks: [
+          createMockQuestionTaskDocument({
+            status: 'completed',
+            questionIndex: 0,
+            answers: [],
+          }),
+        ],
+      })
+    }
+
+    it('adds, deduplicates, and removes multi-choice answers', async () => {
+      const game = buildGame(createMockMultiChoiceQuestionDocument(), [
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.MultiChoice,
+        index: 1,
+      })
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.MultiChoice,
+        index: 1,
+      })
+      await service.deleteCorrectAnswer('game-1', {
+        type: QuestionType.MultiChoice,
+        index: 0,
+      })
+      await service.deleteCorrectAnswer('game-1', {
+        type: QuestionType.MultiChoice,
+        index: 0,
+      })
+
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.MultiChoice, index: 1 },
+      ])
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(4)
+    })
+
+    it('normalizes type-answer identity for repeated add and delete', async () => {
+      const game = buildGame(
+        createMockTypeAnswerQuestionDocument({ options: ['Copenhagen'] }),
+        [{ type: QuestionType.TypeAnswer, value: 'Copenhagen' }],
+      )
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.TypeAnswer,
+        value: ' copenhagen ',
+      })
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.TypeAnswer,
+        value: 'Kobenhavn',
+      })
+      await service.deleteCorrectAnswer('game-1', {
+        type: QuestionType.TypeAnswer,
+        value: 'COPENHAGEN',
+      })
+
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.TypeAnswer, value: 'Kobenhavn' },
+      ])
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(3)
+    })
+
+    it('rejects a whitespace-only type answer', async () => {
+      const game = buildGame(createMockTypeAnswerQuestionDocument(), [
+        { type: QuestionType.TypeAnswer, value: 'Copenhagen' },
+      ])
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.TypeAnswer,
+          value: ' ',
+        }),
+      ).rejects.toThrow('Correct type-answer value is invalid')
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.TypeAnswer, value: 'Copenhagen' },
+      ])
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('rejects a type answer beyond the accepted-answer limit', async () => {
+      const game = buildGame(
+        createMockTypeAnswerQuestionDocument({
+          options: ['Alpha', 'Bravo', 'Charlie', 'Delta'],
+        }),
+        [
+          { type: QuestionType.TypeAnswer, value: 'Alpha' },
+          { type: QuestionType.TypeAnswer, value: 'Bravo' },
+          { type: QuestionType.TypeAnswer, value: 'Charlie' },
+          { type: QuestionType.TypeAnswer, value: 'Delta' },
+        ],
+      )
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.TypeAnswer,
+          value: 'Echo',
+        }),
+      ).rejects.toThrow(
+        'The current question already has the maximum number of accepted answers',
+      )
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.TypeAnswer, value: 'Alpha' },
+        { type: QuestionType.TypeAnswer, value: 'Bravo' },
+        { type: QuestionType.TypeAnswer, value: 'Charlie' },
+        { type: QuestionType.TypeAnswer, value: 'Delta' },
+      ])
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it.each([
+      {
+        question: createMockTrueFalseQuestionDocument({ correct: true }),
+        current: [{ type: QuestionType.TrueFalse, value: true }],
+        request: { type: QuestionType.TrueFalse, value: false },
+        expected: [{ type: QuestionType.TrueFalse, value: false }],
+      },
+      {
+        question: createMockTrueFalseQuestionDocument({ correct: false }),
+        current: [{ type: QuestionType.TrueFalse, value: false }],
+        request: { type: QuestionType.TrueFalse, value: true },
+        expected: [{ type: QuestionType.TrueFalse, value: true }],
+      },
+      {
+        question: createMockRangeQuestionDocument({ correct: 50 }),
+        current: [{ type: QuestionType.Range, value: 50 }],
+        request: { type: QuestionType.Range, value: 40 },
+        expected: [{ type: QuestionType.Range, value: 40 }],
+      },
+    ])('atomically replaces singleton correct answers', async (testCase) => {
+      const game = buildGame(testCase.question, testCase.current)
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await service.addCorrectAnswer('game-1', testCase.request as any)
+
+      expect((game.currentTask as any).correctAnswers).toEqual(
+        testCase.expected,
+      )
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it('accepts both configured range boundaries', async () => {
+      const game = buildGame(
+        createMockRangeQuestionDocument({ min: 0, max: 100, correct: 50 }),
+        [{ type: QuestionType.Range, value: 50 }],
+      )
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.Range,
+        value: 0,
+      })
+      await service.addCorrectAnswer('game-1', {
+        type: QuestionType.Range,
+        value: 100,
+      })
+
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.Range, value: 100 },
+      ])
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(2)
+    })
+
+    it.each([
+      { type: QuestionType.TrueFalse, value: false },
+      { type: QuestionType.Range, value: 50 },
+    ])('rejects deleting a singleton correct answer', async (request) => {
+      const question =
+        request.type === QuestionType.TrueFalse
+          ? createMockTrueFalseQuestionDocument({
+              correct: request.value as boolean,
+            })
+          : createMockRangeQuestionDocument({
+              correct: request.value as number,
+            })
+      const game = buildGame(question, [request])
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.deleteCorrectAnswer('game-1', request as any),
+      ).rejects.toThrow('Cannot delete the only correct')
+
+      expect((game.currentTask as any).correctAnswers).toEqual([request])
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('rejects mismatched and contextually invalid answers', async () => {
+      const game = buildGame(createMockMultiChoiceQuestionDocument(), [
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.Range,
+          value: 50,
+        }),
+      ).rejects.toThrow('does not match the current question')
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.MultiChoice,
+          index: 99,
+        }),
+      ).rejects.toThrow('does not belong to the current question')
+
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('keeps deterministic state when an add fails after delete', async () => {
+      const game = buildGame(createMockMultiChoiceQuestionDocument(), [
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await service.deleteCorrectAnswer('game-1', {
+        type: QuestionType.MultiChoice,
+        index: 0,
+      })
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.MultiChoice,
+          index: 99,
+        }),
+      ).rejects.toThrow('does not belong to the current question')
+
+      expect((game.currentTask as any).correctAnswers).toEqual([])
+      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it('preserves a singleton answer when a replacement add fails', async () => {
+      const game = buildGame(
+        createMockRangeQuestionDocument({ min: 0, max: 100, correct: 50 }),
+        [{ type: QuestionType.Range, value: 50 }],
+      )
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.deleteCorrectAnswer('game-1', {
+          type: QuestionType.Range,
+          value: 50,
+        }),
+      ).rejects.toThrow('Cannot delete the only correct')
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.Range,
+          value: 101,
+        }),
+      ).rejects.toThrow('within the current question range')
+
+      expect((game.currentTask as any).correctAnswers).toEqual([
+        { type: QuestionType.Range, value: 50 },
+      ])
+      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('rejects corrections after the current task changes under the lock', async () => {
+      const game = buildGame(createMockMultiChoiceQuestionDocument(), [
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      const changedGame = buildGame(createMockMultiChoiceQuestionDocument(), [
+        { type: QuestionType.MultiChoice, index: 0 },
+      ])
+      changedGame.currentTask._id = 'changed-task'
+      gameRepository.findGameByIDOrThrow
+        .mockResolvedValueOnce(game)
+        .mockResolvedValueOnce(changedGame)
+
+      await expect(
+        service.addCorrectAnswer('game-1', {
+          type: QuestionType.MultiChoice,
+          index: 1,
+        }),
+      ).rejects.toThrow('current task changed')
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
     })
   })

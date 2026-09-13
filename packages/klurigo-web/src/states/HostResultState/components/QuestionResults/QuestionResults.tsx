@@ -128,6 +128,15 @@ const getResultChips = (
               correct={correct}
               loading={loading}
               index={globalIndex}
+              onClick={
+                correct
+                  ? undefined
+                  : () =>
+                      processCorrectAnswer({
+                        type: QuestionType.TrueFalse,
+                        value: value as boolean,
+                      })
+              }
             />
           )
         case QuestionType.Range:
@@ -139,6 +148,15 @@ const getResultChips = (
               correct={correct}
               loading={loading}
               index={globalIndex}
+              onClick={
+                correct
+                  ? undefined
+                  : () =>
+                      processCorrectAnswer({
+                        type: QuestionType.Range,
+                        value: value as number,
+                      })
+              }
             />
           )
         case QuestionType.TypeAnswer:
