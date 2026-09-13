@@ -212,6 +212,20 @@ export class TokenService {
   }
 
   /**
+   * Revokes all persisted user login token pairs for a principal.
+   *
+   * @param principalId - The user ID whose login sessions should be revoked.
+   * @returns A promise that resolves when the user's login tokens are deleted.
+   */
+  public async revokeUserAuthenticationTokens(
+    principalId: string,
+  ): Promise<void> {
+    await this.tokenRepository.deleteUserAuthenticationTokensByPrincipalId(
+      principalId,
+    )
+  }
+
+  /**
    * Verifies a JWT token and returns the decoded payload.
    *
    * @param {string} token - The JWT token to be verified.

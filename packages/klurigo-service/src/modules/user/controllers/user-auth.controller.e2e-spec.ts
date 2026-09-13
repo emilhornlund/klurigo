@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import {
   MOCK_DEFAULT_HASHED_PASSWORD,
+  MOCK_PRIMARY_PASSWORD,
   MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
   MOCK_PRIMARY_USER_EMAIL,
   MOCK_PRIMARY_USER_FAMILY_NAME,
@@ -19,18 +20,21 @@ import {
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
+import { AuthService } from '../../authentication/services'
 import { TokenService } from '../../token/services'
 import { LocalUser, UserRepository } from '../repositories'
 
 describe('UserAuthController (e2e)', () => {
   let app: INestApplication
   let userRepository: UserRepository
+  let authService: AuthService
   let tokenService: TokenService
   let jwtService: JwtService
 
   beforeEach(async () => {
     app = await createTestApp()
     userRepository = app.get<UserRepository>(UserRepository)
+    authService = app.get<AuthService>(AuthService)
     tokenService = app.get<TokenService>(TokenService)
     jwtService = app.get(JwtService)
   })
@@ -272,7 +276,16 @@ describe('UserAuthController (e2e)', () => {
 
       const accessToken = await tokenService.signPasswordResetToken(userId)
 
-      return supertest(app.getHttpServer())
+      const { refreshToken } = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        '0.0.0.0',
+        'mock-user-agent',
+      )
+
+      await supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
         .set(createBearerAuthHeader(accessToken))
         .send({ password: MOCK_SECONDARY_PASSWORD })
@@ -280,6 +293,18 @@ describe('UserAuthController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({})
         })
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': 'mock-user-agent' })
+        .send({ refreshToken })
+        .expect(401)
+
+      return supertest(app.getHttpServer())
+        .patch('/api/auth/password/reset')
+        .set(createBearerAuthHeader(accessToken))
+        .send({ password: MOCK_SECONDARY_PASSWORD })
+        .expect(401)
     })
 
     it('should return 401 when the authorization has expired', async () => {

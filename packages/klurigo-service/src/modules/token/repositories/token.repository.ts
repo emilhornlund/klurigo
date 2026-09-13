@@ -1,3 +1,4 @@
+import { TokenScope, TokenType } from '@klurigo/common'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 
@@ -67,5 +68,23 @@ export class TokenRepository extends BaseRepository<Token> {
    */
   public async deleteTokensByPairId(pairId: string): Promise<number> {
     return this.deleteMany({ pairId })
+  }
+
+  /**
+   * Deletes persisted user authentication tokens for a principal.
+   *
+   * Game-scoped tokens and password-reset tokens are intentionally excluded.
+   *
+   * @param principalId - The user ID whose login sessions should be revoked.
+   * @returns Promise resolving to the number of deleted token documents.
+   */
+  public async deleteUserAuthenticationTokensByPrincipalId(
+    principalId: string,
+  ): Promise<number> {
+    return this.deleteMany({
+      principalId,
+      scope: TokenScope.User,
+      type: { $in: [TokenType.Access, TokenType.Refresh] },
+    })
   }
 }

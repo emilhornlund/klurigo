@@ -33,6 +33,7 @@ describe('UserService', () => {
   let tokenService: {
     signVerifyEmailToken: jest.Mock
     signPasswordResetToken: jest.Mock
+    revokeUserAuthenticationTokens: jest.Mock
     consumePasswordResetToken: jest.Mock
   }
   let emailService: {
@@ -58,6 +59,7 @@ describe('UserService', () => {
     tokenService = {
       signVerifyEmailToken: jest.fn(),
       signPasswordResetToken: jest.fn(),
+      revokeUserAuthenticationTokens: jest.fn(),
       consumePasswordResetToken: jest.fn(),
     }
 
@@ -856,6 +858,9 @@ describe('UserService', () => {
           hashedPassword: expect.any(String),
         }),
       )
+      expect(tokenService.revokeUserAuthenticationTokens).toHaveBeenCalledWith(
+        'user-123',
+      )
       expect(logger.log).toHaveBeenCalledWith(
         expect.stringContaining('Updated password'),
       )
@@ -882,6 +887,7 @@ describe('UserService', () => {
       expect(logger.debug).toHaveBeenCalledWith(
         expect.stringContaining('Old password is incorrect'),
       )
+      expect(tokenService.revokeUserAuthenticationTokens).not.toHaveBeenCalled()
     })
 
     it('should throw ForbiddenException for non-local users', async () => {
@@ -926,6 +932,9 @@ describe('UserService', () => {
         expect.objectContaining({
           hashedPassword: expect.any(String),
         }),
+      )
+      expect(tokenService.revokeUserAuthenticationTokens).toHaveBeenCalledWith(
+        'user-123',
       )
       expect(tokenService.consumePasswordResetToken).toHaveBeenCalledWith(
         'test-jti',

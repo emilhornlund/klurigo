@@ -661,7 +661,7 @@ describe('AuthController (e2e)', () => {
       it('should succeed in changing password of an existing user', async () => {
         await userModel.create(buildMockPrimaryUser())
 
-        const { accessToken } = await authService.login(
+        const { accessToken, refreshToken } = await authService.login(
           {
             email: MOCK_PRIMARY_USER_EMAIL,
             password: MOCK_PRIMARY_PASSWORD,
@@ -670,7 +670,7 @@ describe('AuthController (e2e)', () => {
           MOCK_USER_AGENT,
         )
 
-        return supertest(app.getHttpServer())
+        await supertest(app.getHttpServer())
           .patch('/api/auth/password')
           .set(createBearerAuthHeader(accessToken))
           .send({
@@ -681,12 +681,18 @@ describe('AuthController (e2e)', () => {
           .expect((res) => {
             expect(res.body).toEqual({})
           })
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken })
+          .expect(401)
       })
 
       it('should return 400 bad request when old password is incorrect', async () => {
         await userModel.create(buildMockPrimaryUser())
 
-        const { accessToken } = await authService.login(
+        const { accessToken, refreshToken } = await authService.login(
           {
             email: MOCK_PRIMARY_USER_EMAIL,
             password: MOCK_PRIMARY_PASSWORD,
@@ -695,7 +701,7 @@ describe('AuthController (e2e)', () => {
           MOCK_USER_AGENT,
         )
 
-        return supertest(app.getHttpServer())
+        await supertest(app.getHttpServer())
           .patch('/api/auth/password')
           .set(createBearerAuthHeader(accessToken))
           .send({
@@ -710,6 +716,46 @@ describe('AuthController (e2e)', () => {
               timestamp: expect.any(String),
             })
           })
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken })
+          .expect(200)
+      })
+
+      it('should not revoke game-scoped sessions for the same principal', async () => {
+        const user = await userModel.create(buildMockPrimaryUser())
+        const game = await gameModel.create(createMockGameDocument())
+        const { accessToken } = await authService.login(
+          {
+            email: MOCK_PRIMARY_USER_EMAIL,
+            password: MOCK_PRIMARY_PASSWORD,
+          },
+          MOCK_IP_ADDRESS,
+          MOCK_USER_AGENT,
+        )
+        const gameTokenPair = await gameAuthenticationService.authenticateGame(
+          { gamePIN: game.pin },
+          MOCK_IP_ADDRESS,
+          MOCK_USER_AGENT,
+          user._id,
+        )
+
+        await supertest(app.getHttpServer())
+          .patch('/api/auth/password')
+          .set(createBearerAuthHeader(accessToken))
+          .send({
+            oldPassword: MOCK_PRIMARY_PASSWORD,
+            newPassword: MOCK_SECONDARY_PASSWORD,
+          })
+          .expect(204)
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken: gameTokenPair.refreshToken })
+          .expect(200)
       })
 
       it('should return 400 bad request when passwords are invalid', async () => {
