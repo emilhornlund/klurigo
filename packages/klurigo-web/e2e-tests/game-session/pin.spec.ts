@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
 import { expect, test } from '@playwright/test'
 
+import { createGameThroughPublicApi } from '../support/api/create-game-through-public-api'
 import { GameHostClient } from '../support/api/game-host-client'
 import { GamePlayerClient } from '../support/api/game-player-client'
 import { authenticatePageThroughApi } from '../support/browser/authenticate-page-through-api'
@@ -242,6 +243,178 @@ test.describe('Game session: Classic Pin', () => {
     } finally {
       gameHost.close()
       gamePlayer.close()
+    }
+  })
+
+  test('completes a Classic Pin game through the real player UI on a constrained viewport', async ({
+    page,
+  }, testInfo) => {
+    const e2eHost = getGameSessionFixture(testInfo)
+    const quiz = e2eHost.quizzes.classicPin
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.Pin) {
+      throw new Error('Expected the seeded question to be Pin')
+    }
+    const playerNickname = `UiPin${randomUUID().slice(0, 8)}`
+    const gameHost = new GameHostClient(E2E_API_BASE_URL)
+
+    await page.setViewportSize({ width: 667, height: 375 })
+
+    try {
+      const createdGame =
+        await test.step('Create the game through the public quiz game API', () =>
+          createGameThroughPublicApi({
+            apiBaseUrl: E2E_API_BASE_URL,
+            email: e2eHost.email,
+            password: E2E_USER_PASSWORD,
+            quizId: quiz.id,
+          }))
+
+      await test.step('Authenticate and connect the simulated host', async () => {
+        const identity = await gameHost.authenticate(
+          { email: e2eHost.email, password: E2E_USER_PASSWORD },
+          { gameId: createdGame.id },
+        )
+        expect(identity.gameId).toBe(createdGame.id)
+        await gameHost.connect()
+      })
+
+      const lobbyEvent =
+        await test.step('Read the real game PIN from the host lobby event', () =>
+          gameHost.waitForEvent(
+            GameEventType.GameLobbyHost,
+            (event) => event.game.id === createdGame.id,
+          ))
+      const gamePIN = lobbyEvent.game.pin
+
+      await test.step('Join through the real player UI', async () => {
+        const joinedPlayerPromise = gameHost.waitForEvent(
+          GameEventType.GameLobbyHost,
+          (event) =>
+            event.players.some(({ nickname }) => nickname === playerNickname),
+        )
+
+        await page.goto(`/auth/game?pin=${encodeURIComponent(gamePIN)}`)
+        await expect(page).toHaveURL('/join')
+        await page.locator('#default-nickname-textfield').fill(playerNickname)
+        await page.locator('#join').click()
+        await expect(page).toHaveURL('/game')
+        await expect(
+          page.getByText('You’re in the waiting room', { exact: true }),
+        ).toBeVisible()
+        await joinedPlayerPromise
+      })
+
+      await test.step('Start and reach the Pin question', async () => {
+        const hostBeginPromise = gameHost.waitForEvent(
+          GameEventType.GameBeginHost,
+        )
+        const hostPreviewPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionPreviewHost,
+          (event) => event.pagination.current === 1,
+        )
+        const hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === 1,
+        )
+
+        await gameHost.completeCurrentTask()
+        await Promise.all([
+          hostBeginPromise,
+          hostPreviewPromise,
+          hostQuestionPromise,
+        ])
+        await expect(
+          page.getByText(question.text, { exact: true }),
+        ).toBeVisible()
+      })
+
+      const pinImage = page.locator(`img[src="${question.imageURL}"]`)
+      const submitButton = page.getByRole('button', { name: 'Submit My Pin' })
+      await test.step('Verify the Pin interaction is reachable', async () => {
+        await expect(pinImage).toBeVisible()
+        await expect(submitButton).toBeVisible()
+
+        const geometry = await submitButton.evaluate((element) => {
+          const answer = element.closest('[class*="answerPin"]')
+          if (!answer) {
+            throw new Error('Submit button is outside the Pin answer')
+          }
+
+          const buttonRect = element.getBoundingClientRect()
+          const answerRect = answer.getBoundingClientRect()
+          return {
+            button: {
+              top: buttonRect.top,
+              bottom: buttonRect.bottom,
+              height: buttonRect.height,
+            },
+            answer: {
+              top: answerRect.top,
+              bottom: answerRect.bottom,
+            },
+            answerOverflow: getComputedStyle(answer).overflow,
+          }
+        })
+
+        expect(geometry.button.height).toBeGreaterThan(0)
+        expect(geometry.button.top).toBeGreaterThanOrEqual(geometry.answer.top)
+        expect(geometry.button.bottom).toBeLessThanOrEqual(
+          geometry.answer.bottom + 1,
+        )
+        expect(geometry.answerOverflow).not.toBe('hidden')
+
+        await submitButton.scrollIntoViewIfNeeded()
+        await expect(submitButton).toBeInViewport({ ratio: 1 })
+      })
+
+      await test.step('Move the Pin and submit through the player UI', async () => {
+        const pinOverlay = page
+          .locator('[class*="answerPin"] [class*="overlay"]')
+          .last()
+        const overlayBox = await pinOverlay.boundingBox()
+        if (!overlayBox) {
+          throw new Error('Pin overlay has no usable geometry')
+        }
+
+        await page.mouse.move(
+          overlayBox.x + overlayBox.width * 0.5,
+          overlayBox.y + overlayBox.height * 0.5,
+        )
+        await page.mouse.down()
+        await page.mouse.move(
+          overlayBox.x + overlayBox.width * question.positionX,
+          overlayBox.y + overlayBox.height * question.positionY,
+        )
+        await page.mouse.up()
+
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === 1,
+        )
+        await submitButton.click()
+        const hostResult = await hostResultPromise
+        expect(hostResult.results).toEqual(
+          expect.objectContaining({
+            type: QuestionType.Pin,
+            positionX: question.positionX,
+            positionY: question.positionY,
+          }),
+        )
+        await expect(page.getByText('Correct', { exact: true })).toBeVisible()
+      })
+
+      await test.step('Progress to the player game-over state', async () => {
+        const podiumPromise = gameHost.waitForEvent(
+          GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
+        )
+        await gameHost.completeCurrentTask()
+        await podiumPromise
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
+      })
+    } finally {
+      gameHost.close()
     }
   })
 })
