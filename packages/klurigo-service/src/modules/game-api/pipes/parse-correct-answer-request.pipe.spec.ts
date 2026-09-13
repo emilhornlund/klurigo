@@ -6,8 +6,6 @@ import { validate } from 'class-validator'
 import { ValidationException } from '../../../app/exceptions'
 import {
   MultiChoiceQuestionCorrectAnswerRequest,
-  PinQuestionCorrectAnswerRequest,
-  PuzzleQuestionCorrectAnswerRequest,
   RangeQuestionCorrectAnswerRequest,
   TrueFalseQuestionCorrectAnswerRequest,
   TypeAnswerQuestionCorrectAnswerRequest,
@@ -113,36 +111,24 @@ describe('ParseCorrectAnswerRequestPipe', () => {
       expect(validateMock).toHaveBeenCalledWith(instance)
     })
 
-    it('should transform Pin correct answer requests', async () => {
+    it('should reject Pin correct answer requests', async () => {
       const value = { type: QuestionType.Pin, foo: 'bar' }
-      const instance = { __type: 'pin' }
 
-      plainToInstanceMock.mockReturnValue(instance as any)
-      validateMock.mockResolvedValue([])
-
-      await expect(pipe.transform(value, {} as any)).resolves.toBe(instance)
-
-      expect(plainToInstanceMock).toHaveBeenCalledWith(
-        PinQuestionCorrectAnswerRequest,
-        value,
+      await expect(pipe.transform(value, {} as any)).rejects.toThrow(
+        'Correct answer changes are not supported for PIN questions',
       )
-      expect(validateMock).toHaveBeenCalledWith(instance)
+      expect(plainToInstanceMock).not.toHaveBeenCalled()
+      expect(validateMock).not.toHaveBeenCalled()
     })
 
-    it('should transform Puzzle correct answer requests', async () => {
+    it('should reject Puzzle correct answer requests', async () => {
       const value = { type: QuestionType.Puzzle, foo: 'bar' }
-      const instance = { __type: 'puzzle' }
 
-      plainToInstanceMock.mockReturnValue(instance as any)
-      validateMock.mockResolvedValue([])
-
-      await expect(pipe.transform(value, {} as any)).resolves.toBe(instance)
-
-      expect(plainToInstanceMock).toHaveBeenCalledWith(
-        PuzzleQuestionCorrectAnswerRequest,
-        value,
+      await expect(pipe.transform(value, {} as any)).rejects.toThrow(
+        'Correct answer changes are not supported for PUZZLE questions',
       )
-      expect(validateMock).toHaveBeenCalledWith(instance)
+      expect(plainToInstanceMock).not.toHaveBeenCalled()
+      expect(validateMock).not.toHaveBeenCalled()
     })
   })
 

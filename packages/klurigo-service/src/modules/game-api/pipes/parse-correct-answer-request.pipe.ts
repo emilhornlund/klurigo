@@ -11,8 +11,6 @@ import { validate } from 'class-validator'
 import { ValidationException } from '../../../app/exceptions'
 import {
   MultiChoiceQuestionCorrectAnswerRequest,
-  PinQuestionCorrectAnswerRequest,
-  PuzzleQuestionCorrectAnswerRequest,
   RangeQuestionCorrectAnswerRequest,
   TrueFalseQuestionCorrectAnswerRequest,
   TypeAnswerQuestionCorrectAnswerRequest,
@@ -32,8 +30,6 @@ export class ParseCorrectAnswerRequestPipe implements PipeTransform<
     | RangeQuestionCorrectAnswerRequest
     | TrueFalseQuestionCorrectAnswerRequest
     | TypeAnswerQuestionCorrectAnswerRequest
-    | PinQuestionCorrectAnswerRequest
-    | PuzzleQuestionCorrectAnswerRequest
   >
 > {
   /**
@@ -54,8 +50,6 @@ export class ParseCorrectAnswerRequestPipe implements PipeTransform<
     | RangeQuestionCorrectAnswerRequest
     | TrueFalseQuestionCorrectAnswerRequest
     | TypeAnswerQuestionCorrectAnswerRequest
-    | PinQuestionCorrectAnswerRequest
-    | PuzzleQuestionCorrectAnswerRequest
   > {
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       throw new BadRequestException('Validation failed')
@@ -71,10 +65,13 @@ export class ParseCorrectAnswerRequestPipe implements PipeTransform<
       object = plainToInstance(TrueFalseQuestionCorrectAnswerRequest, value)
     } else if (value.type === QuestionType.TypeAnswer) {
       object = plainToInstance(TypeAnswerQuestionCorrectAnswerRequest, value)
-    } else if (value.type === QuestionType.Pin) {
-      object = plainToInstance(PinQuestionCorrectAnswerRequest, value)
-    } else if (value.type === QuestionType.Puzzle) {
-      object = plainToInstance(PuzzleQuestionCorrectAnswerRequest, value)
+    } else if (
+      value.type === QuestionType.Pin ||
+      value.type === QuestionType.Puzzle
+    ) {
+      throw new BadRequestException(
+        `Correct answer changes are not supported for ${value.type} questions`,
+      )
     } else {
       throw new BadRequestException('Validation failed')
     }

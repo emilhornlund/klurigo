@@ -5,10 +5,13 @@ import {
   GameParticipantType,
   GameStatus,
   MultiChoiceQuestionCorrectAnswerDto,
+  normalizeString,
   PaginatedGameHistoryDto,
-  PinQuestionCorrectAnswerDto,
-  PuzzleQuestionCorrectAnswerDto,
   QuestionType,
+  QUIZ_TYPE_ANSWER_OPTIONS_MAX,
+  QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MAX_LENGTH,
+  QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH,
+  QUIZ_TYPE_ANSWER_OPTIONS_VALUE_REGEX,
   RangeQuestionCorrectAnswerDto,
   SubmitQuestionAnswerRequestDto,
   TrueFalseQuestionCorrectAnswerDto,
@@ -34,7 +37,11 @@ import {
   GameAnswerRepository,
   GameRepository,
 } from '../../game-core/repositories'
-import { TaskType } from '../../game-core/repositories/models/schemas'
+import {
+  GameDocument,
+  QuestionResultTaskCorrectAnswer,
+  TaskType,
+} from '../../game-core/repositories/models/schemas'
 import {
   getTaskIdentity,
   isParticipantHost,
@@ -49,14 +56,18 @@ import { GameTaskTransitionScheduler } from '../../game-task/services'
 import { rebuildQuestionResultTask } from '../../game-task/utils'
 import {
   isMultiChoiceCorrectAnswer,
-  isPinCorrectAnswer,
-  isPuzzleCorrectAnswer,
   isRangeCorrectAnswer,
   isTrueFalseCorrectAnswer,
   isTypeAnswerCorrectAnswer,
 } from '../../game-task/utils/question-answer-type-guards'
 import { isQuestionResultTask } from '../../game-task/utils/task-type-guards'
 import { QuizRepository } from '../../quiz-core/repositories'
+import {
+  isMultiChoiceQuestion,
+  isRangeQuestion,
+  isTrueFalseQuestion,
+  isTypeAnswerQuestion,
+} from '../../quiz-core/utils'
 import { User } from '../../user/repositories'
 import {
   GameFullException,
@@ -511,11 +522,11 @@ export class GameService {
   /**
    * Adds a new correct answer to the current question result task.
    *
-   * The provided answer is appended to the existing list of correct answers,
-   * and the question result task is rebuilt to reflect updated results.
+   * Multi-choice and type-answer values are added to the accepted set. Range
+   * and true-false values atomically replace their existing singleton value.
    *
    * @param gameID - The ID of the game to update.
-   * @param correctAnswerRequest - The new correct answer to append.
+   * @param correctAnswerRequest - The correct answer to add or set.
    * @throws {BadRequestException} If the current task is not a `QuestionResult` or not in active status.
    */
   public async addCorrectAnswer(
@@ -524,106 +535,17 @@ export class GameService {
       | MultiChoiceQuestionCorrectAnswerDto
       | RangeQuestionCorrectAnswerDto
       | TrueFalseQuestionCorrectAnswerDto
-      | TypeAnswerQuestionCorrectAnswerDto
-      | PinQuestionCorrectAnswerDto
-      | PuzzleQuestionCorrectAnswerDto,
+      | TypeAnswerQuestionCorrectAnswerDto,
   ): Promise<void> {
-    const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
-
-    if (
-      gameDocument.status === GameStatus.Active &&
-      isQuestionResultTask(gameDocument) &&
-      gameDocument.currentTask.status === 'active'
-    ) {
-      const expectedTask = getTaskIdentity(gameDocument)
-      const correctAnswersToAdd = [
-        ...(correctAnswerRequest.type === QuestionType.MultiChoice
-          ? [
-              {
-                type: QuestionType.MultiChoice,
-                index: correctAnswerRequest.index,
-              },
-            ]
-          : []),
-        ...(correctAnswerRequest.type === QuestionType.Range
-          ? [
-              {
-                type: QuestionType.Range,
-                value: correctAnswerRequest.value,
-              },
-            ]
-          : []),
-        ...(correctAnswerRequest.type === QuestionType.TrueFalse
-          ? [
-              {
-                type: QuestionType.TrueFalse,
-                value: correctAnswerRequest.value,
-              },
-            ]
-          : []),
-        ...(correctAnswerRequest.type === QuestionType.TypeAnswer
-          ? [
-              {
-                type: QuestionType.TypeAnswer,
-                value: correctAnswerRequest.value,
-              },
-            ]
-          : []),
-        ...(correctAnswerRequest.type === QuestionType.Pin
-          ? [
-              {
-                type: QuestionType.Pin,
-                value: `${correctAnswerRequest.positionX},${correctAnswerRequest.positionY}`,
-              },
-            ]
-          : []),
-        ...(correctAnswerRequest.type === QuestionType.Puzzle
-          ? [
-              {
-                type: QuestionType.Puzzle,
-                value: correctAnswerRequest.values,
-              },
-            ]
-          : []),
-      ]
-
-      const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
-        gameID,
-        async (currentDocument) => {
-          if (
-            currentDocument.status !== GameStatus.Active ||
-            currentDocument.currentTask._id !== expectedTask.id ||
-            !isQuestionResultTask(currentDocument) ||
-            currentDocument.currentTask.status !== 'active'
-          ) {
-            throw new BadRequestException(
-              `Cannot add a correct answer because the current task changed for game ${gameID}`,
-            )
-          }
-
-          currentDocument.currentTask.correctAnswers = [
-            ...currentDocument.currentTask.correctAnswers,
-            ...correctAnswersToAdd,
-          ]
-          currentDocument.currentTask =
-            rebuildQuestionResultTask(currentDocument)
-          return currentDocument
-        },
-      )
-
-      await this.gameEventPublisher.publish(savedGameDocument)
-    } else {
-      throw new BadRequestException(
-        'Current task is either not of question result type or not in active status',
-      )
-    }
+    await this.mutateCorrectAnswer(gameID, correctAnswerRequest, 'add')
   }
 
   /**
    * Deletes a specific correct answer from the current question result task.
    *
-   * The provided answer is removed from the list of correct answers,
-   * and the question result task is rebuilt accordingly.
+   * Multi-choice and type-answer values are removed from the accepted set.
+   * Deleting singleton range and true-false values is rejected to prevent an
+   * invalid empty state; those values are changed through `addCorrectAnswer`.
    *
    * @param gameID - The ID of the game to update.
    * @param correctAnswerRequest - The correct answer to remove.
@@ -635,20 +557,35 @@ export class GameService {
       | MultiChoiceQuestionCorrectAnswerDto
       | RangeQuestionCorrectAnswerDto
       | TrueFalseQuestionCorrectAnswerDto
-      | TypeAnswerQuestionCorrectAnswerDto
-      | PinQuestionCorrectAnswerDto
-      | PuzzleQuestionCorrectAnswerDto,
+      | TypeAnswerQuestionCorrectAnswerDto,
+  ): Promise<void> {
+    await this.mutateCorrectAnswer(gameID, correctAnswerRequest, 'delete')
+  }
+
+  private async mutateCorrectAnswer(
+    gameID: string,
+    correctAnswerRequest:
+      | MultiChoiceQuestionCorrectAnswerDto
+      | RangeQuestionCorrectAnswerDto
+      | TrueFalseQuestionCorrectAnswerDto
+      | TypeAnswerQuestionCorrectAnswerDto,
+    operation: 'add' | 'delete',
   ): Promise<void> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameID)
 
     if (
-      gameDocument.status === GameStatus.Active &&
-      isQuestionResultTask(gameDocument) &&
-      gameDocument.currentTask.status === 'active'
+      gameDocument.status !== GameStatus.Active ||
+      !isQuestionResultTask(gameDocument) ||
+      gameDocument.currentTask.status !== 'active'
     ) {
-      const expectedTask = getTaskIdentity(gameDocument)
+      throw new BadRequestException(
+        'Current task is either not of question result type or not in active status',
+      )
+    }
 
-      const savedGameDocument = await this.gameRepository.findAndSaveWithLock(
+    const expectedTask = getTaskIdentity(gameDocument)
+    const savedGameDocument =
+      await this.gameRepository.findAndSaveWithLockIfChanged(
         gameID,
         async (currentDocument) => {
           if (
@@ -658,67 +595,39 @@ export class GameService {
             currentDocument.currentTask.status !== 'active'
           ) {
             throw new BadRequestException(
-              `Cannot delete a correct answer because the current task changed for game ${gameID}`,
+              `Cannot ${operation} a correct answer because the current task changed for game ${gameID}`,
             )
           }
 
-          currentDocument.currentTask.correctAnswers =
-            currentDocument.currentTask.correctAnswers.filter(
-              (correctAnswer) => {
-                const isExistingCorrectMultiChoiceAnswer =
-                  isMultiChoiceCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.MultiChoice &&
-                  correctAnswer.index === correctAnswerRequest.index
-
-                const isExistingCorrectRangeAnswer =
-                  isRangeCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.Range &&
-                  correctAnswer.value === correctAnswerRequest.value
-
-                const isExistingCorrectTrueFalseAnswer =
-                  isTrueFalseCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.TrueFalse &&
-                  correctAnswer.value === correctAnswerRequest.value
-
-                const isExistingCorrectTypeAnswer =
-                  isTypeAnswerCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.TypeAnswer &&
-                  correctAnswer.value === correctAnswerRequest.value
-
-                const isExistingCorrectPinAnswer =
-                  isPinCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.Pin &&
-                  correctAnswer.value ===
-                    `${correctAnswerRequest.positionX},${correctAnswerRequest.positionY}`
-
-                const isExistingCorrectPuzzleAnswer =
-                  isPuzzleCorrectAnswer(correctAnswer) &&
-                  correctAnswerRequest.type === QuestionType.Puzzle &&
-                  correctAnswer.value === correctAnswerRequest.values
-
-                return !(
-                  isExistingCorrectMultiChoiceAnswer ||
-                  isExistingCorrectRangeAnswer ||
-                  isExistingCorrectTrueFalseAnswer ||
-                  isExistingCorrectTypeAnswer ||
-                  isExistingCorrectPinAnswer ||
-                  isExistingCorrectPuzzleAnswer
-                )
-              },
+          const questionIndex = currentDocument.currentTask.questionIndex
+          const previousTask = currentDocument.previousTasks?.at(-1)
+          if (
+            previousTask?.type !== TaskType.Question ||
+            previousTask.questionIndex !== questionIndex
+          ) {
+            throw new BadRequestException(
+              'The current question result does not match its question task',
             )
+          }
 
+          const nextCorrectAnswers = mutateCorrectAnswers(
+            currentDocument.questions[questionIndex],
+            currentDocument.currentTask.correctAnswers,
+            correctAnswerRequest,
+            operation,
+          )
+          if (!nextCorrectAnswers) {
+            return undefined
+          }
+
+          currentDocument.currentTask.correctAnswers = nextCorrectAnswers
           currentDocument.currentTask =
             rebuildQuestionResultTask(currentDocument)
           return currentDocument
         },
       )
 
-      await this.gameEventPublisher.publish(savedGameDocument)
-    } else {
-      throw new BadRequestException(
-        'Current task is either not of question result type or not in active status',
-      )
-    }
+    await this.gameEventPublisher.publish(savedGameDocument)
   }
 
   /**
@@ -781,4 +690,177 @@ export class GameService {
 
     await this.gameEventPublisher.publish(savedGame)
   }
+}
+
+type SupportedCorrectAnswerRequest =
+  | MultiChoiceQuestionCorrectAnswerDto
+  | RangeQuestionCorrectAnswerDto
+  | TrueFalseQuestionCorrectAnswerDto
+  | TypeAnswerQuestionCorrectAnswerDto
+
+function mutateCorrectAnswers(
+  question: GameDocument['questions'][number] | undefined,
+  currentAnswers: QuestionResultTaskCorrectAnswer[],
+  request: SupportedCorrectAnswerRequest,
+  operation: 'add' | 'delete',
+): QuestionResultTaskCorrectAnswer[] | undefined {
+  if (!question || question.type !== request.type) {
+    throw new BadRequestException(
+      'Correct answer type does not match the current question',
+    )
+  }
+  if (currentAnswers.some((answer) => answer.type !== question.type)) {
+    throw new BadRequestException(
+      'Current correct answers do not match the current question',
+    )
+  }
+
+  let nextAnswers: QuestionResultTaskCorrectAnswer[]
+  switch (request.type) {
+    case QuestionType.MultiChoice: {
+      if (
+        !isMultiChoiceQuestion(question) ||
+        !Number.isInteger(request.index) ||
+        request.index < 0 ||
+        request.index >= question.options.length
+      ) {
+        throw new BadRequestException(
+          'Correct multi-choice option does not belong to the current question',
+        )
+      }
+
+      const indexes = [
+        ...new Set(
+          currentAnswers
+            .filter(isMultiChoiceCorrectAnswer)
+            .map(({ index }) => index),
+        ),
+      ]
+      nextAnswers = (
+        operation === 'add'
+          ? indexes.includes(request.index)
+            ? indexes
+            : [...indexes, request.index]
+          : indexes.filter((index) => index !== request.index)
+      ).map((index) => ({ type: QuestionType.MultiChoice, index }))
+      break
+    }
+    case QuestionType.TypeAnswer: {
+      if (
+        !isTypeAnswerQuestion(question) ||
+        request.value.length < QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH ||
+        request.value.length > QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MAX_LENGTH ||
+        !QUIZ_TYPE_ANSWER_OPTIONS_VALUE_REGEX.test(request.value)
+      ) {
+        throw new BadRequestException('Correct type-answer value is invalid')
+      }
+
+      const value = request.value.trim()
+      if (value.length < QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH) {
+        throw new BadRequestException('Correct type-answer value is invalid')
+      }
+      const normalizedValue = normalizeString(value)
+      const values = currentAnswers
+        .filter(isTypeAnswerCorrectAnswer)
+        .reduce<string[]>((unique, answer) => {
+          if (
+            !unique.some(
+              (existing) =>
+                normalizeString(existing) === normalizeString(answer.value),
+            )
+          ) {
+            unique.push(answer.value)
+          }
+          return unique
+        }, [])
+
+      const existingIndex = values.findIndex(
+        (existing) => normalizeString(existing) === normalizedValue,
+      )
+      if (
+        operation === 'add' &&
+        existingIndex < 0 &&
+        values.length >= QUIZ_TYPE_ANSWER_OPTIONS_MAX
+      ) {
+        throw new BadRequestException(
+          'The current question already has the maximum number of accepted answers',
+        )
+      }
+
+      nextAnswers = (
+        operation === 'add'
+          ? existingIndex >= 0
+            ? values
+            : [...values, value]
+          : values.filter(
+              (existing) => normalizeString(existing) !== normalizedValue,
+            )
+      ).map((answerValue) => ({
+        type: QuestionType.TypeAnswer,
+        value: answerValue,
+      }))
+      break
+    }
+    case QuestionType.TrueFalse:
+      if (!isTrueFalseQuestion(question)) {
+        throw new BadRequestException(
+          'Correct answer type does not match the current question',
+        )
+      }
+      if (operation === 'delete') {
+        throw new BadRequestException(
+          'Cannot delete the only correct true-false answer; add its replacement instead',
+        )
+      }
+      nextAnswers = [{ type: QuestionType.TrueFalse, value: request.value }]
+      break
+    case QuestionType.Range:
+      if (
+        !isRangeQuestion(question) ||
+        !Number.isFinite(request.value) ||
+        request.value < question.min ||
+        request.value > question.max
+      ) {
+        throw new BadRequestException(
+          'The correct range value must be within the current question range',
+        )
+      }
+      if (operation === 'delete') {
+        throw new BadRequestException(
+          'Cannot delete the only correct range answer; add its replacement instead',
+        )
+      }
+      nextAnswers = [{ type: QuestionType.Range, value: request.value }]
+      break
+  }
+
+  return correctAnswersEqual(currentAnswers, nextAnswers)
+    ? undefined
+    : nextAnswers
+}
+
+function correctAnswersEqual(
+  left: QuestionResultTaskCorrectAnswer[],
+  right: QuestionResultTaskCorrectAnswer[],
+): boolean {
+  return (
+    left.length === right.length &&
+    left.every((answer, index) => {
+      const other = right[index]
+      if (isMultiChoiceCorrectAnswer(answer)) {
+        return isMultiChoiceCorrectAnswer(other) && answer.index === other.index
+      }
+      if (isRangeCorrectAnswer(answer)) {
+        return isRangeCorrectAnswer(other) && answer.value === other.value
+      }
+      if (isTrueFalseCorrectAnswer(answer)) {
+        return isTrueFalseCorrectAnswer(other) && answer.value === other.value
+      }
+      return (
+        isTypeAnswerCorrectAnswer(answer) &&
+        isTypeAnswerCorrectAnswer(other) &&
+        normalizeString(answer.value) === normalizeString(other.value)
+      )
+    })
+  )
 }

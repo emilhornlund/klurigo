@@ -441,7 +441,7 @@ describe('HostResultState', () => {
     })
 
     const arg = h.addCorrectAnswer.mock.calls[0][0]
-    expect(arg).toBeTruthy()
+    expect(arg).toEqual({ type: QuestionType.MultiChoice, index: 1 })
   })
 
   it('removes an already-correct option via QuestionResults UI', async () => {
@@ -493,7 +493,138 @@ describe('HostResultState', () => {
     })
 
     const arg = h.deleteCorrectAnswer.mock.calls[0][0]
-    expect(arg).toBeTruthy()
+    expect(arg).toEqual({ type: QuestionType.MultiChoice, index: 0 })
+  })
+
+  it.each([
+    {
+      type: QuestionType.TrueFalse,
+      correctValue: true,
+      incorrectValue: false,
+      answerText: 'False',
+    },
+    {
+      type: QuestionType.Range,
+      correctValue: 50,
+      incorrectValue: 40,
+      answerText: '40',
+    },
+    {
+      type: QuestionType.TypeAnswer,
+      correctValue: 'copenhagen',
+      incorrectValue: 'kobenhavn',
+      answerText: 'kobenhavn',
+    },
+  ])(
+    'adds an incorrect $type answer through the existing result-chip action',
+    async ({ type, correctValue, incorrectValue, answerText }) => {
+      render(
+        <MemoryRouter>
+          <HostResultState
+            event={
+              {
+                type: GameEventType.GameResultHost,
+                game: { pin: '123456' },
+                question: { type, question: 'Q?' },
+                results: {
+                  type,
+                  distribution: [
+                    { value: correctValue, count: 1, correct: true },
+                    { value: incorrectValue, count: 1, correct: false },
+                  ],
+                },
+                pagination: { current: 1, total: 2 },
+              } as never
+            }
+          />
+        </MemoryRouter>,
+      )
+
+      const button = findActionButtonForAnswer(
+        answerText,
+        /(add|mark|set|correct)/i,
+      )
+      expect(button).toBeTruthy()
+      await act(async () => {
+        fireEvent.click(button as HTMLButtonElement)
+        await Promise.resolve()
+      })
+
+      expect(h.addCorrectAnswer).toHaveBeenCalledWith({
+        type,
+        value: incorrectValue,
+      })
+      expect(h.deleteCorrectAnswer).not.toHaveBeenCalled()
+    },
+  )
+
+  it.each([
+    {
+      type: QuestionType.TrueFalse,
+      value: true,
+      answerText: 'True',
+    },
+    { type: QuestionType.Range, value: 50, answerText: '50' },
+  ])(
+    'does not expose deletion of the sole $type correct answer',
+    ({ type, value, answerText }) => {
+      render(
+        <MemoryRouter>
+          <HostResultState
+            event={
+              {
+                type: GameEventType.GameResultHost,
+                game: { pin: '123456' },
+                question: { type, question: 'Q?' },
+                results: {
+                  type,
+                  distribution: [{ value, count: 1, correct: true }],
+                },
+                pagination: { current: 1, total: 2 },
+              } as never
+            }
+          />
+        </MemoryRouter>,
+      )
+
+      expect(
+        findActionButtonForAnswer(answerText, /(remove|unset|unmark|delete)/i),
+      ).toBeNull()
+    },
+  )
+
+  it('deletes an accepted type answer through the existing result-chip action', async () => {
+    render(
+      <MemoryRouter>
+        <HostResultState
+          event={{
+            type: GameEventType.GameResultHost,
+            game: { pin: '123456' },
+            question: { type: QuestionType.TypeAnswer, question: 'Q?' },
+            results: {
+              type: QuestionType.TypeAnswer,
+              distribution: [{ value: 'copenhagen', count: 1, correct: true }],
+            },
+            pagination: { current: 1, total: 2 },
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    const button = findActionButtonForAnswer(
+      'copenhagen',
+      /(remove|unset|unmark|delete)/i,
+    )
+    expect(button).toBeTruthy()
+    await act(async () => {
+      fireEvent.click(button as HTMLButtonElement)
+      await Promise.resolve()
+    })
+
+    expect(h.deleteCorrectAnswer).toHaveBeenCalledWith({
+      type: QuestionType.TypeAnswer,
+      value: 'copenhagen',
+    })
   })
 
   it('for non-Pin question: default shows results; clicking toggles to media, then back', () => {

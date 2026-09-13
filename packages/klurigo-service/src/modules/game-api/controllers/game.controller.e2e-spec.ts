@@ -2,6 +2,7 @@ import {
   GAME_MAX_PLAYERS,
   GameParticipantType,
   GameStatus,
+  QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
@@ -1919,10 +1920,14 @@ describe('GameController (e2e)', () => {
       ])
     })
 
-    it('should add a correct range answer successfully', async () => {
+    it('should atomically change the correct range answer', async () => {
       const gameDocument = await gameModel.create(
         createMockGameDocument({
-          questions: [createMockRangeQuestionDocument()],
+          questions: [
+            createMockRangeQuestionDocument({
+              margin: QuestionRangeAnswerMargin.None,
+            }),
+          ],
           participants: [
             createMockGameHostParticipantDocument({
               participantId: hostUser._id,
@@ -2010,27 +2015,10 @@ describe('GameController (e2e)', () => {
       )?.currentTask as QuestionResultTaskWithBase
 
       expect(toPlain(correctAnswers)).toEqual([
-        { type: QuestionType.Range, value: 50 },
         { type: QuestionType.Range, value: 40 },
       ])
 
       expect(toPlain(results)).toEqual([
-        toPlain(
-          buildCorrectQuestionResultTaskItem({
-            user: playerUser,
-            answer: {
-              type: QuestionType.Range,
-              answer: 50,
-              created: offsetSeconds(3),
-            },
-            lastScore: 997,
-            totalScore: 997,
-            position: 1,
-            lastResponseTime: 1000,
-            totalResponseTime: 1000,
-            responseCount: 1,
-          }),
-        ),
         toPlain(
           buildCorrectQuestionResultTaskItem({
             user: secondPlayerUser,
@@ -2041,16 +2029,159 @@ describe('GameController (e2e)', () => {
             },
             lastScore: 993,
             totalScore: 993,
-            position: 2,
+            position: 1,
             lastResponseTime: 2000,
             totalResponseTime: 2000,
+            responseCount: 1,
+          }),
+        ),
+        toPlain(
+          buildIncorrectQuestionResultTaskItem({
+            user: playerUser,
+            answer: {
+              type: QuestionType.Range,
+              answer: 50,
+              created: offsetSeconds(3),
+            },
+            position: 2,
+            lastResponseTime: 1000,
+            totalResponseTime: 1000,
             responseCount: 1,
           }),
         ),
       ])
     })
 
-    it('should add a correct true-false answer successfully', async () => {
+    it('should apply the configured range margin after changing the correct answer', async () => {
+      const gameDocument = await gameModel.create(
+        createMockGameDocument({
+          questions: [
+            createMockRangeQuestionDocument({
+              margin: QuestionRangeAnswerMargin.Medium,
+              correct: 50,
+            }),
+          ],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+              nickname: playerUser.defaultNickname,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: secondPlayerUser._id,
+              nickname: secondPlayerUser.defaultNickname,
+            }),
+          ],
+          currentTask: createMockQuestionResultTaskDocument({
+            status: 'active',
+            correctAnswers: [{ type: QuestionType.Range, value: 50 }],
+            results: [
+              buildCorrectQuestionResultTaskItem({
+                user: playerUser,
+                answer: {
+                  type: QuestionType.Range,
+                  answer: 50,
+                  created: offsetSeconds(3),
+                },
+                lastScore: 967,
+                totalScore: 967,
+                position: 1,
+                lastResponseTime: 1000,
+                totalResponseTime: 1000,
+                responseCount: 1,
+              }),
+              buildIncorrectQuestionResultTaskItem({
+                user: secondPlayerUser,
+                answer: {
+                  type: QuestionType.Range,
+                  answer: 75,
+                  created: offsetSeconds(4),
+                },
+              }),
+            ],
+            created: offsetSeconds(4),
+          }),
+          previousTasks: [
+            createMockQuestionTaskDocument({
+              status: 'active',
+              answers: [
+                {
+                  type: QuestionType.Range,
+                  playerId: playerUser._id,
+                  created: offsetSeconds(3),
+                  answer: 50,
+                },
+                {
+                  type: QuestionType.Range,
+                  playerId: secondPlayerUser._id,
+                  created: offsetSeconds(4),
+                  answer: 75,
+                },
+              ],
+              presented: offsetSeconds(2),
+              created: offsetSeconds(1),
+            }),
+          ],
+        }),
+      )
+
+      const accessToken = await authenticateGame(
+        app,
+        gameDocument._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({ type: QuestionType.Range, value: 70 })
+        .expect(204)
+
+      const { correctAnswers, results } = (
+        await gameModel.findById(gameDocument._id).exec()
+      )?.currentTask as QuestionResultTaskWithBase
+
+      expect(toPlain(correctAnswers)).toEqual([
+        { type: QuestionType.Range, value: 70 },
+      ])
+      expect(toPlain(results)).toEqual([
+        toPlain(
+          buildCorrectQuestionResultTaskItem({
+            user: secondPlayerUser,
+            answer: {
+              type: QuestionType.Range,
+              answer: 75,
+              created: offsetSeconds(4),
+            },
+            lastScore: 605,
+            totalScore: 605,
+            position: 1,
+            lastResponseTime: 2000,
+            totalResponseTime: 2000,
+            responseCount: 1,
+          }),
+        ),
+        toPlain(
+          buildIncorrectQuestionResultTaskItem({
+            user: playerUser,
+            answer: {
+              type: QuestionType.Range,
+              answer: 50,
+              created: offsetSeconds(3),
+            },
+            position: 2,
+            lastResponseTime: 1000,
+            totalResponseTime: 1000,
+            responseCount: 1,
+          }),
+        ),
+      ])
+    })
+
+    it('should atomically change the correct true-false answer', async () => {
       const gameDocument = await gameModel.create(
         createMockGameDocument({
           questions: [createMockTrueFalseQuestionDocument()],
@@ -2141,27 +2272,10 @@ describe('GameController (e2e)', () => {
       )?.currentTask as QuestionResultTaskWithBase
 
       expect(toPlain(correctAnswers)).toEqual([
-        { type: QuestionType.TrueFalse, value: false },
         { type: QuestionType.TrueFalse, value: true },
       ])
 
       expect(toPlain(results)).toEqual([
-        toPlain(
-          buildCorrectQuestionResultTaskItem({
-            user: playerUser,
-            answer: {
-              type: QuestionType.TrueFalse,
-              answer: false,
-              created: offsetSeconds(3),
-            },
-            lastScore: 983,
-            totalScore: 983,
-            position: 1,
-            lastResponseTime: 1000,
-            totalResponseTime: 1000,
-            responseCount: 1,
-          }),
-        ),
         toPlain(
           buildCorrectQuestionResultTaskItem({
             user: secondPlayerUser,
@@ -2172,9 +2286,23 @@ describe('GameController (e2e)', () => {
             },
             lastScore: 967,
             totalScore: 967,
-            position: 2,
+            position: 1,
             lastResponseTime: 2000,
             totalResponseTime: 2000,
+            responseCount: 1,
+          }),
+        ),
+        toPlain(
+          buildIncorrectQuestionResultTaskItem({
+            user: playerUser,
+            answer: {
+              type: QuestionType.TrueFalse,
+              answer: false,
+              created: offsetSeconds(3),
+            },
+            position: 2,
+            lastResponseTime: 1000,
+            totalResponseTime: 1000,
             responseCount: 1,
           }),
         ),
@@ -2539,6 +2667,90 @@ describe('GameController (e2e)', () => {
           })
         })
     })
+
+    it.each([QuestionType.Pin, QuestionType.Puzzle])(
+      'should reject unsupported %s correct-answer changes',
+      async (type) => {
+        const gameDocument = await gameModel.create(
+          buildMultiChoiceQuestionGameDocument({
+            users: { hostUser, playerUser, secondPlayerUser },
+          }),
+        )
+        const accessToken = await authenticateGame(
+          app,
+          gameDocument._id,
+          hostUser._id,
+          GameParticipantType.HOST,
+        )
+
+        return supertest(app.getHttpServer())
+          .post(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send(
+            type === QuestionType.Pin
+              ? { type, positionX: 0.5, positionY: 0.5 }
+              : { type, values: ['A', 'B', 'C'] },
+          )
+          .expect(400)
+          .expect((res) => {
+            expect(res.body).toHaveProperty(
+              'message',
+              `Correct answer changes are not supported for ${type} questions`,
+            )
+          })
+      },
+    )
+
+    it('should keep one value after concurrent true-false changes', async () => {
+      const gameDocument = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockTrueFalseQuestionDocument()],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+          currentTask: createMockQuestionResultTaskDocument({
+            status: 'active',
+            correctAnswers: [{ type: QuestionType.TrueFalse, value: false }],
+          }),
+          previousTasks: [
+            createMockQuestionTaskDocument({
+              status: 'completed',
+              questionIndex: 0,
+            }),
+          ],
+        }),
+      )
+      const accessToken = await authenticateGame(
+        app,
+        gameDocument._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      await Promise.all([
+        supertest(app.getHttpServer())
+          .post(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send({ type: QuestionType.TrueFalse, value: true })
+          .expect(204),
+        supertest(app.getHttpServer())
+          .post(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send({ type: QuestionType.TrueFalse, value: false })
+          .expect(204),
+      ])
+
+      const { correctAnswers } = (
+        await gameModel.findById(gameDocument._id).exec()
+      )?.currentTask as QuestionResultTaskWithBase
+      expect(correctAnswers).toHaveLength(1)
+      expect(correctAnswers[0]).toMatchObject({
+        type: QuestionType.TrueFalse,
+        value: expect.any(Boolean),
+      })
+    })
   })
 
   describe('/api/games/:gameID/tasks/current/correct_answers (DELETE)', () => {
@@ -2548,9 +2760,20 @@ describe('GameController (e2e)', () => {
       secondPlayerUser = await userModel.create(buildMockTertiaryUser())
     })
 
-    it('should delete a correct multi-choice answer successfully', async () => {
+    it('should remove one of multiple correct multi-choice answers', async () => {
       const gameDocument = await gameModel.create(
         buildMultiChoiceQuestionGameDocument({
+          game: {
+            currentTask: createMockQuestionResultTaskDocument({
+              status: 'active',
+              correctAnswers: [
+                { type: QuestionType.MultiChoice, index: 0 },
+                { type: QuestionType.MultiChoice, index: 1 },
+              ],
+              results: [],
+              created: offsetSeconds(4),
+            }),
+          },
           users: {
             hostUser,
             playerUser,
@@ -2579,9 +2802,27 @@ describe('GameController (e2e)', () => {
         await gameModel.findById(gameDocument._id).exec()
       )?.currentTask as QuestionResultTaskWithBase
 
-      expect(toPlain(correctAnswers)).toEqual([])
+      expect(toPlain(correctAnswers)).toEqual([
+        { type: QuestionType.MultiChoice, index: 1 },
+      ])
 
       expect(toPlain(results)).toEqual([
+        toPlain(
+          buildCorrectQuestionResultTaskItem({
+            user: secondPlayerUser,
+            answer: {
+              type: QuestionType.MultiChoice,
+              answer: 1,
+              created: offsetSeconds(4),
+            },
+            lastScore: 800,
+            totalScore: 800,
+            position: 1,
+            lastResponseTime: 2000,
+            totalResponseTime: 2000,
+            responseCount: 1,
+          }),
+        ),
         toPlain(
           buildIncorrectQuestionResultTaskItem({
             user: playerUser,
@@ -2590,30 +2831,16 @@ describe('GameController (e2e)', () => {
               answer: 0,
               created: offsetSeconds(3),
             },
-            position: 1,
+            position: 2,
             lastResponseTime: 1000,
             totalResponseTime: 1000,
-            responseCount: 1,
-          }),
-        ),
-        toPlain(
-          buildIncorrectQuestionResultTaskItem({
-            user: secondPlayerUser,
-            answer: {
-              type: QuestionType.MultiChoice,
-              answer: 1,
-              created: offsetSeconds(4),
-            },
-            position: 2,
-            lastResponseTime: 2000,
-            totalResponseTime: 2000,
             responseCount: 1,
           }),
         ),
       ])
     })
 
-    it('should delete a correct range answer successfully', async () => {
+    it('should reject deleting the sole correct range answer', async () => {
       const gameDocument = await gameModel.create(
         createMockGameDocument({
           questions: [createMockRangeQuestionDocument()],
@@ -2694,26 +2921,33 @@ describe('GameController (e2e)', () => {
         .delete(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({ type: QuestionType.Range, value: 50 })
-        .expect(204)
+        .expect(400)
         .expect((res) => {
-          expect(res.body).toEqual({})
+          expect(res.body).toHaveProperty(
+            'message',
+            'Cannot delete the only correct range answer; add its replacement instead',
+          )
         })
 
       const { correctAnswers, results } = (
         await gameModel.findById(gameDocument._id).exec()
       )?.currentTask as QuestionResultTaskWithBase
 
-      expect(toPlain(correctAnswers)).toEqual([])
+      expect(toPlain(correctAnswers)).toEqual([
+        { type: QuestionType.Range, value: 50 },
+      ])
 
       expect(toPlain(results)).toEqual([
         toPlain(
-          buildIncorrectQuestionResultTaskItem({
+          buildCorrectQuestionResultTaskItem({
             user: playerUser,
             answer: {
               type: QuestionType.Range,
               answer: 50,
               created: offsetSeconds(3),
             },
+            lastScore: 997,
+            totalScore: 997,
             position: 1,
             lastResponseTime: 1000,
             totalResponseTime: 1000,
@@ -2728,16 +2962,12 @@ describe('GameController (e2e)', () => {
               answer: 40,
               created: offsetSeconds(4),
             },
-            position: 2,
-            lastResponseTime: 2000,
-            totalResponseTime: 2000,
-            responseCount: 1,
           }),
         ),
       ])
     })
 
-    it('should delete a correct true-false answer successfully', async () => {
+    it('should reject deleting the sole correct true-false answer', async () => {
       const gameDocument = await gameModel.create(
         createMockGameDocument({
           questions: [createMockTrueFalseQuestionDocument()],
@@ -2819,26 +3049,33 @@ describe('GameController (e2e)', () => {
         .delete(`/api/games/${gameDocument._id}/tasks/current/correct_answers`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({ type: QuestionType.TrueFalse, value: false })
-        .expect(204)
+        .expect(400)
         .expect((res) => {
-          expect(res.body).toEqual({})
+          expect(res.body).toHaveProperty(
+            'message',
+            'Cannot delete the only correct true-false answer; add its replacement instead',
+          )
         })
 
       const { correctAnswers, results } = (
         await gameModel.findById(gameDocument._id).exec()
       )?.currentTask as QuestionResultTaskWithBase
 
-      expect(toPlain(correctAnswers)).toEqual([])
+      expect(toPlain(correctAnswers)).toEqual([
+        { type: QuestionType.TrueFalse, value: false },
+      ])
 
       expect(toPlain(results)).toEqual([
         toPlain(
-          buildIncorrectQuestionResultTaskItem({
+          buildCorrectQuestionResultTaskItem({
             user: playerUser,
             answer: {
               type: QuestionType.TrueFalse,
               answer: false,
               created: offsetSeconds(3),
             },
+            lastScore: 983,
+            totalScore: 983,
             position: 1,
             lastResponseTime: 1000,
             totalResponseTime: 1000,
@@ -2854,15 +3091,12 @@ describe('GameController (e2e)', () => {
               created: offsetSeconds(4),
             },
             position: 2,
-            lastResponseTime: 2000,
-            totalResponseTime: 2000,
-            responseCount: 1,
           }),
         ),
       ])
     })
 
-    it('should delete a correct type-answer answer successfully', async () => {
+    it('should remove one of multiple accepted type answers', async () => {
       const gameDocument = await gameModel.create(
         createMockGameDocument({
           questions: [createMockTypeAnswerQuestionDocument()],
@@ -2884,7 +3118,11 @@ describe('GameController (e2e)', () => {
             correctAnswers: [
               {
                 type: QuestionType.TypeAnswer,
-                value: MOCK_TYPE_ANSWER_OPTION_VALUE,
+                value: 'Copenhagen',
+              },
+              {
+                type: QuestionType.TypeAnswer,
+                value: MOCK_TYPE_ANSWER_OPTION_VALUE_ALTERNATIVE,
               },
             ],
             results: [
@@ -2960,9 +3198,30 @@ describe('GameController (e2e)', () => {
         await gameModel.findById(gameDocument._id).exec()
       )?.currentTask as QuestionResultTaskWithBase
 
-      expect(toPlain(correctAnswers)).toEqual([])
+      expect(toPlain(correctAnswers)).toEqual([
+        {
+          type: QuestionType.TypeAnswer,
+          value: MOCK_TYPE_ANSWER_OPTION_VALUE_ALTERNATIVE,
+        },
+      ])
 
       expect(toPlain(results)).toEqual([
+        toPlain(
+          buildCorrectQuestionResultTaskItem({
+            user: secondPlayerUser,
+            answer: {
+              type: QuestionType.TypeAnswer,
+              answer: MOCK_TYPE_ANSWER_OPTION_VALUE_ALTERNATIVE,
+              created: offsetSeconds(4),
+            },
+            lastScore: 967,
+            totalScore: 967,
+            position: 1,
+            lastResponseTime: 2000,
+            totalResponseTime: 2000,
+            responseCount: 1,
+          }),
+        ),
         toPlain(
           buildIncorrectQuestionResultTaskItem({
             user: playerUser,
@@ -2971,23 +3230,9 @@ describe('GameController (e2e)', () => {
               answer: MOCK_TYPE_ANSWER_OPTION_VALUE,
               created: offsetSeconds(3),
             },
-            position: 1,
+            position: 2,
             lastResponseTime: 1000,
             totalResponseTime: 1000,
-            responseCount: 1,
-          }),
-        ),
-        toPlain(
-          buildIncorrectQuestionResultTaskItem({
-            user: secondPlayerUser,
-            answer: {
-              type: QuestionType.TypeAnswer,
-              answer: MOCK_TYPE_ANSWER_OPTION_VALUE_ALTERNATIVE,
-              created: offsetSeconds(4),
-            },
-            position: 2,
-            lastResponseTime: 2000,
-            totalResponseTime: 2000,
             responseCount: 1,
           }),
         ),
@@ -3207,6 +3452,41 @@ describe('GameController (e2e)', () => {
           })
         })
     })
+
+    it.each([QuestionType.Pin, QuestionType.Puzzle])(
+      'should reject deleting an unsupported %s correct answer',
+      async (type) => {
+        const gameDocument = await gameModel.create(
+          buildMultiChoiceQuestionGameDocument({
+            users: { hostUser, playerUser, secondPlayerUser },
+          }),
+        )
+        const accessToken = await authenticateGame(
+          app,
+          gameDocument._id,
+          hostUser._id,
+          GameParticipantType.HOST,
+        )
+
+        return supertest(app.getHttpServer())
+          .delete(
+            `/api/games/${gameDocument._id}/tasks/current/correct_answers`,
+          )
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send(
+            type === QuestionType.Pin
+              ? { type, positionX: 0.5, positionY: 0.5 }
+              : { type, values: ['A', 'B', 'C'] },
+          )
+          .expect(400)
+          .expect((res) => {
+            expect(res.body).toHaveProperty(
+              'message',
+              `Correct answer changes are not supported for ${type} questions`,
+            )
+          })
+      },
+    )
   })
 
   describe('/api/games/:gameID/quit (POST)', () => {
