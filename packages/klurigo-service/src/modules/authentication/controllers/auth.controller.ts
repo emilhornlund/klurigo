@@ -138,15 +138,14 @@ export class AuthController {
   @ApiOperation({
     summary: 'Refresh access token using a refresh token',
     description:
-      'Validates the provided refresh token and issues a new access token (and optionally a new refresh token).',
+      'Validates the provided refresh token, invalidates its token pair, and issues a new access and refresh token pair.',
   })
   @ApiBody({
     description: 'Payload containing the existing refresh token.',
     type: AuthRefreshRequest,
   })
   @ApiOkResponse({
-    description:
-      'Returns a new access token and, if rotated, a new refresh token.',
+    description: 'Returns a new access token and refresh token pair.',
     type: AuthResponse,
   })
   @ApiBadRequestResponse({

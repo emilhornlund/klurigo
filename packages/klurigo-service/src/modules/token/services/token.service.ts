@@ -254,6 +254,7 @@ export class TokenService {
    *
    * @param token - The JWT string that should be invalidated.
    * @returns A promise that resolves when the token has been revoked.
+   * @throws If token persistence cannot be updated.
    */
   public async revoke(token: string): Promise<void> {
     try {
@@ -266,6 +267,7 @@ export class TokenService {
     } catch (error) {
       const { message, stack } = error as Error
       this.logger.debug(`Failed to revoke token: '${message}'.`, stack)
+      throw error
     }
   }
 }
