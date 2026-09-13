@@ -1,6 +1,7 @@
 import { copyFile, mkdir, rm } from 'node:fs/promises'
 import { dirname, join } from 'path'
 
+import { UPLOAD_IMAGE_MAX_FILE_SIZE } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
@@ -12,6 +13,7 @@ import {
   createTestApp,
   expectErrorResponse,
 } from '../../../../test-utils/utils'
+import { ParseImageFilePipe } from '../pipes'
 
 describe('MediaController (e2e)', () => {
   let app: INestApplication
@@ -111,6 +113,30 @@ describe('MediaController (e2e)', () => {
             status: 422,
           }),
         )
+    })
+
+    it('should reject an image that exceeds the maximum file size', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const transformSpy = jest.spyOn(ParseImageFilePipe.prototype, 'transform')
+
+      try {
+        const response = await supertest(app.getHttpServer())
+          .post('/api/media/uploads/photos')
+          .set(createBearerAuthHeader(accessToken))
+          .attach('file', Buffer.alloc(UPLOAD_IMAGE_MAX_FILE_SIZE + 1), {
+            filename: 'oversized.png',
+            contentType: 'image/png',
+          })
+          .expect(413)
+
+        expectErrorResponse(response, {
+          message: 'File too large',
+          status: 413,
+        })
+        expect(transformSpy).not.toHaveBeenCalled()
+      } finally {
+        transformSpy.mockRestore()
+      }
     })
 
     it('should return a 401 error when the request is unauthorized', async () => {
