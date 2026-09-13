@@ -311,7 +311,7 @@ describe('AuthController (e2e)', () => {
     it('should succeed in refresh an existing authentication', async () => {
       const user = await userModel.create(buildMockPrimaryUser())
 
-      const { refreshToken } = await authService.login(
+      const initialTokenPair = await authService.login(
         {
           email: MOCK_PRIMARY_USER_EMAIL,
           password: MOCK_PRIMARY_PASSWORD,
@@ -320,16 +320,32 @@ describe('AuthController (e2e)', () => {
         MOCK_USER_AGENT,
       )
 
-      return supertest(app.getHttpServer())
+      const refreshResponse = await supertest(app.getHttpServer())
         .post('/api/auth/refresh')
         .set({ 'User-Agent': MOCK_USER_AGENT })
         .send({
-          refreshToken,
+          refreshToken: initialTokenPair.refreshToken,
         })
         .expect(200)
-        .expect((res) => {
-          expectUserTokenPair(user._id, res)
-        })
+
+      expectUserTokenPair(user._id, refreshResponse)
+      expect(refreshResponse.body.refreshToken).not.toBe(
+        initialTokenPair.refreshToken,
+      )
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken: initialTokenPair.refreshToken })
+        .expect(401)
+
+      const nextRefreshResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken: refreshResponse.body.refreshToken })
+        .expect(200)
+
+      expectUserTokenPair(user._id, nextRefreshResponse)
     })
 
     it('should succeed in refresh an existing authentication for a game', async () => {
@@ -406,6 +422,43 @@ describe('AuthController (e2e)', () => {
             timestamp: expect.any(String),
           })
         })
+    })
+
+    it('should not revoke an unrelated valid refresh token after a failed refresh', async () => {
+      await userModel.create(buildMockPrimaryUser())
+
+      const firstTokenPair = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+      )
+      const secondTokenPair = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+      )
+
+      await tokenService.revoke(firstTokenPair.refreshToken)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken: firstTokenPair.refreshToken })
+        .expect(401)
+
+      const response = await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken: secondTokenPair.refreshToken })
+        .expect(200)
+
+      expectUserTokenPair(null, response)
     })
 
     it('should return 400 bad request when token is missing REFRESH_AUTH authority.', async () => {

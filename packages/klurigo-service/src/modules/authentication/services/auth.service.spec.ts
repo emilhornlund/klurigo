@@ -11,6 +11,13 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { AuthService } from './auth.service'
 import { USER_LOGIN_EVENT_KEY } from './utils'
 
+jest.mock('murlock', () => ({
+  MurLock:
+    () =>
+    (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor) =>
+      descriptor,
+}))
+
 describe('AuthService', () => {
   let service: AuthService
   let eventEmitter: EventEmitter2
@@ -24,6 +31,7 @@ describe('AuthService', () => {
     signTokenPair: jest.Mock
     verifyToken: jest.Mock
     tokenExistsOrThrow: jest.Mock
+    revoke: jest.Mock
   }
   let googleAuthService: {
     exchangeCodeForAccessToken: jest.Mock
@@ -43,6 +51,7 @@ describe('AuthService', () => {
       signTokenPair: jest.fn(),
       verifyToken: jest.fn(),
       tokenExistsOrThrow: jest.fn(),
+      revoke: jest.fn(),
     }
 
     googleAuthService = {
@@ -268,6 +277,7 @@ describe('AuthService', () => {
         ),
         expect.any(String),
       )
+      expect(tokenService.revoke).not.toHaveBeenCalled()
     })
 
     it('should throw UnauthorizedException if tokenExistsOrThrow fails (and logs debug)', async () => {
@@ -293,6 +303,7 @@ describe('AuthService', () => {
         ),
         expect.any(String),
       )
+      expect(tokenService.revoke).not.toHaveBeenCalled()
     })
 
     it('should throw UnauthorizedException if missing RefreshAuth authority (and logs debug)', async () => {
@@ -313,6 +324,7 @@ describe('AuthService', () => {
       expect(logger.debug).toHaveBeenCalledWith(
         `Failed to refresh token since missing '${Authority.RefreshAuth}' authority.`,
       )
+      expect(tokenService.revoke).not.toHaveBeenCalled()
     })
 
     it('should refresh a User-scoped token and emit login event', async () => {
@@ -350,6 +362,7 @@ describe('AuthService', () => {
         ua,
         {},
       )
+      expect(tokenService.revoke).toHaveBeenCalledWith('rt')
 
       expect(emitSpy).toHaveBeenCalledWith(
         USER_LOGIN_EVENT_KEY,
@@ -392,9 +405,53 @@ describe('AuthService', () => {
         ua,
         { gameId: 'g-1', participantType: 'Player' },
       )
+      expect(tokenService.revoke).toHaveBeenCalledWith('rt')
 
       expect(emitSpy).not.toHaveBeenCalled()
       expect(result).toBe(tokenPair)
+    })
+
+    it('should not revoke the supplied token if issuing the replacement pair fails', async () => {
+      const payload: TokenDto = {
+        sub: 'u-1',
+        jti: 'jti-1',
+        scope: TokenScope.User,
+        authorities: [Authority.RefreshAuth],
+      } as any
+
+      tokenService.verifyToken.mockResolvedValue(payload)
+      tokenService.tokenExistsOrThrow.mockResolvedValue(undefined)
+      tokenService.signTokenPair.mockRejectedValue(new Error('sign failed'))
+
+      await expect(
+        service.refresh({ refreshToken: 'rt' } as any, ip, ua),
+      ).rejects.toThrow('sign failed')
+
+      expect(tokenService.revoke).not.toHaveBeenCalled()
+    })
+
+    it('should fail the refresh if revoking the supplied token fails', async () => {
+      const payload: TokenDto = {
+        sub: 'u-1',
+        jti: 'jti-1',
+        scope: TokenScope.User,
+        authorities: [Authority.RefreshAuth],
+      } as any
+
+      tokenService.verifyToken.mockResolvedValue(payload)
+      tokenService.tokenExistsOrThrow.mockResolvedValue(undefined)
+      tokenService.signTokenPair.mockResolvedValue({
+        accessToken: 'new-access',
+        refreshToken: 'new-refresh',
+      })
+      tokenService.revoke.mockRejectedValue(new Error('revoke failed'))
+      const emitSpy = jest.spyOn(eventEmitter, 'emit')
+
+      await expect(
+        service.refresh({ refreshToken: 'rt' } as any, ip, ua),
+      ).rejects.toThrow('revoke failed')
+
+      expect(emitSpy).not.toHaveBeenCalled()
     })
   })
 })

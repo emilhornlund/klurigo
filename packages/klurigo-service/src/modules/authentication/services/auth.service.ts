@@ -1,14 +1,12 @@
-import {
+import { Authority, GameTokenDto, TokenDto, TokenScope } from '@klurigo/common'
+import type {
   AuthLoginRequestDto,
-  Authority,
   AuthRefreshRequestDto,
   AuthResponseDto,
-  GameTokenDto,
-  TokenDto,
-  TokenScope,
 } from '@klurigo/common'
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
+import { MurLock } from 'murlock'
 
 import { TokenService } from '../../token/services'
 import { UserService } from '../../user/services'
@@ -113,7 +111,8 @@ export class AuthService {
   }
 
   /**
-   * Validates the provided refresh token and issues a new pair of JWTs.
+   * Validates the provided refresh token, consumes its token pair, and issues
+   * a new pair of JWTs.
    *
    * @param authRefreshRequestDto - DTO containing the refresh token.
    * @param ipAddress - The client's IP address, used for logging and token metadata.
@@ -121,6 +120,7 @@ export class AuthService {
    * @returns Promise resolving to an AuthResponseDto with fresh tokens.
    * @throws UnauthorizedException if token is invalid or missing REFRESH_AUTH authority.
    */
+  @MurLock(5000, 'auth_refresh', 'authRefreshRequestDto.refreshToken')
   public async refresh(
     authRefreshRequestDto: AuthRefreshRequestDto,
     ipAddress: string,
@@ -171,6 +171,8 @@ export class AuthService {
       userAgent,
       additionalClaims,
     )
+
+    await this.tokenService.revoke(authRefreshRequestDto.refreshToken)
 
     if (payload.scope === TokenScope.User) {
       await this.emitUserLoginEvent(payload.sub)
