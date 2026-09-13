@@ -1684,10 +1684,17 @@ describe('GameController (e2e)', () => {
       expect([204, 400]).toContain(answerResponse.status)
 
       const updated = await gameModel.findById(game._id).exec()
-      expect(updated?.currentTask.type).toBe(TaskType.QuestionResult)
+      expect(updated).toBeDefined()
       const previousQuestion = updated?.previousTasks.find(
         (previousTask) => previousTask._id === task._id,
       ) as QuestionTaskWithBase
+      expect(previousQuestion).toEqual(
+        expect.objectContaining({
+          _id: task._id,
+          type: TaskType.Question,
+          status: 'completed',
+        }),
+      )
 
       if (answerResponse.status === 204) {
         expect(previousQuestion.answers).toHaveLength(1)
