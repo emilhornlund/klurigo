@@ -1,5 +1,6 @@
 import { extname } from 'path'
 
+import { UPLOAD_IMAGE_MAX_FILE_SIZE } from '@klurigo/common'
 import { HttpModule } from '@nestjs/axios'
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -28,6 +29,9 @@ import { MediaService, PexelsMediaSearchService } from './services'
           filename: (_, file, cb) =>
             cb(null, `${uuidv4()}${extname(file.originalname)}`),
         }),
+        limits: {
+          fileSize: UPLOAD_IMAGE_MAX_FILE_SIZE,
+        },
       }),
       inject: [ConfigService],
     }),
