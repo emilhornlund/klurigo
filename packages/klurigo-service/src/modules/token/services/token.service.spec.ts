@@ -9,6 +9,7 @@ describe(TokenService.name, () => {
   let tokenRepository: {
     findTokenById: jest.Mock
     deleteTokensByPairId: jest.Mock
+    deleteUserAuthenticationTokensByPrincipalId: jest.Mock
   }
   let jwtService: { decode: jest.Mock }
 
@@ -16,6 +17,7 @@ describe(TokenService.name, () => {
     tokenRepository = {
       findTokenById: jest.fn(),
       deleteTokensByPairId: jest.fn(),
+      deleteUserAuthenticationTokensByPrincipalId: jest.fn(),
     }
     jwtService = { decode: jest.fn() }
     service = new TokenService(
@@ -39,6 +41,16 @@ describe(TokenService.name, () => {
       expect(tokenRepository.deleteTokensByPairId).toHaveBeenCalledWith(
         'pair-1',
       )
+    })
+  })
+
+  describe('revokeUserAuthenticationTokens', () => {
+    it('delegates revocation to the token repository', async () => {
+      await service.revokeUserAuthenticationTokens('user-123')
+
+      expect(
+        tokenRepository.deleteUserAuthenticationTokensByPrincipalId,
+      ).toHaveBeenCalledWith('user-123')
     })
   })
 })

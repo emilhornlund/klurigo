@@ -446,6 +446,8 @@ export class UserService {
           hashedPassword,
         } as LocalUser)
 
+        await this.tokenService.revokeUserAuthenticationTokens(userId)
+
         this.logger.log(`Updated password for user '${userId}'.`)
       } else {
         this.logger.debug(`Old password is incorrect for user '${userId}'.`)
@@ -484,6 +486,7 @@ export class UserService {
         hashedPassword,
       } as LocalUser)
 
+      await this.tokenService.revokeUserAuthenticationTokens(userId)
       this.logger.log(`Updated password for user '${userId}'.`)
 
       await this.tokenService.consumePasswordResetToken(jti)
