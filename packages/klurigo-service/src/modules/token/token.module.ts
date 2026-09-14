@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs'
-
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
@@ -17,7 +15,7 @@ import { TokenCleanupSchedulerService, TokenService } from './services'
  * Token domain module.
  *
  * Provides:
- * - JWT configuration (issuer, audience, algorithm, keys/secrets).
+ * - JWT configuration (issuer, audience, algorithm, and secret).
  * - Token persistence (TokenRepository + Mongo schema).
  * - TokenService for signing, verifying, and revoking tokens.
  * - Scheduled cleanup of expired tokens (TokenCleanupSchedulerService).
@@ -34,12 +32,6 @@ import { TokenCleanupSchedulerService, TokenService } from './services'
         configService: ConfigService<EnvironmentVariables>,
       ) => {
         const jwtSecret = configService.get<string>('JWT_SECRET')
-        const jwtPrivateKeyPath = configService.get<string>(
-          'JWT_PRIVATE_KEY_PATH',
-        )
-        const jwtPublicKeyPath = configService.get<string>(
-          'JWT_PUBLIC_KEY_PATH',
-        )
 
         const COMMON_JWT_OPTIONS: jwt.VerifyOptions & jwt.SignOptions = {
           algorithm: 'HS256',
@@ -50,12 +42,6 @@ import { TokenCleanupSchedulerService, TokenService } from './services'
         return {
           global: true,
           secret: jwtSecret,
-          privateKey: jwtPrivateKeyPath
-            ? readFileSync(jwtPrivateKeyPath, 'utf8')
-            : undefined,
-          publicKey: jwtPublicKeyPath
-            ? readFileSync(jwtPublicKeyPath, 'utf8')
-            : undefined,
           signOptions: COMMON_JWT_OPTIONS,
           verifyOptions: COMMON_JWT_OPTIONS,
         }

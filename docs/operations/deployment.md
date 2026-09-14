@@ -91,7 +91,9 @@ production application environment files contribute application-side
 configuration. GitHub Actions builds those images and updates only the image
 references in the external infrastructure repository. The external
 repository's Compose files, services, networks, volumes, runtime credentials,
-and Portainer configuration are not checked in here.
+and Portainer configuration are not checked in here. The service uses `HS256`
+JWTs, so production runtime configuration must provide a non-empty `JWT_SECRET`;
+asymmetric JWT key paths are not used.
 
 The root [`docker-compose.yml`](../../docker-compose.yml) provides local
 MongoDB and Redis services, including their local ports, health checks, and
