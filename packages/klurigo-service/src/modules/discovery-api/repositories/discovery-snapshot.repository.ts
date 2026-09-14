@@ -94,4 +94,22 @@ export class DiscoverySnapshotRepository extends BaseRepository<DiscoverySnapsho
       )
       .exec()
   }
+
+  /**
+   * Removes a quiz from every section in the current snapshot.
+   *
+   * The update is intentionally limited to the matching nested entries. It
+   * preserves section and entry order, does not change the snapshot timestamp,
+   * and is a no-op when the snapshot or quiz does not exist.
+   *
+   * @param quizId - The identifier of the deleted quiz.
+   */
+  public async removeQuizFromSnapshot(quizId: string): Promise<void> {
+    await this.model
+      .updateOne(
+        { _id: DISCOVERY_SNAPSHOT_SINGLETON_ID },
+        { $pull: { 'sections.$[].entries': { quizId } } },
+      )
+      .exec()
+  }
 }

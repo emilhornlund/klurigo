@@ -223,6 +223,18 @@ export class QuizRatingRepository extends BaseRepository<QuizRating> {
   }
 
   /**
+   * Deletes all ratings belonging to a quiz.
+   *
+   * `deleteMany` is intentionally used so this operation is idempotent when
+   * the ratings were already removed or never existed.
+   *
+   * @param quizId - The identifier of the deleted quiz.
+   */
+  public async deleteByQuizId(quizId: string): Promise<void> {
+    await this.deleteMany({ quizId })
+  }
+
+  /**
    * Resolves User references for USER-type authors in lean rating documents.
    *
    * Mongoose cannot populate refs nested inside discriminated subdocument

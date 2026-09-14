@@ -30,6 +30,7 @@ describe(DiscoverySnapshotRepository.name, () => {
     model = {
       findById: jest.fn(),
       findOneAndReplace: jest.fn(),
+      updateOne: jest.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -197,6 +198,32 @@ describe(DiscoverySnapshotRepository.name, () => {
       const lastCallArgs = (model.findOneAndReplace as jest.Mock).mock.calls[1]
       expect(lastCallArgs[0]).toEqual({ _id: DISCOVERY_SNAPSHOT_SINGLETON_ID })
       expect(lastCallArgs[1]._id).toBe(DISCOVERY_SNAPSHOT_SINGLETON_ID)
+    })
+  })
+
+  describe('removeQuizFromSnapshot', () => {
+    it('pulls the quiz from every section without replacing the snapshot', async () => {
+      const execMock = jest.fn().mockResolvedValue({ modifiedCount: 1 })
+      ;(model.updateOne as jest.Mock).mockReturnValue({ exec: execMock })
+
+      await repository.removeQuizFromSnapshot('quiz-2')
+
+      expect(model.updateOne).toHaveBeenCalledWith(
+        { _id: DISCOVERY_SNAPSHOT_SINGLETON_ID },
+        { $pull: { 'sections.$[].entries': { quizId: 'quiz-2' } } },
+      )
+      expect(execMock).toHaveBeenCalledTimes(1)
+      expect(model.findById).not.toHaveBeenCalled()
+      expect(model.findOneAndReplace).not.toHaveBeenCalled()
+    })
+
+    it('succeeds when the snapshot or quiz is not present', async () => {
+      const execMock = jest.fn().mockResolvedValue({ modifiedCount: 0 })
+      ;(model.updateOne as jest.Mock).mockReturnValue({ exec: execMock })
+
+      await expect(
+        repository.removeQuizFromSnapshot('missing-quiz'),
+      ).resolves.toBeUndefined()
     })
   })
 })
