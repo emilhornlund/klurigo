@@ -2,6 +2,7 @@ import { TokenScope, TokenType } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
+import { ApiError } from '../api.utils'
 
 import { createAuthResource } from './auth.resource'
 import type { AuthResourceDeps } from './auth.resource'
@@ -461,6 +462,36 @@ describe('createAuthResource', () => {
     await expect(auth.register(req)).rejects.toBe(err)
     expect(notifyError).toHaveBeenCalledWith(
       'We couldn’t create your account right now. Please try again.',
+    )
+  })
+
+  it('register shows the duplicate-email message for a conflict response', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps, notifyError } = makeDeps()
+    const auth = createAuthResource(api, deps)
+    const request = { email: 'a@example.test' } as never
+    const error = new ApiError("Email 'a@example.test' is not unique", 409)
+
+    apiPost.mockRejectedValue(error)
+
+    await expect(auth.register(request)).rejects.toBe(error)
+    expect(notifyError).toHaveBeenCalledWith(
+      'We couldn’t create an account with that email. Try signing in or resetting your password if you may already have an account.',
+    )
+  })
+
+  it('register shows the validation message for a validation response', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps, notifyError } = makeDeps()
+    const auth = createAuthResource(api, deps)
+    const request = { email: 'a@example.test' } as never
+    const error = new ApiError('Validation failed', 400)
+
+    apiPost.mockRejectedValue(error)
+
+    await expect(auth.register(request)).rejects.toBe(error)
+    expect(notifyError).toHaveBeenCalledWith(
+      'Some of the information you entered is invalid. Please review your details and try again.',
     )
   })
 

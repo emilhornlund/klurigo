@@ -17,6 +17,7 @@ import type {
 import { TokenScope, TokenType } from '@klurigo/common'
 
 import type { ApiClientCore } from '../api-client-core'
+import { ApiError } from '../api.utils'
 
 /**
  * Side-effect hooks used by `createAuthResource`.
@@ -336,9 +337,16 @@ export const createAuthResource = (
         return response
       })
       .catch((error) => {
-        deps.notifyError(
-          'We couldn’t create your account right now. Please try again.',
-        )
+        const message =
+          error instanceof ApiError && error.status === 409
+            ? 'We couldn’t create an account with that email. Try signing in or resetting your password if you may already have an account.'
+            : error instanceof ApiError &&
+                error.status === 400 &&
+                error.message === 'Validation failed'
+              ? 'Some of the information you entered is invalid. Please review your details and try again.'
+              : 'We couldn’t create your account right now. Please try again.'
+
+        deps.notifyError(message)
         throw error
       })
 
