@@ -58,12 +58,23 @@ describe('GoogleAuthService', () => {
       const token = await service.exchangeCodeForAccessToken(code, verifier)
       expect(token).toBe('abc123')
 
-      // ensure correct URL and headers
       expect(httpService.post).toHaveBeenCalledWith(
-        expect.stringContaining('https://oauth2.googleapis.com/token?'),
-        null,
+        'https://oauth2.googleapis.com/token',
+        expect.any(URLSearchParams),
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
       )
+
+      const [url, body] = (httpService.post as jest.Mock).mock.calls[0] as [
+        string,
+        URLSearchParams,
+      ]
+      expect(url).toBe('https://oauth2.googleapis.com/token')
+      expect(body.get('code')).toBe(code)
+      expect(body.get('code_verifier')).toBe(verifier)
+      expect(body.get('client_id')).toBe('test-client-id')
+      expect(body.get('client_secret')).toBe('test-client-secret')
+      expect(body.get('redirect_uri')).toBe('http://localhost/callback')
+      expect(body.get('grant_type')).toBe('authorization_code')
     })
 
     it('should throw UnauthorizedException on HTTP error', async () => {
