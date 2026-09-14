@@ -32,7 +32,8 @@ yarn install --frozen-lockfile
 The development environment files are already included in the service and web
 workspaces. The backend loads `packages/klurigo-service/.env.development` by
 default, and the frontend loads `packages/klurigo-web/.env.development` when
-running in development mode.
+running in development mode. The backend uses `HS256` JWTs and requires the
+`JWT_SECRET` value provided by its environment file or runtime environment.
 
 ## Start The Development Stack
 

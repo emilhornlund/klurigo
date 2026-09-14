@@ -12,8 +12,6 @@ export interface EnvironmentVariables {
   MONGODB_PASSWORD: string
   MONGODB_DB: string
   JWT_SECRET: string
-  JWT_PRIVATE_KEY_PATH: string
-  JWT_PUBLIC_KEY_PATH: string
   PEXELS_API_KEY: string
   UPLOAD_DIRECTORY: string
   EMAIL_ENABLED: boolean

@@ -11,7 +11,6 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { RedisModule } from '@nestjs-modules/ioredis'
 import { SentryModule } from '@sentry/nestjs/setup'
-import Joi from 'joi'
 import Keyv from 'keyv'
 import { MurLockModule } from 'murlock'
 
@@ -33,7 +32,7 @@ import { TokenModule } from '../modules/token'
 import { UserModule } from '../modules/user'
 import { UserProfileApiModule } from '../modules/user-profile-api'
 
-import { EnvironmentVariables } from './config'
+import { environmentValidationSchema, EnvironmentVariables } from './config'
 import { AppController } from './controllers'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { TimeoutInterceptor } from './interceptors'
@@ -53,38 +52,7 @@ const isTestEnv = process.env.NODE_ENV === 'test'
     ...(isProdEnv ? [SentryModule.forRoot()] : []),
     ConfigModule.forRoot({
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
-      validationSchema: Joi.object({
-        NODE_ENV: Joi.string()
-          .valid('development', 'production', 'test')
-          .default('development'),
-        ENVIRONMENT: Joi.string()
-          .valid('local', 'beta', 'prod', 'test')
-          .required(),
-        SERVER_PORT: Joi.number().port().default(8080),
-        SERVER_ALLOW_ORIGIN: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.number().port().required(),
-        REDIS_PASSWORD: Joi.string().optional(),
-        REDIS_DB: Joi.number().default(0),
-        MONGODB_HOST: Joi.string().required(),
-        MONGODB_PORT: Joi.number().port().required(),
-        MONGODB_USERNAME: Joi.string().optional(),
-        MONGODB_PASSWORD: Joi.string().optional(),
-        MONGODB_DB: Joi.string().required(),
-        JWT_SECRET: Joi.string(),
-        JWT_PRIVATE_KEY_PATH: Joi.string(),
-        JWT_PUBLIC_KEY_PATH: Joi.string(),
-        PEXELS_API_KEY: Joi.string().required(),
-        UPLOAD_DIRECTORY: Joi.string().required(),
-        EMAIL_ENABLED: Joi.boolean().default(true),
-        EMAIL_USERNAME: Joi.string().optional(),
-        EMAIL_PASSWORD: Joi.string().optional(),
-        KLURIGO_URL: Joi.string().required(),
-        GOOGLE_CLIENT_ID: Joi.string().required(),
-        GOOGLE_CLIENT_SECRET: Joi.string().required(),
-        GOOGLE_REDIRECT_URI: Joi.string().required(),
-        DISCOVERY_SEED_ON_INIT: Joi.boolean().optional().default(false),
-      }),
+      validationSchema: environmentValidationSchema,
       isGlobal: true,
     }),
     EventEmitterModule.forRoot(),
