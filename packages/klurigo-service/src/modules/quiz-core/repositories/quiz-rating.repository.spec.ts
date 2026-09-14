@@ -25,6 +25,7 @@ jest.mock('../../../app/shared/repository', () => {
     public findWithPagination: jest.Mock
     public create: jest.Mock
     public update: jest.Mock
+    public deleteMany: jest.Mock
 
     constructor(model: unknown, entityName: string) {
       this.model = model
@@ -33,6 +34,7 @@ jest.mock('../../../app/shared/repository', () => {
       this.findWithPagination = jest.fn()
       this.create = jest.fn()
       this.update = jest.fn()
+      this.deleteMany = jest.fn()
     }
   }
 
@@ -63,6 +65,7 @@ describe(QuizRatingRepository.name, () => {
       find: jest.fn(),
       countDocuments: jest.fn(),
       findById: jest.fn(),
+      deleteMany: jest.fn(),
       db: { model: jest.fn() },
     } as Partial<Model<QuizRating>> & {
       findOne: jest.Mock
@@ -70,6 +73,7 @@ describe(QuizRatingRepository.name, () => {
       countDocuments: jest.Mock
       findById: jest.Mock
       db: { model: jest.Mock }
+      deleteMany: jest.Mock
     }
 
     const moduleRef = await Test.createTestingModule({
@@ -526,6 +530,24 @@ describe(QuizRatingRepository.name, () => {
         { stars: 1, comment: 'x', updated: now2 },
         { populate: { path: 'author.user', model: 'User' } },
       )
+    })
+  })
+
+  describe('deleteByQuizId', () => {
+    it('deletes all ratings for the quiz', async () => {
+      ;(repository.deleteMany as jest.Mock).mockResolvedValue(2)
+
+      await expect(repository.deleteByQuizId('quiz-1')).resolves.toBeUndefined()
+
+      expect(repository.deleteMany).toHaveBeenCalledWith({ quizId: 'quiz-1' })
+    })
+
+    it('succeeds when the quiz has no ratings', async () => {
+      ;(repository.deleteMany as jest.Mock).mockResolvedValue(0)
+
+      await expect(
+        repository.deleteByQuizId('missing-quiz'),
+      ).resolves.toBeUndefined()
     })
   })
 })

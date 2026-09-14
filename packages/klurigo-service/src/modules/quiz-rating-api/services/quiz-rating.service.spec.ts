@@ -42,6 +42,7 @@ describe(QuizRatingService.name, () => {
     findQuizRatingsWithPagination: jest.Mock
     createQuizRating: jest.Mock
     updateQuizRating: jest.Mock
+    deleteByQuizId: jest.Mock
   }
 
   let logger: {
@@ -65,6 +66,7 @@ describe(QuizRatingService.name, () => {
       findQuizRatingsWithPagination: jest.fn(),
       createQuizRating: jest.fn(),
       updateQuizRating: jest.fn(),
+      deleteByQuizId: jest.fn(),
     }
 
     logger = {
@@ -177,6 +179,14 @@ describe(QuizRatingService.name, () => {
       ).rejects.toThrow(
         `Quiz rating was not found by quiz id '${quizId}' and author id '${author._id}'`,
       )
+    })
+  })
+
+  describe('deleteByQuizId', () => {
+    it('deletes all ratings for the quiz', async () => {
+      await service.deleteByQuizId('quiz-1')
+
+      expect(quizRatingRepository.deleteByQuizId).toHaveBeenCalledWith('quiz-1')
     })
   })
 

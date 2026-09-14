@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 import { MongooseModule } from '@nestjs/mongoose'
 
 import { GameCoreModule } from '../game-core'
 import { QuizCoreModule } from '../quiz-core'
 
 import { DiscoveryController } from './controllers'
+import { QuizDeletedListener } from './handlers'
 import { DiscoverySnapshotRepository } from './repositories'
 import {
   DiscoverySnapshot,
@@ -34,6 +36,7 @@ import { DiscoveryComputeService, DiscoverySchedulerService } from './services'
         schema: DiscoverySnapshotSchema,
       },
     ]),
+    EventEmitterModule,
     QuizCoreModule,
     GameCoreModule,
   ],
@@ -42,6 +45,7 @@ import { DiscoveryComputeService, DiscoverySchedulerService } from './services'
     DiscoverySnapshotRepository,
     DiscoveryComputeService,
     DiscoverySchedulerService,
+    QuizDeletedListener,
   ],
   exports: [
     DiscoverySnapshotRepository,

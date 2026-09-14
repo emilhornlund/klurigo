@@ -195,6 +195,15 @@ export class QuizRatingService {
   }
 
   /**
+   * Deletes all ratings associated with a quiz.
+   *
+   * @param quizId - The identifier of the deleted quiz.
+   */
+  public async deleteByQuizId(quizId: string): Promise<void> {
+    await this.quizRatingRepository.deleteByQuizId(quizId)
+  }
+
+  /**
    * Maps a rating persistence model to a public DTO.
    *
    * Resolves the author identity from the discriminated author subdocument.

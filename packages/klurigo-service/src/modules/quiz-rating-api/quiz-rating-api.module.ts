@@ -6,6 +6,7 @@ import { QuizCoreModule } from '../quiz-core'
 
 import { ProfileQuizRatingController } from './controllers/profile-quiz-rating.controller'
 import { QuizRatingController } from './controllers/quiz-rating.controller'
+import { QuizDeletedListener } from './handlers'
 import { QuizRatingService } from './services'
 
 /**
@@ -14,7 +15,7 @@ import { QuizRatingService } from './services'
 @Module({
   imports: [EventEmitterModule, GameCoreModule, QuizCoreModule],
   controllers: [QuizRatingController, ProfileQuizRatingController],
-  providers: [Logger, QuizRatingService],
+  providers: [Logger, QuizRatingService, QuizDeletedListener],
   exports: [QuizRatingService],
 })
 export class QuizRatingApiModule {}
