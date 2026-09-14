@@ -57,8 +57,8 @@ export class GoogleAuthService {
     try {
       const { data } = await firstValueFrom(
         this.http.post<GoogleExchangeDto>(
-          `https://oauth2.googleapis.com/token?${params.toString()}`,
-          null,
+          'https://oauth2.googleapis.com/token',
+          params,
           {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           },
