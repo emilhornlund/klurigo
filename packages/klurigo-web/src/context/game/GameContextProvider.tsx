@@ -88,23 +88,40 @@ const GameContextProvider: FC<GameContextProviderProps> = ({ children }) => {
       participantId,
       participantType,
       isFullscreenActive: fullScreenHandle.active,
-      completeTask: () => (gameID ? completeTask(gameID) : Promise.reject()),
+      completeTask: () =>
+        gameID
+          ? completeTask(gameID)
+          : Promise.reject(new Error('Missing gameID')),
       submitQuestionAnswer: (request) =>
-        gameID ? submitQuestionAnswer(gameID, request) : Promise.reject(),
+        gameID
+          ? submitQuestionAnswer(gameID, request)
+          : Promise.reject(new Error('Missing gameID')),
       leaveGame: handleLeaveGame,
       addCorrectAnswer: (answer: QuestionCorrectAnswerDto) =>
-        gameID ? addCorrectAnswer(gameID, answer) : Promise.reject(),
+        gameID
+          ? addCorrectAnswer(gameID, answer)
+          : Promise.reject(new Error('Missing gameID')),
       deleteCorrectAnswer: (answer: QuestionCorrectAnswerDto) =>
-        gameID ? deleteCorrectAnswer(gameID, answer) : Promise.reject(),
-      getPlayers: () => (gameID ? getPlayers(gameID) : Promise.reject()),
+        gameID
+          ? deleteCorrectAnswer(gameID, answer)
+          : Promise.reject(new Error('Missing gameID')),
+      getPlayers: () =>
+        gameID
+          ? getPlayers(gameID)
+          : Promise.reject(new Error('Missing gameID')),
       updateGameSettings: (settings: GameSettingsDto) =>
-        gameID ? updateGameSettings(gameID, settings) : Promise.reject(),
+        gameID
+          ? updateGameSettings(gameID, settings)
+          : Promise.reject(new Error('Missing gameID')),
       toggleFullscreen: fullScreenHandle.active
         ? fullScreenHandle.exit
         : fullScreenHandle.enter,
-      quitGame: () => (gameID ? quitGame(gameID) : Promise.reject()),
+      quitGame: () =>
+        gameID ? quitGame(gameID) : Promise.reject(new Error('Missing gameID')),
       createOrUpdateGameRating: (rating) =>
-        gameID ? createOrUpdateGameRating(gameID, rating) : Promise.reject(),
+        gameID
+          ? createOrUpdateGameRating(gameID, rating)
+          : Promise.reject(new Error('Missing gameID')),
     }),
     [
       gameID,

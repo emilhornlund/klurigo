@@ -470,7 +470,7 @@ describe('AdvancedQuestionEditor', () => {
     expect(parseQuestionsJson).not.toHaveBeenCalled()
   })
 
-  it('IMPORTANT: validations-only rerender does not update jsonError when questions JSON is unchanged', () => {
+  it('updates jsonError when validations change without changing questions JSON', () => {
     const onChange = vi.fn()
 
     const questions = makeClassicQuestions()
@@ -510,8 +510,9 @@ describe('AdvancedQuestionEditor', () => {
       )
     })
 
-    // Because the component guards on questions JSON change, it will not recompute error here.
     expect(parseQuestionsJson).not.toHaveBeenCalled()
-    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(true)
+    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(
+      'questions[1].question: Required',
+    )
   })
 })

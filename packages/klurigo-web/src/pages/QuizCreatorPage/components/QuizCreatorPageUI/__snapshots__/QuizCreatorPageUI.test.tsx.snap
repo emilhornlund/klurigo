@@ -161,6 +161,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                 >
                   <button
                     class="questionPickerItemButton questionPickerItemActive"
+                    type="button"
                   >
                     <div
                       class="questionPickerItemText"
@@ -191,7 +192,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="questionPickerItemOverlayBottom"
                     >
                       <button
+                        aria-label="Duplicate question"
                         class="cloneButton"
+                        type="button"
                       >
                         <svg
                           aria-hidden="true"
@@ -208,7 +211,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                         </svg>
                       </button>
                       <button
+                        aria-label="Delete question"
                         class="deleteButton"
+                        type="button"
                       >
                         <svg
                           aria-hidden="true"
@@ -234,6 +239,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                 >
                   <button
                     class="questionPickerItemButton"
+                    type="button"
                   >
                     <div
                       class="questionPickerItemText"
@@ -272,6 +278,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                 >
                   <button
                     class="questionPickerItemButton"
+                    type="button"
                   >
                     <div
                       class="questionPickerItemText"
@@ -310,6 +317,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                 >
                   <button
                     class="questionPickerItemButton"
+                    type="button"
                   >
                     <div
                       class="questionPickerItemText"
@@ -346,7 +354,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                 class="addQuestionButtonWrapper"
               >
                 <button
+                  aria-label="Add question"
                   class="addQuestionButton"
+                  type="button"
                 >
                   <svg
                     aria-hidden="true"

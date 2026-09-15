@@ -59,4 +59,34 @@ describe('QuestionPickerItem', () => {
 
     expect(onDuplicate).toHaveBeenCalledTimes(1)
   })
+
+  it('does not select the question when an action button is clicked', () => {
+    const onClick = vi.fn()
+    const onDelete = vi.fn()
+    const { getByRole } = renderQuestionPickerItem({ onClick, onDelete })
+
+    fireEvent.click(getByRole('button', { name: 'Delete question' }))
+
+    expect(onDelete).toHaveBeenCalledTimes(1)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('provides accessible names for active actions and displays the item details', () => {
+    const { container, getByRole, getByText } = renderQuestionPickerItem({
+      index: 2,
+      text: 'Question text',
+      active: true,
+      valid: false,
+    })
+
+    expect(getByText('Question text')).toBeInTheDocument()
+    expect(getByText('Multi Choice')).toBeInTheDocument()
+    expect(getByText('3')).toBeInTheDocument()
+    expect(getByRole('button', { name: 'Duplicate question' })).toBeVisible()
+    expect(getByRole('button', { name: 'Delete question' })).toBeVisible()
+    expect(container.querySelector('#question-picker-item-2')).toHaveAttribute(
+      'draggable',
+      'true',
+    )
+  })
 })
