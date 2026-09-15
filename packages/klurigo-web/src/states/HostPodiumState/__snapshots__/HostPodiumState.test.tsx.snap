@@ -99,7 +99,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
                     2
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -141,7 +141,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -216,7 +216,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
                     3
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -652,7 +652,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
                     2
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -694,7 +694,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -769,7 +769,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
                     3
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1205,7 +1205,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
                     2
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1247,7 +1247,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1322,7 +1322,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
                     3
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1758,7 +1758,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
                     2
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1800,7 +1800,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -1875,7 +1875,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
                     3
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -2394,7 +2394,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -2893,7 +2893,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
                     2
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -2935,7 +2935,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
                     1
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3
@@ -3010,7 +3010,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
                     3
                   </div>
                   <div
-                    class="score sizeSmall"
+                    class="score sizeSmall transparent"
                     data-testid="score-chip"
                   >
                     <h3

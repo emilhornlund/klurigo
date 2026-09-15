@@ -353,4 +353,29 @@ describe('HostLobbyState', () => {
 
     expect(screen.queryByText('Game Settings')).not.toBeInTheDocument()
   })
+
+  it('copies the direct join URL and shows copied feedback', async () => {
+    const user = userEvent.setup()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+
+    render(
+      <MemoryRouter>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <HostLobbyState event={sampleEvent as any} />
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: /copy link/i }))
+
+    expect(writeText).toHaveBeenCalledWith(
+      'https://example.com/auth/game?id=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    )
+
+    expect(screen.getByRole('button', { name: /copied/i })).toBeInTheDocument()
+  })
 })

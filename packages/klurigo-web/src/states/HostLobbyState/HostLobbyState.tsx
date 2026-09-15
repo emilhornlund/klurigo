@@ -1,4 +1,9 @@
-import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCheck,
+  faCopy,
+  faGear,
+  faUserGroup,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { GameLobbyHostEvent } from '@klurigo/common'
 import { GAME_MAX_PLAYERS } from '@klurigo/common'
@@ -57,6 +62,19 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
   const prevPlayersRef = useRef<string[]>([])
 
   const { gameID, completeTask, leaveGame } = useGameContext()
+  const joinUrl = `${config.baseUrl}/auth/game?id=${id}`
+
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  const handleCopyJoinLink = async () => {
+    await navigator.clipboard.writeText(joinUrl)
+
+    setLinkCopied(true)
+
+    window.setTimeout(() => {
+      setLinkCopied(false)
+    }, 1500)
+  }
 
   // Handle player join/leave animations
   useEffect(() => {
@@ -143,60 +161,16 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
         width="medium"
         height="full"
         header={
-          <IconButtonArrowRight
-            id="start-game-button"
-            type="button"
-            kind="call-to-action"
-            size="small"
-            value="Start"
-            loading={isStartingGame}
-            onClick={() =>
-              !players.length
-                ? setShowConfirmStartGameDialog(true)
-                : handleStartGame()
-            }
-          />
-        }>
-        <div className={styles.header}>
-          <div className={classNames(styles.box, styles.info)}>
-            <Typography variant="body2" noOpacity>
-              Join at
-            </Typography>{' '}
-            <Typography variant="body2" noOpacity bold>
-              {extractUrl(config.baseUrl, { omitProtocol: true })}
-            </Typography>
-          </div>
-          <div className={classNames(styles.box, styles.pin)}>
-            <Typography variant="body2" noOpacity>
-              Game PIN
-            </Typography>
-            <Typography variant="title" noOpacity>
-              {pin}
-            </Typography>
-          </div>
-          <div
-            className={classNames(styles.box, styles.qr, styles.qrContainer)}>
-            <QRCode value={`${config.baseUrl}/auth/game?id=${id}`} />
-            <div className={styles.qrScanLine} />
-          </div>
-        </div>
-
-        <div className={styles.misc}>
-          <div className={styles.item} />
-
-          <div className={styles.item}>
-            <div className={styles.playerCounter}>
-              <FontAwesomeIcon
-                icon={faUserGroup}
-                className={styles.playerIcon}
-              />
-              <span className={styles.playerCount}>
-                {players.length} / {GAME_MAX_PLAYERS}
-              </span>
-            </div>
-          </div>
-
-          <div className={styles.item}>
+          <>
+            <Button
+              id="share-button"
+              type="button"
+              size="small"
+              hideValue="mobile"
+              icon={linkCopied ? faCheck : faCopy}
+              onClick={handleCopyJoinLink}>
+              {linkCopied ? 'Copied' : 'Copy link'}
+            </Button>
             <Button
               id="game-settings-button"
               type="button"
@@ -206,6 +180,50 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
               onClick={() => setShowGameSettingsModal(true)}>
               Settings
             </Button>
+            <IconButtonArrowRight
+              id="start-game-button"
+              type="button"
+              kind="call-to-action"
+              size="small"
+              value="Start"
+              loading={isStartingGame}
+              onClick={() =>
+                !players.length
+                  ? setShowConfirmStartGameDialog(true)
+                  : handleStartGame()
+              }
+            />
+          </>
+        }>
+        <div className={styles.header}>
+          <div className={classNames(styles.box, styles.info)}>
+            <Typography variant="body2" color="inverseSubtle" noOpacity>
+              Join at
+            </Typography>{' '}
+            <Typography variant="body2" color="inverse" noOpacity bold>
+              {extractUrl(config.baseUrl, { omitProtocol: true })}
+            </Typography>
+          </div>
+          <div className={classNames(styles.box, styles.pin)}>
+            <Typography variant="body2" color="inverseSubtle" noOpacity>
+              Game PIN
+            </Typography>
+            <Typography variant="title" color="inverse" noOpacity>
+              {pin}
+            </Typography>
+          </div>
+          <div className={classNames(styles.box, styles.qr)}>
+            <QRCode value={joinUrl} />
+            <div className={styles.qrScanLine} />
+          </div>
+        </div>
+
+        <div className={styles.misc}>
+          <div className={styles.playerCounter}>
+            <FontAwesomeIcon icon={faUserGroup} className={styles.playerIcon} />
+            <span className={styles.playerCount}>
+              {players.length} / {GAME_MAX_PLAYERS}
+            </span>
           </div>
         </div>
 

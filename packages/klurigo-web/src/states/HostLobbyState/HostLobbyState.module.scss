@@ -1,5 +1,6 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
@@ -25,38 +26,24 @@
   }
 
   .box {
-    outline-style: solid;
-    outline-color: colors.$color-focus-outline;
-
-    border-style: solid;
-    border-color: transparent;
-    border-radius: radius.$radius-surface-sm;
-
-    background-color: colors.$color-surface-default;
-    color: colors.$color-text-default;
+    @include surface.surface-box(true);
 
     @include helpers.mobile {
       height: 98px;
       margin: spacing.$space-content-gap-mobile 0;
-      outline-width: helpers.pxToRem(2px);
-      outline-offset: helpers.pxToRem(2px);
-      border-width: helpers.pxToRem(2px);
+      border-radius: radius.$radius-surface-sm;
     }
 
     @include helpers.tablet {
       height: 118px;
       margin: spacing.$space-content-gap-tablet 0;
-      outline-width: helpers.pxToRem(3px);
-      outline-offset: helpers.pxToRem(3px);
-      border-width: helpers.pxToRem(3px);
+      border-radius: radius.$radius-surface-md;
     }
 
     @include helpers.desktop {
       height: 138px;
       margin: spacing.$space-content-gap-desktop 0;
-      outline-width: helpers.pxToRem(4px);
-      outline-offset: helpers.pxToRem(4px);
-      border-width: helpers.pxToRem(4px);
+      border-radius: radius.$radius-surface-lg;
     }
   }
 
@@ -108,6 +95,18 @@
   .qr {
     display: flex;
     flex-direction: column;
+    background: colors.$color-surface-default;
+    border: controls.$control-border-width-outside solid
+      colors.$color-border-glass-default;
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled),
+    &:active {
+      background: colors.$color-surface-subtle;
+      border-color: colors.$color-border-glass-default;
+      box-shadow: none;
+      transform: none;
+    }
 
     svg {
       width: auto;
@@ -115,13 +114,13 @@
       height: 100%;
 
       @include helpers.mobile {
-        padding: spacing.$space-inline-tight-mobile;
+        padding: spacing.$space-inline-mobile;
       }
       @include helpers.tablet {
-        padding: spacing.$space-inline-tight-tablet;
+        padding: spacing.$space-inline-tablet;
       }
       @include helpers.desktop {
-        padding: spacing.$space-inline-tight-desktop;
+        padding: spacing.$space-inline-desktop;
       }
     }
   }
@@ -131,21 +130,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-
-  .item {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-
-    &:first-child {
-      justify-content: flex-start;
-    }
-    &:last-child {
-      justify-content: flex-end;
-    }
-  }
 
   .playerCounter {
     @include surface.surface-box;
