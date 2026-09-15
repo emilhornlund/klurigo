@@ -2,6 +2,7 @@
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
+@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -22,15 +23,16 @@
   }
 
   .row {
+    @include surface.surface-box;
+
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
     min-width: 0;
     overflow: hidden;
-    background-color: colors.$color-surface-default;
     border-radius: radius.$radius-surface-lg;
-    color: colors.$color-text-default;
+    font-weight: bold;
 
     animation: dramaticReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation-delay: calc(var(--row-index) * 0.2s);
@@ -53,16 +55,6 @@
       padding: spacing.$space-compact-desktop;
     }
 
-    &.gold {
-      background-color: celebration.$color-celebration-medal-gold;
-    }
-    &.silver {
-      background-color: celebration.$color-celebration-medal-silver;
-    }
-    &.bronze {
-      background-color: celebration.$color-celebration-medal-bronze;
-    }
-
     .column {
       display: flex;
       flex-direction: row;
@@ -82,35 +74,33 @@
       }
 
       &.position {
-        .badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: radius.$radius-circle;
-          background-color: colors.$color-surface-overlay-subtle;
-          color: colors.$color-text-default;
-          font-weight: bold;
+        @include surface.surface-box;
 
-          @include helpers.mobile {
-            width: helpers.pxToRem(40px);
-            height: helpers.pxToRem(40px);
-            padding: spacing.$space-inline-mobile;
-            @include helpers.fontSize(typography.$font-size-body2-mobile);
-          }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: radius.$radius-circle;
+        font-weight: bolder;
 
-          @include helpers.tablet {
-            width: helpers.pxToRem(44px);
-            height: helpers.pxToRem(44px);
-            padding: spacing.$space-inline-tablet;
-            @include helpers.fontSize(typography.$font-size-body2-tablet);
-          }
+        @include helpers.mobile {
+          width: helpers.pxToRem(40px);
+          height: helpers.pxToRem(40px);
+          padding: spacing.$space-inline-mobile;
+          @include helpers.fontSize(typography.$font-size-body2-mobile);
+        }
 
-          @include helpers.desktop {
-            width: helpers.pxToRem(48px);
-            height: helpers.pxToRem(48px);
-            padding: spacing.$space-inline-desktop;
-            @include helpers.fontSize(typography.$font-size-body2-desktop);
-          }
+        @include helpers.tablet {
+          width: helpers.pxToRem(44px);
+          height: helpers.pxToRem(44px);
+          padding: spacing.$space-inline-tablet;
+          @include helpers.fontSize(typography.$font-size-body2-tablet);
+        }
+
+        @include helpers.desktop {
+          width: helpers.pxToRem(48px);
+          height: helpers.pxToRem(48px);
+          padding: spacing.$space-inline-desktop;
+          @include helpers.fontSize(typography.$font-size-body2-desktop);
         }
       }
 
@@ -184,23 +174,53 @@
         }
       }
 
-      &.score {
-        background-color: colors.$color-surface-overlay-subtle;
-        color: colors.$color-text-default;
+      .score {
+        @include surface.surface-box;
+
         font-weight: bold;
-        border-radius: radius.$radius-control-lg;
 
         @include helpers.mobile {
           padding: 0 spacing.$space-compact-mobile;
+          border-radius: radius.$radius-control-sm;
         }
 
         @include helpers.tablet {
           padding: 0 spacing.$space-compact-tablet;
+          border-radius: radius.$radius-control-md;
         }
 
         @include helpers.desktop {
           padding: 0 spacing.$space-compact-desktop;
+          border-radius: radius.$radius-control-lg;
         }
+      }
+    }
+
+    &.gold {
+      .position,
+      .score {
+        background-color: celebration.$color-celebration-medal-gold;
+        border-color: celebration.$color-celebration-medal-gold-highlight;
+        box-shadow: 0 0 12px
+          rgba(celebration.$color-celebration-medal-gold-highlight, 0.25);
+      }
+    }
+    &.silver {
+      .position,
+      .score {
+        background-color: celebration.$color-celebration-medal-silver;
+        border-color: celebration.$color-celebration-medal-silver-highlight;
+        box-shadow: 0 0 12px
+          rgba(celebration.$color-celebration-medal-silver-highlight, 0.25);
+      }
+    }
+    &.bronze {
+      .position,
+      .score {
+        background-color: celebration.$color-celebration-medal-bronze;
+        border-color: celebration.$color-celebration-medal-bronze-highlight;
+        box-shadow: 0 0 12px
+          rgba(celebration.$color-celebration-medal-bronze-highlight, 0.25);
       }
     }
 

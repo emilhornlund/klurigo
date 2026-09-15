@@ -12,11 +12,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          4
-        </span>
+        4
       </div>
       <div
         class="column nickname"
@@ -29,9 +25,13 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
         class="column streaks"
       />
       <div
-        class="column score"
+        class="column"
       >
-        40
+        <div
+          class="score"
+        >
+          40
+        </div>
       </div>
     </div>
     <div
@@ -41,11 +41,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          5
-        </span>
+        5
       </div>
       <div
         class="column nickname"
@@ -55,9 +51,13 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
         </span>
       </div>
       <div
-        class="column score"
+        class="column"
       >
-        20
+        <div
+          class="score"
+        >
+          20
+        </div>
       </div>
     </div>
   </div>
@@ -76,11 +76,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          1
-        </span>
+        1
       </div>
       <div
         class="column nickname"
@@ -97,16 +93,20 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         >
           <div
             class="badge small number-5 border"
-            style="background-color: white; outline-color: white;"
+            style="color: white;"
           >
             5
           </div>
         </div>
       </span>
       <div
-        class="column score"
+        class="column"
       >
-        100
+        <div
+          class="score"
+        >
+          100
+        </div>
       </div>
     </div>
     <div
@@ -116,11 +116,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          2
-        </span>
+        2
       </div>
       <div
         class="column nickname"
@@ -144,9 +140,13 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         </div>
       </span>
       <div
-        class="column score"
+        class="column"
       >
-        80
+        <div
+          class="score"
+        >
+          80
+        </div>
       </div>
     </div>
     <div
@@ -156,11 +156,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          3
-        </span>
+        3
       </div>
       <div
         class="column nickname"
@@ -177,16 +173,20 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         >
           <div
             class="badge small number-2 border"
-            style="background-color: white; outline-color: white;"
+            style="color: white;"
           >
             2
           </div>
         </div>
       </span>
       <div
-        class="column score"
+        class="column"
       >
-        60
+        <div
+          class="score"
+        >
+          60
+        </div>
       </div>
     </div>
     <div
@@ -196,11 +196,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          4
-        </span>
+        4
       </div>
       <div
         class="column nickname"
@@ -213,9 +209,13 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column streaks"
       />
       <div
-        class="column score"
+        class="column"
       >
-        40
+        <div
+          class="score"
+        >
+          40
+        </div>
       </div>
     </div>
     <div
@@ -225,11 +225,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
       <div
         class="column position"
       >
-        <span
-          class="badge"
-        >
-          5
-        </span>
+        5
       </div>
       <div
         class="column nickname"
@@ -239,9 +235,13 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         </span>
       </div>
       <div
-        class="column score"
+        class="column"
       >
-        20
+        <div
+          class="score"
+        >
+          20
+        </div>
       </div>
     </div>
   </div>

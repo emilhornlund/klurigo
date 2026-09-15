@@ -2185,11 +2185,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  4
-                </span>
+                4
               </div>
               <div
                 class="column nickname"
@@ -2199,9 +2195,13 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                14118
+                <div
+                  class="score"
+                >
+                  14118
+                </div>
               </div>
             </div>
             <div
@@ -2211,11 +2211,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  5
-                </span>
+                5
               </div>
               <div
                 class="column nickname"
@@ -2225,9 +2221,13 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                13463
+                <div
+                  class="score"
+                >
+                  13463
+                </div>
               </div>
             </div>
           </div>

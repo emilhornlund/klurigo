@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Podium from './Podium'
 
 const meta = {
+  title: 'Gameplay Components/Podium',
   component: Podium,
   parameters: {
     layout: 'fullscreen',
