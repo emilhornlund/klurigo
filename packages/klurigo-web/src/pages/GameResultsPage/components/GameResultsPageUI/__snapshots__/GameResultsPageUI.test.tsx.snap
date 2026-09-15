@@ -133,7 +133,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -175,7 +175,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -250,7 +250,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                             3
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1177,7 +1177,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1219,7 +1219,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1294,7 +1294,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                             3
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -2182,7 +2182,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -2224,7 +2224,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -4332,7 +4332,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -4374,7 +4374,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -5364,7 +5364,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -5406,7 +5406,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -7175,7 +7175,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -7217,7 +7217,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3

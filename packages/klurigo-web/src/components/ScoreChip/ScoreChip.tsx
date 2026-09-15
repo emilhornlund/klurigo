@@ -17,6 +17,9 @@ export type ScoreChipProps = {
 
   /** Controls the visual size of the chip. */
   readonly size?: 'normal' | 'small'
+
+  /** Renders the chip without its surface background. */
+  readonly transparent?: boolean
 }
 
 /**
@@ -26,12 +29,14 @@ const ScoreChip: FC<ScoreChipProps> = ({
   value,
   color = 'inverse',
   size = 'normal',
+  transparent = false,
 }) => (
   <div
     className={classNames(
       styles.score,
       size === 'normal' ? styles.sizeNormal : undefined,
       size === 'small' ? styles.sizeSmall : undefined,
+      transparent ? styles.transparent : undefined,
     )}
     data-testid="score-chip">
     <Typography

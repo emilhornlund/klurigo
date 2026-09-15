@@ -190,7 +190,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -232,7 +232,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1284,7 +1284,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             2
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1326,7 +1326,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             1
                           </div>
                           <div
-                            class="score sizeSmall"
+                            class="score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3

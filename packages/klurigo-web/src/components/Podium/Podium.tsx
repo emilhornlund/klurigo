@@ -57,7 +57,7 @@ const Stack: FC<StackProps> = ({
         )}
 
         {score !== undefined && (
-          <ScoreChip value={score} color="default" size="small" />
+          <ScoreChip value={score} color="default" size="small" transparent />
         )}
 
         {position === 1 && (
