@@ -91,13 +91,18 @@ export const ClassicRangeQuestionForm: FC<
 > = ({ question, questionValidation, onChange }) => {
   const correctRangeMarginFooter = useMemo<string | undefined>(() => {
     const {
-      correct = 0,
+      correct,
       margin = QuestionRangeAnswerMargin.Medium,
-      min = 0,
-      max = 100,
+      min,
+      max,
     } = question
 
-    if (!isValidNumber(correct, min, max)) {
+    if (
+      correct === undefined ||
+      min === undefined ||
+      max === undefined ||
+      !isValidNumber(correct, min, max)
+    ) {
       return undefined
     }
 
