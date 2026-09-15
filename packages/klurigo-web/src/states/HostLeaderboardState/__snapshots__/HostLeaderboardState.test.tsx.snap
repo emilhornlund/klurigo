@@ -78,11 +78,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  1
-                </span>
+                1
               </div>
               <div
                 class="column nickname"
@@ -92,9 +88,13 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18456
+                <div
+                  class="score"
+                >
+                  18456
+                </div>
               </div>
             </div>
             <div
@@ -104,11 +104,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  2
-                </span>
+                2
               </div>
               <div
                 class="column nickname"
@@ -118,9 +114,13 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18398
+                <div
+                  class="score"
+                >
+                  18398
+                </div>
               </div>
             </div>
           </div>
@@ -288,11 +288,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  1
-                </span>
+                1
               </div>
               <div
                 class="column nickname"
@@ -302,9 +298,13 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18456
+                <div
+                  class="score"
+                >
+                  18456
+                </div>
               </div>
             </div>
             <div
@@ -314,11 +314,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  2
-                </span>
+                2
               </div>
               <div
                 class="column nickname"
@@ -328,9 +324,13 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18398
+                <div
+                  class="score"
+                >
+                  18398
+                </div>
               </div>
             </div>
           </div>
@@ -506,11 +506,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  1
-                </span>
+                1
               </div>
               <div
                 class="column nickname"
@@ -520,9 +516,13 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18456
+                <div
+                  class="score"
+                >
+                  18456
+                </div>
               </div>
             </div>
             <div
@@ -532,11 +532,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  2
-                </span>
+                2
               </div>
               <div
                 class="column nickname"
@@ -546,9 +542,13 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18398
+                <div
+                  class="score"
+                >
+                  18398
+                </div>
               </div>
             </div>
           </div>
@@ -724,11 +724,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  1
-                </span>
+                1
               </div>
               <div
                 class="column nickname"
@@ -738,9 +734,13 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18456
+                <div
+                  class="score"
+                >
+                  18456
+                </div>
               </div>
             </div>
             <div
@@ -750,11 +750,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  2
-                </span>
+                2
               </div>
               <div
                 class="column nickname"
@@ -764,9 +760,13 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                18398
+                <div
+                  class="score"
+                >
+                  18398
+                </div>
               </div>
             </div>
             <div
@@ -776,11 +776,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  3
-                </span>
+                3
               </div>
               <div
                 class="column nickname"
@@ -790,9 +786,13 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                15492
+                <div
+                  class="score"
+                >
+                  15492
+                </div>
               </div>
             </div>
             <div
@@ -802,11 +802,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  4
-                </span>
+                4
               </div>
               <div
                 class="column nickname"
@@ -816,9 +812,13 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                14118
+                <div
+                  class="score"
+                >
+                  14118
+                </div>
               </div>
             </div>
             <div
@@ -828,11 +828,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               <div
                 class="column position"
               >
-                <span
-                  class="badge"
-                >
-                  5
-                </span>
+                5
               </div>
               <div
                 class="column nickname"
@@ -842,9 +838,13 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 </span>
               </div>
               <div
-                class="column score"
+                class="column"
               >
-                13463
+                <div
+                  class="score"
+                >
+                  13463
+                </div>
               </div>
             </div>
           </div>

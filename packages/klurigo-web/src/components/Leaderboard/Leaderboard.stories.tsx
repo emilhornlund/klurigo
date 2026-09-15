@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Leaderboard from './Leaderboard'
 
 const meta = {
+  title: 'Gameplay Components/Leaderboard',
   component: Leaderboard,
   parameters: {
     layout: 'fullscreen',

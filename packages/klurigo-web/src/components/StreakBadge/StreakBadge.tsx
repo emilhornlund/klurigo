@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react'
 
-import Badge, { type BadgeColor } from '../Badge'
+import Badge from '../Badge'
 
 import styles from './StreakBadge.module.scss'
 
@@ -12,53 +12,16 @@ export interface StreakBadgeProps {
   children?: ReactNode | ReactNode[]
 }
 
-const getBackgroundColor = (style: StreakBadgeStyle): BadgeColor => {
-  switch (style) {
-    case 'gold':
-    case 'bronze':
-      return 'white'
-    case 'silver':
-    case 'default':
-      return 'orange'
-  }
-}
-
-const getBorderColor = (style: StreakBadgeStyle): BadgeColor => {
-  switch (style) {
-    case 'gold':
-    case 'bronze':
-      return 'white'
-    case 'silver':
-    case 'default':
-      return 'orange'
-  }
-}
-
-const getTextColor = (style: StreakBadgeStyle): BadgeColor => {
-  switch (style) {
-    case 'gold':
-    case 'bronze':
-      return 'orange'
-    case 'silver':
-    case 'default':
-      return 'white'
-  }
-}
-
-const StreakBadge: FC<StreakBadgeProps> = ({
-  streak,
-  style = 'default',
-  children,
-}) => {
+const StreakBadge: FC<StreakBadgeProps> = ({ streak, children }) => {
   if (!streak || streak < 2) return null
   return (
     <div className={styles.streakBadge}>
       {children}
       <Badge
         size="small"
-        backgroundColor={getBackgroundColor(style)}
-        borderColor={getBorderColor(style)}
-        textColor={getTextColor(style)}>
+        backgroundColor="bronze"
+        borderColor="bronze"
+        textColor="white">
         {streak}
       </Badge>
     </div>

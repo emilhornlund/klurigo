@@ -18,21 +18,6 @@ const getPodiumClassName = (position: number): string | null => {
   return null
 }
 
-const getStreakBadgeStyle = (
-  position: number,
-): 'default' | 'gold' | 'silver' | 'bronze' => {
-  if (position === 1) {
-    return 'gold'
-  }
-  if (position === 2) {
-    return 'silver'
-  }
-  if (position === 3) {
-    return 'bronze'
-  }
-  return 'default'
-}
-
 export type LeaderboardValue = {
   position: number
   nickname: string
@@ -77,7 +62,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
               )}
               style={rowStyle}>
               <div className={classNames(styles.column, styles.position)}>
-                <span className={styles.badge}>{position}</span>
+                {position}
               </div>
 
               <div className={classNames(styles.column, styles.nickname)}>
@@ -102,15 +87,12 @@ const Leaderboard: FC<LeaderboardProps> = ({
 
               {showStreaks && !!streaks && (
                 <span className={classNames(styles.column, styles.streaks)}>
-                  <StreakBadge
-                    streak={streaks}
-                    style={getStreakBadgeStyle(position)}
-                  />
+                  <StreakBadge streak={streaks} />
                 </span>
               )}
 
-              <div className={classNames(styles.column, styles.score)}>
-                {score}
+              <div className={styles.column}>
+                <div className={styles.score}>{score}</div>
               </div>
             </div>
           )
