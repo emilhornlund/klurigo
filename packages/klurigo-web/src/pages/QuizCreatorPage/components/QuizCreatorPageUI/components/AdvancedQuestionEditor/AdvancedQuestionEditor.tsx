@@ -30,37 +30,45 @@ const AdvancedQuestionEditor: FC<AdvancedQuestionEditorProps> = ({
   const [jsonError, setJsonError] = useState<string>()
 
   const lastPropJsonRef = useRef<string>(JSON.stringify(questions, null, 2))
+  const jsonTextRef = useRef<string>(JSON.stringify(questions, null, 2))
 
   useEffect(() => {
     const newQuestions = questions
     const newPropJson = JSON.stringify(newQuestions, null, 2)
+    const questionsChanged = newPropJson !== lastPropJsonRef.current
 
-    if (newPropJson !== lastPropJsonRef.current) {
+    if (questionsChanged) {
       lastPropJsonRef.current = newPropJson
+      jsonTextRef.current = newPropJson
       setJsonText(newPropJson)
 
       try {
         parseQuestionsJson(newQuestions, gameMode)
-
-        const firstInvalid = questionValidations.find(
-          (validation) => !validation.valid,
-        )
-
-        const error = firstInvalid?.errors?.[0]
-
-        if (firstInvalid && error?.path && error?.message) {
-          const index = questionValidations.indexOf(firstInvalid)
-          setJsonError(`questions[${index}].${error.path}: ${error.message}`)
-        } else {
-          setJsonError(undefined)
-        }
       } catch (err) {
         setJsonError((err as Error).message)
+        return
+      }
+    }
+
+    // Keep validation feedback in sync without replacing a user's local JSON error.
+    if (questionsChanged || newPropJson === jsonTextRef.current) {
+      const firstInvalid = questionValidations.find(
+        (validation) => !validation.valid,
+      )
+
+      const error = firstInvalid?.errors?.[0]
+
+      if (firstInvalid && error?.path && error?.message) {
+        const index = questionValidations.indexOf(firstInvalid)
+        setJsonError(`questions[${index}].${error.path}: ${error.message}`)
+      } else {
+        setJsonError(undefined)
       }
     }
   }, [gameMode, questions, questionValidations])
 
   const handleChange = (text: string) => {
+    jsonTextRef.current = text
     setJsonText(text)
     setJsonError(undefined)
 

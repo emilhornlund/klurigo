@@ -98,6 +98,8 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
       </div>
       <div className={styles.addQuestionButtonWrapper}>
         <button
+          type="button"
+          aria-label="Add question"
           className={styles.addQuestionButton}
           onClick={handleAddItemButtonClick}>
           <FontAwesomeIcon icon={faPlusCircle} widthAuto />
