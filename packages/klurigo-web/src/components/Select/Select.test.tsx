@@ -44,4 +44,77 @@ describe('Select', () => {
 
     expect(container).toMatchSnapshot()
   })
+
+  it('reports required and custom validation errors after focus leaves the field', () => {
+    const onValid = vi.fn()
+    const { rerender } = render(
+      <Select
+        id="required-select"
+        required
+        forceValidate
+        onValid={onValid}
+        values={[{ key: 'one', value: 'one', valueLabel: 'One' }]}
+      />,
+    )
+
+    expect(screen.getByText('This field is required')).toBeInTheDocument()
+    expect(onValid).toHaveBeenCalledWith(false)
+
+    rerender(
+      <Select
+        id="required-select"
+        required="Pick one"
+        value="one"
+        onValid={onValid}
+        values={[{ key: 'one', value: 'one', valueLabel: 'One' }]}
+      />,
+    )
+    const select = screen.getByTestId('test-required-select-select')
+    fireEvent.focus(select)
+    fireEvent.blur(select)
+    expect(screen.queryByText('Pick one')).not.toBeInTheDocument()
+
+    rerender(
+      <Select
+        id="required-select"
+        value="one"
+        customErrorMessage="Invalid selection"
+        forceValidate
+        values={[{ key: 'one', value: 'one', valueLabel: 'One' }]}
+      />,
+    )
+    expect(screen.getByText('Invalid selection')).toBeInTheDocument()
+  })
+
+  it('runs additional validation and suppresses required validation when disabled', () => {
+    const onValid = vi.fn()
+    const additionalValidation = vi.fn((value: string) =>
+      value === 'bad' ? 'Bad selection' : true,
+    )
+    const { rerender } = render(
+      <Select
+        id="validated-select"
+        value="bad"
+        onAdditionalValidation={additionalValidation}
+        forceValidate
+        onValid={onValid}
+        values={[{ key: 'bad', value: 'bad', valueLabel: 'Bad' }]}
+      />,
+    )
+
+    expect(screen.getByText('Bad selection')).toBeInTheDocument()
+    expect(additionalValidation).toHaveBeenCalledWith('bad')
+    expect(onValid).toHaveBeenCalledWith(false)
+
+    rerender(
+      <Select
+        id="validated-select"
+        required
+        disabled
+        forceValidate
+        values={[{ key: 'bad', value: 'bad', valueLabel: 'Bad' }]}
+      />,
+    )
+    expect(screen.queryByText('This field is required')).not.toBeInTheDocument()
+  })
 })

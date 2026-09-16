@@ -515,4 +515,45 @@ describe('AdvancedQuestionEditor', () => {
       'questions[1].question: Required',
     )
   })
+
+  it('keeps a local JSON parse error when validations rerender', () => {
+    const onChange = vi.fn()
+    const questions = makeClassicQuestions()
+
+    const view = render(
+      <AdvancedQuestionEditor
+        gameMode={GameMode.Classic}
+        questions={questions}
+        questionValidations={[
+          validQuestionValidation(),
+          validQuestionValidation(),
+        ]}
+        onChange={onChange}
+      />,
+    )
+
+    act(() => {
+      lastTextareaProps?.onChange('{ invalid json')
+    })
+
+    const localError = lastTextareaProps?.onAdditionalValidation?.()
+    expect(localError).toMatchObject(expect.any(String))
+
+    act(() => {
+      view.rerender(
+        <AdvancedQuestionEditor
+          gameMode={GameMode.Classic}
+          questions={questions}
+          questionValidations={[
+            validQuestionValidation(),
+            invalidQuestionValidation([ve('question', 'Required')]),
+          ]}
+          onChange={onChange}
+        />,
+      )
+    })
+
+    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(localError)
+    expect(onChange).not.toHaveBeenCalled()
+  })
 })

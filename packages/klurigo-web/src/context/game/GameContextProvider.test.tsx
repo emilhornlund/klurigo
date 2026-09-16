@@ -95,6 +95,13 @@ function renderProvider(capture: (context: GameContextType) => void) {
 describe('GameContextProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    Object.values(mockClient).forEach((mock) => {
+      mock.mockResolvedValue(undefined)
+    })
+    mockClient.getPlayers.mockResolvedValue([])
+    mockClient.updateGameSettings.mockResolvedValue({})
+    mockClient.createOrUpdateGameRating.mockResolvedValue({})
+    revokeGame.mockResolvedValue(undefined)
     fullScreenHandle.active = false
   })
 
@@ -195,8 +202,75 @@ describe('GameContextProvider', () => {
 
     await waitFor(() => expect(context?.gameID).toBeUndefined())
 
+    const answer: QuestionCorrectAnswerDto = {
+      type: QuestionType.Range,
+      value: 42,
+    }
+    const request: Parameters<
+      NonNullable<GameContextType['submitQuestionAnswer']>
+    >[0] = { type: QuestionType.Range, value: 42 }
+    const settings: Parameters<
+      NonNullable<GameContextType['updateGameSettings']>
+    >[0] = {
+      randomizeQuestionOrder: true,
+      randomizeAnswerOrder: false,
+    }
+    const rating: Parameters<
+      NonNullable<GameContextType['createOrUpdateGameRating']>
+    >[0] = { stars: 5 }
+
     await expect(context?.completeTask?.()).rejects.toThrow('Missing gameID')
-    expect(mockClient.completeTask).not.toHaveBeenCalled()
+    await expect(context?.submitQuestionAnswer?.(request)).rejects.toThrow(
+      'Missing gameID',
+    )
+    await expect(context?.leaveGame?.('participant-1')).rejects.toThrow(
+      'Missing gameID',
+    )
+    await expect(context?.addCorrectAnswer?.(answer)).rejects.toThrow(
+      'Missing gameID',
+    )
+    await expect(context?.deleteCorrectAnswer?.(answer)).rejects.toThrow(
+      'Missing gameID',
+    )
+    await expect(context?.getPlayers?.()).rejects.toThrow('Missing gameID')
+    await expect(context?.updateGameSettings?.(settings)).rejects.toThrow(
+      'Missing gameID',
+    )
+    await expect(context?.quitGame?.()).rejects.toThrow('Missing gameID')
+    await expect(context?.createOrUpdateGameRating?.(rating)).rejects.toThrow(
+      'Missing gameID',
+    )
+
+    Object.values(mockClient).forEach((mock) => {
+      expect(mock).not.toHaveBeenCalled()
+    })
+    expect(revokeGame).not.toHaveBeenCalled()
+  })
+
+  it('selects the correct fullscreen action from the current active state', async () => {
+    let context: GameContextType | undefined
+    renderProvider((value) => {
+      context = value
+    })
+
+    await waitFor(() => expect(context?.isFullscreenActive).toBe(false))
+    await act(async () => {
+      await context?.toggleFullscreen?.()
+    })
+    expect(fullScreenHandle.enter).toHaveBeenCalledTimes(1)
+    expect(fullScreenHandle.exit).not.toHaveBeenCalled()
+
+    fullScreenHandle.active = true
+    const activeView = renderProvider((value) => {
+      context = value
+    })
+    await waitFor(() => expect(context?.isFullscreenActive).toBe(true))
+
+    await act(async () => {
+      await context?.toggleFullscreen?.()
+    })
+    expect(fullScreenHandle.exit).toHaveBeenCalledTimes(1)
+    activeView.unmount()
   })
 })
 

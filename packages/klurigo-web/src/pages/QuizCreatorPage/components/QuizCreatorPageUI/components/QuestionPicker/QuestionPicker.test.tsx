@@ -10,6 +10,9 @@ type QuestionPickerItemProps = {
   index: number
   canDelete: boolean
   onDelete?: () => void
+  onClick?: () => void
+  onDrop?: (index: number) => void
+  onDuplicate?: () => void
 }
 
 const questionPickerItemMock =
@@ -19,9 +22,17 @@ vi.mock('./components', () => ({
   QuestionPickerItem: (props: QuestionPickerItemProps) => {
     questionPickerItemMock(props)
     return (
-      <button type="button" onClick={props.onDelete}>
-        delete-{props.index}
-      </button>
+      <>
+        <button type="button" onClick={props.onClick}>
+          select-{props.index}
+        </button>
+        <button type="button" onClick={props.onDuplicate}>
+          duplicate-{props.index}
+        </button>
+        <button type="button" onClick={props.onDelete}>
+          delete-{props.index}
+        </button>
+      </>
     )
   },
 }))
@@ -205,5 +216,43 @@ describe('QuestionPicker', () => {
     fireEvent.click(screen.getByRole('button', { name: 'confirm' }))
 
     expect(onDeleteQuestion).not.toHaveBeenCalled()
+  })
+
+  it('handles add, select, duplicate, drop, and closing the delete dialog', () => {
+    const onAddQuestion = vi.fn()
+    const onSelectQuestion = vi.fn()
+    const onDropQuestion = vi.fn()
+    const onDuplicateQuestion = vi.fn()
+    const onDeleteQuestion = vi.fn()
+
+    render(
+      <QuestionPicker
+        questions={[
+          { type: QuestionType.MultiChoice, valid: true },
+          { type: QuestionType.TrueFalse, valid: true },
+        ]}
+        selectedQuestionIndex={1}
+        onAddQuestion={onAddQuestion}
+        onSelectQuestion={onSelectQuestion}
+        onDropQuestion={onDropQuestion}
+        onDuplicateQuestion={onDuplicateQuestion}
+        onDeleteQuestion={onDeleteQuestion}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'select-0' }))
+    fireEvent.click(screen.getByRole('button', { name: 'duplicate-0' }))
+    fireEvent.click(screen.getByRole('button', { name: 'delete-0' }))
+    fireEvent.click(screen.getByRole('button', { name: 'close' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add question' }))
+
+    const firstItem = questionPickerItemMock.mock.calls[0][0]
+    firstItem.onDrop?.(1)
+
+    expect(onSelectQuestion).toHaveBeenCalledWith(0)
+    expect(onDuplicateQuestion).toHaveBeenCalledWith(0)
+    expect(onDeleteQuestion).not.toHaveBeenCalled()
+    expect(onAddQuestion).toHaveBeenCalledTimes(1)
+    expect(onDropQuestion).toHaveBeenCalledWith(1)
   })
 })

@@ -71,6 +71,21 @@ describe('QuestionForm behavior', () => {
         question={{
           type: QuestionType.Range,
           correct: 50,
+          min: 0,
+          max: undefined,
+        }}
+        questionValidation={validation}
+        onChange={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByTestId('field-MARGIN')).toBeEmptyDOMElement()
+
+    rerender(
+      <ClassicRangeQuestionForm
+        question={{
+          type: QuestionType.Range,
+          correct: 50,
           min: undefined,
           max: 100,
         }}
