@@ -270,7 +270,7 @@ export class GameRepository extends BaseRepository<Game> {
    *
    * @throws {GameNotFoundException} If no active or completed game is found with the given ID.
    */
-  @MurLock(5000, 'game', 'gameID')
+  @MurLock(5000, 'gameID')
   public async findAndSaveWithLock(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument>,
@@ -283,7 +283,7 @@ export class GameRepository extends BaseRepository<Game> {
    * from the callback leaves the document untouched, which is useful for
    * idempotent operations that have already completed.
    */
-  @MurLock(5000, 'game', 'gameID')
+  @MurLock(5000, 'gameID')
   public async findAndSaveWithLockIfChanged(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
