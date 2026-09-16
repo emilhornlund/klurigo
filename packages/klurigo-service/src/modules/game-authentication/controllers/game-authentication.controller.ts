@@ -118,8 +118,8 @@ export class GameAuthenticationController {
     if (!authorization) {
       return undefined
     }
-    const [type, token] = authorization.split(' ') ?? []
-    const accessToken = type === 'Bearer' ? token : undefined
+    const bearerHeader = /^Bearer\s+(\S+)$/.exec(authorization)
+    const accessToken = bearerHeader?.[1]
 
     try {
       if (!accessToken) {
@@ -127,14 +127,21 @@ export class GameAuthenticationController {
       }
       const payload = await this.tokenService.verifyToken(accessToken)
       if (payload.scope === TokenScope.User) {
-        if (payload.authorities.includes(Authority.Game)) {
-          return { scope: TokenScope.User, sub: payload.sub }
+        if (
+          !Array.isArray(payload.authorities) ||
+          !payload.authorities.includes(Authority.Game) ||
+          typeof payload.sub !== 'string'
+        ) {
+          throw new UnauthorizedException('Invalid user token')
         }
+        return { scope: TokenScope.User, sub: payload.sub }
       } else if (payload.scope === TokenScope.Game) {
         if (
+          !Array.isArray(payload.authorities) ||
           !payload.authorities.includes(Authority.Game) ||
           typeof payload.gameId !== 'string' ||
-          typeof payload.sub !== 'string'
+          typeof payload.sub !== 'string' ||
+          typeof payload.jti !== 'string'
         ) {
           throw new UnauthorizedException('Invalid game token')
         }
@@ -147,6 +154,8 @@ export class GameAuthenticationController {
           sub: payload.sub,
         }
       }
+
+      throw new UnauthorizedException('Invalid token scope')
     } catch {
       throw new UnauthorizedException('Invalid or expired token')
     }

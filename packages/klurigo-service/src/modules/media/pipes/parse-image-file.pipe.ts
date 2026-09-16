@@ -58,6 +58,10 @@ export class ParseImageFilePipe implements PipeTransform<
    * @returns The filename of the newly processed image.
    */
   async transform(file: Express.Multer.File): Promise<string> {
+    if (!file || typeof file.filename !== 'string' || !file.filename) {
+      throw new UnprocessableEntityException('Unable to process image file')
+    }
+
     const configuredDir = this.configService.get<string>('UPLOAD_DIRECTORY')!
     const baseDir = resolve(configuredDir)
     const safeFilename = basename(file.filename)
@@ -88,7 +92,15 @@ export class ParseImageFilePipe implements PipeTransform<
       await this.resizeImage(originalFilePath, newFilePath)
     } catch (error) {
       if (isNewDirectory) {
-        await rm(newOutputDirectory, { recursive: true, force: true })
+        try {
+          await rm(newOutputDirectory, { recursive: true, force: true })
+        } catch (cleanupError) {
+          const { message, stack } = cleanupError as Error
+          this.logger.warn(
+            `Unable to clean up image output directory: ${message}`,
+            stack,
+          )
+        }
       }
       const { message, stack } = error as Error
       this.logger.log(`Unable to process image file: ${message}`, stack)
@@ -96,7 +108,15 @@ export class ParseImageFilePipe implements PipeTransform<
     } finally {
       const toDelete = resolve(baseDir, safeFilename)
       if (toDelete.startsWith(baseDir + sep)) {
-        await unlink(toDelete)
+        try {
+          await unlink(toDelete)
+        } catch (cleanupError) {
+          const { message, stack } = cleanupError as Error
+          this.logger.warn(
+            `Unable to clean up uploaded image file: ${message}`,
+            stack,
+          )
+        }
       }
     }
 
@@ -112,7 +132,7 @@ export class ParseImageFilePipe implements PipeTransform<
    */
   private validate(file: Express.Multer.File): void {
     if (
-      !('mimetype' in file) ||
+      typeof file?.mimetype !== 'string' ||
       !file.mimetype.match(UPLOAD_IMAGE_MIMETYPE_REGEX)
     ) {
       this.logger.warn(`Invalid file type: ${file.mimetype}`)
@@ -120,7 +140,8 @@ export class ParseImageFilePipe implements PipeTransform<
     }
 
     if (
-      !('size' in file) ||
+      typeof file?.size !== 'number' ||
+      !Number.isFinite(file.size) ||
       file.size < UPLOAD_IMAGE_MIN_FILE_SIZE ||
       file.size > UPLOAD_IMAGE_MAX_FILE_SIZE
     ) {
@@ -143,12 +164,13 @@ export class ParseImageFilePipe implements PipeTransform<
   ): Promise<void> {
     const image = sharp(inputFilePath)
 
-    const metadata = await image.metadata()
+    await image.metadata()
 
     await image
       .resize({
-        width: metadata.width > metadata.height ? 800 : undefined,
-        height: metadata.height > metadata.width ? 800 : undefined,
+        width: 800,
+        height: 800,
+        fit: 'inside',
         withoutEnlargement: true,
       })
       .webp({ quality: 75 })
