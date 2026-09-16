@@ -53,11 +53,13 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
 
   const handleClickDuplicate = (event: MouseEvent) => {
     event.preventDefault()
+    event.stopPropagation()
     onDuplicate?.()
   }
 
   const handleClickDelete = (event: MouseEvent) => {
     event.preventDefault()
+    event.stopPropagation()
     onDelete?.()
   }
 
@@ -70,6 +72,7 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
       onDragOver={handleDragQuestionPickerItem}
       onDrop={handleDropQuestionPickerItem}>
       <button
+        type="button"
         className={classNames(
           styles.questionPickerItemButton,
           active ? styles.questionPickerItemActive : undefined,
@@ -94,6 +97,8 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
         <div className={styles.questionPickerItemOverlayBottom}>
           {active && (
             <button
+              type="button"
+              aria-label="Duplicate question"
               className={styles.cloneButton}
               onClick={handleClickDuplicate}>
               <FontAwesomeIcon icon={faCopy} />
@@ -106,7 +111,9 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
           )}
           {active && (
             <button
+              type="button"
               disabled={!canDelete}
+              aria-label="Delete question"
               className={styles.deleteButton}
               onClick={handleClickDelete}>
               <FontAwesomeIcon icon={faTrash} />

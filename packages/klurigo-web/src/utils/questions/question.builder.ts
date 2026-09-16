@@ -400,7 +400,9 @@ export function buildPartialZeroToOneHundredRangeQuestionDto(
   if (!fromDto) return dto
 
   if (fromDto.type === QuestionType.Range) {
-    copyClassicCommonBase(dto, fromDto as Partial<ClassicCommonBase>)
+    dto.question = fromDto.question
+    dto.duration = fromDto.duration
+    dto.info = fromDto.info
     dto.media = (fromDto as Partial<QuestionCommonDto>).media
   }
 

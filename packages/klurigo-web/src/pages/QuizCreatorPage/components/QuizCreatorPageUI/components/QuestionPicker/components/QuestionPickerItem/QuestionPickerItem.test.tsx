@@ -59,4 +59,77 @@ describe('QuestionPickerItem', () => {
 
     expect(onDuplicate).toHaveBeenCalledTimes(1)
   })
+
+  it('does not select the question when an action button is clicked', () => {
+    const onClick = vi.fn()
+    const onDelete = vi.fn()
+    const { getByRole } = renderQuestionPickerItem({ onClick, onDelete })
+
+    fireEvent.click(getByRole('button', { name: 'Delete question' }))
+
+    expect(onDelete).toHaveBeenCalledTimes(1)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('does not select the question when it is duplicated', () => {
+    const onClick = vi.fn()
+    const onDuplicate = vi.fn()
+    const { getByRole } = renderQuestionPickerItem({ onClick, onDuplicate })
+
+    fireEvent.click(getByRole('button', { name: 'Duplicate question' }))
+
+    expect(onDuplicate).toHaveBeenCalledTimes(1)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('forwards valid drops and ignores malformed item IDs', () => {
+    const onDrop = vi.fn()
+    const { container, rerender } = renderQuestionPickerItem({ onDrop })
+    const wrapper = container.querySelector('.questionPickerItemWrapper')
+
+    expect(wrapper).toBeTruthy()
+    fireEvent.dragOver(wrapper!)
+    fireEvent.drop(wrapper!)
+    expect(onDrop).toHaveBeenCalledWith(0)
+
+    rerender(
+      <QuestionPickerItem
+        index={0}
+        text="Question"
+        type={QuestionType.MultiChoice}
+        active
+        valid
+        canDelete
+        onDrop={onDrop}
+      />,
+    )
+    const malformedWrapper = container.querySelector(
+      '.questionPickerItemWrapper',
+    )
+    Object.defineProperty(malformedWrapper, 'id', {
+      configurable: true,
+      value: 'not-a-question-picker-item',
+    })
+    fireEvent.drop(malformedWrapper!)
+    expect(onDrop).toHaveBeenCalledTimes(1)
+  })
+
+  it('provides accessible names for active actions and displays the item details', () => {
+    const { container, getByRole, getByText } = renderQuestionPickerItem({
+      index: 2,
+      text: 'Question text',
+      active: true,
+      valid: false,
+    })
+
+    expect(getByText('Question text')).toBeInTheDocument()
+    expect(getByText('Multi Choice')).toBeInTheDocument()
+    expect(getByText('3')).toBeInTheDocument()
+    expect(getByRole('button', { name: 'Duplicate question' })).toBeVisible()
+    expect(getByRole('button', { name: 'Delete question' })).toBeVisible()
+    expect(container.querySelector('#question-picker-item-2')).toHaveAttribute(
+      'draggable',
+      'true',
+    )
+  })
 })

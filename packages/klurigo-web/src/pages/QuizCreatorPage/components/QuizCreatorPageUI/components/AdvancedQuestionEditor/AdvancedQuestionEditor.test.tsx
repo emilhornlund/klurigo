@@ -470,7 +470,7 @@ describe('AdvancedQuestionEditor', () => {
     expect(parseQuestionsJson).not.toHaveBeenCalled()
   })
 
-  it('IMPORTANT: validations-only rerender does not update jsonError when questions JSON is unchanged', () => {
+  it('updates jsonError when validations change without changing questions JSON', () => {
     const onChange = vi.fn()
 
     const questions = makeClassicQuestions()
@@ -510,8 +510,50 @@ describe('AdvancedQuestionEditor', () => {
       )
     })
 
-    // Because the component guards on questions JSON change, it will not recompute error here.
     expect(parseQuestionsJson).not.toHaveBeenCalled()
-    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(true)
+    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(
+      'questions[1].question: Required',
+    )
+  })
+
+  it('keeps a local JSON parse error when validations rerender', () => {
+    const onChange = vi.fn()
+    const questions = makeClassicQuestions()
+
+    const view = render(
+      <AdvancedQuestionEditor
+        gameMode={GameMode.Classic}
+        questions={questions}
+        questionValidations={[
+          validQuestionValidation(),
+          validQuestionValidation(),
+        ]}
+        onChange={onChange}
+      />,
+    )
+
+    act(() => {
+      lastTextareaProps?.onChange('{ invalid json')
+    })
+
+    const localError = lastTextareaProps?.onAdditionalValidation?.()
+    expect(localError).toMatchObject(expect.any(String))
+
+    act(() => {
+      view.rerender(
+        <AdvancedQuestionEditor
+          gameMode={GameMode.Classic}
+          questions={questions}
+          questionValidations={[
+            validQuestionValidation(),
+            invalidQuestionValidation([ve('question', 'Required')]),
+          ]}
+          onChange={onChange}
+        />,
+      )
+    })
+
+    expect(lastTextareaProps?.onAdditionalValidation?.()).toBe(localError)
+    expect(onChange).not.toHaveBeenCalled()
   })
 })
