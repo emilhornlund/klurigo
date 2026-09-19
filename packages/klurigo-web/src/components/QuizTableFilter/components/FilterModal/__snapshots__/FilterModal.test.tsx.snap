@@ -1353,7 +1353,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
             class="row buttonGroup"
           >
             <div
-              class="buttonInputContainer buttonInputKindSecondary"
+              class="buttonContainer variantOutline surfaceLight intentDefault"
             >
               <button
                 data-testid="test-close-button-button"
@@ -1367,7 +1367,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-apply-button-button"

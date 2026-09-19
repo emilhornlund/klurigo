@@ -136,7 +136,8 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
               <Button
                 id="clear-filter-button"
                 type="button"
-                kind="secondary"
+                variant="outline"
+                surface="light"
                 icon={faXmark}
                 onClick={onClearFilter}>
                 Back to discovery

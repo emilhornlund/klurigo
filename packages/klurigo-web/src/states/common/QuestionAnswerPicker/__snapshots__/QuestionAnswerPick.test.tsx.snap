@@ -76,7 +76,7 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
           class="buttonWrapper"
         >
           <div
-            class="buttonInputContainer buttonInputKindCallToAction"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-submit-button-button"
@@ -230,7 +230,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
         class="buttonWrapper"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-submit-button-button"
@@ -301,7 +301,7 @@ exports[`QuestionAnswerPicker > renders Range and forwards numeric value from sl
             </div>
           </div>
           <div
-            class="buttonInputContainer buttonInputKindCallToAction"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-submit-button-button"
@@ -366,7 +366,7 @@ exports[`QuestionAnswerPicker > renders TypeAnswer and forwards typed value on s
             </div>
           </div>
           <div
-            class="buttonInputContainer buttonInputKindCallToAction"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-submit-button-button"

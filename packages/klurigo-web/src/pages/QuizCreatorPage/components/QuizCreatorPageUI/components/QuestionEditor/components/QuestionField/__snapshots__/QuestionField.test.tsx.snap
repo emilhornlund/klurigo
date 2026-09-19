@@ -34,7 +34,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -61,7 +61,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -252,7 +252,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -279,7 +279,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -306,7 +306,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"
@@ -1732,7 +1732,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1759,7 +1759,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -1835,7 +1835,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1862,7 +1862,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -1889,7 +1889,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"
@@ -1965,7 +1965,7 @@ exports[`QuestionField > renders an image media question field with square effec
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1992,7 +1992,7 @@ exports[`QuestionField > renders an image media question field with square effec
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -2019,7 +2019,7 @@ exports[`QuestionField > renders an image media question field with square effec
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"

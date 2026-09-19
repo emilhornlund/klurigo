@@ -61,7 +61,8 @@ const PexelsImageProvider: FC<PexelsImageProviderProps> = ({ onChange }) => {
         <Button
           id="image-search-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           icon={faMagnifyingGlass}
           loading={isLoadingSearch}
           disabled={!searchTerm.trim().length}

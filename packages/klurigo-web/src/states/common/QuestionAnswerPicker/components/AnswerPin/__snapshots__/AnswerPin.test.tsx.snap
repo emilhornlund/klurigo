@@ -29,7 +29,7 @@ exports[`AnswerPin > renders interactive mode 1`] = `
         class="buttonWrapper"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-submit-button-button"

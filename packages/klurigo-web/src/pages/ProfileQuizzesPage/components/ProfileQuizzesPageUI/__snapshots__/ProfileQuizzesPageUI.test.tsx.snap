@@ -53,7 +53,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
             All your quiz creations, lined up and ready for their next moment in the spotlight.
           </p>
           <div
-            class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+            class="buttonContainer variantPrimary surfaceBrand intentAccent"
           >
             <button
               data-testid="test-create-quiz-button-button"
@@ -108,7 +108,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                 class="column"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault"
                 >
                   <button
                     data-testid="test-search-button-button"
@@ -136,7 +136,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                 class="column"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault"
                 >
                   <button
                     data-testid="test-filter-button-button"
@@ -575,7 +575,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
             class="loadMoreContainer"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-load-more-quizzes-button-button"

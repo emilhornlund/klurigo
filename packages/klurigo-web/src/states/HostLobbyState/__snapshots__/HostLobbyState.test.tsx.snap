@@ -26,7 +26,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-share-button-button"
@@ -53,7 +53,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-game-settings-button-button"
@@ -80,7 +80,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-start-game-button-button"
@@ -288,7 +288,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-share-button-button"
@@ -315,7 +315,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-game-settings-button-button"
@@ -342,7 +342,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-start-game-button-button"
@@ -514,7 +514,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
           class="actions"
         >
           <div
-            class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+            class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
           >
             <button
               data-testid="test-confirm-button-button"
@@ -528,7 +528,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
             </button>
           </div>
           <div
-            class="buttonInputContainer buttonInputKindSecondary buttonInputSizeSmall"
+            class="buttonContainer variantOutline surfaceLight intentDefault sizeSmall"
           >
             <button
               data-testid="test-close-button-button"
@@ -581,7 +581,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-share-button-button"
@@ -608,7 +608,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-game-settings-button-button"
@@ -635,7 +635,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-start-game-button-button"
@@ -841,7 +841,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-share-button-button"
@@ -868,7 +868,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-game-settings-button-button"
@@ -895,7 +895,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-start-game-button-button"
@@ -1285,7 +1285,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-share-button-button"
@@ -1312,7 +1312,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
             data-testid="test-game-settings-button-button"
@@ -1339,7 +1339,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
           </button>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-start-game-button-button"

@@ -39,7 +39,8 @@ const HostPodiumState: FC<HostPodiumStateProps> = ({
         <IconButtonArrowLeft
           id="home-button"
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="small"
           onClick={handleBackToHome}>
           Back to Home
@@ -56,6 +57,8 @@ const HostPodiumState: FC<HostPodiumStateProps> = ({
       <IconButtonArrowRight
         id="game-results-button"
         type="button"
+        variant="primary"
+        surface="brand"
         onClick={handleViewFullResults}>
         View Full Results
       </IconButtonArrowRight>

@@ -26,7 +26,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -215,7 +215,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -272,7 +272,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -588,7 +588,7 @@ exports[`HostResultState > should render HostResultState with question type mult
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -645,7 +645,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -1049,7 +1049,7 @@ exports[`HostResultState > should render HostResultState with question type mult
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1106,7 +1106,7 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -1334,7 +1334,7 @@ exports[`HostResultState > should render HostResultState with question type mult
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1391,7 +1391,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -1540,7 +1540,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1597,7 +1597,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -1945,7 +1945,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2002,7 +2002,7 @@ exports[`HostResultState > should render HostResultState with question type rang
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -2521,7 +2521,7 @@ exports[`HostResultState > should render HostResultState with question type rang
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2578,7 +2578,7 @@ exports[`HostResultState > should render HostResultState with question type true
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -2789,7 +2789,7 @@ exports[`HostResultState > should render HostResultState with question type true
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2846,7 +2846,7 @@ exports[`HostResultState > should render HostResultState with question type type
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-next-button-button"
@@ -3162,7 +3162,7 @@ exports[`HostResultState > should render HostResultState with question type type
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"

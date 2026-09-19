@@ -1,6 +1,6 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useMemo } from 'react'
+import { type FC, type ReactNode, useMemo } from 'react'
 
 import { DeviceType } from '../../utils/device-size.types'
 import { classNames } from '../../utils/helpers'
@@ -12,15 +12,11 @@ export interface ButtonProps {
   id: string
   name?: string
   type: 'submit' | 'reset' | 'button'
-  kind?:
-    | 'primary'
-    | 'secondary'
-    | 'call-to-action'
-    | 'success'
-    | 'destructive'
-    | 'plain'
+  variant?: 'primary' | 'outline' | 'plain'
+  surface?: 'brand' | 'light'
+  intent?: 'default' | 'accent' | 'danger' | 'success'
   size?: 'normal' | 'small'
-  value?: React.ReactNode | string | undefined
+  value?: ReactNode | string | undefined
   hideValue?: 'mobile' | 'never'
   disabled?: boolean
   loading?: boolean
@@ -28,14 +24,16 @@ export interface ButtonProps {
   iconPosition?: 'leading' | 'trailing'
   iconColor?: string
   onClick?: () => void
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   id,
   name,
   type,
-  kind = 'primary',
+  variant = 'primary',
+  surface = 'brand',
+  intent = 'default',
   size = 'normal',
   value,
   hideValue = 'never',
@@ -53,6 +51,7 @@ const Button: React.FC<ButtonProps> = ({
     if (hideValue === 'mobile' && deviceType === DeviceType.Mobile) {
       return false
     }
+
     return !!value || !!children
   }, [value, children, deviceType, hideValue])
 
@@ -64,16 +63,17 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <div
       className={classNames(
-        styles.buttonInputContainer,
-        kind === 'primary' ? styles.buttonInputKindPrimary : undefined,
-        kind === 'secondary' ? styles.buttonInputKindSecondary : undefined,
-        kind === 'call-to-action'
-          ? styles.buttonInputKindCallToAction
-          : undefined,
-        kind === 'success' ? styles.buttonInputKindSuccess : undefined,
-        kind === 'destructive' ? styles.buttonInputKindDestructive : undefined,
-        kind === 'plain' ? styles.buttonInputKindPlain : undefined,
-        deviceSize === 'small' ? styles.buttonInputSizeSmall : undefined,
+        styles.buttonContainer,
+        variant === 'primary' ? styles.variantPrimary : undefined,
+        variant === 'outline' ? styles.variantOutline : undefined,
+        variant === 'plain' ? styles.variantPlain : undefined,
+        surface === 'brand' ? styles.surfaceBrand : undefined,
+        surface === 'light' ? styles.surfaceLight : undefined,
+        intent === 'default' ? styles.intentDefault : undefined,
+        intent === 'accent' ? styles.intentAccent : undefined,
+        intent === 'danger' ? styles.intentDanger : undefined,
+        intent === 'success' ? styles.intentSuccess : undefined,
+        deviceSize === 'small' ? styles.sizeSmall : undefined,
       )}>
       <button
         id={id}
@@ -93,7 +93,9 @@ const Button: React.FC<ButtonProps> = ({
             {icon && iconPosition === 'leading' && (
               <FontAwesomeIcon icon={icon} color={iconColor} />
             )}
+
             {showValue && <span>{children || value}</span>}
+
             {icon && iconPosition === 'trailing' && (
               <FontAwesomeIcon icon={icon} color={iconColor} />
             )}

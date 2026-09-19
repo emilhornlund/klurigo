@@ -178,7 +178,8 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
         <IconButtonArrowRight
           id="join"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           value="Let's go!"
           loading={loading}
           disabled={!isFormValid || loading}

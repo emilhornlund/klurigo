@@ -1,28 +1,33 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Button > should receive onClick event when button is clicked 1`] = `
+exports[`Button > loading > should render the small loading state when size is small 1`] = `
 <div>
   <div
-    class="buttonInputContainer buttonInputKindPrimary"
+    class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
   >
     <button
       data-testid="test-my-button-button"
+      disabled=""
       id="my-button"
       name="my-button"
       type="button"
     >
-      <span>
-        My Button
-      </span>
+      <div
+        class="loadingSpinner"
+      >
+        <div />
+        <div />
+        <div />
+      </div>
     </button>
   </div>
 </div>
 `;
 
-exports[`Button > should render a Button with default props 1`] = `
+exports[`Button > rendering > should render with the default variant, surface, intent and size 1`] = `
 <div>
   <div
-    class="buttonInputContainer buttonInputKindPrimary"
+    class="buttonContainer variantPrimary surfaceBrand intentDefault"
   >
     <button
       data-testid="test-my-button-button"

@@ -26,7 +26,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -213,7 +213,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -270,7 +270,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -436,7 +436,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -493,7 +493,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -695,7 +695,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -752,7 +752,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -954,7 +954,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1011,7 +1011,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -1240,7 +1240,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1297,7 +1297,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -1546,7 +1546,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1603,7 +1603,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -1812,7 +1812,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1869,7 +1869,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -2057,7 +2057,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2114,7 +2114,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -2301,7 +2301,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2358,7 +2358,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-skip-button-button"
@@ -2546,7 +2546,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"

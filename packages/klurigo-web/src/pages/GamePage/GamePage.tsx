@@ -374,14 +374,16 @@ const GamePage: FC = () => {
             <Button
               id="cancel-button"
               type="button"
-              kind="secondary"
+              variant="outline"
+              surface="light"
               value="Cancel"
               onClick={() => blocker.reset()}
             />
             <Button
               id="proceed-button"
               type="button"
-              kind="destructive"
+              variant="primary"
+              intent="danger"
               value="Proceed"
               onClick={handleLeaveGame}
             />

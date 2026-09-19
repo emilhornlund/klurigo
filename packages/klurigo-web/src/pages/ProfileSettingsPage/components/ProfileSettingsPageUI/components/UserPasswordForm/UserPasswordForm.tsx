@@ -149,7 +149,8 @@ const UserPasswordForm: FC<UserPasswordFormProps> = ({ loading, onChange }) => {
         <Button
           id="update-password-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="normal"
           value="Lock It Down!"
           icon={faLock}

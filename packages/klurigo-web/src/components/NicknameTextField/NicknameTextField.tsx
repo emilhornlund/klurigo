@@ -50,7 +50,8 @@ const NicknameTextField: FC<NicknameTextFieldProps> = ({
       <Button
         id="shuffle-nickname-button"
         type="button"
-        kind="primary"
+        variant="primary"
+        surface="brand"
         disabled={disabled}
         icon={faRefresh}
         onClick={handleRefreshNicknameClick}

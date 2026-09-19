@@ -26,8 +26,9 @@ $shadow-overlay: $shadow-surface-rest;
    Controls / focus
    ========================================================================== */
 
-$shadow-control-hover: 0 4px 12px colors.$color-shadow-control;
-$shadow-control-active: 0 2px 4px colors.$color-shadow-control;
+$shadow-control-rest: 0 4px 10px colors.$color-shadow-active;
+$shadow-control-hover: 0 4px 12px colors.$color-shadow-hover;
+$shadow-control-active: 0 2px 4px colors.$color-shadow-active;
 
 $shadow-focus-control-default: 0 0 0 3px
   colors.$color-focus-control-default-ring;

@@ -165,7 +165,8 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
         <Button
           id="reset-password-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="normal"
           value="Lock It Down!"
           icon={faLock}

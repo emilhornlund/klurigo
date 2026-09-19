@@ -165,7 +165,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
             class="menuButtonWrapper"
           >
             <div
-              class="buttonInputContainer buttonInputKindPlain"
+              class="buttonContainer variantPlain surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-settings-button-button"

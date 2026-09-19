@@ -70,7 +70,8 @@ const Modal: FC<ModalProps> = ({
               <Button
                 id="close-modal-button"
                 type="button"
-                kind="plain"
+                variant="plain"
+                surface="brand"
                 icon={faXmark}
                 iconColor="gray"
                 onClick={onClose}

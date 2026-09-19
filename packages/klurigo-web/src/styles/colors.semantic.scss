@@ -66,6 +66,7 @@ $color-surface-success: palette.$green-600;
 $color-surface-success-soft: palette.$green-500;
 $color-surface-success-subtle: palette.alpha($color-surface-success, 0.15);
 $color-surface-danger: palette.$red-600;
+$color-surface-danger-subtle: palette.alpha($color-surface-danger, 0.15);
 $color-surface-danger-soft: palette.$red-500;
 $color-surface-danger-strong: palette.$red-700;
 $color-surface-warning: palette.$orange-500;
@@ -74,6 +75,7 @@ $color-surface-info: palette.$turquoise-400;
 $color-surface-info-soft: palette.$turquoise-300;
 $color-surface-accent: $color-action-accent;
 $color-surface-accent-hover: $color-action-accent-hover;
+$color-surface-accent-subtle: palette.$yellow-50;
 
 /* Control surfaces */
 $color-surface-control-default: palette.$white;
@@ -97,6 +99,7 @@ $color-text-control-subtle: palette.$gray-300;
 $color-text-control-inverse-subtle: palette.$gray-100;
 $color-text-control-success: $color-surface-success;
 $color-text-control-danger: $color-surface-danger;
+$color-text-control-accent: palette.$yellow-900;
 $color-text-control-plain-hover: palette.$gray-200;
 
 /* Borders */

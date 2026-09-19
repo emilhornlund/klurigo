@@ -142,7 +142,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -167,7 +167,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -341,7 +341,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -366,7 +366,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -468,7 +468,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-password-button-button"
@@ -645,7 +645,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -670,7 +670,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -843,7 +843,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -868,7 +868,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -969,7 +969,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-password-button-button"
@@ -1166,7 +1166,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -1191,7 +1191,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -1384,7 +1384,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -1409,7 +1409,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-user-button-button"
@@ -1510,7 +1510,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-update-password-button-button"

@@ -154,7 +154,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -179,7 +179,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -380,7 +380,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -406,7 +406,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"

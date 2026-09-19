@@ -48,7 +48,7 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-submit-button-button"
@@ -145,7 +145,7 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with submi
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-submit-button-button"
@@ -208,7 +208,7 @@ exports[`AnswerInput > Basic Rendering > renders with submitted answer 1`] = `
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-submit-button-button"

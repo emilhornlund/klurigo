@@ -73,7 +73,8 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
           <IconButtonArrowLeft
             id="leave-game-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             size="small"
             value="Leave"
             loading={isLeavingGame}

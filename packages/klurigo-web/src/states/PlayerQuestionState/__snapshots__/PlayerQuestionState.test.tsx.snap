@@ -542,7 +542,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       </div>
                     </div>
                     <div
-                      class="buttonInputContainer buttonInputKindCallToAction"
+                      class="buttonContainer variantPrimary surfaceBrand intentDefault"
                     >
                       <button
                         data-testid="test-submit-button-button"
@@ -863,7 +863,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       </div>
                     </div>
                     <div
-                      class="buttonInputContainer buttonInputKindCallToAction"
+                      class="buttonContainer variantPrimary surfaceBrand intentDefault"
                     >
                       <button
                         data-testid="test-submit-button-button"

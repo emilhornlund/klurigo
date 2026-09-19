@@ -91,7 +91,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
     <Page
       height="full"
       header={
-        <div className={styles.quizCreatorPageHeader}>
+        <>
           {deviceType !== DeviceType.Mobile && (
             <TextField
               id="quiz-title-textfield"
@@ -116,7 +116,8 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             id="settings-button"
             type="button"
             size="small"
-            kind="primary"
+            variant="primary"
+            surface="brand"
             value="Settings"
             hideValue="mobile"
             icon={faGear}
@@ -126,7 +127,8 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             id="save-button"
             type="button"
             size="small"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             value="Save"
             hideValue="mobile"
             icon={faFloppyDisk}
@@ -138,13 +140,14 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             id="exit-button"
             type="button"
             size="small"
-            kind="primary"
+            variant="primary"
+            surface="brand"
             value="Exit"
             hideValue="mobile"
             icon={faArrowRightFromBracket}
             onClick={onExit}
           />
-        </div>
+        </>
       }
       disableContentFadeAnimation>
       <div className={styles.quizCreatorPage}>

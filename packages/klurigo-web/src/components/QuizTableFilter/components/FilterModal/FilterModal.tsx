@@ -215,14 +215,16 @@ const FilterModal: FC<FilterModalProps> = ({
           <Button
             id="close-button"
             type="button"
-            kind="secondary"
+            variant="outline"
+            surface="light"
             value="Close"
             onClick={onClose}
           />
           <Button
             id="apply-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             value="Apply"
             onClick={handleApplyFilter}
           />

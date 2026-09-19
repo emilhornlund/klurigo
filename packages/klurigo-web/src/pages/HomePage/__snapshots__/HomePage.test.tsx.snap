@@ -144,7 +144,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -290,7 +290,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
