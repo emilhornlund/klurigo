@@ -7,6 +7,9 @@
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
+@use '../../styles/colors.palette' as palette;
+@use '../../styles/controls.tokens' as controls;
+@use '../../styles/shadows.tokens' as shadows;
 
 @mixin iconSize() {
   @include helpers.mobile {
@@ -54,15 +57,15 @@
     width: 100%;
 
     @include helpers.mobile {
-      padding: spacing.$space-compact-mobile;
+      padding: spacing.$space-compact-mobile spacing.$space-page-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
     @include helpers.tablet {
-      padding: spacing.$space-compact-tablet;
+      padding: spacing.$space-compact-tablet spacing.$space-page-tablet;
       column-gap: spacing.$space-compact-tablet;
     }
     @include helpers.desktop {
-      padding: spacing.$space-compact-desktop;
+      padding: spacing.$space-compact-desktop spacing.$space-page-desktop;
       column-gap: spacing.$space-compact-desktop;
     }
 
@@ -233,6 +236,10 @@
     overflow-y: auto;
     width: 100%;
 
+    &.fullBleed {
+      background: palette.$blue-50;
+    }
+
     .contentWrapper {
       display: block;
 
@@ -318,8 +325,12 @@
           width: breakpoints.$breakpoint-tablet;
         }
 
-        &.fullWidth {
+        &.largeWidth {
           width: breakpoints.$breakpoint-tablet;
+        }
+
+        &.fullWidth {
+          width: 100%;
         }
 
         > .contentInner {
@@ -340,8 +351,12 @@
           width: breakpoints.$breakpoint-tablet;
         }
 
-        &.fullWidth {
+        &.largeWidth {
           width: breakpoints.$breakpoint-desktop;
+        }
+
+        &.fullWidth {
+          width: 100%;
         }
 
         > .contentInner {
@@ -360,14 +375,14 @@
     color: colors.$color-text-inverse;
 
     @include helpers.mobile() {
-      padding: 0 spacing.$space-compact-mobile spacing.$space-compact-mobile
-        spacing.$space-compact-mobile;
+      padding: 0 spacing.$space-page-mobile spacing.$space-compact-mobile
+        spacing.$space-page-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      padding: 0 spacing.$space-compact-tablet spacing.$space-compact-tablet
-        spacing.$space-compact-tablet;
+      padding: 0 spacing.$space-page-tablet spacing.$space-compact-tablet
+        spacing.$space-page-tablet;
       column-gap: spacing.$space-compact-tablet;
 
       &:not(&.fullWidth) {
@@ -376,13 +391,17 @@
     }
 
     @include helpers.desktop {
-      padding: 0 spacing.$space-compact-desktop spacing.$space-compact-desktop
-        spacing.$space-compact-desktop;
+      padding: 0 spacing.$space-page-desktop spacing.$space-compact-desktop
+        spacing.$space-page-desktop;
       column-gap: spacing.$space-compact-desktop;
 
       &:not(&.fullWidth) {
         width: breakpoints.$breakpoint-desktop;
       }
+    }
+
+    &.fullBleed {
+      background: palette.$blue-50;
     }
 
     a {

@@ -1,0 +1,18 @@
+@use '../../../../styles/colors.palette' as palette;
+
+.quizCreatorPageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+}
+
+.quizCreatorPageFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  background: palette.$white;
+}

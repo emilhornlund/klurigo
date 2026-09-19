@@ -27,8 +27,11 @@ import { Menu, MenuItem, MenuSeparator } from '../Menu'
 
 import styles from './Page.module.scss'
 
+export type PageLayout = 'contained' | 'fullBleed'
+
 export interface PageProps {
-  width?: 'small' | 'medium' | 'full'
+  layout?: PageLayout
+  width?: 'small' | 'medium' | 'large' | 'full'
   height?: 'normal' | 'full'
   align?: 'start' | 'center' | 'space-between'
   noPadding?: boolean
@@ -42,7 +45,8 @@ export interface PageProps {
 }
 
 const Page: FC<PageProps> = ({
-  width = 'full',
+  layout = 'contained',
+  width = 'large',
   height = 'normal',
   align = 'center',
   noPadding = false,
@@ -103,7 +107,16 @@ const Page: FC<PageProps> = ({
 
   return (
     <div className={styles.main}>
-      <div className={classNames(styles.header)}>
+      <div
+        className={classNames(
+          styles.header,
+          width === 'small' ? styles.smallWidth : undefined,
+          width === 'medium' ? styles.mediumWidth : undefined,
+          width === 'large' ? styles.largeWidth : undefined,
+          width === 'full' || layout === 'fullBleed'
+            ? styles.fullWidth
+            : undefined,
+        )}>
         <button className={styles.logo} onClick={() => navigate('/')}>
           <img className={styles.icon} src={KlurigoIcon} alt="Klurigo" />
           <span className={styles.text}>Klurigo</span>
@@ -164,6 +177,7 @@ const Page: FC<PageProps> = ({
       <div
         className={classNames(
           styles.content,
+          layout === 'fullBleed' ? styles.fullBleed : undefined,
           height === 'full' ? styles.fullHeight : undefined,
           align === 'start' ? styles.startAlign : undefined,
           align === 'center' ? styles.centerAlign : undefined,
@@ -175,6 +189,7 @@ const Page: FC<PageProps> = ({
             styles.contentWrapper,
             width === 'small' ? styles.smallWidth : undefined,
             width === 'medium' ? styles.mediumWidth : undefined,
+            width === 'large' ? styles.largeWidth : undefined,
             width === 'full' ? styles.fullWidth : undefined,
           )}>
           <div
@@ -186,7 +201,19 @@ const Page: FC<PageProps> = ({
           </div>
         </div>
       </div>
-      {footer && <div className={classNames(styles.footer)}>{footer}</div>}
+      {footer && (
+        <div
+          className={classNames(
+            styles.footer,
+            layout === 'fullBleed' ? styles.fullBleed : undefined,
+            width === 'small' ? styles.smallWidth : undefined,
+            width === 'medium' ? styles.mediumWidth : undefined,
+            width === 'large' ? styles.largeWidth : undefined,
+            width === 'full' ? styles.fullWidth : undefined,
+          )}>
+          {footer}
+        </div>
+      )}
     </div>
   )
 }

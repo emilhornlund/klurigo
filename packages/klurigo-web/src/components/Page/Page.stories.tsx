@@ -32,3 +32,25 @@ export const Default = {
     children: <div>Content</div>,
   },
 } satisfies Story
+
+export const FullBleed = {
+  name: 'Full Bleed',
+  args: {
+    layout: 'fullBleed',
+    height: 'full',
+    width: 'full',
+    header: (
+      <>
+        <a>About</a>
+        <a>GitHub</a>
+      </>
+    ),
+    footer: (
+      <>
+        <a>Some link</a>
+      </>
+    ),
+    profile: true,
+    children: <div>Content</div>,
+  },
+} satisfies Story
