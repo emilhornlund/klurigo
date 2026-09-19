@@ -386,7 +386,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -462,7 +462,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -520,7 +520,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -578,7 +578,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -636,7 +636,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -694,7 +694,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -941,7 +941,7 @@ exports[`QuestionField > renders a question text question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -995,7 +995,7 @@ exports[`QuestionField > renders a range correct question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1139,7 +1139,7 @@ exports[`QuestionField > renders a range max question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1193,7 +1193,7 @@ exports[`QuestionField > renders a range min question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1317,7 +1317,7 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1370,7 +1370,7 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1524,7 +1524,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1549,7 +1549,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1574,7 +1574,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1599,7 +1599,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"

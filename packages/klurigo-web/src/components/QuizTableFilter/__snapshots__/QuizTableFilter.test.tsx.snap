@@ -13,7 +13,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary"
+            class="textFieldInputContainer surfaceBrand"
           >
             <input
               class="textfield"

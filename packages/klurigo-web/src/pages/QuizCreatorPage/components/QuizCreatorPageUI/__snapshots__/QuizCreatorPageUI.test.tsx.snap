@@ -35,7 +35,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindSecondary small"
+            class="textFieldInputContainer surfaceLight sizeSmall"
           >
             <input
               class="textfield"
@@ -470,7 +470,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary"
+                        class="textFieldInputContainer surfaceBrand"
                       >
                         <input
                           class="textfield"
@@ -662,7 +662,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -738,7 +738,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -796,7 +796,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -854,7 +854,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -912,7 +912,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -970,7 +970,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             class="inputContainer"
                           >
                             <div
-                              class="textFieldInputContainer textFieldInputKindPrimary"
+                              class="textFieldInputContainer surfaceBrand"
                             >
                               <input
                                 class="textfield"
@@ -1264,7 +1264,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary"
+                        class="textFieldInputContainer surfaceBrand"
                       >
                         <input
                           class="textfield"
@@ -1362,7 +1362,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindSecondary small"
+            class="textFieldInputContainer surfaceLight sizeSmall"
           >
             <input
               class="textfield"
@@ -1552,7 +1552,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindSecondary small"
+            class="textFieldInputContainer surfaceLight sizeSmall"
           >
             <input
               class="textfield"
@@ -1742,7 +1742,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindSecondary small"
+            class="textFieldInputContainer surfaceLight sizeSmall"
           >
             <input
               class="textfield"
@@ -1934,7 +1934,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindSecondary small"
+            class="textFieldInputContainer surfaceLight sizeSmall"
           >
             <input
               class="textfield"

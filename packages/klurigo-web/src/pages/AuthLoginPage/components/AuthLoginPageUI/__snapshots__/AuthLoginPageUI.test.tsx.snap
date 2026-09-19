@@ -59,7 +59,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -78,7 +78,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -235,7 +235,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -254,7 +254,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -412,7 +412,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -431,7 +431,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -589,7 +589,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -608,7 +608,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -766,7 +766,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -786,7 +786,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"

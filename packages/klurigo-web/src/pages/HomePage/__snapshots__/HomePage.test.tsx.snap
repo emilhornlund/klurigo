@@ -128,7 +128,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -274,7 +274,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"

@@ -68,7 +68,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           <TextField
             id="quiz-title-textfield"
             type="text"
-            kind="secondary"
+            surface="light"
             placeholder="Title"
             value={title}
             customErrorMessage={getValidationErrorMessage(validation, 'title')}

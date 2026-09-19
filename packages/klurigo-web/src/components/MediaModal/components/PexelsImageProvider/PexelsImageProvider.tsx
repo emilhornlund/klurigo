@@ -52,7 +52,7 @@ const PexelsImageProvider: FC<PexelsImageProviderProps> = ({ onChange }) => {
           <TextField
             id="image-search-textfield"
             type="text"
-            kind="secondary"
+            surface="light"
             value={searchTerm}
             placeholder="Search"
             onChange={(value) => setSearchTerm(value as string)}

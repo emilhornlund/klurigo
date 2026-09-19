@@ -101,7 +101,7 @@ const MediaModal: FC<MediaModalProps> = ({
               <TextField
                 id="media-url-textfield"
                 type="text"
-                kind="secondary"
+                surface="light"
                 placeholder="URL"
                 value={internalURL}
                 regex={{ value: URL_REGEX, message: 'Is not a valid URL' }}

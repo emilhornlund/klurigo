@@ -90,7 +90,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"

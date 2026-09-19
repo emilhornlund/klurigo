@@ -36,7 +36,6 @@ const NicknameTextField: FC<NicknameTextFieldProps> = ({
       <TextField
         id="default-nickname-textfield"
         type="text"
-        kind="primary"
         placeholder={placeholder}
         value={value}
         minLength={PLAYER_NICKNAME_MIN_LENGTH}

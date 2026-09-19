@@ -13,7 +13,7 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary error"
+            class="textFieldInputContainer surfaceBrand error"
           >
             <input
               class="textfield"
@@ -128,7 +128,7 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with submi
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary disabled"
+            class="textFieldInputContainer surfaceBrand disabled"
           >
             <input
               class="textfield"
@@ -191,7 +191,7 @@ exports[`AnswerInput > Basic Rendering > renders with submitted answer 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary disabled"
+            class="textFieldInputContainer surfaceBrand disabled"
           >
             <input
               class="textfield"

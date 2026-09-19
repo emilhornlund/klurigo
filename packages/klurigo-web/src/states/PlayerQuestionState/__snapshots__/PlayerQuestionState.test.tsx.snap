@@ -527,7 +527,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary"
+                        class="textFieldInputContainer surfaceBrand"
                       >
                         <input
                           class="textfield"
@@ -828,7 +828,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary error"
+                        class="textFieldInputContainer surfaceBrand error"
                       >
                         <input
                           class="textfield"

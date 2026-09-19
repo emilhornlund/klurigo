@@ -286,7 +286,7 @@ exports[`QuestionAnswerPicker > renders Range and forwards numeric value from sl
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -350,7 +350,7 @@ exports[`QuestionAnswerPicker > renders TypeAnswer and forwards typed value on s
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"

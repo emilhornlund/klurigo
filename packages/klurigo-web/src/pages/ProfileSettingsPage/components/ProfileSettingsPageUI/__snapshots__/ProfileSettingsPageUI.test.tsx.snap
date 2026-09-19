@@ -62,7 +62,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                  class="textFieldInputContainer surfaceBrand disabled"
                 >
                   <input
                     class="textfield"
@@ -83,7 +83,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -103,7 +103,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -126,7 +126,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -264,7 +264,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -284,7 +284,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -303,7 +303,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -325,7 +325,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -414,7 +414,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -433,7 +433,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -452,7 +452,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -565,7 +565,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                  class="textFieldInputContainer surfaceBrand disabled"
                 >
                   <input
                     class="textfield"
@@ -586,7 +586,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -606,7 +606,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -629,7 +629,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -766,7 +766,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -786,7 +786,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -805,7 +805,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -827,7 +827,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -915,7 +915,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -934,7 +934,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -953,7 +953,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1066,7 +1066,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                  class="textFieldInputContainer surfaceBrand disabled"
                 >
                   <input
                     class="textfield"
@@ -1107,7 +1107,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -1127,7 +1127,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -1150,7 +1150,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -1287,7 +1287,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -1327,7 +1327,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1346,7 +1346,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1368,7 +1368,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -1456,7 +1456,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1475,7 +1475,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1494,7 +1494,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"

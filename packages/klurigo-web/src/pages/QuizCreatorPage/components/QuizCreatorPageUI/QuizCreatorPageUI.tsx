@@ -96,7 +96,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             <TextField
               id="quiz-title-textfield"
               type="text"
-              kind="secondary"
+              surface="light"
               size="small"
               placeholder="Title"
               value={quizSettings.title}
