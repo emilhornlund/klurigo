@@ -1,58 +1,247 @@
 @use '../../styles/border-radius.tokens' as radius;
-@use '../../styles/inputs';
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
+@use '../../styles/helpers' as helpers;
+@use '../../styles/mixins/button' as button;
+@use '../../styles/shadows.tokens' as shadows;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
 
 .segmentedControl {
   display: flex;
   flex-direction: row;
 
   .segmentedControlItem {
-    @extend .input;
-
-    flex: 1;
+    align-items: center;
+    border: controls.$control-border-width-outside solid transparent;
     border-radius: radius.$radius-sharp;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
 
-    &.segmentedControlInputKindPrimary {
-      &.segmentedControlInputActive {
-        @extend .input-kind-call-to-action;
+    button {
+      @include button.button-reset;
+
+      align-items: center;
+      cursor: pointer;
+      display: inline-flex;
+      flex: 1;
+      flex-direction: row;
+      font-family: inherit;
+      font-weight: bold;
+      height: 100%;
+      justify-content: center;
+      min-width: 0;
+      outline: none;
+
+      @include helpers.mobile {
+        column-gap: spacing.$space-compact-mobile;
+
+        @include helpers.fontSize(typography.$font-size-control-normal-mobile);
       }
-      &.segmentedControlInputInactive {
-        @extend .input-kind-primary;
+
+      @include helpers.tablet {
+        column-gap: spacing.$space-compact-tablet;
+
+        @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+      }
+
+      @include helpers.desktop {
+        column-gap: spacing.$space-compact-desktop;
+
+        @include helpers.fontSize(typography.$font-size-control-normal-desktop);
       }
     }
 
-    &.segmentedControlInputKindSecondary {
-      &.segmentedControlInputActive {
-        @extend .input-kind-call-to-action;
+    /*
+     * Responsive sizing
+     */
+
+    @include helpers.mobile {
+      min-height: controls.$control-normal-height-mobile;
+      padding: 0 spacing.$space-compact-mobile;
+    }
+
+    @include helpers.tablet {
+      min-height: controls.$control-normal-height-tablet;
+      padding: 0 spacing.$space-compact-tablet;
+    }
+
+    @include helpers.desktop {
+      min-height: controls.$control-normal-height-desktop;
+      padding: 0 spacing.$space-compact-desktop;
+    }
+
+    /*
+     * Brand surface
+     */
+
+    &.surfaceBrand {
+      &.inactive {
+        background-color: colors.$color-surface-control-default;
+        border-color: colors.$color-border-muted;
+
+        button {
+          color: colors.$color-text-control-default;
+        }
       }
-      &.segmentedControlInputInactive {
-        @extend .input-kind-secondary;
+
+      &.active {
+        background-color: colors.$color-surface-control-accent;
+        border-color: transparent;
+        border-top-color: colors.$color-shadow-active;
+        border-bottom-color: colors.$color-inset-hover;
+        box-shadow: shadows.$shadow-control-rest;
+        z-index: 1;
+
+        button {
+          color: colors.$color-text-control-default;
+        }
       }
     }
 
-    &.segmentedControlInputSizeNormal {
+    /*
+     * Light surface
+     */
+
+    &.surfaceLight {
+      &.inactive {
+        background-color: colors.$color-surface-control-default;
+        border-color: colors.$color-border-muted;
+
+        button {
+          color: colors.$color-text-control-default;
+        }
+      }
+
+      &.active {
+        background-color: colors.$color-surface-control-accent;
+        border-color: transparent;
+        border-top-color: colors.$color-shadow-active;
+        border-bottom-color: colors.$color-inset-hover;
+        box-shadow: shadows.$shadow-control-rest;
+        z-index: 1;
+
+        button {
+          color: colors.$color-text-control-default;
+        }
+      }
+    }
+
+    /*
+     * Hover
+     */
+
+    &.inactive:has(> button:hover) {
+      background-color: colors.$color-surface-control-default-hover;
+
+      button {
+        color: colors.$color-text-control-default-hover;
+      }
+    }
+
+    &.active:has(> button:hover) {
+      background-color: colors.$color-surface-control-accent-hover;
+      border-color: transparent;
+      border-top-color: colors.$color-shadow-hover;
+      border-bottom-color: colors.$color-inset-hover;
+      box-shadow: shadows.$shadow-control-hover;
+    }
+
+    /*
+     * Active
+     */
+
+    &.active:has(> button:active) {
+      border-color: transparent;
+      border-top-color: colors.$color-shadow-hover;
+      border-bottom-color: colors.$color-inset-active;
+      box-shadow: shadows.$shadow-control-active;
+    }
+
+    /*
+     * Keyboard focus
+     */
+
+    &:has(> button:focus-visible) {
+      outline: controls.$control-border-width-outside solid
+        colors.$color-focus-ring;
+      outline-offset: controls.$control-border-width-outside;
+    }
+
+    /*
+     * Normal size
+     */
+
+    &.sizeNormal {
       &:first-child {
-        border-top-left-radius: radius.$radius-control-md;
         border-bottom-left-radius: radius.$radius-control-md;
+        border-top-left-radius: radius.$radius-control-md;
       }
 
       &:last-child {
-        border-top-right-radius: radius.$radius-control-md;
         border-bottom-right-radius: radius.$radius-control-md;
+        border-top-right-radius: radius.$radius-control-md;
       }
     }
 
-    &.segmentedControlInputSizeSmall {
+    /*
+     * Small size
+     */
+
+    &.sizeSmall {
       border-radius: radius.$radius-sharp;
-      @extend .input-size-small;
+
+      @include helpers.mobile {
+        min-height: controls.$control-small-height-mobile;
+        padding: 0 spacing.$space-inline-mobile;
+
+        button {
+          column-gap: spacing.$space-inline-mobile;
+
+          @include helpers.fontSize(typography.$font-size-control-small-mobile);
+        }
+      }
+
+      @include helpers.tablet {
+        min-height: controls.$control-small-height-tablet;
+        padding: 0 spacing.$space-inline-tablet;
+
+        button {
+          column-gap: spacing.$space-inline-tablet;
+
+          @include helpers.fontSize(typography.$font-size-control-small-tablet);
+        }
+      }
+
+      @include helpers.desktop {
+        min-height: controls.$control-small-height-desktop;
+        padding: 0 spacing.$space-inline-desktop;
+
+        button {
+          column-gap: spacing.$space-inline-desktop;
+
+          @include helpers.fontSize(
+            typography.$font-size-control-small-desktop
+          );
+        }
+      }
 
       &:first-child {
-        border-top-left-radius: radius.$radius-control-sm;
         border-bottom-left-radius: radius.$radius-control-sm;
+        border-top-left-radius: radius.$radius-control-sm;
       }
 
       &:last-child {
-        border-top-right-radius: radius.$radius-control-sm;
         border-bottom-right-radius: radius.$radius-control-sm;
+        border-top-right-radius: radius.$radius-control-sm;
       }
     }
   }

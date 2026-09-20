@@ -82,7 +82,8 @@ const QuizTableFilter: FC<QuizTableFilterProps> = ({
             <Button
               id="search-button"
               type="button"
-              kind="primary"
+              variant="primary"
+              surface="brand"
               icon={faMagnifyingGlass}
               onClick={handleSearch}
             />
@@ -91,7 +92,8 @@ const QuizTableFilter: FC<QuizTableFilterProps> = ({
             <Button
               id="filter-button"
               type="button"
-              kind="primary"
+              variant="primary"
+              surface="brand"
               icon={faFilter}
               onClick={() => setShowFilterModal(true)}
             />

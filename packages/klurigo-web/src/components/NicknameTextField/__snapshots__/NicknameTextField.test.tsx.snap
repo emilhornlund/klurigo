@@ -9,7 +9,7 @@ exports[`NicknameTextField > should render NicknameTextField with default props 
       class="inputContainer"
     >
       <div
-        class="textFieldInputContainer textFieldInputKindPrimary"
+        class="textFieldInputContainer surfaceBrand"
       >
         <input
           class="textfield"
@@ -25,7 +25,7 @@ exports[`NicknameTextField > should render NicknameTextField with default props 
       </div>
     </div>
     <div
-      class="buttonInputContainer buttonInputKindPrimary"
+      class="buttonContainer variantPrimary surfaceBrand intentDefault"
     >
       <button
         data-testid="test-shuffle-nickname-button-button"

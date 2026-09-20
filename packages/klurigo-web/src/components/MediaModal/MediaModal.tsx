@@ -80,7 +80,7 @@ const MediaModal: FC<MediaModalProps> = ({
             <div className={classNames(styles.column, styles.half)}>
               <Select
                 id="media-type-select"
-                kind="secondary"
+                surface="light"
                 value={internalType}
                 values={Object.values(MediaType).map((type) => ({
                   key: type,
@@ -101,7 +101,7 @@ const MediaModal: FC<MediaModalProps> = ({
               <TextField
                 id="media-url-textfield"
                 type="text"
-                kind="secondary"
+                surface="light"
                 placeholder="URL"
                 value={internalURL}
                 regex={{ value: URL_REGEX, message: 'Is not a valid URL' }}
@@ -133,7 +133,7 @@ const MediaModal: FC<MediaModalProps> = ({
               <div className={styles.column}>
                 <SegmentedControl
                   id="selected-provider-segmented-control"
-                  kind="secondary"
+                  surface="light"
                   size="small"
                   value={selectedImageProvider}
                   values={[
@@ -168,14 +168,16 @@ const MediaModal: FC<MediaModalProps> = ({
           <Button
             id="close-button"
             type="button"
-            kind="secondary"
+            variant="outline"
+            surface="light"
             value="Close"
             onClick={onClose}
           />
           <Button
             id="apply-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             value="Apply"
             disabled={!isValid}
             onClick={onApply}

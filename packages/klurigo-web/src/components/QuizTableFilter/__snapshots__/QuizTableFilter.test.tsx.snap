@@ -13,7 +13,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary"
+            class="textFieldInputContainer surfaceBrand"
           >
             <input
               class="textfield"
@@ -31,7 +31,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
         class="column"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-search-button-button"
@@ -59,7 +59,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
         class="column"
       >
         <div
-          class="buttonInputContainer buttonInputKindPrimary"
+          class="buttonContainer variantPrimary surfaceBrand intentDefault"
         >
           <button
             data-testid="test-filter-button-button"

@@ -59,7 +59,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -71,7 +71,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -83,7 +83,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -1103,7 +1103,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -1115,7 +1115,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -1127,7 +1127,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -2108,7 +2108,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -2120,7 +2120,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -2132,7 +2132,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -3140,7 +3140,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -3152,7 +3152,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -3164,7 +3164,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -3759,7 +3759,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -3771,7 +3771,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -3783,7 +3783,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -4258,7 +4258,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -4270,7 +4270,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -4282,7 +4282,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -5290,7 +5290,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -5302,7 +5302,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -5314,7 +5314,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -6283,7 +6283,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -6295,7 +6295,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -6307,7 +6307,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -6722,7 +6722,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -6734,7 +6734,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -6746,7 +6746,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -7101,7 +7101,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -7113,7 +7113,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -7125,7 +7125,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"

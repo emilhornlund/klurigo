@@ -62,7 +62,8 @@ const GameJoinPage: FC = () => {
         <IconButtonArrowLeft
           id="back-button"
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="small"
           value="Back"
           onClick={handleBack}
@@ -120,7 +121,8 @@ const GameJoinPage: FC = () => {
         <IconButtonArrowRight
           id="join"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           value="OK, Go!"
           loading={isJoiningGame}
           disabled={!nicknameValid}

@@ -1,9 +1,6 @@
 @use 'sass:color';
 
-@use '../../../../../../styles/border-radius.tokens' as radius;
-@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers' as helpers;
-@use '../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
 $outline-offset: helpers.pxToRem(2px);
@@ -24,43 +21,48 @@ $outline-offset: helpers.pxToRem(2px);
     column-gap: spacing.$space-compact-desktop;
   }
 
-  .classic,
-  .zeroToOneHundred {
-    @include button.button-reset;
-
-    display: flex;
-    flex-direction: column;
+  div[class*='buttonContainer'] {
     flex: 1;
-    background-color: colors.$color-action-accent;
-    outline: colors.$color-action-accent solid $outline-offset !important;
-    outline-offset: $outline-offset;
-    border: $outline-offset solid transparent;
-    border-radius: radius.$radius-surface-lg;
-    margin: calc($outline-offset * 2);
-    font-weight: bold;
-    text-align: center;
+
+    button {
+      white-space: normal;
+
+      > span {
+        align-self: stretch;
+        display: flex;
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  .buttonContent {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+
+    .buttonText {
+      color: inherit;
+    }
 
     @include helpers.mobile {
       row-gap: spacing.$space-inline-mobile;
-      padding: spacing.$space-compact-mobile;
-      border-width: helpers.pxToRem(1px);
+      padding-block: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
       row-gap: spacing.$space-inline-tablet;
-      padding: spacing.$space-compact-tablet;
-      border-width: helpers.pxToRem(2px);
+      padding-block: spacing.$space-compact-tablet;
     }
 
     @include helpers.desktop {
       row-gap: spacing.$space-inline-desktop;
-      padding: spacing.$space-compact-desktop;
-      border-width: helpers.pxToRem(3px);
-    }
-
-    &:hover {
-      background-color: colors.$color-action-accent-hover;
-      outline-color: colors.$color-action-accent-hover;
+      padding-block: spacing.$space-compact-desktop;
     }
   }
 }

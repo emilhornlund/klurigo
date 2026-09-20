@@ -52,7 +52,7 @@ const PexelsImageProvider: FC<PexelsImageProviderProps> = ({ onChange }) => {
           <TextField
             id="image-search-textfield"
             type="text"
-            kind="secondary"
+            surface="light"
             value={searchTerm}
             placeholder="Search"
             onChange={(value) => setSearchTerm(value as string)}
@@ -61,7 +61,8 @@ const PexelsImageProvider: FC<PexelsImageProviderProps> = ({ onChange }) => {
         <Button
           id="image-search-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           icon={faMagnifyingGlass}
           loading={isLoadingSearch}
           disabled={!searchTerm.trim().length}

@@ -1,113 +1,519 @@
+@use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.loading.semantic' as loadingColors;
+@use '../../styles/colors.semantic' as colors;
 @use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/inputs' as inputs;
 @use '../../styles/loading' as loading;
+@use '../../styles/mixins/button' as button;
+@use '../../styles/shadows.tokens' as shadows;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
 
-.buttonInputContainer {
-  @extend .input;
+/*
+ * Primary variant
+ */
+
+@mixin primary-variant(
+  $background,
+  $color,
+  $hover-background,
+  $hover-color: $color
+) {
+  background-color: $background;
+  border-color: transparent;
+  border-top-color: colors.$color-shadow-active;
+  border-bottom-color: colors.$color-inset-hover;
+  box-shadow: shadows.$shadow-control-rest;
 
   button {
-    .loadingSpinner {
-      @extend .loading-spinner;
+    color: $color;
+  }
 
+  &:has(> button:hover:not(:disabled)) {
+    background-color: $hover-background;
+    border-color: transparent;
+    border-top-color: colors.$color-shadow-hover;
+    border-bottom-color: colors.$color-inset-hover;
+    box-shadow: shadows.$shadow-control-hover;
+    transform: translateY(-1px);
+
+    button {
+      color: $hover-color;
+    }
+  }
+
+  &:has(> button:active:not(:disabled)) {
+    border-color: transparent;
+    border-top-color: colors.$color-shadow-hover;
+    border-bottom-color: colors.$color-inset-active;
+    box-shadow: shadows.$shadow-control-active;
+    transform: translateY(0);
+  }
+
+  &:has(> button:disabled) {
+    background-color: colors.$color-surface-control-disabled;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+
+    button {
+      color: colors.$color-text-control-disabled;
+      cursor: default;
+    }
+  }
+}
+
+/*
+ * Outline variant
+ */
+
+@mixin outline-variant(
+  $background,
+  $border,
+  $color,
+  $hover-background,
+  $hover-border,
+  $hover-color
+) {
+  background-color: $background;
+  border-color: $border;
+
+  button {
+    color: $color;
+  }
+
+  &:has(> button:hover:not(:disabled)) {
+    background-color: $hover-background;
+    border-color: $hover-border;
+    box-shadow: none;
+    transform: translateY(-1px);
+
+    button {
+      color: $hover-color;
+    }
+  }
+
+  &:has(> button:disabled) {
+    background-color: transparent;
+    border-color: colors.$color-border-muted;
+    box-shadow: none;
+    transform: none;
+
+    button {
+      color: colors.$color-text-control-disabled;
+      cursor: default;
+    }
+  }
+}
+
+/*
+ * Plain variant
+ */
+
+@mixin plain-variant($color, $hover-color) {
+  background-color: transparent;
+  border-color: transparent;
+
+  button {
+    color: $color;
+  }
+
+  &:has(> button:hover:not(:disabled)) {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transform: translateY(-1px);
+
+    button {
+      color: $hover-color;
+    }
+  }
+
+  &:has(> button:disabled) {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+
+    button {
+      color: colors.$color-text-control-disabled;
+      cursor: default;
+    }
+  }
+}
+
+/*
+ * Base layout
+ */
+
+.buttonContainer {
+  align-items: center;
+  border: controls.$control-border-width-outside solid transparent;
+  border-radius: radius.$radius-control-md;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-shrink: 1;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  button {
+    @include button.button-reset;
+
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 1;
+    flex-direction: row;
+    font-family: inherit;
+    font-weight: bold;
+    height: 100%;
+    justify-content: center;
+    min-width: 0;
+    outline: none;
+
+    @include helpers.mobile {
+      column-gap: spacing.$space-compact-mobile;
+
+      @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+    }
+
+    @include helpers.tablet {
+      column-gap: spacing.$space-compact-tablet;
+
+      @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+    }
+
+    @include helpers.desktop {
+      column-gap: spacing.$space-compact-desktop;
+
+      @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+    }
+  }
+
+  /*
+   * Responsive sizing
+   */
+
+  @include helpers.mobile {
+    min-height: controls.$control-normal-height-mobile;
+    padding: 0 spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    min-height: controls.$control-normal-height-tablet;
+    padding: 0 spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    min-height: controls.$control-normal-height-desktop;
+    padding: 0 spacing.$space-compact-desktop;
+  }
+
+  /*
+   * Keyboard focus
+   */
+
+  &:has(> button:focus-visible) {
+    outline: controls.$control-border-width-outside solid
+      colors.$color-focus-ring;
+    outline-offset: controls.$control-border-width-outside;
+  }
+
+  /*
+   * Default intent
+   */
+
+  &.intentDefault.surfaceBrand {
+    &.variantPrimary {
+      @include primary-variant(
+        colors.$color-surface-control-default,
+        colors.$color-text-control-default,
+        colors.$color-surface-control-default-hover,
+        colors.$color-text-control-default-hover
+      );
+    }
+
+    &.variantOutline {
+      @include outline-variant(
+        transparent,
+        colors.$color-border-contrast,
+        colors.$color-text-inverse,
+        colors.$color-surface-overlay-subtle,
+        colors.$color-border-contrast,
+        colors.$color-text-inverse
+      );
+    }
+
+    &.variantPlain {
+      @include plain-variant(
+        colors.$color-text-inverse,
+        colors.$color-text-control-plain-hover
+      );
+    }
+  }
+
+  &.intentDefault.surfaceLight {
+    &.variantPrimary {
+      @include primary-variant(
+        colors.$color-action-default,
+        colors.$color-text-inverse,
+        colors.$color-action-strong,
+        colors.$color-text-inverse
+      );
+    }
+
+    &.variantOutline {
+      @include outline-variant(
+        transparent,
+        colors.$color-border-action,
+        colors.$color-action-default,
+        colors.$color-action-subtle,
+        colors.$color-border-action,
+        colors.$color-action-default
+      );
+    }
+
+    &.variantPlain {
+      @include plain-variant(
+        colors.$color-action-default,
+        colors.$color-action-strong
+      );
+    }
+  }
+
+  /*
+   * Accent intent
+   */
+
+  &.intentAccent {
+    &.variantPrimary {
+      @include primary-variant(
+        colors.$color-surface-control-accent,
+        colors.$color-text-control-default,
+        colors.$color-surface-control-accent-hover,
+        colors.$color-text-control-default-hover
+      );
+    }
+
+    &.variantOutline {
+      @include outline-variant(
+        colors.$color-surface-accent-subtle,
+        colors.$color-border-warning,
+        colors.$color-text-control-accent,
+        colors.$color-action-accent,
+        colors.$color-border-warning,
+        colors.$color-text-control-default-hover
+      );
+    }
+
+    &.surfaceBrand.variantPlain {
+      @include plain-variant(
+        colors.$color-action-accent,
+        colors.$color-action-accent-hover
+      );
+    }
+
+    &.surfaceLight.variantPlain {
+      @include plain-variant(
+        colors.$color-text-control-accent,
+        colors.$color-action-accent
+      );
+    }
+  }
+
+  /*
+   * Danger intent
+   */
+
+  &.intentDanger {
+    &.variantPrimary {
+      @include primary-variant(
+        colors.$color-surface-control-danger,
+        colors.$color-text-control-inverse,
+        colors.$color-surface-control-danger-hover,
+        colors.$color-text-control-inverse-subtle
+      );
+    }
+
+    &.variantOutline {
+      @include outline-variant(
+        colors.$color-surface-danger-subtle,
+        colors.$color-surface-control-danger,
+        colors.$color-text-control-danger,
+        colors.$color-surface-control-danger,
+        colors.$color-surface-control-danger,
+        colors.$color-text-control-inverse
+      );
+    }
+
+    &.variantPlain {
+      @include plain-variant(
+        colors.$color-text-control-danger,
+        colors.$color-surface-control-danger-hover
+      );
+    }
+  }
+
+  /*
+   * Success intent
+   */
+
+  &.intentSuccess {
+    &.variantPrimary {
+      @include primary-variant(
+        colors.$color-surface-control-success,
+        colors.$color-text-control-inverse,
+        colors.$color-surface-control-success-hover,
+        colors.$color-text-control-inverse-subtle
+      );
+    }
+
+    &.variantOutline {
+      @include outline-variant(
+        colors.$color-surface-success-subtle,
+        colors.$color-border-control-success,
+        colors.$color-text-control-success,
+        colors.$color-surface-control-success,
+        colors.$color-border-control-success,
+        colors.$color-text-control-inverse
+      );
+    }
+
+    &.variantPlain {
+      @include plain-variant(
+        colors.$color-text-control-success,
+        colors.$color-surface-control-success-hover
+      );
+    }
+  }
+
+  /*
+   * Small size
+   */
+
+  &.sizeSmall {
+    border-radius: radius.$radius-control-sm;
+
+    @include helpers.mobile {
+      min-height: controls.$control-small-height-mobile;
+      padding: 0 spacing.$space-inline-mobile;
+
+      button {
+        column-gap: spacing.$space-inline-mobile;
+
+        @include helpers.fontSize(typography.$font-size-control-small-mobile);
+      }
+    }
+
+    @include helpers.tablet {
+      min-height: controls.$control-small-height-tablet;
+      padding: 0 spacing.$space-inline-tablet;
+
+      button {
+        column-gap: spacing.$space-inline-tablet;
+
+        @include helpers.fontSize(typography.$font-size-control-small-tablet);
+      }
+    }
+
+    @include helpers.desktop {
+      min-height: controls.$control-small-height-desktop;
+      padding: 0 spacing.$space-inline-desktop;
+
+      button {
+        column-gap: spacing.$space-inline-desktop;
+
+        @include helpers.fontSize(typography.$font-size-control-small-desktop);
+      }
+    }
+
+    /*
+     * Loading
+     */
+
+    .loadingSpinner {
       @include helpers.mobile {
         $--mobile-loading-spinner-size: calc(
-          #{controls.$control-normal-height-mobile} * 0.9
+          #{controls.$control-small-height-mobile} * 0.9
         );
+
         @include loading.loading-spinner-dimensions(
           $--mobile-loading-spinner-size,
           loadingColors.$color-loading-spinner-default,
-          button-mobile-normal
+          button-mobile-small
         );
       }
 
       @include helpers.tablet {
         $--tablet-loading-spinner-size: calc(
-          #{controls.$control-normal-height-tablet} * 0.9
+          #{controls.$control-small-height-tablet} * 0.9
         );
+
         @include loading.loading-spinner-dimensions(
           $--tablet-loading-spinner-size,
           loadingColors.$color-loading-spinner-default,
-          button-tablet-normal
+          button-tablet-small
         );
       }
 
       @include helpers.desktop {
         $--desktop-loading-spinner-size: calc(
-          #{controls.$control-normal-height-desktop} * 0.9
+          #{controls.$control-small-height-desktop} * 0.9
         );
+
         @include loading.loading-spinner-dimensions(
           $--desktop-loading-spinner-size,
           loadingColors.$color-loading-spinner-default,
-          button-desktop-normal
+          button-desktop-small
         );
       }
     }
   }
 
-  &.buttonInputKindPrimary {
-    @extend .input-kind-primary;
-  }
+  .loadingSpinner {
+    @extend .loading-spinner;
 
-  &.buttonInputKindSecondary {
-    @extend .input-kind-secondary;
-  }
+    @include helpers.mobile {
+      $--mobile-loading-spinner-size: calc(
+        #{controls.$control-normal-height-mobile} * 0.9
+      );
 
-  &.buttonInputKindCallToAction {
-    @extend .input-kind-call-to-action;
-  }
+      @include loading.loading-spinner-dimensions(
+        $--mobile-loading-spinner-size,
+        loadingColors.$color-loading-spinner-default,
+        button-mobile-normal
+      );
+    }
 
-  &.buttonInputKindSuccess {
-    @extend .input-kind-success;
-  }
+    @include helpers.tablet {
+      $--tablet-loading-spinner-size: calc(
+        #{controls.$control-normal-height-tablet} * 0.9
+      );
 
-  &.buttonInputKindDestructive {
-    @extend .input-kind-destructive;
-  }
+      @include loading.loading-spinner-dimensions(
+        $--tablet-loading-spinner-size,
+        loadingColors.$color-loading-spinner-default,
+        button-tablet-normal
+      );
+    }
 
-  &.buttonInputKindPlain {
-    @extend .input-kind-plain;
-  }
+    @include helpers.desktop {
+      $--desktop-loading-spinner-size: calc(
+        #{controls.$control-normal-height-desktop} * 0.9
+      );
 
-  &.buttonInputSizeSmall {
-    @extend .input-size-small;
-
-    button {
-      .loadingSpinner {
-        @include helpers.mobile {
-          $--mobile-loading-spinner-size: calc(
-            #{controls.$control-small-height-mobile} * 0.9
-          );
-          @include loading.loading-spinner-dimensions(
-            $--mobile-loading-spinner-size,
-            loadingColors.$color-loading-spinner-default,
-            button-mobile-small
-          );
-        }
-
-        @include helpers.tablet {
-          $--tablet-loading-spinner-size: calc(
-            #{controls.$control-small-height-tablet} * 0.9
-          );
-          @include loading.loading-spinner-dimensions(
-            $--tablet-loading-spinner-size,
-            loadingColors.$color-loading-spinner-default,
-            button-tablet-small
-          );
-        }
-
-        @include helpers.desktop {
-          $--desktop-loading-spinner-size: calc(
-            #{controls.$control-small-height-desktop} * 0.9
-          );
-          @include loading.loading-spinner-dimensions(
-            $--desktop-loading-spinner-size,
-            loadingColors.$color-loading-spinner-default,
-            button-desktop-small
-          );
-        }
-      }
+      @include loading.loading-spinner-dimensions(
+        $--desktop-loading-spinner-size,
+        loadingColors.$color-loading-spinner-default,
+        button-desktop-normal
+      );
     }
   }
 }

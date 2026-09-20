@@ -80,7 +80,8 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
         <Button
           id="discover-quizzes-button"
           type="button"
-          kind="primary"
+          variant="primary"
+          surface="brand"
           size="small"
           value="Discover quizzes"
           icon={faMagnifyingGlass}
@@ -107,7 +108,8 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
         <Button
           id="create-quiz-button"
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="small"
           value="Create a quiz"
           icon={faPlus}

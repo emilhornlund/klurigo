@@ -59,7 +59,7 @@ $outline-offset: helpers.pxToRem(2px);
     column-gap: spacing.$space-inline-desktop;
   }
 
-  div[class*='buttonInputContainer'] {
+  div[class*='buttonContainer'] {
     flex: 1;
   }
 }

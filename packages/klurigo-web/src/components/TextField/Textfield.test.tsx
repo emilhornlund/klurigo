@@ -1,192 +1,300 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { DeviceType } from '../../utils/device-size.types'
+import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
 
 import TextField from './TextField'
+import styles from './TextField.module.scss'
+
+vi.mock('../../utils/useDeviceSizeType', () => ({
+  useDeviceSizeType: vi.fn(),
+}))
 
 describe('TextField', () => {
-  it('should render a TextField with type text', async () => {
-    const { container } = render(<TextField id="my-textfield" type="text" />)
-
-    const input = screen.getByRole('textbox')
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: 'some value' } })
-
-    expect(container).toMatchSnapshot()
+  beforeEach(() => {
+    vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Desktop)
   })
 
-  it('should render a TextField with type number', async () => {
-    const { container } = render(<TextField id="my-textfield" type="number" />)
+  describe('rendering', () => {
+    it('should render with default props', () => {
+      render(
+        <TextField id="my-text-field" type="text" placeholder="Placeholder" />,
+      )
 
-    expect(container).toMatchSnapshot()
-  })
+      const input = screen.getByTestId('test-my-text-field-textfield')
+      const container = input.parentElement
 
-  it('should receive onChange event when text changes', async () => {
-    const onChange = vi.fn()
+      expect(input).toHaveAttribute('id', 'my-text-field')
+      expect(input).toHaveAttribute('name', 'my-text-field')
+      expect(input).toHaveAttribute('type', 'text')
+      expect(input).toHaveAttribute('placeholder', 'Placeholder')
 
-    const { container } = render(
-      <TextField id="my-textfield" type="text" onChange={onChange} />,
+      expect(container).toHaveClass(
+        styles.textFieldInputContainer,
+        styles.surfaceBrand,
+      )
+
+      expect(container).not.toHaveClass(styles.surfaceLight)
+      expect(container).not.toHaveClass(styles.sizeSmall)
+    })
+
+    it('should use the provided name', () => {
+      render(<TextField id="my-text-field" name="custom-name" type="text" />)
+
+      expect(
+        screen.getByTestId('test-my-text-field-textfield'),
+      ).toHaveAttribute('name', 'custom-name')
+    })
+
+    it.each(['text', 'number', 'password'] as const)(
+      'should render type="%s"',
+      (type) => {
+        render(<TextField id={`textfield-${type}`} type={type} />)
+
+        expect(
+          screen.getByTestId(`test-textfield-${type}-textfield`),
+        ).toHaveAttribute('type', type)
+      },
     )
-
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
-
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: 'some value' } })
-
-    expect(input.value).toBe('some value')
-
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith('some value')
-
-    expect(container).toMatchSnapshot()
   })
 
-  it('should receive onChange event when number changes', async () => {
-    const onChange = vi.fn()
+  describe('surfaces', () => {
+    it('should use the brand surface by default', () => {
+      render(<TextField id="my-text-field" type="text" />)
 
-    const { container } = render(
-      <TextField id="my-textfield" type="number" onChange={onChange} />,
-    )
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.surfaceBrand)
+    })
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+    it('should support the light surface', () => {
+      render(<TextField id="my-text-field" type="text" surface="light" />)
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: '1337' } })
-
-    expect(input.value).toBe('1337')
-
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(1337)
-
-    expect(container).toMatchSnapshot()
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.surfaceLight)
+    })
   })
 
-  it('should receive onChange event when number equal min changes', async () => {
-    const onChange = vi.fn()
+  describe('size', () => {
+    it('should use normal size by default on desktop', () => {
+      render(<TextField id="my-text-field" type="text" />)
 
-    const { container } = render(
-      <TextField id="my-textfield" type="number" min={0} onChange={onChange} />,
-    )
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).not.toHaveClass(styles.sizeSmall)
+    })
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+    it('should support small size', () => {
+      render(<TextField id="my-text-field" type="text" size="small" />)
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: '0' } })
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.sizeSmall)
+    })
 
-    expect(input.value).toBe('0')
+    it('should force small size on mobile', () => {
+      vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
 
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(0)
+      render(<TextField id="my-text-field" type="text" size="normal" />)
 
-    expect(container).toMatchSnapshot()
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.sizeSmall)
+    })
   })
 
-  it('should receive onChange event when number equal max changes', async () => {
-    const onChange = vi.fn()
+  describe('value', () => {
+    it('should render the provided value', () => {
+      render(<TextField id="my-text-field" type="text" value="Hello" />)
 
-    const { container } = render(
-      <TextField
-        id="my-textfield"
-        type="number"
-        max={100}
-        onChange={onChange}
-      />,
-    )
+      expect(screen.getByTestId('test-my-text-field-textfield')).toHaveValue(
+        'Hello',
+      )
+    })
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+    it('should call onChange with a string value', () => {
+      const onChange = vi.fn()
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: '100' } })
+      render(<TextField id="my-text-field" type="text" onChange={onChange} />)
 
-    expect(input.value).toBe('100')
+      fireEvent.change(screen.getByTestId('test-my-text-field-textfield'), {
+        target: { value: 'Hello' },
+      })
 
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(100)
+      expect(onChange).toHaveBeenCalledWith('Hello')
+    })
 
-    expect(container).toMatchSnapshot()
+    it('should call onChange with a numeric value for number inputs', () => {
+      const onChange = vi.fn()
+
+      render(<TextField id="my-text-field" type="number" onChange={onChange} />)
+
+      fireEvent.change(screen.getByTestId('test-my-text-field-textfield'), {
+        target: { value: '42' },
+      })
+
+      expect(onChange).toHaveBeenCalledWith(42)
+    })
+
+    it('should call onChange with undefined for an empty number input', () => {
+      const onChange = vi.fn()
+
+      render(
+        <TextField
+          id="my-text-field"
+          type="number"
+          value={42}
+          onChange={onChange}
+        />,
+      )
+
+      fireEvent.change(screen.getByTestId('test-my-text-field-textfield'), {
+        target: { value: '' },
+      })
+
+      expect(onChange).toHaveBeenCalledWith(undefined)
+    })
   })
 
-  it('should not receive onChange event when not a number changes', async () => {
-    const onChange = vi.fn()
+  describe('state', () => {
+    it('should render disabled', () => {
+      render(<TextField id="my-text-field" type="text" disabled />)
 
-    const { container } = render(
-      <TextField
-        id="my-textfield"
-        type="number"
-        min={0}
-        max={100}
-        onChange={onChange}
-      />,
-    )
+      const input = screen.getByTestId('test-my-text-field-textfield')
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+      expect(input).toBeDisabled()
+      expect(input.parentElement).toHaveClass(styles.disabled)
+    })
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: 'not a number' } })
+    it('should render read-only', () => {
+      render(<TextField id="my-text-field" type="text" readOnly />)
 
-    expect(input.value).toBe('')
+      expect(
+        screen.getByTestId('test-my-text-field-textfield'),
+      ).toHaveAttribute('readonly')
+    })
 
-    expect(onChange).not.toHaveBeenCalled()
+    it('should apply the error state when validation fails', () => {
+      render(
+        <TextField id="my-text-field" type="text" required forceValidate />,
+      )
 
-    expect(container).toMatchSnapshot()
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.error)
+    })
+
+    it('should render a custom error message', () => {
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          customErrorMessage="Custom error"
+          forceValidate
+        />,
+      )
+
+      expect(screen.getByText('Custom error')).toBeInTheDocument()
+    })
+
+    it('should hide the error message when showErrorMessage is false', () => {
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          customErrorMessage="Custom error"
+          forceValidate
+          showErrorMessage={false}
+        />,
+      )
+
+      expect(screen.queryByText('Custom error')).not.toBeInTheDocument()
+      expect(
+        screen.getByTestId('test-my-text-field-textfield').parentElement,
+      ).toHaveClass(styles.error)
+    })
   })
 
-  it('should not receive onChange event when number bellow min changes', async () => {
-    const onChange = vi.fn()
+  describe('checkbox', () => {
+    it('should render the checkbox when checked is provided', () => {
+      render(<TextField id="my-text-field" type="text" checked={false} />)
 
-    const { container } = render(
-      <TextField
-        id="my-textfield"
-        type="number"
-        min={0}
-        max={100}
-        onChange={onChange}
-      />,
-    )
+      expect(
+        document.getElementById('my-text-field-checkbox'),
+      ).toBeInTheDocument()
+    })
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+    it('should render the check icon when checked', () => {
+      render(<TextField id="my-text-field" type="text" checked />)
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: '-1' } })
+      const checkbox = document.getElementById(
+        'my-text-field-checkbox',
+      ) as HTMLInputElement
 
-    expect(onChange).toHaveBeenCalled()
+      expect(checkbox).toBeChecked()
+      expect(
+        checkbox.parentElement?.querySelector(`.${styles.checkboxIcon}`),
+      ).toBeInTheDocument()
+    })
 
-    expect(container).toMatchSnapshot()
+    it('should call onCheck when the checkbox changes', () => {
+      const onCheck = vi.fn()
+
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          checked={false}
+          onCheck={onCheck}
+        />,
+      )
+
+      fireEvent.click(document.getElementById('my-text-field-checkbox')!)
+
+      expect(onCheck).toHaveBeenCalledWith(true)
+    })
+
+    it('should disable the checkbox together with the text field', () => {
+      render(<TextField id="my-text-field" type="text" checked disabled />)
+
+      expect(document.getElementById('my-text-field-checkbox')).toBeDisabled()
+    })
   })
 
-  it('should not receive onChange event when number above max changes', async () => {
-    const onChange = vi.fn()
+  describe('validation callbacks', () => {
+    it('should call onValid when validity changes', () => {
+      const onValid = vi.fn()
 
-    const { container } = render(
-      <TextField
-        id="my-textfield"
-        type="number"
-        min={0}
-        max={100}
-        onChange={onChange}
-      />,
-    )
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          required
+          value=""
+          onValid={onValid}
+        />,
+      )
 
-    const input = screen.getByTestId(
-      'test-my-textfield-textfield',
-    ) as HTMLInputElement
+      expect(onValid).toHaveBeenCalledWith(false)
+    })
 
-    fireEvent.focus(input)
-    fireEvent.change(input, { target: { value: '101' } })
+    it('should use additional validation', () => {
+      const onAdditionalValidation = vi.fn(() => 'Invalid value')
 
-    expect(onChange).toHaveBeenCalled()
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          value="value"
+          forceValidate
+          onAdditionalValidation={onAdditionalValidation}
+        />,
+      )
 
-    expect(container).toMatchSnapshot()
+      expect(onAdditionalValidation).toHaveBeenCalledWith('value')
+      expect(screen.getByText('Invalid value')).toBeInTheDocument()
+    })
   })
 })

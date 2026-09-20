@@ -95,7 +95,8 @@ const AuthPasswordForgotPageUI: FC<AuthPasswordForgotPageUIProps> = ({
         <IconButtonArrowRight
           id="continue-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           value="Send Reset Link"
           loading={loading}
           disabled={!isFormValid || loading}

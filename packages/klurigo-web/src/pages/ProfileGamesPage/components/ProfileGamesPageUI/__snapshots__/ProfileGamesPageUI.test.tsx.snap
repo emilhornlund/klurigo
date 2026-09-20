@@ -66,7 +66,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             Browse quizzes made by others and host a live game in seconds.
           </p>
           <div
-            class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
           >
             <button
               data-testid="test-discover-quizzes-button-button"
@@ -106,7 +106,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             Create a quiz in minutes and reuse it for future games.
           </p>
           <div
-            class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+            class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
           >
             <button
               data-testid="test-create-quiz-button-button"
@@ -535,7 +535,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
             class="loadMoreContainer"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-load-more-games-button-button"

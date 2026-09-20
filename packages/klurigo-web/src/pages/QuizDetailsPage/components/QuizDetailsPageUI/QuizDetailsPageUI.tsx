@@ -122,7 +122,8 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
               <Button
                 id="delete-quiz-button"
                 type="button"
-                kind="destructive"
+                variant="primary"
+                intent="danger"
                 size="small"
                 value="Delete"
                 hideValue="mobile"
@@ -132,7 +133,8 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
               <Button
                 id="edit-quiz-button"
                 type="button"
-                kind="primary"
+                variant="primary"
+                surface="brand"
                 size="small"
                 value="Edit"
                 hideValue="mobile"
@@ -144,7 +146,8 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
           <Button
             id="host-game-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             size="small"
             value="Host Game"
             hideValue="mobile"

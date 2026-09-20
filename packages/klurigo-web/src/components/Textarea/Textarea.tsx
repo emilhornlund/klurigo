@@ -1,10 +1,9 @@
-import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import { isCallbackValid, isValidString } from '../../utils/validation'
+import InputError from '../InputError'
 
 import styles from './Textarea.module.scss'
 
@@ -12,7 +11,7 @@ export interface TextareaProps {
   id: string
   name?: string
   type?: 'text' | 'code'
-  kind?: 'primary' | 'secondary'
+  surface?: 'brand' | 'light'
   value?: string
   placeholder?: string
   regex?: RegExp | { value: RegExp; message: string }
@@ -31,7 +30,7 @@ const Textarea: FC<TextareaProps> = ({
   id,
   name = id,
   type = 'text',
-  kind = 'primary',
+  surface = 'brand',
   value,
   placeholder,
   regex,
@@ -118,10 +117,11 @@ const Textarea: FC<TextareaProps> = ({
       <div
         className={classNames(
           styles.textareaInputContainer,
-          showError ? styles.error : undefined,
+          surface === 'brand' ? styles.surfaceBrand : undefined,
+          surface === 'light' ? styles.surfaceLight : undefined,
           type === 'code' ? styles.code : undefined,
-          kind === 'primary' ? styles.textareaInputKindPrimary : undefined,
-          kind === 'secondary' ? styles.textareaInputKindSecondary : undefined,
+          disabled ? styles.disabled : undefined,
+          showError ? styles.error : undefined,
         )}>
         <textarea
           id={id}
@@ -138,12 +138,7 @@ const Textarea: FC<TextareaProps> = ({
           data-testid={`test-${id}-textarea`}
         />
       </div>
-      {showError && (
-        <div className={styles.errorContainer}>
-          <FontAwesomeIcon icon={faTriangleExclamation} />{' '}
-          {errorMessage ?? 'Unknown error'}
-        </div>
-      )}
+      {showError && <InputError message={errorMessage ?? 'Unknown error'} />}
     </div>
   )
 }

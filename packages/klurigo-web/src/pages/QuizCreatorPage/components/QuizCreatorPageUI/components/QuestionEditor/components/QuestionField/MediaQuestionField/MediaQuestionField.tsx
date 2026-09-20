@@ -93,7 +93,9 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
               <Button
                 id="delete-media-button"
                 type="button"
-                kind="destructive"
+                variant="primary"
+                surface="brand"
+                intent="danger"
                 size="small"
                 value="Delete"
                 hideValue="mobile"
@@ -103,7 +105,9 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
               <Button
                 id="add-media-button"
                 type="button"
-                kind="call-to-action"
+                variant="primary"
+                surface="brand"
+                intent="accent"
                 size="small"
                 value="Replace"
                 hideValue="mobile"
@@ -114,7 +118,9 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
                 <Button
                   id="add-image-effect-button"
                   type="button"
-                  kind="primary"
+                  variant="primary"
+                  surface="brand"
+                  intent="default"
                   size="small"
                   value="Image Effect"
                   hideValue="mobile"
@@ -128,7 +134,9 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
           <Button
             id="add-media-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            surface="brand"
+            intent="accent"
             size="small"
             value="Add media"
             icon={faPlus}

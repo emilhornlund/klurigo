@@ -13,7 +13,7 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary error"
+            class="textFieldInputContainer surfaceBrand error"
           >
             <input
               class="textfield"
@@ -28,11 +28,11 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
             />
           </div>
           <div
-            class="errorContainer"
+            class="inputError"
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-triangle-exclamation"
+              class="svg-inline--fa fa-triangle-exclamation icon"
               data-icon="triangle-exclamation"
               data-prefix="fas"
               role="img"
@@ -43,12 +43,11 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
                 fill="currentColor"
               />
             </svg>
-             
             This field is required
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent"
         >
           <button
             data-testid="test-submit-button-button"
@@ -128,7 +127,7 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with submi
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary disabled"
+            class="textFieldInputContainer surfaceBrand disabled"
           >
             <input
               class="textfield"
@@ -145,7 +144,7 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with submi
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent"
         >
           <button
             data-testid="test-submit-button-button"
@@ -191,7 +190,7 @@ exports[`AnswerInput > Basic Rendering > renders with submitted answer 1`] = `
           class="inputContainer"
         >
           <div
-            class="textFieldInputContainer textFieldInputKindPrimary disabled"
+            class="textFieldInputContainer surfaceBrand disabled"
           >
             <input
               class="textfield"
@@ -208,7 +207,7 @@ exports[`AnswerInput > Basic Rendering > renders with submitted answer 1`] = `
           </div>
         </div>
         <div
-          class="buttonInputContainer buttonInputKindCallToAction"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent"
         >
           <button
             data-testid="test-submit-button-button"

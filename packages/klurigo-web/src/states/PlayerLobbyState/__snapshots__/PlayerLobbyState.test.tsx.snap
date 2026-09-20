@@ -26,7 +26,7 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-leave-game-button-button"
@@ -132,7 +132,7 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-leave-game-button-button"
@@ -238,7 +238,7 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-leave-game-button-button"
@@ -346,7 +346,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-leave-game-button-button"
@@ -464,7 +464,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           class="actions"
         >
           <div
-            class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+            class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
           >
             <button
               data-testid="test-confirm-button-button"
@@ -478,7 +478,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
             </button>
           </div>
           <div
-            class="buttonInputContainer buttonInputKindSecondary buttonInputSizeSmall"
+            class="buttonContainer variantOutline surfaceLight intentDefault sizeSmall"
           >
             <button
               data-testid="test-close-button-button"
@@ -531,7 +531,7 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-leave-game-button-button"

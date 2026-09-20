@@ -134,7 +134,8 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
         <IconButtonArrowRight
           id="login"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           value="Let's go!"
           loading={loading}
           disabled={!isFormValid || loading}
@@ -157,7 +158,8 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
         <Button
           id="google-login-button"
           type="button"
-          kind="primary"
+          variant="primary"
+          surface="brand"
           value="Continue with Google"
           icon={faGoogle}
           iconPosition="leading"

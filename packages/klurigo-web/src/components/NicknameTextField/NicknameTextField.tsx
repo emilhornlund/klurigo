@@ -36,7 +36,6 @@ const NicknameTextField: FC<NicknameTextFieldProps> = ({
       <TextField
         id="default-nickname-textfield"
         type="text"
-        kind="primary"
         placeholder={placeholder}
         value={value}
         minLength={PLAYER_NICKNAME_MIN_LENGTH}
@@ -50,7 +49,8 @@ const NicknameTextField: FC<NicknameTextFieldProps> = ({
       <Button
         id="shuffle-nickname-button"
         type="button"
-        kind="primary"
+        variant="primary"
+        surface="brand"
         disabled={disabled}
         icon={faRefresh}
         onClick={handleRefreshNicknameClick}

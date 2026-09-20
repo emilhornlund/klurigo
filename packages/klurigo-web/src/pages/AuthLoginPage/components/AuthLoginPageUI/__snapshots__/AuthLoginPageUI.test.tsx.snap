@@ -59,7 +59,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -78,7 +78,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -101,7 +101,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               Forgot your password?
             </a>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-login-button"
@@ -142,7 +142,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
             class="authProviderButton"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-google-login-button-button"
@@ -235,7 +235,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -254,7 +254,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -277,7 +277,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               Forgot your password?
             </a>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-login-button"
@@ -319,7 +319,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
             class="authProviderButton"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-google-login-button-button"
@@ -412,7 +412,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -431,7 +431,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -454,7 +454,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               Forgot your password?
             </a>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-login-button"
@@ -496,7 +496,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
             class="authProviderButton"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-google-login-button-button"
@@ -589,7 +589,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -608,7 +608,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -631,7 +631,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               Forgot your password?
             </a>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-login-button"
@@ -673,7 +673,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
             class="authProviderButton"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-google-login-button-button"
@@ -766,7 +766,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -786,7 +786,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -810,7 +810,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               Forgot your password?
             </a>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-login-button"
@@ -843,7 +843,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
             class="authProviderButton"
           >
             <div
-              class="buttonInputContainer buttonInputKindPrimary"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault"
             >
               <button
                 data-testid="test-google-login-button-button"

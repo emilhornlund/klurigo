@@ -69,7 +69,8 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
           <Button
             id="settings-button"
             type="button"
-            kind="plain"
+            variant="plain"
+            surface="brand"
             icon={faGear}
             onClick={toggleSettingsMenu}
           />

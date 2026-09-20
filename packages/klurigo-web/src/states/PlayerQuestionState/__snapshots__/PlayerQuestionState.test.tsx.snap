@@ -527,7 +527,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary"
+                        class="textFieldInputContainer surfaceBrand"
                       >
                         <input
                           class="textfield"
@@ -542,7 +542,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       </div>
                     </div>
                     <div
-                      class="buttonInputContainer buttonInputKindCallToAction"
+                      class="buttonContainer variantPrimary surfaceBrand intentAccent"
                     >
                       <button
                         data-testid="test-submit-button-button"
@@ -828,7 +828,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       class="inputContainer"
                     >
                       <div
-                        class="textFieldInputContainer textFieldInputKindPrimary error"
+                        class="textFieldInputContainer surfaceBrand error"
                       >
                         <input
                           class="textfield"
@@ -843,11 +843,11 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                         />
                       </div>
                       <div
-                        class="errorContainer"
+                        class="inputError"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-triangle-exclamation"
+                          class="svg-inline--fa fa-triangle-exclamation icon"
                           data-icon="triangle-exclamation"
                           data-prefix="fas"
                           role="img"
@@ -858,12 +858,11 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                             fill="currentColor"
                           />
                         </svg>
-                         
                         This field is required
                       </div>
                     </div>
                     <div
-                      class="buttonInputContainer buttonInputKindCallToAction"
+                      class="buttonContainer variantPrimary surfaceBrand intentAccent"
                     >
                       <button
                         data-testid="test-submit-button-button"

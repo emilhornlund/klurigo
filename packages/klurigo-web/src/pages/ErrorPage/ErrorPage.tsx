@@ -18,6 +18,8 @@ const ErrorPage: FC = () => {
         <IconButtonArrowLeft
           id="go-back"
           type="button"
+          variant="primary"
+          surface="brand"
           size="small"
           value="Go Back"
           onClick={() => {

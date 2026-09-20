@@ -68,7 +68,8 @@ const HostResultState: FC<HostResultStateProps> = ({
         <IconButtonArrowRight
           id={'next-button'}
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="small"
           value="Next"
           loading={isInitiatingLeaderboardTask}

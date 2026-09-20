@@ -172,7 +172,8 @@ const UserDetailsForm: FC<UserDetailsFormProps> = ({
         <Button
           id="update-user-button"
           type="submit"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="normal"
           value="Save!"
           icon={faFloppyDisk}

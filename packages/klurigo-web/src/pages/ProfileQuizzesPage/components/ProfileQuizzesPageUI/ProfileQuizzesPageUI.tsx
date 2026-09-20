@@ -101,8 +101,8 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
       <Button
         id="create-quiz-button"
         type="button"
-        kind="call-to-action"
-        size="small"
+        variant="primary"
+        intent="accent"
         value="Create Quiz"
         icon={faPlus}
         iconPosition="leading"

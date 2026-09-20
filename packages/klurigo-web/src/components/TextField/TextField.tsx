@@ -1,9 +1,6 @@
-import {
-  faCheck,
-  faTriangleExclamation,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { DeviceType } from '../../utils/device-size.types'
@@ -14,6 +11,7 @@ import {
   isValidNumber,
   isValidString,
 } from '../../utils/validation'
+import InputError from '../InputError'
 
 import styles from './TextField.module.scss'
 
@@ -21,7 +19,7 @@ export interface TextFieldProps {
   id: string
   name?: string
   type: 'text' | 'number' | 'password'
-  kind?: 'primary' | 'secondary'
+  surface?: 'brand' | 'light'
   size?: 'normal' | 'small'
   placeholder?: string
   value?: string | number
@@ -44,11 +42,11 @@ export interface TextFieldProps {
   onCheck?: (checked: boolean) => void
 }
 
-const TextField: React.FC<TextFieldProps> = ({
+const TextField: FC<TextFieldProps> = ({
   id,
   name,
   type,
-  kind = 'primary',
+  surface = 'brand',
   size = 'normal',
   placeholder,
   value,
@@ -184,9 +182,9 @@ const TextField: React.FC<TextFieldProps> = ({
       <div
         className={classNames(
           styles.textFieldInputContainer,
-          kind === 'primary' ? styles.textFieldInputKindPrimary : undefined,
-          kind === 'secondary' ? styles.textFieldInputKindSecondary : undefined,
-          deviceSize === 'small' ? styles.small : undefined,
+          surface === 'brand' ? styles.surfaceBrand : undefined,
+          surface === 'light' ? styles.surfaceLight : undefined,
+          deviceSize === 'small' ? styles.sizeSmall : undefined,
           disabled ? styles.disabled : undefined,
           showError ? styles.error : undefined,
         )}>
@@ -232,10 +230,10 @@ const TextField: React.FC<TextFieldProps> = ({
         )}
       </div>
       {showError && showErrorMessage && (
-        <div className={styles.errorContainer}>
-          <FontAwesomeIcon icon={faTriangleExclamation} />{' '}
-          {errorMessage ?? 'Unknown error'}
-        </div>
+        <InputError
+          message={errorMessage ?? 'Unknown error'}
+          size={deviceSize}
+        />
       )}
     </div>
   )

@@ -33,14 +33,16 @@ const GameSessionErrorFallback: FC<GameSessionErrorFallbackProps> = ({
         <Button
           id="reload-game"
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           value="Reload game"
           onClick={onReload}
         />
         <Button
           id="return-home"
           type="button"
-          kind="secondary"
+          variant="outline"
+          surface="light"
           value="Return home"
           onClick={onReturnHome}
         />

@@ -87,7 +87,8 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
         <IconButtonArrowLeft
           id="home-button"
           type="button"
-          kind="call-to-action"
+          variant="primary"
+          intent="accent"
           size="small"
           loading={false}
           onClick={handleBackToHome}>
@@ -148,6 +149,8 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
         <IconButtonArrowRight
           id="game-results-button"
           type="button"
+          variant="primary"
+          surface="brand"
           onClick={handleViewFullResults}>
           View Full Results
         </IconButtonArrowRight>

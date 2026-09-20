@@ -45,7 +45,8 @@ const ConnectionNotice: FC<ConnectionNoticeProps> = ({
           <Button
             id="retry-game-connection"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             size="small"
             value="Try again"
             onClick={onRetry}
@@ -118,7 +119,8 @@ const ConnectionNotice: FC<ConnectionNoticeProps> = ({
           <Button
             id="retry-game-connection"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            intent="accent"
             size="small"
             value="Try again"
             onClick={onRetry}
@@ -127,7 +129,8 @@ const ConnectionNotice: FC<ConnectionNoticeProps> = ({
         <Button
           id="leave-game-connection"
           type="button"
-          kind="secondary"
+          variant="outline"
+          surface="light"
           size="small"
           value="Return home"
           onClick={onLeave}

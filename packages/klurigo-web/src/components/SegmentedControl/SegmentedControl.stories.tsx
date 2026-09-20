@@ -6,6 +6,12 @@ import SegmentedControl, {
   type SegmentedControlProps,
 } from './SegmentedControl'
 
+const values = [
+  { key: 'first', value: 'first', valueLabel: 'First' },
+  { key: 'second', value: 'second', valueLabel: 'Second' },
+  { key: 'third', value: 'third', valueLabel: 'Third' },
+]
+
 const SegmentedControlStoryComponent: FC<SegmentedControlProps> = (props) => {
   const [value, setValue] = useState<string>()
 
@@ -17,59 +23,47 @@ const meta = {
   component: SegmentedControl,
   tags: ['autodocs'],
   render: (props) => <SegmentedControlStoryComponent {...props} />,
+  args: {
+    id: 'my-segmented-control',
+    values,
+  },
 } satisfies Meta<typeof SegmentedControl>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary = {
+export const Playground = {
+  args: {},
+} satisfies Story
+
+export const BrandSurface = {
   args: {
-    id: 'my-primary-normal-segmented-control',
-    kind: 'primary',
-    size: 'normal',
-    values: [
-      { key: 'first', value: 'first', valueLabel: 'First' },
-      { key: 'second', value: 'second', valueLabel: 'Second' },
-      { key: 'third', value: 'third', valueLabel: 'Third' },
-    ],
+    surface: 'brand',
   },
 } satisfies Story
 
-export const Secondary = {
+export const LightSurface = {
   args: {
-    id: 'my-secondary-normal-segmented-control',
-    kind: 'secondary',
-    size: 'normal',
-    values: [
-      { key: 'first', value: 'first', valueLabel: 'First' },
-      { key: 'second', value: 'second', valueLabel: 'Second' },
-      { key: 'third', value: 'third', valueLabel: 'Third' },
-    ],
+    surface: 'light',
   },
 } satisfies Story
 
-export const PrimarySmall = {
+export const Small = {
   args: {
-    id: 'my-primary-small-segmented-control',
-    kind: 'primary',
     size: 'small',
-    values: [
-      { key: 'first', value: 'first', valueLabel: 'First' },
-      { key: 'second', value: 'second', valueLabel: 'Second' },
-      { key: 'third', value: 'third', valueLabel: 'Third' },
-    ],
   },
 } satisfies Story
 
-export const SecondarySmall = {
+export const BrandSurfaceSmall = {
   args: {
-    id: 'my-secondary-small-segmented-control',
-    kind: 'secondary',
+    surface: 'brand',
     size: 'small',
-    values: [
-      { key: 'first', value: 'first', valueLabel: 'First' },
-      { key: 'second', value: 'second', valueLabel: 'Second' },
-      { key: 'third', value: 'third', valueLabel: 'Third' },
-    ],
+  },
+} satisfies Story
+
+export const LightSurfaceSmall = {
+  args: {
+    surface: 'light',
+    size: 'small',
   },
 } satisfies Story

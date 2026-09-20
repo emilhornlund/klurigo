@@ -25,7 +25,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-question-type-select-select"
@@ -66,7 +66,6 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -102,7 +101,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -161,7 +160,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                 class="actions"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -188,7 +187,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -215,7 +214,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
                 >
                   <button
                     data-testid="test-add-image-effect-button-button"
@@ -294,7 +293,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -370,7 +369,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -428,7 +427,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -486,7 +485,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -544,7 +543,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -602,7 +601,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -707,7 +706,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-points-select-select"
@@ -733,7 +732,6 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -782,7 +780,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-duration-select-select"
@@ -843,7 +841,6 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -896,7 +893,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -941,7 +938,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-question-type-select-select"
@@ -982,7 +979,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -1018,7 +1014,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1077,7 +1073,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                 class="actions"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -1104,7 +1100,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -1131,7 +1127,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
                 >
                   <button
                     data-testid="test-add-image-effect-button-button"
@@ -1200,7 +1196,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1249,7 +1245,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1298,7 +1294,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1347,7 +1343,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-range-margin-select-select"
@@ -1383,7 +1379,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -1441,7 +1436,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-points-select-select"
@@ -1467,7 +1462,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -1516,7 +1510,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-duration-select-select"
@@ -1577,7 +1571,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -1630,7 +1623,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1675,7 +1668,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-question-type-select-select"
@@ -1716,7 +1709,6 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -1752,7 +1744,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -1811,7 +1803,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                 class="actions"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -1838,7 +1830,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -1865,7 +1857,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
                 >
                   <button
                     data-testid="test-add-image-effect-button-button"
@@ -1926,7 +1918,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -1979,7 +1971,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -2045,7 +2037,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-points-select-select"
@@ -2071,7 +2063,6 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -2120,7 +2111,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-duration-select-select"
@@ -2181,7 +2172,6 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -2234,7 +2224,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -2279,7 +2269,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-question-type-select-select"
@@ -2320,7 +2310,6 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -2356,7 +2345,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -2415,7 +2404,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                 class="actions"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -2442,7 +2431,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -2469,7 +2458,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
                 >
                   <button
                     data-testid="test-add-image-effect-button-button"
@@ -2547,7 +2536,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -2572,7 +2561,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -2597,7 +2586,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -2622,7 +2611,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   class="inputContainer"
                 >
                   <div
-                    class="textFieldInputContainer textFieldInputKindPrimary"
+                    class="textFieldInputContainer surfaceBrand"
                   >
                     <input
                       class="textfield"
@@ -2678,7 +2667,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-points-select-select"
@@ -2704,7 +2693,6 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -2753,7 +2741,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-duration-select-select"
@@ -2814,7 +2802,6 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -2867,7 +2854,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -2912,7 +2899,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -2971,7 +2958,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                 class="actions"
               >
                 <div
-                  class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -2998,7 +2985,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -3025,7 +3012,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                   </button>
                 </div>
                 <div
-                  class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
                 >
                   <button
                     data-testid="test-add-image-effect-button-button"
@@ -3094,7 +3081,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"
@@ -3147,7 +3134,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
             class="inputContainer"
           >
             <div
-              class="selectInputContainer selectInputKindPrimary"
+              class="selectInputContainer surfaceBrand"
             >
               <select
                 data-testid="test-duration-select-select"
@@ -3208,7 +3195,6 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
               <svg
                 aria-hidden="true"
                 class="svg-inline--fa fa-chevron-down selectIcon"
-                color="black"
                 data-icon="chevron-down"
                 data-prefix="fas"
                 role="img"
@@ -3261,7 +3247,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
             class="inputContainer"
           >
             <div
-              class="textFieldInputContainer textFieldInputKindPrimary"
+              class="textFieldInputContainer surfaceBrand"
             >
               <input
                 class="textfield"

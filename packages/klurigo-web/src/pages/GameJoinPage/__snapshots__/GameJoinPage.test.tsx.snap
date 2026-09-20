@@ -26,7 +26,7 @@ exports[`GameJoinPage > disables the input while joining and re-enables after pr
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -105,7 +105,7 @@ exports[`GameJoinPage > disables the input while joining and re-enables after pr
               value="Runner"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -165,7 +165,7 @@ exports[`GameJoinPage > does not submit when nickname is blank or whitespace 1`]
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -244,7 +244,7 @@ exports[`GameJoinPage > does not submit when nickname is blank or whitespace 1`]
               value="   "
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -305,7 +305,7 @@ exports[`GameJoinPage > does nothing when gameID is missing 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -384,7 +384,7 @@ exports[`GameJoinPage > does nothing when gameID is missing 1`] = `
               value="Someone"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -444,7 +444,7 @@ exports[`GameJoinPage > join button stays disabled until nickname is valid 1`] =
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -523,7 +523,7 @@ exports[`GameJoinPage > join button stays disabled until nickname is valid 1`] =
               value="Emil"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -583,7 +583,7 @@ exports[`GameJoinPage > navigates back when clicking the back button 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -662,7 +662,7 @@ exports[`GameJoinPage > navigates back when clicking the back button 1`] = `
               value=""
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -723,7 +723,7 @@ exports[`GameJoinPage > prefills nickname from user default and enables Join aft
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -802,7 +802,7 @@ exports[`GameJoinPage > prefills nickname from user default and enables Join aft
               value="PreFilledNick2"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -862,7 +862,7 @@ exports[`GameJoinPage > renders title and message (via RotatingMessage) 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -941,7 +941,7 @@ exports[`GameJoinPage > renders title and message (via RotatingMessage) 1`] = `
               value=""
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -1002,7 +1002,7 @@ exports[`GameJoinPage > starts with empty nickname when user has no default, kee
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -1081,7 +1081,7 @@ exports[`GameJoinPage > starts with empty nickname when user has no default, kee
               value=""
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -1142,7 +1142,7 @@ exports[`GameJoinPage > submits when the form is submitted (Enter key equivalent
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -1221,7 +1221,7 @@ exports[`GameJoinPage > submits when the form is submitted (Enter key equivalent
               value="KeyUser"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -1281,7 +1281,7 @@ exports[`GameJoinPage > submits with gameID and nickname and navigates to /game 
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-back-button-button"
@@ -1360,7 +1360,7 @@ exports[`GameJoinPage > submits with gameID and nickname and navigates to /game 
               value="Emil"
             />
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"

@@ -37,7 +37,8 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
       <Button
         id="confirm-button"
         type="button"
-        kind={destructive ? 'destructive' : 'call-to-action'}
+        variant="primary"
+        intent={destructive ? 'danger' : 'accent'}
         size="small"
         value={confirmTitle}
         loading={loading}
@@ -46,7 +47,8 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
       <Button
         id="close-button"
         type="button"
-        kind="secondary"
+        variant="outline"
+        surface="light"
         size="small"
         value={closeTitle}
         onClick={() => onClose?.()}

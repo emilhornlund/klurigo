@@ -26,7 +26,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -520,7 +520,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
             class="leaderboard"
           />
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"
@@ -579,7 +579,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -1073,7 +1073,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
             class="leaderboard"
           />
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"
@@ -1132,7 +1132,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -1626,7 +1626,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
             class="leaderboard"
           />
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"
@@ -1685,7 +1685,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -2232,7 +2232,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
             </div>
           </div>
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"
@@ -2291,7 +2291,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -2761,7 +2761,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
             class="leaderboard"
           />
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"
@@ -2820,7 +2820,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
         class="side"
       >
         <div
-          class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+          class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
         >
           <button
             data-testid="test-home-button-button"
@@ -3314,7 +3314,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
             class="leaderboard"
           />
           <div
-            class="buttonInputContainer buttonInputKindPrimary"
+            class="buttonContainer variantPrimary surfaceBrand intentDefault"
           >
             <button
               data-testid="test-game-results-button-button"

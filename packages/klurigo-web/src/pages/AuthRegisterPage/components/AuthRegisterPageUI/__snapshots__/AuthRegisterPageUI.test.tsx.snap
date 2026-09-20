@@ -59,7 +59,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -78,7 +78,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -97,7 +97,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -116,7 +116,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -138,7 +138,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary"
+                  class="textFieldInputContainer surfaceBrand"
                 >
                   <input
                     class="textfield"
@@ -154,7 +154,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -179,7 +179,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"
@@ -280,7 +280,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -300,7 +300,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -320,7 +320,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -340,7 +340,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                class="textFieldInputContainer surfaceBrand disabled"
               >
                 <input
                   class="textfield"
@@ -363,7 +363,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 class="inputContainer"
               >
                 <div
-                  class="textFieldInputContainer textFieldInputKindPrimary disabled"
+                  class="textFieldInputContainer surfaceBrand disabled"
                 >
                   <input
                     class="textfield"
@@ -380,7 +380,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonInputContainer buttonInputKindPrimary"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -406,7 +406,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
               </div>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-join-button"

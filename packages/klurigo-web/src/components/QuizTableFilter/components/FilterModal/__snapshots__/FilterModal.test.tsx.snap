@@ -54,7 +54,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-category-select-select"
@@ -175,7 +175,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -201,7 +200,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-visibility-select-select"
@@ -227,7 +226,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -253,7 +251,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-language-select-select"
@@ -1184,7 +1182,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -1210,7 +1207,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-game-mode-select-select"
@@ -1236,7 +1233,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -1262,7 +1258,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-sort-by-select-select"
@@ -1288,7 +1284,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -1314,7 +1309,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               class="inputContainer"
             >
               <div
-                class="selectInputContainer selectInputKindSecondary"
+                class="selectInputContainer surfaceLight"
               >
                 <select
                   data-testid="test-sort-order-select-select"
@@ -1335,7 +1330,6 @@ exports[`FilterModal > should render FilterModal 1`] = `
                 <svg
                   aria-hidden="true"
                   class="svg-inline--fa fa-chevron-down selectIcon"
-                  color="black"
                   data-icon="chevron-down"
                   data-prefix="fas"
                   role="img"
@@ -1353,7 +1347,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
             class="row buttonGroup"
           >
             <div
-              class="buttonInputContainer buttonInputKindSecondary"
+              class="buttonContainer variantOutline surfaceLight intentDefault"
             >
               <button
                 data-testid="test-close-button-button"
@@ -1367,7 +1361,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
               <button
                 data-testid="test-apply-button-button"

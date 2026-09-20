@@ -183,7 +183,8 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
             <IconButtonArrowRight
               id="start-game-button"
               type="button"
-              kind="call-to-action"
+              variant="primary"
+              intent="accent"
               size="small"
               value="Start"
               loading={isStartingGame}

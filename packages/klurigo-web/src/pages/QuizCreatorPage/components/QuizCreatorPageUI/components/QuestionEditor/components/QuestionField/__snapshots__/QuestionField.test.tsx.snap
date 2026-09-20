@@ -34,7 +34,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -61,7 +61,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -131,7 +131,7 @@ exports[`QuestionField > renders a duration question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-duration-select-select"
@@ -192,7 +192,6 @@ exports[`QuestionField > renders a duration question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -252,7 +251,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -279,7 +278,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -306,7 +305,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"
@@ -386,7 +385,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -462,7 +461,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -520,7 +519,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -578,7 +577,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -636,7 +635,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -694,7 +693,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -783,7 +782,7 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -824,7 +823,6 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -878,7 +876,7 @@ exports[`QuestionField > renders a points question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-points-select-select"
@@ -904,7 +902,6 @@ exports[`QuestionField > renders a points question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -941,7 +938,7 @@ exports[`QuestionField > renders a question text question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -995,7 +992,7 @@ exports[`QuestionField > renders a range correct question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1049,7 +1046,7 @@ exports[`QuestionField > renders a range margin question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-range-margin-select-select"
@@ -1085,7 +1082,6 @@ exports[`QuestionField > renders a range margin question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1139,7 +1135,7 @@ exports[`QuestionField > renders a range max question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1193,7 +1189,7 @@ exports[`QuestionField > renders a range min question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="textFieldInputContainer textFieldInputKindPrimary"
+          class="textFieldInputContainer surfaceBrand"
         >
           <input
             class="textfield"
@@ -1230,7 +1226,7 @@ exports[`QuestionField > renders a range type question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1271,7 +1267,6 @@ exports[`QuestionField > renders a range type question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1317,7 +1312,7 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1370,7 +1365,7 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1420,7 +1415,7 @@ exports[`QuestionField > renders a true or false question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1461,7 +1456,6 @@ exports[`QuestionField > renders a true or false question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1524,7 +1518,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1549,7 +1543,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1574,7 +1568,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1599,7 +1593,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
               class="inputContainer"
             >
               <div
-                class="textFieldInputContainer textFieldInputKindPrimary"
+                class="textFieldInputContainer surfaceBrand"
               >
                 <input
                   class="textfield"
@@ -1639,7 +1633,7 @@ exports[`QuestionField > renders a type answer question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1680,7 +1674,6 @@ exports[`QuestionField > renders a type answer question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1732,7 +1725,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1759,7 +1752,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -1835,7 +1828,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1862,7 +1855,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -1889,7 +1882,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"
@@ -1965,7 +1958,7 @@ exports[`QuestionField > renders an image media question field with square effec
             class="actions"
           >
             <div
-              class="buttonInputContainer buttonInputKindDestructive buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
             >
               <button
                 data-testid="test-delete-media-button-button"
@@ -1992,7 +1985,7 @@ exports[`QuestionField > renders an image media question field with square effec
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindCallToAction buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
                 data-testid="test-add-media-button-button"
@@ -2019,7 +2012,7 @@ exports[`QuestionField > renders an image media question field with square effec
               </button>
             </div>
             <div
-              class="buttonInputContainer buttonInputKindPrimary buttonInputSizeSmall"
+              class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
             >
               <button
                 data-testid="test-add-image-effect-button-button"
