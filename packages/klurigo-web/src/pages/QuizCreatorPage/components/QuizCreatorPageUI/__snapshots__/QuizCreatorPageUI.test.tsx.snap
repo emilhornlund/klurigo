@@ -2080,34 +2080,60 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                   <div
                     class="gameModeSelectionModalWrapper"
                   >
-                    <button
-                      class="classic"
+                    <div
+                      class="buttonContainer variantPrimary surfaceLight intentDefault"
                     >
-                      <h4
-                        class="typography title4 alignCenter widthFull colorDefault noOpacity"
+                      <button
+                        data-testid="test-game-mode-classic-button-button"
+                        id="game-mode-classic-button"
+                        name="game-mode-classic-button"
+                        type="button"
                       >
-                        Classic
-                      </h4>
-                      <p
-                        class="typography control alignCenter widthFull colorDefault noOpacity"
-                      >
-                        Create a traditional quiz with a mix of question types, including multiple-choice, true/false, range sliders, and typed answers.
-                      </p>
-                    </button>
-                    <button
-                      class="zeroToOneHundred"
+                        <span>
+                          <div
+                            class="buttonContent"
+                          >
+                            <h4
+                              class="typography title4 alignCenter widthFull colorDefault noOpacity buttonText"
+                            >
+                              Classic
+                            </h4>
+                            <p
+                              class="typography control alignCenter widthFull colorDefault noOpacity buttonText"
+                            >
+                              Create a traditional quiz with a mix of question types, including multiple-choice, true/false, range sliders, and typed answers.
+                            </p>
+                          </div>
+                        </span>
+                      </button>
+                    </div>
+                    <div
+                      class="buttonContainer variantPrimary surfaceLight intentDefault"
                     >
-                      <h4
-                        class="typography title4 alignCenter widthFull colorDefault noOpacity"
+                      <button
+                        data-testid="test-game-mode-zero-to-one-hundred-button-button"
+                        id="game-mode-zero-to-one-hundred-button"
+                        name="game-mode-zero-to-one-hundred-button"
+                        type="button"
                       >
-                        0-100
-                      </h4>
-                      <p
-                        class="typography control alignCenter widthFull colorDefault noOpacity"
-                      >
-                        Design a quiz with slider-based questions, where all answers range between 0 and 100.
-                      </p>
-                    </button>
+                        <span>
+                          <div
+                            class="buttonContent"
+                          >
+                            <h4
+                              class="typography title4 alignCenter widthFull colorDefault noOpacity buttonText"
+                            >
+                              0-100
+                            </h4>
+                            <p
+                              class="typography control alignCenter widthFull colorDefault noOpacity buttonText"
+                            >
+                              Design a quiz with slider-based questions, where all answers range between 0 and 100.
+                            </p>
+                          </div>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

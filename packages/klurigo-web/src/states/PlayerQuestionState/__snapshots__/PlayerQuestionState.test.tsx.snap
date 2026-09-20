@@ -847,7 +847,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-triangle-exclamation"
+                          class="svg-inline--fa fa-triangle-exclamation icon"
                           data-icon="triangle-exclamation"
                           data-prefix="fas"
                           role="img"
