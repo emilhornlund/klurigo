@@ -1,10 +1,9 @@
-import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import { isCallbackValid, isValidString } from '../../utils/validation'
+import InputError from '../InputError'
 
 import styles from './Textarea.module.scss'
 
@@ -139,12 +138,7 @@ const Textarea: FC<TextareaProps> = ({
           data-testid={`test-${id}-textarea`}
         />
       </div>
-      {showError && (
-        <div className={styles.errorContainer}>
-          <FontAwesomeIcon icon={faTriangleExclamation} />{' '}
-          {errorMessage ?? 'Unknown error'}
-        </div>
-      )}
+      {showError && <InputError message={errorMessage ?? 'Unknown error'} />}
     </div>
   )
 }

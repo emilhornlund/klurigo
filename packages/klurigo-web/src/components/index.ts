@@ -16,6 +16,7 @@ export type { DropzoneProps } from './Dropzone'
 export { default as GameSessionErrorBoundary } from './GameSessionErrorBoundary'
 export type { HorizontalRailProps } from './HorizontalRail'
 export type { IconTooltipProps } from './IconTooltip'
+export type { InputErrorProps } from './InputError'
 export {
   default as Leaderboard,
   type LeaderboardValue,
@@ -80,6 +81,7 @@ export { default as Dropzone } from './Dropzone'
 export { default as HorizontalRail } from './HorizontalRail'
 export { default as IconTooltip } from './IconTooltip'
 export { default as InfiniteScrollContainer } from './InfiniteScrollContainer'
+export { default as InputError } from './InputError'
 export { default as LoadingSpinner } from './LoadingSpinner'
 export { CardInfoItem, CardMetaItem, MediaInfoCard } from './MediaInfoCard'
 export { default as MediaModal } from './MediaModal'

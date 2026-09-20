@@ -141,43 +141,6 @@
     }
   }
 
-  /*
-   * Error message
-   */
-
-  .errorContainer {
-    align-items: center;
-    background-color: colors.$color-surface-accent;
-    border-radius: radius.$radius-control-md;
-    color: colors.$color-text-default;
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    font-weight: bold;
-    justify-content: flex-start;
-
-    @include helpers.mobile {
-      column-gap: spacing.$space-compact-mobile;
-      padding: spacing.$space-compact-mobile;
-
-      @include helpers.fontSize(typography.$font-size-control-small-mobile);
-    }
-
-    @include helpers.tablet {
-      column-gap: spacing.$space-compact-tablet;
-      padding: spacing.$space-compact-tablet;
-
-      @include helpers.fontSize(typography.$font-size-control-small-tablet);
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-compact-desktop;
-      padding: spacing.$space-compact-desktop;
-
-      @include helpers.fontSize(typography.$font-size-control-small-desktop);
-    }
-  }
-
   @include helpers.mobile {
     row-gap: spacing.$space-compact-mobile;
   }

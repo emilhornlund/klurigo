@@ -1,9 +1,6 @@
-import {
-  faCheck,
-  faTriangleExclamation,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { DeviceType } from '../../utils/device-size.types'
@@ -14,6 +11,7 @@ import {
   isValidNumber,
   isValidString,
 } from '../../utils/validation'
+import InputError from '../InputError'
 
 import styles from './TextField.module.scss'
 
@@ -44,7 +42,7 @@ export interface TextFieldProps {
   onCheck?: (checked: boolean) => void
 }
 
-const TextField: React.FC<TextFieldProps> = ({
+const TextField: FC<TextFieldProps> = ({
   id,
   name,
   type,
@@ -232,10 +230,10 @@ const TextField: React.FC<TextFieldProps> = ({
         )}
       </div>
       {showError && showErrorMessage && (
-        <div className={styles.errorContainer}>
-          <FontAwesomeIcon icon={faTriangleExclamation} />{' '}
-          {errorMessage ?? 'Unknown error'}
-        </div>
+        <InputError
+          message={errorMessage ?? 'Unknown error'}
+          size={deviceSize}
+        />
       )}
     </div>
   )

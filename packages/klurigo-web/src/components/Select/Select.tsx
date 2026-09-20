@@ -1,7 +1,4 @@
-import {
-  faChevronDown,
-  faTriangleExclamation,
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -10,6 +7,7 @@ import { DeviceType } from '../../utils/device-size.types'
 import { classNames } from '../../utils/helpers'
 import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
 import { isCallbackValid } from '../../utils/validation'
+import InputError from '../InputError'
 
 import styles from './Select.module.scss'
 
@@ -150,10 +148,10 @@ const Select: FC<SelectProps> = ({
         <FontAwesomeIcon icon={faChevronDown} className={styles.selectIcon} />
       </div>
       {showError && (
-        <div className={styles.errorContainer}>
-          <FontAwesomeIcon icon={faTriangleExclamation} />{' '}
-          {errorMessage ?? 'Unknown error'}
-        </div>
+        <InputError
+          message={errorMessage ?? 'Unknown error'}
+          size={deviceSize}
+        />
       )}
     </div>
   )

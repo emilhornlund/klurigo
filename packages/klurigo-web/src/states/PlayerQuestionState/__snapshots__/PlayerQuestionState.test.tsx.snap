@@ -843,7 +843,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                         />
                       </div>
                       <div
-                        class="errorContainer"
+                        class="inputError"
                       >
                         <svg
                           aria-hidden="true"
@@ -858,7 +858,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                             fill="currentColor"
                           />
                         </svg>
-                         
                         This field is required
                       </div>
                     </div>

@@ -28,7 +28,7 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
             />
           </div>
           <div
-            class="errorContainer"
+            class="inputError"
           >
             <svg
               aria-hidden="true"
@@ -43,7 +43,6 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
                 fill="currentColor"
               />
             </svg>
-             
             This field is required
           </div>
         </div>
