@@ -11,13 +11,19 @@ import {
   createMockLeaderboardTaskDocument,
   createMockLobbyTaskDocument,
   createMockMultiChoiceQuestionDocument,
+  createMockPinQuestionDocument,
   createMockPodiumTaskDocument,
+  createMockPuzzleQuestionDocument,
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
   createMockQuizGameplaySummary,
+  createMockRangeQuestionDocument,
+  createMockTrueFalseQuestionDocument,
+  createMockTypeAnswerQuestionDocument,
   createMockUniqueId,
   createMockZeroToOneHundredQuiz,
   createMockZeroToOneHundredQuizRequestDto,
+  MOCK_QUESTION_INFO,
   offsetSeconds,
 } from '../../test-utils/data'
 
@@ -31,6 +37,40 @@ describe('backend test data builders', () => {
     expect(quiz.questions).toHaveLength(6)
     expect(game.quiz.questions).toHaveLength(6)
     expect(gameResult.game.quiz.questions).toHaveLength(6)
+  })
+
+  it('composes all supported Classic question types', () => {
+    const quiz = createMockClassicQuiz()
+
+    expect(quiz.questions.map((question) => question.type)).toEqual([
+      QuestionType.MultiChoice,
+      QuestionType.Range,
+      QuestionType.TrueFalse,
+      QuestionType.TypeAnswer,
+      QuestionType.Pin,
+      QuestionType.Puzzle,
+    ])
+    expect(quiz.questions).toEqual([
+      createMockMultiChoiceQuestionDocument({
+        options: [
+          { value: 'Stockholm', correct: true },
+          { value: 'Copenhagen', correct: false },
+          { value: 'London', correct: false },
+          { value: 'Berlin', correct: false },
+        ],
+        duration: 30,
+      }),
+      createMockRangeQuestionDocument({ step: 0 }),
+      createMockTrueFalseQuestionDocument(),
+      createMockTypeAnswerQuestionDocument({ options: ['Copenhagen'] }),
+      createMockPinQuestionDocument({
+        duration: 30,
+        info: MOCK_QUESTION_INFO,
+      }),
+      createMockPuzzleQuestionDocument({
+        info: MOCK_QUESTION_INFO,
+      }),
+    ])
   })
 
   it('applies typed overrides while retaining concrete fixture shapes', () => {
