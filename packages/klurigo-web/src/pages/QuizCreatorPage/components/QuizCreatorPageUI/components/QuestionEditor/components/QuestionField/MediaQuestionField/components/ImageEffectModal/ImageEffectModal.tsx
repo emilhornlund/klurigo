@@ -81,14 +81,18 @@ const ImageEffectModal: FC<ImageEffectModalProps> = ({
           <Button
             id="close-button"
             type="button"
-            kind="secondary"
+            variant="primary"
+            surface="light"
+            intent="default"
             value="Close"
             onClick={onClose}
           />
           <Button
             id="apply-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            surface="light"
+            intent="accent"
             value="Apply"
             onClick={onApply}
           />

@@ -50,7 +50,9 @@ const PinQuestionField: FC<PinQuestionFieldProps> = ({
                 <Button
                   id="replace-image-button"
                   type="button"
-                  kind="call-to-action"
+                  variant="primary"
+                  surface="brand"
+                  intent="accent"
                   size="small"
                   icon={faRetweet}
                   onClick={() => setShowMediaModal(true)}
@@ -58,7 +60,9 @@ const PinQuestionField: FC<PinQuestionFieldProps> = ({
                 <Button
                   id="delete-image-button"
                   type="button"
-                  kind="destructive"
+                  variant="primary"
+                  surface="brand"
+                  intent="danger"
                   size="small"
                   icon={faTrash}
                   onClick={() => setShowConfirmDeleteImage(true)}
@@ -70,7 +74,9 @@ const PinQuestionField: FC<PinQuestionFieldProps> = ({
           <Button
             id="add-image-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            surface="brand"
+            intent="accent"
             size="small"
             value="Add Pin Image"
             icon={faPlus}

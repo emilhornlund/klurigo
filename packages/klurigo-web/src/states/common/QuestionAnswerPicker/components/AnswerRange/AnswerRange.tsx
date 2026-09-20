@@ -94,7 +94,9 @@ const AnswerRange: FC<AnswerRangeProps> = ({
           <Button
             id="submit-button"
             type="submit"
-            kind="call-to-action"
+            variant="primary"
+            surface="brand"
+            intent="accent"
             icon={faRocket}
             disabled={disabled || !valid}>
             Submit My Answer

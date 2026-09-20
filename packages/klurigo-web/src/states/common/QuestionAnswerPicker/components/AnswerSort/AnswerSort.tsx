@@ -54,7 +54,9 @@ const AnswerSort: FC<AnswerSortProps> = ({
           <Button
             id="submit-button"
             type="button"
-            kind="call-to-action"
+            variant="primary"
+            surface="brand"
+            intent="accent"
             icon={faRocket}
             disabled={disabled}
             onClick={handleSubmit}>

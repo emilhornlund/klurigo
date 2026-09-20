@@ -83,7 +83,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           <Textarea
             id="quiz-description-textarea"
             placeholder="Description"
-            kind="secondary"
+            surface="light"
             value={description}
             customErrorMessage={getValidationErrorMessage(
               validation,
@@ -102,7 +102,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
             <Button
               id="add-image-cover-button"
               type="button"
-              kind="call-to-action"
+              surface="light"
+              intent="accent"
               size="small"
               value={imageCoverURL ? 'Replace' : 'Add'}
               icon={imageCoverURL ? faRetweet : faPlus}
@@ -112,7 +113,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
               <Button
                 id="delete-image-cover-button"
                 type="button"
-                kind="destructive"
+                surface="light"
+                intent="danger"
                 size="small"
                 value="Delete"
                 icon={faTrash}
@@ -206,7 +208,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           <Button
             id="close-button"
             type="button"
-            kind="secondary"
+            variant="outline"
+            surface="light"
             value="Close"
             onClick={onClose}
           />

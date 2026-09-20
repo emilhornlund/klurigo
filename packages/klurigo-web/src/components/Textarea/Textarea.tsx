@@ -12,7 +12,7 @@ export interface TextareaProps {
   id: string
   name?: string
   type?: 'text' | 'code'
-  kind?: 'primary' | 'secondary'
+  surface?: 'brand' | 'light'
   value?: string
   placeholder?: string
   regex?: RegExp | { value: RegExp; message: string }
@@ -31,7 +31,7 @@ const Textarea: FC<TextareaProps> = ({
   id,
   name = id,
   type = 'text',
-  kind = 'primary',
+  surface = 'brand',
   value,
   placeholder,
   regex,
@@ -118,10 +118,11 @@ const Textarea: FC<TextareaProps> = ({
       <div
         className={classNames(
           styles.textareaInputContainer,
-          showError ? styles.error : undefined,
+          surface === 'brand' ? styles.surfaceBrand : undefined,
+          surface === 'light' ? styles.surfaceLight : undefined,
           type === 'code' ? styles.code : undefined,
-          kind === 'primary' ? styles.textareaInputKindPrimary : undefined,
-          kind === 'secondary' ? styles.textareaInputKindSecondary : undefined,
+          disabled ? styles.disabled : undefined,
+          showError ? styles.error : undefined,
         )}>
         <textarea
           id={id}

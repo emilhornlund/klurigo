@@ -59,7 +59,6 @@ const RatingCard: FC<RatingCardProps> = ({
           placeholder="Optional comment..."
           value={comment}
           onChange={onCommentChange}
-          kind="primary"
         />
       </div>
     )}

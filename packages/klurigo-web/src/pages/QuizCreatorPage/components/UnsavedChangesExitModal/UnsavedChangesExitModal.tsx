@@ -27,14 +27,18 @@ const UnsavedChangesExitModal: FC<UnsavedChangesExitModalProps> = ({
         <Button
           id="cancel-button"
           type="button"
-          kind="secondary"
+          variant="outline"
+          surface="light"
+          intent="default"
           value="Stay"
           onClick={onReset}
         />
         <Button
           id="exit-button"
           type="button"
-          kind="destructive"
+          variant="primary"
+          surface="light"
+          intent="danger"
           value="Leave"
           onClick={onConfirm}
         />

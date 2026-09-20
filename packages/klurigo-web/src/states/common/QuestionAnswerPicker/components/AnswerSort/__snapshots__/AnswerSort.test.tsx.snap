@@ -79,7 +79,7 @@ exports[`AnswerSort > handles empty list 1`] = `
       class="buttonWrapper"
     >
       <div
-        class="buttonContainer variantPrimary surfaceBrand intentDefault"
+        class="buttonContainer variantPrimary surfaceBrand intentAccent"
       >
         <button
           data-testid="test-submit-button-button"
@@ -190,7 +190,7 @@ exports[`AnswerSort > renders interactive table with initial values 1`] = `
       class="buttonWrapper"
     >
       <div
-        class="buttonContainer variantPrimary surfaceBrand intentDefault"
+        class="buttonContainer variantPrimary surfaceBrand intentAccent"
       >
         <button
           data-testid="test-submit-button-button"

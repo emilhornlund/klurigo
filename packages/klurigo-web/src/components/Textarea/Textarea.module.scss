@@ -1,38 +1,181 @@
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/inputs';
+@use '../../styles/mixins/textarea' as textarea;
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
-
-$outline-offset: helpers.pxToRem(2px);
+@use '../../styles/typography.tokens' as typography;
 
 .inputContainer {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
+
+  /*
+   * Base layout
+   */
 
   .textareaInputContainer {
-    @extend .input;
+    align-items: center;
+    background-color: colors.$color-surface-control-default;
+    border: controls.$control-border-width-outside solid transparent;
+    border-radius: radius.$radius-control-md;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    textarea {
+      @include textarea.textarea-reset;
+
+      color: colors.$color-text-control-default;
+      display: inline-flex;
+      flex: 1;
+      flex-direction: row;
+      font-family: inherit;
+      height: 100%;
+      min-width: 0;
+      outline: none;
+      resize: none;
+      width: 100%;
+
+      @include helpers.mobile {
+        @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+      }
+
+      @include helpers.tablet {
+        @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+      }
+
+      @include helpers.desktop {
+        @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+      }
+    }
+
+    /*
+     * Responsive spacing
+     */
+
+    @include helpers.mobile {
+      padding: spacing.$space-compact-mobile;
+    }
+
+    @include helpers.tablet {
+      padding: spacing.$space-compact-tablet;
+    }
+
+    @include helpers.desktop {
+      padding: spacing.$space-compact-desktop;
+    }
+
+    /*
+     * Brand surface
+     */
+
+    &.surfaceBrand {
+      background-color: colors.$color-surface-control-default;
+      border-color: colors.$color-border-muted;
+    }
+
+    /*
+     * Light surface
+     */
+
+    &.surfaceLight {
+      background-color: colors.$color-surface-control-default;
+      border-color: colors.$color-border-muted;
+    }
+
+    /*
+     * Keyboard focus
+     */
+
+    &:has(> textarea:focus-visible) {
+      border-color: colors.$color-focus-control-default;
+      box-shadow: shadows.$shadow-focus-control-default;
+    }
+
+    /*
+     * Disabled
+     */
+
+    &.disabled {
+      background-color: colors.$color-surface-control-disabled;
+      border-color: colors.$color-border-control-muted-disabled;
+      box-shadow: none;
+
+      textarea {
+        color: colors.$color-text-control-disabled;
+        cursor: default;
+      }
+    }
+
+    /*
+     * Error
+     */
+
+    &.error:not(.disabled) {
+      border-color: colors.$color-surface-control-danger;
+
+      &:has(> textarea:focus-visible) {
+        border-color: colors.$color-surface-control-danger;
+      }
+    }
+
+    /*
+     * Code
+     */
 
     &.code {
       textarea {
         font-family: monospace, monospace;
       }
     }
-
-    &.textareaInputKindPrimary {
-      @extend .input-kind-primary;
-    }
-
-    &.textareaInputKindSecondary {
-      @extend .input-kind-secondary;
-    }
-
-    &.error {
-      @extend .input-kind-destructive;
-    }
   }
 
+  /*
+   * Error message
+   */
+
   .errorContainer {
-    @extend .input-error;
+    align-items: center;
+    background-color: colors.$color-surface-accent;
+    border-radius: radius.$radius-control-md;
+    color: colors.$color-text-default;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-weight: bold;
+    justify-content: flex-start;
+
+    @include helpers.mobile {
+      column-gap: spacing.$space-compact-mobile;
+      padding: spacing.$space-compact-mobile;
+
+      @include helpers.fontSize(typography.$font-size-control-small-mobile);
+    }
+
+    @include helpers.tablet {
+      column-gap: spacing.$space-compact-tablet;
+      padding: spacing.$space-compact-tablet;
+
+      @include helpers.fontSize(typography.$font-size-control-small-tablet);
+    }
+
+    @include helpers.desktop {
+      column-gap: spacing.$space-compact-desktop;
+      padding: spacing.$space-compact-desktop;
+
+      @include helpers.fontSize(typography.$font-size-control-small-desktop);
+    }
   }
 
   @include helpers.mobile {

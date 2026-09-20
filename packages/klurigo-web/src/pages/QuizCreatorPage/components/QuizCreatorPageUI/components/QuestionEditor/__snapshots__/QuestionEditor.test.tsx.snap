@@ -161,7 +161,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                 class="actions"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -188,7 +188,7 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   </button>
                 </div>
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -1077,7 +1077,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                 class="actions"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -1104,7 +1104,7 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -1811,7 +1811,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                 class="actions"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -1838,7 +1838,7 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   </button>
                 </div>
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -2415,7 +2415,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                 class="actions"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -2442,7 +2442,7 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
                   </button>
                 </div>
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"
@@ -2971,7 +2971,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                 class="actions"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                 >
                   <button
                     data-testid="test-delete-media-button-button"
@@ -2998,7 +2998,7 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                   </button>
                 </div>
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                  class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                 >
                   <button
                     data-testid="test-add-media-button-button"

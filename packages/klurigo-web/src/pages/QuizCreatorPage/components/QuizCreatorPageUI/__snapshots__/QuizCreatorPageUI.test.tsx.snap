@@ -529,7 +529,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                           class="actions"
                         >
                           <div
-                            class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                            class="buttonContainer variantPrimary surfaceBrand intentDanger sizeSmall"
                           >
                             <button
                               data-testid="test-delete-media-button-button"
@@ -556,7 +556,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             </button>
                           </div>
                           <div
-                            class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+                            class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
                           >
                             <button
                               data-testid="test-add-media-button-button"
