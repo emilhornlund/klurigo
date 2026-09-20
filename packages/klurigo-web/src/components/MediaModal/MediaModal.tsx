@@ -80,7 +80,7 @@ const MediaModal: FC<MediaModalProps> = ({
             <div className={classNames(styles.column, styles.half)}>
               <Select
                 id="media-type-select"
-                kind="secondary"
+                surface="light"
                 value={internalType}
                 values={Object.values(MediaType).map((type) => ({
                   key: type,

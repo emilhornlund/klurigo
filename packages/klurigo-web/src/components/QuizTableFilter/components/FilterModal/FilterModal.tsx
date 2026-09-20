@@ -81,7 +81,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </Typography>
           <Select
             id="category-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: ALL_KEY, value: ALL_KEY, valueLabel: ALL_VALUE },
               ...Object.values(QuizCategory).map((category) => ({
@@ -106,7 +106,7 @@ const FilterModal: FC<FilterModalProps> = ({
             </Typography>
             <Select
               id="visibility-select"
-              kind="secondary"
+              surface="light"
               values={[
                 { key: ALL_KEY, value: ALL_KEY, valueLabel: ALL_VALUE },
                 ...Object.values(QuizVisibility).map((visibility) => ({
@@ -131,7 +131,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </Typography>
           <Select
             id="language-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: ALL_KEY, value: ALL_KEY, valueLabel: ALL_VALUE },
               ...Object.values(LanguageCode).map((languageCode) => ({
@@ -155,7 +155,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </Typography>
           <Select
             id="game-mode-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: ALL_KEY, value: ALL_KEY, valueLabel: ALL_VALUE },
               ...Object.values(GameMode).map((gameMode) => ({
@@ -179,7 +179,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </Typography>
           <Select
             id="sort-by-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: 'title', value: 'title', valueLabel: 'Title' },
               { key: 'created', value: 'created', valueLabel: 'Created' },
@@ -200,7 +200,7 @@ const FilterModal: FC<FilterModalProps> = ({
           </Typography>
           <Select
             id="sort-order-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: 'asc', value: 'asc', valueLabel: 'Ascending' },
               { key: 'desc', value: 'desc', valueLabel: 'Descending' },

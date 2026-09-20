@@ -131,7 +131,7 @@ exports[`QuestionField > renders a duration question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-duration-select-select"
@@ -192,7 +192,6 @@ exports[`QuestionField > renders a duration question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -783,7 +782,7 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -824,7 +823,6 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -878,7 +876,7 @@ exports[`QuestionField > renders a points question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-points-select-select"
@@ -904,7 +902,6 @@ exports[`QuestionField > renders a points question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1049,7 +1046,7 @@ exports[`QuestionField > renders a range margin question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-range-margin-select-select"
@@ -1085,7 +1082,6 @@ exports[`QuestionField > renders a range margin question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1230,7 +1226,7 @@ exports[`QuestionField > renders a range type question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1271,7 +1267,6 @@ exports[`QuestionField > renders a range type question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1420,7 +1415,7 @@ exports[`QuestionField > renders a true or false question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1461,7 +1456,6 @@ exports[`QuestionField > renders a true or false question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"
@@ -1639,7 +1633,7 @@ exports[`QuestionField > renders a type answer question field 1`] = `
         class="inputContainer"
       >
         <div
-          class="selectInputContainer selectInputKindPrimary"
+          class="selectInputContainer surfaceBrand"
         >
           <select
             data-testid="test-question-type-select-select"
@@ -1680,7 +1674,6 @@ exports[`QuestionField > renders a type answer question field 1`] = `
           <svg
             aria-hidden="true"
             class="svg-inline--fa fa-chevron-down selectIcon"
-            color="black"
             data-icon="chevron-down"
             data-prefix="fas"
             role="img"

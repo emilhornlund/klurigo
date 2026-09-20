@@ -51,7 +51,7 @@ const ImageEffectModal: FC<ImageEffectModalProps> = ({
       <div className={styles.imageMediaModal}>
         <Select
           id="select-image-effect"
-          kind="secondary"
+          surface="light"
           values={[
             {
               key: NONE_KEY,

@@ -393,7 +393,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="inputContainer"
                     >
                       <div
-                        class="selectInputContainer selectInputKindPrimary"
+                        class="selectInputContainer surfaceBrand"
                       >
                         <select
                           data-testid="test-question-type-select-select"
@@ -434,7 +434,6 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-chevron-down selectIcon"
-                          color="black"
                           data-icon="chevron-down"
                           data-prefix="fas"
                           role="img"
@@ -1075,7 +1074,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="inputContainer"
                     >
                       <div
-                        class="selectInputContainer selectInputKindPrimary"
+                        class="selectInputContainer surfaceBrand"
                       >
                         <select
                           data-testid="test-points-select-select"
@@ -1101,7 +1100,6 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-chevron-down selectIcon"
-                          color="black"
                           data-icon="chevron-down"
                           data-prefix="fas"
                           role="img"
@@ -1150,7 +1148,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                       class="inputContainer"
                     >
                       <div
-                        class="selectInputContainer selectInputKindPrimary"
+                        class="selectInputContainer surfaceBrand"
                       >
                         <select
                           data-testid="test-duration-select-select"
@@ -1211,7 +1209,6 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-chevron-down selectIcon"
-                          color="black"
                           data-icon="chevron-down"
                           data-prefix="fas"
                           role="img"

@@ -16,7 +16,7 @@ import styles from './Select.module.scss'
 export interface SelectProps {
   id: string
   name?: string
-  kind?: 'primary' | 'secondary'
+  surface?: 'brand' | 'light'
   size?: 'normal' | 'small'
   value?: string | undefined
   values?: { key: string; value: string; valueLabel: string }[]
@@ -32,7 +32,7 @@ export interface SelectProps {
 const Select: FC<SelectProps> = ({
   id,
   name = id,
-  kind = 'primary',
+  surface = 'brand',
   size = 'normal',
   value,
   values,
@@ -123,9 +123,11 @@ const Select: FC<SelectProps> = ({
       <div
         className={classNames(
           styles.selectInputContainer,
-          kind === 'primary' ? styles.selectInputKindPrimary : undefined,
-          kind === 'secondary' ? styles.selectInputKindSecondary : undefined,
-          deviceSize === 'small' ? styles.selectInputSizeSmall : undefined,
+          surface === 'brand' ? styles.surfaceBrand : undefined,
+          surface === 'light' ? styles.surfaceLight : undefined,
+          deviceSize === 'small' ? styles.sizeSmall : undefined,
+          disabled ? styles.disabled : undefined,
+          showError ? styles.error : undefined,
         )}>
         <select
           id={id}
@@ -145,11 +147,7 @@ const Select: FC<SelectProps> = ({
             </option>
           ))}
         </select>
-        <FontAwesomeIcon
-          icon={faChevronDown}
-          color="black"
-          className={styles.selectIcon}
-        />
+        <FontAwesomeIcon icon={faChevronDown} className={styles.selectIcon} />
       </div>
       {showError && (
         <div className={styles.errorContainer}>

@@ -129,7 +129,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           </Typography>
           <Select
             id="category-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: 'none', value: 'none', valueLabel: 'None' },
               ...Object.values(QuizCategory).map((category) => ({
@@ -157,7 +157,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           </Typography>
           <Select
             id="visibility-select"
-            kind="secondary"
+            surface="light"
             values={Object.values(QuizVisibility).map((visibility) => ({
               key: visibility,
               value: visibility,
@@ -182,7 +182,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           </Typography>
           <Select
             id="language-select"
-            kind="secondary"
+            surface="light"
             values={[
               { key: 'none', value: 'none', valueLabel: 'None' },
               ...Object.values(LanguageCode).map((languageCode) => ({

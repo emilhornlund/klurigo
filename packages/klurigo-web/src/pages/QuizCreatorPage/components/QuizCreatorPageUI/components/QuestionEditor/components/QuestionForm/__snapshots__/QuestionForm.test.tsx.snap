@@ -627,7 +627,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-points-select-select"
@@ -653,7 +653,6 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -702,7 +701,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-duration-select-select"
@@ -763,7 +762,6 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -1186,7 +1184,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-range-margin-select-select"
@@ -1222,7 +1220,6 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -1280,7 +1277,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-points-select-select"
@@ -1306,7 +1303,6 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -1355,7 +1351,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-duration-select-select"
@@ -1416,7 +1412,6 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -1803,7 +1798,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-points-select-select"
@@ -1829,7 +1824,6 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -1878,7 +1872,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-duration-select-select"
@@ -1939,7 +1933,6 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -2355,7 +2348,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-points-select-select"
@@ -2381,7 +2374,6 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -2430,7 +2422,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-duration-select-select"
@@ -2491,7 +2483,6 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
@@ -2820,7 +2811,7 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
           class="inputContainer"
         >
           <div
-            class="selectInputContainer selectInputKindPrimary"
+            class="selectInputContainer surfaceBrand"
           >
             <select
               data-testid="test-duration-select-select"
@@ -2881,7 +2872,6 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
             <svg
               aria-hidden="true"
               class="svg-inline--fa fa-chevron-down selectIcon"
-              color="black"
               data-icon="chevron-down"
               data-prefix="fas"
               role="img"
