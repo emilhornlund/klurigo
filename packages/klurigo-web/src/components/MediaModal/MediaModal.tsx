@@ -133,7 +133,7 @@ const MediaModal: FC<MediaModalProps> = ({
               <div className={styles.column}>
                 <SegmentedControl
                   id="selected-provider-segmented-control"
-                  kind="secondary"
+                  surface="light"
                   size="small"
                   value={selectedImageProvider}
                   values={[

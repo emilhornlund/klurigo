@@ -116,7 +116,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -128,7 +128,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -140,7 +140,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"
@@ -1210,7 +1210,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
               class="segmentedControl"
             >
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputActive"
+                class="segmentedControlItem surfaceBrand sizeNormal active"
               >
                 <button
                   data-testid="test-section-segmented-control_SUMMARY-segmented-control"
@@ -1222,7 +1222,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_PLAYERS-segmented-control"
@@ -1234,7 +1234,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                 </button>
               </div>
               <div
-                class="segmentedControlItem segmentedControlInputKindPrimary segmentedControlInputSizeNormal segmentedControlInputInactive"
+                class="segmentedControlItem surfaceBrand sizeNormal inactive"
               >
                 <button
                   data-testid="test-section-segmented-control_QUESTIONS-segmented-control"

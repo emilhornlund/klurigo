@@ -9,7 +9,7 @@ import styles from './SegmentedControl.module.scss'
 
 export interface SegmentedControlProps {
   id: string
-  kind?: 'primary' | 'secondary'
+  surface?: 'brand' | 'light'
   size?: 'normal' | 'small'
   value?: string | undefined
   values?: { key: string; value: string; valueLabel: string }[]
@@ -18,7 +18,7 @@ export interface SegmentedControlProps {
 
 const SegmentedControl: FC<SegmentedControlProps> = ({
   id,
-  kind = 'primary',
+  surface = 'brand',
   size = 'normal',
   value,
   values,
@@ -38,18 +38,12 @@ const SegmentedControl: FC<SegmentedControlProps> = ({
           key={item.key}
           className={classNames(
             styles.segmentedControlItem,
-            kind === 'primary'
-              ? styles.segmentedControlInputKindPrimary
-              : undefined,
-            kind === 'secondary'
-              ? styles.segmentedControlInputKindSecondary
-              : undefined,
-            deviceSize === 'small'
-              ? styles.segmentedControlInputSizeSmall
-              : styles.segmentedControlInputSizeNormal,
+            surface === 'brand' ? styles.surfaceBrand : undefined,
+            surface === 'light' ? styles.surfaceLight : undefined,
+            deviceSize === 'small' ? styles.sizeSmall : styles.sizeNormal,
             (value ? value === item.value : index === 0)
-              ? styles.segmentedControlInputActive
-              : styles.segmentedControlInputInactive,
+              ? styles.active
+              : styles.inactive,
           )}>
           <button
             id={`${id}_${item.value}`}
