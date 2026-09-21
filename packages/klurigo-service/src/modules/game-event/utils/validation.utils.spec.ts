@@ -206,10 +206,9 @@ describe('validation.utils', () => {
     })
 
     it('should work with valid game that has minimal required fields', () => {
-      const minimalGame = {
-        _id: createMockGameDocument()._id,
+      const minimalGame = createMockGameDocument({
         currentTask: createMockLobbyTaskDocument(),
-      }
+      })
 
       expect(() => validateGameDocument(minimalGame)).not.toThrow()
     })
