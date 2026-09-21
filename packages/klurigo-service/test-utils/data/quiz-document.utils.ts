@@ -3,6 +3,7 @@ import { QuizRatingAuthorType } from '@klurigo/common'
 import {
   QuizGameplaySummary,
   QuizRating,
+  QuizRatingSummary,
   QuizRatingUserAuthorWithBase,
 } from '../../src/modules/quiz-core/repositories/models/schemas'
 import { User } from '../../src/modules/user/repositories'
@@ -51,5 +52,18 @@ export function createMockQuizGameplaySummary(
     lastPlayedAt: undefined,
     updated: offsetSeconds(0),
     ...(quizGameplaySummary ?? {}),
+  }
+}
+
+export function createMockQuizRatingSummary(
+  quizRatingSummary?: Partial<QuizRatingSummary>,
+): QuizRatingSummary {
+  return {
+    count: 0,
+    avg: 0,
+    stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
+    commentCount: 0,
+    updated: undefined,
+    ...(quizRatingSummary ?? {}),
   }
 }

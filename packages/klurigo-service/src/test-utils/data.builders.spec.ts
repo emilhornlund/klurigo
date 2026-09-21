@@ -17,6 +17,7 @@ import {
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
   createMockQuizGameplaySummary,
+  createMockQuizRatingSummary,
   createMockRangeQuestionDocument,
   createMockTrueFalseQuestionDocument,
   createMockTypeAnswerQuestionDocument,
@@ -93,6 +94,7 @@ describe('backend test data builders', () => {
       title: 'Overridden request',
     })
     const rating = buildMockQuizRating({ stars: 4 })
+    const ratingSummary = createMockQuizRatingSummary({ avg: 4.5 })
 
     expect(question.type).toBe(QuestionType.MultiChoice)
     expect(question.text).toBe('Overridden question')
@@ -102,6 +104,7 @@ describe('backend test data builders', () => {
     expect(classicRequest.mode).toBe(GameMode.Classic)
     expect(zeroToOneHundredRequest.mode).toBe(GameMode.ZeroToOneHundred)
     expect(rating.author.type).toBeDefined()
+    expect(ratingSummary.avg).toBe(4.5)
   })
 
   it('repeats deterministic IDs and dates across equivalent builder calls', () => {
