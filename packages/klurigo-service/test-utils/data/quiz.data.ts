@@ -20,6 +20,10 @@ import {
   createMockTypeAnswerQuestionDocument,
   MOCK_QUESTION_INFO,
 } from './question.data'
+import {
+  createMockQuizGameplaySummary,
+  createMockQuizRatingSummary,
+} from './quiz-document.utils'
 import { buildMockPrimaryUser } from './user.data'
 
 export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
@@ -55,22 +59,8 @@ export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
       }),
     ],
     owner: buildMockPrimaryUser(),
-    gameplaySummary: {
-      count: 0,
-      totalPlayerCount: 0,
-      totalClassicCorrectCount: 0,
-      totalClassicIncorrectCount: 0,
-      totalClassicUnansweredCount: 0,
-      totalZeroToOneHundredPrecisionSum: 0,
-      totalZeroToOneHundredAnsweredCount: 0,
-      totalZeroToOneHundredUnansweredCount: 0,
-    },
-    ratingSummary: {
-      count: 0,
-      avg: 0,
-      stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
-      commentCount: 0,
-    },
+    gameplaySummary: createMockQuizGameplaySummary(),
+    ratingSummary: createMockQuizRatingSummary(),
     created: now,
     updated: now,
     ...(quiz ?? {}),
@@ -107,22 +97,8 @@ export function createMockZeroToOneHundredQuiz(quiz?: Partial<Quiz>): Quiz {
       },
     ],
     owner: buildMockPrimaryUser(),
-    gameplaySummary: {
-      count: 0,
-      totalPlayerCount: 0,
-      totalClassicCorrectCount: 0,
-      totalClassicIncorrectCount: 0,
-      totalClassicUnansweredCount: 0,
-      totalZeroToOneHundredPrecisionSum: 0,
-      totalZeroToOneHundredAnsweredCount: 0,
-      totalZeroToOneHundredUnansweredCount: 0,
-    },
-    ratingSummary: {
-      count: 0,
-      avg: 0,
-      stars: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
-      commentCount: 0,
-    },
+    gameplaySummary: createMockQuizGameplaySummary(),
+    ratingSummary: createMockQuizRatingSummary(),
     created: now,
     updated: now,
     ...(quiz ?? {}),
