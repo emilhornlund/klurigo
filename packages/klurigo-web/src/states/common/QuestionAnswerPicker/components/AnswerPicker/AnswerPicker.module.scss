@@ -176,7 +176,7 @@
       }
       &:nth-child(3) {
         div {
-          background-color: colors.$color-surface-accent;
+          background-color: colors.$color-surface-action;
 
           &:after {
             content: 'C';
@@ -194,7 +194,7 @@
       }
       &:nth-child(5) {
         div {
-          background-color: colors.$color-surface-info;
+          background-color: colors.$color-surface-action-alt;
 
           &:after {
             content: 'E';
@@ -203,7 +203,7 @@
       }
       &:nth-child(6) {
         div {
-          background-color: colors.$color-action-alt;
+          background-color: colors.$color-surface-info;
 
           &:after {
             content: 'F';
