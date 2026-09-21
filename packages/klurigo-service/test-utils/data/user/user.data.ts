@@ -1,8 +1,7 @@
 import { AuthProvider } from '@klurigo/common'
 
-import { GoogleUser, LocalUser } from '../../src/modules/user/repositories'
-
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
+import { GoogleUser, LocalUser } from '../../../src/modules/user/repositories'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
 
 export const MOCK_PRIMARY_USER_EMAIL = 'user@example.com'
 export const MOCK_PRIMARY_USER_GIVEN_NAME = 'John'

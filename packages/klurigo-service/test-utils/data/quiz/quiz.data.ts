@@ -8,9 +8,10 @@ import {
   QuizVisibility,
 } from '@klurigo/common'
 
-import { Quiz } from '../../src/modules/quiz-core/repositories/models/schemas'
+import { Quiz } from '../../../src/modules/quiz-core/repositories/models/schemas'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
+import { buildMockPrimaryUser } from '../user/user.data'
 
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
 import {
   createMockMultiChoiceQuestionDocument,
   createMockPinQuestionDocument,
@@ -24,7 +25,6 @@ import {
   createMockQuizGameplaySummary,
   createMockQuizRatingSummary,
 } from './quiz-document.utils'
-import { buildMockPrimaryUser } from './user.data'
 
 export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
   const now = offsetSeconds(0)

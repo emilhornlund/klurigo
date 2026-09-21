@@ -1,4 +1,4 @@
-import { GoogleProfileDto } from '../../src/modules/authentication/services/models'
+import { GoogleProfileDto } from '../../../src/modules/authentication/services/models'
 
 import {
   MOCK_PRIMARY_GOOGLE_USER_ID,

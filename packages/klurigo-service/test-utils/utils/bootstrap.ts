@@ -10,12 +10,13 @@ import { configureApp } from '../../src/app/utils'
 import { GoogleAuthService } from '../../src/modules/authentication/services'
 import { GoogleProfileDto } from '../../src/modules/authentication/services/models'
 import { PexelsMediaSearchService } from '../../src/modules/media/services'
-import { MOCK_PRIMARY_GOOGLE_USER_ID, MOCK_PRIMARY_USER_EMAIL } from '../data'
 import {
   MOCK_GOOGLE_ACCESS_TOKEN_VALID,
   MOCK_GOOGLE_VALID_CODE,
   MOCK_GOOGLE_VALID_CODE_VERIFIER,
-} from '../data/google-auth.data'
+  MOCK_PRIMARY_GOOGLE_USER_ID,
+  MOCK_PRIMARY_USER_EMAIL,
+} from '../data'
 
 const mockPexelsMediaSearchService = {
   searchPhotos: async () =>

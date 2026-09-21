@@ -15,6 +15,8 @@ import {
   buildMockPrimaryGoogleUser,
   buildMockPrimaryUser,
   createMockGameDocument,
+  MOCK_GOOGLE_VALID_CODE,
+  MOCK_GOOGLE_VALID_CODE_VERIFIER,
   MOCK_PRIMARY_GOOGLE_USER_ID,
   MOCK_PRIMARY_INVALID_PASSWORD,
   MOCK_PRIMARY_PASSWORD,
@@ -22,10 +24,6 @@ import {
   MOCK_SECONDARY_PASSWORD,
   MOCK_WEAK_PASSWORD,
 } from '../../../../test-utils/data'
-import {
-  MOCK_GOOGLE_VALID_CODE,
-  MOCK_GOOGLE_VALID_CODE_VERIFIER,
-} from '../../../../test-utils/data/google-auth.data'
 import {
   cleanupTestApp,
   createBearerAuthHeader,

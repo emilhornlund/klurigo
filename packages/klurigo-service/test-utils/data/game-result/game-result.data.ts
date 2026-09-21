@@ -4,14 +4,13 @@ import {
   GameResult,
   PlayerMetric,
   QuestionMetric,
-} from '../../src/modules/game-result/repositories/models/schemas'
-
+} from '../../../src/modules/game-result/repositories/models/schemas'
 import {
   MOCK_DEFAULT_PLAYER_ID,
   MOCK_DEFAULT_PLAYER_NICKNAME,
-} from './game.constants'
-import { createMockGameDocument } from './game.data'
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
+} from '../game/constants'
+import { createMockGameDocument } from '../game/game.data'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
 
 export function createMockGameResultDocument(
   gameResult?: Partial<GameResult>,
