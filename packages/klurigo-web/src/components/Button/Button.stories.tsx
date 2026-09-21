@@ -250,3 +250,28 @@ export const Loading = {
     </div>
   ),
 } satisfies Story
+
+export const EqualWidthActions = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+      <Button
+        id="grow-first-button"
+        type="button"
+        surface="light"
+        variant="outline"
+        value="Cancel"
+        grow
+      />
+
+      <Button
+        id="grow-second-button"
+        type="button"
+        surface="light"
+        intent="danger"
+        variant="primary"
+        value="Delete"
+        grow
+      />
+    </div>
+  ),
+} satisfies Story

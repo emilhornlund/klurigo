@@ -101,6 +101,22 @@ describe('Button', () => {
 
       expect(button.querySelector('span')).not.toBeInTheDocument()
     })
+
+    it('should grow to fill available flex space when grow is true', () => {
+      render(<Button id="my-button" type="button" value="My Button" grow />)
+
+      expect(
+        screen.getByTestId('test-my-button-button').parentElement,
+      ).toHaveClass(styles.grow)
+    })
+
+    it('should not grow by default', () => {
+      render(<Button id="my-button" type="button" value="My Button" />)
+
+      expect(
+        screen.getByTestId('test-my-button-button').parentElement,
+      ).not.toHaveClass(styles.grow)
+    })
   })
 
   describe('variants, surfaces and intents', () => {

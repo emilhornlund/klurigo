@@ -12,7 +12,7 @@ import type { FC, ReactNode } from 'react'
 import { useId } from 'react'
 
 import { classNames } from '../../utils/helpers'
-import Button from '../Button'
+import Button, { type ButtonProps } from '../Button'
 import Typography from '../Typography'
 
 import styles from './Modal.module.scss'
@@ -21,15 +21,30 @@ export interface ModalProps {
   title: string
   size?: 'normal' | 'large'
   open?: boolean
-  onClose?: () => void
+  closeAction?: ModalCloseAction
+  primaryAction?: ModalPrimaryAction
   children?: ReactNode | ReactNode[]
+}
+
+export interface ModalCloseAction {
+  label?: string
+  onClick: () => void
+}
+
+export interface ModalPrimaryAction {
+  label: string
+  intent?: ButtonProps['intent']
+  disabled?: boolean
+  loading?: boolean
+  onClick: () => void
 }
 
 const Modal: FC<ModalProps> = ({
   title,
   size = 'normal',
   open = false,
-  onClose,
+  closeAction,
+  primaryAction,
   children,
 }) => {
   const { refs, context } = useFloating({
@@ -66,7 +81,8 @@ const Modal: FC<ModalProps> = ({
             <Typography id={titleId} variant="title4" noOpacity>
               {title}
             </Typography>
-            {onClose && (
+
+            {closeAction && (
               <Button
                 id="close-modal-button"
                 type="button"
@@ -74,11 +90,45 @@ const Modal: FC<ModalProps> = ({
                 surface="brand"
                 icon={faXmark}
                 iconColor="gray"
-                onClick={onClose}
+                onClick={closeAction.onClick}
               />
             )}
           </div>
+
           <div className={styles.content}>{children}</div>
+
+          {(closeAction?.label || primaryAction) && (
+            <div className={styles.actions}>
+              {closeAction?.label && (
+                <Button
+                  id="modal-close-action-button"
+                  type="button"
+                  variant="outline"
+                  surface="light"
+                  size="small"
+                  value={closeAction.label}
+                  onClick={closeAction.onClick}
+                  grow
+                />
+              )}
+
+              {primaryAction && (
+                <Button
+                  id="modal-primary-action-button"
+                  type="button"
+                  variant="primary"
+                  surface="light"
+                  intent={primaryAction.intent ?? 'default'}
+                  size="small"
+                  value={primaryAction.label}
+                  disabled={primaryAction.disabled}
+                  loading={primaryAction.loading}
+                  onClick={primaryAction.onClick}
+                  grow
+                />
+              )}
+            </div>
+          )}
         </div>
       </FloatingFocusManager>
     </FloatingOverlay>

@@ -116,5 +116,21 @@
         @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
     }
+
+    .actions {
+      display: flex;
+
+      @include helpers.mobile {
+        column-gap: spacing.$space-compact-mobile;
+      }
+
+      @include helpers.tablet {
+        column-gap: spacing.$space-compact-tablet;
+      }
+
+      @include helpers.desktop {
+        column-gap: spacing.$space-compact-desktop;
+      }
+    }
   }
 }

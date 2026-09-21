@@ -45,7 +45,10 @@ const GameSettingsModal: FC<GameSettingsModalProps> = ({
   }
 
   return (
-    <Modal title="Game Settings" open={open} onClose={onClose}>
+    <Modal
+      title="Game Settings"
+      open={open}
+      closeAction={{ onClick: () => onClose?.() }}>
       <Switch
         id="randomize-question-order-switch"
         label="Randomize order of questions"

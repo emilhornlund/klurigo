@@ -29,7 +29,7 @@ export type {
 } from './MediaInfoCard'
 export type { MediaModalProps } from './MediaModal'
 export type { MenuProps, MenuItemProps } from './Menu'
-export type { ModalProps } from './Modal'
+export type { ModalProps, ModalCloseAction, ModalPrimaryAction } from './Modal'
 export type {
   NicknameChipProps,
   NicknameChipVariant,

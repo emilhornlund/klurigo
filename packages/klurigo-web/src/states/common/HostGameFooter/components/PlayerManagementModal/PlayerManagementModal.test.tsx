@@ -49,18 +49,18 @@ vi.mock('../../../../../components', () => ({
   Modal: ({
     title,
     open,
-    onClose,
+    closeAction,
     children,
   }: {
     title: string
     open?: boolean
-    onClose?: () => void
+    closeAction?: { onClick: () => void }
     children: React.ReactNode
   }) =>
     open ? (
       <div data-testid="modal">
         <h1>{title}</h1>
-        <button data-testid="modal-close" onClick={onClose}>
+        <button data-testid="modal-close" onClick={closeAction?.onClick}>
           close
         </button>
         {children}
@@ -406,7 +406,7 @@ describe('PlayerManagementModal', () => {
     })
   })
 
-  it('wires Modal onClose through to the provided onClose prop', () => {
+  it('wires Modal closeAction through to the provided onClose prop', () => {
     const onClose = vi.fn()
 
     mockedUseGameContext.mockReturnValue({

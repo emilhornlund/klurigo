@@ -32,26 +32,5 @@
     @include helpers.desktop {
       row-gap: spacing.$space-inline-desktop;
     }
-
-    &.buttonGroup {
-      display: flex;
-      flex-direction: row;
-
-      @include helpers.mobile {
-        column-gap: spacing.$space-compact-mobile;
-      }
-
-      @include helpers.tablet {
-        column-gap: spacing.$space-compact-tablet;
-      }
-
-      @include helpers.desktop {
-        column-gap: spacing.$space-compact-desktop;
-      }
-
-      > div {
-        flex: 1;
-      }
-    }
   }
 }

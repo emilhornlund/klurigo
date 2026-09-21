@@ -501,6 +501,31 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
         >
           Start Game Without Players?
         </h4>
+        <div
+          class="buttonContainer variantPlain surfaceBrand intentDefault"
+        >
+          <button
+            data-testid="test-close-modal-button-button"
+            id="close-modal-button"
+            name="close-modal-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-xmark"
+              color="gray"
+              data-icon="xmark"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 384 512"
+            >
+              <path
+                d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div
         class="content"
@@ -510,37 +535,37 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
         >
           There are no players in the game. Are you sure you want to start the game anyway?
         </p>
+      </div>
+      <div
+        class="actions"
+      >
         <div
-          class="actions"
+          class="buttonContainer variantOutline surfaceLight intentDefault sizeSmall grow"
         >
-          <div
-            class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
+          <button
+            data-testid="test-modal-close-action-button-button"
+            id="modal-close-action-button"
+            name="modal-close-action-button"
+            type="button"
           >
-            <button
-              data-testid="test-confirm-button-button"
-              id="confirm-button"
-              name="confirm-button"
-              type="button"
-            >
-              <span>
-                Start Game
-              </span>
-            </button>
-          </div>
-          <div
-            class="buttonContainer variantOutline surfaceLight intentDefault sizeSmall"
+            <span>
+              Close
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceLight intentDefault sizeSmall grow"
+        >
+          <button
+            data-testid="test-modal-primary-action-button-button"
+            id="modal-primary-action-button"
+            name="modal-primary-action-button"
+            type="button"
           >
-            <button
-              data-testid="test-close-button-button"
-              id="close-button"
-              name="close-button"
-              type="button"
-            >
-              <span>
-                Close
-              </span>
-            </button>
-          </div>
+            <span>
+              Start Game
+            </span>
+          </button>
         </div>
       </div>
     </div>

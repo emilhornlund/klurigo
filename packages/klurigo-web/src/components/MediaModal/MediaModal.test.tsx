@@ -22,41 +22,49 @@ vi.mock('../Modal', () => ({
   default: ({
     title,
     open,
-    onClose,
+    closeAction,
+    primaryAction,
     children,
   }: {
     title: string
     open: boolean
-    onClose: () => void
+    closeAction?: { label?: string; onClick: () => void }
+    primaryAction?: {
+      label: string
+      disabled?: boolean
+      loading?: boolean
+      onClick: () => void
+    }
     children: React.ReactNode
   }) =>
     open ? (
       <div data-testid="modal">
         <div data-testid="modal-title">{title}</div>
-        <button data-testid="modal-close" onClick={onClose}>
+        <button data-testid="modal-close" onClick={closeAction?.onClick}>
           modal-close
         </button>
         {children}
+        {(closeAction?.label || primaryAction) && (
+          <div data-testid="modal-actions">
+            {closeAction?.label && (
+              <button
+                data-testid="test-modal-close-action-button-button"
+                onClick={closeAction.onClick}>
+                {closeAction.label}
+              </button>
+            )}
+            {primaryAction && (
+              <button
+                data-testid="test-modal-primary-action-button-button"
+                disabled={primaryAction.disabled || primaryAction.loading}
+                onClick={primaryAction.onClick}>
+                {primaryAction.label}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     ) : null,
-}))
-
-vi.mock('../Button', () => ({
-  default: ({
-    id,
-    value,
-    disabled,
-    onClick,
-  }: {
-    id?: string
-    value?: string
-    disabled?: boolean
-    onClick?: () => void
-  }) => (
-    <button id={id} disabled={disabled} onClick={onClick}>
-      {value ?? id}
-    </button>
-  ),
 }))
 
 vi.mock('../Select', () => ({
@@ -254,7 +262,9 @@ describe('MediaModal', () => {
     ).toHaveTextContent('1')
 
     // Apply disabled because initial internalValid.url is false
-    expect(document.getElementById('apply-button')).toBeDisabled()
+    expect(
+      screen.getByTestId('test-modal-primary-action-button-button'),
+    ).toBeDisabled()
   })
 
   it('applies (calls onChange, onValid(true), onClose) when URL becomes valid and Apply is clicked', () => {
@@ -272,7 +282,7 @@ describe('MediaModal', () => {
 
     fireEvent.change(urlInput, { target: { value: good } })
 
-    const apply = document.getElementById('apply-button') as HTMLButtonElement
+    const apply = screen.getByTestId('test-modal-primary-action-button-button')
     expect(apply).not.toBeDisabled()
 
     fireEvent.click(apply)
@@ -291,7 +301,7 @@ describe('MediaModal', () => {
       <MediaModal onChange={onChange} onValid={onValid} onClose={onClose} />,
     )
 
-    fireEvent.click(document.getElementById('close-button') as HTMLElement)
+    fireEvent.click(screen.getByTestId('test-modal-close-action-button-button'))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
@@ -317,7 +327,7 @@ describe('MediaModal', () => {
       target: { value: 'https://example.com/a.jpg' },
     })
 
-    const apply = document.getElementById('apply-button') as HTMLButtonElement
+    const apply = screen.getByTestId('test-modal-primary-action-button-button')
     expect(apply).not.toBeDisabled()
 
     fireEvent.change(screen.getByTestId('select-media-type-select-native'), {
@@ -327,7 +337,9 @@ describe('MediaModal', () => {
     expect(screen.getByTestId('input-media-url-textfield')).toHaveValue('')
 
     await waitFor(() => {
-      expect(document.getElementById('apply-button')).toBeDisabled()
+      expect(
+        screen.getByTestId('test-modal-primary-action-button-button'),
+      ).toBeDisabled()
     })
   })
 
@@ -364,11 +376,15 @@ describe('MediaModal', () => {
     fireEvent.click(screen.getByTestId('pexels-pick'))
 
     await waitFor(() => {
-      const apply = document.getElementById('apply-button') as HTMLButtonElement
+      const apply = screen.getByTestId(
+        'test-modal-primary-action-button-button',
+      )
       expect(apply).not.toBeDisabled()
     })
 
-    fireEvent.click(document.getElementById('apply-button') as HTMLElement)
+    fireEvent.click(
+      screen.getByTestId('test-modal-primary-action-button-button'),
+    )
 
     const urlInput = screen.getByTestId(
       'input-media-url-textfield',
