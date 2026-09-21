@@ -5,8 +5,13 @@ import { Test } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
 import {
+  createMockClassicQuiz,
   createMockGameDocument,
+  createMockGameHostParticipantDocument,
+  createMockGamePlayerParticipantDocument,
+  createMockLobbyTaskDocument,
   createMockMultiChoiceQuestionDocument,
+  createMockPodiumTaskDocument,
   createMockQuestionResultTaskDocument,
   createMockQuestionTaskDocument,
   createMockRangeQuestionDocument,
@@ -19,6 +24,10 @@ import {
   GameRepository,
 } from '../../game-core/repositories'
 import { TaskType } from '../../game-core/repositories/models/schemas'
+import type {
+  Game,
+  QuestionResultTaskCorrectAnswer,
+} from '../../game-core/repositories/models/schemas'
 import { GameEventPublisher } from '../../game-event/services'
 import { GameTaskTransitionScheduler } from '../../game-task/services'
 import { QuizRepository } from '../../quiz-core/repositories'
@@ -129,23 +138,22 @@ describe(GameService.name, () => {
     })
 
     it('maps host participant to host history dto', async () => {
+      const game = createMockGameDocument({
+        _id: 'g-1',
+        name: 'Game 1',
+        created: new Date('2026-01-01T10:00:00.000Z'),
+        quiz: createMockClassicQuiz({
+          imageCoverURL: 'https://example.test/cover.png',
+        }),
+        currentTask: createMockLobbyTaskDocument(),
+        participants: [
+          createMockGameHostParticipantDocument({ participantId: 'p-host' }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-1',
-              name: 'Game 1',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Lobby },
-              created: '2026-01-01T10:00:00.000Z',
-              quiz: { imageCoverURL: 'https://example.test/cover.png' },
-              participants: [
-                { participantId: 'p-host', type: GameParticipantType.HOST },
-              ],
-            },
-          ],
+          results: [game],
           total: 1,
         })
 
@@ -156,10 +164,10 @@ describe(GameService.name, () => {
           {
             id: 'g-1',
             name: 'Game 1',
-            mode: 'Classic',
+            mode: game.mode,
             status: GameStatus.Active,
             imageCoverURL: 'https://example.test/cover.png',
-            created: '2026-01-01T10:00:00.000Z',
+            created: game.created,
             participantType: GameParticipantType.HOST,
           },
         ],
@@ -170,28 +178,24 @@ describe(GameService.name, () => {
     })
 
     it('maps player participant to player history dto including rank and score', async () => {
+      const game = createMockGameDocument({
+        _id: 'g-2',
+        name: 'Game 2',
+        created: new Date('2026-01-01T11:00:00.000Z'),
+        quiz: createMockClassicQuiz({ imageCoverURL: undefined }),
+        currentTask: createMockLobbyTaskDocument(),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'p-1',
+            rank: 3,
+            totalScore: 420,
+          }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-2',
-              name: 'Game 2',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Lobby },
-              created: '2026-01-01T11:00:00.000Z',
-              quiz: { imageCoverURL: undefined },
-              participants: [
-                {
-                  participantId: 'p-1',
-                  type: GameParticipantType.PLAYER,
-                  rank: 3,
-                  totalScore: 420,
-                },
-              ],
-            },
-          ],
+          results: [game],
           total: 1,
         })
 
@@ -200,10 +204,10 @@ describe(GameService.name, () => {
       expect(result.results[0]).toEqual({
         id: 'g-2',
         name: 'Game 2',
-        mode: 'Classic',
+        mode: game.mode,
         status: GameStatus.Active,
         imageCoverURL: undefined,
-        created: '2026-01-01T11:00:00.000Z',
+        created: game.created,
         participantType: GameParticipantType.PLAYER,
         rank: 3,
         score: 420,
@@ -211,22 +215,19 @@ describe(GameService.name, () => {
     })
 
     it('forces status to Completed when game is Active and current task is Podium', async () => {
+      const game = createMockGameDocument({
+        _id: 'g-3',
+        name: 'Game 3',
+        created: new Date('2026-01-01T12:00:00.000Z'),
+        currentTask: createMockPodiumTaskDocument(),
+        participants: [
+          createMockGameHostParticipantDocument({ participantId: 'p-1' }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-3',
-              name: 'Game 3',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Podium },
-              created: '2026-01-01T12:00:00.000Z',
-              participants: [
-                { participantId: 'p-1', type: GameParticipantType.HOST },
-              ],
-            },
-          ],
+          results: [game],
           total: 1,
         })
 
@@ -240,27 +241,24 @@ describe(GameService.name, () => {
     })
 
     it('keeps status as Completed when repository returns Completed', async () => {
+      const game = createMockGameDocument({
+        _id: 'g-4',
+        name: 'Game 4',
+        status: GameStatus.Completed,
+        created: new Date('2026-01-01T13:00:00.000Z'),
+        currentTask: createMockPodiumTaskDocument(),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'p-1',
+            rank: 1,
+            totalScore: 999,
+          }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-4',
-              name: 'Game 4',
-              mode: 'Classic',
-              status: GameStatus.Completed,
-              currentTask: { type: TaskType.Podium },
-              created: '2026-01-01T13:00:00.000Z',
-              participants: [
-                {
-                  participantId: 'p-1',
-                  type: GameParticipantType.PLAYER,
-                  rank: 1,
-                  totalScore: 999,
-                },
-              ],
-            },
-          ],
+          results: [game],
           total: 1,
         })
 
@@ -276,25 +274,21 @@ describe(GameService.name, () => {
     })
 
     it('throws when the participant is not present in a returned game', async () => {
+      const game = createMockGameDocument({
+        _id: 'g-missing',
+        name: 'Missing',
+        created: new Date('2026-01-01T14:00:00.000Z'),
+        currentTask: createMockLobbyTaskDocument(),
+        participants: [
+          createMockGameHostParticipantDocument({
+            participantId: 'someone-else',
+          }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-missing',
-              name: 'Missing',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Lobby },
-              created: '2026-01-01T14:00:00.000Z',
-              participants: [
-                {
-                  participantId: 'someone-else',
-                  type: GameParticipantType.HOST,
-                },
-              ],
-            },
-          ],
+          results: [game],
           total: 1,
         })
 
@@ -327,40 +321,38 @@ describe(GameService.name, () => {
     })
 
     it('maps multiple games and preserves total/limit/offset', async () => {
+      const firstGame = createMockGameDocument({
+        _id: 'g-1',
+        name: 'Game 1',
+        created: new Date('2026-01-01T10:00:00.000Z'),
+        quiz: createMockClassicQuiz({
+          imageCoverURL: 'https://example.test/c1.png',
+        }),
+        currentTask: createMockLobbyTaskDocument(),
+        participants: [
+          createMockGameHostParticipantDocument({ participantId: 'p-1' }),
+        ],
+      })
+      const secondGame = createMockGameDocument({
+        _id: 'g-2',
+        name: 'Game 2',
+        created: new Date('2026-01-01T11:00:00.000Z'),
+        quiz: createMockClassicQuiz({
+          imageCoverURL: 'https://example.test/c2.png',
+        }),
+        currentTask: createMockPodiumTaskDocument(),
+        participants: [
+          createMockGamePlayerParticipantDocument({
+            participantId: 'p-1',
+            rank: 2,
+            totalScore: 200,
+          }),
+        ],
+      })
       gameRepository.findGamesByParticipantId = jest
         .fn()
         .mockResolvedValueOnce({
-          results: [
-            {
-              _id: 'g-1',
-              name: 'Game 1',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Lobby },
-              created: '2026-01-01T10:00:00.000Z',
-              quiz: { imageCoverURL: 'https://example.test/c1.png' },
-              participants: [
-                { participantId: 'p-1', type: GameParticipantType.HOST },
-              ],
-            },
-            {
-              _id: 'g-2',
-              name: 'Game 2',
-              mode: 'Classic',
-              status: GameStatus.Active,
-              currentTask: { type: TaskType.Podium },
-              created: '2026-01-01T11:00:00.000Z',
-              quiz: { imageCoverURL: 'https://example.test/c2.png' },
-              participants: [
-                {
-                  participantId: 'p-1',
-                  type: GameParticipantType.PLAYER,
-                  rank: 2,
-                  totalScore: 200,
-                },
-              ],
-            },
-          ],
+          results: [firstGame, secondGame],
           total: 123,
         })
 
@@ -371,19 +363,19 @@ describe(GameService.name, () => {
           {
             id: 'g-1',
             name: 'Game 1',
-            mode: 'Classic',
+            mode: firstGame.mode,
             status: GameStatus.Active,
             imageCoverURL: 'https://example.test/c1.png',
-            created: '2026-01-01T10:00:00.000Z',
+            created: firstGame.created,
             participantType: GameParticipantType.HOST,
           },
           {
             id: 'g-2',
             name: 'Game 2',
-            mode: 'Classic',
+            mode: secondGame.mode,
             status: GameStatus.Completed,
             imageCoverURL: 'https://example.test/c2.png',
-            created: '2026-01-01T11:00:00.000Z',
+            created: secondGame.created,
             participantType: GameParticipantType.PLAYER,
             rank: 2,
             score: 200,
@@ -498,12 +490,10 @@ describe(GameService.name, () => {
 
   describe('joinGame', () => {
     beforeEach(() => {
-      const gameDocument = {
+      const gameDocument = createMockGameDocument({
         _id: 'game-123',
-        status: GameStatus.Active,
-        currentTask: { type: TaskType.Lobby },
-        participants: [],
-      }
+        currentTask: createMockLobbyTaskDocument(),
+      })
       gameRepository.findGameByIDOrThrow = jest
         .fn()
         .mockResolvedValue(gameDocument)
@@ -596,12 +586,10 @@ describe(GameService.name, () => {
     })
 
     it('rejects joining while the final Podium leaderboard is active', async () => {
-      const gameDoc = {
+      const gameDoc = createMockGameDocument({
         _id: 'game-123',
-        status: GameStatus.Active,
-        currentTask: { type: TaskType.Podium },
-        participants: [],
-      }
+        currentTask: createMockPodiumTaskDocument(),
+      })
       gameRepository.findGameByIDOrThrow.mockResolvedValueOnce(gameDoc)
       gameRepository.findAndSaveWithLockIfChanged.mockImplementationOnce(
         async (_gameId: string, callback: (game: typeof gameDoc) => unknown) =>
@@ -628,7 +616,7 @@ describe(GameService.name, () => {
         publish: jest.fn().mockResolvedValue(undefined),
       }
       gameRepository.findAndSaveWithLock.mockImplementation(
-        async (gameId: string, callback: (game: any) => Promise<any>) =>
+        async (gameId: string, callback: (game: Game) => Promise<Game>) =>
           callback(await gameRepository.findGameByIDOrThrow(gameId)),
       )
       ;(
@@ -642,15 +630,15 @@ describe(GameService.name, () => {
     })
 
     it('schedules transition when answerCount equals playerCount', async () => {
-      const gameDoc = {
+      const gameDoc = createMockGameDocument({
         _id: 'game-1',
-        currentTask: { type: TaskType.Question, status: 'active' },
+        currentTask: createMockQuestionTaskDocument({ status: 'active' }),
         participants: [
-          { participantId: 'p1', type: GameParticipantType.PLAYER },
-          { participantId: 'p2', type: GameParticipantType.PLAYER },
-          { participantId: 'host', type: GameParticipantType.HOST },
+          createMockGamePlayerParticipantDocument({ participantId: 'p1' }),
+          createMockGamePlayerParticipantDocument({ participantId: 'p2' }),
+          createMockGameHostParticipantDocument({ participantId: 'host' }),
         ],
-      }
+      })
       gameRepository.findGameByIDOrThrow.mockResolvedValue(gameDoc)
       gameAnswerRepository.submitOnce.mockResolvedValue({
         accepted: true,
@@ -660,12 +648,13 @@ describe(GameService.name, () => {
       await service.submitQuestionAnswer('game-1', 'p1', {
         type: QuestionType.MultiChoice,
         optionIndex: 1,
-      } as any)
+      })
 
       expect(gameAnswerRepository.submitOnce).toHaveBeenCalledWith(
         'game-1',
         expect.objectContaining({ playerId: 'p1' }),
         2,
+        gameDoc.currentTask._id,
       )
       expect(
         gameTaskTransitionScheduler.scheduleTaskTransition,
@@ -674,16 +663,16 @@ describe(GameService.name, () => {
     })
 
     it('publishes event when answerCount does not equal playerCount', async () => {
-      const gameDoc = {
+      const gameDoc = createMockGameDocument({
         _id: 'game-1',
-        currentTask: { type: TaskType.Question, status: 'active' },
+        currentTask: createMockQuestionTaskDocument({ status: 'active' }),
         participants: [
-          { participantId: 'p1', type: GameParticipantType.PLAYER },
-          { participantId: 'p2', type: GameParticipantType.PLAYER },
-          { participantId: 'p3', type: GameParticipantType.PLAYER },
-          { participantId: 'host', type: GameParticipantType.HOST },
+          createMockGamePlayerParticipantDocument({ participantId: 'p1' }),
+          createMockGamePlayerParticipantDocument({ participantId: 'p2' }),
+          createMockGamePlayerParticipantDocument({ participantId: 'p3' }),
+          createMockGameHostParticipantDocument({ participantId: 'host' }),
         ],
-      }
+      })
       gameRepository.findGameByIDOrThrow.mockResolvedValue(gameDoc)
       gameAnswerRepository.submitOnce.mockResolvedValue({
         accepted: true,
@@ -693,12 +682,13 @@ describe(GameService.name, () => {
       await service.submitQuestionAnswer('game-1', 'p1', {
         type: QuestionType.MultiChoice,
         optionIndex: 2,
-      } as any)
+      })
 
       expect(gameAnswerRepository.submitOnce).toHaveBeenCalledWith(
         'game-1',
         expect.objectContaining({ playerId: 'p1' }),
         3,
+        gameDoc.currentTask._id,
       )
       expect(gameEventPublisher.publish).toHaveBeenCalledWith(gameDoc)
       expect(
@@ -707,13 +697,13 @@ describe(GameService.name, () => {
     })
 
     it('throws BadRequestException when repository rejects submission', async () => {
-      const gameDoc = {
+      const gameDoc = createMockGameDocument({
         _id: 'game-1',
-        currentTask: { type: TaskType.Question, status: 'active' },
+        currentTask: createMockQuestionTaskDocument({ status: 'active' }),
         participants: [
-          { participantId: 'p1', type: GameParticipantType.PLAYER },
+          createMockGamePlayerParticipantDocument({ participantId: 'p1' }),
         ],
-      }
+      })
       gameRepository.findGameByIDOrThrow.mockResolvedValue(gameDoc)
       gameAnswerRepository.submitOnce.mockRejectedValue(
         new Error('Redis connection failed'),
@@ -723,13 +713,14 @@ describe(GameService.name, () => {
         service.submitQuestionAnswer('game-1', 'p1', {
           type: QuestionType.MultiChoice,
           optionIndex: 1,
-        } as any),
+        }),
       ).rejects.toThrow('Redis connection failed')
 
       expect(gameAnswerRepository.submitOnce).toHaveBeenCalledWith(
         'game-1',
         expect.objectContaining({ playerId: 'p1' }),
         1,
+        gameDoc.currentTask._id,
       )
       expect(
         gameTaskTransitionScheduler.scheduleTaskTransition,
@@ -747,14 +738,20 @@ describe(GameService.name, () => {
         service as unknown as { gameEventPublisher: { publish: jest.Mock } }
       ).gameEventPublisher = gameEventPublisher
       gameRepository.findAndSaveWithLockIfChanged.mockImplementation(
-        async (gameId: string, callback: (game: any) => Promise<any>) => {
+        async (
+          gameId: string,
+          callback: (game: Game) => Promise<Game | undefined>,
+        ) => {
           const game = await gameRepository.findGameByIDOrThrow(gameId)
           return (await callback(game)) ?? game
         },
       )
     })
 
-    function buildGame(question: any, correctAnswers: any[]) {
+    function buildGame(
+      question: Game['questions'][number],
+      correctAnswers: QuestionResultTaskCorrectAnswer[],
+    ) {
       return createMockGameDocument({
         questions: [question],
         currentTask: createMockQuestionResultTaskDocument({
@@ -771,6 +768,14 @@ describe(GameService.name, () => {
           }),
         ],
       })
+    }
+
+    function getQuestionResultTask(game: Game) {
+      if (game.currentTask.type !== TaskType.QuestionResult) {
+        throw new Error('Expected a question result task')
+      }
+
+      return game.currentTask
     }
 
     it('adds, deduplicates, and removes multi-choice answers', async () => {
@@ -796,7 +801,7 @@ describe(GameService.name, () => {
         index: 0,
       })
 
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.MultiChoice, index: 1 },
       ])
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(4)
@@ -822,7 +827,7 @@ describe(GameService.name, () => {
         value: 'COPENHAGEN',
       })
 
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.TypeAnswer, value: 'Kobenhavn' },
       ])
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(3)
@@ -840,7 +845,7 @@ describe(GameService.name, () => {
           value: ' ',
         }),
       ).rejects.toThrow('Correct type-answer value is invalid')
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.TypeAnswer, value: 'Copenhagen' },
       ])
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
@@ -868,7 +873,7 @@ describe(GameService.name, () => {
       ).rejects.toThrow(
         'The current question already has the maximum number of accepted answers',
       )
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.TypeAnswer, value: 'Alpha' },
         { type: QuestionType.TypeAnswer, value: 'Bravo' },
         { type: QuestionType.TypeAnswer, value: 'Charlie' },
@@ -877,7 +882,12 @@ describe(GameService.name, () => {
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
     })
 
-    it.each([
+    const singletonCorrectAnswerCases: Array<{
+      question: Game['questions'][number]
+      current: QuestionResultTaskCorrectAnswer[]
+      request: Parameters<GameService['addCorrectAnswer']>[1]
+      expected: QuestionResultTaskCorrectAnswer[]
+    }> = [
       {
         question: createMockTrueFalseQuestionDocument({ correct: true }),
         current: [{ type: QuestionType.TrueFalse, value: true }],
@@ -896,17 +906,22 @@ describe(GameService.name, () => {
         request: { type: QuestionType.Range, value: 40 },
         expected: [{ type: QuestionType.Range, value: 40 }],
       },
-    ])('atomically replaces singleton correct answers', async (testCase) => {
-      const game = buildGame(testCase.question, testCase.current)
-      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+    ]
 
-      await service.addCorrectAnswer('game-1', testCase.request as any)
+    it.each(singletonCorrectAnswerCases)(
+      'atomically replaces singleton correct answers',
+      async (testCase) => {
+        const game = buildGame(testCase.question, testCase.current)
+        gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
 
-      expect((game.currentTask as any).correctAnswers).toEqual(
-        testCase.expected,
-      )
-      expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
-    })
+        await service.addCorrectAnswer('game-1', testCase.request)
+
+        expect(getQuestionResultTask(game).correctAnswers).toEqual(
+          testCase.expected,
+        )
+        expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+      },
+    )
 
     it('accepts both configured range boundaries', async () => {
       const game = buildGame(
@@ -924,34 +939,46 @@ describe(GameService.name, () => {
         value: 100,
       })
 
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.Range, value: 100 },
       ])
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(2)
     })
 
-    it.each([
+    const singletonDeletionCases: Array<
+      Extract<
+        Parameters<GameService['deleteCorrectAnswer']>[1],
+        {
+          type: QuestionType.TrueFalse | QuestionType.Range
+        }
+      >
+    > = [
       { type: QuestionType.TrueFalse, value: false },
       { type: QuestionType.Range, value: 50 },
-    ])('rejects deleting a singleton correct answer', async (request) => {
-      const question =
-        request.type === QuestionType.TrueFalse
-          ? createMockTrueFalseQuestionDocument({
-              correct: request.value as boolean,
-            })
-          : createMockRangeQuestionDocument({
-              correct: request.value as number,
-            })
-      const game = buildGame(question, [request])
-      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+    ]
 
-      await expect(
-        service.deleteCorrectAnswer('game-1', request as any),
-      ).rejects.toThrow('Cannot delete the only correct')
+    it.each(singletonDeletionCases)(
+      'rejects deleting a singleton correct answer',
+      async (request) => {
+        const question =
+          request.type === QuestionType.TrueFalse
+            ? createMockTrueFalseQuestionDocument({
+                correct: request.value,
+              })
+            : createMockRangeQuestionDocument({
+                correct: request.value,
+              })
+        const game = buildGame(question, [request])
+        gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
 
-      expect((game.currentTask as any).correctAnswers).toEqual([request])
-      expect(gameEventPublisher.publish).not.toHaveBeenCalled()
-    })
+        await expect(
+          service.deleteCorrectAnswer('game-1', request),
+        ).rejects.toThrow('Cannot delete the only correct')
+
+        expect(getQuestionResultTask(game).correctAnswers).toEqual([request])
+        expect(gameEventPublisher.publish).not.toHaveBeenCalled()
+      },
+    )
 
     it('rejects mismatched and contextually invalid answers', async () => {
       const game = buildGame(createMockMultiChoiceQuestionDocument(), [
@@ -972,7 +999,7 @@ describe(GameService.name, () => {
         }),
       ).rejects.toThrow('does not belong to the current question')
 
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.MultiChoice, index: 0 },
       ])
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
@@ -995,7 +1022,7 @@ describe(GameService.name, () => {
         }),
       ).rejects.toThrow('does not belong to the current question')
 
-      expect((game.currentTask as any).correctAnswers).toEqual([])
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([])
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
     })
 
@@ -1019,7 +1046,7 @@ describe(GameService.name, () => {
         }),
       ).rejects.toThrow('within the current question range')
 
-      expect((game.currentTask as any).correctAnswers).toEqual([
+      expect(getQuestionResultTask(game).correctAnswers).toEqual([
         { type: QuestionType.Range, value: 50 },
       ])
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
