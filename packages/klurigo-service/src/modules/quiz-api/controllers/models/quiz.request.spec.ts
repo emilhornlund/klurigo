@@ -1,15 +1,17 @@
 import {
-  GameMode,
   LanguageCode,
   MediaType,
   QuestionImageRevealEffectType,
-  QuestionType,
-  QuizCategory,
-  QuizClassicModeRequestDto,
   QuizVisibility,
 } from '@klurigo/common'
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
+
+import {
+  createMockClassicQuizRequestDto,
+  createMockQuestionMediaDto,
+  createMockQuestionMultiChoiceDto,
+} from '../../../../../test-utils/data'
 
 import {
   QuestionAudioMedia,
@@ -20,58 +22,22 @@ import { QuestionMultiChoice } from './question-multi-choice'
 import { QuizClassicRequest } from './quiz-classic.request'
 
 describe('QuizRequest', () => {
-  const validData: QuizClassicModeRequestDto = {
-    title: 'Trivia Battle',
-    description: 'A fun and engaging trivia quiz for all ages.',
-    mode: GameMode.Classic,
-    visibility: QuizVisibility.Public,
-    category: QuizCategory.GeneralKnowledge,
-    imageCoverURL: 'https://example.com/question-cover-image.png',
-    languageCode: LanguageCode.English,
-    questions: [
-      {
-        type: QuestionType.MultiChoice,
-        question: 'What is the capital of Sweden?',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
-        options: [
-          {
-            value: 'Stockholm',
-            correct: true,
-          },
-          {
-            value: 'Copenhagen',
-            correct: false,
-          },
-          {
-            value: 'London',
-            correct: false,
-          },
-          {
-            value: 'Berlin',
-            correct: false,
-          },
-        ],
-        points: 1000,
-        duration: 30,
-        info: 'This is an info text displayed along the question result.',
-      },
-    ],
-  }
-
   it('should pass validation with valid data', async () => {
-    const response = plainToInstance(QuizClassicRequest, validData)
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto(),
+    )
     const errors = await validate(response, { whitelist: true })
     expect(errors).toHaveLength(0)
   })
 
   it('should fail if `title` is too short', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      title: 'Hi',
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({
+        title: 'Hi',
+      }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('title')
@@ -79,10 +45,10 @@ describe('QuizRequest', () => {
   })
 
   it('should fail if `title` exceeds the maximum length', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      title: 'A'.repeat(96),
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({ title: 'A'.repeat(96) }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('title')
@@ -90,10 +56,10 @@ describe('QuizRequest', () => {
   })
 
   it('should fail if `title` does not match the regex pattern', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      title: 'Invalid\nTitle',
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({ title: 'Invalid\nTitle' }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('title')
@@ -101,10 +67,10 @@ describe('QuizRequest', () => {
   })
 
   it('should fail if `description` exceeds 500 characters', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      description: 'A'.repeat(501),
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({ description: 'A'.repeat(501) }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('description')
@@ -112,76 +78,69 @@ describe('QuizRequest', () => {
   })
 
   it('should pass if `description` is optional', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      description: undefined,
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({
+        description: undefined,
+      }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(0)
   })
 
   it('should fail if `visibility` is not valid', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      visibility: 'not-valid',
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({
+        visibility: 'not-valid' as QuizVisibility,
+      }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('visibility')
   })
 
   it('should pass if `imageCoverURL` is optional', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      imageCoverURL: undefined,
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({ imageCoverURL: undefined }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(0)
   })
 
   it('should fail if `imageCoverURL` is not a valid URL', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      imageCoverURL: 'not-a-valid-url',
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({ imageCoverURL: 'not-a-valid-url' }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('imageCoverURL')
   })
 
   it('should fail if `languageCode` is not a valid enum value', async () => {
-    const response = plainToInstance(QuizClassicRequest, {
-      ...validData,
-      languageCode: 'INVALID_LANGUAGE',
-    })
+    const response = plainToInstance(
+      QuizClassicRequest,
+      createMockClassicQuizRequestDto({
+        languageCode: 'INVALID_LANGUAGE' as LanguageCode,
+      }),
+    )
     const errors = await validate(response)
     expect(errors).toHaveLength(1)
     expect(errors[0].property).toBe('languageCode')
   })
 
   it('should pass validation with media effect', async () => {
-    const dataWithEffect: QuizClassicModeRequestDto = {
-      ...validData,
+    const dataWithEffect = createMockClassicQuizRequestDto({
       questions: [
-        {
-          type: QuestionType.MultiChoice,
-          question: 'What is the capital of Sweden?',
-          media: {
-            type: MediaType.Image,
-            url: 'https://example.com/question-image.png',
+        createMockQuestionMultiChoiceDto({
+          media: createMockQuestionMediaDto({
             effect: QuestionImageRevealEffectType.Square3x3,
-          },
-          options: [
-            { value: 'Stockholm', correct: true },
-            { value: 'Copenhagen', correct: false },
-            { value: 'London', correct: false },
-            { value: 'Berlin', correct: false },
-          ],
-          points: 1000,
-          duration: 30,
-        } as QuestionMultiChoice,
+          }),
+        }),
       ],
-    }
+    })
     const response = plainToInstance(QuizClassicRequest, dataWithEffect)
     const errors = await validate(response, { whitelist: true })
     expect(errors).toHaveLength(0)
@@ -195,27 +154,15 @@ describe('QuizRequest', () => {
   })
 
   it('should pass validation for audio media', async () => {
-    const data: QuizClassicModeRequestDto = {
-      ...validData,
+    const data = createMockClassicQuizRequestDto({
       questions: [
-        {
-          type: QuestionType.MultiChoice,
-          question: 'What is the capital of Sweden?',
-          media: {
+        createMockQuestionMultiChoiceDto({
+          media: createMockQuestionMediaDto({
             type: MediaType.Audio,
-            url: 'https://example.com/question-audio.mp3',
-          },
-          options: [
-            { value: 'Stockholm', correct: true },
-            { value: 'Copenhagen', correct: false },
-            { value: 'London', correct: false },
-            { value: 'Berlin', correct: false },
-          ],
-          points: 1000,
-          duration: 30,
-        } as QuestionMultiChoice,
+          }),
+        }),
       ],
-    }
+    })
     const response = plainToInstance(QuizClassicRequest, data)
     const errors = await validate(response, { whitelist: true })
     expect(errors).toHaveLength(0)
@@ -227,27 +174,15 @@ describe('QuizRequest', () => {
   })
 
   it('should pass validation for video media', async () => {
-    const data: QuizClassicModeRequestDto = {
-      ...validData,
+    const data = createMockClassicQuizRequestDto({
       questions: [
-        {
-          type: QuestionType.MultiChoice,
-          question: 'What is the capital of Sweden?',
-          media: {
+        createMockQuestionMultiChoiceDto({
+          media: createMockQuestionMediaDto({
             type: MediaType.Video,
-            url: 'https://example.com/question-video.mp4',
-          },
-          options: [
-            { value: 'Stockholm', correct: true },
-            { value: 'Copenhagen', correct: false },
-            { value: 'London', correct: false },
-            { value: 'Berlin', correct: false },
-          ],
-          points: 1000,
-          duration: 30,
-        } as QuestionMultiChoice,
+          }),
+        }),
       ],
-    }
+    })
     const response = plainToInstance(QuizClassicRequest, data)
     const errors = await validate(response, { whitelist: true })
     expect(errors).toHaveLength(0)
