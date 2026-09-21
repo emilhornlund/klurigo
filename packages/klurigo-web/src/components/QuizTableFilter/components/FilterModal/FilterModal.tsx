@@ -13,8 +13,6 @@ import {
   QuizCategoryLabels,
   QuizVisibilityLabels,
 } from '../../../../models'
-import { classNames } from '../../../../utils/helpers'
-import Button from '../../../Button'
 import Modal from '../../../Modal'
 import Select from '../../../Select'
 import Typography from '../../../Typography'
@@ -70,7 +68,11 @@ const FilterModal: FC<FilterModalProps> = ({
   }
 
   return (
-    <Modal title="Refine Your Quiz Search" open={open}>
+    <Modal
+      title="Refine Your Quiz Search"
+      open={open}
+      closeAction={{ label: 'Close', onClick: onClose }}
+      primaryAction={{ label: 'Apply', onClick: handleApplyFilter }}>
       <div className={styles.filterModalContainer}>
         <Typography variant="body2" noOpacity>
           Narrow down your search and find the perfect quiz!
@@ -209,24 +211,6 @@ const FilterModal: FC<FilterModalProps> = ({
             onChange={(value) =>
               handleFilterOptionChange('order', value as 'asc' | 'desc')
             }
-          />
-        </div>
-        <div className={classNames(styles.row, styles.buttonGroup)}>
-          <Button
-            id="close-button"
-            type="button"
-            variant="outline"
-            surface="light"
-            value="Close"
-            onClick={onClose}
-          />
-          <Button
-            id="apply-button"
-            type="button"
-            variant="primary"
-            intent="accent"
-            value="Apply"
-            onClick={handleApplyFilter}
           />
         </div>
       </div>

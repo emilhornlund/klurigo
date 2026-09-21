@@ -10,37 +10,35 @@ vi.mock('../../../../../../../../../../../components', () => ({
   Modal: ({
     title,
     open,
-    onClose,
+    closeAction,
+    primaryAction,
     children,
   }: {
     title: string
     open: boolean
-    onClose: () => void
+    closeAction: { label?: string; onClick: () => void }
+    primaryAction: { label: string; onClick: () => void }
     children: React.ReactNode
   }) =>
     open ? (
       <div data-testid="modal">
         <div data-testid="modal-title">{title}</div>
-        <button data-testid="modal-close" onClick={onClose}>
+        <button data-testid="modal-close" onClick={closeAction.onClick}>
           modal-close
         </button>
         {children}
+        <button
+          data-testid="test-modal-close-action-button-button"
+          onClick={closeAction.onClick}>
+          {closeAction.label}
+        </button>
+        <button
+          data-testid="test-modal-primary-action-button-button"
+          onClick={primaryAction.onClick}>
+          {primaryAction.label}
+        </button>
       </div>
     ) : null,
-
-  Button: ({
-    id,
-    value,
-    onClick,
-  }: {
-    id?: string
-    value?: string
-    onClick?: () => void
-  }) => (
-    <button id={id} onClick={onClick}>
-      {value ?? id}
-    </button>
-  ),
 
   Select: ({
     id,
@@ -188,7 +186,7 @@ describe('ImageEffectModal', () => {
       />,
     )
 
-    fireEvent.click(document.getElementById('close-button') as HTMLElement)
+    fireEvent.click(screen.getByTestId('test-modal-close-action-button-button'))
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(onChangeImageEffect).not.toHaveBeenCalled()
@@ -211,7 +209,9 @@ describe('ImageEffectModal', () => {
       target: { value: QuestionImageRevealEffectType.Blur },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
+    fireEvent.click(
+      screen.getByTestId('test-modal-primary-action-button-button'),
+    )
 
     expect(onChangeImageEffect).toHaveBeenCalledTimes(1)
     expect(onChangeImageEffect).toHaveBeenCalledWith(
@@ -237,7 +237,9 @@ describe('ImageEffectModal', () => {
       target: { value: NONE_KEY },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: /apply/i }))
+    fireEvent.click(
+      screen.getByTestId('test-modal-primary-action-button-button'),
+    )
 
     expect(onChangeImageEffect).toHaveBeenCalledWith(undefined)
     expect(onClose).toHaveBeenCalledTimes(1)

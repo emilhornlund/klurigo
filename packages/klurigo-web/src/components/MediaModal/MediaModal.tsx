@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 
 import { MediaTypeLabels } from '../../models'
 import { classNames } from '../../utils/helpers'
-import Button from '../Button'
 import Modal from '../Modal'
 import ResponsiveImage from '../ResponsiveImage'
 import ResponsivePlayer from '../ResponsivePlayer'
@@ -73,7 +72,12 @@ const MediaModal: FC<MediaModalProps> = ({
   )
 
   return (
-    <Modal title={title || 'Add Media'} size="normal" onClose={onClose} open>
+    <Modal
+      title={title || 'Add Media'}
+      size="normal"
+      closeAction={{ label: 'Close', onClick: onClose }}
+      primaryAction={{ label: 'Apply', disabled: !isValid, onClick: onApply }}
+      open>
       <div className={styles.mediaModal}>
         <div className={styles.content}>
           {!imageOnly && (
@@ -160,28 +164,6 @@ const MediaModal: FC<MediaModalProps> = ({
               )}
             </>
           )}
-
-          <div className={classNames(styles.column, styles.divider)} />
-        </div>
-
-        <div className={classNames(styles.column, styles.actions)}>
-          <Button
-            id="close-button"
-            type="button"
-            variant="outline"
-            surface="light"
-            value="Close"
-            onClick={onClose}
-          />
-          <Button
-            id="apply-button"
-            type="button"
-            variant="primary"
-            intent="accent"
-            value="Apply"
-            disabled={!isValid}
-            onClick={onApply}
-          />
         </div>
       </div>
     </Modal>

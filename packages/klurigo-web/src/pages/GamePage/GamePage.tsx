@@ -13,7 +13,6 @@ import type { BlockerFunction } from 'react-router-dom'
 import { useBlocker } from 'react-router-dom'
 
 import { LoadingSpinner, Modal, Page } from '../../components'
-import Button from '../../components/Button'
 import { useAuthContext } from '../../context/auth'
 import { useGameContext } from '../../context/game'
 import {
@@ -363,31 +362,18 @@ const GamePage: FC = () => {
               ? 'Quit Game'
               : 'Leave Game'
           }
+          closeAction={{ label: 'Cancel', onClick: () => blocker.reset() }}
+          primaryAction={{
+            label: 'Proceed',
+            intent: 'danger',
+            onClick: handleLeaveGame,
+          }}
           open>
           {participantType === GameParticipantType.HOST &&
             'This will immediately end the game for all participants, and it cannot be resumed.'}
 
           {participantType === GameParticipantType.PLAYER &&
             'Leaving now will disconnect you from the game. Are you sure you want to continue?'}
-
-          <div className={styles.leaveModalActionButtons}>
-            <Button
-              id="cancel-button"
-              type="button"
-              variant="outline"
-              surface="light"
-              value="Cancel"
-              onClick={() => blocker.reset()}
-            />
-            <Button
-              id="proceed-button"
-              type="button"
-              variant="primary"
-              intent="danger"
-              value="Proceed"
-              onClick={handleLeaveGame}
-            />
-          </div>
         </Modal>
       )}
     </>

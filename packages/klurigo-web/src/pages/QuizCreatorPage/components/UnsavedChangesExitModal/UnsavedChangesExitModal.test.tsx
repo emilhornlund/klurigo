@@ -1,41 +1,38 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
 import UnsavedChangesExitModal from './UnsavedChangesExitModal'
 
 vi.mock('../../../../components', () => ({
-  Modal: ({
+  ConfirmDialog: ({
     title,
+    message,
     open,
-    children,
+    confirmTitle,
+    closeTitle,
+    onConfirm,
+    onClose,
   }: {
     title: string
+    message: string
     open: boolean
-    children?: ReactNode
+    confirmTitle: string
+    closeTitle: string
+    onConfirm: () => void
+    onClose: () => void
   }) =>
     open ? (
       <div role="dialog" aria-label={title}>
-        {children}
+        <div>{message}</div>
+        <button type="button" onClick={onClose}>
+          {closeTitle}
+        </button>
+        <button type="button" onClick={onConfirm}>
+          {confirmTitle}
+        </button>
       </div>
     ) : null,
-}))
-
-vi.mock('../../../../components/Button', () => ({
-  default: ({
-    id,
-    value,
-    onClick,
-  }: {
-    id?: string
-    value: string
-    onClick: () => void
-  }) => (
-    <button id={id} type="button" onClick={onClick}>
-      {value}
-    </button>
-  ),
 }))
 
 describe('UnsavedChangesExitModal', () => {

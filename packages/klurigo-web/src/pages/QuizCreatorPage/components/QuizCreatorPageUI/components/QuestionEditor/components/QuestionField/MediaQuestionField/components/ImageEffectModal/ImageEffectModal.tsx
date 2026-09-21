@@ -2,13 +2,8 @@ import { QuestionImageRevealEffectType } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
-import {
-  Button,
-  Modal,
-  Select,
-} from '../../../../../../../../../../../components'
+import { Modal, Select } from '../../../../../../../../../../../components'
 import { ImageRevealEffectLabels } from '../../../../../../../../../../../models'
-import { classNames } from '../../../../../../../../../../../utils/helpers'
 import type { QuizQuestionValidationResult } from '../../../../../../../../../utils/QuestionDataSource'
 import { getValidationErrorMessage } from '../../../../../../../../../validation-rules'
 
@@ -46,7 +41,8 @@ const ImageEffectModal: FC<ImageEffectModalProps> = ({
     <Modal
       title={title || 'Add Image Effect'}
       size="normal"
-      onClose={onClose}
+      closeAction={{ label: 'Close', onClick: onClose }}
+      primaryAction={{ label: 'Apply', onClick: onApply }}
       open>
       <div className={styles.imageMediaModal}>
         <Select
@@ -77,26 +73,6 @@ const ImageEffectModal: FC<ImageEffectModalProps> = ({
             )
           }
         />
-        <div className={classNames(styles.column, styles.actions)}>
-          <Button
-            id="close-button"
-            type="button"
-            variant="primary"
-            surface="light"
-            intent="default"
-            value="Close"
-            onClick={onClose}
-          />
-          <Button
-            id="apply-button"
-            type="button"
-            variant="primary"
-            surface="light"
-            intent="accent"
-            value="Apply"
-            onClick={onApply}
-          />
-        </div>
       </div>
     </Modal>
   )

@@ -16,6 +16,7 @@ export interface ButtonProps {
   surface?: 'brand' | 'light'
   intent?: 'default' | 'accent' | 'danger' | 'success'
   size?: 'normal' | 'small'
+  grow?: boolean
   value?: ReactNode | string | undefined
   hideValue?: 'mobile' | 'never'
   disabled?: boolean
@@ -35,6 +36,7 @@ const Button: FC<ButtonProps> = ({
   surface = 'brand',
   intent = 'default',
   size = 'normal',
+  grow,
   value,
   hideValue = 'never',
   disabled,
@@ -74,6 +76,7 @@ const Button: FC<ButtonProps> = ({
         intent === 'danger' ? styles.intentDanger : undefined,
         intent === 'success' ? styles.intentSuccess : undefined,
         deviceSize === 'small' ? styles.sizeSmall : undefined,
+        grow ? styles.grow : undefined,
       )}>
       <button
         id={id}

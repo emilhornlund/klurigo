@@ -59,7 +59,10 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
   }
 
   return (
-    <Modal title="Settings" onClose={onClose} open>
+    <Modal
+      title="Settings"
+      closeAction={{ label: 'Close', onClick: onClose }}
+      open>
       <div className={styles.quizSettingsModalWrapper}>
         <div className={styles.quizSettingsRow}>
           <Typography variant="control" noOpacity bold>
@@ -202,16 +205,6 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
                 value === 'none' ? undefined : (value as LanguageCode),
               )
             }
-          />
-        </div>
-        <div className={styles.actions}>
-          <Button
-            id="close-button"
-            type="button"
-            variant="outline"
-            surface="light"
-            value="Close"
-            onClick={onClose}
           />
         </div>
       </div>

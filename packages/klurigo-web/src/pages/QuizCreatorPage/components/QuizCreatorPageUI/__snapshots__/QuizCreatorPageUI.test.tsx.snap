@@ -2081,7 +2081,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                     class="gameModeSelectionModalWrapper"
                   >
                     <div
-                      class="buttonContainer variantPrimary surfaceLight intentDefault"
+                      class="buttonContainer variantPrimary surfaceLight intentDefault grow"
                     >
                       <button
                         data-testid="test-game-mode-classic-button-button"
@@ -2108,7 +2108,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                       </button>
                     </div>
                     <div
-                      class="buttonContainer variantPrimary surfaceLight intentDefault"
+                      class="buttonContainer variantPrimary surfaceLight intentDefault grow"
                     >
                       <button
                         data-testid="test-game-mode-zero-to-one-hundred-button-button"

@@ -1,9 +1,6 @@
 import { type FC } from 'react'
 
-import { Modal } from '../../../../components'
-import Button from '../../../../components/Button'
-
-import styles from './UnsavedChangesExitModal.module.scss'
+import { ConfirmDialog } from '../../../../components'
 
 /**
  * Props for the UnsavedChangesExitModal component.
@@ -19,32 +16,17 @@ export type UnsavedChangesExitModalProps = {
 const UnsavedChangesExitModal: FC<UnsavedChangesExitModalProps> = ({
   onReset,
   onConfirm,
-}) => {
-  return (
-    <Modal title="Leave your quiz?" open>
-      You have unsaved changes. If you leave now, your changes will be lost.
-      <div className={styles.actions}>
-        <Button
-          id="cancel-button"
-          type="button"
-          variant="outline"
-          surface="light"
-          intent="default"
-          value="Stay"
-          onClick={onReset}
-        />
-        <Button
-          id="exit-button"
-          type="button"
-          variant="primary"
-          surface="light"
-          intent="danger"
-          value="Leave"
-          onClick={onConfirm}
-        />
-      </div>
-    </Modal>
-  )
-}
+}) => (
+  <ConfirmDialog
+    title="Leave your quiz?"
+    message="You have unsaved changes. If you leave now, your changes will be lost."
+    confirmTitle="Leave"
+    closeTitle="Stay"
+    onConfirm={onConfirm}
+    onClose={onReset}
+    destructive
+    open
+  />
+)
 
 export default UnsavedChangesExitModal

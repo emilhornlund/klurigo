@@ -1,10 +1,7 @@
 import type { FC } from 'react'
 
-import Button from '../Button'
 import Modal from '../Modal'
 import Typography from '../Typography'
-
-import styles from './ConfirmDialog.module.scss'
 
 export interface ConfirmDialogProps {
   title: string
@@ -29,31 +26,19 @@ const ConfirmDialog: FC<ConfirmDialogProps> = ({
   onConfirm,
   onClose,
 }) => (
-  <Modal title={title} open={open}>
+  <Modal
+    title={title}
+    open={open}
+    closeAction={{ label: closeTitle, onClick: () => onClose?.() }}
+    primaryAction={{
+      label: confirmTitle,
+      ...(destructive && { intent: 'danger' }),
+      loading,
+      onClick: () => onConfirm?.(),
+    }}>
     <Typography variant="body2" noOpacity>
       {message}
     </Typography>
-    <div className={styles.actions}>
-      <Button
-        id="confirm-button"
-        type="button"
-        variant="primary"
-        intent={destructive ? 'danger' : 'accent'}
-        size="small"
-        value={confirmTitle}
-        loading={loading}
-        onClick={() => onConfirm?.()}
-      />
-      <Button
-        id="close-button"
-        type="button"
-        variant="outline"
-        surface="light"
-        size="small"
-        value={closeTitle}
-        onClick={() => onClose?.()}
-      />
-    </div>
   </Modal>
 )
 

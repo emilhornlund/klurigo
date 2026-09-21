@@ -48,21 +48,28 @@ vi.mock('../../../../../../components', () => ({
   Modal: ({
     title,
     open,
-    onClose,
+    closeAction,
     children,
   }: {
     title: string
     open: boolean
-    onClose: () => void
+    closeAction: { label?: string; onClick: () => void }
     children: React.ReactNode
   }) =>
     open ? (
       <div data-testid="modal">
         <div data-testid="modal-title">{title}</div>
-        <button data-testid="modal-close" onClick={onClose}>
+        <button data-testid="modal-close" onClick={closeAction.onClick}>
           close
         </button>
         {children}
+        {closeAction.label && (
+          <button
+            data-testid="test-modal-close-action-button-button"
+            onClick={closeAction.onClick}>
+            {closeAction.label}
+          </button>
+        )}
       </div>
     ) : null,
   ResponsiveImage: ({ imageURL }: { imageURL?: string }) => (
@@ -207,7 +214,7 @@ describe('QuizSettingsModal', () => {
         onClose={onClose}
       />,
     )
-    fireEvent.click(document.getElementById('close-button') as HTMLElement)
+    fireEvent.click(screen.getByTestId('test-modal-close-action-button-button'))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

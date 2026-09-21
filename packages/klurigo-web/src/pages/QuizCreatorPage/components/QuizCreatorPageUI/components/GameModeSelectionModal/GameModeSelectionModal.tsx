@@ -23,7 +23,8 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
           id="game-mode-classic-button"
           type="button"
           surface="light"
-          onClick={() => onSelect?.(GameMode.Classic)}>
+          onClick={() => onSelect?.(GameMode.Classic)}
+          grow>
           <div className={styles.buttonContent}>
             <Typography
               variant="title4"
@@ -46,7 +47,8 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
           id="game-mode-zero-to-one-hundred-button"
           type="button"
           surface="light"
-          onClick={() => onSelect?.(GameMode.ZeroToOneHundred)}>
+          onClick={() => onSelect?.(GameMode.ZeroToOneHundred)}
+          grow>
           <div className={styles.buttonContent}>
             <Typography
               variant="title4"

@@ -1,2 +1,2 @@
-export type { ModalProps } from './Modal'
+export type { ModalProps, ModalCloseAction, ModalPrimaryAction } from './Modal'
 export { default } from './Modal'

@@ -163,6 +163,10 @@
     box-shadow 0.2s ease,
     transform 0.2s ease;
 
+  &.grow {
+    flex: 1;
+  }
+
   button {
     @include button.button-reset;
 
