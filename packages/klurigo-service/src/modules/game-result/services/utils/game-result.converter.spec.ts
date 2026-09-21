@@ -1,15 +1,34 @@
 import {
   GameMode,
-  GameParticipantType,
-  GameStatus,
-  MediaType,
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
 
 import {
+  createMockGameDocument,
+  createMockGameHostParticipantDocument,
+  createMockGamePlayerParticipantDocument,
+  createMockLeaderboardTaskDocument,
+  createMockLeaderboardTaskItem,
+  createMockLobbyTaskDocument,
+  createMockMultiChoiceQuestionDocument,
+  createMockPodiumTaskDocument,
+  createMockQuestionResultTaskDocument,
+  createMockQuestionResultTaskItemDocument,
+  createMockQuestionTaskDocument,
+  createMockQuestionTaskMultiChoiceAnswer,
+  createMockQuestionTaskRangeAnswer,
+  createMockQuestionTaskTrueFalseAnswer,
+  createMockQuestionTaskTypeAnswer,
+  createMockRangeQuestionDocument,
+  createMockTrueFalseQuestionDocument,
+  createMockTypeAnswerQuestionDocument,
+  offsetSeconds,
+} from '../../../../../test-utils/data'
+import {
   GameDocument,
-  TaskType,
+  LeaderboardTaskItem,
+  QuestionResultTaskItem,
 } from '../../../game-core/repositories/models/schemas'
 
 import { buildGameResultModel } from './game-result.converter'
@@ -17,145 +36,166 @@ import { buildGameResultModel } from './game-result.converter'
 describe('Game Result Converter', () => {
   describe('buildGameResultModel', () => {
     it('should create a game result model for a classic mode game', () => {
-      const gameDocument: GameDocument = {
-        _id: '816d14d6-9945-4f8a-afbd-dc7976f6d79d',
-        created: new Date('2025-04-09T14:43:03.687Z'),
-        currentTask: {
-          _id: '8ddd37d7-c0a3-4a23-873b-cd331502ebdf',
-          type: TaskType.Podium,
-          status: 'completed',
-          currentTransitionInitiated: new Date('2025-04-09T14:46:00.969Z'),
-          created: new Date('2025-04-09T14:45:53.482Z'),
-          leaderboard: [
-            {
-              playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-              position: 3,
-              nickname: 'BraveStallion',
-              score: 948,
-              streaks: 0,
-            },
-            {
-              playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-              position: 2,
-              nickname: 'FieryBear',
-              score: 2742,
-              streaks: 2,
-            },
-            {
-              playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-              position: 1,
-              nickname: 'CosmicScorpion',
-              score: 3891,
-              streaks: 4,
-            },
+      const hostId = 'ecd312eb-b732-4232-9621-d9d075d7cef1'
+      const cosmicScorpionId = 'c36386fd-34c9-4a93-b282-805c026fb62e'
+      const fieryBearId = 'dc74af58-f7d3-4116-9194-019674a607dc'
+      const braveStallionId = '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1'
+      const hosted = offsetSeconds(1)
+      const completed = offsetSeconds(180)
+
+      const players = [
+        createMockGamePlayerParticipantDocument({
+          participantId: cosmicScorpionId,
+          nickname: 'CosmicScorpion',
+          rank: 1,
+          worstRank: 2,
+          totalScore: 3891,
+          currentStreak: 4,
+          totalResponseTime: 7844,
+          responseCount: 4,
+        }),
+        createMockGamePlayerParticipantDocument({
+          participantId: fieryBearId,
+          nickname: 'FieryBear',
+          rank: 2,
+          worstRank: 3,
+          totalScore: 2742,
+          currentStreak: 2,
+          totalResponseTime: 20510,
+          responseCount: 4,
+        }),
+        createMockGamePlayerParticipantDocument({
+          participantId: braveStallionId,
+          nickname: 'BraveStallion',
+          rank: 3,
+          worstRank: 3,
+          totalScore: 948,
+          currentStreak: 0,
+          totalResponseTime: 67999,
+          responseCount: 4,
+        }),
+      ]
+
+      const questions = [
+        createMockMultiChoiceQuestionDocument({
+          text: 'What is the capital of Sweden?',
+          duration: 30,
+        }),
+        createMockRangeQuestionDocument({
+          text: 'Guess the temperature of the hottest day ever recorded.',
+          margin: QuestionRangeAnswerMargin.Medium,
+          correct: 50,
+          duration: 30,
+        }),
+        createMockTrueFalseQuestionDocument({
+          text: 'The earth is flat.',
+          correct: false,
+          duration: 30,
+        }),
+        createMockTypeAnswerQuestionDocument({
+          text: 'What is the capital of Denmark?',
+          options: ['Copenhagen', 'Köpenhamn'],
+          duration: 30,
+        }),
+      ]
+
+      const question0Presented = offsetSeconds(10)
+      const question1Presented = offsetSeconds(40)
+      const question2Presented = offsetSeconds(70)
+      const question3Presented = offsetSeconds(100)
+
+      const questionTasks = [
+        createMockQuestionTaskDocument({
+          questionIndex: 0,
+          presented: question0Presented,
+          created: hosted,
+          metadata: { type: QuestionType.MultiChoice },
+          answers: [
+            createMockQuestionTaskMultiChoiceAnswer({
+              playerId: cosmicScorpionId,
+              answer: 0,
+              created: responseAt(question0Presented, 944),
+            }),
+            createMockQuestionTaskMultiChoiceAnswer({
+              playerId: fieryBearId,
+              answer: 0,
+              created: responseAt(question0Presented, 2203),
+            }),
+            createMockQuestionTaskMultiChoiceAnswer({
+              playerId: braveStallionId,
+              answer: 0,
+              created: responseAt(question0Presented, 3109),
+            }),
           ],
-        },
-        mode: GameMode.Classic,
-        name: 'Classic Quiz Debug',
-        nextQuestion: 4,
-        participants: [
-          {
-            participantId: 'ecd312eb-b732-4232-9621-d9d075d7cef1',
-            type: GameParticipantType.HOST,
-            created: new Date('2025-04-09T14:43:03.687Z'),
-            updated: new Date('2025-04-09T14:43:03.687Z'),
-          },
-          {
-            participantId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-            type: GameParticipantType.PLAYER,
-            nickname: 'CosmicScorpion',
-            created: new Date('2025-04-09T14:43:15.956Z'),
-            updated: new Date('2025-04-09T14:43:15.956Z'),
-            rank: 1,
-            worstRank: 2,
-            totalScore: 3891,
-            currentStreak: 4,
-            totalResponseTime: 7844,
-            responseCount: 4,
-          },
-          {
-            participantId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-            type: GameParticipantType.PLAYER,
-            nickname: 'FieryBear',
-            created: new Date('2025-04-09T14:43:25.876Z'),
-            updated: new Date('2025-04-09T14:43:25.876Z'),
-            rank: 2,
-            worstRank: 3,
-            totalScore: 2742,
-            currentStreak: 2,
-            totalResponseTime: 20510,
-            responseCount: 4,
-          },
-          {
-            participantId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-            type: GameParticipantType.PLAYER,
-            nickname: 'BraveStallion',
-            created: new Date('2025-04-09T14:43:38.314Z'),
-            updated: new Date('2025-04-09T14:43:38.314Z'),
-            rank: 3,
-            worstRank: 3,
-            totalScore: 948,
-            currentStreak: 0,
-            totalResponseTime: 67999,
-            responseCount: 4,
-          },
-        ],
-        pin: '528610',
-        previousTasks: [
-          {
-            _id: '3b9ae98c-2fe7-41b4-9a0e-e6b0d2661655',
-            type: TaskType.Lobby,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:43:42.810Z'),
-            currentTransitionExpires: new Date('2025-04-09T14:43:45.810Z'),
-            created: new Date('2025-04-09T14:43:03.687Z'),
-          },
-          {
-            _id: '73ef5481-ef82-4230-8301-2ed47446c65e',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:43:52.210Z'),
-            created: new Date('2025-04-09T14:43:45.872Z'),
-            questionIndex: 0,
-            answers: [
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 1,
+          presented: question1Presented,
+          metadata: { type: QuestionType.Range },
+          answers: [
+            createMockQuestionTaskRangeAnswer({
+              playerId: cosmicScorpionId,
+              answer: 50,
+              created: responseAt(question1Presented, 1683),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: fieryBearId,
+              answer: 0,
+              created: responseAt(question1Presented, 5075),
+            }),
+          ],
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 2,
+          presented: question2Presented,
+          metadata: { type: QuestionType.TrueFalse },
+          answers: [
+            createMockQuestionTaskTrueFalseAnswer({
+              playerId: cosmicScorpionId,
+              answer: false,
+              created: responseAt(question2Presented, 1196),
+            }),
+            createMockQuestionTaskTrueFalseAnswer({
+              playerId: fieryBearId,
+              answer: false,
+              created: responseAt(question2Presented, 2521),
+            }),
+            createMockQuestionTaskTrueFalseAnswer({
+              playerId: braveStallionId,
+              answer: true,
+              created: responseAt(question2Presented, 4890),
+            }),
+          ],
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 3,
+          presented: question3Presented,
+          metadata: { type: QuestionType.TypeAnswer },
+          answers: [
+            createMockQuestionTaskTypeAnswer({
+              playerId: cosmicScorpionId,
+              answer: 'copenhagen',
+              created: responseAt(question3Presented, 4021),
+            }),
+            createMockQuestionTaskTypeAnswer({
+              playerId: fieryBearId,
+              answer: 'Köpenhamn',
+              created: responseAt(question3Presented, 10711),
+            }),
+          ],
+        }),
+      ]
+
+      const questionResultTasks = [
+        createMockQuestionResultTaskDocument({
+          questionIndex: 0,
+          results: [
+            resultItem(
+              QuestionType.MultiChoice,
+              cosmicScorpionId,
+              'CosmicScorpion',
               {
-                type: QuestionType.MultiChoice,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                created: new Date('2025-04-09T14:43:49.972Z'),
-                answer: 0,
-              },
-              {
-                type: QuestionType.MultiChoice,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-09T14:43:51.231Z'),
-                answer: 0,
-              },
-              {
-                type: QuestionType.MultiChoice,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                created: new Date('2025-04-09T14:43:52.137Z'),
-                answer: 0,
-              },
-            ],
-            presented: new Date('2025-04-09T14:43:49.028Z'),
-          },
-          {
-            _id: 'b5601e48-89ab-4420-a887-5a9f4d00e9b7',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:43:55.594Z'),
-            created: new Date('2025-04-09T14:43:52.225Z'),
-            questionIndex: 0,
-            results: [
-              {
-                type: QuestionType.MultiChoice,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                answer: {
-                  type: QuestionType.MultiChoice,
-                  playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                  created: new Date('2025-04-09T14:43:49.972Z'),
-                  answer: 0,
-                },
+                answer: questionTasks[0].answers[0],
                 correct: true,
                 lastScore: 984,
                 totalScore: 984,
@@ -165,33 +205,24 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 944,
                 responseCount: 1,
               },
+            ),
+            resultItem(QuestionType.MultiChoice, fieryBearId, 'FieryBear', {
+              answer: questionTasks[0].answers[1],
+              correct: true,
+              lastScore: 963,
+              totalScore: 963,
+              position: 2,
+              streak: 1,
+              lastResponseTime: 2203,
+              totalResponseTime: 2203,
+              responseCount: 1,
+            }),
+            resultItem(
+              QuestionType.MultiChoice,
+              braveStallionId,
+              'BraveStallion',
               {
-                type: QuestionType.MultiChoice,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.MultiChoice,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-09T14:43:51.231Z'),
-                  answer: 0,
-                },
-                correct: true,
-                lastScore: 963,
-                totalScore: 963,
-                position: 2,
-                streak: 1,
-                lastResponseTime: 2203,
-                totalResponseTime: 2203,
-                responseCount: 1,
-              },
-              {
-                type: QuestionType.MultiChoice,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                answer: {
-                  type: QuestionType.MultiChoice,
-                  playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                  created: new Date('2025-04-09T14:43:52.137Z'),
-                  answer: 0,
-                },
+                answer: questionTasks[0].answers[2],
                 correct: true,
                 lastScore: 948,
                 totalScore: 948,
@@ -201,197 +232,56 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 3109,
                 responseCount: 1,
               },
-            ],
-          },
-          {
-            _id: '36c22085-af8f-4577-83fa-7427083ff882',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:44:05.520Z'),
-            created: new Date('2025-04-09T14:43:55.605Z'),
-            questionIndex: 0,
-            leaderboard: [
+            ),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 1,
+          results: [
+            resultItem(QuestionType.Range, cosmicScorpionId, 'CosmicScorpion', {
+              answer: questionTasks[1].answers[0],
+              correct: true,
+              lastScore: 994,
+              totalScore: 1978,
+              position: 1,
+              streak: 2,
+              lastResponseTime: 1683,
+              totalResponseTime: 2627,
+              responseCount: 2,
+            }),
+            resultItem(QuestionType.Range, fieryBearId, 'FieryBear', {
+              answer: questionTasks[1].answers[1],
+              correct: false,
+              lastScore: 0,
+              totalScore: 963,
+              position: 2,
+              streak: 0,
+              lastResponseTime: 5075,
+              totalResponseTime: 7278,
+              responseCount: 2,
+            }),
+            resultItem(QuestionType.Range, braveStallionId, 'BraveStallion', {
+              answer: undefined,
+              correct: false,
+              lastScore: 0,
+              totalScore: 948,
+              position: 3,
+              streak: 0,
+              lastResponseTime: 30000,
+              totalResponseTime: 33109,
+              responseCount: 2,
+            }),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 2,
+          results: [
+            resultItem(
+              QuestionType.TrueFalse,
+              cosmicScorpionId,
+              'CosmicScorpion',
               {
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                position: 1,
-                nickname: 'CosmicScorpion',
-                score: 984,
-                streaks: 1,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 963,
-                streaks: 1,
-              },
-              {
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                position: 3,
-                nickname: 'BraveStallion',
-                score: 948,
-                streaks: 1,
-              },
-            ],
-          },
-          {
-            _id: '58b884bc-be8b-4ea4-bd9d-8216e159abe8',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:44:41.244Z'),
-            created: new Date('2025-04-09T14:44:05.534Z'),
-            questionIndex: 1,
-            answers: [
-              {
-                type: QuestionType.Range,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                created: new Date('2025-04-09T14:44:12.817Z'),
-                answer: 50,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-09T14:44:16.209Z'),
-                answer: 0,
-              },
-            ],
-            presented: new Date('2025-04-09T14:44:11.134Z'),
-          },
-          {
-            _id: '7cec6fe7-de46-4d82-bb0b-9425392a3551',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:44:46.433Z'),
-            created: new Date('2025-04-09T14:44:41.262Z'),
-            questionIndex: 1,
-            results: [
-              {
-                type: QuestionType.Range,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                  created: new Date('2025-04-09T14:44:12.817Z'),
-                  answer: 50,
-                },
-                correct: true,
-                lastScore: 994,
-                totalScore: 1978,
-                position: 1,
-                streak: 2,
-                lastResponseTime: 1683,
-                totalResponseTime: 2627,
-                responseCount: 2,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-09T14:44:16.209Z'),
-                  answer: 0,
-                },
-                correct: false,
-                lastScore: 0,
-                totalScore: 963,
-                position: 2,
-                streak: 0,
-                lastResponseTime: 5075,
-                totalResponseTime: 7278,
-                responseCount: 2,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                correct: false,
-                lastScore: 0,
-                totalScore: 948,
-                position: 3,
-                streak: 0,
-                lastResponseTime: 30000,
-                totalResponseTime: 33109,
-                responseCount: 2,
-              },
-            ],
-          },
-          {
-            _id: '5cd0d9d2-33f9-4a4e-b724-9603c6616f16',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:44:55.672Z'),
-            created: new Date('2025-04-09T14:44:46.447Z'),
-            questionIndex: 1,
-            leaderboard: [
-              {
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                position: 1,
-                nickname: 'CosmicScorpion',
-                score: 1978,
-                streaks: 2,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 963,
-                streaks: 0,
-              },
-              {
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                position: 3,
-                nickname: 'BraveStallion',
-                score: 948,
-                streaks: 0,
-              },
-            ],
-          },
-          {
-            _id: '3c35e563-24fd-40d0-ad99-b41a0049fffd',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:45:02.555Z'),
-            created: new Date('2025-04-09T14:44:55.685Z'),
-            questionIndex: 2,
-            answers: [
-              {
-                type: QuestionType.TrueFalse,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                created: new Date('2025-04-09T14:44:58.795Z'),
-                answer: false,
-              },
-              {
-                type: QuestionType.TrueFalse,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-09T14:45:00.120Z'),
-                answer: false,
-              },
-              {
-                type: QuestionType.TrueFalse,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                created: new Date('2025-04-09T14:45:02.489Z'),
-                answer: true,
-              },
-            ],
-            presented: new Date('2025-04-09T14:44:57.599Z'),
-          },
-          {
-            _id: 'dea6cd6c-90ae-4084-910f-fb4dd453a16f',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:45:09.837Z'),
-            created: new Date('2025-04-09T14:45:02.571Z'),
-            questionIndex: 2,
-            results: [
-              {
-                type: QuestionType.TrueFalse,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                answer: {
-                  type: QuestionType.TrueFalse,
-                  playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                  created: new Date('2025-04-09T14:44:58.795Z'),
-                  answer: false,
-                },
+                answer: questionTasks[2].answers[0],
                 correct: true,
                 lastScore: 980,
                 totalScore: 2958,
@@ -401,33 +291,24 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 3823,
                 responseCount: 3,
               },
+            ),
+            resultItem(QuestionType.TrueFalse, fieryBearId, 'FieryBear', {
+              answer: questionTasks[2].answers[1],
+              correct: true,
+              lastScore: 958,
+              totalScore: 1921,
+              position: 2,
+              streak: 1,
+              lastResponseTime: 2521,
+              totalResponseTime: 9799,
+              responseCount: 3,
+            }),
+            resultItem(
+              QuestionType.TrueFalse,
+              braveStallionId,
+              'BraveStallion',
               {
-                type: QuestionType.TrueFalse,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.TrueFalse,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-09T14:45:00.120Z'),
-                  answer: false,
-                },
-                correct: true,
-                lastScore: 958,
-                totalScore: 1921,
-                position: 2,
-                streak: 1,
-                lastResponseTime: 2521,
-                totalResponseTime: 9799,
-                responseCount: 3,
-              },
-              {
-                type: QuestionType.TrueFalse,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                answer: {
-                  type: QuestionType.TrueFalse,
-                  playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                  created: new Date('2025-04-09T14:45:02.489Z'),
-                  answer: true,
-                },
+                answer: questionTasks[2].answers[2],
                 correct: false,
                 lastScore: 0,
                 totalScore: 948,
@@ -437,79 +318,18 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 37999,
                 responseCount: 3,
               },
-            ],
-          },
-          {
-            _id: 'f3489a9b-3e5e-452f-94aa-dca4b032eb91',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:45:13.392Z'),
-            created: new Date('2025-04-09T14:45:09.850Z'),
-            questionIndex: 2,
-            leaderboard: [
+            ),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 3,
+          results: [
+            resultItem(
+              QuestionType.TypeAnswer,
+              cosmicScorpionId,
+              'CosmicScorpion',
               {
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                position: 1,
-                nickname: 'CosmicScorpion',
-                score: 2958,
-                streaks: 3,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 1921,
-                streaks: 1,
-              },
-              {
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
-                position: 3,
-                nickname: 'BraveStallion',
-                score: 948,
-                streaks: 0,
-              },
-            ],
-          },
-          {
-            _id: '928c28c3-f6f6-4f1d-b1e1-2bd57d795a11',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:45:46.750Z'),
-            created: new Date('2025-04-09T14:45:13.405Z'),
-            questionIndex: 3,
-            answers: [
-              {
-                type: QuestionType.TypeAnswer,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                created: new Date('2025-04-09T14:45:20.697Z'),
-                answer: 'copenhagen',
-              },
-              {
-                type: QuestionType.TypeAnswer,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-09T14:45:27.387Z'),
-                answer: 'Köpenhamn',
-              },
-            ],
-            presented: new Date('2025-04-09T14:45:16.676Z'),
-          },
-          {
-            _id: '98df29b3-1b01-4c21-b830-c3835dc80a15',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-09T14:45:53.465Z'),
-            created: new Date('2025-04-09T14:45:46.766Z'),
-            questionIndex: 3,
-            results: [
-              {
-                type: QuestionType.TypeAnswer,
-                playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                answer: {
-                  type: QuestionType.TypeAnswer,
-                  playerId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
-                  created: new Date('2025-04-09T14:45:20.697Z'),
-                  answer: 'copenhagen',
-                },
+                answer: questionTasks[3].answers[0],
                 correct: true,
                 lastScore: 933,
                 totalScore: 3891,
@@ -519,27 +339,24 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 7844,
                 responseCount: 4,
               },
+            ),
+            resultItem(QuestionType.TypeAnswer, fieryBearId, 'FieryBear', {
+              answer: questionTasks[3].answers[1],
+              correct: true,
+              lastScore: 821,
+              totalScore: 2742,
+              position: 2,
+              streak: 2,
+              lastResponseTime: 10711,
+              totalResponseTime: 20510,
+              responseCount: 4,
+            }),
+            resultItem(
+              QuestionType.TypeAnswer,
+              braveStallionId,
+              'BraveStallion',
               {
-                type: QuestionType.TypeAnswer,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.TypeAnswer,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-09T14:45:27.387Z'),
-                  answer: 'Köpenhamn',
-                },
-                correct: true,
-                lastScore: 821,
-                totalScore: 2742,
-                position: 2,
-                streak: 2,
-                lastResponseTime: 10711,
-                totalResponseTime: 20510,
-                responseCount: 4,
-              },
-              {
-                type: QuestionType.TypeAnswer,
-                playerId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
+                answer: undefined,
                 correct: false,
                 lastScore: 0,
                 totalScore: 948,
@@ -549,80 +366,114 @@ describe('Game Result Converter', () => {
                 totalResponseTime: 67999,
                 responseCount: 4,
               },
-            ],
-          },
+            ),
+          ],
+        }),
+      ]
+
+      const leaderboardTasks = [
+        createMockLeaderboardTaskDocument({
+          questionIndex: 0,
+          leaderboard: [
+            leaderboardItem(cosmicScorpionId, 'CosmicScorpion', {
+              position: 1,
+              score: 984,
+              streaks: 1,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 963,
+              streaks: 1,
+            }),
+            leaderboardItem(braveStallionId, 'BraveStallion', {
+              position: 3,
+              score: 948,
+              streaks: 1,
+            }),
+          ],
+        }),
+        createMockLeaderboardTaskDocument({
+          questionIndex: 1,
+          leaderboard: [
+            leaderboardItem(cosmicScorpionId, 'CosmicScorpion', {
+              position: 1,
+              score: 1978,
+              streaks: 2,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 963,
+              streaks: 0,
+            }),
+            leaderboardItem(braveStallionId, 'BraveStallion', {
+              position: 3,
+              score: 948,
+              streaks: 0,
+            }),
+          ],
+        }),
+        createMockLeaderboardTaskDocument({
+          questionIndex: 2,
+          leaderboard: [
+            leaderboardItem(cosmicScorpionId, 'CosmicScorpion', {
+              position: 1,
+              score: 2958,
+              streaks: 3,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 1921,
+              streaks: 1,
+            }),
+            leaderboardItem(braveStallionId, 'BraveStallion', {
+              position: 3,
+              score: 948,
+              streaks: 0,
+            }),
+          ],
+        }),
+      ]
+
+      const gameDocument = createMockGameDocument({
+        _id: '816d14d6-9945-4f8a-afbd-dc7976f6d79d',
+        name: 'Classic Quiz Debug',
+        mode: GameMode.Classic,
+        nextQuestion: 4,
+        participants: [
+          createMockGameHostParticipantDocument({ participantId: hostId }),
+          ...players,
         ],
-        questions: [
-          {
-            type: QuestionType.MultiChoice,
-            text: 'What is the capital of Sweden?',
-            media: {
-              type: MediaType.Image,
-              url: 'https://d3hne3c382ip58.cloudfront.net/files/uploads/bookmundi/resized/cmsfeatured/stockholm-old-town-gamla-stan-1680860369-785X440.jpg',
-            },
-            points: 1000,
-            duration: 30,
-            options: [
-              {
-                value: 'Stockholm',
-                correct: true,
-              },
-              {
-                value: 'Paris',
-                correct: false,
-              },
-              {
-                value: 'London',
-                correct: false,
-              },
-              {
-                value: 'Berlin',
-                correct: false,
-              },
-            ],
-          },
-          {
-            type: QuestionType.Range,
-            text: 'Guess the temperature of the hottest day ever recorded.',
-            media: {
-              type: MediaType.Image,
-              url: 'https://nineplanets.org/wp-content/uploads/2019/09/Color-Temperature.jpg',
-            },
-            points: 1000,
-            duration: 30,
-            min: 0,
-            max: 100,
-            step: 2,
-            margin: 'MEDIUM',
-            correct: 50,
-          },
-          {
-            type: QuestionType.TrueFalse,
-            text: 'The earth is flat.',
-            media: {
-              type: MediaType.Image,
-              url: 'https://cdn.sciencesensei.com/wp-content/uploads/2019/07/flat-earth-cover.jpg',
-            },
-            points: 1000,
-            duration: 30,
-            correct: false,
-          },
-          {
-            type: QuestionType.TypeAnswer,
-            text: 'What is the capital of Denmark?',
-            media: {
-              type: MediaType.Image,
-              url: 'http://fayyaztravels.com/uploads/images/place/Copenhagen.jpg',
-            },
-            points: 1000,
-            duration: 30,
-            options: ['Copenhagen', 'Köpenhamn'],
-          },
+        currentTask: createMockPodiumTaskDocument({
+          status: 'completed',
+          created: completed,
+          leaderboard: [
+            leaderboardItem(braveStallionId, 'BraveStallion', {
+              position: 3,
+              score: 948,
+              streaks: 0,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 2742,
+              streaks: 2,
+            }),
+            leaderboardItem(cosmicScorpionId, 'CosmicScorpion', {
+              position: 1,
+              score: 3891,
+              streaks: 4,
+            }),
+          ],
+        }),
+        previousTasks: [
+          createMockLobbyTaskDocument({ status: 'completed', created: hosted }),
+          ...questionTasks.flatMap((questionTask, index) => [
+            questionTask,
+            questionResultTasks[index],
+            ...(leaderboardTasks[index] ? [leaderboardTasks[index]] : []),
+          ]),
         ],
-        quiz: { _id: 'b7955ac8-ccd1-4457-b6d0-36dd06de0ff2' },
-        status: GameStatus.Active,
-        updated: new Date('2025-04-09T14:46:00.984Z'),
-      } as GameDocument
+        questions,
+      }) as GameDocument
 
       const actual = buildGameResultModel(gameDocument)
 
@@ -630,10 +481,10 @@ describe('Game Result Converter', () => {
         _id: expect.anything(),
         name: gameDocument.name,
         game: gameDocument,
-        hostParticipantId: 'ecd312eb-b732-4232-9621-d9d075d7cef1',
+        hostParticipantId: hostId,
         players: [
           {
-            participantId: 'c36386fd-34c9-4a93-b282-805c026fb62e',
+            participantId: cosmicScorpionId,
             nickname: 'CosmicScorpion',
             rank: 1,
             comebackRankGain: 1,
@@ -645,7 +496,7 @@ describe('Game Result Converter', () => {
             score: 3891,
           },
           {
-            participantId: 'dc74af58-f7d3-4116-9194-019674a607dc',
+            participantId: fieryBearId,
             nickname: 'FieryBear',
             rank: 2,
             comebackRankGain: 1,
@@ -657,7 +508,7 @@ describe('Game Result Converter', () => {
             score: 2742,
           },
           {
-            participantId: '3bf8caf6-ca1b-44d2-bc8c-aaea03afb8b1',
+            participantId: braveStallionId,
             nickname: 'BraveStallion',
             rank: 3,
             comebackRankGain: 0,
@@ -703,588 +554,417 @@ describe('Game Result Converter', () => {
             averageResponseTime: 14910,
           },
         ],
-        hosted: new Date('2025-04-09T14:43:45.872Z'),
-        completed: new Date('2025-04-09T14:45:53.482Z'),
+        hosted,
+        completed,
       })
     })
 
     it('should create a game result model for a zero to one hundred mode game', () => {
-      const gameDocument: GameDocument = {
-        _id: '154b2fa4-6d7f-434f-b99a-c5bbc825fc1b',
-        created: new Date('2025-04-11T15:21:00.069Z'),
-        currentTask: {
-          _id: '472292e0-4034-445f-9139-1b908c91922c',
-          type: TaskType.Podium,
-          status: 'completed',
-          currentTransitionInitiated: new Date('2025-04-11T15:25:16.951Z'),
-          created: new Date('2025-04-11T15:25:11.915Z'),
-          leaderboard: [
-            {
-              playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-              position: 3,
-              nickname: 'AtomicBasilisk',
-              score: 236,
-              streaks: 0,
-            },
-            {
-              playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-              position: 2,
-              nickname: 'FieryBear',
-              score: 118,
-              streaks: 0,
-            },
-            {
-              playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-              position: 1,
-              nickname: 'BraveBison',
-              score: 70,
-              streaks: 0,
-            },
+      const hostId = '4c5edb8a-ae4f-4294-ac59-dc5befbe5644'
+      const braveBisonId = 'a145a38f-cb05-4ee5-b41a-6c4c16327321'
+      const fieryBearId = 'dc74af58-f7d3-4116-9194-019674a607dc'
+      const atomicBasiliskId = '84aabd9d-e067-4930-b6d2-9048f295d190'
+      const hosted = offsetSeconds(201)
+      const completed = offsetSeconds(350)
+
+      const players = [
+        createMockGamePlayerParticipantDocument({
+          participantId: braveBisonId,
+          nickname: 'BraveBison',
+          rank: 1,
+          worstRank: 2,
+          totalScore: 70,
+          currentStreak: 0,
+          totalResponseTime: 66866,
+          responseCount: 4,
+        }),
+        createMockGamePlayerParticipantDocument({
+          participantId: fieryBearId,
+          nickname: 'FieryBear',
+          rank: 2,
+          worstRank: 3,
+          totalScore: 118,
+          currentStreak: 0,
+          totalResponseTime: 82603,
+          responseCount: 4,
+        }),
+        createMockGamePlayerParticipantDocument({
+          participantId: atomicBasiliskId,
+          nickname: 'AtomicBasilisk',
+          rank: 3,
+          worstRank: 3,
+          totalScore: 236,
+          currentStreak: 0,
+          totalResponseTime: 144774,
+          responseCount: 4,
+        }),
+      ]
+
+      const questions = [
+        createMockRangeQuestionDocument({
+          text: '2002 levererades den första Koenigseggbilen av modell CC8S. Hur många tillverkades totalt?',
+          points: 0,
+          duration: 60,
+          margin: QuestionRangeAnswerMargin.None,
+          correct: 6,
+        }),
+        createMockRangeQuestionDocument({
+          text: 'Hur många år blev Kubas förre president Fidel Castro?',
+          points: 0,
+          duration: 60,
+          margin: QuestionRangeAnswerMargin.None,
+          correct: 90,
+        }),
+        createMockRangeQuestionDocument({
+          text: 'Vilka är de två första decimalerna i talet pi?',
+          points: 0,
+          duration: 60,
+          margin: QuestionRangeAnswerMargin.None,
+          correct: 14,
+        }),
+        createMockRangeQuestionDocument({
+          text: 'Hur många klädda kort finns det i en kortlek?',
+          points: 0,
+          duration: 60,
+          margin: QuestionRangeAnswerMargin.None,
+          correct: 12,
+        }),
+      ]
+
+      const question0Presented = offsetSeconds(210)
+      const question1Presented = offsetSeconds(240)
+      const question2Presented = offsetSeconds(270)
+      const question3Presented = offsetSeconds(300)
+
+      const questionTasks = [
+        createMockQuestionTaskDocument({
+          questionIndex: 0,
+          presented: question0Presented,
+          created: hosted,
+          metadata: { type: QuestionType.Range },
+          answers: [
+            createMockQuestionTaskRangeAnswer({
+              playerId: braveBisonId,
+              answer: 6,
+              created: responseAt(question0Presented, 2290),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: fieryBearId,
+              answer: 12,
+              created: responseAt(question0Presented, 7253),
+            }),
           ],
-        },
-        mode: GameMode.ZeroToOneHundred,
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 1,
+          presented: question1Presented,
+          metadata: { type: QuestionType.Range },
+          answers: [
+            createMockQuestionTaskRangeAnswer({
+              playerId: braveBisonId,
+              answer: 90,
+              created: responseAt(question1Presented, 2271),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: fieryBearId,
+              answer: 80,
+              created: responseAt(question1Presented, 7276),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: atomicBasiliskId,
+              answer: 60,
+              created: responseAt(question1Presented, 12422),
+            }),
+          ],
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 2,
+          presented: question2Presented,
+          metadata: { type: QuestionType.Range },
+          answers: [
+            createMockQuestionTaskRangeAnswer({
+              playerId: braveBisonId,
+              answer: 14,
+              created: responseAt(question2Presented, 2305),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: fieryBearId,
+              answer: 12,
+              created: responseAt(question2Presented, 8074),
+            }),
+            createMockQuestionTaskRangeAnswer({
+              playerId: atomicBasiliskId,
+              answer: 20,
+              created: responseAt(question2Presented, 12352),
+            }),
+          ],
+        }),
+        createMockQuestionTaskDocument({
+          questionIndex: 3,
+          presented: question3Presented,
+          metadata: { type: QuestionType.Range },
+          answers: [],
+        }),
+      ]
+
+      const questionResultTasks = [
+        createMockQuestionResultTaskDocument({
+          questionIndex: 0,
+          results: [
+            resultItem(QuestionType.Range, braveBisonId, 'BraveBison', {
+              answer: questionTasks[0].answers[0],
+              correct: true,
+              lastScore: -10,
+              totalScore: -10,
+              position: 1,
+              streak: 1,
+              lastResponseTime: 2290,
+              totalResponseTime: 2290,
+              responseCount: 1,
+            }),
+            resultItem(QuestionType.Range, fieryBearId, 'FieryBear', {
+              answer: questionTasks[0].answers[1],
+              correct: false,
+              lastScore: 6,
+              totalScore: 6,
+              position: 2,
+              streak: 0,
+              lastResponseTime: 7253,
+              totalResponseTime: 7253,
+              responseCount: 1,
+            }),
+            resultItem(QuestionType.Range, atomicBasiliskId, 'AtomicBasilisk', {
+              answer: undefined,
+              correct: false,
+              lastScore: 100,
+              totalScore: 100,
+              position: 3,
+              streak: 0,
+              lastResponseTime: 60000,
+              totalResponseTime: 60000,
+              responseCount: 1,
+            }),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 1,
+          results: [
+            resultItem(QuestionType.Range, braveBisonId, 'BraveBison', {
+              answer: questionTasks[1].answers[0],
+              correct: true,
+              lastScore: -10,
+              totalScore: -20,
+              position: 1,
+              streak: 2,
+              lastResponseTime: 2271,
+              totalResponseTime: 4561,
+              responseCount: 2,
+            }),
+            resultItem(QuestionType.Range, fieryBearId, 'FieryBear', {
+              answer: questionTasks[1].answers[1],
+              correct: false,
+              lastScore: 10,
+              totalScore: 16,
+              position: 2,
+              streak: 0,
+              lastResponseTime: 7276,
+              totalResponseTime: 14529,
+              responseCount: 2,
+            }),
+            resultItem(QuestionType.Range, atomicBasiliskId, 'AtomicBasilisk', {
+              answer: questionTasks[1].answers[2],
+              correct: false,
+              lastScore: 30,
+              totalScore: 130,
+              position: 3,
+              streak: 0,
+              lastResponseTime: 12422,
+              totalResponseTime: 72422,
+              responseCount: 2,
+            }),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 2,
+          results: [
+            resultItem(QuestionType.Range, braveBisonId, 'BraveBison', {
+              answer: questionTasks[2].answers[0],
+              correct: true,
+              lastScore: -10,
+              totalScore: -30,
+              position: 1,
+              streak: 3,
+              lastResponseTime: 2305,
+              totalResponseTime: 6866,
+              responseCount: 3,
+            }),
+            resultItem(QuestionType.Range, fieryBearId, 'FieryBear', {
+              answer: questionTasks[2].answers[1],
+              correct: false,
+              lastScore: 2,
+              totalScore: 18,
+              position: 2,
+              streak: 0,
+              lastResponseTime: 8074,
+              totalResponseTime: 22603,
+              responseCount: 3,
+            }),
+            resultItem(QuestionType.Range, atomicBasiliskId, 'AtomicBasilisk', {
+              answer: questionTasks[2].answers[2],
+              correct: false,
+              lastScore: 6,
+              totalScore: 136,
+              position: 3,
+              streak: 0,
+              lastResponseTime: 12352,
+              totalResponseTime: 84774,
+              responseCount: 3,
+            }),
+          ],
+        }),
+        createMockQuestionResultTaskDocument({
+          questionIndex: 3,
+          results: [
+            resultItem(QuestionType.Range, braveBisonId, 'BraveBison', {
+              answer: undefined,
+              correct: false,
+              lastScore: 100,
+              totalScore: 70,
+              position: 1,
+              streak: 0,
+              lastResponseTime: 60000,
+              totalResponseTime: 66866,
+              responseCount: 4,
+            }),
+            resultItem(QuestionType.Range, fieryBearId, 'FieryBear', {
+              answer: undefined,
+              correct: false,
+              lastScore: 100,
+              totalScore: 118,
+              position: 2,
+              streak: 0,
+              lastResponseTime: 60000,
+              totalResponseTime: 82603,
+              responseCount: 4,
+            }),
+            resultItem(QuestionType.Range, atomicBasiliskId, 'AtomicBasilisk', {
+              answer: undefined,
+              correct: false,
+              lastScore: 100,
+              totalScore: 236,
+              position: 3,
+              streak: 0,
+              lastResponseTime: 60000,
+              totalResponseTime: 144774,
+              responseCount: 4,
+            }),
+          ],
+        }),
+      ]
+
+      const leaderboardTasks = [
+        createMockLeaderboardTaskDocument({
+          questionIndex: 0,
+          leaderboard: [
+            leaderboardItem(braveBisonId, 'BraveBison', {
+              position: 1,
+              score: -10,
+              streaks: 1,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 6,
+              streaks: 0,
+            }),
+            leaderboardItem(atomicBasiliskId, 'AtomicBasilisk', {
+              position: 3,
+              score: 100,
+              streaks: 0,
+            }),
+          ],
+        }),
+        createMockLeaderboardTaskDocument({
+          questionIndex: 1,
+          leaderboard: [
+            leaderboardItem(braveBisonId, 'BraveBison', {
+              position: 1,
+              score: -20,
+              streaks: 2,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 16,
+              streaks: 0,
+            }),
+            leaderboardItem(atomicBasiliskId, 'AtomicBasilisk', {
+              position: 3,
+              score: 130,
+              streaks: 0,
+            }),
+          ],
+        }),
+        createMockLeaderboardTaskDocument({
+          questionIndex: 2,
+          leaderboard: [
+            leaderboardItem(braveBisonId, 'BraveBison', {
+              position: 1,
+              score: -30,
+              streaks: 3,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 18,
+              streaks: 0,
+            }),
+            leaderboardItem(atomicBasiliskId, 'AtomicBasilisk', {
+              position: 3,
+              score: 136,
+              streaks: 0,
+            }),
+          ],
+        }),
+      ]
+
+      const gameDocument = createMockGameDocument({
+        _id: '154b2fa4-6d7f-434f-b99a-c5bbc825fc1b',
         name: '0-100 Quiz Debug',
+        mode: GameMode.ZeroToOneHundred,
         nextQuestion: 4,
         participants: [
-          {
-            participantId: '4c5edb8a-ae4f-4294-ac59-dc5befbe5644',
-            type: GameParticipantType.HOST,
-            created: new Date('2025-04-11T15:21:00.069Z'),
-            updated: new Date('2025-04-11T15:21:00.069Z'),
-          },
-          {
-            participantId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-            type: GameParticipantType.PLAYER,
-            nickname: 'BraveBison',
-            created: new Date('2025-04-11T15:21:13.166Z'),
-            updated: new Date('2025-04-11T15:21:13.166Z'),
-            rank: 1,
-            worstRank: 2,
-            totalScore: 70,
-            currentStreak: 0,
-            totalResponseTime: 66866,
-            responseCount: 4,
-          },
-          {
-            participantId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-            type: GameParticipantType.PLAYER,
-            nickname: 'FieryBear',
-            created: new Date('2025-04-11T15:21:22.480Z'),
-            updated: new Date('2025-04-11T15:21:22.480Z'),
-            rank: 2,
-            worstRank: 3,
-            totalScore: 118,
-            currentStreak: 0,
-            totalResponseTime: 82603,
-            responseCount: 4,
-          },
-          {
-            participantId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-            type: GameParticipantType.PLAYER,
-            nickname: 'AtomicBasilisk',
-            created: new Date('2025-04-11T15:21:36.885Z'),
-            updated: new Date('2025-04-11T15:21:36.885Z'),
-            rank: 3,
-            worstRank: 3,
-            totalScore: 236,
-            currentStreak: 0,
-            totalResponseTime: 144774,
-            responseCount: 4,
-          },
+          createMockGameHostParticipantDocument({ participantId: hostId }),
+          ...players,
         ],
-        pin: '174282',
+        currentTask: createMockPodiumTaskDocument({
+          status: 'completed',
+          created: completed,
+          leaderboard: [
+            leaderboardItem(atomicBasiliskId, 'AtomicBasilisk', {
+              position: 3,
+              score: 236,
+              streaks: 0,
+            }),
+            leaderboardItem(fieryBearId, 'FieryBear', {
+              position: 2,
+              score: 118,
+              streaks: 0,
+            }),
+            leaderboardItem(braveBisonId, 'BraveBison', {
+              position: 1,
+              score: 70,
+              streaks: 0,
+            }),
+          ],
+        }),
         previousTasks: [
-          {
-            _id: 'd9ae473b-f139-4b52-bc1b-d2ec03deeba8',
-            type: TaskType.Lobby,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:21:43.117Z'),
-            currentTransitionExpires: new Date('2025-04-11T15:21:46.117Z'),
-            created: new Date('2025-04-11T15:21:00.069Z'),
-          },
-          {
-            _id: '166f0a5d-8a40-4211-a952-05435924be71',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:22:55.399Z'),
-            created: new Date('2025-04-11T15:21:46.184Z'),
-            questionIndex: 0,
-            answers: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                created: new Date('2025-04-11T15:21:57.556Z'),
-                answer: 6,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-11T15:22:02.519Z'),
-                answer: 12,
-              },
-            ],
-            presented: new Date('2025-04-11T15:21:55.266Z'),
-          },
-          {
-            _id: '889e647e-4a32-4c90-9d1d-352f2d04467d',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:02.897Z'),
-            created: new Date('2025-04-11T15:22:55.414Z'),
-            questionIndex: 0,
-            results: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                  created: new Date('2025-04-11T15:21:57.556Z'),
-                  answer: 6,
-                },
-                correct: true,
-                lastScore: -10,
-                totalScore: -10,
-                position: 1,
-                streak: 1,
-                lastResponseTime: 2290,
-                totalResponseTime: 2290,
-                responseCount: 1,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-11T15:22:02.519Z'),
-                  answer: 12,
-                },
-                correct: false,
-                lastScore: 6,
-                totalScore: 6,
-                position: 2,
-                streak: 0,
-                lastResponseTime: 7253,
-                totalResponseTime: 7253,
-                responseCount: 1,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                correct: false,
-                lastScore: 100,
-                totalScore: 100,
-                position: 3,
-                streak: 0,
-                lastResponseTime: 60000,
-                totalResponseTime: 60000,
-                responseCount: 1,
-              },
-            ],
-          },
-          {
-            _id: 'b450a146-5f61-438b-8b8a-810b7a003188',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:08.354Z'),
-            created: new Date('2025-04-11T15:23:02.908Z'),
-            questionIndex: 0,
-            leaderboard: [
-              {
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                position: 1,
-                nickname: 'BraveBison',
-                score: -10,
-                streaks: 1,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 6,
-                streaks: 0,
-              },
-              {
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                position: 3,
-                nickname: 'AtomicBasilisk',
-                score: 100,
-                streaks: 0,
-              },
-            ],
-          },
-          {
-            _id: 'f7d9d8c0-d110-43a0-8f7c-f362f950fcfd',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:26.293Z'),
-            created: new Date('2025-04-11T15:23:08.365Z'),
-            questionIndex: 1,
-            answers: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                created: new Date('2025-04-11T15:23:16.077Z'),
-                answer: 90,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-11T15:23:21.082Z'),
-                answer: 80,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                created: new Date('2025-04-11T15:23:26.228Z'),
-                answer: 60,
-              },
-            ],
-            presented: new Date('2025-04-11T15:23:13.806Z'),
-          },
-          {
-            _id: 'b84af6eb-8457-48f6-80be-5e56ea320860',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:34.479Z'),
-            created: new Date('2025-04-11T15:23:26.308Z'),
-            questionIndex: 1,
-            results: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                  created: new Date('2025-04-11T15:23:16.077Z'),
-                  answer: 90,
-                },
-                correct: true,
-                lastScore: -10,
-                totalScore: -20,
-                position: 1,
-                streak: 2,
-                lastResponseTime: 2271,
-                totalResponseTime: 4561,
-                responseCount: 2,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-11T15:23:21.082Z'),
-                  answer: 80,
-                },
-                correct: false,
-                lastScore: 10,
-                totalScore: 16,
-                position: 2,
-                streak: 0,
-                lastResponseTime: 7276,
-                totalResponseTime: 14529,
-                responseCount: 2,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                  created: new Date('2025-04-11T15:23:26.228Z'),
-                  answer: 60,
-                },
-                correct: false,
-                lastScore: 30,
-                totalScore: 130,
-                position: 3,
-                streak: 0,
-                lastResponseTime: 12422,
-                totalResponseTime: 72422,
-                responseCount: 2,
-              },
-            ],
-          },
-          {
-            _id: '3ca44484-bf44-4625-90d7-4678df6b40fc',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:40.800Z'),
-            created: new Date('2025-04-11T15:23:34.491Z'),
-            questionIndex: 1,
-            leaderboard: [
-              {
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                position: 1,
-                nickname: 'BraveBison',
-                score: -20,
-                streaks: 2,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 16,
-                streaks: 0,
-              },
-              {
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                position: 3,
-                nickname: 'AtomicBasilisk',
-                score: 130,
-                streaks: 0,
-              },
-            ],
-          },
-          {
-            _id: 'ff5ba189-93ca-4ee3-8362-2ba4ea3a06ec',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:23:57.984Z'),
-            created: new Date('2025-04-11T15:23:40.812Z'),
-            questionIndex: 2,
-            answers: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                created: new Date('2025-04-11T15:23:47.870Z'),
-                answer: 14,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                created: new Date('2025-04-11T15:23:53.639Z'),
-                answer: 12,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                created: new Date('2025-04-11T15:23:57.917Z'),
-                answer: 20,
-              },
-            ],
-            presented: new Date('2025-04-11T15:23:45.565Z'),
-          },
-          {
-            _id: 'b472aaee-718d-4d71-9c3e-08678fb58424',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:24:00.963Z'),
-            created: new Date('2025-04-11T15:23:58.007Z'),
-            questionIndex: 2,
-            results: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                  created: new Date('2025-04-11T15:23:47.870Z'),
-                  answer: 14,
-                },
-                correct: true,
-                lastScore: -10,
-                totalScore: -30,
-                position: 1,
-                streak: 3,
-                lastResponseTime: 2305,
-                totalResponseTime: 6866,
-                responseCount: 3,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                  created: new Date('2025-04-11T15:23:53.639Z'),
-                  answer: 12,
-                },
-                correct: false,
-                lastScore: 2,
-                totalScore: 18,
-                position: 2,
-                streak: 0,
-                lastResponseTime: 8074,
-                totalResponseTime: 22603,
-                responseCount: 3,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                answer: {
-                  type: QuestionType.Range,
-                  playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                  created: new Date('2025-04-11T15:23:57.917Z'),
-                  answer: 20,
-                },
-                correct: false,
-                lastScore: 6,
-                totalScore: 136,
-                position: 3,
-                streak: 0,
-                lastResponseTime: 12352,
-                totalResponseTime: 84774,
-                responseCount: 3,
-              },
-            ],
-          },
-          {
-            _id: 'c18a2c0c-4813-40c3-82fe-5ff3fffe7f35',
-            type: TaskType.Leaderboard,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:24:04.208Z'),
-            created: new Date('2025-04-11T15:24:00.976Z'),
-            questionIndex: 2,
-            leaderboard: [
-              {
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                position: 1,
-                nickname: 'BraveBison',
-                score: -30,
-                streaks: 3,
-              },
-              {
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                position: 2,
-                nickname: 'FieryBear',
-                score: 18,
-                streaks: 0,
-              },
-              {
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                position: 3,
-                nickname: 'AtomicBasilisk',
-                score: 136,
-                streaks: 0,
-              },
-            ],
-          },
-          {
-            _id: '5ec14c7d-c231-4345-98ea-144c2b83b461',
-            type: TaskType.Question,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:25:08.938Z'),
-            created: new Date('2025-04-11T15:24:04.221Z'),
-            questionIndex: 3,
-            answers: [],
-            presented: new Date('2025-04-11T15:24:08.794Z'),
-          },
-          {
-            _id: '30caf4a0-bd20-4493-8ebd-d86359aba30f',
-            type: TaskType.QuestionResult,
-            status: 'completed',
-            currentTransitionInitiated: new Date('2025-04-11T15:25:11.901Z'),
-            created: new Date('2025-04-11T15:25:08.957Z'),
-            questionIndex: 3,
-            results: [
-              {
-                type: QuestionType.Range,
-                playerId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
-                correct: false,
-                lastScore: 100,
-                totalScore: 70,
-                position: 1,
-                streak: 0,
-                lastResponseTime: 60000,
-                totalResponseTime: 66866,
-                responseCount: 4,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: 'dc74af58-f7d3-4116-9194-019674a607dc',
-                correct: false,
-                lastScore: 100,
-                totalScore: 118,
-                position: 2,
-                streak: 0,
-                lastResponseTime: 60000,
-                totalResponseTime: 82603,
-                responseCount: 4,
-              },
-              {
-                type: QuestionType.Range,
-                playerId: '84aabd9d-e067-4930-b6d2-9048f295d190',
-                correct: false,
-                lastScore: 100,
-                totalScore: 236,
-                position: 3,
-                streak: 0,
-                lastResponseTime: 60000,
-                totalResponseTime: 144774,
-                responseCount: 4,
-              },
-            ],
-          },
+          createMockLobbyTaskDocument({ status: 'completed', created: hosted }),
+          ...questionTasks.flatMap((questionTask, index) => [
+            questionTask,
+            questionResultTasks[index],
+            ...(leaderboardTasks[index] ? [leaderboardTasks[index]] : []),
+          ]),
         ],
-        questions: [
-          {
-            type: QuestionType.Range,
-            text: '2002 levererades den första Koenigseggbilen av modell CC8S. Hur många tillverkades totalt?',
-            media: {
-              type: MediaType.Image,
-              url: 'https://s1.cdn.autoevolution.com/images/gallery/KOENIGSEGG-CC8S-4049_7.jpg',
-            },
-            points: 0,
-            duration: 60,
-            min: 0,
-            max: 100,
-            step: 1,
-            margin: QuestionRangeAnswerMargin.None,
-            correct: 6,
-          },
-          {
-            type: QuestionType.Range,
-            text: 'Hur många år blev Kubas förre president Fidel Castro?',
-            media: {
-              type: MediaType.Image,
-              url: 'http://www.turizmtatilseyahat.com/en/wp-content/uploads/2014/08/fidel-castro-kuba.jpg',
-            },
-            points: 0,
-            duration: 60,
-            min: 0,
-            max: 100,
-            step: 1,
-            margin: QuestionRangeAnswerMargin.None,
-            correct: 90,
-          },
-          {
-            type: QuestionType.Range,
-            text: 'Vilka är de två första decimalerna i talet pi?',
-            media: {
-              type: MediaType.Image,
-              url: 'https://www.nationalgeographic.com.es/medio/2023/02/23/numero-pi_902def82_230223124056_1200x630.jpg',
-            },
-            points: 0,
-            duration: 60,
-            min: 0,
-            max: 100,
-            step: 1,
-            margin: QuestionRangeAnswerMargin.None,
-            correct: 14,
-          },
-          {
-            type: QuestionType.Range,
-            text: 'Hur många klädda kort finns det i en kortlek?',
-            media: {
-              type: MediaType.Image,
-              url: 'https://hallmiba.com/thumb/2826/1024x0/d2b999d1709edbedeb911ad28ec8e6ab.jpg',
-            },
-            points: 0,
-            duration: 60,
-            min: 0,
-            max: 100,
-            step: 1,
-            margin: QuestionRangeAnswerMargin.None,
-            correct: 12,
-          },
-        ],
-        quiz: { _id: '8a2923a1-80f4-4adb-aee1-0b82998186cb' },
-        status: GameStatus.Active,
-        updated: new Date('2025-04-11T15:25:16.966Z'),
-      } as GameDocument
+        questions,
+      }) as GameDocument
 
       const actual = buildGameResultModel(gameDocument)
 
@@ -1292,11 +972,11 @@ describe('Game Result Converter', () => {
         _id: expect.anything(),
         name: gameDocument.name,
         game: gameDocument,
-        hostParticipantId: '4c5edb8a-ae4f-4294-ac59-dc5befbe5644',
+        hostParticipantId: hostId,
         players: [
           {
             nickname: 'BraveBison',
-            participantId: 'a145a38f-cb05-4ee5-b41a-6c4c16327321',
+            participantId: braveBisonId,
             rank: 1,
             comebackRankGain: 1,
             averagePrecision: 0.75,
@@ -1306,7 +986,7 @@ describe('Game Result Converter', () => {
           },
           {
             nickname: 'FieryBear',
-            participantId: 'dc74af58-f7d3-4116-9194-019674a607dc',
+            participantId: fieryBearId,
             rank: 2,
             comebackRankGain: 1,
             averagePrecision: 0.7,
@@ -1316,7 +996,7 @@ describe('Game Result Converter', () => {
           },
           {
             nickname: 'AtomicBasilisk',
-            participantId: '84aabd9d-e067-4930-b6d2-9048f295d190',
+            participantId: atomicBasiliskId,
             rank: 3,
             comebackRankGain: 0,
             averagePrecision: 0.41,
@@ -1355,37 +1035,35 @@ describe('Game Result Converter', () => {
             averageResponseTime: 60000,
           },
         ],
-        hosted: new Date('2025-04-11T15:21:46.184Z'),
-        completed: new Date('2025-04-11T15:25:11.915Z'),
+        hosted,
+        completed,
       })
     })
 
     it('does not produce a negative unanswered count when a player leaves after answering', () => {
-      const presented = new Date('2026-02-01T10:00:00.000Z')
-      const gameDocument = {
+      const presented = offsetSeconds(400)
+      const hostId = 'host-1'
+      const remainingPlayerId = 'remaining-player'
+      const removedPlayerId = 'removed-player'
+
+      const gameDocument = createMockGameDocument({
         _id: 'game-with-leaver',
         name: 'Game with leaver',
         mode: GameMode.Classic,
-        quiz: { _id: 'quiz-1' },
         questions: [
-          {
-            type: QuestionType.MultiChoice,
+          createMockMultiChoiceQuestionDocument({
             text: 'Question',
-            points: 1000,
-            duration: 30,
             options: [{ value: 'Correct', correct: true }],
-          },
+          }),
         ],
         participants: [
-          {
-            participantId: 'host-1',
-            type: GameParticipantType.HOST,
+          createMockGameHostParticipantDocument({
+            participantId: hostId,
             created: presented,
             updated: presented,
-          },
-          {
-            participantId: 'remaining-player',
-            type: GameParticipantType.PLAYER,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: remainingPlayerId,
             nickname: 'Remaining',
             rank: 1,
             worstRank: 1,
@@ -1395,71 +1073,63 @@ describe('Game Result Converter', () => {
             responseCount: 1,
             created: presented,
             updated: presented,
-          },
+          }),
         ],
-        currentTask: {
-          type: TaskType.Podium,
+        currentTask: createMockPodiumTaskDocument({
           status: 'completed',
-          created: new Date('2026-02-01T10:00:10.000Z'),
+          created: offsetSeconds(410),
           leaderboard: [
-            {
-              playerId: 'remaining-player',
-              position: 1,
-              nickname: 'Remaining',
+            leaderboardItem(remainingPlayerId, 'Remaining', {
               score: 900,
               streaks: 1,
-            },
+            }),
           ],
-        },
+        }),
         previousTasks: [
-          {
-            type: TaskType.Question,
+          createMockQuestionTaskDocument({
             questionIndex: 0,
             presented,
             created: presented,
             answers: [
-              {
-                type: QuestionType.MultiChoice,
-                playerId: 'remaining-player',
+              createMockQuestionTaskMultiChoiceAnswer({
+                playerId: remainingPlayerId,
                 answer: 0,
-                created: new Date(presented.getTime() + 1000),
-              },
-              {
-                type: QuestionType.MultiChoice,
-                playerId: 'removed-player',
+                created: responseAt(presented, 1000),
+              }),
+              createMockQuestionTaskMultiChoiceAnswer({
+                playerId: removedPlayerId,
                 answer: 0,
-                created: new Date(presented.getTime() + 2000),
-              },
+                created: responseAt(presented, 2000),
+              }),
             ],
-          },
-          {
-            type: TaskType.QuestionResult,
+          }),
+          createMockQuestionResultTaskDocument({
             questionIndex: 0,
             results: [
-              {
-                type: QuestionType.MultiChoice,
-                playerId: 'remaining-player',
-                correct: true,
-                answer: {
-                  type: QuestionType.MultiChoice,
-                  playerId: 'remaining-player',
-                  answer: 0,
-                  created: new Date(presented.getTime() + 1000),
+              resultItem(
+                QuestionType.MultiChoice,
+                remainingPlayerId,
+                'Remaining',
+                {
+                  answer: createMockQuestionTaskMultiChoiceAnswer({
+                    playerId: remainingPlayerId,
+                    answer: 0,
+                    created: responseAt(presented, 1000),
+                  }),
+                  correct: true,
+                  lastScore: 900,
+                  totalScore: 900,
+                  position: 1,
+                  streak: 1,
+                  lastResponseTime: 1000,
+                  totalResponseTime: 1000,
+                  responseCount: 1,
                 },
-                lastScore: 900,
-                totalScore: 900,
-                position: 1,
-                streak: 1,
-                lastResponseTime: 1000,
-                totalResponseTime: 1000,
-                responseCount: 1,
-              },
+              ),
             ],
-          },
+          }),
         ],
-        created: presented,
-        updated: presented,
-      } as unknown as GameDocument
+      }) as GameDocument
 
       const result = buildGameResultModel(gameDocument)
 
@@ -1468,3 +1138,33 @@ describe('Game Result Converter', () => {
     })
   })
 })
+
+function responseAt(presented: Date, responseTime: number): Date {
+  return new Date(presented.getTime() + responseTime)
+}
+
+function resultItem(
+  type: QuestionType,
+  playerId: string,
+  nickname: string,
+  overrides: Partial<QuestionResultTaskItem>,
+): QuestionResultTaskItem {
+  return createMockQuestionResultTaskItemDocument({
+    type,
+    playerId,
+    nickname,
+    ...overrides,
+  })
+}
+
+function leaderboardItem(
+  playerId: string,
+  nickname: string,
+  overrides: Partial<LeaderboardTaskItem>,
+): LeaderboardTaskItem {
+  return createMockLeaderboardTaskItem({
+    playerId,
+    nickname,
+    ...overrides,
+  })
+}
