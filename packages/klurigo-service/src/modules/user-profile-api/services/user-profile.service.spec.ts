@@ -1,9 +1,18 @@
 import {
   AuthProvider,
+  GameMode,
+  LanguageCode,
+  QuizCategory,
   QuizVisibility,
   UserProfileResponseDto,
 } from '@klurigo/common'
 
+import {
+  buildMockPrimaryUser,
+  createMockClassicQuiz,
+  createMockQuizGameplaySummary,
+  createMockQuizRatingSummary,
+} from '../../../../test-utils/data'
 import { UserNotFoundException } from '../../user/exceptions'
 
 import { UserProfileService } from './user-profile.service'
@@ -104,44 +113,37 @@ describe('UserProfileService', () => {
 
   describe('findPublicQuizzesByUserId', () => {
     const userId = 'user-123'
-    const baseQuiz = {
-      description: 'A fun quiz',
-      mode: 'classic',
-      category: 'general-knowledge',
-      imageCoverURL: 'https://example.com/quiz.jpg',
-      languageCode: 'en',
-      owner: {
-        _id: userId,
-        defaultNickname: 'FrostyBear',
-      },
-      gameplaySummary: {
-        count: 4,
-        totalPlayerCount: 16,
-        lastPlayedAt: new Date('2025-02-01T12:00:00.000Z'),
-        totalClassicCorrectCount: 30,
-        totalClassicIncorrectCount: 10,
-        totalClassicUnansweredCount: 5,
-        totalZeroToOneHundredPrecisionSum: 0,
-        totalZeroToOneHundredAnsweredCount: 0,
-        totalZeroToOneHundredUnansweredCount: 0,
-      },
-      ratingSummary: {
-        avg: 4.5,
-        count: 6,
-        commentCount: 2,
-      },
-      created: new Date('2025-01-01T12:00:00.000Z'),
-      updated: new Date('2025-01-02T12:00:00.000Z'),
-    }
 
     it('should return paginated public quizzes with default sorting', async () => {
+      const quiz = createMockClassicQuiz({
+        description: 'A fun quiz',
+        imageCoverURL: 'https://example.com/quiz.jpg',
+        owner: buildMockPrimaryUser({
+          _id: userId,
+          defaultNickname: 'FrostyBear',
+        }),
+        gameplaySummary: createMockQuizGameplaySummary({
+          count: 4,
+          totalPlayerCount: 16,
+          lastPlayedAt: new Date('2025-02-01T12:00:00.000Z'),
+          totalClassicCorrectCount: 30,
+          totalClassicIncorrectCount: 10,
+          totalClassicUnansweredCount: 5,
+        }),
+        ratingSummary: createMockQuizRatingSummary({
+          avg: 4.5,
+          count: 6,
+          commentCount: 2,
+        }),
+        created: new Date('2025-01-01T12:00:00.000Z'),
+        updated: new Date('2025-01-02T12:00:00.000Z'),
+      })
       const quizzes = [
         {
-          ...baseQuiz,
+          ...quiz,
           _id: 'quiz-1',
           title: 'Astronomy Basics',
-          questions: [{ id: 'q1' }, { id: 'q2' }],
-          visibility: QuizVisibility.Public,
+          questions: quiz.questions.slice(0, 2),
         },
       ]
 
@@ -157,11 +159,11 @@ describe('UserProfileService', () => {
             id: 'quiz-1',
             title: 'Astronomy Basics',
             description: 'A fun quiz',
-            mode: 'classic',
+            mode: GameMode.Classic,
             visibility: QuizVisibility.Public,
-            category: 'general-knowledge',
+            category: QuizCategory.GeneralKnowledge,
             imageCoverURL: 'https://example.com/quiz.jpg',
-            languageCode: 'en',
+            languageCode: LanguageCode.English,
             numberOfQuestions: 2,
             author: {
               id: userId,
