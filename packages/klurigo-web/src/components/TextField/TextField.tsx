@@ -3,9 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { DeviceType } from '../../utils/device-size.types'
 import { classNames } from '../../utils/helpers'
-import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
 import {
   isCallbackValid,
   isValidNumber,
@@ -170,13 +168,6 @@ const TextField: FC<TextFieldProps> = ({
     onChange?.(newValue)
   }
 
-  const deviceType = useDeviceSizeType()
-
-  const deviceSize = useMemo(
-    () => (deviceType === DeviceType.Mobile ? 'small' : size),
-    [size, deviceType],
-  )
-
   return (
     <div className={styles.inputContainer}>
       <div
@@ -184,7 +175,7 @@ const TextField: FC<TextFieldProps> = ({
           styles.textFieldInputContainer,
           surface === 'brand' ? styles.surfaceBrand : undefined,
           surface === 'light' ? styles.surfaceLight : undefined,
-          deviceSize === 'small' ? styles.sizeSmall : undefined,
+          size === 'small' ? styles.sizeSmall : undefined,
           disabled ? styles.disabled : undefined,
           showError ? styles.error : undefined,
         )}>
@@ -230,10 +221,7 @@ const TextField: FC<TextFieldProps> = ({
         )}
       </div>
       {showError && showErrorMessage && (
-        <InputError
-          message={errorMessage ?? 'Unknown error'}
-          size={deviceSize}
-        />
+        <InputError message={errorMessage ?? 'Unknown error'} size={size} />
       )}
     </div>
   )

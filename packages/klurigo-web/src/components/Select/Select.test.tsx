@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { DeviceType } from '../../utils/device-size.types'
 import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
+import inputErrorStyles from '../InputError/InputError.module.scss'
 
 import Select from './Select'
 import styles from './Select.module.scss'
@@ -102,14 +103,58 @@ describe('Select', () => {
       ).toHaveClass(styles.sizeSmall)
     })
 
-    it('should force small size on mobile', () => {
+    it('should use normal size by default on mobile', () => {
       vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
 
-      render(<Select id="my-select" size="normal" values={values} />)
+      render(<Select id="my-select" values={values} />)
 
       expect(
         screen.getByTestId('test-my-select-select').parentElement,
-      ).toHaveClass(styles.sizeSmall)
+      ).not.toHaveClass(styles.sizeSmall)
+    })
+
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
+      'should respect normal size on %s',
+      (deviceType) => {
+        vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
+
+        render(<Select id="my-select" size="normal" values={values} />)
+
+        expect(
+          screen.getByTestId('test-my-select-select').parentElement,
+        ).not.toHaveClass(styles.sizeSmall)
+      },
+    )
+
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
+      'should respect small size on %s',
+      (deviceType) => {
+        vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
+
+        render(<Select id="my-select" size="small" values={values} />)
+
+        expect(
+          screen.getByTestId('test-my-select-select').parentElement,
+        ).toHaveClass(styles.sizeSmall)
+      },
+    )
+
+    it('should pass the requested size to InputError on mobile', () => {
+      vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
+
+      render(
+        <Select
+          id="my-select"
+          values={values}
+          size="normal"
+          customErrorMessage="Invalid selection"
+          forceValidate
+        />,
+      )
+
+      expect(screen.getByText('Invalid selection')).not.toHaveClass(
+        inputErrorStyles.sizeSmall,
+      )
     })
   })
 

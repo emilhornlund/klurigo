@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { DeviceType } from '../../utils/device-size.types'
 import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
+import inputErrorStyles from '../InputError/InputError.module.scss'
 
 import TextField from './TextField'
 import styles from './TextField.module.scss'
@@ -94,14 +95,58 @@ describe('TextField', () => {
       ).toHaveClass(styles.sizeSmall)
     })
 
-    it('should force small size on mobile', () => {
+    it('should use normal size by default on mobile', () => {
       vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
 
-      render(<TextField id="my-text-field" type="text" size="normal" />)
+      render(<TextField id="my-text-field" type="text" />)
 
       expect(
         screen.getByTestId('test-my-text-field-textfield').parentElement,
-      ).toHaveClass(styles.sizeSmall)
+      ).not.toHaveClass(styles.sizeSmall)
+    })
+
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
+      'should respect normal size on %s',
+      (deviceType) => {
+        vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
+
+        render(<TextField id="my-text-field" type="text" size="normal" />)
+
+        expect(
+          screen.getByTestId('test-my-text-field-textfield').parentElement,
+        ).not.toHaveClass(styles.sizeSmall)
+      },
+    )
+
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
+      'should respect small size on %s',
+      (deviceType) => {
+        vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
+
+        render(<TextField id="my-text-field" type="text" size="small" />)
+
+        expect(
+          screen.getByTestId('test-my-text-field-textfield').parentElement,
+        ).toHaveClass(styles.sizeSmall)
+      },
+    )
+
+    it('should pass the requested size to InputError on mobile', () => {
+      vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
+
+      render(
+        <TextField
+          id="my-text-field"
+          type="text"
+          size="normal"
+          customErrorMessage="Invalid value"
+          forceValidate
+        />,
+      )
+
+      expect(screen.getByText('Invalid value')).not.toHaveClass(
+        inputErrorStyles.sizeSmall,
+      )
     })
   })
 
