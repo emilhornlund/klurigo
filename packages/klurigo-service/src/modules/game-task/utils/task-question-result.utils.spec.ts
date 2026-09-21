@@ -44,22 +44,22 @@ describe('Task Question Result Utils', () => {
   const PARTICIPANT_PLAYER_ID_02 = uuidv4()
   const PARTICIPANT_PLAYER_ID_03 = uuidv4()
 
+  const createGameParticipants = (playerIds: string[]) => [
+    createMockGameHostParticipantDocument(),
+    ...playerIds.map((participantId) =>
+      createMockGamePlayerParticipantDocument({ participantId }),
+    ),
+  ]
+
   describe('buildQuestionResultTask', () => {
     describe('Basic functionality', () => {
       it('should build a question result task item for a classic mode game when question type is multi choice', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockMultiChoiceQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -143,18 +143,11 @@ describe('Task Question Result Utils', () => {
 
       it('should build a question result task item for a classic mode game when question type is range', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockRangeQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -238,18 +231,11 @@ describe('Task Question Result Utils', () => {
 
       it('should build a question result task item for a classic mode game when question type is true false', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockTrueFalseQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -333,18 +319,11 @@ describe('Task Question Result Utils', () => {
 
       it('should build a question result task item for a classic mode game when question type is type answer', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockTypeAnswerQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -430,18 +409,11 @@ describe('Task Question Result Utils', () => {
 
       it('should build a question result task item for a classic mode game when question type is pin', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockPinQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -525,18 +497,11 @@ describe('Task Question Result Utils', () => {
 
       it('should build a question result task item for a classic mode game when question type is puzzle', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_03,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+            PARTICIPANT_PLAYER_ID_03,
+          ]),
           questions: [createMockPuzzleQuestionDocument({ duration: 30 })],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -657,15 +622,10 @@ describe('Task Question Result Utils', () => {
       it('should build a question result task for ZeroToOneHundred mode with range question', () => {
         const game = createMockGameDocument({
           mode: GameMode.ZeroToOneHundred,
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+          ]),
           questions: [createMockRangeQuestionDocument()],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -697,15 +657,10 @@ describe('Task Question Result Utils', () => {
       it('should assign 100 points to players with no answers in ZeroToOneHundred mode', () => {
         const game = createMockGameDocument({
           mode: GameMode.ZeroToOneHundred,
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_02,
-            }),
-          ],
+          participants: createGameParticipants([
+            PARTICIPANT_PLAYER_ID_01,
+            PARTICIPANT_PLAYER_ID_02,
+          ]),
           questions: [createMockRangeQuestionDocument()],
           currentTask: createMockQuestionTaskDocument({
             answers: [
@@ -756,12 +711,7 @@ describe('Task Question Result Utils', () => {
 
       it('should handle single participant', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockMultiChoiceQuestionDocument()],
           currentTask: createMockQuestionTaskDocument(),
         })
@@ -830,12 +780,7 @@ describe('Task Question Result Utils', () => {
 
       it('should handle multi-choice questions with multiple correct answers', () => {
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [
             createMockMultiChoiceQuestionDocument({
               options: [
@@ -891,12 +836,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockMultiChoiceQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -930,12 +870,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockRangeQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -965,12 +900,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockTrueFalseQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1002,12 +932,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockTypeAnswerQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1037,12 +962,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockPinQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1074,12 +994,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockPuzzleQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1110,12 +1025,7 @@ describe('Task Question Result Utils', () => {
 
         const game = createMockGameDocument({
           mode: GameMode.ZeroToOneHundred,
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockRangeQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1235,12 +1145,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockMultiChoiceQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
@@ -1273,12 +1178,7 @@ describe('Task Question Result Utils', () => {
         })
 
         const game = createMockGameDocument({
-          participants: [
-            createMockGameHostParticipantDocument({}),
-            createMockGamePlayerParticipantDocument({
-              participantId: PARTICIPANT_PLAYER_ID_01,
-            }),
-          ],
+          participants: createGameParticipants([PARTICIPANT_PLAYER_ID_01]),
           questions: [createMockMultiChoiceQuestionDocument()],
           currentTask,
           previousTasks: [previousTask],
