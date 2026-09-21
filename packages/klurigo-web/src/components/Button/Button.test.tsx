@@ -253,19 +253,17 @@ describe('Button', () => {
       ).toHaveClass(styles.sizeSmall)
     })
 
-    it('should force small size on mobile', () => {
+    it('should use normal size by default on mobile', () => {
       vi.mocked(useDeviceSizeType).mockReturnValue(DeviceType.Mobile)
 
-      render(
-        <Button id="my-button" type="button" size="normal" value="Button" />,
-      )
+      render(<Button id="my-button" type="button" value="Button" />)
 
       expect(
         screen.getByTestId('test-my-button-button').parentElement,
-      ).toHaveClass(styles.sizeSmall)
+      ).not.toHaveClass(styles.sizeSmall)
     })
 
-    it.each([DeviceType.Tablet, DeviceType.Desktop])(
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
       'should respect normal size on %s',
       (deviceType) => {
         vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
@@ -277,6 +275,21 @@ describe('Button', () => {
         expect(
           screen.getByTestId('test-my-button-button').parentElement,
         ).not.toHaveClass(styles.sizeSmall)
+      },
+    )
+
+    it.each([DeviceType.Mobile, DeviceType.Tablet, DeviceType.Desktop])(
+      'should respect small size on %s',
+      (deviceType) => {
+        vi.mocked(useDeviceSizeType).mockReturnValue(deviceType)
+
+        render(
+          <Button id="my-button" type="button" size="small" value="Button" />,
+        )
+
+        expect(
+          screen.getByTestId('test-my-button-button').parentElement,
+        ).toHaveClass(styles.sizeSmall)
       },
     )
   })

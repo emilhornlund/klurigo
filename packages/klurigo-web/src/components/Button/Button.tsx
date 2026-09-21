@@ -57,11 +57,6 @@ const Button: FC<ButtonProps> = ({
     return !!value || !!children
   }, [value, children, deviceType, hideValue])
 
-  const deviceSize = useMemo(
-    () => (deviceType === DeviceType.Mobile ? 'small' : size),
-    [size, deviceType],
-  )
-
   return (
     <div
       className={classNames(
@@ -75,7 +70,7 @@ const Button: FC<ButtonProps> = ({
         intent === 'accent' ? styles.intentAccent : undefined,
         intent === 'danger' ? styles.intentDanger : undefined,
         intent === 'success' ? styles.intentSuccess : undefined,
-        deviceSize === 'small' ? styles.sizeSmall : undefined,
+        size === 'small' ? styles.sizeSmall : undefined,
         grow ? styles.grow : undefined,
       )}>
       <button
