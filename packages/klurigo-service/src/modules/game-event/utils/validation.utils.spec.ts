@@ -4,7 +4,6 @@ import {
   createMockMultiChoiceQuestionDocument,
   createMockQuestionTaskDocument,
 } from '../../../../test-utils/data'
-import type { Game } from '../../game-core/repositories/models/schemas'
 
 import {
   validateAndGetQuestion,
@@ -14,23 +13,23 @@ import {
 describe('validation.utils', () => {
   describe('validateAndGetQuestion', () => {
     const mockQuestion = createMockMultiChoiceQuestionDocument()
-    const createMockQuestionGame = (
-      questions: Game['questions'] = [mockQuestion],
-      questionIndex = 0,
-    ) => ({
-      ...createMockGameDocument(),
-      questions,
-      currentTask: createMockQuestionTaskDocument({ questionIndex }),
-    })
 
     it('should return the question when valid game and index', () => {
-      const mockGame = createMockQuestionGame()
+      const mockGame = {
+        ...createMockGameDocument(),
+        questions: [mockQuestion],
+        currentTask: createMockQuestionTaskDocument(),
+      }
       const result = validateAndGetQuestion(mockGame)
       expect(result).toBe(mockQuestion)
     })
 
     it('should throw error when game has no questions', () => {
-      const gameWithNoQuestions = createMockQuestionGame([])
+      const gameWithNoQuestions = {
+        ...createMockGameDocument(),
+        questions: [],
+        currentTask: createMockQuestionTaskDocument(),
+      }
 
       expect(() => validateAndGetQuestion(gameWithNoQuestions)).toThrow(
         'Game has no questions',
@@ -40,6 +39,7 @@ describe('validation.utils', () => {
     it('should throw error when questions array is undefined', () => {
       const gameWithUndefinedQuestions = createMockGameDocument({
         questions: undefined as never,
+        currentTask: createMockQuestionTaskDocument(),
       })
 
       expect(() =>
@@ -48,7 +48,11 @@ describe('validation.utils', () => {
     })
 
     it('should throw error when questionIndex is negative', () => {
-      const gameWithNegativeIndex = createMockQuestionGame([mockQuestion], -1)
+      const gameWithNegativeIndex = {
+        ...createMockGameDocument(),
+        questions: [mockQuestion],
+        currentTask: createMockQuestionTaskDocument({ questionIndex: -1 }),
+      }
 
       expect(() => validateAndGetQuestion(gameWithNegativeIndex)).toThrow(
         'Question index -1 is out of bounds. Game has 1 questions (0-0)',
@@ -56,7 +60,11 @@ describe('validation.utils', () => {
     })
 
     it('should throw error when questionIndex is equal to questions length', () => {
-      const gameWithIndexAtLength = createMockQuestionGame([mockQuestion], 1)
+      const gameWithIndexAtLength = {
+        ...createMockGameDocument(),
+        questions: [mockQuestion],
+        currentTask: createMockQuestionTaskDocument({ questionIndex: 1 }),
+      }
 
       expect(() => validateAndGetQuestion(gameWithIndexAtLength)).toThrow(
         'Question index 1 is out of bounds. Game has 1 questions (0-0)',
@@ -64,10 +72,11 @@ describe('validation.utils', () => {
     })
 
     it('should throw error when questionIndex is greater than questions length', () => {
-      const gameWithIndexBeyondLength = createMockQuestionGame(
-        [mockQuestion],
-        5,
-      )
+      const gameWithIndexBeyondLength = {
+        ...createMockGameDocument(),
+        questions: [mockQuestion],
+        currentTask: createMockQuestionTaskDocument({ questionIndex: 5 }),
+      }
 
       expect(() => validateAndGetQuestion(gameWithIndexBeyondLength)).toThrow(
         'Question index 5 is out of bounds. Game has 1 questions (0-0)',
@@ -81,7 +90,11 @@ describe('validation.utils', () => {
         createMockMultiChoiceQuestionDocument({ text: 'Third question' }),
       ]
 
-      const gameWithMultipleQuestions = createMockQuestionGame(mockQuestions, 1)
+      const gameWithMultipleQuestions = {
+        ...createMockGameDocument(),
+        questions: mockQuestions,
+        currentTask: createMockQuestionTaskDocument({ questionIndex: 1 }),
+      }
 
       const result = validateAndGetQuestion(gameWithMultipleQuestions)
       expect(result).toBe(mockQuestions[1])
@@ -95,7 +108,11 @@ describe('validation.utils', () => {
         createMockMultiChoiceQuestionDocument({ text: 'Third question' }),
       ]
 
-      const gameWithLastIndex = createMockQuestionGame(mockQuestions, 2)
+      const gameWithLastIndex = {
+        ...createMockGameDocument(),
+        questions: mockQuestions,
+        currentTask: createMockQuestionTaskDocument({ questionIndex: 2 }),
+      }
 
       const result = validateAndGetQuestion(gameWithLastIndex)
       expect(result).toBe(mockQuestions[2])
@@ -108,7 +125,11 @@ describe('validation.utils', () => {
         text: `Question ${i}`,
       }))
 
-      const gameWithZeroIndex = createMockQuestionGame(mockQuestions)
+      const gameWithZeroIndex = {
+        ...createMockGameDocument(),
+        questions: mockQuestions,
+        currentTask: createMockQuestionTaskDocument(),
+      }
 
       const result = validateAndGetQuestion(gameWithZeroIndex)
       expect(result).toBe(mockQuestions[0])
