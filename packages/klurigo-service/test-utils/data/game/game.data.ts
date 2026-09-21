@@ -4,16 +4,16 @@ import {
   Game,
   ParticipantHostWithBase,
   ParticipantPlayerWithBase,
-} from '../../src/modules/game-core/repositories/models/schemas'
+} from '../../../src/modules/game-core/repositories/models/schemas'
+import { createMockLobbyTaskDocument } from '../game-task/game-task.data'
+import { createMockClassicQuiz } from '../quiz/quiz.data'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
 
-import { createMockLobbyTaskDocument } from './game-task.data'
 import {
   MOCK_DEFAULT_GAME_NAME,
   MOCK_DEFAULT_PLAYER_ID,
   MOCK_DEFAULT_PLAYER_NICKNAME,
-} from './game.constants'
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
-import { createMockClassicQuiz } from './quiz.data'
+} from './constants'
 
 export function createMockGameDocument(game?: Partial<Game>): Game {
   return {

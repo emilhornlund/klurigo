@@ -22,14 +22,13 @@ import {
   QuestionTaskTypeAnswerAnswer,
   QuestionTaskWithBase,
   TaskType,
-} from '../../src/modules/game-core/repositories/models/schemas'
-
+} from '../../../src/modules/game-core/repositories/models/schemas'
 import {
   MOCK_DEFAULT_PLAYER_ID,
   MOCK_DEFAULT_PLAYER_NICKNAME,
-  MOCK_TYPE_ANSWER_OPTION_VALUE,
-} from './game.constants'
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
+} from '../game/constants'
+import { MOCK_TYPE_ANSWER_OPTION_VALUE } from '../quiz/constants'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
 
 export function createMockQuestionTaskDocument(
   task?: Partial<QuestionTaskWithBase>,

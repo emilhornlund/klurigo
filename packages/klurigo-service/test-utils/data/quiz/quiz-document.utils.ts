@@ -5,11 +5,10 @@ import {
   QuizRating,
   QuizRatingSummary,
   QuizRatingUserAuthorWithBase,
-} from '../../src/modules/quiz-core/repositories/models/schemas'
-import { User } from '../../src/modules/user/repositories'
-
-import { createMockUniqueId, offsetSeconds } from './helpers.utils'
-import { buildMockPrimaryUser } from './user.data'
+} from '../../../src/modules/quiz-core/repositories/models/schemas'
+import { User } from '../../../src/modules/user/repositories'
+import { createMockUniqueId, offsetSeconds } from '../shared/helpers.utils'
+import { buildMockPrimaryUser } from '../user/user.data'
 
 export function buildMockQuizRating(
   quizRating?: Partial<Omit<QuizRating, 'author'>> & {

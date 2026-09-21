@@ -12,9 +12,9 @@ import {
   QuestionRangeWithBase,
   QuestionTrueFalseWithBase,
   QuestionTypeAnswerWithBase,
-} from '../../src/modules/quiz-core/repositories/models/schemas'
+} from '../../../src/modules/quiz-core/repositories/models/schemas'
 
-import { MOCK_TYPE_ANSWER_OPTION_VALUE } from './game.constants'
+import { MOCK_TYPE_ANSWER_OPTION_VALUE } from './constants'
 
 export const MOCK_QUESTION_INFO =
   'This is an info text displayed along the question result.'

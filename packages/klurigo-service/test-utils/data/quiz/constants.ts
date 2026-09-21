@@ -1,8 +1,3 @@
-export const MOCK_DEFAULT_GAME_NAME = 'Trivia Battle'
-
-export const MOCK_DEFAULT_PLAYER_ID = '00000000-0000-4000-8000-000000000001'
-export const MOCK_DEFAULT_PLAYER_NICKNAME = 'FrostyBear'
-
 export const MOCK_TYPE_ANSWER_OPTION_VALUE = 'copenhagen'
 export const MOCK_TYPE_ANSWER_OPTION_VALUE_ALTERNATIVE = 'köpenhamn'
 export const MOCK_TYPE_ANSWER_INCORRECT_OPTION_VALUE = 'stockholm'
