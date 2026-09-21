@@ -1,7 +1,7 @@
 import { GameEvent, GameStatus } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
 } from '../../game-core/repositories/models/schemas'
 import {
@@ -29,7 +29,7 @@ import { buildGameResultPlayerEvent } from './game-result-event.utils'
 /**
  * Constructs an event for a player based on the current state of the game document and the provided player details.
  *
- * @param game - The `GameDocument` representing the current state of the game, including its task and associated data.
+ * @param game - The `Game` representing the current state of the game, including its task and associated data.
  * @param player - The player participant object for whom the event is being built.
  * @param metadata - Metadata containing the number of submissions and related player information.
  *
@@ -38,7 +38,7 @@ import { buildGameResultPlayerEvent } from './game-result-event.utils'
  * @returns A `GameEvent` tailored for the player, depending on the type and status of the current task.
  */
 export function buildPlayerGameEvent(
-  game: GameDocument,
+  game: Game,
   player: ParticipantPlayerWithBase,
   metadata: Partial<GameEventMetaData> = {},
 ): GameEvent {

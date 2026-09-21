@@ -1,5 +1,5 @@
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
   QuestionResultTaskItem,
   QuestionResultTaskWithBase,
@@ -82,7 +82,7 @@ function findQuestionResultIndexForPlayer(
  * @returns The latest QuestionResult task if found, otherwise `null`.
  */
 export function findLastQuestionResultTask(
-  gameDocument: GameDocument,
+  gameDocument: Game,
 ): QuestionResultTaskWithBase | null {
   if (isQuestionResultTask(gameDocument)) {
     return gameDocument.currentTask

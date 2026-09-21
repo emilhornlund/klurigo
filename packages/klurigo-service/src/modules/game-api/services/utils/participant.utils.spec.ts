@@ -32,11 +32,7 @@ describe('Participant Utils', () => {
       const beforeRef = game
       const beforeLength = game.participants.length
 
-      const result = addPlayerParticipantToGame(
-        game as never,
-        'player-2',
-        'New Player',
-      )
+      const result = addPlayerParticipantToGame(game, 'player-2', 'New Player')
 
       expect(result).toBe(beforeRef)
       expect(result.participants.length).toBe(beforeLength + 1)
@@ -76,7 +72,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-3',
         'Lobby Joiner',
       )
@@ -107,11 +103,7 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(
-        game as never,
-        'player-4',
-        'Late Joiner',
-      )
+      const result = addPlayerParticipantToGame(game, 'player-4', 'Late Joiner')
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(6)
@@ -154,11 +146,7 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(
-        game as never,
-        'player-3',
-        'Late Joiner',
-      )
+      const result = addPlayerParticipantToGame(game, 'player-3', 'Late Joiner')
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(3)
@@ -201,7 +189,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-3',
         'Average Starter',
       )
@@ -230,7 +218,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-3',
         'Average Starter',
       )
@@ -255,7 +243,7 @@ describe('Participant Utils', () => {
         ],
       })
 
-      addPlayerParticipantToGame(game as never, 'late-player', 'Late Player')
+      addPlayerParticipantToGame(game, 'late-player', 'Late Player')
 
       const added = game.participants[1] as any
       expect(added.totalScore).toBe(0)
@@ -291,11 +279,7 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(
-        game as never,
-        'player-3',
-        'Late Joiner',
-      )
+      const result = addPlayerParticipantToGame(game, 'player-3', 'Late Joiner')
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(3)
@@ -309,7 +293,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-1',
         'First Player',
       )
@@ -344,7 +328,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-4',
         'Average Starter',
       )
@@ -369,7 +353,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-2',
         'Lobby Joiner',
       )
@@ -396,7 +380,7 @@ describe('Participant Utils', () => {
       })
 
       const result = addPlayerParticipantToGame(
-        game as never,
+        game,
         'player-2',
         'Timed Player',
       )

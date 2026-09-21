@@ -1,7 +1,7 @@
 import { GameMode, GameParticipantType } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   QuestionResultTaskItem,
 } from '../../../game-core/repositories/models/schemas'
 import { isParticipantPlayer } from '../../../game-core/utils'
@@ -38,11 +38,11 @@ type QuestionResultRankingData = Pick<
  * @param nickname - The nickname to assign to the new player.
  * @returns The same game document instance with the new player participant appended.
  */
-export function addPlayerParticipantToGame(
-  game: GameDocument,
+export function addPlayerParticipantToGame<T extends Game>(
+  game: T,
   participantId: string,
   nickname: string,
-): GameDocument {
+): T {
   const now = new Date()
 
   const totalScore = calculateTotalScore(game)
@@ -78,7 +78,7 @@ export function addPlayerParticipantToGame(
  * @param game - The game document containing existing participants and current task state.
  * @returns The initial rank to assign to the newly joining player.
  */
-function calculateRank(game: GameDocument, totalScore: number): number {
+function calculateRank(game: Game, totalScore: number): number {
   if (isLobbyTask(game)) {
     return 0 // default initial rank
   }
@@ -119,7 +119,7 @@ function calculateRank(game: GameDocument, totalScore: number): number {
  * same applies to the leaderboard snapshot while that task is active.
  */
 function getCurrentRanking(
-  game: GameDocument,
+  game: Game,
 ): QuestionResultRankingData[] | undefined {
   const players = game.participants.filter(isParticipantPlayer)
 
@@ -162,7 +162,7 @@ function getCurrentRanking(
 }
 
 function compareRankingData(
-  game: GameDocument,
+  game: Game,
 ): (lhs: QuestionResultRankingData, rhs: QuestionResultRankingData) => number {
   return game.mode === GameMode.Classic
     ? compareClassicModeQuestionResultTaskItemByScoreThenParticipationThenTime
@@ -179,7 +179,7 @@ function compareRankingData(
  * @param game - The game document containing existing participants and the game mode.
  * @returns The initial total score to assign to the newly joining player.
  */
-function calculateTotalScore(game: GameDocument): number {
+function calculateTotalScore(game: Game): number {
   if (!isLobbyTask(game) && game.mode === GameMode.ZeroToOneHundred) {
     const players = game.participants.filter(isParticipantPlayer)
     if (players.length === 0) {

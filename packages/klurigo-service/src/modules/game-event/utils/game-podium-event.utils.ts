@@ -1,9 +1,6 @@
 import { GameEventType, GamePodiumHostEvent } from '@klurigo/common'
 
-import {
-  GameDocument,
-  TaskType,
-} from '../../game-core/repositories/models/schemas'
+import { Game, TaskType } from '../../game-core/repositories/models/schemas'
 
 /**
  * Builds a podium event for the host.
@@ -11,7 +8,7 @@ import {
  * @param game - The game document containing the current podium task.
  */
 export function buildGamePodiumHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Podium } },
+  game: Game & { currentTask: { type: TaskType.Podium } },
 ): GamePodiumHostEvent {
   return {
     type: GameEventType.GamePodiumHost,

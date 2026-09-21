@@ -7,7 +7,7 @@ import {
 } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
@@ -21,7 +21,7 @@ import { isParticipantPlayer } from '../../game-core/utils'
  * @returns A lobby event containing game PIN and player list.
  */
 export function buildGameLobbyHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Lobby } },
+  game: Game & { currentTask: { type: TaskType.Lobby } },
 ): GameLobbyHostEvent {
   const { randomizeQuestionOrder, randomizeAnswerOrder } = game.settings
   return {

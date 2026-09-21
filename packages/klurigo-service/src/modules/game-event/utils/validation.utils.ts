@@ -1,4 +1,4 @@
-import { GameDocument } from '../../game-core/repositories/models/schemas'
+import { Game } from '../../game-core/repositories/models/schemas'
 
 /**
  * Validates that the question index is within bounds and returns the question.
@@ -8,7 +8,7 @@ import { GameDocument } from '../../game-core/repositories/models/schemas'
  * @returns The question at the specified index
  */
 export function validateAndGetQuestion(
-  game: GameDocument & { currentTask: { questionIndex: number } },
+  game: Game & { currentTask: { questionIndex: number } },
 ) {
   if (!game.questions || game.questions.length === 0) {
     throw new Error('Game has no questions')
@@ -31,7 +31,7 @@ export function validateAndGetQuestion(
  * @param game - The game document to validate
  * @throws {Error} When required properties are missing
  */
-export function validateGameDocument(game: GameDocument): void {
+export function validateGameDocument(game: Game): void {
   if (!game) {
     throw new Error('Game document is required')
   }

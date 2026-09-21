@@ -6,7 +6,7 @@ import {
 } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
@@ -26,7 +26,7 @@ import { GameEventMetaData } from '../models'
  * @returns A fully assembled `GameOverPlayerEvent`.
  */
 export function buildGameOverPlayerEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Podium } },
+  game: Game & { currentTask: { type: TaskType.Podium } },
   player: ParticipantPlayerWithBase,
   metadata: Partial<GameEventMetaData> = {},
 ): GameOverPlayerEvent {

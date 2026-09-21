@@ -11,7 +11,7 @@ import {
 } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
   QuestionResultTaskWithBase,
   TaskType,
@@ -60,7 +60,7 @@ import {
  * @param game - The game document containing the current question result task.
  */
 export function buildGameResultHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.QuestionResult } },
+  game: Game & { currentTask: { type: TaskType.QuestionResult } },
 ): GameResultHostEvent {
   validateGameDocument(game)
   const currentQuestion = validateAndGetQuestion(game)
@@ -98,7 +98,7 @@ export function buildGameResultHostEvent(
  * @throws {Error} Throws an error if the question type is not recognized.
  */
 function buildGameEventQuestionResults(
-  game: GameDocument & { currentTask: { type: TaskType.QuestionResult } },
+  game: Game & { currentTask: { type: TaskType.QuestionResult } },
 ): GameEventQuestionResults {
   validateGameDocument(game)
   const question = validateAndGetQuestion(game)
@@ -164,7 +164,7 @@ function buildGameEventQuestionResults(
  * @returns A player game result event for the current task.
  */
 export function buildGameResultPlayerEvent(
-  game: GameDocument & {
+  game: Game & {
     currentTask: {
       type: TaskType.QuestionResult | TaskType.Leaderboard | TaskType.Podium
     }
@@ -198,7 +198,7 @@ export function buildGameResultPlayerEvent(
  * @returns A player game result event for the current question result task.
  */
 function buildGameResultPlayerEventFromCurrentQuestionResultTask(
-  game: GameDocument & {
+  game: Game & {
     currentTask: { type: TaskType.QuestionResult }
   },
   player: ParticipantPlayerWithBase,
@@ -222,7 +222,7 @@ function buildGameResultPlayerEventFromCurrentQuestionResultTask(
  * @returns A player game result event for the given question result task.
  */
 function buildGameResultPlayerEventFromQuestionResultTask(
-  game: GameDocument,
+  game: Game,
   questionResultTask: QuestionResultTaskWithBase,
   player: ParticipantPlayerWithBase,
 ): GameResultPlayerEvent {
@@ -296,7 +296,7 @@ function buildGameResultPlayerEventFromQuestionResultTask(
  * @returns A fallback player game result event for the given question result task.
  */
 function buildFallbackGameResultPlayerEventForQuestionResultTask(
-  game: GameDocument,
+  game: Game,
   questionResultTask: QuestionResultTaskWithBase,
   player: ParticipantPlayerWithBase,
 ): GameResultPlayerEvent {
@@ -334,7 +334,7 @@ function buildFallbackGameResultPlayerEventForQuestionResultTask(
  * @returns A player game result event based on the last question result task.
  */
 function buildGameResultPlayerEventFromLeaderboardOrPodiumTask(
-  game: GameDocument & {
+  game: Game & {
     currentTask: { type: TaskType.Leaderboard | TaskType.Podium }
   },
   player: ParticipantPlayerWithBase,
