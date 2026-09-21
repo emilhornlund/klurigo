@@ -2,7 +2,6 @@ import {
   GameMode,
   LanguageCode,
   MediaType,
-  QuestionPinTolerance,
   QuestionRangeAnswerMargin,
   QuestionType,
   QuizCategory,
@@ -12,6 +11,15 @@ import {
 import { Quiz } from '../../src/modules/quiz-core/repositories/models/schemas'
 
 import { createMockUniqueId, offsetSeconds } from './helpers.utils'
+import {
+  createMockMultiChoiceQuestionDocument,
+  createMockPinQuestionDocument,
+  createMockPuzzleQuestionDocument,
+  createMockRangeQuestionDocument,
+  createMockTrueFalseQuestionDocument,
+  createMockTypeAnswerQuestionDocument,
+  MOCK_QUESTION_INFO,
+} from './question.data'
 import { buildMockPrimaryUser } from './user.data'
 
 export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
@@ -26,94 +34,25 @@ export function createMockClassicQuiz(quiz?: Partial<Quiz>): Quiz {
     imageCoverURL: 'https://example.com/question-cover-image.png',
     languageCode: LanguageCode.English,
     questions: [
-      {
-        type: QuestionType.MultiChoice,
-        text: 'What is the capital of Sweden?',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
+      createMockMultiChoiceQuestionDocument({
         options: [
-          {
-            value: 'Stockholm',
-            correct: true,
-          },
-          {
-            value: 'Copenhagen',
-            correct: false,
-          },
-          {
-            value: 'London',
-            correct: false,
-          },
-          {
-            value: 'Berlin',
-            correct: false,
-          },
+          { value: 'Stockholm', correct: true },
+          { value: 'Copenhagen', correct: false },
+          { value: 'London', correct: false },
+          { value: 'Berlin', correct: false },
         ],
-        points: 1000,
         duration: 30,
-      },
-      {
-        type: QuestionType.Range,
-        text: 'Guess the temperature of the hottest day ever recorded.',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
-        min: 0,
-        max: 100,
-        step: 0,
-        correct: 50,
-        margin: QuestionRangeAnswerMargin.Medium,
-        points: 1000,
+      }),
+      createMockRangeQuestionDocument({ step: 0 }),
+      createMockTrueFalseQuestionDocument(),
+      createMockTypeAnswerQuestionDocument({ options: ['Copenhagen'] }),
+      createMockPinQuestionDocument({
         duration: 30,
-      },
-      {
-        type: QuestionType.TrueFalse,
-        text: 'The earth is flat.',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
-        correct: false,
-        points: 1000,
-        duration: 30,
-      },
-      {
-        type: QuestionType.TypeAnswer,
-        text: 'What is the capital of Denmark?',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
-        options: ['Copenhagen'],
-        points: 1000,
-        duration: 30,
-      },
-      {
-        type: QuestionType.Pin,
-        text: 'Where is the Eiffel Tower located in Paris? Pin the answer on a map of Paris',
-        imageURL: 'https://example.com/question-image.png',
-        positionX: 0.5,
-        positionY: 0.5,
-        tolerance: QuestionPinTolerance.Medium,
-        points: 1000,
-        duration: 30,
-        info: 'This is an info text displayed along the question result.',
-      },
-      {
-        type: QuestionType.Puzzle,
-        text: 'Sort the oldest cities in Europe',
-        media: {
-          type: MediaType.Image,
-          url: 'https://example.com/question-image.png',
-        },
-        values: ['Athens', 'Argos', 'Plovdiv', 'Lisbon'],
-        points: 1000,
-        duration: 30,
-        info: 'This is an info text displayed along the question result.',
-      },
+        info: MOCK_QUESTION_INFO,
+      }),
+      createMockPuzzleQuestionDocument({
+        info: MOCK_QUESTION_INFO,
+      }),
     ],
     owner: buildMockPrimaryUser(),
     gameplaySummary: {

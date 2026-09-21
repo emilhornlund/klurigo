@@ -16,6 +16,9 @@ import {
 
 import { MOCK_TYPE_ANSWER_OPTION_VALUE } from './game.constants'
 
+export const MOCK_QUESTION_INFO =
+  'This is an info text displayed along the question result.'
+
 export function createMockMultiChoiceQuestionDocument(
   question?: Partial<QuestionMultiChoiceWithBase>,
 ): QuestionMultiChoiceWithBase {
