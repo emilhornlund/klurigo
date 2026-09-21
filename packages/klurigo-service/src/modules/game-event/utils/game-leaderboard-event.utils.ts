@@ -4,10 +4,7 @@ import {
   GameMode,
 } from '@klurigo/common'
 
-import {
-  GameDocument,
-  TaskType,
-} from '../../game-core/repositories/models/schemas'
+import { Game, TaskType } from '../../game-core/repositories/models/schemas'
 
 import { buildPaginationEventFromGameDocument } from './pagination-event.utils'
 
@@ -17,7 +14,7 @@ import { buildPaginationEventFromGameDocument } from './pagination-event.utils'
  * @param game - The game document containing the current leaderboard task.
  */
 export function buildGameLeaderboardHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Leaderboard } },
+  game: Game & { currentTask: { type: TaskType.Leaderboard } },
 ): GameLeaderboardHostEvent {
   const leaderboard = game.currentTask.leaderboard.slice(0, 5)
 

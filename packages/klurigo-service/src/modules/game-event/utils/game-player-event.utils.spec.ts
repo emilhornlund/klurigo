@@ -23,7 +23,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockLobbyTaskDocument(),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -33,7 +33,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: { ...createMockLobbyTaskDocument(), status: 'active' },
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLobbyPlayer)
       if (result.type === GameEventType.GameLobbyPlayer) {
@@ -49,7 +49,7 @@ describe('buildPlayerGameEvent', () => {
         },
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameBeginPlayer)
       if (result.type === GameEventType.GameBeginPlayer) {
@@ -65,7 +65,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'pending' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuestionPreviewPlayer)
     })
@@ -76,7 +76,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuestionPlayer)
     })
@@ -87,7 +87,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'completed' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuestionPlayer)
     })
@@ -99,7 +99,7 @@ describe('buildPlayerGameEvent', () => {
       })
       const playerAnswer = createMockQuestionTaskMultiChoiceAnswer()
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer, {
+      const result = buildPlayerGameEvent(game, mockPlayer, {
         playerAnswerSubmission: playerAnswer,
       })
 
@@ -115,7 +115,7 @@ describe('buildPlayerGameEvent', () => {
         }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -127,7 +127,7 @@ describe('buildPlayerGameEvent', () => {
         }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameResultPlayer)
     })
@@ -139,7 +139,7 @@ describe('buildPlayerGameEvent', () => {
         }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -151,7 +151,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockLeaderboardTaskDocument({ status: 'pending' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -162,7 +162,7 @@ describe('buildPlayerGameEvent', () => {
         previousTasks: [createMockQuestionResultTaskDocument()],
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameResultPlayer)
     })
@@ -174,7 +174,7 @@ describe('buildPlayerGameEvent', () => {
         }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -186,7 +186,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockPodiumTaskDocument({ status: 'pending' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameLoading)
     })
@@ -197,7 +197,7 @@ describe('buildPlayerGameEvent', () => {
         participants: [mockPlayer],
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameOverPlayer)
     })
@@ -208,7 +208,7 @@ describe('buildPlayerGameEvent', () => {
         participants: [mockPlayer],
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameOverPlayer)
     })
@@ -221,7 +221,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockLobbyTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuitEvent)
       if (result.type === GameEventType.GameQuitEvent) {
@@ -235,7 +235,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuitEvent)
       if (result.type === GameEventType.GameQuitEvent) {
@@ -255,7 +255,7 @@ describe('buildPlayerGameEvent', () => {
         },
       })
 
-      expect(() => buildPlayerGameEvent(game as never, mockPlayer)).toThrow(
+      expect(() => buildPlayerGameEvent(game, mockPlayer)).toThrow(
         'Unknown task',
       )
     })
@@ -268,7 +268,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer, {})
+      const result = buildPlayerGameEvent(game, mockPlayer, {})
 
       expect(result.type).toBe(GameEventType.GameQuestionPlayer)
     })
@@ -279,7 +279,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuestionPlayer)
     })
@@ -294,7 +294,7 @@ describe('buildPlayerGameEvent', () => {
         type: 'player' as const,
       }
 
-      const result = buildPlayerGameEvent(game as never, minimalPlayer as never)
+      const result = buildPlayerGameEvent(game, minimalPlayer as never)
 
       expect(result.type).toBe(GameEventType.GameLobbyPlayer)
       if (result.type === GameEventType.GameLobbyPlayer) {
@@ -308,7 +308,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'pending' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer)
+      const result = buildPlayerGameEvent(game, mockPlayer)
 
       expect(result.type).toBe(GameEventType.GameQuestionPreviewPlayer)
     })
@@ -319,7 +319,7 @@ describe('buildPlayerGameEvent', () => {
         currentTask: createMockQuestionTaskDocument({ status: 'active' }),
       })
 
-      const result = buildPlayerGameEvent(game as never, mockPlayer, {
+      const result = buildPlayerGameEvent(game, mockPlayer, {
         playerAnswerSubmission: null as never,
       })
 

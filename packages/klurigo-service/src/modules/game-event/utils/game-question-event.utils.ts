@@ -12,7 +12,7 @@ import {
 } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   ParticipantPlayerWithBase,
   QuestionTaskAnswer,
   QuestionTaskBaseMetadata,
@@ -52,7 +52,7 @@ import {
  * @returns An event showing a preview of the current question for the host.
  */
 export function buildGameQuestionPreviewHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Question } },
+  game: Game & { currentTask: { type: TaskType.Question } },
 ): GameQuestionPreviewHostEvent {
   validateGameDocument(game)
   const currentQuestion = validateAndGetQuestion(game)
@@ -82,7 +82,7 @@ export function buildGameQuestionPreviewHostEvent(
  * @returns An event showing a preview of the current question for the player.
  */
 export function buildGameQuestionPreviewPlayerEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Question } },
+  game: Game & { currentTask: { type: TaskType.Question } },
   player: ParticipantPlayerWithBase,
 ): GameQuestionPreviewPlayerEvent {
   validateGameDocument(game)
@@ -118,7 +118,7 @@ export function buildGameQuestionPreviewPlayerEvent(
  * @returns {GameQuestionHostEvent} A question event for the host.
  */
 export function buildGameQuestionHostEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Question } },
+  game: Game & { currentTask: { type: TaskType.Question } },
   currentAnswerSubmissions: number,
   totalAnswerSubmissions: number,
 ): GameQuestionHostEvent {
@@ -155,7 +155,7 @@ export function buildGameQuestionHostEvent(
  * @returns A question event for the player.
  */
 export function buildGameQuestionPlayerEvent(
-  game: GameDocument & { currentTask: { type: TaskType.Question } },
+  game: Game & { currentTask: { type: TaskType.Question } },
   player: ParticipantPlayerWithBase,
   answer?: QuestionTaskAnswer,
 ): GameQuestionPlayerEvent {
@@ -191,7 +191,7 @@ export function buildGameQuestionPlayerEvent(
  * @returns A countdown event with expiry time and server time.
  */
 function buildGameQuestionCountdownEvent(
-  game: GameDocument & {
+  game: Game & {
     currentTask: { type: TaskType.Question }
   },
 ): CountdownEvent {

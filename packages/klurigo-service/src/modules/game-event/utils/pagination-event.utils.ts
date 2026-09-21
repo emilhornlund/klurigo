@@ -1,7 +1,7 @@
 import { PaginationEvent } from '@klurigo/common'
 
 import {
-  GameDocument,
+  Game,
   QuestionResultTaskWithBase,
 } from '../../game-core/repositories/models/schemas'
 
@@ -15,7 +15,7 @@ import {
  * @returns Pagination metadata with current question (1-based) and total questions.
  */
 export function buildPaginationEventFromGameDocument(
-  game: GameDocument & { currentTask: { questionIndex: number } },
+  game: Game & { currentTask: { questionIndex: number } },
 ): PaginationEvent {
   return buildPaginationEvent(
     game.currentTask.questionIndex + 1,
@@ -34,7 +34,7 @@ export function buildPaginationEventFromGameDocument(
  * @returns Pagination metadata with current question (1-based) and total questions.
  */
 export function buildPaginationEventFromQuestionResultTask(
-  game: GameDocument,
+  game: Game,
   task: QuestionResultTaskWithBase,
 ): PaginationEvent {
   return buildPaginationEvent(task.questionIndex + 1, game.questions.length)

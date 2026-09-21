@@ -1,6 +1,6 @@
 import { GameEvent, GameStatus } from '@klurigo/common'
 
-import { GameDocument } from '../../game-core/repositories/models/schemas'
+import { Game } from '../../game-core/repositories/models/schemas'
 import {
   isLeaderboardTask,
   isLobbyTask,
@@ -27,7 +27,7 @@ import { buildGameResultHostEvent } from './game-result-event.utils'
 /**
  * Constructs an event for the host based on the current state of the game document.
  *
- * @param game - The `GameDocument` representing the current state of the game, including its task and associated data.
+ * @param game - The `Game` representing the current state of the game, including its task and associated data.
  * @param metadata - Metadata including the number of submissions and related player information.
  *
  * @throws {Error} Throws an error if the task type is not recognized.
@@ -35,7 +35,7 @@ import { buildGameResultHostEvent } from './game-result-event.utils'
  * @returns A `GameEvent` tailored for the host, depending on the type and status of the current task.
  */
 export function buildHostGameEvent(
-  game: GameDocument,
+  game: Game,
   metadata: Partial<GameEventMetaData> = {},
 ): GameEvent {
   if (
