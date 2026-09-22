@@ -43,6 +43,15 @@ export const Small = {
   },
 } satisfies Story
 
+export const Sizes = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Select id="normal-select" values={values} size="normal" />
+      <Select id="small-select" values={values} size="small" />
+    </div>
+  ),
+} satisfies Story
+
 export const LightSurfaceSmall = {
   args: {
     surface: 'light',

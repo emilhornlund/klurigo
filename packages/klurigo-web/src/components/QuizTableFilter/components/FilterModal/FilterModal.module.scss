@@ -6,15 +6,15 @@
   flex-direction: column;
 
   @include helpers.mobile {
-    gap: spacing.$space-compact-mobile;
+    gap: spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    gap: spacing.$space-compact-tablet;
+    gap: spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    gap: spacing.$space-compact-desktop;
+    gap: spacing.$space-stack-desktop;
   }
 
   .row {
