@@ -552,7 +552,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-rocket"
+                          class="svg-inline--fa fa-rocket icon"
                           data-icon="rocket"
                           data-prefix="fas"
                           role="img"
@@ -873,7 +873,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-rocket"
+                          class="svg-inline--fa fa-rocket icon"
                           data-icon="rocket"
                           data-prefix="fas"
                           role="img"

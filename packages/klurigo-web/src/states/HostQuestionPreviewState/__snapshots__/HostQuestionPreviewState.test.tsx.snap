@@ -161,11 +161,9 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -175,7 +173,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"

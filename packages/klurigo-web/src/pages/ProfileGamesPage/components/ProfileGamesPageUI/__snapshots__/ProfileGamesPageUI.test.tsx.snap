@@ -76,7 +76,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-magnifying-glass"
+                class="svg-inline--fa fa-magnifying-glass icon"
                 data-icon="magnifying-glass"
                 data-prefix="fas"
                 role="img"
@@ -116,7 +116,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-plus"
+                class="svg-inline--fa fa-plus icon"
                 data-icon="plus"
                 data-prefix="fas"
                 role="img"
@@ -545,7 +545,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-rotate-left"
+                  class="svg-inline--fa fa-arrow-rotate-left icon"
                   data-icon="arrow-rotate-left"
                   data-prefix="fas"
                   role="img"

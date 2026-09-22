@@ -44,7 +44,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-trash"
+                  class="svg-inline--fa fa-trash icon"
                   data-icon="trash"
                   data-prefix="fas"
                   role="img"
@@ -71,7 +71,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-retweet"
+                  class="svg-inline--fa fa-retweet icon"
                   data-icon="retweet"
                   data-prefix="fas"
                   role="img"
@@ -261,7 +261,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-trash"
+                  class="svg-inline--fa fa-trash icon"
                   data-icon="trash"
                   data-prefix="fas"
                   role="img"
@@ -288,7 +288,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-retweet"
+                  class="svg-inline--fa fa-retweet icon"
                   data-icon="retweet"
                   data-prefix="fas"
                   role="img"
@@ -315,7 +315,7 @@ exports[`QuestionField > renders a image media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-wand-magic-sparkles"
+                  class="svg-inline--fa fa-wand-magic-sparkles icon"
                   data-icon="wand-magic-sparkles"
                   data-prefix="fas"
                   role="img"
@@ -1735,7 +1735,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-trash"
+                  class="svg-inline--fa fa-trash icon"
                   data-icon="trash"
                   data-prefix="fas"
                   role="img"
@@ -1762,7 +1762,7 @@ exports[`QuestionField > renders a video media question field 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-retweet"
+                  class="svg-inline--fa fa-retweet icon"
                   data-icon="retweet"
                   data-prefix="fas"
                   role="img"
@@ -1838,7 +1838,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-trash"
+                  class="svg-inline--fa fa-trash icon"
                   data-icon="trash"
                   data-prefix="fas"
                   role="img"
@@ -1865,7 +1865,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-retweet"
+                  class="svg-inline--fa fa-retweet icon"
                   data-icon="retweet"
                   data-prefix="fas"
                   role="img"
@@ -1892,7 +1892,7 @@ exports[`QuestionField > renders an image media question field with blur effect 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-wand-magic-sparkles"
+                  class="svg-inline--fa fa-wand-magic-sparkles icon"
                   data-icon="wand-magic-sparkles"
                   data-prefix="fas"
                   role="img"
@@ -1968,7 +1968,7 @@ exports[`QuestionField > renders an image media question field with square effec
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-trash"
+                  class="svg-inline--fa fa-trash icon"
                   data-icon="trash"
                   data-prefix="fas"
                   role="img"
@@ -1995,7 +1995,7 @@ exports[`QuestionField > renders an image media question field with square effec
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-retweet"
+                  class="svg-inline--fa fa-retweet icon"
                   data-icon="retweet"
                   data-prefix="fas"
                   role="img"
@@ -2022,7 +2022,7 @@ exports[`QuestionField > renders an image media question field with square effec
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-wand-magic-sparkles"
+                  class="svg-inline--fa fa-wand-magic-sparkles icon"
                   data-icon="wand-magic-sparkles"
                   data-prefix="fas"
                   role="img"

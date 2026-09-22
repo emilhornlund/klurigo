@@ -39,7 +39,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -209,11 +209,9 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -223,7 +221,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -283,7 +281,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -432,11 +430,9 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -446,7 +442,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -506,7 +502,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -691,11 +687,9 @@ exports[`HostQuestionState > renders with audio media 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -705,7 +699,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -765,7 +759,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -950,11 +944,9 @@ exports[`HostQuestionState > renders with video media 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -964,7 +956,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -1024,7 +1016,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -1236,11 +1228,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1250,7 +1240,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -1310,7 +1300,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -1542,11 +1532,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1556,7 +1544,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -1616,7 +1604,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -1808,11 +1796,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -1822,7 +1808,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -1882,7 +1868,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -2053,11 +2039,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2067,7 +2051,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -2127,7 +2111,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -2297,11 +2281,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2311,7 +2293,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -2371,7 +2353,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -2542,11 +2524,9 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -2556,7 +2536,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"

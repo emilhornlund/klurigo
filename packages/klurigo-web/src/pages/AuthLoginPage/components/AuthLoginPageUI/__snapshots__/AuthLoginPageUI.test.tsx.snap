@@ -114,7 +114,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
                 </span>
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-right"
+                  class="svg-inline--fa fa-arrow-right icon"
                   data-icon="arrow-right"
                   data-prefix="fas"
                   role="img"
@@ -152,7 +152,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-google"
+                  class="svg-inline--fa fa-google icon"
                   data-icon="google"
                   data-prefix="fab"
                   role="img"
@@ -291,7 +291,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
                 </span>
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-right"
+                  class="svg-inline--fa fa-arrow-right icon"
                   data-icon="arrow-right"
                   data-prefix="fas"
                   role="img"
@@ -329,7 +329,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-google"
+                  class="svg-inline--fa fa-google icon"
                   data-icon="google"
                   data-prefix="fab"
                   role="img"
@@ -468,7 +468,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
                 </span>
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-right"
+                  class="svg-inline--fa fa-arrow-right icon"
                   data-icon="arrow-right"
                   data-prefix="fas"
                   role="img"
@@ -506,7 +506,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-google"
+                  class="svg-inline--fa fa-google icon"
                   data-icon="google"
                   data-prefix="fab"
                   role="img"
@@ -645,7 +645,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
                 </span>
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-right"
+                  class="svg-inline--fa fa-arrow-right icon"
                   data-icon="arrow-right"
                   data-prefix="fas"
                   role="img"
@@ -683,7 +683,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-google"
+                  class="svg-inline--fa fa-google icon"
                   data-icon="google"
                   data-prefix="fab"
                   role="img"
@@ -853,7 +853,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-google"
+                  class="svg-inline--fa fa-google icon"
                   data-icon="google"
                   data-prefix="fab"
                   role="img"

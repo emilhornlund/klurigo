@@ -171,6 +171,25 @@ export const Icons = {
         variant="plain"
         icon={faArrowLeft}
       />
+
+      <Button
+        id="small-text-icon-button"
+        type="button"
+        surface="brand"
+        variant="primary"
+        size="small"
+        value="Small"
+        icon={faArrowLeft}
+      />
+
+      <Button
+        id="small-icon-only-button"
+        type="button"
+        surface="brand"
+        variant="plain"
+        size="small"
+        icon={faArrowRight}
+      />
     </div>
   ),
 } satisfies Story
