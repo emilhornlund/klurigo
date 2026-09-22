@@ -6,13 +6,13 @@ exports[`GameResultTable > does not crash when details are missing 1`] = `
     class="table"
   >
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           3
         </div>
@@ -89,13 +89,13 @@ exports[`GameResultTable > hides details by default and toggles them on row clic
     class="table"
   >
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           1
         </div>
@@ -210,13 +210,13 @@ exports[`GameResultTable > hides details by default and toggles them on row clic
       </div>
     </div>
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           2
         </div>
@@ -293,13 +293,13 @@ exports[`GameResultTable > renders badge and value, and sets title attribute on 
     class="table"
   >
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           1
         </div>
@@ -414,13 +414,13 @@ exports[`GameResultTable > renders badge and value, and sets title attribute on 
       </div>
     </div>
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           2
         </div>
@@ -497,13 +497,13 @@ exports[`GameResultTable > renders one row per item 1`] = `
     class="table"
   >
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           1
         </div>
@@ -618,13 +618,13 @@ exports[`GameResultTable > renders one row per item 1`] = `
       </div>
     </div>
     <div
-      class="tableRow"
+      class="surface interactive tableRow"
     >
       <div
         class="main"
       >
         <div
-          class="badge"
+          class="surface interactive badge"
         >
           2
         </div>

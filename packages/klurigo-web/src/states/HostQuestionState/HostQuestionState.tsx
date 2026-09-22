@@ -5,7 +5,12 @@ import { MediaType, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 
-import { IconButtonArrowRight, ProgressBar, Typography } from '../../components'
+import {
+  IconButtonArrowRight,
+  ProgressBar,
+  Surface,
+  Typography,
+} from '../../components'
 import { useGameContext } from '../../context/game'
 import { classNames } from '../../utils/helpers'
 import {
@@ -84,12 +89,12 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
       {!!totalSubmissions && (
         <div className={classNames(styles.row, styles.flexibleHeight)}>
           <div className={styles.column}>
-            <div className={classNames(styles.iconInfo)}>
+            <Surface className={classNames(styles.iconInfo)}>
               <FontAwesomeIcon icon={faUserGroup} />
               <span>
                 {currentSubmission} / {totalSubmissions}
               </span>
-            </div>
+            </Surface>
           </div>
         </div>
       )}

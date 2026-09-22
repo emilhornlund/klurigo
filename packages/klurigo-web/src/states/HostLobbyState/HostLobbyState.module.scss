@@ -2,7 +2,6 @@
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/mixins/_surface' as surface;
 @use '../../styles/spacing.semantic' as spacing;
 
 .header {
@@ -26,8 +25,6 @@
   }
 
   .box {
-    @include surface.surface-box(true);
-
     @include helpers.mobile {
       height: 98px;
       margin: spacing.$space-content-gap-mobile 0;
@@ -134,8 +131,6 @@
   width: 100%;
 
   .playerCounter {
-    @include surface.surface-box;
-
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -29,6 +29,7 @@ import {
   Page,
   PageDivider,
   ResponsiveImage,
+  Surface,
   Typography,
 } from '../../../../components'
 import {
@@ -162,7 +163,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
           </div>
         )}
 
-        <div className={styles.details}>
+        <Surface className={styles.details}>
           <DetailItem
             icon={faEye}
             value={QuizVisibilityLabels[quiz.visibility]}
@@ -234,7 +235,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
                 : 'Never played'
             }
           />
-        </div>
+        </Surface>
 
         {quiz.ratingSummary.stars > 0 && (
           <>

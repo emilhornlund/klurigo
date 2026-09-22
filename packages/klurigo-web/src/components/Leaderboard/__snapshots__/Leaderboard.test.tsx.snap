@@ -6,11 +6,11 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
     class="leaderboard"
   >
     <div
-      class="row"
+      class="surface row"
       style="--row-index: 0;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         4
       </div>
@@ -28,18 +28,18 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           40
         </div>
       </div>
     </div>
     <div
-      class="row"
+      class="surface row"
       style="--row-index: 1;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         5
       </div>
@@ -54,7 +54,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           20
         </div>
@@ -70,11 +70,11 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
     class="leaderboard"
   >
     <div
-      class="row gold topPosition"
+      class="surface row gold topPosition"
       style="--row-index: 0;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         1
       </div>
@@ -103,18 +103,18 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           100
         </div>
       </div>
     </div>
     <div
-      class="row silver topPosition"
+      class="surface row silver topPosition"
       style="--row-index: 1;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         2
       </div>
@@ -143,18 +143,18 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           80
         </div>
       </div>
     </div>
     <div
-      class="row bronze topPosition"
+      class="surface row bronze topPosition"
       style="--row-index: 2;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         3
       </div>
@@ -183,18 +183,18 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           60
         </div>
       </div>
     </div>
     <div
-      class="row"
+      class="surface row"
       style="--row-index: 3;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         4
       </div>
@@ -212,18 +212,18 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           40
         </div>
       </div>
     </div>
     <div
-      class="row"
+      class="surface row"
       style="--row-index: 4;"
     >
       <div
-        class="column position"
+        class="surface column position"
       >
         5
       </div>
@@ -238,7 +238,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard inc
         class="column"
       >
         <div
-          class="score"
+          class="surface score"
         >
           20
         </div>

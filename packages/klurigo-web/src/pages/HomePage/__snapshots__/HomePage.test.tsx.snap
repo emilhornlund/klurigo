@@ -85,7 +85,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             class="callToActionCard"
           >
             <button
-              class="button"
+              class="surface interactive button"
               type="button"
             >
               <div
@@ -103,7 +103,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
                 </p>
               </div>
               <div
-                class="icon"
+                class="surface interactive icon"
               >
                 <svg
                   aria-hidden="true"

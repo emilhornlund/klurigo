@@ -2,7 +2,7 @@
 
 exports[`NicknameChip > matches snapshot (accent + entrance + delete + staggerDelay) 1`] = `
 <div
-  class="main entrance accent"
+  class="surface main entrance accent"
   style="animation-delay: 250ms;"
 >
   Snapshot complex
@@ -19,7 +19,7 @@ exports[`NicknameChip > matches snapshot (accent + entrance + delete + staggerDe
 
 exports[`NicknameChip > matches snapshot (default subtle, no delete, no animation, no delay) 1`] = `
 <div
-  class="main subtle"
+  class="surface interactive main subtle"
 >
   Snapshot default
 </div>
@@ -27,7 +27,7 @@ exports[`NicknameChip > matches snapshot (default subtle, no delete, no animatio
 
 exports[`NicknameChip > matches snapshot (exit without delete) 1`] = `
 <div
-  class="main exit subtle"
+  class="surface interactive main exit subtle"
 >
   Snapshot exit
 </div>

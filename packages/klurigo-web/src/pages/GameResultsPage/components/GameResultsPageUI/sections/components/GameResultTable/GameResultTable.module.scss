@@ -1,7 +1,6 @@
 @use '../../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../styles/helpers' as helpers;
-@use '../../../../../../../styles/mixins/_surface' as surface;
 @use '../../../../../../../styles/spacing.semantic' as spacing;
 @use '../../../../../../../styles/typography.tokens' as typography;
 
@@ -25,8 +24,6 @@
   }
 
   .tableRow {
-    @include surface.surface-box(true);
-
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -63,8 +60,6 @@
       }
 
       .badge {
-        @include surface.surface-box(true);
-
         display: flex;
         justify-content: center;
         align-items: center;

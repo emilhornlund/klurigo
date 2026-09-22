@@ -1,0 +1,9 @@
+@use '../../styles/mixins/_surface' as surface;
+
+.surface {
+  @include surface.surface-box;
+}
+
+.interactive {
+  @include surface.surface-box(true);
+}

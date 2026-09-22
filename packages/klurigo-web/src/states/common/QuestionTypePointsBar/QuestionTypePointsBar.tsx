@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { Typography } from '../../../components'
+import { Surface, Typography } from '../../../components'
 import { QuestionTypeLabels } from '../../../models'
 import colors from '../../../styles/colors.tokens.module.scss'
 
@@ -21,7 +21,7 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
   questionPoints,
 }) =>
   mode === GameMode.Classic ? (
-    <div className={styles.chip}>
+    <Surface className={styles.chip}>
       <Typography variant="body2" color="inverse" noOpacity bold>
         <FontAwesomeIcon
           icon={faQuestionCircle}
@@ -35,7 +35,7 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
         {questionPoints === 1000 && 'Standard Points'}
         {questionPoints === 2000 && 'Double Points'}
       </Typography>
-    </div>
+    </Surface>
   ) : null
 
 export default QuestionTypePointsBar

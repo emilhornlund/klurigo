@@ -83,7 +83,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -157,7 +157,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -325,7 +325,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -378,7 +378,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -546,7 +546,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -635,7 +635,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -803,7 +803,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -892,7 +892,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1060,7 +1060,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -1176,7 +1176,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1344,7 +1344,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -1480,7 +1480,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1648,7 +1648,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -1744,7 +1744,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1912,7 +1912,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -1987,7 +1987,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2155,7 +2155,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -2229,7 +2229,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2397,7 +2397,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
               class="column"
             >
               <div
-                class="iconInfo"
+                class="surface iconInfo"
               >
                 <svg
                   aria-hidden="true"
@@ -2472,7 +2472,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"

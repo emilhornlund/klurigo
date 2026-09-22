@@ -2,7 +2,7 @@
 
 exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
 <div
-  class="main"
+  class="surface main"
 >
   <div
     class="questions"
@@ -67,7 +67,7 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
 
 exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
 <div
-  class="main"
+  class="surface main"
 >
   <div
     class="questions"
@@ -154,7 +154,7 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
 
 exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = `
 <div
-  class="main"
+  class="surface main"
 >
   <div
     class="questions"
@@ -256,7 +256,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
 
 exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
 <div
-  class="main"
+  class="surface main"
 >
   <div
     class="questions"

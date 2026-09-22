@@ -2,7 +2,6 @@
 @use '../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers' as helpers;
-@use '../../../../styles/mixins/_surface' as surface;
 @use '../../../../styles/spacing.semantic' as spacing;
 
 .layout {
@@ -77,8 +76,6 @@
   }
 
   .details {
-    @include surface.surface-box;
-
     display: grid;
     margin-top: auto;
     width: 100%;

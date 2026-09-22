@@ -14,6 +14,7 @@ import {
   PageDivider,
   QuizDiscoveryCard,
   RailHeader,
+  Surface,
   Typography,
 } from '../../../../components'
 import {
@@ -43,7 +44,7 @@ const Card: FC<{
   value: string | number
   alt?: string
 }> = ({ title, value, alt }) => (
-  <div className={styles.card}>
+  <Surface className={styles.card}>
     <Typography variant="body2" align="center" color="inverse">
       {title}
     </Typography>
@@ -55,7 +56,7 @@ const Card: FC<{
       title={alt}>
       {value}
     </Typography>
-  </div>
+  </Surface>
 )
 
 /**

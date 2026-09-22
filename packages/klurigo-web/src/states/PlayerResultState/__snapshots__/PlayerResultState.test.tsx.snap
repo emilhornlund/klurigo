@@ -88,7 +88,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -396,7 +396,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -525,7 +525,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -733,7 +733,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -873,7 +873,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -1181,7 +1181,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1321,7 +1321,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -1629,7 +1629,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -1758,7 +1758,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -1966,7 +1966,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2106,7 +2106,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -2314,7 +2314,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2443,7 +2443,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -2464,7 +2464,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2593,7 +2593,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -2614,7 +2614,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -2743,7 +2743,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -2871,7 +2871,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -3011,7 +3011,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -3139,7 +3139,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -3279,7 +3279,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -3598,7 +3598,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -3727,7 +3727,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             </div>
           </div>
           <div
-            class="score sizeNormal"
+            class="surface score sizeNormal"
             data-testid="score-chip"
           >
             <h2
@@ -3748,7 +3748,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"

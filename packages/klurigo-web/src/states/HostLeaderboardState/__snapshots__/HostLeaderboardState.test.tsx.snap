@@ -72,11 +72,11 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
             class="leaderboard"
           >
             <div
-              class="row gold topPosition"
+              class="surface row gold topPosition"
               style="--row-index: 0;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 1
               </div>
@@ -91,18 +91,18 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18456
                 </div>
               </div>
             </div>
             <div
-              class="row silver topPosition"
+              class="surface row silver topPosition"
               style="--row-index: 1;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 2
               </div>
@@ -117,7 +117,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18398
                 </div>
@@ -131,7 +131,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -280,11 +280,11 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
             class="leaderboard"
           >
             <div
-              class="row gold topPosition"
+              class="surface row gold topPosition"
               style="--row-index: 0;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 1
               </div>
@@ -299,18 +299,18 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18456
                 </div>
               </div>
             </div>
             <div
-              class="row silver topPosition"
+              class="surface row silver topPosition"
               style="--row-index: 1;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 2
               </div>
@@ -325,7 +325,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18398
                 </div>
@@ -339,7 +339,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -496,11 +496,11 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
             class="leaderboard"
           >
             <div
-              class="row gold topPosition"
+              class="surface row gold topPosition"
               style="--row-index: 0;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 1
               </div>
@@ -515,18 +515,18 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18456
                 </div>
               </div>
             </div>
             <div
-              class="row silver topPosition"
+              class="surface row silver topPosition"
               style="--row-index: 1;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 2
               </div>
@@ -541,7 +541,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18398
                 </div>
@@ -555,7 +555,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
@@ -712,11 +712,11 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             class="leaderboard"
           >
             <div
-              class="row gold topPosition"
+              class="surface row gold topPosition"
               style="--row-index: 0;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 1
               </div>
@@ -731,18 +731,18 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18456
                 </div>
               </div>
             </div>
             <div
-              class="row silver topPosition"
+              class="surface row silver topPosition"
               style="--row-index: 1;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 2
               </div>
@@ -757,18 +757,18 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   18398
                 </div>
               </div>
             </div>
             <div
-              class="row bronze topPosition"
+              class="surface row bronze topPosition"
               style="--row-index: 2;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 3
               </div>
@@ -783,18 +783,18 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   15492
                 </div>
               </div>
             </div>
             <div
-              class="row"
+              class="surface row"
               style="--row-index: 3;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 4
               </div>
@@ -809,18 +809,18 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   14118
                 </div>
               </div>
             </div>
             <div
-              class="row"
+              class="surface row"
               style="--row-index: 4;"
             >
               <div
-                class="column position"
+                class="surface column position"
               >
                 5
               </div>
@@ -835,7 +835,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
                 class="column"
               >
                 <div
-                  class="score"
+                  class="surface score"
                 >
                   13463
                 </div>
@@ -849,7 +849,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"

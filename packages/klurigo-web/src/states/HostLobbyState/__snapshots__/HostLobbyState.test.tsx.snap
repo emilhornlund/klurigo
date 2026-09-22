@@ -121,7 +121,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
             class="header"
           >
             <div
-              class="box info"
+              class="surface interactive box info"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -136,7 +136,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               </p>
             </div>
             <div
-              class="box pin"
+              class="surface interactive box pin"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -150,7 +150,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               </h1>
             </div>
             <div
-              class="box qr"
+              class="surface interactive box qr"
             >
               <svg
                 height="256"
@@ -176,7 +176,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
             class="misc"
           >
             <div
-              class="playerCounter"
+              class="surface playerCounter"
             >
               <svg
                 aria-hidden="true"
@@ -207,7 +207,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               class="players"
             >
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
               >
                 Alice
                 <button
@@ -229,7 +229,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 100ms;"
               >
                 Bob
@@ -383,7 +383,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
             class="header"
           >
             <div
-              class="box info"
+              class="surface interactive box info"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -398,7 +398,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
               </p>
             </div>
             <div
-              class="box pin"
+              class="surface interactive box pin"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -412,7 +412,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
               </h1>
             </div>
             <div
-              class="box qr"
+              class="surface interactive box qr"
             >
               <svg
                 height="256"
@@ -438,7 +438,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
             class="misc"
           >
             <div
-              class="playerCounter"
+              class="surface playerCounter"
             >
               <svg
                 aria-hidden="true"
@@ -701,7 +701,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
             class="header"
           >
             <div
-              class="box info"
+              class="surface interactive box info"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -716,7 +716,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               </p>
             </div>
             <div
-              class="box pin"
+              class="surface interactive box pin"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -730,7 +730,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               </h1>
             </div>
             <div
-              class="box qr"
+              class="surface interactive box qr"
             >
               <svg
                 height="256"
@@ -756,7 +756,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
             class="misc"
           >
             <div
-              class="playerCounter"
+              class="surface playerCounter"
             >
               <svg
                 aria-hidden="true"
@@ -787,7 +787,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               class="players"
             >
               <div
-                class="main shake subtle"
+                class="surface interactive main shake subtle"
               >
                 Alice
                 <button
@@ -809,7 +809,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 100ms;"
               >
                 Bob
@@ -961,7 +961,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
             class="header"
           >
             <div
-              class="box info"
+              class="surface interactive box info"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -976,7 +976,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               </p>
             </div>
             <div
-              class="box pin"
+              class="surface interactive box pin"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -990,7 +990,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               </h1>
             </div>
             <div
-              class="box qr"
+              class="surface interactive box qr"
             >
               <svg
                 height="256"
@@ -1016,7 +1016,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
             class="misc"
           >
             <div
-              class="playerCounter"
+              class="surface playerCounter"
             >
               <svg
                 aria-hidden="true"
@@ -1047,7 +1047,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               class="players"
             >
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
               >
                 ShadowCyborg
                 <button
@@ -1069,7 +1069,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 100ms;"
               >
                 Radar
@@ -1092,7 +1092,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 200ms;"
               >
                 ShadowWhirlwind
@@ -1115,7 +1115,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 300ms;"
               >
                 WhiskerFox
@@ -1138,7 +1138,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 400ms;"
               >
                 JollyNimbus
@@ -1161,7 +1161,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 500ms;"
               >
                 PuddingPop
@@ -1184,7 +1184,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 600ms;"
               >
                 MysticPine
@@ -1207,7 +1207,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 700ms;"
               >
                 FrostyBear
@@ -1230,7 +1230,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 800ms;"
               >
                 Willo
@@ -1253,7 +1253,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 900ms;"
               >
                 ScarletFlame
@@ -1405,7 +1405,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
             class="header"
           >
             <div
-              class="box info"
+              class="surface interactive box info"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -1420,7 +1420,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               </p>
             </div>
             <div
-              class="box pin"
+              class="surface interactive box pin"
             >
               <p
                 class="typography body2 alignLeft widthFull colorInverseSubtle noOpacity"
@@ -1434,7 +1434,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               </h1>
             </div>
             <div
-              class="box qr"
+              class="surface interactive box qr"
             >
               <svg
                 height="256"
@@ -1460,7 +1460,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
             class="misc"
           >
             <div
-              class="playerCounter"
+              class="surface playerCounter"
             >
               <svg
                 aria-hidden="true"
@@ -1491,7 +1491,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               class="players"
             >
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
               >
                 Alice
                 <button
@@ -1513,7 +1513,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
                 </button>
               </div>
               <div
-                class="main entrance subtle"
+                class="surface interactive main entrance subtle"
                 style="animation-delay: 100ms;"
               >
                 Bob

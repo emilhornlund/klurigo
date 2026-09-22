@@ -1,6 +1,7 @@
 import { type FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
+import Surface from '../Surface'
 import Typography from '../Typography'
 
 import styles from './ScoreChip.module.scss'
@@ -31,7 +32,7 @@ const ScoreChip: FC<ScoreChipProps> = ({
   size = 'normal',
   transparent = false,
 }) => (
-  <div
+  <Surface
     className={classNames(
       styles.score,
       size === 'normal' ? styles.sizeNormal : undefined,
@@ -45,7 +46,7 @@ const ScoreChip: FC<ScoreChipProps> = ({
       color={color}>
       {value}
     </Typography>
-  </div>
+  </Surface>
 )
 
 export default ScoreChip

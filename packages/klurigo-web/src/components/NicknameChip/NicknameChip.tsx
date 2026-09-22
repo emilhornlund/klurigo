@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
+import Surface from '../Surface'
 
 import styles from './NicknameChip.module.scss'
 
@@ -97,7 +98,8 @@ const NicknameChip: FC<NicknameChipProps> = ({
       : {}
 
   return (
-    <div
+    <Surface
+      interactive={variant === 'subtle'}
       className={classNames(
         styles.main,
         animationState === 'entrance' ? styles.entrance : undefined,
@@ -115,7 +117,7 @@ const NicknameChip: FC<NicknameChipProps> = ({
           <FontAwesomeIcon icon={faXmark} />
         </button>
       )}
-    </div>
+    </Surface>
   )
 }
 

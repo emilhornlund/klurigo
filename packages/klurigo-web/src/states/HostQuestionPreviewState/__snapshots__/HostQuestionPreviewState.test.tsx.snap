@@ -36,7 +36,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
           class="contentInner"
         >
           <div
-            class="chip"
+            class="surface chip"
           >
             <p
               class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
@@ -109,7 +109,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
       class="footer"
     >
       <div
-        class="main"
+        class="surface main"
       >
         <div
           class="questions"
