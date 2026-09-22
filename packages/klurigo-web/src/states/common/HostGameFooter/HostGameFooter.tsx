@@ -65,7 +65,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
         </Typography>
       </div>
       <div className={styles.actions}>
-        <div className={styles.menuButtonWrapper} ref={settingsMenuButtonRef}>
+        <div ref={settingsMenuButtonRef}>
           <Button
             id="settings-button"
             type="button"

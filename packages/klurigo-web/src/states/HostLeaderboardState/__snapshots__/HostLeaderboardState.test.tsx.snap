@@ -39,7 +39,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -183,11 +183,9 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -197,7 +195,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -393,11 +391,9 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -407,7 +403,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -467,7 +463,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -611,11 +607,9 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -625,7 +619,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"
@@ -685,7 +679,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             </span>
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right"
+              class="svg-inline--fa fa-arrow-right icon"
               data-icon="arrow-right"
               data-prefix="fas"
               role="img"
@@ -907,11 +901,9 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
         <div
           class="actions"
         >
-          <div
-            class="menuButtonWrapper"
-          >
+          <div>
             <div
-              class="buttonContainer variantPlain surfaceBrand intentDefault"
+              class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
                 data-testid="test-settings-button-button"
@@ -921,7 +913,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-gear"
+                  class="svg-inline--fa fa-gear icon"
                   data-icon="gear"
                   data-prefix="fas"
                   role="img"

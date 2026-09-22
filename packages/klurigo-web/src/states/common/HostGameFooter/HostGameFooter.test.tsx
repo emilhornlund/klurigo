@@ -10,7 +10,6 @@ vi.mock('./HostGameFooter.module.scss', () => ({
     questions: 'questions',
     gamePIN: 'gamePIN',
     actions: 'actions',
-    menuButtonWrapper: 'menuButtonWrapper',
   },
 }))
 

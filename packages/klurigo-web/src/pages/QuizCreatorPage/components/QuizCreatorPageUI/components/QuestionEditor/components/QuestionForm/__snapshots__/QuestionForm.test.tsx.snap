@@ -91,7 +91,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-trash"
+                    class="svg-inline--fa fa-trash icon"
                     data-icon="trash"
                     data-prefix="fas"
                     role="img"
@@ -118,7 +118,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-retweet"
+                    class="svg-inline--fa fa-retweet icon"
                     data-icon="retweet"
                     data-prefix="fas"
                     role="img"
@@ -145,7 +145,7 @@ exports[`QuestionForm > renders a classic multi choice option question form 1`] 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-wand-magic-sparkles"
+                    class="svg-inline--fa fa-wand-magic-sparkles icon"
                     data-icon="wand-magic-sparkles"
                     data-prefix="fas"
                     role="img"
@@ -924,7 +924,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-trash"
+                    class="svg-inline--fa fa-trash icon"
                     data-icon="trash"
                     data-prefix="fas"
                     role="img"
@@ -951,7 +951,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-retweet"
+                    class="svg-inline--fa fa-retweet icon"
                     data-icon="retweet"
                     data-prefix="fas"
                     role="img"
@@ -978,7 +978,7 @@ exports[`QuestionForm > renders a classic range question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-wand-magic-sparkles"
+                    class="svg-inline--fa fa-wand-magic-sparkles icon"
                     data-icon="wand-magic-sparkles"
                     data-prefix="fas"
                     role="img"
@@ -1574,7 +1574,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-trash"
+                    class="svg-inline--fa fa-trash icon"
                     data-icon="trash"
                     data-prefix="fas"
                     role="img"
@@ -1601,7 +1601,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-retweet"
+                    class="svg-inline--fa fa-retweet icon"
                     data-icon="retweet"
                     data-prefix="fas"
                     role="img"
@@ -1628,7 +1628,7 @@ exports[`QuestionForm > renders a classic true or false question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-wand-magic-sparkles"
+                    class="svg-inline--fa fa-wand-magic-sparkles icon"
                     data-icon="wand-magic-sparkles"
                     data-prefix="fas"
                     role="img"
@@ -2095,7 +2095,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-trash"
+                    class="svg-inline--fa fa-trash icon"
                     data-icon="trash"
                     data-prefix="fas"
                     role="img"
@@ -2122,7 +2122,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-retweet"
+                    class="svg-inline--fa fa-retweet icon"
                     data-icon="retweet"
                     data-prefix="fas"
                     role="img"
@@ -2149,7 +2149,7 @@ exports[`QuestionForm > renders a classic type answer question form 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-wand-magic-sparkles"
+                    class="svg-inline--fa fa-wand-magic-sparkles icon"
                     data-icon="wand-magic-sparkles"
                     data-prefix="fas"
                     role="img"
@@ -2645,7 +2645,7 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-trash"
+                    class="svg-inline--fa fa-trash icon"
                     data-icon="trash"
                     data-prefix="fas"
                     role="img"
@@ -2672,7 +2672,7 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-retweet"
+                    class="svg-inline--fa fa-retweet icon"
                     data-icon="retweet"
                     data-prefix="fas"
                     role="img"
@@ -2699,7 +2699,7 @@ exports[`QuestionForm > renders a zero to one hundred range question form 1`] = 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-wand-magic-sparkles"
+                    class="svg-inline--fa fa-wand-magic-sparkles icon"
                     data-icon="wand-magic-sparkles"
                     data-prefix="fas"
                     role="img"

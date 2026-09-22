@@ -154,7 +154,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -164,7 +164,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -193,7 +193,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 </span>
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-right"
+                  class="svg-inline--fa fa-arrow-right icon"
                   data-icon="arrow-right"
                   data-prefix="fas"
                   role="img"
@@ -380,7 +380,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -391,7 +391,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"

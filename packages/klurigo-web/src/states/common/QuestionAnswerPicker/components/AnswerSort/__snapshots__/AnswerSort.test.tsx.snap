@@ -89,7 +89,7 @@ exports[`AnswerSort > handles empty list 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-rocket"
+            class="svg-inline--fa fa-rocket icon"
             data-icon="rocket"
             data-prefix="fas"
             role="img"
@@ -200,7 +200,7 @@ exports[`AnswerSort > renders interactive table with initial values 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-rocket"
+            class="svg-inline--fa fa-rocket icon"
             data-icon="rocket"
             data-prefix="fas"
             role="img"

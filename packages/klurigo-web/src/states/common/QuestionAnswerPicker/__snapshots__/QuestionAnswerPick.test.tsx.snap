@@ -86,7 +86,7 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-rocket"
+                class="svg-inline--fa fa-rocket icon"
                 data-icon="rocket"
                 data-prefix="fas"
                 role="img"
@@ -240,7 +240,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-rocket"
+              class="svg-inline--fa fa-rocket icon"
               data-icon="rocket"
               data-prefix="fas"
               role="img"
@@ -311,7 +311,7 @@ exports[`QuestionAnswerPicker > renders Range and forwards numeric value from sl
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-rocket"
+                class="svg-inline--fa fa-rocket icon"
                 data-icon="rocket"
                 data-prefix="fas"
                 role="img"
@@ -376,7 +376,7 @@ exports[`QuestionAnswerPicker > renders TypeAnswer and forwards typed value on s
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-rocket"
+                class="svg-inline--fa fa-rocket icon"
                 data-icon="rocket"
                 data-prefix="fas"
                 role="img"

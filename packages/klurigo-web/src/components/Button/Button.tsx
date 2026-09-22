@@ -71,6 +71,7 @@ const Button: FC<ButtonProps> = ({
         intent === 'danger' ? styles.intentDanger : undefined,
         intent === 'success' ? styles.intentSuccess : undefined,
         size === 'small' ? styles.sizeSmall : undefined,
+        icon && !showValue ? styles.iconOnly : undefined,
         grow ? styles.grow : undefined,
       )}>
       <button
@@ -89,13 +90,21 @@ const Button: FC<ButtonProps> = ({
         ) : (
           <>
             {icon && iconPosition === 'leading' && (
-              <FontAwesomeIcon icon={icon} color={iconColor} />
+              <FontAwesomeIcon
+                icon={icon}
+                color={iconColor}
+                className={styles.icon}
+              />
             )}
 
             {showValue && <span>{children || value}</span>}
 
             {icon && iconPosition === 'trailing' && (
-              <FontAwesomeIcon icon={icon} color={iconColor} />
+              <FontAwesomeIcon
+                icon={icon}
+                color={iconColor}
+                className={styles.icon}
+              />
             )}
           </>
         )}

@@ -38,9 +38,7 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
   <div
     class="actions"
   >
-    <div
-      class="menuButtonWrapper"
-    >
+    <div>
       <button
         id="settings-button"
         type="button"
@@ -105,9 +103,7 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
   <div
     class="actions"
   >
-    <div
-      class="menuButtonWrapper"
-    >
+    <div>
       <button
         id="settings-button"
         type="button"
@@ -194,9 +190,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
   <div
     class="actions"
   >
-    <div
-      class="menuButtonWrapper"
-    >
+    <div>
       <button
         id="settings-button"
         type="button"
@@ -298,9 +292,7 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
   <div
     class="actions"
   >
-    <div
-      class="menuButtonWrapper"
-    >
+    <div>
       <button
         id="settings-button"
         type="button"

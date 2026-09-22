@@ -59,7 +59,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-gear"
+              class="svg-inline--fa fa-gear icon"
               data-icon="gear"
               data-prefix="fas"
               role="img"
@@ -87,7 +87,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-floppy-disk"
+              class="svg-inline--fa fa-floppy-disk icon"
               data-icon="floppy-disk"
               data-prefix="fas"
               role="img"
@@ -114,7 +114,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right-from-bracket"
+              class="svg-inline--fa fa-arrow-right-from-bracket icon"
               data-icon="arrow-right-from-bracket"
               data-prefix="fas"
               role="img"
@@ -538,7 +538,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-trash"
+                                class="svg-inline--fa fa-trash icon"
                                 data-icon="trash"
                                 data-prefix="fas"
                                 role="img"
@@ -565,7 +565,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-retweet"
+                                class="svg-inline--fa fa-retweet icon"
                                 data-icon="retweet"
                                 data-prefix="fas"
                                 role="img"
@@ -592,7 +592,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-wand-magic-sparkles"
+                                class="svg-inline--fa fa-wand-magic-sparkles icon"
                                 data-icon="wand-magic-sparkles"
                                 data-prefix="fas"
                                 role="img"
@@ -1298,7 +1298,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-code"
+                      class="svg-inline--fa fa-code icon"
                       data-icon="code"
                       data-prefix="fas"
                       role="img"
@@ -1383,7 +1383,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-gear"
+              class="svg-inline--fa fa-gear icon"
               data-icon="gear"
               data-prefix="fas"
               role="img"
@@ -1411,7 +1411,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-floppy-disk"
+              class="svg-inline--fa fa-floppy-disk icon"
               data-icon="floppy-disk"
               data-prefix="fas"
               role="img"
@@ -1438,7 +1438,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right-from-bracket"
+              class="svg-inline--fa fa-arrow-right-from-bracket icon"
               data-icon="arrow-right-from-bracket"
               data-prefix="fas"
               role="img"
@@ -1488,7 +1488,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-code"
+                      class="svg-inline--fa fa-code icon"
                       data-icon="code"
                       data-prefix="fas"
                       role="img"
@@ -1573,7 +1573,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-gear"
+              class="svg-inline--fa fa-gear icon"
               data-icon="gear"
               data-prefix="fas"
               role="img"
@@ -1601,7 +1601,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-floppy-disk"
+              class="svg-inline--fa fa-floppy-disk icon"
               data-icon="floppy-disk"
               data-prefix="fas"
               role="img"
@@ -1628,7 +1628,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right-from-bracket"
+              class="svg-inline--fa fa-arrow-right-from-bracket icon"
               data-icon="arrow-right-from-bracket"
               data-prefix="fas"
               role="img"
@@ -1678,7 +1678,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-code"
+                      class="svg-inline--fa fa-code icon"
                       data-icon="code"
                       data-prefix="fas"
                       role="img"
@@ -1763,7 +1763,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-gear"
+              class="svg-inline--fa fa-gear icon"
               data-icon="gear"
               data-prefix="fas"
               role="img"
@@ -1791,7 +1791,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-floppy-disk"
+              class="svg-inline--fa fa-floppy-disk icon"
               data-icon="floppy-disk"
               data-prefix="fas"
               role="img"
@@ -1818,7 +1818,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right-from-bracket"
+              class="svg-inline--fa fa-arrow-right-from-bracket icon"
               data-icon="arrow-right-from-bracket"
               data-prefix="fas"
               role="img"
@@ -1868,7 +1868,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-code"
+                      class="svg-inline--fa fa-code icon"
                       data-icon="code"
                       data-prefix="fas"
                       role="img"
@@ -1955,7 +1955,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-gear"
+              class="svg-inline--fa fa-gear icon"
               data-icon="gear"
               data-prefix="fas"
               role="img"
@@ -1983,7 +1983,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-floppy-disk"
+              class="svg-inline--fa fa-floppy-disk icon"
               data-icon="floppy-disk"
               data-prefix="fas"
               role="img"
@@ -2010,7 +2010,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-right-from-bracket"
+              class="svg-inline--fa fa-arrow-right-from-bracket icon"
               data-icon="arrow-right-from-bracket"
               data-prefix="fas"
               role="img"

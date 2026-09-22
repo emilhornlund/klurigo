@@ -201,6 +201,36 @@
     }
   }
 
+  .icon {
+    flex-shrink: 0;
+
+    @include helpers.mobile {
+      @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+    }
+
+    @include helpers.tablet {
+      @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+    }
+
+    @include helpers.desktop {
+      @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+    }
+  }
+
+  &.iconOnly .icon {
+    @include helpers.mobile {
+      @include helpers.fontSize(20px);
+    }
+
+    @include helpers.tablet {
+      @include helpers.fontSize(22px);
+    }
+
+    @include helpers.desktop {
+      @include helpers.fontSize(24px);
+    }
+  }
+
   /*
    * Responsive sizing
    */
@@ -414,6 +444,14 @@
 
         @include helpers.fontSize(typography.$font-size-control-small-mobile);
       }
+
+      .icon {
+        @include helpers.fontSize(typography.$font-size-control-small-mobile);
+      }
+
+      &.iconOnly .icon {
+        @include helpers.fontSize(18px);
+      }
     }
 
     @include helpers.tablet {
@@ -425,6 +463,14 @@
 
         @include helpers.fontSize(typography.$font-size-control-small-tablet);
       }
+
+      .icon {
+        @include helpers.fontSize(typography.$font-size-control-small-tablet);
+      }
+
+      &.iconOnly .icon {
+        @include helpers.fontSize(20px);
+      }
     }
 
     @include helpers.desktop {
@@ -435,6 +481,14 @@
         column-gap: spacing.$space-inline-desktop;
 
         @include helpers.fontSize(typography.$font-size-control-small-desktop);
+      }
+
+      .icon {
+        @include helpers.fontSize(typography.$font-size-control-small-desktop);
+      }
+
+      &.iconOnly .icon {
+        @include helpers.fontSize(22px);
       }
     }
 

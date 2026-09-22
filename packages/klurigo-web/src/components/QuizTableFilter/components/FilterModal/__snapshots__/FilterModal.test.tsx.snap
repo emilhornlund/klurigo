@@ -31,7 +31,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
           Refine Your Quiz Search
         </h4>
         <div
-          class="buttonContainer variantPlain surfaceBrand intentDefault"
+          class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
         >
           <button
             data-testid="test-close-modal-button-button"
@@ -41,7 +41,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-xmark"
+              class="svg-inline--fa fa-xmark icon"
               color="gray"
               data-icon="xmark"
               data-prefix="fas"

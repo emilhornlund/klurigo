@@ -90,26 +90,5 @@
     @include helpers.desktop {
       column-gap: spacing.$space-compact-desktop;
     }
-
-    .menuButtonWrapper {
-      div[class*='_buttonInputContainer'] {
-        padding: 0;
-        margin: 0;
-
-        button {
-          @include helpers.mobile {
-            @include helpers.fontSize(typography.$font-size-body2-mobile);
-          }
-
-          @include helpers.tablet {
-            @include helpers.fontSize(typography.$font-size-body2-tablet);
-          }
-
-          @include helpers.desktop {
-            @include helpers.fontSize(typography.$font-size-body2-desktop);
-          }
-        }
-      }
-    }
   }
 }

@@ -58,7 +58,7 @@ exports[`AnswerInput > Basic Rendering > renders interactive mode 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-rocket"
+              class="svg-inline--fa fa-rocket icon"
               data-icon="rocket"
               data-prefix="fas"
               role="img"
@@ -155,7 +155,7 @@ exports[`AnswerInput > Basic Rendering > renders non-interactive mode with submi
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-rocket"
+              class="svg-inline--fa fa-rocket icon"
               data-icon="rocket"
               data-prefix="fas"
               role="img"
@@ -218,7 +218,7 @@ exports[`AnswerInput > Basic Rendering > renders with submitted answer 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-rocket"
+              class="svg-inline--fa fa-rocket icon"
               data-icon="rocket"
               data-prefix="fas"
               role="img"

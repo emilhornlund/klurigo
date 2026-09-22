@@ -36,7 +36,7 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -142,7 +142,7 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -248,7 +248,7 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -356,7 +356,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -452,7 +452,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           Confirm Leave Game
         </h4>
         <div
-          class="buttonContainer variantPlain surfaceBrand intentDefault"
+          class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
         >
           <button
             data-testid="test-close-modal-button-button"
@@ -462,7 +462,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-xmark"
+              class="svg-inline--fa fa-xmark icon"
               color="gray"
               data-icon="xmark"
               data-prefix="fas"
@@ -566,7 +566,7 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"

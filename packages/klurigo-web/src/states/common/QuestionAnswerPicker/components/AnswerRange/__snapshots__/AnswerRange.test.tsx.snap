@@ -51,7 +51,7 @@ exports[`AnswerRange > renders interactive mode with initial midpoint and disabl
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-rocket"
+              class="svg-inline--fa fa-rocket icon"
               data-icon="rocket"
               data-prefix="fas"
               role="img"

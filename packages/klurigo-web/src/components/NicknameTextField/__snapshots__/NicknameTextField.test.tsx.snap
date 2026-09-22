@@ -25,7 +25,7 @@ exports[`NicknameTextField > should render NicknameTextField with default props 
       </div>
     </div>
     <div
-      class="buttonContainer variantPrimary surfaceBrand intentDefault"
+      class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
     >
       <button
         data-testid="test-shuffle-nickname-button-button"
@@ -35,7 +35,7 @@ exports[`NicknameTextField > should render NicknameTextField with default props 
       >
         <svg
           aria-hidden="true"
-          class="svg-inline--fa fa-arrows-rotate"
+          class="svg-inline--fa fa-arrows-rotate icon"
           data-icon="arrows-rotate"
           data-prefix="fas"
           role="img"

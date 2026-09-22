@@ -142,7 +142,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -152,7 +152,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -178,7 +178,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -341,7 +341,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -351,7 +351,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -377,7 +377,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -479,7 +479,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-lock"
+                  class="svg-inline--fa fa-lock icon"
                   data-icon="lock"
                   data-prefix="fas"
                   role="img"
@@ -645,7 +645,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -655,7 +655,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -680,7 +680,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -843,7 +843,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -853,7 +853,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -878,7 +878,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -980,7 +980,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-lock"
+                  class="svg-inline--fa fa-lock icon"
                   data-icon="lock"
                   data-prefix="fas"
                   role="img"
@@ -1166,7 +1166,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -1176,7 +1176,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -1201,7 +1201,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -1384,7 +1384,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 </div>
               </div>
               <div
-                class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
                   data-testid="test-shuffle-nickname-button-button"
@@ -1394,7 +1394,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-arrows-rotate"
+                    class="svg-inline--fa fa-arrows-rotate icon"
                     data-icon="arrows-rotate"
                     data-prefix="fas"
                     role="img"
@@ -1419,7 +1419,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-floppy-disk"
+                  class="svg-inline--fa fa-floppy-disk icon"
                   data-icon="floppy-disk"
                   data-prefix="fas"
                   role="img"
@@ -1521,7 +1521,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-lock"
+                  class="svg-inline--fa fa-lock icon"
                   data-icon="lock"
                   data-prefix="fas"
                   role="img"

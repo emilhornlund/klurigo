@@ -63,7 +63,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-plus"
+                class="svg-inline--fa fa-plus icon"
                 data-icon="plus"
                 data-prefix="fas"
                 role="img"
@@ -108,7 +108,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                 class="column"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
                 >
                   <button
                     data-testid="test-search-button-button"
@@ -118,7 +118,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-magnifying-glass"
+                      class="svg-inline--fa fa-magnifying-glass icon"
                       data-icon="magnifying-glass"
                       data-prefix="fas"
                       role="img"
@@ -136,7 +136,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                 class="column"
               >
                 <div
-                  class="buttonContainer variantPrimary surfaceBrand intentDefault"
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
                 >
                   <button
                     data-testid="test-filter-button-button"
@@ -146,7 +146,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-filter"
+                      class="svg-inline--fa fa-filter icon"
                       data-icon="filter"
                       data-prefix="fas"
                       role="img"
@@ -585,7 +585,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-arrow-rotate-left"
+                  class="svg-inline--fa fa-arrow-rotate-left icon"
                   data-icon="arrow-rotate-left"
                   data-prefix="fas"
                   role="img"

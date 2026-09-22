@@ -36,7 +36,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -533,7 +533,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"
@@ -589,7 +589,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -1086,7 +1086,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"
@@ -1142,7 +1142,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -1639,7 +1639,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"
@@ -1695,7 +1695,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -2245,7 +2245,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"
@@ -2301,7 +2301,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -2774,7 +2774,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"
@@ -2830,7 +2830,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-arrow-left"
+              class="svg-inline--fa fa-arrow-left icon"
               data-icon="arrow-left"
               data-prefix="fas"
               role="img"
@@ -3327,7 +3327,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
               </span>
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-arrow-right"
+                class="svg-inline--fa fa-arrow-right icon"
                 data-icon="arrow-right"
                 data-prefix="fas"
                 role="img"

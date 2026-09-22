@@ -368,8 +368,10 @@ describe('Button', () => {
       const value = screen.getByText('My Button')
 
       expect(icon).toBeInTheDocument()
+      expect(icon).toHaveClass(styles.icon)
       expect(button.children[0]).toBe(icon)
       expect(button.children[1]).toBe(value)
+      expect(button.parentElement).not.toHaveClass(styles.iconOnly)
     })
 
     it('should render a trailing icon after the value', () => {
@@ -388,8 +390,10 @@ describe('Button', () => {
       const value = screen.getByText('My Button')
 
       expect(icon).toBeInTheDocument()
+      expect(icon).toHaveClass(styles.icon)
       expect(button.children[0]).toBe(value)
       expect(button.children[1]).toBe(icon)
+      expect(button.parentElement).not.toHaveClass(styles.iconOnly)
     })
 
     it('should render an icon-only button', () => {
@@ -398,7 +402,38 @@ describe('Button', () => {
       const button = screen.getByTestId('test-my-button-button')
 
       expect(button.querySelector('svg')).toBeInTheDocument()
+      expect(button.querySelector('svg')).toHaveClass(styles.icon)
       expect(button.querySelector('span')).not.toBeInTheDocument()
+      expect(button.parentElement).toHaveClass(styles.iconOnly)
+    })
+
+    it('should apply the icon-only state to a small button', () => {
+      render(
+        <Button id="my-button" type="button" size="small" icon={faArrowLeft} />,
+      )
+
+      expect(
+        screen.getByTestId('test-my-button-button').parentElement,
+      ).toHaveClass(styles.sizeSmall, styles.iconOnly)
+    })
+
+    it('should keep a small button with text out of the icon-only state', () => {
+      render(
+        <Button
+          id="my-button"
+          type="button"
+          size="small"
+          value="My Button"
+          icon={faArrowLeft}
+        />,
+      )
+
+      expect(
+        screen.getByTestId('test-my-button-button').parentElement,
+      ).toHaveClass(styles.sizeSmall)
+      expect(
+        screen.getByTestId('test-my-button-button').parentElement,
+      ).not.toHaveClass(styles.iconOnly)
     })
 
     it('should keep the icon visible when the value is hidden on mobile', () => {
@@ -418,6 +453,7 @@ describe('Button', () => {
 
       expect(button.querySelector('svg')).toBeInTheDocument()
       expect(screen.queryByText('My Button')).not.toBeInTheDocument()
+      expect(button.parentElement).toHaveClass(styles.iconOnly)
     })
   })
 
