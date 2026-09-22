@@ -3322,7 +3322,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -3577,7 +3577,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -3941,7 +3941,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -4136,7 +4136,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -6405,7 +6405,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -6570,7 +6570,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -6844,7 +6844,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"
@@ -6979,7 +6979,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-circle-minus"
-                          color="colorActionDefault"
+                          color="colorActionTint"
                           data-icon="circle-minus"
                           data-prefix="fas"
                           role="img"

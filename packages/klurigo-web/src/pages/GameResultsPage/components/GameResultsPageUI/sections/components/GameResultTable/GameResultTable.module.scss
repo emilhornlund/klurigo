@@ -141,7 +141,6 @@
 
     .details {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       transition: all 0.25s linear;
       overflow: hidden;
       visibility: hidden;
@@ -149,6 +148,7 @@
       height: 0;
 
       @include helpers.mobile {
+        grid-template-columns: 1fr;
         column-gap: spacing.$space-content-inline-mobile;
         row-gap: spacing.$space-compact-mobile;
 
@@ -156,6 +156,7 @@
       }
 
       @include helpers.tablet {
+        grid-template-columns: 1fr 1fr;
         column-gap: spacing.$space-content-inline-tablet;
         row-gap: spacing.$space-compact-tablet;
 
@@ -163,6 +164,7 @@
       }
 
       @include helpers.desktop {
+        grid-template-columns: 1fr 1fr;
         column-gap: spacing.$space-content-inline-desktop;
         row-gap: spacing.$space-compact-desktop;
 
