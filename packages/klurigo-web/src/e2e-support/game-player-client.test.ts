@@ -15,6 +15,7 @@ const gameToken = createToken({
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   vi.restoreAllMocks()
 })
 
@@ -128,6 +129,45 @@ describe('GamePlayerClient', () => {
     expect(() => client.close()).not.toThrow()
 
     await expect(pendingEvent).rejects.toThrow('Game player client closed')
+  })
+
+  it('times out waits with event diagnostics and removes the timed-out waiter', async () => {
+    vi.useFakeTimers()
+    const { client, emit } = await createConnectedClient()
+    const pendingEvent = client.waitForEvent(
+      GameEventType.GameBeginPlayer,
+      undefined,
+      { timeout: 25 },
+    )
+
+    emit({
+      type: GameEventType.GameLobbyPlayer,
+      player: { nickname: 'Ada' },
+    })
+    const timeoutAssertion = expect(pendingEvent).rejects.toThrow(
+      'Timed out after 25ms waiting for game event type "GAME_BEGIN_PLAYER". ' +
+        'Recently received non-heartbeat event types: GAME_LOBBY_PLAYER. ' +
+        'Queued events that did not satisfy this wait: {"type":"GAME_LOBBY_PLAYER"',
+    )
+    await vi.advanceTimersByTimeAsync(25)
+
+    await timeoutAssertion
+
+    const nextEvent = client.waitForEvent(
+      GameEventType.GameBeginPlayer,
+      undefined,
+      { timeout: 25 },
+    )
+    emit({
+      type: GameEventType.GameBeginPlayer,
+      player: { nickname: 'Ada' },
+    })
+
+    await expect(nextEvent).resolves.toEqual({
+      type: GameEventType.GameBeginPlayer,
+      player: { nickname: 'Ada' },
+    })
+    client.close()
   })
 })
 
