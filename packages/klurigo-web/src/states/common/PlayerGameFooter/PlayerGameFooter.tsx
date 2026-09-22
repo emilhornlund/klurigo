@@ -2,7 +2,7 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 
-import { Typography } from '../../../components'
+import { Surface, Typography } from '../../../components'
 
 import styles from './PlayerGameFooter.module.scss'
 
@@ -19,7 +19,7 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
   nickname,
   totalScore,
 }) => (
-  <div className={styles.main}>
+  <Surface className={styles.main}>
     <div className={styles.questions}>
       <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
       <Typography variant="body2" color="inverse" noOpacity bold>
@@ -43,7 +43,7 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
         </Typography>
       </span>
     </div>
-  </div>
+  </Surface>
 )
 
 export default PlayerGameFooter

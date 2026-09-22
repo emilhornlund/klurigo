@@ -2,6 +2,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { type FC } from 'react'
 
+import Surface from '../Surface'
 import Typography from '../Typography'
 
 import styles from './CallToActionCard.module.scss'
@@ -47,7 +48,12 @@ const CallToActionCard: FC<CallToActionCardProps> = ({
   onClick,
 }) => (
   <div className={styles.callToActionCard}>
-    <button type="button" className={styles.button} onClick={onClick}>
+    <Surface
+      as="button"
+      type="button"
+      interactive
+      className={styles.button}
+      onClick={onClick}>
       <div className={styles.content}>
         <Typography variant="title3" align="center" color="inverse">
           {title}
@@ -56,10 +62,10 @@ const CallToActionCard: FC<CallToActionCardProps> = ({
           {text}
         </Typography>
       </div>
-      <div className={styles.icon}>
+      <Surface interactive className={styles.icon}>
         <FontAwesomeIcon icon={faArrowRight} />
-      </div>
-    </button>
+      </Surface>
+    </Surface>
   </div>
 )
 

@@ -16,6 +16,7 @@ import {
   ConfirmDialog,
   IconButtonArrowRight,
   NicknameChip,
+  Surface,
   Typography,
 } from '../../components'
 import config from '../../config'
@@ -197,35 +198,35 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
           </>
         }>
         <div className={styles.header}>
-          <div className={classNames(styles.box, styles.info)}>
+          <Surface interactive className={classNames(styles.box, styles.info)}>
             <Typography variant="body2" color="inverseSubtle" noOpacity>
               Join at
             </Typography>{' '}
             <Typography variant="body2" color="inverse" noOpacity bold>
               {extractUrl(config.baseUrl, { omitProtocol: true })}
             </Typography>
-          </div>
-          <div className={classNames(styles.box, styles.pin)}>
+          </Surface>
+          <Surface interactive className={classNames(styles.box, styles.pin)}>
             <Typography variant="body2" color="inverseSubtle" noOpacity>
               Game PIN
             </Typography>
             <Typography variant="title" color="inverse" noOpacity>
               {pin}
             </Typography>
-          </div>
-          <div className={classNames(styles.box, styles.qr)}>
+          </Surface>
+          <Surface interactive className={classNames(styles.box, styles.qr)}>
             <QRCode value={joinUrl} />
             <div className={styles.qrScanLine} />
-          </div>
+          </Surface>
         </div>
 
         <div className={styles.misc}>
-          <div className={styles.playerCounter}>
+          <Surface className={styles.playerCounter}>
             <FontAwesomeIcon icon={faUserGroup} className={styles.playerIcon} />
             <span className={styles.playerCount}>
               {players.length} / {GAME_MAX_PLAYERS}
             </span>
-          </div>
+          </Surface>
         </div>
 
         <div className={styles.content}>

@@ -54,6 +54,7 @@ export type { SelectProps } from './Select'
 export type { SortableTableProps, SortableTableValue } from './SortableTable'
 export type { StarRatingProps, StarRatingSize } from './StarRating'
 export type { StreakBadgeProps } from './StreakBadge'
+export { type SurfaceProps, default as Surface } from './Surface'
 export type { TextareaProps } from './Textarea'
 export type { TextFieldProps } from './TextField'
 export {

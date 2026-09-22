@@ -1,10 +1,7 @@
 @use '../../../styles/helpers' as helpers;
-@use '../../../styles/mixins/_surface' as surface;
 @use '../../../styles/spacing.semantic' as spacing;
 
 .chip {
-  @include surface.surface-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;

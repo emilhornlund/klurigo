@@ -77,7 +77,7 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>
@@ -183,7 +183,7 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>
@@ -289,7 +289,7 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>
@@ -397,7 +397,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>
@@ -607,7 +607,7 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>

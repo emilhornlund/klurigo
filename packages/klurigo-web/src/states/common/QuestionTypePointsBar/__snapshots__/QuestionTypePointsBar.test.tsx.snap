@@ -3,7 +3,7 @@
 exports[`QuestionTypePointsBar > renders double points for 2000 1`] = `
 <div>
   <div
-    class="chip"
+    class="surface chip"
   >
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
@@ -52,7 +52,7 @@ exports[`QuestionTypePointsBar > renders null for non-classic mode 1`] = `<div /
 exports[`QuestionTypePointsBar > renders only question type label when points are undefined 1`] = `
 <div>
   <div
-    class="chip"
+    class="surface chip"
   >
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
@@ -98,7 +98,7 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
 exports[`QuestionTypePointsBar > renders question type label and zero points 1`] = `
 <div>
   <div
-    class="chip"
+    class="surface chip"
   >
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
@@ -145,7 +145,7 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
 exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
 <div>
   <div
-    class="chip"
+    class="surface chip"
   >
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity bold"

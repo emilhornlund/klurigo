@@ -49,7 +49,7 @@ exports[`PlayerGameBeginState > should render PlayerGameBeginState 1`] = `
             </div>
           </div>
           <div
-            class="main subtle"
+            class="surface interactive main subtle"
           >
             FrostyBear
           </div>

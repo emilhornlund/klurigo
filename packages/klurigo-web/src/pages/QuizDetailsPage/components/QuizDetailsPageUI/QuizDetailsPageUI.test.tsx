@@ -67,6 +67,15 @@ vi.mock('../../../../components', async () => {
 
   const PageDivider = () => <hr data-testid="page-divider" />
 
+  const Surface = ({
+    as: Component = 'div',
+    children,
+    ...props
+  }: {
+    as?: 'div' | 'button'
+    children?: React.ReactNode
+  }) => <Component {...props}>{children}</Component>
+
   const ResponsiveImage = ({ imageURL }: { imageURL: string }) => (
     <img data-testid="responsive-image" alt="cover" src={imageURL} />
   )
@@ -114,6 +123,7 @@ vi.mock('../../../../components', async () => {
     Page,
     PageDivider,
     ResponsiveImage,
+    Surface,
     Typography,
   }
 })

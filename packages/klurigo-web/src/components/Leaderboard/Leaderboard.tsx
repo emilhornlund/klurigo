@@ -2,6 +2,7 @@ import type { FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import StreakBadge from '../StreakBadge'
+import Surface from '../Surface'
 
 import styles from './Leaderboard.module.scss'
 
@@ -53,7 +54,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
             !!previousPosition && previousPosition > position
 
           return (
-            <div
+            <Surface
               key={`${position}_${nickname}_${score}`}
               className={classNames(
                 styles.row,
@@ -61,9 +62,9 @@ const Leaderboard: FC<LeaderboardProps> = ({
                 isTopPosition ? styles.topPosition : undefined,
               )}
               style={rowStyle}>
-              <div className={classNames(styles.column, styles.position)}>
+              <Surface className={classNames(styles.column, styles.position)}>
                 {position}
-              </div>
+              </Surface>
 
               <div className={classNames(styles.column, styles.nickname)}>
                 <span>{nickname}</span>
@@ -92,9 +93,9 @@ const Leaderboard: FC<LeaderboardProps> = ({
               )}
 
               <div className={styles.column}>
-                <div className={styles.score}>{score}</div>
+                <Surface className={styles.score}>{score}</Surface>
               </div>
-            </div>
+            </Surface>
           )
         },
       )}

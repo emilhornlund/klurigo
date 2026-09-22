@@ -3,7 +3,7 @@
 exports[`PlayerGameFooter > should render PlayerGameFooter with default props 1`] = `
 <div>
   <div
-    class="main"
+    class="surface main"
   >
     <div
       class="questions"

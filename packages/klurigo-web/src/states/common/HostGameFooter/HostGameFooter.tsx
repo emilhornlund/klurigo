@@ -16,6 +16,7 @@ import {
   Menu,
   MenuItem,
   MenuSeparator,
+  Surface,
   Typography,
 } from '../../../components'
 import { useGameContext } from '../../../context/game'
@@ -47,7 +48,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
     useState<boolean>(false)
 
   return (
-    <div className={styles.main}>
+    <Surface className={styles.main}>
       <div className={styles.questions}>
         <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
         <Typography variant="body2" color="inverse" noOpacity bold>
@@ -115,7 +116,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
         onClose={() => setShowConfirmQuitGameDialog(false)}
         destructive
       />
-    </div>
+    </Surface>
   )
 }
 

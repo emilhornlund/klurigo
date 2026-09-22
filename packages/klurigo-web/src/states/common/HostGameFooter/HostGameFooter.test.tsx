@@ -136,6 +136,17 @@ const playerManagementModalMock = vi.fn(
 )
 
 vi.mock('../../../components', () => ({
+  Surface: ({
+    children,
+    className,
+  }: {
+    children?: React.ReactNode
+    className?: string
+  }) => (
+    <div className={['surface', className].filter(Boolean).join(' ')}>
+      {children}
+    </div>
+  ),
   Button: (props: ButtonProps) => buttonMock(props),
   Menu: (props: MenuProps) => menuMock(props),
   MenuItem: (props: MenuItemProps) => menuItemMock(props),

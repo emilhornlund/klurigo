@@ -8,6 +8,7 @@ import {
   CircularProgressBar,
   CircularProgressBarKind,
   CircularProgressBarSize,
+  Surface,
 } from '../../../../../../../components'
 import { classNames } from '../../../../../../../utils/helpers'
 
@@ -45,7 +46,8 @@ const GameResultTableRow: FC<TableItem> = ({
   const [showDetails, setShowDetails] = useState<boolean>(false)
 
   return (
-    <div
+    <Surface
+      interactive
       key={`${badge}`}
       className={styles.tableRow}
       onClick={(event) => {
@@ -53,7 +55,7 @@ const GameResultTableRow: FC<TableItem> = ({
         setShowDetails(!showDetails)
       }}>
       <div className={styles.main}>
-        <div className={styles.badge}>{`${badge}`}</div>
+        <Surface interactive className={styles.badge}>{`${badge}`}</Surface>
         <div className={styles.value} title={value}>
           {value}
           {label && <div className={styles.label}>{label}</div>}
@@ -90,7 +92,7 @@ const GameResultTableRow: FC<TableItem> = ({
           </div>
         ))}
       </div>
-    </div>
+    </Surface>
   )
 }
 

@@ -173,7 +173,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                         class="nickname"
                       >
                         <div
-                          class="main subtle"
+                          class="surface interactive main subtle"
                         >
                           Bob
                         </div>
@@ -190,7 +190,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             2
                           </div>
                           <div
-                            class="score sizeSmall transparent"
+                            class="surface score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -210,7 +210,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                         class="nickname"
                       >
                         <div
-                          class="main subtle"
+                          class="surface interactive main subtle"
                         >
                           Alice
                         </div>
@@ -232,7 +232,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                             1
                           </div>
                           <div
-                            class="score sizeSmall transparent"
+                            class="surface score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -603,7 +603,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   />
                 </div>
                 <div
-                  class="card full progress"
+                  class="surface card full progress"
                 >
                   <svg
                     class="circularProgressBar correct medium"
@@ -769,7 +769,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   </p>
                 </div>
                 <button
-                  class="card hostGameButton"
+                  class="surface interactive card hostGameButton"
                   id="host-game-button"
                   type="button"
                 >
@@ -788,7 +788,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     </p>
                   </div>
                   <div
-                    class="icon"
+                    class="surface interactive icon"
                   >
                     <svg
                       aria-hidden="true"
@@ -806,7 +806,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   </div>
                 </button>
                 <div
-                  class="card full details"
+                  class="surface card full details"
                 >
                   <div
                     class="column"
@@ -988,7 +988,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -1004,14 +1004,14 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Alice
                     </div>
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -1027,14 +1027,14 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Alice
                     </div>
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -1050,14 +1050,14 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Alice
                     </div>
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -1073,12 +1073,12 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Alice
                     </div>
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Bob
                     </div>
@@ -1267,7 +1267,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                         class="nickname"
                       >
                         <div
-                          class="main subtle"
+                          class="surface interactive main subtle"
                         >
                           Dave
                         </div>
@@ -1284,7 +1284,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             2
                           </div>
                           <div
-                            class="score sizeSmall transparent"
+                            class="surface score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1304,7 +1304,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                         class="nickname"
                       >
                         <div
-                          class="main subtle"
+                          class="surface interactive main subtle"
                         >
                           Carol
                         </div>
@@ -1326,7 +1326,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                             1
                           </div>
                           <div
-                            class="score sizeSmall transparent"
+                            class="surface score sizeSmall transparent"
                             data-testid="score-chip"
                           >
                             <h3
@@ -1697,7 +1697,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   />
                 </div>
                 <div
-                  class="card full progress"
+                  class="surface card full progress"
                 >
                   <svg
                     class="circularProgressBar correct medium"
@@ -1863,7 +1863,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   </p>
                 </div>
                 <button
-                  class="card hostGameButton"
+                  class="surface interactive card hostGameButton"
                   disabled=""
                   id="host-game-button"
                   type="button"
@@ -1884,7 +1884,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   </div>
                 </button>
                 <div
-                  class="card full details"
+                  class="surface card full details"
                 >
                   <div
                     class="column"
@@ -2066,7 +2066,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -2082,14 +2082,14 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Carol
                     </div>
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -2105,14 +2105,14 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Carol
                     </div>
                   </div>
                 </div>
                 <div
-                  class="card metric"
+                  class="surface card metric"
                 >
                   <p
                     class="typography body2 alignCenter widthFull colorInverse"
@@ -2128,12 +2128,12 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     class="nicknames"
                   >
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Carol
                     </div>
                     <div
-                      class="main subtle"
+                      class="surface interactive main subtle"
                     >
                       Dave
                     </div>

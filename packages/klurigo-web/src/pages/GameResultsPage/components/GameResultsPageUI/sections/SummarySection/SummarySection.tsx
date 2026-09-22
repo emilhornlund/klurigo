@@ -33,6 +33,7 @@ import {
   PageDivider,
   Podium,
   type PodiumValue,
+  Surface,
   Typography,
 } from '../../../../../../components'
 import { GameModeLabels } from '../../../../../../models'
@@ -81,7 +82,7 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
   value,
   nicknames,
 }) => (
-  <div className={classNames(styles.card, styles.metric)}>
+  <Surface className={classNames(styles.card, styles.metric)}>
     <Typography variant="body2" align="center" color="inverse">
       {title}
     </Typography>
@@ -93,7 +94,7 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
         <NicknameChip key={`${nickname}_${index}`} value={nickname} />
       ))}
     </div>
-  </div>
+  </Surface>
 )
 
 export type SummarySectionProps = {
@@ -236,7 +237,8 @@ const SummarySection: FC<SummarySectionProps> = ({
           <PageDivider />
         </div>
 
-        <div className={classNames(styles.card, styles.full, styles.progress)}>
+        <Surface
+          className={classNames(styles.card, styles.full, styles.progress)}>
           <CircularProgressBar
             kind={CircularProgressBarKind.Correct}
             size={CircularProgressBarSize.Medium}
@@ -246,7 +248,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <Typography variant="body2" color="inverse" className={styles.text}>
             {getQuizDifficultyMessage(percentage)}
           </Typography>
-        </div>
+        </Surface>
 
         <RatingCard
           canRateQuiz={quiz.canRateQuiz}
@@ -256,9 +258,11 @@ const SummarySection: FC<SummarySectionProps> = ({
           onCommentChange={onCommentChange}
         />
 
-        <button
+        <Surface
+          as="button"
           id="host-game-button"
           type="button"
+          interactive
           className={classNames(styles.card, styles.hostGameButton)}
           disabled={!quiz.canHostLiveGame}
           onClick={() => setShowConfirmHostGameModal(true)}>
@@ -273,9 +277,9 @@ const SummarySection: FC<SummarySectionProps> = ({
                   join.
                 </Typography>
               </div>
-              <div className={styles.icon}>
+              <Surface interactive className={styles.icon}>
                 <FontAwesomeIcon icon={faPlay} />
-              </div>
+              </Surface>
             </>
           ) : (
             <>
@@ -290,9 +294,10 @@ const SummarySection: FC<SummarySectionProps> = ({
               </div>
             </>
           )}
-        </button>
+        </Surface>
 
-        <div className={classNames(styles.card, styles.full, styles.details)}>
+        <Surface
+          className={classNames(styles.card, styles.full, styles.details)}>
           <div className={styles.column}>
             <DetailsItem title="Game Mode" icon={faGamepad}>
               {GameModeLabels[mode]}
@@ -326,7 +331,7 @@ const SummarySection: FC<SummarySectionProps> = ({
               {formatRoundedDuration(duration)}
             </DetailsItem>
           </div>
-        </div>
+        </Surface>
 
         {averageResponseTimeMetric && (
           <MetricCard

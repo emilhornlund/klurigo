@@ -47,6 +47,14 @@ vi.mock('../../../../../../api', () => ({
 }))
 
 vi.mock('../../../../../../components', () => ({
+  Surface: ({
+    as: Component = 'div',
+    children,
+    ...props
+  }: {
+    as?: 'div' | 'button'
+    children?: React.ReactNode
+  }) => <Component {...props}>{children}</Component>,
   CircularProgressBar: () => <div data-testid="circular-progress" />,
   Podium: () => <div data-testid="podium" />,
   Leaderboard: () => <div data-testid="leaderboard" />,
