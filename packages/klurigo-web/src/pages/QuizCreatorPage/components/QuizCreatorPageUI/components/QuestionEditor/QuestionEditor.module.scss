@@ -7,15 +7,15 @@
   flex-direction: column;
 
   @include helpers.mobile {
-    row-gap: spacing.$space-compact-mobile;
+    row-gap: spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
-    row-gap: spacing.$space-compact-tablet;
+    row-gap: spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
-    row-gap: spacing.$space-compact-desktop;
+    row-gap: spacing.$space-stack-desktop;
   }
 
   .section {

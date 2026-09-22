@@ -16,6 +16,30 @@ $tablet-select-normal-size: calc(
 $desktop-select-normal-size: calc(
   #{controls.$control-normal-height-desktop} * 0.4
 );
+$mobile-select-small-size: calc(#{controls.$control-small-height-mobile} * 0.4);
+$tablet-select-small-size: calc(#{controls.$control-small-height-tablet} * 0.4);
+$desktop-select-small-size: calc(
+  #{controls.$control-small-height-desktop} * 0.4
+);
+
+$mobile-select-normal-padding-right: calc(
+  #{$mobile-select-normal-size} + #{spacing.$space-compact-mobile}
+);
+$tablet-select-normal-padding-right: calc(
+  #{$tablet-select-normal-size} + #{spacing.$space-compact-tablet}
+);
+$desktop-select-normal-padding-right: calc(
+  #{$desktop-select-normal-size} + #{spacing.$space-compact-desktop}
+);
+$mobile-select-small-padding-right: calc(
+  #{$mobile-select-small-size} + #{spacing.$space-inline-mobile}
+);
+$tablet-select-small-padding-right: calc(
+  #{$tablet-select-small-size} + #{spacing.$space-inline-tablet}
+);
+$desktop-select-small-padding-right: calc(
+  #{$desktop-select-small-size} + #{spacing.$space-inline-desktop}
+);
 
 .inputContainer {
   display: flex;
@@ -57,22 +81,24 @@ $desktop-select-normal-size: calc(
       justify-content: center;
       min-width: 0;
       outline: none;
-      padding-right: 2rem;
 
       @include helpers.mobile {
         column-gap: spacing.$space-compact-mobile;
+        padding-right: $mobile-select-normal-padding-right;
 
         @include helpers.fontSize(typography.$font-size-control-normal-mobile);
       }
 
       @include helpers.tablet {
         column-gap: spacing.$space-compact-tablet;
+        padding-right: $tablet-select-normal-padding-right;
 
         @include helpers.fontSize(typography.$font-size-control-normal-tablet);
       }
 
       @include helpers.desktop {
         column-gap: spacing.$space-compact-desktop;
+        padding-right: $desktop-select-normal-padding-right;
 
         @include helpers.fontSize(typography.$font-size-control-normal-desktop);
       }
@@ -192,8 +218,15 @@ $desktop-select-normal-size: calc(
 
         select {
           column-gap: spacing.$space-inline-mobile;
+          padding-right: $mobile-select-small-padding-right;
 
           @include helpers.fontSize(typography.$font-size-control-small-mobile);
+        }
+
+        .selectIcon {
+          height: $mobile-select-small-size;
+          right: controls.$control-small-height-mobile * 0.2;
+          width: $mobile-select-small-size;
         }
       }
 
@@ -203,8 +236,15 @@ $desktop-select-normal-size: calc(
 
         select {
           column-gap: spacing.$space-inline-tablet;
+          padding-right: $tablet-select-small-padding-right;
 
           @include helpers.fontSize(typography.$font-size-control-small-tablet);
+        }
+
+        .selectIcon {
+          height: $tablet-select-small-size;
+          right: controls.$control-small-height-tablet * 0.2;
+          width: $tablet-select-small-size;
         }
       }
 
@@ -214,10 +254,17 @@ $desktop-select-normal-size: calc(
 
         select {
           column-gap: spacing.$space-inline-desktop;
+          padding-right: $desktop-select-small-padding-right;
 
           @include helpers.fontSize(
             typography.$font-size-control-small-desktop
           );
+        }
+
+        .selectIcon {
+          height: $desktop-select-small-size;
+          right: controls.$control-small-height-desktop * 0.2;
+          width: $desktop-select-small-size;
         }
       }
     }
