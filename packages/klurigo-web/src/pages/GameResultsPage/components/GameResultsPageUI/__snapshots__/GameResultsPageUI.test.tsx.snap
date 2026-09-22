@@ -601,7 +601,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -1645,7 +1645,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -2638,7 +2638,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -4788,7 +4788,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -5820,7 +5820,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -7631,7 +7631,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"

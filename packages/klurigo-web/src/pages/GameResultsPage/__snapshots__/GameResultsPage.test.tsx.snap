@@ -646,7 +646,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"
@@ -1740,7 +1740,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                   </p>
                 </div>
                 <div
-                  class="card rating"
+                  class="surface card rating"
                 >
                   <div
                     class="content"

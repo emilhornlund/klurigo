@@ -15,16 +15,19 @@
   @include helpers.mobile {
     padding: spacing.$space-inline-tight-mobile spacing.$space-compact-mobile;
     width: 100%;
+    height: helpers.pxToRem(52px);
   }
 
   @include helpers.tablet {
     padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
     width: breakpoints.$breakpoint-tablet;
+    height: helpers.pxToRem(60px);
   }
 
   @include helpers.desktop {
     padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
     width: breakpoints.$breakpoint-desktop;
+    height: helpers.pxToRem(66px);
   }
 
   .questions,
@@ -81,18 +84,15 @@
       border-radius: radius.$radius-control-md;
 
       @include helpers.mobile {
-        padding: spacing.$space-inline-tight-mobile
-          spacing.$space-compact-mobile;
+        padding: 0 spacing.$space-compact-mobile;
       }
 
       @include helpers.tablet {
-        padding: spacing.$space-inline-tight-tablet
-          spacing.$space-compact-tablet;
+        padding: 0 spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        padding: spacing.$space-inline-tight-desktop
-          spacing.$space-compact-desktop;
+        padding: 0 spacing.$space-compact-desktop;
       }
     }
   }

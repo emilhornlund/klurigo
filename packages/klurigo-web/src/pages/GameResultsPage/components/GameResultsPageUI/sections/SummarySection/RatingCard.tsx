@@ -1,6 +1,11 @@
 import type { FC } from 'react'
 
-import { StarRating, Textarea, Typography } from '../../../../../../components'
+import {
+  StarRating,
+  Surface,
+  Textarea,
+  Typography,
+} from '../../../../../../components'
 import { classNames } from '../../../../../../utils/helpers'
 
 import styles from './SummarySection.module.scss'
@@ -57,7 +62,7 @@ const RatingCard: FC<RatingCardProps> = ({
   onRatingChange,
   onCommentChange,
 }) => (
-  <div className={classNames(styles.card, styles.rating)}>
+  <Surface className={classNames(styles.card, styles.rating)}>
     <div className={styles.content}>
       <Typography variant="title3" align="center" color="inverse">
         Rate this quiz
@@ -84,7 +89,7 @@ const RatingCard: FC<RatingCardProps> = ({
         You cannot rate your own quiz
       </Typography>
     )}
-  </div>
+  </Surface>
 )
 
 export default RatingCard
