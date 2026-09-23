@@ -10,18 +10,28 @@ import playwrightConfig from '../../playwright.config'
 
 const GAME_SESSION_TEST_MATCH = '**/game-session/**/*.spec.ts'
 
-function testInfo(projectName: string, repeatEachIndex: number): TestInfo {
+function testInfo(
+  projectName: string,
+  parallelIndex: number,
+  repeatEachIndex: number,
+  repeatEach: number,
+): TestInfo {
   return {
-    project: { name: projectName },
+    parallelIndex,
+    project: { name: projectName, repeatEach },
     repeatEachIndex,
   } as TestInfo
 }
 
 function getFixture(
   projectName: string,
+  parallelIndex: number,
   repeatEachIndex: number,
+  repeatEach: number,
 ): GameSessionUserFixture {
-  return getGameSessionFixture(testInfo(projectName, repeatEachIndex))
+  return getGameSessionFixture(
+    testInfo(projectName, parallelIndex, repeatEachIndex, repeatEach),
+  )
 }
 
 describe('frontend Playwright configuration', () => {
@@ -49,28 +59,51 @@ describe('frontend Playwright configuration', () => {
     })
   })
 
-  it('resolves every configured Chromium repeatEachIndex for both projects', () => {
+  it('resolves every configured repeatEachIndex for a single Chromium worker', () => {
     const chromiumFixtures =
       E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots.chromium
 
     for (const projectName of ['chromium', 'chromium-game-session']) {
       for (const [repeatEachIndex, fixture] of chromiumFixtures.entries()) {
-        expect(getFixture(projectName, repeatEachIndex)).toBe(fixture)
+        expect(getFixture(projectName, 0, repeatEachIndex, 3)).toBe(fixture)
       }
     }
   })
 
-  it('keeps actionable errors for unsupported projects and repeat indices', () => {
-    expect(() => getFixture('unsupported-project', 0)).toThrow(
-      'No E2E fixture configured for Playwright project "unsupported-project" and repeatEachIndex 0',
+  it('assigns different fixture slots to concurrent workers', () => {
+    const chromiumFixtures =
+      E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots.chromium
+
+    const concurrentFixtures = chromiumFixtures.map((_, parallelIndex) =>
+      getFixture('chromium-game-session', parallelIndex, 0, 1),
     )
-    expect(() =>
-      getFixture(
-        'chromium-game-session',
-        E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots.chromium.length,
-      ),
-    ).toThrow(
-      'No E2E fixture configured for Playwright project "chromium-game-session" and repeatEachIndex 3',
+
+    expect(concurrentFixtures).toEqual(chromiumFixtures)
+    expect(new Set(concurrentFixtures.map(({ id }) => id)).size).toBe(
+      concurrentFixtures.length,
+    )
+  })
+
+  it('keeps repeated runs on different fixture slots', () => {
+    const chromiumFixtures =
+      E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots.chromium
+
+    const allocations = chromiumFixtures.map((_, repeatEachIndex) =>
+      getFixture('chromium-game-session', 0, repeatEachIndex, 3),
+    )
+
+    expect(allocations).toEqual(chromiumFixtures)
+    expect(new Set(allocations.map(({ id }) => id)).size).toBe(
+      allocations.length,
+    )
+  })
+
+  it('keeps actionable errors for unsupported projects and slot combinations', () => {
+    expect(() => getFixture('unsupported-project', 0, 0, 1)).toThrow(
+      'No E2E fixture configured for Playwright project "unsupported-project", parallelIndex 0, repeatEachIndex 0 (fixture slot 0; 0 slots available)',
+    )
+    expect(() => getFixture('chromium-game-session', 1, 2, 2)).toThrow(
+      'No E2E fixture configured for Playwright project "chromium-game-session", parallelIndex 1, repeatEachIndex 2 (fixture slot 4; 3 slots available)',
     )
   })
 })

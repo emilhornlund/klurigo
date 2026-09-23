@@ -19,14 +19,18 @@ export function getGameSessionFixture(
   const fixtureProject =
     GAME_SESSION_PROJECT_TO_FIXTURE_PROJECT[testInfo.project.name] ??
     testInfo.project.name
-  const fixture =
+  const fixtureSlots =
     E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots[
       fixtureProject as keyof typeof E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots
-    ]?.[testInfo.repeatEachIndex]
+    ]
+  const fixtureIndex =
+    testInfo.parallelIndex * testInfo.project.repeatEach +
+    testInfo.repeatEachIndex
+  const fixture = fixtureSlots?.[fixtureIndex]
 
   if (!fixture) {
     throw new Error(
-      `No E2E fixture configured for Playwright project "${testInfo.project.name}" and repeatEachIndex ${testInfo.repeatEachIndex}`,
+      `No E2E fixture configured for Playwright project "${testInfo.project.name}", parallelIndex ${testInfo.parallelIndex}, repeatEachIndex ${testInfo.repeatEachIndex} (fixture slot ${fixtureIndex}; ${fixtureSlots?.length ?? 0} slots available)`,
     )
   }
 

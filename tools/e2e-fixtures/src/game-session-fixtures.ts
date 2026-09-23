@@ -317,6 +317,8 @@ export const E2E_USERS = {
 export const E2E_PLAINTEXT_PASSWORD = 'Super$ecretPassw0rd123#'
 
 export const E2E_GAME_SESSION_FIXTURE_SLOTS = {
+  // Each slot owns a complete user and quiz set. The Playwright resolver
+  // assigns one deterministic slot to every worker/repeat combination.
   chromium: [E2E_USERS.tester02, E2E_USERS.tester05, E2E_USERS.tester08],
 } as const satisfies Record<string, readonly GameSessionUserFixture[]>
 
