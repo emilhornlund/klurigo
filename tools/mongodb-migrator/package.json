@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@klurigo/common": "1.0.0",
-    "bson": "^7.3.2",
+    "bson": "^7.3.3",
     "commander": "^15.0.0",
     "json-diff": "^1.0.6"
   },
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/json-diff": "^1.0.3",
-    "@types/node": "^24.13.4",
+    "@types/node": "^24.13.6",
     "eslint": "^9.39.4",
     "rimraf": "^6.1.3",
     "ts-node": "^10.9.2",
