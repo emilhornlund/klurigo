@@ -8,6 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiExtraModels,
   ApiOkResponse,
@@ -57,7 +58,7 @@ export class ProfileGameController {
    */
   @Get()
   @ApiOperation({
-    summary: 'Get user-associated games',
+    summary: 'Retrieve associated games',
     description:
       'Retrieves a paginated list of games where the authenticated user has participated.',
   })
@@ -74,6 +75,9 @@ export class ProfileGameController {
     type: Number,
     required: false,
     example: 10,
+  })
+  @ApiBadRequestResponse({
+    description: 'One or more pagination parameters are invalid.',
   })
   @ApiOkResponse({
     description: 'Successfully retrieved the list of associated games.',

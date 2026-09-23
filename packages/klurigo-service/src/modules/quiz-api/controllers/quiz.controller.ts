@@ -12,14 +12,17 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
   getSchemaPath,
@@ -97,7 +100,7 @@ export class QuizController {
       'Creates a new quiz and associates it with the authenticated user.',
   })
   @ApiBody({
-    description: 'Request body for creating a new game.',
+    description: 'Request body for creating a new quiz.',
     schema: {
       oneOf: [
         { $ref: getSchemaPath(QuizClassicRequest) },
@@ -105,12 +108,18 @@ export class QuizController {
       ],
     },
   })
+  @ApiBadRequestResponse({
+    description: 'The quiz payload is invalid.',
+  })
   @ApiCreatedResponse({
     description: 'Successfully created the quiz.',
     type: QuizResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The user token lacks the Quiz authority.',
   })
   @HttpCode(HttpStatus.CREATED)
   public async createQuiz(
@@ -139,12 +148,66 @@ export class QuizController {
     description:
       'Retrieves a paginated list of public quizzes. Supports filtering, sorting, and pagination.',
   })
+  @ApiQuery({
+    name: 'search',
+    description: 'Filter quizzes by a title search term.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'mode',
+    description: 'Filter quizzes by game mode.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'category',
+    description: 'Filter quizzes by category.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'languageCode',
+    description: 'Filter quizzes by language code.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'sort',
+    description: 'Sort results by title, creation time, or update time.',
+    required: false,
+    enum: ['title', 'created', 'updated'],
+  })
+  @ApiQuery({
+    name: 'order',
+    description: 'Sort results in ascending or descending order.',
+    required: false,
+    enum: ['asc', 'desc'],
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Maximum number of quizzes to return per page.',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'offset',
+    description: 'Number of quizzes to skip before returning results.',
+    required: false,
+    type: Number,
+  })
+  @ApiBadRequestResponse({
+    description: 'One or more query parameters are invalid.',
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the paginated list of public quizzes.',
     type: PaginatedQuizResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The user token lacks the required scope or authority.',
   })
   @HttpCode(HttpStatus.OK)
   public async getPublicQuizzes(
@@ -211,13 +274,16 @@ export class QuizController {
   })
   @ApiQuizIdParam()
   @ApiBody({
-    description: 'Request body for creating a new game.',
+    description: 'Request body for updating a quiz.',
     schema: {
       oneOf: [
         { $ref: getSchemaPath(QuizClassicRequest) },
         { $ref: getSchemaPath(QuizZeroToOneHundredRequest) },
       ],
     },
+  })
+  @ApiBadRequestResponse({
+    description: 'The quiz payload is invalid.',
   })
   @ApiOkResponse({
     description: 'Successfully updated the quiz.',
@@ -253,9 +319,8 @@ export class QuizController {
     description: 'Deletes an existing quiz by its unique ID.',
   })
   @ApiQuizIdParam()
-  @ApiOkResponse({
+  @ApiNoContentResponse({
     description: 'Successfully deleted the quiz.',
-    type: QuizResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
@@ -309,7 +374,7 @@ export class QuizController {
     description: 'Unauthorized access to the endpoint.',
   })
   @ApiForbiddenResponse({
-    description: 'The ser does not have access to the quiz.',
+    description: 'The user does not have access to the quiz.',
   })
   @HttpCode(HttpStatus.OK)
   public async findAllQuestion(

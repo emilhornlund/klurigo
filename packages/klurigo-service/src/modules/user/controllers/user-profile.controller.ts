@@ -12,9 +12,11 @@ import {
   Put,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -75,6 +77,9 @@ export class UserProfileController {
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
   })
+  @ApiForbiddenResponse({
+    description: 'The user token lacks the required authority or scope.',
+  })
   @ApiNotFoundResponse({
     description: 'The associated user was not found.',
   })
@@ -101,7 +106,7 @@ export class UserProfileController {
       'Updates the profile associated with the currently authenticated user.',
   })
   @ApiBody({
-    description: 'Payload containing the new new update details for the user.',
+    description: 'Payload containing the updated details for the user.',
     schema: {
       oneOf: [
         { $ref: getSchemaPath(UpdateLocalUserProfileRequest) },
@@ -109,12 +114,18 @@ export class UserProfileController {
       ],
     },
   })
+  @ApiBadRequestResponse({
+    description: 'The user profile payload is invalid.',
+  })
   @ApiOkResponse({
     description: 'Successfully updated the user’s profile.',
     type: UserProfileResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access. The user must be authenticated.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The user token lacks the required authority or scope.',
   })
   @ApiNotFoundResponse({
     description: 'The profile associated with the user was not found.',

@@ -1,10 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
-  ApiOkResponse,
+  ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
@@ -18,7 +17,6 @@ import { CreateUserRequest, CreateUserResponse } from './models'
 /**
  * Controller for user management endpoints.
  */
-@ApiBearerAuth()
 @ApiTags('user')
 @Controller('users')
 export class UserController {
@@ -43,7 +41,7 @@ export class UserController {
     long: { limit: 10, ttl: 1000 * 60 * 60 * 24 }, // 10 requests per 86 400 000 ms (per IP per day)
   })
   @ApiOperation({
-    summary: 'Create new user',
+    summary: 'Create a user',
     description:
       'Registers a new user with email, password, and optional names.',
   })
@@ -51,7 +49,7 @@ export class UserController {
     description: 'Payload for creating a new user.',
     type: CreateUserRequest,
   })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'User successfully created.',
     type: CreateUserResponse,
   })

@@ -72,7 +72,7 @@ export class GameResultController {
    */
   @Get()
   @ApiOperation({
-    summary: 'Get final results of a completed quiz game',
+    summary: 'Retrieve final game results',
     description:
       'Returns performance metrics for players and questions based on the game mode (classic or zero to one hundred). Streak metrics are Classic-only.',
   })

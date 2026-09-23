@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiForbiddenResponse,
   ApiNoContentResponse,
@@ -97,6 +98,11 @@ export class AuthController {
    */
   @Public()
   @Post('/google/exchange')
+  @ApiOperation({
+    summary: 'Exchange a Google authorization code',
+    description:
+      'Exchanges a Google OAuth authorization code and PKCE verifier for access and refresh tokens.',
+  })
   @ApiBody({
     description:
       'Request payload with Google OAuth authorization code and PKCE code verifier.',
@@ -176,6 +182,10 @@ export class AuthController {
     description:
       'Invalidates the provided JWT so it can no longer be used for authentication.',
   })
+  @ApiBody({
+    description: 'Payload containing the JWT to revoke.',
+    type: AuthRevokeRequest,
+  })
   @ApiNoContentResponse({
     description: 'Token successfully revoked.',
   })
@@ -200,10 +210,15 @@ export class AuthController {
    * @throws ForbiddenException if the user is not a local account.
    */
   @Patch('/password')
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Change authenticated user’s password',
     description:
       'Endpoint for authenticated users to change their password by supplying their current password for verification and a new desired password.',
+  })
+  @ApiBody({
+    description: 'Payload containing the current and new passwords.',
+    type: AuthPasswordChangeRequest,
   })
   @ApiNoContentResponse({
     description: 'Password changed successfully.',

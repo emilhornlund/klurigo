@@ -1,7 +1,9 @@
 import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiBody,
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
@@ -59,11 +61,18 @@ export class GameRatingController {
   @Put('/ratings')
   @AuthorizedGame(GameParticipantType.PLAYER)
   @ApiOperation({
-    summary: "Creates or updates the player's quiz rating from a game context.",
+    summary: "Create or update a player's quiz rating",
     description:
       'Creates a new rating for the quiz associated with the specified game, or updates the existing rating made by the current player. Supports both anonymous and authenticated players. Quiz owners cannot rate their own quiz.',
   })
   @ApiGameIdParam()
+  @ApiBody({
+    description: 'Payload containing the rating stars and optional comment.',
+    type: CreateQuizRatingRequest,
+  })
+  @ApiBadRequestResponse({
+    description: 'The rating payload is invalid.',
+  })
   @ApiOkResponse({
     description: 'The created or updated quiz rating.',
     type: QuizRatingResponse,
