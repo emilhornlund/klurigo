@@ -4,6 +4,7 @@ exports[`PinImage > matches snapshot 1`] = `
 <div>
   <div
     class="overlay"
+    data-testid="pin-overlay"
     style="cursor: grab;"
   >
     <div

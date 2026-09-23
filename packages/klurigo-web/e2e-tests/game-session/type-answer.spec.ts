@@ -182,7 +182,9 @@ test.describe('Game session: Classic Type Answer', () => {
     await test.step('Verify the host result state reflects the text answer', async () => {
       const questionResults = page.getByTestId('question-results')
       await expect(questionResults).toBeVisible()
-      await expect(questionResults.locator(':scope > div')).toHaveCount(1)
+      await expect(
+        questionResults.getByTestId('question-results-group'),
+      ).toHaveCount(1)
       await expect(questionResults).toContainText(answer.toLowerCase())
       await expect(questionResults).toContainText('1')
     })

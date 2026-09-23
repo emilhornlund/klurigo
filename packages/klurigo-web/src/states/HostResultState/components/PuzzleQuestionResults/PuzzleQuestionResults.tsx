@@ -43,7 +43,9 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
   )
 
   return (
-    <div className={styles.puzzleQuestionResults}>
+    <div
+      className={styles.puzzleQuestionResults}
+      data-testid="puzzle-question-results">
       <div className={styles.bars}>
         <div className={styles.bar}>
           <div
@@ -54,7 +56,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           />
           <div className={classNames(styles.inner, styles.green)}>
             <div className={styles.spacer} />
-            <div className={styles.footer}>
+            <div className={styles.footer} data-testid="puzzle-correct-count">
               <Typography variant="body" align="center" color="inverse">
                 {correct} <FontAwesomeIcon icon={faCheck} />
               </Typography>
@@ -70,7 +72,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
           />
           <div className={classNames(styles.inner, styles.red)}>
             <div className={styles.spacer} />
-            <div className={styles.footer}>
+            <div className={styles.footer} data-testid="puzzle-incorrect-count">
               <Typography align="center" color="inverse">
                 {incorrect} <FontAwesomeIcon icon={faXmark} />
               </Typography>
@@ -87,6 +89,7 @@ const PuzzleQuestionResults: FC<PuzzleQuestionResultsProps> = ({ results }) => {
             iconColor: colors.colorStatusSuccess,
           }))}
           disabled
+          itemTestId="puzzle-result-value"
         />
       </div>
     </div>

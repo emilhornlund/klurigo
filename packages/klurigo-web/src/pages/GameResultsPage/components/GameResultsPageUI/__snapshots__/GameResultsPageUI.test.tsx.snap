@@ -107,6 +107,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -147,6 +148,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -221,6 +223,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div
@@ -1151,6 +1154,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -1191,6 +1195,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -1265,6 +1270,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div
@@ -2156,6 +2162,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -2196,6 +2203,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -2270,6 +2278,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div
@@ -4306,6 +4315,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -4346,6 +4356,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -4420,6 +4431,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div
@@ -5338,6 +5350,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -5378,6 +5391,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -5452,6 +5466,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div
@@ -7149,6 +7164,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   >
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 1;"
                     >
                       <div
@@ -7189,6 +7205,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 2;"
                     >
                       <div
@@ -7263,6 +7280,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-testid="podium-column"
                       style="--position-index: 0;"
                     >
                       <div

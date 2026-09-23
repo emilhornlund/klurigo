@@ -226,14 +226,16 @@ test.describe('Game session: Classic Puzzle', () => {
     })
 
     await test.step('Verify the host Puzzle result count and target ordering', async () => {
-      const puzzleResults = page.locator('[class*="puzzleQuestionResults"]')
+      const puzzleResults = page.getByTestId('puzzle-question-results')
       await expect(puzzleResults).toBeVisible()
-      await expect(puzzleResults.locator('[class*="green"]')).toContainText('1')
-      await expect(puzzleResults.locator('[class*="red"]')).toContainText('1')
+      await expect(
+        puzzleResults.getByTestId('puzzle-correct-count'),
+      ).toContainText('1')
+      await expect(
+        puzzleResults.getByTestId('puzzle-incorrect-count'),
+      ).toContainText('1')
 
-      const resultValues = puzzleResults.locator(
-        '[class*="sortableTable"] [class*="item"]',
-      )
+      const resultValues = puzzleResults.getByTestId('puzzle-result-value')
       await expect(resultValues).toHaveCount(question.values.length)
       expect(
         (await resultValues.allTextContents()).map((value) => value.trim()),
@@ -302,13 +304,11 @@ test.describe('Game session: Classic Puzzle', () => {
         page.getByText(incorrectPlayerNickname, { exact: true }),
       ).toBeVisible()
       const correctPlayerColumn = page
-        .getByText(correctPlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: correctPlayerNickname })
       const incorrectPlayerColumn = page
-        .getByText(incorrectPlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: incorrectPlayerNickname })
       await expect(
         correctPlayerColumn.getByText('1', { exact: true }),
       ).toBeVisible()

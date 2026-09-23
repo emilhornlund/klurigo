@@ -40,6 +40,7 @@ const Pin: FC<PinProps> = ({
     {toleranceSizePx && (
       <div
         className={styles.tolerance}
+        data-testid="pin-tolerance"
         style={{
           width: `${toleranceSizePx.width}px`,
           height: `${toleranceSizePx.height}px`,

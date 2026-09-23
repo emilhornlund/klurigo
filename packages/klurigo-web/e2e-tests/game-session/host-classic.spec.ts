@@ -446,7 +446,7 @@ test.describe('Game session: host UI with simulated players', () => {
       const questionResults = page.getByTestId('question-results')
       await expect(questionResults).toBeVisible()
 
-      const resultGroups = questionResults.locator(':scope > div')
+      const resultGroups = questionResults.getByTestId('question-results-group')
       await expect(resultGroups).toHaveCount(2)
       await expect(resultGroups.nth(0)).toContainText(correctAnswer)
       await expect(resultGroups.nth(0)).toContainText('1')
@@ -503,13 +503,11 @@ test.describe('Game session: host UI with simulated players', () => {
       await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
 
       const correctPlayerColumn = page
-        .getByText(correctPlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: correctPlayerNickname })
       const incorrectPlayerColumn = page
-        .getByText(incorrectPlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: incorrectPlayerNickname })
 
       await expect(
         correctPlayerColumn.getByText('1', { exact: true }),

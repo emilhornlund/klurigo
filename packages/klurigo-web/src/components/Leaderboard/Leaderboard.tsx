@@ -61,6 +61,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
                 includePodium ? getPodiumClassName(position) : undefined,
                 isTopPosition ? styles.topPosition : undefined,
               )}
+              data-testid="leaderboard-row"
               style={rowStyle}>
               <Surface className={classNames(styles.column, styles.position)}>
                 {position}

@@ -456,18 +456,20 @@ async function expectResultState(
       question.imageURL,
     )
     await expect(pinResults.locator('svg')).toHaveCount(2)
-    await expect(pinResults.locator('[class*="tolerance"]')).toHaveCount(1)
+    await expect(pinResults.getByTestId('pin-tolerance')).toHaveCount(1)
     return
   }
 
   if (question.type === QuestionType.Puzzle) {
-    const puzzleResults = page.locator('[class*="puzzleQuestionResults"]')
+    const puzzleResults = page.getByTestId('puzzle-question-results')
     await expect(puzzleResults).toBeVisible()
-    await expect(puzzleResults.locator('[class*="green"]')).toContainText('1')
-    await expect(puzzleResults.locator('[class*="red"]')).toContainText('0')
-    const resultValues = puzzleResults.locator(
-      '[class*="sortableTable"] [class*="item"]',
-    )
+    await expect(
+      puzzleResults.getByTestId('puzzle-correct-count'),
+    ).toContainText('1')
+    await expect(
+      puzzleResults.getByTestId('puzzle-incorrect-count'),
+    ).toContainText('0')
+    const resultValues = puzzleResults.getByTestId('puzzle-result-value')
     await expect(resultValues).toHaveCount(question.values.length)
     expect(
       (await resultValues.allTextContents()).map((value) => value.trim()),

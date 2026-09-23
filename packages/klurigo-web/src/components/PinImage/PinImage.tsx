@@ -263,6 +263,7 @@ const PinImage: FC<PinImageProps> = ({
       <div
         ref={setOverlayNode}
         className={styles.overlay}
+        data-testid="pin-overlay"
         style={{
           cursor:
             disabled || !interactivePinPosition

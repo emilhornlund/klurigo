@@ -40,6 +40,7 @@ const ResultChip: FC<ResultChipProps> = ({
       styles.chip,
       correct ? styles.correct : styles.incorrect,
     )}
+    data-testid="result-chip"
     style={
       index !== undefined
         ? ({ '--index': index } as React.CSSProperties & { '--index': number })
@@ -203,10 +204,14 @@ const QuestionResults: FC<QuestionResultsProps> = ({
   return (
     <div className={styles.questionResults} data-testid="question-results">
       {correctElements?.length > 0 && (
-        <div className={styles.chips}>{correctElements}</div>
+        <div className={styles.chips} data-testid="question-results-group">
+          {correctElements}
+        </div>
       )}
       {incorrectElements?.length > 0 && (
-        <div className={styles.chips}>{incorrectElements}</div>
+        <div className={styles.chips} data-testid="question-results-group">
+          {incorrectElements}
+        </div>
       )}
     </div>
   )
