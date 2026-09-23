@@ -145,10 +145,11 @@ from GameSession tests:
 
 - `chromium` runs ordinary tests and excludes
   `**/game-session/**/*.spec.ts`.
-- `chromium-game-session` includes the GameSession pattern, uses one worker, a
+- `chromium-game-session` includes the GameSession pattern, uses three workers, a
   15-second expect timeout, and a 90-second test timeout.
 - Ordinary tests are fully parallel; GameSession tests use the dedicated
-  single-worker projects because they exercise shared real-time state.
+  project because they exercise real-time state and require isolated fixture
+  slots.
 
 ## Docker Images
 

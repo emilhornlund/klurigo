@@ -9,8 +9,6 @@ import { startHostGame } from '../support/browser/start-host-game'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
-test.describe.configure({ mode: 'serial' })
-
 test.describe('Game session: Classic Pin', () => {
   test('completes a Classic Pin game with one simulated player', async ({
     page,

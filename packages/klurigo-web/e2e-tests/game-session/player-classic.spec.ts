@@ -8,8 +8,6 @@ import { interruptActiveGameEventStream } from '../support/browser/interrupt-act
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
-test.describe.configure({ mode: 'serial' })
-
 test.describe('Game session: player UI with simulated host', () => {
   test('completes a Classic game with one real player using a simulated host', async ({
     page,

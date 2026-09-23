@@ -55,7 +55,7 @@ describe('frontend Playwright configuration', () => {
       testMatch: GAME_SESSION_TEST_MATCH,
       expect: { timeout: 15_000 },
       timeout: 90_000,
-      workers: 1,
+      workers: 3,
     })
   })
 
