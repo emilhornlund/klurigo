@@ -77,6 +77,47 @@ describe('GameSessionEventClient', () => {
     client.close()
   })
 
+  it('retains queued events independently from bounded diagnostic history', async () => {
+    vi.useFakeTimers()
+    const { client, emit } = await createConnectedClient()
+
+    await emit(frame(event(GameEventType.GameLoading)))
+    for (let index = 0; index < 50; index += 1) {
+      await emit(frame(lobbyPlayerEvent(`Later-${index}`)))
+    }
+
+    await expect(
+      client.waitForEvent(GameEventType.GameLoading),
+    ).resolves.toEqual(event(GameEventType.GameLoading))
+
+    const pending = client.waitForEvent(
+      GameEventType.GameBeginHost,
+      undefined,
+      { timeout: 10 },
+    )
+    const timeoutError = pending.then(
+      () => {
+        throw new Error('Expected the event wait to time out')
+      },
+      (caught: unknown) => {
+        if (!(caught instanceof Error)) throw caught
+        return caught
+      },
+    )
+    await vi.advanceTimersByTimeAsync(10)
+    const error = await timeoutError
+    const recentEvents = Array.from(
+      { length: 50 },
+      () => GameEventType.GameLobbyPlayer,
+    ).join(', ')
+
+    expect(error.message).toContain(
+      `Recently received non-heartbeat event types: ${recentEvents}. `,
+    )
+    expect(error.message).not.toContain(GameEventType.GameLoading)
+    client.close()
+  })
+
   it('ignores heartbeat events', async () => {
     vi.useFakeTimers()
     const { client, emit } = await createConnectedClient()
@@ -158,13 +199,17 @@ describe('GameSessionEventClient', () => {
   })
 
   it('rejects pending waits and clears state on explicit close', async () => {
-    const { client } = await createConnectedClient()
+    const { client, emit } = await createConnectedClient()
+    await emit(frame(event(GameEventType.GameBeginHost)))
     const pending = client.waitForEvent(GameEventType.GameLoading)
 
     client.close()
     client.close()
 
     await expect(pending).rejects.toThrow('Game test client closed')
+    expect(
+      (client as unknown as { queuedEvents: unknown[] }).queuedEvents,
+    ).toHaveLength(0)
     expect(() => client.waitForEvent(GameEventType.GameLoading)).toThrow(
       'Game test client is closed',
     )

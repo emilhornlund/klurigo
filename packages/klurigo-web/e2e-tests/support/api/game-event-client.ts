@@ -279,9 +279,6 @@ export class GameSessionEventClient {
     )
     if (waiterIndex === -1) {
       this.queuedEvents.push(event)
-      if (this.queuedEvents.length > MAX_EVENT_HISTORY_LENGTH) {
-        this.queuedEvents.shift()
-      }
       return
     }
 
