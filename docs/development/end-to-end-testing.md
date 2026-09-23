@@ -71,19 +71,25 @@ are the current isolation behavior; do not merge GameSession tests back into
 the fully parallel ordinary project without changing the underlying
 constraints.
 
-GameSession fixture lookup maps both Chromium projects to the `chromium` slot
-and selects by `testInfo.repeatEachIndex`:
+GameSession fixture lookup maps both Chromium projects to the `chromium` slot.
+Each slot owns a complete seeded user and quiz set. The resolver assigns slots
+using `testInfo.parallelIndex * testInfo.project.repeatEach +
+testInfo.repeatEachIndex`, so concurrent workers and repeated runs have
+different mutable fixture data:
 
 - Chromium projects use the three supported `chromium` entries: `tester02`,
   `tester05`, and `tester08`.
 
-The fixture resolver fails when a project and repeat index do not have a
-configured fixture. Stateful tests must create their own game data and must
-not rely on another test's mutations. The shared fixture manifest is seeded
+The fixture resolver fails when a project and worker/repeat combination does
+not have a configured fixture, rather than reusing another slot. With the
+current three slots, one worker can run three repeats or three workers can run
+one repeat; larger combinations require more seeded slots. Stateful tests must
+create their own game data and must not rely on another test's mutations. The
+shared fixture manifest is seeded
 before the run and is the source for the deterministic users, passwords,
 quizzes, and question expectations used by the browser tests. Each GameSession
 test reads its selected user's quiz and question data from the fixture returned
-for the current project and `testInfo.repeatEachIndex`; it does not assume the
+for the current project, worker, and repeat; it does not assume the
 `tester02` slot. The GameSession directory contains 11 logical Playwright tests
 and covers the six supported
 `QuestionType` values as follows:
