@@ -5,7 +5,7 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
   class="surface main"
 >
   <div
-    class="questions"
+    class="leading"
   >
     <span
       data-testid="fa-icon"
@@ -21,7 +21,7 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
     </p>
   </div>
   <div
-    class="gamePIN"
+    class="center"
   >
     <p
       class="body2"
@@ -36,7 +36,7 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
     </p>
   </div>
   <div
-    class="actions"
+    class="trailing"
   >
     <div>
       <button
@@ -70,7 +70,7 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
   class="surface main"
 >
   <div
-    class="questions"
+    class="leading"
   >
     <span
       data-testid="fa-icon"
@@ -86,7 +86,7 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
     </p>
   </div>
   <div
-    class="gamePIN"
+    class="center"
   >
     <p
       class="body2"
@@ -101,7 +101,7 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
     </p>
   </div>
   <div
-    class="actions"
+    class="trailing"
   >
     <div>
       <button
@@ -157,7 +157,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
   class="surface main"
 >
   <div
-    class="questions"
+    class="leading"
   >
     <span
       data-testid="fa-icon"
@@ -173,7 +173,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
     </p>
   </div>
   <div
-    class="gamePIN"
+    class="center"
   >
     <p
       class="body2"
@@ -188,7 +188,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
     </p>
   </div>
   <div
-    class="actions"
+    class="trailing"
   >
     <div>
       <button
@@ -259,7 +259,7 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
   class="surface main"
 >
   <div
-    class="questions"
+    class="leading"
   >
     <span
       data-testid="fa-icon"
@@ -275,7 +275,7 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
     </p>
   </div>
   <div
-    class="gamePIN"
+    class="center"
   >
     <p
       class="body2"
@@ -290,7 +290,7 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
     </p>
   </div>
   <div
-    class="actions"
+    class="trailing"
   >
     <div>
       <button

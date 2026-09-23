@@ -112,11 +112,11 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -136,7 +136,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -159,7 +159,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div

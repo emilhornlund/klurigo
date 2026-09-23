@@ -16,13 +16,12 @@ import {
   Menu,
   MenuItem,
   MenuSeparator,
-  Surface,
   Typography,
 } from '../../../components'
 import { useGameContext } from '../../../context/game'
+import GameFooterShell from '../GameFooterShell'
 
 import { PlayerManagementModal } from './components'
-import styles from './HostGameFooter.module.scss'
 
 export interface HostGameFooterProps {
   gamePIN: string
@@ -48,14 +47,16 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
     useState<boolean>(false)
 
   return (
-    <Surface className={styles.main}>
-      <div className={styles.questions}>
-        <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
-        <Typography variant="body2" color="inverse" noOpacity bold>
-          {currentQuestion} / {totalQuestions}
-        </Typography>
-      </div>
-      <div className={styles.gamePIN}>
+    <GameFooterShell
+      leading={
+        <>
+          <FontAwesomeIcon icon={faCircleQuestion} />
+          <Typography variant="body2" color="inverse" noOpacity bold>
+            {currentQuestion} / {totalQuestions}
+          </Typography>
+        </>
+      }
+      center={
         <Typography
           variant="body2"
           align="center"
@@ -64,8 +65,8 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
           bold>
           <FontAwesomeIcon icon={faLockOpen} /> {gamePIN}
         </Typography>
-      </div>
-      <div className={styles.actions}>
+      }
+      trailing={
         <div ref={settingsMenuButtonRef}>
           <Button
             id="settings-button"
@@ -99,7 +100,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
             </MenuItem>
           </Menu>
         </div>
-      </div>
+      }>
       <PlayerManagementModal
         open={playerManagementModalOpen}
         onClose={() => setPlayerManagementModalOpen(false)}
@@ -116,7 +117,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
         onClose={() => setShowConfirmQuitGameDialog(false)}
         destructive
       />
-    </Surface>
+    </GameFooterShell>
   )
 }
 
