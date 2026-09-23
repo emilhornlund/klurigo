@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 import { loadEnv } from 'vite'
 
-import { validateGameSessionFixtureCapacity } from './e2e-tests/support/fixtures/game-session-fixtures'
+import { validateGameSessionFixtureCapacity } from './e2e-tests/support/fixtures/game-session-fixture-capacity'
 
 const env = loadEnv('development', process.cwd(), '')
 const SERVER_PORT = env.SERVER_PORT || '3000'

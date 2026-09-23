@@ -5,10 +5,8 @@ import {
 import type { TestInfo } from '@playwright/test'
 import { describe, expect, it } from 'vitest'
 
-import {
-  getGameSessionFixture,
-  validateGameSessionFixtureCapacity,
-} from '../../e2e-tests/support/fixtures/game-session-fixtures'
+import { validateGameSessionFixtureCapacity } from '../../e2e-tests/support/fixtures/game-session-fixture-capacity'
+import { getGameSessionFixture } from '../../e2e-tests/support/fixtures/game-session-fixtures'
 import playwrightConfig from '../../playwright.config'
 
 const GAME_SESSION_TEST_MATCH = '**/game-session/**/*.spec.ts'

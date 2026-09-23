@@ -13,27 +13,6 @@ const GAME_SESSION_PROJECT_TO_FIXTURE_PROJECT: Record<string, string> = {
   'chromium-game-session': 'chromium',
 }
 
-export type GameSessionFixtureCapacity = {
-  workerCount: number
-  repeatCount: number
-}
-
-export function validateGameSessionFixtureCapacity({
-  workerCount,
-  repeatCount,
-}: GameSessionFixtureCapacity): void {
-  const fixtureProject = 'chromium'
-  const availableFixtureSlots =
-    E2E_FIXTURE_MANIFEST.gameSessionFixtureSlots[fixtureProject].length
-  const requiredFixtureSlots = workerCount * repeatCount
-
-  if (requiredFixtureSlots > availableFixtureSlots) {
-    throw new Error(
-      `GameSession fixture capacity is insufficient: configured GameSession worker count: ${workerCount}; configured repeat count: ${repeatCount}; required fixture-slot count: ${requiredFixtureSlots}; available fixture-slot count: ${availableFixtureSlots}.`,
-    )
-  }
-}
-
 export function getGameSessionFixture(
   testInfo: TestInfo,
 ): GameSessionUserFixture {
