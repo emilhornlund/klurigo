@@ -51,6 +51,7 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
   >
     <div
       class="answerPin"
+      data-testid="pin-answer"
     >
       <div
         class="interactive"

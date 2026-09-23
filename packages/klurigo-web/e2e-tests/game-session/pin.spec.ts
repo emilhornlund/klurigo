@@ -194,7 +194,7 @@ test.describe('Game session: Classic Pin', () => {
         question.imageURL,
       )
       await expect(pinResults.locator('svg')).toHaveCount(2)
-      await expect(pinResults.locator('[class*="tolerance"]')).toHaveCount(1)
+      await expect(pinResults.getByTestId('pin-tolerance')).toHaveCount(1)
     })
 
     await test.step('Progress to and verify the final podium', async () => {
@@ -326,7 +326,7 @@ test.describe('Game session: Classic Pin', () => {
       await expect(submitButton).toBeVisible()
 
       const geometry = await submitButton.evaluate((element) => {
-        const answer = element.closest('[class*="answerPin"]')
+        const answer = element.closest('[data-testid="pin-answer"]')
         if (!answer) {
           throw new Error('Submit button is outside the Pin answer')
         }
@@ -359,9 +359,7 @@ test.describe('Game session: Classic Pin', () => {
     })
 
     await test.step('Move the Pin and submit through the player UI', async () => {
-      const pinOverlay = page
-        .locator('[class*="answerPin"] [class*="overlay"]')
-        .last()
+      const pinOverlay = page.getByTestId('pin-overlay')
       const overlayBox = await pinOverlay.boundingBox()
       if (!overlayBox) {
         throw new Error('Pin overlay has no usable geometry')

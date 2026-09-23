@@ -46,6 +46,7 @@ exports[`Pin > should match snapshot with tolerance area 1`] = `
   >
     <div
       class="tolerance"
+      data-testid="pin-tolerance"
       style="width: 120px; height: 90px;"
     />
     <div

@@ -74,9 +74,11 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 True
@@ -105,9 +107,11 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 False
@@ -318,9 +322,11 @@ exports[`HostResultState > should render HostResultState with question type mult
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 Vincent van Gogh
@@ -366,9 +372,11 @@ exports[`HostResultState > should render HostResultState with question type mult
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 Claude Monet
@@ -413,6 +421,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 2;"
               >
                 Pablo Picasso
@@ -457,6 +466,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 3;"
               >
                 Leonardo da Vinci
@@ -689,9 +699,11 @@ exports[`HostResultState > should render HostResultState with question type mult
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 Vincent van Gogh
@@ -737,9 +749,11 @@ exports[`HostResultState > should render HostResultState with question type mult
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 Leonardo da Vinci
@@ -784,6 +798,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 2;"
               >
                 Rembrandt
@@ -828,6 +843,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 3;"
               >
                 Pablo Picasso
@@ -872,6 +888,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 4;"
               >
                 Claude Monet
@@ -916,6 +933,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 5;"
               >
                 Michelangelo
@@ -1148,9 +1166,11 @@ exports[`HostResultState > should render HostResultState with question type mult
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 Vincent van Gogh
@@ -1196,9 +1216,11 @@ exports[`HostResultState > should render HostResultState with question type mult
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 Pablo Picasso
@@ -1631,6 +1653,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
           </h1>
           <div
             class="puzzleQuestionResults"
+            data-testid="puzzle-question-results"
           >
             <div
               class="bars"
@@ -1650,6 +1673,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   />
                   <div
                     class="footer"
+                    data-testid="puzzle-correct-count"
                   >
                     <p
                       class="typography body alignCenter widthFull colorInverse"
@@ -1688,6 +1712,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   />
                   <div
                     class="footer"
+                    data-testid="puzzle-incorrect-count"
                   >
                     <p
                       class="typography body alignCenter widthFull colorInverse"
@@ -1723,6 +1748,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   aria-disabled="false"
                   aria-roledescription="sortable"
                   class="item"
+                  data-testid="puzzle-result-value"
                   role="button"
                   tabindex="0"
                 >
@@ -1751,6 +1777,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   aria-disabled="false"
                   aria-roledescription="sortable"
                   class="item"
+                  data-testid="puzzle-result-value"
                   role="button"
                   tabindex="0"
                 >
@@ -1779,6 +1806,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   aria-disabled="false"
                   aria-roledescription="sortable"
                   class="item"
+                  data-testid="puzzle-result-value"
                   role="button"
                   tabindex="0"
                 >
@@ -1807,6 +1835,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
                   aria-disabled="false"
                   aria-roledescription="sortable"
                   class="item"
+                  data-testid="puzzle-result-value"
                   role="button"
                   tabindex="0"
                 >
@@ -2038,9 +2067,11 @@ exports[`HostResultState > should render HostResultState with question type rang
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 71
@@ -2069,9 +2100,11 @@ exports[`HostResultState > should render HostResultState with question type rang
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 59
@@ -2116,6 +2149,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 2;"
               >
                 61
@@ -2160,6 +2194,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 3;"
               >
                 64
@@ -2204,6 +2239,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 4;"
               >
                 65
@@ -2248,6 +2284,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 5;"
               >
                 72
@@ -2292,6 +2329,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 6;"
               >
                 73
@@ -2336,6 +2374,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 7;"
               >
                 79
@@ -2380,6 +2419,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 8;"
               >
                 83
@@ -2612,9 +2652,11 @@ exports[`HostResultState > should render HostResultState with question type true
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 True
@@ -2643,9 +2685,11 @@ exports[`HostResultState > should render HostResultState with question type true
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 False
@@ -2878,9 +2922,11 @@ exports[`HostResultState > should render HostResultState with question type type
           >
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip correct"
+                data-testid="result-chip"
                 style="--index: 0;"
               >
                 leonardo da vinci
@@ -2926,9 +2972,11 @@ exports[`HostResultState > should render HostResultState with question type type
             </div>
             <div
               class="chips"
+              data-testid="question-results-group"
             >
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 1;"
               >
                 leonardo
@@ -2973,6 +3021,7 @@ exports[`HostResultState > should render HostResultState with question type type
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 2;"
               >
                 picasso
@@ -3017,6 +3066,7 @@ exports[`HostResultState > should render HostResultState with question type type
               </div>
               <div
                 class="chip incorrect"
+                data-testid="result-chip"
                 style="--index: 3;"
               >
                 rembrandt

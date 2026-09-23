@@ -221,13 +221,11 @@ test.describe('Game session: Classic late joining', () => {
       await expect(page.getByText('Leaderboard', { exact: true })).toBeVisible()
 
       const playerAColumn = page
-        .getByText(playerANickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('leaderboard-row')
+        .filter({ hasText: playerANickname })
       const playerBColumn = page
-        .getByText(playerBNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('leaderboard-row')
+        .filter({ hasText: playerBNickname })
 
       await expect(playerAColumn.getByText('1', { exact: true })).toBeVisible()
       await expect(playerBColumn.getByText('2', { exact: true })).toBeVisible()
@@ -358,15 +356,11 @@ test.describe('Game session: Classic late joining', () => {
       ).toBeVisible()
 
       const playerAColumn = page
-        .getByText(playerANickname, { exact: true })
-        .last()
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: playerANickname })
       const playerBColumn = page
-        .getByText(playerBNickname, { exact: true })
-        .last()
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: playerBNickname })
 
       await expect(playerAColumn.getByText('1', { exact: true })).toBeVisible()
       await expect(playerBColumn.getByText('2', { exact: true })).toBeVisible()

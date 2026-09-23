@@ -39,12 +39,14 @@ export type SortableTableProps = {
   values?: SortableTableValue[]
   disabled?: boolean
   onChange?: (values: SortableTableValue[]) => void
+  itemTestId?: string
 }
 
 type SortableItemProps = {
   id: string
   disabled?: boolean
   dropAnimation?: string | null
+  itemTestId?: string
 } & Pick<SortableTableValue, 'value' | 'icon' | 'iconColor'>
 
 const SortableItem: FC<SortableItemProps> = ({
@@ -54,6 +56,7 @@ const SortableItem: FC<SortableItemProps> = ({
   value,
   icon,
   iconColor = colors.colorTextDefault,
+  itemTestId,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })
@@ -72,6 +75,7 @@ const SortableItem: FC<SortableItemProps> = ({
         dropAnimation === id ? styles.dropSuccess : undefined,
       )}
       style={style}
+      data-testid={itemTestId}
       {...attributes}
       {...listeners}>
       <div className={styles.value}>{value}</div>
@@ -98,6 +102,7 @@ const SortableTable: FC<SortableTableProps> = ({
   values = [],
   disabled = false,
   onChange = () => undefined,
+  itemTestId,
 }) => {
   const [internalValues, setInternalValues] = useState(values)
   const [dropAnimation, setDropAnimation] = useState<string | null>(null)
@@ -158,6 +163,7 @@ const SortableTable: FC<SortableTableProps> = ({
               {...value}
               disabled={disabled}
               dropAnimation={dropAnimation}
+              itemTestId={itemTestId}
               key={value.id}
             />
           ))}

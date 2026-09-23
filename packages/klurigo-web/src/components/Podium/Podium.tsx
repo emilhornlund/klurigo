@@ -38,6 +38,7 @@ const Stack: FC<StackProps> = ({
 }) => (
   <div
     className={styles.column}
+    data-testid="podium-column"
     style={{ '--position-index': animationIndex } as CSSProperties}>
     {[...Array(position - 1).keys()].map((key) => (
       <div key={key} className={styles.spacer} />

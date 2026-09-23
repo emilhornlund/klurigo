@@ -38,14 +38,14 @@ const AnswerPin: FC<AnswerPinProps> = ({
 
   if (!interactive && !submittedAnswer) {
     return (
-      <div className={styles.answerPin}>
+      <div className={styles.answerPin} data-testid="pin-answer">
         <ResponsiveImage imageURL={imageURL} />
       </div>
     )
   }
 
   return (
-    <div className={styles.answerPin}>
+    <div className={styles.answerPin} data-testid="pin-answer">
       <div className={styles.interactive}>
         <PinImage
           value={position}

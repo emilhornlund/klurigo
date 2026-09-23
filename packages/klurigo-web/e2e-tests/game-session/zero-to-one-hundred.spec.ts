@@ -216,8 +216,10 @@ test.describe('Game session: Zero to One Hundred', () => {
     await test.step('Verify the host result state reflects both answers', async () => {
       const questionResults = page.getByTestId('question-results')
       await expect(questionResults).toBeVisible()
-      await expect(questionResults.locator(':scope > div')).toHaveCount(1)
-      await expect(questionResults.locator(':scope > div > div')).toHaveCount(2)
+      await expect(
+        questionResults.getByTestId('question-results-group'),
+      ).toHaveCount(1)
+      await expect(questionResults.getByTestId('result-chip')).toHaveCount(2)
       await expect(questionResults).toContainText(`${exactAnswer}`)
       await expect(questionResults).toContainText(`${approximateAnswer}`)
     })
@@ -274,13 +276,11 @@ test.describe('Game session: Zero to One Hundred', () => {
       await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
 
       const precisePlayerColumn = page
-        .getByText(precisePlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: precisePlayerNickname })
       const approximatePlayerColumn = page
-        .getByText(approximatePlayerNickname, { exact: true })
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: approximatePlayerNickname })
 
       await expect(
         precisePlayerColumn.getByText('1', { exact: true }),
@@ -656,15 +656,11 @@ test.describe('Game session: Zero to One Hundred', () => {
       ).toBeVisible()
 
       const playerAColumn = page
-        .getByText(playerANickname, { exact: true })
-        .last()
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: playerANickname })
       const playerBColumn = page
-        .getByText(playerBNickname, { exact: true })
-        .last()
-        .locator('..')
-        .locator('..')
+        .getByTestId('podium-column')
+        .filter({ hasText: playerBNickname })
 
       await expect(playerAColumn.getByText('1', { exact: true })).toBeVisible()
       await expect(playerBColumn.getByText('2', { exact: true })).toBeVisible()

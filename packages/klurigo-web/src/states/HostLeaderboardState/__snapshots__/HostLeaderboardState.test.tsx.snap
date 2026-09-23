@@ -73,6 +73,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
           >
             <div
               class="surface row gold topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 0;"
             >
               <div
@@ -99,6 +100,7 @@ exports[`HostLeaderboardState > clicks Next and calls completeTask 1`] = `
             </div>
             <div
               class="surface row silver topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 1;"
             >
               <div
@@ -281,6 +283,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
           >
             <div
               class="surface row gold topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 0;"
             >
               <div
@@ -307,6 +310,7 @@ exports[`HostLeaderboardState > clicks Next when completeTask is undefined 1`] =
             </div>
             <div
               class="surface row silver topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 1;"
             >
               <div
@@ -497,6 +501,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
           >
             <div
               class="surface row gold topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 0;"
             >
               <div
@@ -523,6 +528,7 @@ exports[`HostLeaderboardState > renders subtitle and leaderboard entries 1`] = `
             </div>
             <div
               class="surface row silver topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 1;"
             >
               <div
@@ -713,6 +719,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
           >
             <div
               class="surface row gold topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 0;"
             >
               <div
@@ -739,6 +746,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             </div>
             <div
               class="surface row silver topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 1;"
             >
               <div
@@ -765,6 +773,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             </div>
             <div
               class="surface row bronze topPosition"
+              data-testid="leaderboard-row"
               style="--row-index: 2;"
             >
               <div
@@ -791,6 +800,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             </div>
             <div
               class="surface row"
+              data-testid="leaderboard-row"
               style="--row-index: 3;"
             >
               <div
@@ -817,6 +827,7 @@ exports[`HostLeaderboardState > should render HostLeaderboardState 1`] = `
             </div>
             <div
               class="surface row"
+              data-testid="leaderboard-row"
               style="--row-index: 4;"
             >
               <div
