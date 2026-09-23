@@ -5,6 +5,7 @@ import {
 import type { TestInfo } from '@playwright/test'
 import { describe, expect, it } from 'vitest'
 
+import { validateGameSessionFixtureCapacity } from '../../e2e-tests/support/fixtures/game-session-fixture-capacity'
 import { getGameSessionFixture } from '../../e2e-tests/support/fixtures/game-session-fixtures'
 import playwrightConfig from '../../playwright.config'
 
@@ -56,7 +57,37 @@ describe('frontend Playwright configuration', () => {
       expect: { timeout: 15_000 },
       timeout: 90_000,
       workers: 3,
+      repeatEach: 1,
     })
+  })
+
+  it('supports the configured three-worker, single-repeat capacity', () => {
+    expect(() =>
+      validateGameSessionFixtureCapacity({
+        workerCount: 3,
+        repeatCount: 1,
+      }),
+    ).not.toThrow()
+  })
+
+  it('supports one worker with three repeats', () => {
+    expect(() =>
+      validateGameSessionFixtureCapacity({
+        workerCount: 1,
+        repeatCount: 3,
+      }),
+    ).not.toThrow()
+  })
+
+  it('rejects worker and repeat combinations above fixture capacity', () => {
+    expect(() =>
+      validateGameSessionFixtureCapacity({
+        workerCount: 3,
+        repeatCount: 3,
+      }),
+    ).toThrow(
+      'GameSession fixture capacity is insufficient: configured GameSession worker count: 3; configured repeat count: 3; required fixture-slot count: 9; available fixture-slot count: 3.',
+    )
   })
 
   it('resolves every configured repeatEachIndex for a single Chromium worker', () => {

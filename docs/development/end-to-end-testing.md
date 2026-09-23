@@ -62,6 +62,7 @@ these Chromium-only projects:
 - `chromium` runs non-GameSession tests with Desktop Chrome.
 - `chromium-game-session` runs GameSession tests with Desktop Chrome, a
   15-second expect timeout, a 90-second test timeout, and three workers.
+  It is configured with one repeat.
 
 The ordinary project excludes `**/game-session/**/*.spec.ts`; the dedicated
 GameSession project includes that pattern. Each GameSession test creates its
@@ -81,11 +82,16 @@ different mutable fixture data:
   `tester05`, and `tester08`.
 
 The fixture resolver fails when a project and worker/repeat combination does
-not have a configured fixture, rather than reusing another slot. With the
-current three slots, one worker can run three repeats or three workers can run
-one repeat; larger combinations require more seeded slots. Stateful tests must
-create their own game data and must not rely on another test's mutations. The
-shared fixture manifest is seeded
+not have a configured fixture, rather than reusing another slot. The required
+fixture capacity is the number of isolated worker/repeat combinations:
+`configured workers * configured repeats`. The current configuration therefore
+requires `3 * 1 = 3` slots. With the current three slots, one worker can run
+three repeats or three workers can run one repeat; larger combinations are
+unsupported. Playwright configuration loading validates this capacity before
+the GameSession suite starts and reports the configured worker count, repeat
+count, required slot count, and available slot count when it is insufficient.
+Stateful tests must create their own game data and must not rely on another
+test's mutations. The shared fixture manifest is seeded
 before the run and is the source for the deterministic users, passwords,
 quizzes, and question expectations used by the browser tests. Each GameSession
 test reads its selected user's quiz and question data from the fixture returned
