@@ -21,6 +21,7 @@ type EventWaiter = {
   matches: (event: GameEvent) => boolean
   resolve: (event: GameEvent) => void
   reject: (error: Error) => void
+  timeoutId: ReturnType<typeof setTimeout>
 }
 
 type RequestOptions = {
@@ -29,7 +30,14 @@ type RequestOptions = {
   accept?: string
 }
 
+export type GameEventWaitOptions = {
+  timeout?: number
+}
+
 const SIMULATED_PLAYER_USER_AGENT = 'klurigo-playwright-e2e'
+const DEFAULT_EVENT_WAIT_TIMEOUT_MS = 10_000
+const MAX_EVENT_HISTORY_LENGTH = 50
+const MAX_QUEUED_EVENT_DESCRIPTION_LENGTH = 500
 
 /**
  * A wire-level client for one anonymous player in a Klurigo game.
@@ -43,6 +51,7 @@ export class GamePlayerClient {
   private readonly abortController = new AbortController()
   private readonly queuedEvents: GameEvent[] = []
   private readonly eventWaiters: EventWaiter[] = []
+  private readonly recentEventTypes: string[] = []
 
   private accessToken: string | undefined
   private gameId: string | undefined
@@ -123,13 +132,17 @@ export class GamePlayerClient {
    * Waits for the next non-heartbeat event of the requested type.
    *
    * Events received before this method is called remain queued. The optional
-   * predicate can distinguish multiple events with the same type.
+   * predicate can distinguish multiple events with the same type. The optional
+   * timeout defaults to 10 seconds.
    */
   public waitForEvent<T extends GameEventType>(
     type: T,
     predicate?: (event: GameEventOfType<T>) => boolean,
+    options: GameEventWaitOptions = {},
   ): Promise<GameEventOfType<T>> {
     this.ensureOpen()
+    const timeout = options.timeout ?? DEFAULT_EVENT_WAIT_TIMEOUT_MS
+    validateEventWaitTimeout(timeout)
 
     if (!this.connectionStarted) {
       throw new Error('Call connect() before waiting for game events')
@@ -148,7 +161,14 @@ export class GamePlayerClient {
     }
 
     return new Promise<GameEventOfType<T>>((resolve, reject) => {
-      this.eventWaiters.push({
+      const waiter: EventWaiter = {
+        timeoutId: setTimeout(() => {
+          const waiterIndex = this.eventWaiters.indexOf(waiter)
+          if (waiterIndex === -1) return
+
+          this.eventWaiters.splice(waiterIndex, 1)
+          reject(this.createEventWaitTimeoutError(type, timeout))
+        }, timeout),
         matches: (event) =>
           isEventOfType(event, type) && (!predicate || predicate(event)),
         resolve: (event) => {
@@ -157,7 +177,8 @@ export class GamePlayerClient {
           }
         },
         reject,
-      })
+      }
+      this.eventWaiters.push(waiter)
     })
   }
 
@@ -187,10 +208,12 @@ export class GamePlayerClient {
 
     const error = new Error('Game player client closed')
     for (const waiter of this.eventWaiters) {
+      clearTimeout(waiter.timeoutId)
       waiter.reject(error)
     }
     this.eventWaiters.length = 0
     this.queuedEvents.length = 0
+    this.recentEventTypes.length = 0
   }
 
   private async openConnection(): Promise<void> {
@@ -266,15 +289,24 @@ export class GamePlayerClient {
   private handleEvent(event: GameEvent): void {
     if (event.type === GameEventType.GameHeartbeat) return
 
+    this.recentEventTypes.push(event.type)
+    if (this.recentEventTypes.length > MAX_EVENT_HISTORY_LENGTH) {
+      this.recentEventTypes.shift()
+    }
+
     const waiterIndex = this.eventWaiters.findIndex((waiter) =>
       waiter.matches(event),
     )
     if (waiterIndex === -1) {
       this.queuedEvents.push(event)
+      if (this.queuedEvents.length > MAX_EVENT_HISTORY_LENGTH) {
+        this.queuedEvents.shift()
+      }
       return
     }
 
     const waiter = this.eventWaiters.splice(waiterIndex, 1)[0]
+    if (waiter) clearTimeout(waiter.timeoutId)
     waiter?.resolve(event)
   }
 
@@ -284,9 +316,25 @@ export class GamePlayerClient {
     this.streamError = error instanceof Error ? error : new Error(String(error))
 
     for (const waiter of this.eventWaiters) {
+      clearTimeout(waiter.timeoutId)
       waiter.reject(this.streamError)
     }
     this.eventWaiters.length = 0
+  }
+
+  private createEventWaitTimeoutError<T extends GameEventType>(
+    type: T,
+    timeout: number,
+  ): Error {
+    const recentEvents = this.recentEventTypes.join(', ') || 'none'
+    const queuedEvents =
+      this.queuedEvents.map(describeQueuedEvent).join('; ') || 'none'
+
+    return new Error(
+      `Timed out after ${timeout}ms waiting for game event type "${type}". ` +
+        `Recently received non-heartbeat event types: ${recentEvents}. ` +
+        `Queued events that did not satisfy this wait: ${queuedEvents}`,
+    )
   }
 
   private async post<T extends object>(
@@ -377,4 +425,19 @@ function isEventOfType<T extends GameEventType>(
   type: T,
 ): event is GameEventOfType<T> {
   return event.type === type
+}
+
+function validateEventWaitTimeout(timeout: number): void {
+  if (!Number.isFinite(timeout) || timeout < 0) {
+    throw new Error('Event wait timeout must be a finite non-negative number')
+  }
+}
+
+function describeQueuedEvent(event: GameEvent): string {
+  const serialized = JSON.stringify(event)
+  if (serialized.length <= MAX_QUEUED_EVENT_DESCRIPTION_LENGTH) {
+    return serialized
+  }
+
+  return `${serialized.slice(0, MAX_QUEUED_EVENT_DESCRIPTION_LENGTH)}...`
 }

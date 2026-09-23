@@ -19,6 +19,7 @@ const gameToken = createToken({
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   vi.restoreAllMocks()
 })
 
@@ -128,6 +129,38 @@ describe('GameHostClient', () => {
     expect(() => client.close()).not.toThrow()
 
     await expect(pendingEvent).rejects.toThrow('Game host client closed')
+  })
+
+  it('times out waits with event diagnostics and removes the timed-out waiter', async () => {
+    vi.useFakeTimers()
+    const { client, emit } = await createConnectedClient()
+    const pendingEvent = client.waitForEvent(
+      GameEventType.GameBeginHost,
+      undefined,
+      { timeout: 25 },
+    )
+
+    emit(createLobbyEvent('Ada'))
+    const timeoutAssertion = expect(pendingEvent).rejects.toThrow(
+      'Timed out after 25ms waiting for game event type "GAME_BEGIN_HOST". ' +
+        'Recently received non-heartbeat event types: GAME_LOBBY_HOST. ' +
+        'Queued events that did not satisfy this wait: {"type":"GAME_LOBBY_HOST"',
+    )
+    await vi.advanceTimersByTimeAsync(25)
+
+    await timeoutAssertion
+
+    const nextEvent = client.waitForEvent(
+      GameEventType.GameBeginHost,
+      undefined,
+      { timeout: 25 },
+    )
+    emit({ type: GameEventType.GameBeginHost })
+
+    await expect(nextEvent).resolves.toEqual({
+      type: GameEventType.GameBeginHost,
+    })
+    client.close()
   })
 })
 
