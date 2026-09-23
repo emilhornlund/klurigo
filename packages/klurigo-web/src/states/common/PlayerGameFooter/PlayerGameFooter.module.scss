@@ -1,99 +1,23 @@
 @use '../../../styles/border-radius.tokens' as radius;
-@use '../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../styles/colors.semantic' as colors;
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/spacing.semantic' as spacing;
-@use '../../../styles/typography.tokens' as typography;
 
-.main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: radius.$radius-surface-lg;
+.badge {
+  margin: 0;
+  background-color: colors.$color-surface-default;
+  color: colors.$color-text-default;
+  border-radius: radius.$radius-control-md;
 
   @include helpers.mobile {
-    padding: spacing.$space-inline-tight-mobile spacing.$space-compact-mobile;
-    width: 100%;
-    height: helpers.pxToRem(52px);
+    padding: 0 spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    padding: spacing.$space-inline-tight-tablet spacing.$space-compact-tablet;
-    width: breakpoints.$breakpoint-tablet;
-    height: helpers.pxToRem(60px);
+    padding: 0 spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    padding: spacing.$space-inline-tight-desktop spacing.$space-compact-desktop;
-    width: breakpoints.$breakpoint-desktop;
-    height: helpers.pxToRem(66px);
-  }
-
-  .questions,
-  .nickname,
-  .score {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-
-    @include helpers.mobile {
-      column-gap: spacing.$space-compact-mobile;
-    }
-
-    @include helpers.tablet {
-      column-gap: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-compact-desktop;
-    }
-
-    .icon {
-      @include helpers.mobile {
-        @include helpers.fontSize(typography.$font-size-body2-mobile);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(typography.$font-size-body2-tablet);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(typography.$font-size-body2-desktop);
-      }
-    }
-  }
-
-  .questions {
-    justify-content: flex-start;
-  }
-
-  .nickname {
-    justify-content: center;
-  }
-
-  .score {
-    justify-content: flex-end;
-
-    .badge {
-      margin: 0;
-      background-color: colors.$color-surface-default;
-      color: colors.$color-text-default;
-      border-radius: radius.$radius-control-md;
-
-      @include helpers.mobile {
-        padding: 0 spacing.$space-compact-mobile;
-      }
-
-      @include helpers.tablet {
-        padding: 0 spacing.$space-compact-tablet;
-      }
-
-      @include helpers.desktop {
-        padding: 0 spacing.$space-compact-desktop;
-      }
-    }
+    padding: 0 spacing.$space-compact-desktop;
   }
 }

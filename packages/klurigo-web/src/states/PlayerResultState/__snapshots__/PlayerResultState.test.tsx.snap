@@ -399,11 +399,11 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -423,7 +423,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -432,7 +432,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -736,11 +736,11 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -760,7 +760,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -769,7 +769,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -1184,11 +1184,11 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1208,7 +1208,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1217,7 +1217,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -1632,11 +1632,11 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1656,7 +1656,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1665,7 +1665,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -1969,11 +1969,11 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1993,7 +1993,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2002,7 +2002,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -2317,11 +2317,11 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2341,7 +2341,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2350,7 +2350,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -2467,11 +2467,11 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2491,7 +2491,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2500,7 +2500,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -2617,11 +2617,11 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2641,7 +2641,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2650,7 +2650,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -2874,11 +2874,11 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2898,7 +2898,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2907,7 +2907,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -3142,11 +3142,11 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3166,7 +3166,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -3175,7 +3175,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -3601,11 +3601,11 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3625,7 +3625,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -3634,7 +3634,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p
@@ -3751,11 +3751,11 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3775,7 +3775,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -3784,7 +3784,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p

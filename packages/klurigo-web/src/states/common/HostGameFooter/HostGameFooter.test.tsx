@@ -4,12 +4,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import HostGameFooter from './HostGameFooter'
 
-vi.mock('./HostGameFooter.module.scss', () => ({
+vi.mock('../GameFooterShell/GameFooterShell.module.scss', () => ({
   default: {
     main: 'main',
-    questions: 'questions',
-    gamePIN: 'gamePIN',
-    actions: 'actions',
+    leading: 'leading',
+    center: 'center',
+    trailing: 'trailing',
   },
 }))
 

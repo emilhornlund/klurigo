@@ -160,11 +160,11 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -184,7 +184,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -207,7 +207,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -382,11 +382,11 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -406,7 +406,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -429,7 +429,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -639,11 +639,11 @@ exports[`HostQuestionState > renders with audio media 1`] = `
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -663,7 +663,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -686,7 +686,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -896,11 +896,11 @@ exports[`HostQuestionState > renders with video media 1`] = `
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -920,7 +920,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -943,7 +943,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1180,11 +1180,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1204,7 +1204,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1227,7 +1227,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1484,11 +1484,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1508,7 +1508,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1531,7 +1531,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1748,11 +1748,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1772,7 +1772,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1795,7 +1795,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1991,11 +1991,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2015,7 +2015,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2038,7 +2038,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -2233,11 +2233,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2257,7 +2257,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2280,7 +2280,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -2476,11 +2476,11 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2500,7 +2500,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2523,7 +2523,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div

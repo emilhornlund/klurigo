@@ -1,3 +1,4 @@
+export type { GameFooterShellProps } from './GameFooterShell'
 export type { HostGameFooterProps } from './HostGameFooter'
 export type { NonInteractiveInfoBoxProps } from './NonInteractiveInfoBox'
 export type { PlayerGameFooterProps } from './PlayerGameFooter'
@@ -7,6 +8,7 @@ export type { QuestionMediaProps } from './QuestionMedia'
 export type { QuestionTextPreviewProps } from './QuestionTextPreview'
 export type { QuestionTypePointsBarProps } from './QuestionTypePointsBar'
 
+export { default as GameFooterShell } from './GameFooterShell'
 export { default as GamePage } from './GamePage'
 export { default as HostGameFooter } from './HostGameFooter'
 export { default as NonInteractiveInfoBox } from './NonInteractiveInfoBox'

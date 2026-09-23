@@ -29,8 +29,7 @@
     height: helpers.pxToRem(66px);
   }
 
-  .questions,
-  .gamePIN {
+  .section {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -49,7 +48,7 @@
       column-gap: spacing.$space-compact-desktop;
     }
 
-    .icon {
+    > svg {
       @include helpers.mobile {
         @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
@@ -64,31 +63,21 @@
     }
   }
 
-  .questions {
+  .leading {
+    @extend .section;
+
     justify-content: flex-start;
   }
 
-  .gamePIN {
+  .center {
+    @extend .section;
+
     justify-content: center;
   }
 
-  .actions {
-    display: flex;
-    flex-direction: row;
+  .trailing {
+    @extend .section;
+
     justify-content: flex-end;
-    align-items: center;
-    flex: 1;
-
-    @include helpers.mobile {
-      column-gap: spacing.$space-compact-mobile;
-    }
-
-    @include helpers.tablet {
-      column-gap: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-compact-desktop;
-    }
   }
 }

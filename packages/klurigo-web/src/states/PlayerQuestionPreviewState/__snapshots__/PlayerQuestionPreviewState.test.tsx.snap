@@ -112,11 +112,11 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -136,7 +136,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
           </p>
         </div>
         <div
-          class="nickname"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -145,7 +145,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
           </p>
         </div>
         <div
-          class="score"
+          class="trailing"
         >
           <span>
             <p

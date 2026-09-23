@@ -166,11 +166,11 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -190,7 +190,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -213,7 +213,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -543,11 +543,11 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -567,7 +567,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -590,7 +590,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1010,11 +1010,11 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1034,7 +1034,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1057,7 +1057,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1297,11 +1297,11 @@ exports[`HostResultState > should render HostResultState with question type mult
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1321,7 +1321,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1344,7 +1344,7 @@ exports[`HostResultState > should render HostResultState with question type mult
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1501,11 +1501,11 @@ exports[`HostResultState > should render HostResultState with question type pin 
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1525,7 +1525,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1548,7 +1548,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -1911,11 +1911,11 @@ exports[`HostResultState > should render HostResultState with question type puzz
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -1935,7 +1935,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -1958,7 +1958,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -2496,11 +2496,11 @@ exports[`HostResultState > should render HostResultState with question type rang
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2520,7 +2520,7 @@ exports[`HostResultState > should render HostResultState with question type rang
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2543,7 +2543,7 @@ exports[`HostResultState > should render HostResultState with question type rang
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -2766,11 +2766,11 @@ exports[`HostResultState > should render HostResultState with question type true
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -2790,7 +2790,7 @@ exports[`HostResultState > should render HostResultState with question type true
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -2813,7 +2813,7 @@ exports[`HostResultState > should render HostResultState with question type true
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div
@@ -3143,11 +3143,11 @@ exports[`HostResultState > should render HostResultState with question type type
         class="surface main"
       >
         <div
-          class="questions"
+          class="leading"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-circle-question icon"
+            class="svg-inline--fa fa-circle-question"
             data-icon="circle-question"
             data-prefix="fas"
             role="img"
@@ -3167,7 +3167,7 @@ exports[`HostResultState > should render HostResultState with question type type
           </p>
         </div>
         <div
-          class="gamePIN"
+          class="center"
         >
           <p
             class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
@@ -3190,7 +3190,7 @@ exports[`HostResultState > should render HostResultState with question type type
           </p>
         </div>
         <div
-          class="actions"
+          class="trailing"
         >
           <div>
             <div

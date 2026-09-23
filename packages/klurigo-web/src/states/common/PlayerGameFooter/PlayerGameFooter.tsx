@@ -2,7 +2,8 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { FC } from 'react'
 
-import { Surface, Typography } from '../../../components'
+import { Typography } from '../../../components'
+import GameFooterShell from '../GameFooterShell'
 
 import styles from './PlayerGameFooter.module.scss'
 
@@ -19,19 +20,21 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
   nickname,
   totalScore,
 }) => (
-  <Surface className={styles.main}>
-    <div className={styles.questions}>
-      <FontAwesomeIcon icon={faCircleQuestion} className={styles.icon} />
-      <Typography variant="body2" color="inverse" noOpacity bold>
-        {currentQuestion} / {totalQuestions}
-      </Typography>
-    </div>
-    <div className={styles.nickname}>
+  <GameFooterShell
+    leading={
+      <>
+        <FontAwesomeIcon icon={faCircleQuestion} />
+        <Typography variant="body2" color="inverse" noOpacity bold>
+          {currentQuestion} / {totalQuestions}
+        </Typography>
+      </>
+    }
+    center={
       <Typography variant="body2" align="center" color="inverse" noOpacity bold>
         {nickname}
       </Typography>
-    </div>
-    <div className={styles.score}>
+    }
+    trailing={
       <span>
         <Typography
           variant="body2"
@@ -42,8 +45,8 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
           {totalScore}
         </Typography>
       </span>
-    </div>
-  </Surface>
+    }
+  />
 )
 
 export default PlayerGameFooter
