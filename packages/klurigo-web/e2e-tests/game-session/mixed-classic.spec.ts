@@ -9,22 +9,23 @@ import {
   type SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import { type GameSessionQuestionFixture } from '@klurigo/e2e-fixtures'
-import { expect, type Page, test } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 
-import { GameHostClient } from '../support/api/game-host-client'
-import { GamePlayerClient } from '../support/api/game-player-client'
 import { authenticatePageThroughApi } from '../support/browser/authenticate-page-through-api'
 import { startHostGame } from '../support/browser/start-host-game'
-import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
-import { getGameSessionFixture } from '../support/fixtures/game-session-fixtures'
+import { E2E_USER_PASSWORD } from '../support/e2e-runtime'
+import { test } from '../support/fixtures/game-session-fixtures'
 
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Game session: mixed Classic question types', () => {
   test('completes one deterministic question of every Classic type', async ({
     page,
-  }, testInfo) => {
-    const e2eHost = getGameSessionFixture(testInfo)
+    gameSessionFixture,
+    gameHost,
+    createGamePlayer,
+  }) => {
+    const e2eHost = gameSessionFixture
     const quiz = e2eHost.quizzes.classicMixed
     const questions = quiz.questions
     const playerNickname = `ApiMixed${randomUUID().slice(0, 8)}`
@@ -42,224 +43,214 @@ test.describe('Game session: mixed Classic question types', () => {
 
     const gamePIN = await test.step('Create and open the host game', () =>
       startHostGame(page))
-    const gameHost = new GameHostClient(E2E_API_BASE_URL)
-    const gamePlayer = new GamePlayerClient(E2E_API_BASE_URL)
+    const gamePlayer = createGamePlayer()
 
-    try {
-      await test.step('Join and connect the simulated player', async () => {
-        const hostIdentity = await gameHost.authenticate(
-          { email: e2eHost.email, password: E2E_USER_PASSWORD },
-          { gamePIN },
-        )
-        await gameHost.connect()
-        const lobbyEvent = await gameHost.waitForEvent(
-          GameEventType.GameLobbyHost,
-          (event) => event.game.pin === gamePIN,
-        )
-        expect(lobbyEvent.players).toEqual([])
-        const joinedLobbyPromise = gameHost.waitForEvent(
-          GameEventType.GameLobbyHost,
+    await test.step('Join and connect the simulated player', async () => {
+      const hostIdentity = await gameHost.authenticate(
+        { email: e2eHost.email, password: E2E_USER_PASSWORD },
+        { gamePIN },
+      )
+      await gameHost.connect()
+      const lobbyEvent = await gameHost.waitForEvent(
+        GameEventType.GameLobbyHost,
+        (event) => event.game.pin === gamePIN,
+      )
+      expect(lobbyEvent.players).toEqual([])
+      const joinedLobbyPromise = gameHost.waitForEvent(
+        GameEventType.GameLobbyHost,
+        (event) =>
+          event.players.some(({ nickname }) => nickname === playerNickname),
+      )
+      const identity = await gamePlayer.authenticateAndJoin(
+        { gamePIN },
+        playerNickname,
+      )
+      expect(identity.gameId).toBe(hostIdentity.gameId)
+      expect(identity.gameId).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      )
+
+      await gamePlayer.connect()
+      const joinedLobby = await joinedLobbyPromise
+      expect(joinedLobby.players).toEqual([
+        expect.objectContaining({ nickname: playerNickname }),
+      ])
+      await expect(
+        page.getByText(playerNickname, { exact: true }),
+      ).toBeVisible()
+    })
+
+    const hostBeginPromise = gameHost.waitForEvent(GameEventType.GameBeginHost)
+    const hostPreviewPromise = gameHost.waitForEvent(
+      GameEventType.GameQuestionPreviewHost,
+      (event) => event.pagination.current === 1,
+    )
+    let hostQuestionPromise = gameHost.waitForEvent(
+      GameEventType.GameQuestionHost,
+      (event) => event.pagination.current === 1,
+    )
+    let playerQuestionPromise = gamePlayer.waitForEvent(
+      GameEventType.GameQuestionPlayer,
+      (event) => event.pagination.current === 1,
+    )
+    await page.locator('#start-game-button').click()
+    await hostBeginPromise
+    const hostPreview = await hostPreviewPromise
+    expect(hostPreview.game.mode).toBe(GameMode.Classic)
+    expect(hostPreview.question).toEqual(
+      expect.objectContaining({
+        type: questions[0].type,
+        question: questions[0].text,
+        points: questions[0].points,
+      }),
+    )
+    expect(hostPreview.pagination).toEqual({ current: 1, total: 6 })
+    let hostQuestion = await hostQuestionPromise
+    let playerQuestion = await playerQuestionPromise
+
+    for (const [index, expectedQuestion] of questions.entries()) {
+      const paginationPosition = index + 1
+
+      await test.step(`Verify question ${paginationPosition} and submit its answer`, async () => {
+        await expect(
+          page.getByText(expectedQuestion.text, { exact: true }),
+        ).toBeVisible()
+        expect(hostQuestion.game.pin).toBe(gamePIN)
+        expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
+        expect(hostQuestion.pagination).toEqual({
+          current: paginationPosition,
+          total: questions.length,
+        })
+        assertQuestionPayload(hostQuestion.question, expectedQuestion)
+        expect(playerQuestion.pagination).toEqual({
+          current: paginationPosition,
+          total: questions.length,
+        })
+        expect(playerQuestion.player.nickname).toBe(playerNickname)
+
+        assertQuestionPayload(playerQuestion.question, expectedQuestion)
+
+        const playerResultPromise = gamePlayer.waitForEvent(
+          GameEventType.GameResultPlayer,
           (event) =>
-            event.players.some(({ nickname }) => nickname === playerNickname),
+            event.pagination.current === paginationPosition &&
+            event.player.nickname === playerNickname,
         )
-        const identity = await gamePlayer.authenticateAndJoin(
-          { gamePIN },
-          playerNickname,
-        )
-        expect(identity.gameId).toBe(hostIdentity.gameId)
-        expect(identity.gameId).toMatch(
-          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        const hostResultPromise = gameHost.waitForEvent(
+          GameEventType.GameResultHost,
+          (event) => event.pagination.current === paginationPosition,
         )
 
-        await gamePlayer.connect()
-        const joinedLobby = await joinedLobbyPromise
-        expect(joinedLobby.players).toEqual([
-          expect.objectContaining({ nickname: playerNickname }),
+        await gamePlayer.submitAnswer(getCorrectAnswer(expectedQuestion))
+        const [playerResult, hostResult] = await Promise.all([
+          playerResultPromise,
+          hostResultPromise,
         ])
+
+        expect(hostResult.game.pin).toBe(gamePIN)
+        expect(hostResult.question).toEqual(
+          expect.objectContaining({
+            type: expectedQuestion.type,
+            question: expectedQuestion.text,
+          }),
+        )
+        expect(hostResult.pagination).toEqual({
+          current: paginationPosition,
+          total: questions.length,
+        })
+        expect(hostResult.results.type).toBe(expectedQuestion.type)
+        assertCorrectAnswerDistribution(hostResult.results, expectedQuestion)
+        expect(playerResult.pagination).toEqual({
+          current: paginationPosition,
+          total: questions.length,
+        })
+        expect(playerResult.game.mode).toBe(GameMode.Classic)
+        expect(playerResult.player.score.correct).toBe(true)
+        expect(playerResult.player.score.total).toBeGreaterThan(0)
+      })
+
+      if (paginationPosition < questions.length) {
+        await expectResultState(page, expectedQuestion)
+
+        const leaderboardPromise = gameHost.waitForEvent(
+          GameEventType.GameLeaderboardHost,
+          (event) => event.pagination.current === paginationPosition,
+        )
+        await page.locator('#next-button').click()
+        await expect(
+          page.getByText('Leaderboard', { exact: true }),
+        ).toBeVisible()
+        const leaderboard = await leaderboardPromise
+        expect(leaderboard.game).toEqual({
+          mode: GameMode.Classic,
+          pin: gamePIN,
+        })
+        expect(leaderboard.pagination).toEqual({
+          current: paginationPosition,
+          total: questions.length,
+        })
+        expect(leaderboard.leaderboard).toEqual([
+          expect.objectContaining({
+            nickname: playerNickname,
+            position: 1,
+          }),
+        ])
+
+        hostQuestionPromise = gameHost.waitForEvent(
+          GameEventType.GameQuestionHost,
+          (event) => event.pagination.current === paginationPosition + 1,
+        )
+        playerQuestionPromise = gamePlayer.waitForEvent(
+          GameEventType.GameQuestionPlayer,
+          (event) => event.pagination.current === paginationPosition + 1,
+        )
+        await page.locator('#next-button').click()
+        playerQuestion = await playerQuestionPromise
+        hostQuestion = await hostQuestionPromise
+      } else {
+        await expectResultState(page, expectedQuestion)
+
+        const gameOverPromise = gamePlayer.waitForEvent(
+          GameEventType.GameOverPlayer,
+          (event) => event.player.nickname === playerNickname,
+        )
+        const podiumPromise = gameHost.waitForEvent(
+          GameEventType.GamePodiumHost,
+          (event) => event.game.name === quiz.title,
+        )
+        await page.locator('#next-button').click()
+        const [gameOver, podium] = await Promise.all([
+          gameOverPromise,
+          podiumPromise,
+        ])
+
+        expect(podium.game.name).toBe(quiz.title)
+        expect(podium.leaderboard).toEqual([
+          expect.objectContaining({
+            position: 1,
+            nickname: playerNickname,
+          }),
+        ])
+        expect(gameOver.game.mode).toBe(GameMode.Classic)
+        expect(gameOver.quiz).toEqual({
+          id: quiz.id,
+          title: quiz.title,
+        })
+        expect(gameOver.player).toEqual(
+          expect.objectContaining({
+            nickname: playerNickname,
+            rank: 1,
+            totalPlayers: 1,
+          }),
+        )
+        await expect(
+          page.getByRole('button', { name: 'View Full Results' }),
+        ).toBeVisible()
+        await expect(page.getByText(quiz.title, { exact: true })).toBeVisible()
         await expect(
           page.getByText(playerNickname, { exact: true }),
         ).toBeVisible()
-      })
-
-      const hostBeginPromise = gameHost.waitForEvent(
-        GameEventType.GameBeginHost,
-      )
-      const hostPreviewPromise = gameHost.waitForEvent(
-        GameEventType.GameQuestionPreviewHost,
-        (event) => event.pagination.current === 1,
-      )
-      let hostQuestionPromise = gameHost.waitForEvent(
-        GameEventType.GameQuestionHost,
-        (event) => event.pagination.current === 1,
-      )
-      let playerQuestionPromise = gamePlayer.waitForEvent(
-        GameEventType.GameQuestionPlayer,
-        (event) => event.pagination.current === 1,
-      )
-      await page.locator('#start-game-button').click()
-      await hostBeginPromise
-      const hostPreview = await hostPreviewPromise
-      expect(hostPreview.game.mode).toBe(GameMode.Classic)
-      expect(hostPreview.question).toEqual(
-        expect.objectContaining({
-          type: questions[0].type,
-          question: questions[0].text,
-          points: questions[0].points,
-        }),
-      )
-      expect(hostPreview.pagination).toEqual({ current: 1, total: 6 })
-      let hostQuestion = await hostQuestionPromise
-      let playerQuestion = await playerQuestionPromise
-
-      for (const [index, expectedQuestion] of questions.entries()) {
-        const paginationPosition = index + 1
-
-        await test.step(`Verify question ${paginationPosition} and submit its answer`, async () => {
-          await expect(
-            page.getByText(expectedQuestion.text, { exact: true }),
-          ).toBeVisible()
-          expect(hostQuestion.game.pin).toBe(gamePIN)
-          expect(hostQuestion.submissions).toEqual({ current: 0, total: 1 })
-          expect(hostQuestion.pagination).toEqual({
-            current: paginationPosition,
-            total: questions.length,
-          })
-          assertQuestionPayload(hostQuestion.question, expectedQuestion)
-          expect(playerQuestion.pagination).toEqual({
-            current: paginationPosition,
-            total: questions.length,
-          })
-          expect(playerQuestion.player.nickname).toBe(playerNickname)
-
-          assertQuestionPayload(playerQuestion.question, expectedQuestion)
-
-          const playerResultPromise = gamePlayer.waitForEvent(
-            GameEventType.GameResultPlayer,
-            (event) =>
-              event.pagination.current === paginationPosition &&
-              event.player.nickname === playerNickname,
-          )
-          const hostResultPromise = gameHost.waitForEvent(
-            GameEventType.GameResultHost,
-            (event) => event.pagination.current === paginationPosition,
-          )
-
-          await gamePlayer.submitAnswer(getCorrectAnswer(expectedQuestion))
-          const [playerResult, hostResult] = await Promise.all([
-            playerResultPromise,
-            hostResultPromise,
-          ])
-
-          expect(hostResult.game.pin).toBe(gamePIN)
-          expect(hostResult.question).toEqual(
-            expect.objectContaining({
-              type: expectedQuestion.type,
-              question: expectedQuestion.text,
-            }),
-          )
-          expect(hostResult.pagination).toEqual({
-            current: paginationPosition,
-            total: questions.length,
-          })
-          expect(hostResult.results.type).toBe(expectedQuestion.type)
-          assertCorrectAnswerDistribution(hostResult.results, expectedQuestion)
-          expect(playerResult.pagination).toEqual({
-            current: paginationPosition,
-            total: questions.length,
-          })
-          expect(playerResult.game.mode).toBe(GameMode.Classic)
-          expect(playerResult.player.score.correct).toBe(true)
-          expect(playerResult.player.score.total).toBeGreaterThan(0)
-        })
-
-        if (paginationPosition < questions.length) {
-          await expectResultState(page, expectedQuestion)
-
-          const leaderboardPromise = gameHost.waitForEvent(
-            GameEventType.GameLeaderboardHost,
-            (event) => event.pagination.current === paginationPosition,
-          )
-          await page.locator('#next-button').click()
-          await expect(
-            page.getByText('Leaderboard', { exact: true }),
-          ).toBeVisible()
-          const leaderboard = await leaderboardPromise
-          expect(leaderboard.game).toEqual({
-            mode: GameMode.Classic,
-            pin: gamePIN,
-          })
-          expect(leaderboard.pagination).toEqual({
-            current: paginationPosition,
-            total: questions.length,
-          })
-          expect(leaderboard.leaderboard).toEqual([
-            expect.objectContaining({
-              nickname: playerNickname,
-              position: 1,
-            }),
-          ])
-
-          hostQuestionPromise = gameHost.waitForEvent(
-            GameEventType.GameQuestionHost,
-            (event) => event.pagination.current === paginationPosition + 1,
-          )
-          playerQuestionPromise = gamePlayer.waitForEvent(
-            GameEventType.GameQuestionPlayer,
-            (event) => event.pagination.current === paginationPosition + 1,
-          )
-          await page.locator('#next-button').click()
-          playerQuestion = await playerQuestionPromise
-          hostQuestion = await hostQuestionPromise
-        } else {
-          await expectResultState(page, expectedQuestion)
-
-          const gameOverPromise = gamePlayer.waitForEvent(
-            GameEventType.GameOverPlayer,
-            (event) => event.player.nickname === playerNickname,
-          )
-          const podiumPromise = gameHost.waitForEvent(
-            GameEventType.GamePodiumHost,
-            (event) => event.game.name === quiz.title,
-          )
-          await page.locator('#next-button').click()
-          const [gameOver, podium] = await Promise.all([
-            gameOverPromise,
-            podiumPromise,
-          ])
-
-          expect(podium.game.name).toBe(quiz.title)
-          expect(podium.leaderboard).toEqual([
-            expect.objectContaining({
-              position: 1,
-              nickname: playerNickname,
-            }),
-          ])
-          expect(gameOver.game.mode).toBe(GameMode.Classic)
-          expect(gameOver.quiz).toEqual({
-            id: quiz.id,
-            title: quiz.title,
-          })
-          expect(gameOver.player).toEqual(
-            expect.objectContaining({
-              nickname: playerNickname,
-              rank: 1,
-              totalPlayers: 1,
-            }),
-          )
-          await expect(
-            page.getByRole('button', { name: 'View Full Results' }),
-          ).toBeVisible()
-          await expect(
-            page.getByText(quiz.title, { exact: true }),
-          ).toBeVisible()
-          await expect(
-            page.getByText(playerNickname, { exact: true }),
-          ).toBeVisible()
-        }
       }
-    } finally {
-      gameHost.close()
-      gamePlayer.close()
     }
   })
 })
