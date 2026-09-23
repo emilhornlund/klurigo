@@ -364,12 +364,13 @@ yarn workspace @klurigo/klurigo-web playwright install chromium --with-deps
 
 The CI workflow then runs the same `test:e2e` package script. Ordinary tests
 exclude `**/game-session/**/*.spec.ts`, while the dedicated
-`chromium-game-session` project runs those files with one worker, a 15-second
+`chromium-game-session` project runs those files with three workers, a 15-second
 expect timeout, and a 90-second test timeout. Its fixture resolver maps
 each worker/repeat combination to a distinct configured Chromium fixture user
 using `parallelIndex * repeatEach + repeatEachIndex`. With the current three
-users, the serial project supports three repeats; unsupported combinations fail
-instead of sharing mutable state. The configured HTML reporter writes a
+users, the project supports three workers for one repeat or one worker for
+three repeats; unsupported combinations fail instead of sharing mutable state.
+The configured HTML reporter writes a
 Playwright report under
 `playwright-report/`.
 

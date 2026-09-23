@@ -8,8 +8,6 @@ import { startHostGame } from '../support/browser/start-host-game'
 import { E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
-test.describe.configure({ mode: 'serial' })
-
 test.describe('Game session: Zero to One Hundred', () => {
   test('completes a Zero to One Hundred game with two simulated players', async ({
     page,

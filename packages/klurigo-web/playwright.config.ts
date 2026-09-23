@@ -36,7 +36,7 @@ export default defineConfig({
       testMatch: GAME_SESSION_TEST_MATCH,
       expect: { timeout: GAME_SESSION_EXPECT_TIMEOUT },
       timeout: GAME_SESSION_TEST_TIMEOUT,
-      workers: 1,
+      workers: 3,
       use: { ...devices['Desktop Chrome'] },
     },
   ],

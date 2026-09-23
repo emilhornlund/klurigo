@@ -8,8 +8,6 @@ import { startHostGame } from '../support/browser/start-host-game'
 import { E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
-test.describe.configure({ mode: 'serial' })
-
 test.describe('Game session: Classic late joining', () => {
   test('keeps a late Classic joiner behind a scored player', async ({
     page,

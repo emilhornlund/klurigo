@@ -61,15 +61,15 @@ these Chromium-only projects:
 
 - `chromium` runs non-GameSession tests with Desktop Chrome.
 - `chromium-game-session` runs GameSession tests with Desktop Chrome, a
-  15-second expect timeout, a 90-second test timeout, and one worker.
+  15-second expect timeout, a 90-second test timeout, and three workers.
 
 The ordinary project excludes `**/game-session/**/*.spec.ts`; the dedicated
-GameSession project includes that pattern. GameSession files also use
-Playwright's `test.describe.configure({ mode: 'serial' })` because the flows
-exercise shared real-time game state. This project split and the worker limit
-are the current isolation behavior; do not merge GameSession tests back into
-the fully parallel ordinary project without changing the underlying
-constraints.
+GameSession project includes that pattern. Each GameSession test creates its
+own game and uses the isolated fixture slot assigned to its worker, so the
+tests do not require file-level serialization. The individual game flows remain
+sequential within each test. This project split and the three-worker limit are
+the current isolation behavior; do not merge GameSession tests back into the
+fully parallel ordinary project without changing the underlying constraints.
 
 GameSession fixture lookup maps both Chromium projects to the `chromium` slot.
 Each slot owns a complete seeded user and quiz set. The resolver assigns slots
@@ -90,7 +90,7 @@ before the run and is the source for the deterministic users, passwords,
 quizzes, and question expectations used by the browser tests. Each GameSession
 test reads its selected user's quiz and question data from the fixture returned
 for the current project, worker, and repeat; it does not assume the
-`tester02` slot. The GameSession directory contains 11 logical Playwright tests
+`tester02` slot. The GameSession directory contains 12 logical Playwright tests
 and covers the six supported
 `QuestionType` values as follows:
 
@@ -122,8 +122,8 @@ Use the authenticated test-only stream interruption control for interruption and
 `page.reload()` while the persisted Game-scope token is still valid. The control
 closes the active server-side SSE observable, allowing the browser to receive a
 real transport error and retry. Assert the replacement stream and visible state
-after recovery, then continue the same game progression. Keep these checks in
-the existing serial GameSession files and project isolation.
+after recovery, then continue the same game progression. Keep these checks
+within their individual GameSession tests and retain project isolation.
 The frontend displays reconnecting and reconnect-failed diagnostics while a
 retry is pending or exhausted. Expired, unavailable, and host-terminated games
 remain negative cases: they must follow existing authorization, quit, or
@@ -145,6 +145,6 @@ It caches Playwright browsers by the installed `@playwright/test` version and
 installs Chromium plus Linux system dependencies.
 
 The test step sets `CI=true` and runs `yarn workspace @klurigo/klurigo-web
-test:e2e`. The Playwright configuration then enables two retries and keeps the
-dedicated Chromium GameSession project at one worker. Docker Compose is brought
-down with `-v` in an `always()` cleanup step.
+test:e2e`. The Playwright configuration then enables two retries and runs the
+dedicated Chromium GameSession project with three workers. Docker Compose is
+brought down with `-v` in an `always()` cleanup step.

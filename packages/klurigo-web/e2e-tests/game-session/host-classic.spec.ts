@@ -9,8 +9,6 @@ import { startHostGame } from '../support/browser/start-host-game'
 import { E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
-test.describe.configure({ mode: 'serial' })
-
 test.describe('Game session: host UI with simulated players', () => {
   test('completes a Classic game with one simulated player', async ({
     page,
