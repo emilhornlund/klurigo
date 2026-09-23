@@ -110,13 +110,15 @@ const isTestEnv = process.env.NODE_ENV === 'test'
       useFactory: async (config: ConfigService<EnvironmentVariables>) => {
         const username = config.get('MONGODB_USERNAME')
         const password = config.get('MONGODB_PASSWORD')
-        if (username && password) {
-          return {
-            uri: `mongodb://${username}:${password}@${config.get('MONGODB_HOST')}:${config.get('MONGODB_PORT')}/${config.get('MONGODB_DB')}`,
-          }
-        }
+        const uri =
+          username && password
+            ? `mongodb://${username}:${password}@${config.get('MONGODB_HOST')}:${config.get('MONGODB_PORT')}/${config.get('MONGODB_DB')}`
+            : `mongodb://${config.get('MONGODB_HOST')}:${config.get('MONGODB_PORT')}/${config.get('MONGODB_DB')}`
         return {
-          uri: `mongodb://${config.get('MONGODB_HOST')}:${config.get('MONGODB_PORT')}/${config.get('MONGODB_DB')}`,
+          uri,
+          // mongodb 7.6 needs the Node adapter explicitly when loaded by Jest.
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          ...(isTestEnv ? { runtimeAdapters: { os: require('os') } } : {}),
         }
       },
       inject: [ConfigService],
