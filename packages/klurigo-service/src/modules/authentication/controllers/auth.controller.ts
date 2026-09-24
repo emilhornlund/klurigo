@@ -7,17 +7,19 @@ import {
   Post,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import { TokenService } from '../../token/services'
 import { UserService } from '../../user/services'
 import { AuthService } from '../services'
@@ -227,9 +229,7 @@ export class AuthController {
     description:
       'Old password incorrect or user account not eligible for password change.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Non-local accounts cannot change password.',
   })

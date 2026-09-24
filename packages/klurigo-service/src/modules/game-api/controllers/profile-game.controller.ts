@@ -8,16 +8,18 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   PrincipalId,
   RequiredAuthorities,
@@ -83,9 +85,7 @@ export class ProfileGameController {
     description: 'Successfully retrieved the list of associated games.',
     type: PaginatedGameHistoryResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @HttpCode(HttpStatus.OK)
   public async getUserGames(
     @PrincipalId() userId: string,

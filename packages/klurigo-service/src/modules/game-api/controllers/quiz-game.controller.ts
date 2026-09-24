@@ -3,13 +3,15 @@ import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   Principal,
   RequiredAuthorities,
@@ -61,9 +63,7 @@ export class QuizGameController {
     description: 'The game has been successfully created.',
     type: CreateGameResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to this quiz.',
   })

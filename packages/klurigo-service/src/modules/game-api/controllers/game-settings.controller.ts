@@ -1,17 +1,19 @@
 import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   RequiredAuthorities,
   RequiresScopes,
@@ -69,9 +71,7 @@ export class GameSettingsController {
     description: 'Game settings were updated successfully.',
     type: GameSettingsResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized. Missing or invalid access token.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description:
       'Forbidden. The authenticated participant is not allowed to access this game or does not have the required role.',

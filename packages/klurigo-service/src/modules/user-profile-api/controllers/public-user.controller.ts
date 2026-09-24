@@ -9,18 +9,20 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   RequiredAuthorities,
   RequiresScopes,
@@ -70,9 +72,7 @@ export class PublicUserController {
     description: 'Successfully retrieved the user’s public profile.',
     type: PublicUserProfileResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authentication required.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Insufficient permissions to view public user profiles.',
   })
@@ -141,9 +141,7 @@ export class PublicUserController {
   @ApiBadRequestResponse({
     description: 'Invalid query parameters.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authentication required.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Insufficient permissions to view public user quizzes.',
   })

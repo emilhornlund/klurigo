@@ -17,17 +17,19 @@ import {
   Query,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   RequiredAuthorities,
   RequiresScopes,
@@ -110,9 +112,7 @@ export class DiscoveryController {
     description: 'The latest discovery snapshot with hydrated quiz cards.',
     type: DiscoveryResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the Discovery authority.',
   })
@@ -218,9 +218,7 @@ export class DiscoveryController {
   @ApiBadRequestResponse({
     description: 'Query parameters must be valid integers.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the Discovery authority.',
   })

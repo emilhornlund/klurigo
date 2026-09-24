@@ -1,10 +1,5 @@
 import { Controller, Get } from '@nestjs/common'
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiServiceUnavailableResponse,
-  ApiTags,
-} from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import {
   HealthCheck,
   HealthCheckService,
@@ -12,6 +7,7 @@ import {
 } from '@nestjs/terminus'
 import type { HealthCheckResult } from '@nestjs/terminus'
 
+import { ApiServiceUnavailableErrorResponse as ApiServiceUnavailableResponse } from '../../../app/decorators'
 import { Public } from '../../authentication/controllers/decorators'
 import { RedisHealthIndicator } from '../indicators'
 

@@ -1,14 +1,17 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBody,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiConflictErrorResponse as ApiConflictResponse,
+  ApiTooManyRequestsErrorResponse,
+} from '../../../app/decorators'
 import { Public } from '../../authentication/controllers/decorators'
 import { UserService } from '../services'
 
@@ -59,6 +62,7 @@ export class UserController {
   @ApiConflictResponse({
     description: 'User already exists.',
   })
+  @ApiTooManyRequestsErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   public async createUser(
     @Body() createUserRequest: CreateUserRequest,

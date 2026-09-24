@@ -13,24 +13,27 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
-  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
-import { Timeout } from '../../../app/decorators'
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiTooManyRequestsErrorResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+  ApiUnprocessableEntityErrorResponse as ApiUnprocessableEntityResponse,
+  Timeout,
+} from '../../../app/decorators'
 import { User } from '../../../modules/user/repositories'
 import {
   Principal,
@@ -98,13 +101,12 @@ export class MediaController {
   @ApiBadRequestResponse({
     description: 'One or more search parameters are invalid.',
   })
+  @ApiTooManyRequestsErrorResponse()
   @ApiOkResponse({
     description: 'A paginated response containing photos.',
     type: PaginatedMediaPhotoSearchResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the Media authority.',
   })
@@ -158,9 +160,7 @@ export class MediaController {
     description: 'Successfully uploaded and processed the image.',
     type: MediaUploadPhotoResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the Media authority.',
   })
@@ -190,9 +190,7 @@ export class MediaController {
   @ApiNoContentResponse({
     description: 'Successfully deleted the uploaded photo.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the Media authority.',
   })

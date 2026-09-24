@@ -14,27 +14,29 @@ import {
   Sse,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiExcludeEndpoint,
   ApiExtraModels,
-  ApiForbiddenResponse,
-  ApiGoneResponse,
   ApiNoContentResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger'
 import { SkipThrottle } from '@nestjs/throttler'
 import { from, Observable } from 'rxjs'
 import { mergeMap } from 'rxjs/operators'
 
-import { NoTimeout } from '../../../app/decorators'
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiGoneErrorResponse as ApiGoneResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+  NoTimeout,
+} from '../../../app/decorators'
 import {
   PrincipalId,
   RequiredAuthorities,
@@ -127,9 +129,7 @@ export class GameController {
     description:
       'Invalid request, possibly due to malformed game ID or validation error.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Game is full and cannot accept more players.',
   })
@@ -165,9 +165,7 @@ export class GameController {
     type: GameParticipantPlayerResponse,
     isArray: true,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized. Missing or invalid access token.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description:
       'Forbidden. The authenticated participant is not allowed to access this game or does not have the required role.',
@@ -207,9 +205,7 @@ export class GameController {
   @ApiForbiddenResponse({
     description: 'The participant is not allowed to remove the player.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiNotFoundResponse({
     description:
       'No game or player found with the specified unique identifier.',
@@ -270,9 +266,7 @@ export class GameController {
   @ApiBadRequestResponse({
     description: 'Invalid game ID format.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant is not allowed to access this game.',
   })
@@ -338,9 +332,7 @@ export class GameController {
   @ApiBadRequestResponse({
     description: 'Invalid game ID format or task not in active status.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant must be the game host.',
   })
@@ -391,9 +383,7 @@ export class GameController {
   @ApiNoContentResponse({
     description: 'The correct answer was added successfully.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant must be the game host.',
   })
@@ -449,9 +439,7 @@ export class GameController {
   @ApiNoContentResponse({
     description: 'The correct answer was deleted successfully.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant must be the game host.',
   })
@@ -502,9 +490,7 @@ export class GameController {
     description:
       'The answer has been successfully submitted. If the response is lost, retrying is safe but the retry is reported as a duplicate.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant must be a player in the game.',
   })
@@ -549,9 +535,7 @@ export class GameController {
   @ApiNotFoundResponse({
     description: 'No active game found with the specified game ID.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication credentials.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The participant must be the game host.',
   })

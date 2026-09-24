@@ -10,17 +10,20 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiTooManyRequestsErrorResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   JwtPayload,
   PrincipalId,
@@ -70,9 +73,7 @@ export class UserAuthController {
     description:
       'The provided email does not match the user’s pending unverified email.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Missing or invalid authentication token.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Authenticated user lacks the VerifyEmail authority.',
   })
@@ -107,9 +108,7 @@ export class UserAuthController {
     description:
       'No content returned when the verification email is sent successfully.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authorization header is missing or invalid.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description:
       'User does not have sufficient authority to perform this operation.',
@@ -146,6 +145,7 @@ export class UserAuthController {
     description:
       'No content returned when the password reset email is sent successfully.',
   })
+  @ApiTooManyRequestsErrorResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
   public async resetPassword(
     @Body() authPasswordForgotRequest: AuthPasswordForgotRequest,
@@ -178,9 +178,7 @@ export class UserAuthController {
   @ApiNoContentResponse({
     description: 'No content returned when the password is reset.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authorization header is missing or invalid.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description:
       'User does not have sufficient authority to perform this operation.',
