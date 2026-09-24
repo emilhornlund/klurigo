@@ -1,5 +1,6 @@
 import {
   Authority,
+  AuthProvider,
   TokenScope,
   UpdateGoogleUserProfileRequestDto,
 } from '@klurigo/common'
@@ -112,6 +113,13 @@ export class UserProfileController {
         { $ref: getSchemaPath(UpdateLocalUserProfileRequest) },
         { $ref: getSchemaPath(UpdateGoogleUserProfileRequest) },
       ],
+      discriminator: {
+        propertyName: 'authProvider',
+        mapping: {
+          [AuthProvider.Local]: getSchemaPath(UpdateLocalUserProfileRequest),
+          [AuthProvider.Google]: getSchemaPath(UpdateGoogleUserProfileRequest),
+        },
+      },
     },
   })
   @ApiBadRequestResponse({

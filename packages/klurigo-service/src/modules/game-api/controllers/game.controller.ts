@@ -1,4 +1,9 @@
-import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
+import {
+  Authority,
+  GameParticipantType,
+  QuestionType,
+  TokenScope,
+} from '@klurigo/common'
 import {
   BadRequestException,
   Body,
@@ -371,6 +376,23 @@ export class GameController {
         { $ref: getSchemaPath(TrueFalseQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TypeAnswerQuestionCorrectAnswerRequest) },
       ],
+      discriminator: {
+        propertyName: 'type',
+        mapping: {
+          [QuestionType.MultiChoice]: getSchemaPath(
+            MultiChoiceQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.Range]: getSchemaPath(
+            RangeQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.TrueFalse]: getSchemaPath(
+            TrueFalseQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.TypeAnswer]: getSchemaPath(
+            TypeAnswerQuestionCorrectAnswerRequest,
+          ),
+        },
+      },
     },
   })
   @ApiNotFoundResponse({
@@ -427,6 +449,23 @@ export class GameController {
         { $ref: getSchemaPath(TrueFalseQuestionCorrectAnswerRequest) },
         { $ref: getSchemaPath(TypeAnswerQuestionCorrectAnswerRequest) },
       ],
+      discriminator: {
+        propertyName: 'type',
+        mapping: {
+          [QuestionType.MultiChoice]: getSchemaPath(
+            MultiChoiceQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.Range]: getSchemaPath(
+            RangeQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.TrueFalse]: getSchemaPath(
+            TrueFalseQuestionCorrectAnswerRequest,
+          ),
+          [QuestionType.TypeAnswer]: getSchemaPath(
+            TypeAnswerQuestionCorrectAnswerRequest,
+          ),
+        },
+      },
     },
   })
   @ApiNotFoundResponse({
@@ -484,6 +523,25 @@ export class GameController {
         { $ref: getSchemaPath(SubmitPinQuestionAnswerRequest) },
         { $ref: getSchemaPath(SubmitPuzzleQuestionAnswerRequest) },
       ],
+      discriminator: {
+        propertyName: 'type',
+        mapping: {
+          [QuestionType.MultiChoice]: getSchemaPath(
+            SubmitMultiChoiceQuestionAnswerRequest,
+          ),
+          [QuestionType.Range]: getSchemaPath(SubmitRangeQuestionAnswerRequest),
+          [QuestionType.TrueFalse]: getSchemaPath(
+            SubmitTrueFalseQuestionAnswerRequest,
+          ),
+          [QuestionType.TypeAnswer]: getSchemaPath(
+            SubmitTypeAnswerQuestionAnswerRequest,
+          ),
+          [QuestionType.Pin]: getSchemaPath(SubmitPinQuestionAnswerRequest),
+          [QuestionType.Puzzle]: getSchemaPath(
+            SubmitPuzzleQuestionAnswerRequest,
+          ),
+        },
+      },
     },
   })
   @ApiNoContentResponse({

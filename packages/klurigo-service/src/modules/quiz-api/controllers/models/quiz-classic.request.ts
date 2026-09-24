@@ -116,15 +116,30 @@ export class QuizClassicRequest implements QuizClassicModeRequestDto {
     description:
       'The list of questions to be included in the quiz. Must include at least one question.',
     required: true,
-    minimum: 1,
-    oneOf: [
-      { $ref: getSchemaPath(QuestionMultiChoice) },
-      { $ref: getSchemaPath(QuestionRange) },
-      { $ref: getSchemaPath(QuestionTrueFalse) },
-      { $ref: getSchemaPath(QuestionTypeAnswer) },
-      { $ref: getSchemaPath(QuestionPin) },
-      { $ref: getSchemaPath(QuestionPuzzle) },
-    ],
+    type: 'array',
+    minItems: QUIZ_QUESTION_MIN,
+    maxItems: QUIZ_QUESTION_MAX,
+    items: {
+      oneOf: [
+        { $ref: getSchemaPath(QuestionMultiChoice) },
+        { $ref: getSchemaPath(QuestionRange) },
+        { $ref: getSchemaPath(QuestionTrueFalse) },
+        { $ref: getSchemaPath(QuestionTypeAnswer) },
+        { $ref: getSchemaPath(QuestionPin) },
+        { $ref: getSchemaPath(QuestionPuzzle) },
+      ],
+      discriminator: {
+        propertyName: 'type',
+        mapping: {
+          [QuestionType.MultiChoice]: getSchemaPath(QuestionMultiChoice),
+          [QuestionType.Range]: getSchemaPath(QuestionRange),
+          [QuestionType.TrueFalse]: getSchemaPath(QuestionTrueFalse),
+          [QuestionType.TypeAnswer]: getSchemaPath(QuestionTypeAnswer),
+          [QuestionType.Pin]: getSchemaPath(QuestionPin),
+          [QuestionType.Puzzle]: getSchemaPath(QuestionPuzzle),
+        },
+      },
+    },
   })
   @IsArray()
   @ArrayMinSize(QUIZ_QUESTION_MIN)
