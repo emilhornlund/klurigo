@@ -121,15 +121,20 @@
       display: flex;
 
       @include helpers.mobile {
-        column-gap: spacing.$space-compact-mobile;
+        flex-direction: column-reverse;
+        gap: spacing.$space-compact-mobile;
+
+        > * {
+          width: 100%;
+        }
       }
 
       @include helpers.tablet {
-        column-gap: spacing.$space-compact-tablet;
+        gap: spacing.$space-compact-tablet;
       }
 
       @include helpers.desktop {
-        column-gap: spacing.$space-compact-desktop;
+        gap: spacing.$space-compact-desktop;
       }
     }
   }
