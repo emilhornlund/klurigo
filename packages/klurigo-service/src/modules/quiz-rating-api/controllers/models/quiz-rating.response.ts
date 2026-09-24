@@ -5,6 +5,8 @@ import {
 } from '@klurigo/common'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
+import { ApiDateTimeProperty, ApiUuidProperty } from '../../../../app/swagger'
+
 import { QuizRatingAuthorResponse } from './quiz-rating-author.response'
 
 /**
@@ -14,12 +16,9 @@ export class QuizRatingResponse implements QuizRatingDto {
   /**
    * The unique identifier of the rating.
    */
-  @ApiProperty({
+  @ApiUuidProperty({
     title: 'ID',
     description: 'The unique identifier of the rating.',
-    required: true,
-    type: String,
-    format: 'uuid',
     example: '86e51511-08d1-4e63-b122-1730f79e0300',
   })
   readonly id: string
@@ -27,12 +26,9 @@ export class QuizRatingResponse implements QuizRatingDto {
   /**
    * The unique identifier of the quiz that was rated.
    */
-  @ApiProperty({
+  @ApiUuidProperty({
     title: 'Quiz ID',
     description: 'The unique identifier of the quiz that was rated.',
-    required: true,
-    type: String,
-    format: 'uuid',
     example: 'eaf37189-7aa7-455e-9e47-73db2a7d0a03',
   })
   readonly quizId: string
@@ -77,11 +73,9 @@ export class QuizRatingResponse implements QuizRatingDto {
   /**
    * The timestamp when the rating was created (ISO 8601).
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Created At',
     description: 'The timestamp when the rating was created (ISO 8601).',
-    required: true,
-    type: Date,
     example: '2026-01-10T18:42:13.125Z',
   })
   readonly createdAt: Date
@@ -89,11 +83,9 @@ export class QuizRatingResponse implements QuizRatingDto {
   /**
    * The timestamp when the rating was last updated (ISO 8601).
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Updated At',
     description: 'The timestamp when the rating was last updated (ISO 8601).',
-    required: true,
-    type: Date,
     example: '2026-01-10T18:42:13.125Z',
   })
   readonly updatedAt: Date

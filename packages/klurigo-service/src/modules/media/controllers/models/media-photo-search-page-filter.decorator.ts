@@ -4,17 +4,18 @@ import {
   MEDIA_SEARCH_TERM_REGEX,
 } from '@klurigo/common'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
 import {
-  IsInt,
   IsOptional,
   IsString,
   Matches,
-  Max,
   MaxLength,
-  Min,
   MinLength,
 } from 'class-validator'
+
+import {
+  ApiPaginationLimitProperty,
+  ApiPaginationOffsetProperty,
+} from '../../../../app/swagger'
 
 /**
  * Represents the query parameters used to filter and paginate photos.
@@ -46,34 +47,18 @@ export class MediaPhotoSearchPageFilter {
   /**
    * The maximum number of photos to retrieve per page.
    */
-  @ApiPropertyOptional({
+  @ApiPaginationLimitProperty({
     description: 'The maximum number of photos to retrieve per page.',
-    type: Number,
-    minimum: 5,
-    maximum: 50,
     default: 10,
-    example: 10,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(5)
-  @Max(50)
-  @Type(() => Number)
   limit?: number
 
   /**
    * The number of photos to skip before starting retrieval.
    */
-  @ApiPropertyOptional({
+  @ApiPaginationOffsetProperty({
     description: 'The number of photos to skip before starting retrieval.',
-    type: Number,
-    minimum: 0,
     default: 0,
-    example: 0,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Type(() => Number)
   offset?: number
 }

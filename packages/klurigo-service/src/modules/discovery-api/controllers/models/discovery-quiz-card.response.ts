@@ -6,6 +6,7 @@ import {
 } from '@klurigo/common'
 import { ApiProperty } from '@nestjs/swagger'
 
+import { ApiDateTimeProperty, ApiUuidProperty } from '../../../../app/swagger'
 import { QuizAuthorResponse } from '../../../quiz-api/controllers/models'
 import { QuizGameplaySummaryResponse } from '../../../quiz-api/controllers/models/quiz-gameplay-summary.response'
 import { QuizRatingSummaryResponse } from '../../../quiz-api/controllers/models/quiz-rating-summary.response'
@@ -24,7 +25,7 @@ export class DiscoveryQuizCardResponse implements DiscoveryQuizCardDto {
   /**
    * The unique identifier of the quiz.
    */
-  @ApiProperty({
+  @ApiUuidProperty({
     title: 'Quiz ID',
     description: 'The unique identifier of the quiz.',
     example: '2e3c7d0a-6c2b-4e47-9f38-7b9b3b9a2a18',
@@ -145,11 +146,9 @@ export class DiscoveryQuizCardResponse implements DiscoveryQuizCardDto {
   /**
    * Timestamp of when the quiz was originally created.
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Created',
     description: 'Timestamp of when the quiz was originally created.',
-    type: String,
-    format: 'date-time',
     example: '2026-02-22T09:30:00.000Z',
   })
   public readonly created: Date

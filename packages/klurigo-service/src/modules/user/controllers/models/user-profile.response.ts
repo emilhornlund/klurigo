@@ -1,14 +1,17 @@
 import {
   AuthProvider,
-  EMAIL_REGEX,
   FAMILY_NAME_REGEX,
   GIVEN_NAME_REGEX,
-  PLAYER_NICKNAME_MAX_LENGTH,
-  PLAYER_NICKNAME_MIN_LENGTH,
-  PLAYER_NICKNAME_REGEX,
   UserProfileResponseDto,
 } from '@klurigo/common'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+
+import {
+  ApiDateTimeProperty,
+  ApiEmailProperty,
+  ApiNicknameProperty,
+  ApiUuidProperty,
+} from '../../../../app/swagger'
 
 /**
  * Response returned after successful user creation.
@@ -17,37 +20,28 @@ export class UserProfileResponse implements UserProfileResponseDto {
   /**
    * The user’s unique identifier.
    */
-  @ApiProperty({
+  @ApiUuidProperty({
     title: 'User ID',
     description: 'Unique identifier for the user.',
-    type: String,
-    format: 'uuid',
   })
   readonly id: string
 
   /**
    * The user’s email address.
    */
-  @ApiProperty({
+  @ApiEmailProperty({
     title: 'Email',
     description: 'Email address of the user.',
-    type: String,
-    format: 'email',
-    pattern: EMAIL_REGEX.source,
-    example: 'user@example.com',
   })
   readonly email: string
 
   /**
    * The user’s unverified email address, if provided.
    */
-  @ApiPropertyOptional({
+  @ApiEmailProperty({
     title: 'Unverified Email',
     description: 'The user’s unverified email address.',
-    type: String,
-    format: 'email',
-    pattern: EMAIL_REGEX.source,
-    example: 'user@example.com',
+    required: false,
   })
   readonly unverifiedEmail?: string
 
@@ -78,16 +72,10 @@ export class UserProfileResponse implements UserProfileResponseDto {
   /**
    * The user’s default nickname.
    */
-  @ApiProperty({
+  @ApiNicknameProperty({
     title: 'Default Nickname',
     description:
       'A nickname chosen by the user, must be 2 to 20 characters long and contain only letters, numbers, or underscores.',
-    required: true,
-    type: String,
-    minLength: PLAYER_NICKNAME_MIN_LENGTH,
-    maxLength: PLAYER_NICKNAME_MAX_LENGTH,
-    pattern: PLAYER_NICKNAME_REGEX.source,
-    example: 'FrostyBear',
   })
   readonly defaultNickname: string
 
@@ -105,11 +93,9 @@ export class UserProfileResponse implements UserProfileResponseDto {
   /**
    * ISO 8601 timestamp when the user was created.
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Created',
     description: 'Creation timestamp for the created user.',
-    type: Date,
-    format: 'date-time',
     example: '2025-06-18T12:00:00.000Z',
   })
   readonly created: Date
@@ -117,11 +103,9 @@ export class UserProfileResponse implements UserProfileResponseDto {
   /**
    * ISO 8601 timestamp when the user was last updated.
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Updated',
     description: 'Last update timestamp for the created user.',
-    type: Date,
-    format: 'date-time',
     example: '2025-06-18T12:00:00.000Z',
   })
   readonly updated: Date

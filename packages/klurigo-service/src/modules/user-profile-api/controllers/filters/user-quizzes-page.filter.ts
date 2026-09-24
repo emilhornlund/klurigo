@@ -1,7 +1,11 @@
 import { UserQuizzesPageFilterDto } from '@klurigo/common'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator'
+import { IsEnum, IsOptional } from 'class-validator'
+
+import {
+  ApiPaginationLimitProperty,
+  ApiPaginationOffsetProperty,
+} from '../../../../app/swagger'
 
 /**
  * Request query parameters for fetching a user's public quizzes with pagination and sorting.
@@ -45,38 +49,18 @@ export class UserQuizzesPageFilter implements UserQuizzesPageFilterDto {
   /**
    * The maximum number of quizzes to retrieve per page.
    */
-  @ApiPropertyOptional({
-    name: 'limit',
+  @ApiPaginationLimitProperty({
     description: 'The maximum number of quizzes to retrieve per page.',
-    type: Number,
-    required: false,
-    minimum: 5,
-    maximum: 50,
     default: 10,
-    example: 10,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(5)
-  @Max(50)
-  @Type(() => Number)
   limit: number
 
   /**
    * The number of quizzes to skip before starting retrieval.
    */
-  @ApiPropertyOptional({
-    name: 'offset',
+  @ApiPaginationOffsetProperty({
     description: 'The number of quizzes to skip before starting retrieval.',
-    type: Number,
-    required: false,
-    minimum: 0,
     default: 0,
-    example: 0,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Type(() => Number)
   offset: number
 }
