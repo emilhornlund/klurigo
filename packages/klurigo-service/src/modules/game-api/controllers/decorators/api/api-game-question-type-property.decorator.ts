@@ -14,7 +14,7 @@ export function ApiGameQuestionTypeProperty(type: QuestionType) {
   return applyDecorators(
     ApiProperty({
       title: 'Type',
-      description: `The type of the question, which is set to {type} for this request.`,
+      description: `The type of the question, which is set to ${type} for this request.`,
       enum: [type],
       example: type,
       required: true,

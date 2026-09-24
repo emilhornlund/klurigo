@@ -1,4 +1,4 @@
-import { Authority, TokenScope } from '@klurigo/common'
+import { Authority, GameMode, QuestionType, TokenScope } from '@klurigo/common'
 import {
   Body,
   Controller,
@@ -108,6 +108,15 @@ export class QuizController {
         { $ref: getSchemaPath(QuizClassicRequest) },
         { $ref: getSchemaPath(QuizZeroToOneHundredRequest) },
       ],
+      discriminator: {
+        propertyName: 'mode',
+        mapping: {
+          [GameMode.Classic]: getSchemaPath(QuizClassicRequest),
+          [GameMode.ZeroToOneHundred]: getSchemaPath(
+            QuizZeroToOneHundredRequest,
+          ),
+        },
+      },
     },
   })
   @ApiBadRequestResponse({
@@ -276,6 +285,15 @@ export class QuizController {
         { $ref: getSchemaPath(QuizClassicRequest) },
         { $ref: getSchemaPath(QuizZeroToOneHundredRequest) },
       ],
+      discriminator: {
+        propertyName: 'mode',
+        mapping: {
+          [GameMode.Classic]: getSchemaPath(QuizClassicRequest),
+          [GameMode.ZeroToOneHundred]: getSchemaPath(
+            QuizZeroToOneHundredRequest,
+          ),
+        },
+      },
     },
   })
   @ApiBadRequestResponse({
@@ -358,6 +376,17 @@ export class QuizController {
           { $ref: getSchemaPath(QuestionPin) },
           { $ref: getSchemaPath(QuestionPuzzle) },
         ],
+        discriminator: {
+          propertyName: 'type',
+          mapping: {
+            [QuestionType.MultiChoice]: getSchemaPath(QuestionMultiChoice),
+            [QuestionType.Range]: getSchemaPath(QuestionRange),
+            [QuestionType.TrueFalse]: getSchemaPath(QuestionTrueFalse),
+            [QuestionType.TypeAnswer]: getSchemaPath(QuestionTypeAnswer),
+            [QuestionType.Pin]: getSchemaPath(QuestionPin),
+            [QuestionType.Puzzle]: getSchemaPath(QuestionPuzzle),
+          },
+        },
       },
     },
     example: [QuestionResponseMultiChoiceExample],

@@ -1,4 +1,4 @@
-import { PaginatedGameHistoryDto } from '@klurigo/common'
+import { GameParticipantType, PaginatedGameHistoryDto } from '@klurigo/common'
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger'
 import { IsArray, IsNumber, Max, Min } from 'class-validator'
 
@@ -22,6 +22,15 @@ export class PaginatedGameHistoryResponse implements PaginatedGameHistoryDto {
         { $ref: getSchemaPath(GameHistoryHostResponse) },
         { $ref: getSchemaPath(GameHistoryPlayerResponse) },
       ],
+      discriminator: {
+        propertyName: 'participantType',
+        mapping: {
+          [GameParticipantType.HOST]: getSchemaPath(GameHistoryHostResponse),
+          [GameParticipantType.PLAYER]: getSchemaPath(
+            GameHistoryPlayerResponse,
+          ),
+        },
+      },
     },
     required: true,
   })

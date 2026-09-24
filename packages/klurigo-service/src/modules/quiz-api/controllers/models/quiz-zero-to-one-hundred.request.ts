@@ -94,8 +94,12 @@ export class QuizZeroToOneHundredRequest implements QuizZeroToOneHundredModeRequ
     description:
       'The list of questions to be included in the quiz. Must include at least one question.',
     required: true,
-    minimum: 1,
-    oneOf: [{ $ref: getSchemaPath(QuestionZeroToOneHundredRange) }],
+    type: 'array',
+    minItems: QUIZ_QUESTION_MIN,
+    maxItems: QUIZ_QUESTION_MAX,
+    items: {
+      oneOf: [{ $ref: getSchemaPath(QuestionZeroToOneHundredRange) }],
+    },
   })
   @IsArray()
   @ArrayMinSize(QUIZ_QUESTION_MIN)

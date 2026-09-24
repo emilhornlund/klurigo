@@ -1,4 +1,4 @@
-import { Authority, TokenScope } from '@klurigo/common'
+import { Authority, GameMode, TokenScope } from '@klurigo/common'
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import {
   ApiBearerAuth,
@@ -87,6 +87,15 @@ export class GameResultController {
         { $ref: getSchemaPath(GameResultClassicModeResponse) },
         { $ref: getSchemaPath(GameResultZeroToOneHundredModeResponse) },
       ],
+      discriminator: {
+        propertyName: 'mode',
+        mapping: {
+          [GameMode.Classic]: getSchemaPath(GameResultClassicModeResponse),
+          [GameMode.ZeroToOneHundred]: getSchemaPath(
+            GameResultZeroToOneHundredModeResponse,
+          ),
+        },
+      },
     },
   })
   @ApiUnauthorizedResponse()
