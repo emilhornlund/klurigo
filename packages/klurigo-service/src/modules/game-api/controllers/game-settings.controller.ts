@@ -1,7 +1,9 @@
 import { Authority, GameParticipantType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiBody,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -55,6 +57,13 @@ export class GameSettingsController {
     summary: 'Update game settings',
     description:
       'Updates runtime settings for an existing game. Settings can only be changed by the host while the game is in an active lobby task.',
+  })
+  @ApiBody({
+    description: 'Payload containing the runtime settings to save.',
+    type: GameSettingsRequest,
+  })
+  @ApiBadRequestResponse({
+    description: 'The game settings payload is invalid.',
   })
   @ApiOkResponse({
     description: 'Game settings were updated successfully.',

@@ -2,7 +2,7 @@ import { applyDecorators } from '@nestjs/common'
 import { ApiParam } from '@nestjs/swagger'
 
 /**
- * Decorator for documenting the `gameID` params parameter.
+ * Decorator for documenting the `gameID` path parameter.
  *
  * Applies:
  * - `@ApiParam` for Swagger documentation.

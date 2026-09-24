@@ -13,13 +13,17 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
@@ -73,12 +77,36 @@ export class MediaController {
     description:
       'Retrieves photos based on the provided search term and pagination parameters.',
   })
+  @ApiQuery({
+    name: 'search',
+    description: 'Filter photos by name or tags.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Maximum number of photos to return per page.',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'offset',
+    description: 'Number of photos to skip before returning results.',
+    required: false,
+    type: Number,
+  })
+  @ApiBadRequestResponse({
+    description: 'One or more search parameters are invalid.',
+  })
   @ApiOkResponse({
     description: 'A paginated response containing photos.',
     type: PaginatedMediaPhotoSearchResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the Media authority.',
   })
   @HttpCode(HttpStatus.OK)
   @Throttle({
@@ -126,12 +154,15 @@ export class MediaController {
       },
     },
   })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Successfully uploaded and processed the image.',
     type: MediaUploadPhotoResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the Media authority.',
   })
   @ApiUnprocessableEntityResponse({
     description: 'The uploaded file was invalid or could not be processed.',
@@ -161,6 +192,9 @@ export class MediaController {
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the Media authority.',
   })
   @ApiNotFoundResponse({
     description: 'The uploaded photo was not found.',

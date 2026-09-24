@@ -1,7 +1,9 @@
 import { Authority, QuizRatingAuthorType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiBody,
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
@@ -57,11 +59,18 @@ export class ProfileQuizRatingController {
   @Put('/ratings')
   @AuthorizedQuizRating()
   @ApiOperation({
-    summary: 'Creates or updates the authenticated user’s quiz rating.',
+    summary: 'Create or update the authenticated user’s quiz rating',
     description:
       'Creates a new rating for the specified quiz or updates the existing rating made by the authenticated user.',
   })
   @ApiQuizIdParam()
+  @ApiBody({
+    description: 'Payload containing the rating stars and optional comment.',
+    type: CreateQuizRatingRequest,
+  })
+  @ApiBadRequestResponse({
+    description: 'The rating payload is invalid.',
+  })
   @ApiOkResponse({
     description: 'The created or updated quiz rating.',
     type: QuizRatingResponse,

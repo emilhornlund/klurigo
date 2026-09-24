@@ -1,9 +1,12 @@
 import { Authority, TokenScope } from '@klurigo/common'
 import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -48,12 +51,72 @@ export class ProfileQuizController {
     description:
       'Fetches a paginated list of quizzes associated with the authenticated user.',
   })
+  @ApiQuery({
+    name: 'search',
+    description: 'Filter quizzes by a title search term.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'mode',
+    description: 'Filter quizzes by game mode.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'visibility',
+    description: 'Filter quizzes by visibility.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'category',
+    description: 'Filter quizzes by category.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'languageCode',
+    description: 'Filter quizzes by language code.',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'sort',
+    description: 'Sort results by title, creation time, or update time.',
+    required: false,
+    enum: ['title', 'created', 'updated'],
+  })
+  @ApiQuery({
+    name: 'order',
+    description: 'Sort results in ascending or descending order.',
+    required: false,
+    enum: ['asc', 'desc'],
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Maximum number of quizzes to return per page.',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'offset',
+    description: 'Number of quizzes to skip before returning results.',
+    required: false,
+    type: Number,
+  })
+  @ApiBadRequestResponse({
+    description: 'One or more quiz query parameters are invalid.',
+  })
   @ApiOkResponse({
     description: "Successfully retrieved the associated user's quizzes.",
     type: PaginatedQuizResponse,
   })
   @ApiUnauthorizedResponse({
     description: 'Unauthorized access to the endpoint.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the required quiz or user authority.',
   })
   public async getUserQuizzes(
     @Principal() user: User,

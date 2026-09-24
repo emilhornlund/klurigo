@@ -63,7 +63,7 @@ export class GameAuthenticationController {
   @Public()
   @Post('/game')
   @ApiOperation({
-    summary: 'Game authentication',
+    summary: 'Authenticate for a game',
     description:
       'Issue access and refresh tokens for participating in a game by providing either its UUID or 6-digit PIN.',
   })

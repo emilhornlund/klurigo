@@ -1,5 +1,10 @@
 import { Controller, Get } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiServiceUnavailableResponse,
+  ApiTags,
+} from '@nestjs/swagger'
 import {
   HealthCheck,
   HealthCheckService,
@@ -22,18 +27,41 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @ApiOperation({
+    summary: 'Check service health',
+    description: 'Checks the availability of the service dependencies.',
+  })
+  @ApiOkResponse({
+    description: 'The service and its dependencies are healthy.',
+  })
+  @ApiServiceUnavailableResponse({
+    description: 'One or more service dependencies are unavailable.',
+  })
   async check(): Promise<HealthCheckResult> {
     return this.checkDependencies()
   }
 
   @Get('ready')
   @HealthCheck()
+  @ApiOperation({
+    summary: 'Check service readiness',
+    description: 'Checks whether the service dependencies are ready.',
+  })
+  @ApiOkResponse({ description: 'The service is ready to accept requests.' })
+  @ApiServiceUnavailableResponse({
+    description: 'One or more service dependencies are not ready.',
+  })
   async readiness(): Promise<HealthCheckResult> {
     return this.checkDependencies()
   }
 
   @Get('live')
   @HealthCheck()
+  @ApiOperation({
+    summary: 'Check service liveness',
+    description: 'Checks whether the service process is running.',
+  })
+  @ApiOkResponse({ description: 'The service process is running.' })
   liveness(): HealthCheckResult {
     return {
       status: 'ok',

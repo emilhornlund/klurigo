@@ -19,11 +19,13 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
 import {
@@ -98,7 +100,7 @@ export class DiscoveryController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Retrieve the discovery snapshot.',
+    summary: 'Retrieve the discovery snapshot',
     description:
       'Returns curated discovery rails with hydrated quiz cards in a fixed ' +
       'section order. Each section contains the first ' +
@@ -107,6 +109,12 @@ export class DiscoveryController {
   @ApiOkResponse({
     description: 'The latest discovery snapshot with hydrated quiz cards.',
     type: DiscoveryResponse,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the Discovery authority.',
   })
   public async getDiscovery(): Promise<DiscoveryResponseDto> {
     const snapshot = await this.discoverySnapshotRepository.findLatest()
@@ -178,7 +186,7 @@ export class DiscoveryController {
   @Get('section/:key')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Retrieve a paginated discovery section.',
+    summary: 'Retrieve a paginated discovery section',
     description:
       'Returns an offset-paginated list of quiz cards for a single discovery ' +
       'rail. Pagination reads directly from the snapshot to ensure ordering ' +
@@ -208,7 +216,13 @@ export class DiscoveryController {
     type: PaginatedDiscoverySectionResponse,
   })
   @ApiBadRequestResponse({
-    description: 'Invalid query parameters (e.g. limit out of range).',
+    description: 'Query parameters must be valid integers.',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The token lacks the Discovery authority.',
   })
   public async getSection(
     @Param('key') key: DiscoverySectionKey,

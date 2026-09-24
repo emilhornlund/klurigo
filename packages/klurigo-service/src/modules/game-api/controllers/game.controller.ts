@@ -25,6 +25,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
   getSchemaPath,
@@ -113,7 +114,7 @@ export class GameController {
   @ApiOperation({
     summary: 'Join a game',
     description:
-      'Allows a participant to join an existing game as a player by providing the game ID. Returns a unique identifier and a token for the participant.',
+      'Allows a participant to join an existing game as a player by providing the game ID.',
   })
   @ApiBody({
     description: 'Request body for joining an existing game.',
@@ -125,6 +126,9 @@ export class GameController {
   @ApiBadRequestResponse({
     description:
       'Invalid request, possibly due to malformed game ID or validation error.',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
   })
   @ApiForbiddenResponse({
     description: 'Game is full and cannot accept more players.',
@@ -152,7 +156,7 @@ export class GameController {
   @Get('/:gameID/players')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Retrieves the current list of players for a game.',
+    summary: 'Retrieve the current game players',
     description:
       'Returns the player participants currently associated with the specified game. Only host participants can access this endpoint.',
   })
@@ -202,6 +206,9 @@ export class GameController {
   })
   @ApiForbiddenResponse({
     description: 'The participant is not allowed to remove the player.',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
   })
   @ApiNotFoundResponse({
     description:
@@ -261,10 +268,22 @@ export class GameController {
     description: 'The game has already ended.',
   })
   @ApiBadRequestResponse({
-    description: 'Invalid game ID format or missing authorization token.',
+    description: 'Invalid game ID format.',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant is not allowed to access this game.',
   })
   @AuthorizedGame()
   @ApiGameIdParam()
+  @ApiQuery({
+    name: 'connectionId',
+    description: 'The client connection identifier to resume or close.',
+    required: false,
+    type: String,
+  })
   @SkipThrottle()
   public getEventStream(
     @PrincipalId() participantId: string,
@@ -309,7 +328,7 @@ export class GameController {
   @Post('/:gameID/tasks/current/complete')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
-    summary: 'Marks the current task as complete for the active game session.',
+    summary: 'Complete the current game task',
     description:
       'This endpoint allows a game host to mark the active task as complete when all players have responded or the task has otherwise been concluded.',
   })
@@ -320,7 +339,13 @@ export class GameController {
     description: 'Invalid game ID format or task not in active status.',
   })
   @ApiUnauthorizedResponse({
-    description: 'Unauthorized access or invalid participant role.',
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant must be the game host.',
+  })
+  @ApiNoContentResponse({
+    description: 'The current task was completed successfully.',
   })
   @AuthorizedGame(GameParticipantType.HOST)
   @ApiGameIdParam()
@@ -363,8 +388,14 @@ export class GameController {
     description:
       'Invalid game ID format or question result task not in active status.',
   })
+  @ApiNoContentResponse({
+    description: 'The correct answer was added successfully.',
+  })
   @ApiUnauthorizedResponse({
-    description: 'Unauthorized access or invalid participant role.',
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant must be the game host.',
   })
   @AuthorizedGame(GameParticipantType.HOST)
   @ApiGameIdParam()
@@ -415,8 +446,14 @@ export class GameController {
     description:
       'Invalid game ID format or question result task not in active status.',
   })
+  @ApiNoContentResponse({
+    description: 'The correct answer was deleted successfully.',
+  })
   @ApiUnauthorizedResponse({
-    description: 'Unauthorized access or invalid participant role.',
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant must be the game host.',
   })
   @AuthorizedGame(GameParticipantType.HOST)
   @ApiGameIdParam()
@@ -465,6 +502,12 @@ export class GameController {
     description:
       'The answer has been successfully submitted. If the response is lost, retrying is safe but the retry is reported as a duplicate.',
   })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant must be a player in the game.',
+  })
   @AuthorizedGame(GameParticipantType.PLAYER)
   @ApiGameIdParam()
   public async submitQuestionAnswer(
@@ -496,7 +539,7 @@ export class GameController {
   @Post('/:gameID/quit')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
-    summary: 'Ends the active game.',
+    summary: 'End the active game',
     description:
       'Ends an active game and marks it as terminated. Completed, expired, terminated, and repeated quit requests are rejected without another lifecycle event.',
   })
@@ -505,6 +548,12 @@ export class GameController {
   })
   @ApiNotFoundResponse({
     description: 'No active game found with the specified game ID.',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Missing or invalid authentication credentials.',
+  })
+  @ApiForbiddenResponse({
+    description: 'The participant must be the game host.',
   })
   @AuthorizedGame(GameParticipantType.HOST)
   @ApiGameIdParam()

@@ -135,9 +135,8 @@ export class UserAuthController {
     long: { limit: 10, ttl: 1000 * 60 * 60 * 24 }, // 10 requests per 86 400 000 ms (per IP per day)
   })
   @ApiOperation({
-    summary: 'Forgot password',
-    description:
-      '`Authorization: None`\n\nSends a password reset link to the user’s email address.',
+    summary: 'Request a password reset',
+    description: 'Sends a password reset link to the user’s email address.',
   })
   @ApiBody({
     description: 'Password forgot request payload',
