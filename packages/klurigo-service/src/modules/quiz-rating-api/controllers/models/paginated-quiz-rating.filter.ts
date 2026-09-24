@@ -1,6 +1,11 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform, Type } from 'class-transformer'
-import { IsBoolean, IsIn, IsInt, IsOptional, Max, Min } from 'class-validator'
+import { Transform } from 'class-transformer'
+import { IsBoolean, IsIn, IsOptional } from 'class-validator'
+
+import {
+  ApiPaginationLimitProperty,
+  ApiPaginationOffsetProperty,
+} from '../../../../app/swagger'
 
 /**
  * Parses common boolean-like query parameter values into actual booleans.
@@ -82,40 +87,20 @@ export class PaginatedQuizRatingFilter {
   /**
    * The maximum number of quiz ratings to retrieve per page.
    */
-  @ApiPropertyOptional({
-    name: 'limit',
+  @ApiPaginationLimitProperty({
     description: 'The maximum number of quiz ratings to retrieve per page.',
-    type: Number,
-    required: false,
-    minimum: 5,
-    maximum: 50,
     default: 10,
-    example: 10,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(5)
-  @Max(50)
-  @Type(() => Number)
   limit?: number
 
   /**
    * The number of quiz ratings to skip before starting retrieval.
    */
-  @ApiPropertyOptional({
-    name: 'offset',
+  @ApiPaginationOffsetProperty({
     description:
       'The number of quiz ratings to skip before starting retrieval.',
-    type: Number,
-    required: false,
-    minimum: 0,
     default: 0,
-    example: 0,
   })
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Type(() => Number)
   offset?: number
 
   /**

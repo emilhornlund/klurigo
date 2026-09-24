@@ -1,6 +1,6 @@
-import { applyDecorators } from '@nestjs/common'
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
+import type { ApiPropertyOptions } from '@nestjs/swagger'
+
+import { ApiUuidProperty } from '../../../../../app/swagger'
 
 /**
  * Decorator for documenting the `id` property of a game.
@@ -12,14 +12,8 @@ import { IsUUID } from 'class-validator'
 export function ApiGameIdProperty(
   options?: Pick<ApiPropertyOptions, 'description'>,
 ) {
-  return applyDecorators(
-    ApiProperty({
-      title: 'ID',
-      description: options?.description,
-      required: true,
-      format: 'uuid',
-      type: String,
-    }),
-    IsUUID(),
-  )
+  return ApiUuidProperty({
+    title: 'ID',
+    description: options?.description,
+  })
 }

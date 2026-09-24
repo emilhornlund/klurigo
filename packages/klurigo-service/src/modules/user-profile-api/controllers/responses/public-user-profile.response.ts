@@ -1,10 +1,11 @@
-import {
-  PLAYER_NICKNAME_MAX_LENGTH,
-  PLAYER_NICKNAME_MIN_LENGTH,
-  PLAYER_NICKNAME_REGEX,
-  PublicUserProfileResponseDto,
-} from '@klurigo/common'
+import { PublicUserProfileResponseDto } from '@klurigo/common'
 import { ApiProperty } from '@nestjs/swagger'
+
+import {
+  ApiDateTimeProperty,
+  ApiNicknameProperty,
+  ApiUuidProperty,
+} from '../../../../app/swagger'
 
 /**
  * Response returned when fetching a user's public profile.
@@ -13,25 +14,18 @@ export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
   /**
    * The user's unique identifier.
    */
-  @ApiProperty({
+  @ApiUuidProperty({
     title: 'User ID',
     description: 'Unique identifier for the user.',
-    type: String,
-    format: 'uuid',
   })
   readonly id: string
 
   /**
    * The public nickname displayed for the user.
    */
-  @ApiProperty({
+  @ApiNicknameProperty({
     title: 'Nickname',
     description: 'Public nickname displayed for the user.',
-    type: String,
-    minLength: PLAYER_NICKNAME_MIN_LENGTH,
-    maxLength: PLAYER_NICKNAME_MAX_LENGTH,
-    pattern: PLAYER_NICKNAME_REGEX.source,
-    example: 'FrostyBear',
   })
   readonly nickname: string
 
@@ -74,11 +68,9 @@ export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
   /**
    * ISO 8601 timestamp when the user account was created.
    */
-  @ApiProperty({
+  @ApiDateTimeProperty({
     title: 'Created At',
     description: 'Creation timestamp for the user account.',
-    type: Date,
-    format: 'date-time',
     example: '2025-06-18T12:00:00.000Z',
   })
   readonly createdAt: Date

@@ -1,18 +1,11 @@
 import {
   AuthProvider,
-  PLAYER_NICKNAME_MAX_LENGTH,
-  PLAYER_NICKNAME_MIN_LENGTH,
-  PLAYER_NICKNAME_REGEX,
   UpdateGoogleUserProfileRequestDto,
 } from '@klurigo/common'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import {
-  IsEnum,
-  IsOptional,
-  Matches,
-  MaxLength,
-  MinLength,
-} from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
+import { IsEnum } from 'class-validator'
+
+import { ApiNicknameProperty } from '../../../../app/swagger'
 
 /**
  * Represents the request object for updating a Google user’s profile.
@@ -33,22 +26,11 @@ export class UpdateGoogleUserProfileRequest implements UpdateGoogleUserProfileRe
   /**
    * The user’s default nickname, if provided.
    */
-  @ApiPropertyOptional({
+  @ApiNicknameProperty({
     title: 'Default Nickname',
     description:
       'A nickname chosen by the user, must be 2 to 20 characters long and contain only letters, numbers, or underscores.',
-    required: true,
-    type: String,
-    minLength: PLAYER_NICKNAME_MIN_LENGTH,
-    maxLength: PLAYER_NICKNAME_MAX_LENGTH,
-    pattern: PLAYER_NICKNAME_REGEX.source,
-    example: 'FrostyBear',
-  })
-  @IsOptional()
-  @MinLength(PLAYER_NICKNAME_MIN_LENGTH)
-  @MaxLength(PLAYER_NICKNAME_MAX_LENGTH)
-  @Matches(PLAYER_NICKNAME_REGEX, {
-    message: 'Nickname can only contain letters, numbers, and underscores.',
+    required: false,
   })
   readonly defaultNickname?: string
 }
