@@ -14,7 +14,32 @@ import {
 } from '@nestjs/swagger'
 import { Test } from '@nestjs/testing'
 
-import { AppModule } from '../app.module'
+import { AuthController } from '../../modules/authentication/controllers'
+import { DiscoveryController } from '../../modules/discovery-api/controllers'
+import {
+  GameController,
+  GameRatingController,
+  GameSettingsController,
+  ProfileGameController,
+  QuizGameController,
+} from '../../modules/game-api/controllers'
+import { GameAuthenticationController } from '../../modules/game-authentication/controllers'
+import { GameResultController } from '../../modules/game-result/controllers'
+import { HealthController } from '../../modules/health/controllers'
+import { MediaController } from '../../modules/media/controllers'
+import {
+  ProfileQuizController,
+  QuizController,
+} from '../../modules/quiz-api/controllers'
+import { ProfileQuizRatingController } from '../../modules/quiz-rating-api/controllers/profile-quiz-rating.controller'
+import { QuizRatingController } from '../../modules/quiz-rating-api/controllers/quiz-rating.controller'
+import {
+  UserAuthController,
+  UserController,
+  UserProfileController,
+} from '../../modules/user/controllers'
+import { PublicUserController } from '../../modules/user-profile-api/controllers'
+import { AppController } from '../controllers'
 
 import { createOpenApiConfig } from './openapi.config'
 
@@ -56,6 +81,29 @@ const COMMON_ERROR_STATUSES = [
   '503',
 ]
 
+const OPENAPI_CONTROLLERS = [
+  AppController,
+  AuthController,
+  DiscoveryController,
+  GameAuthenticationController,
+  GameController,
+  GameRatingController,
+  GameResultController,
+  GameSettingsController,
+  HealthController,
+  MediaController,
+  ProfileGameController,
+  ProfileQuizController,
+  ProfileQuizRatingController,
+  PublicUserController,
+  QuizController,
+  QuizGameController,
+  QuizRatingController,
+  UserAuthController,
+  UserController,
+  UserProfileController,
+]
+
 function getSchema(document: OpenAPIObject, name: string): SchemaObject {
   const schema = document.components?.schemas?.[name]
   if (!schema || '$ref' in schema) throw new Error(`Missing schema: ${name}`)
@@ -92,19 +140,22 @@ function getItemsSchema(schema: SchemaObject | ReferenceObject | undefined) {
 }
 
 describe('generated OpenAPI contract', () => {
-  let app: INestApplication
+  let app: INestApplication | undefined
   let document: OpenAPIObject
 
   beforeAll(async () => {
-    const module = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile()
-    app = module.createNestApplication()
-    document = SwaggerModule.createDocument(app, createOpenApiConfig())
+    const testingModule = await Test.createTestingModule({
+      controllers: OPENAPI_CONTROLLERS,
+    })
+      .useMocker(() => ({}))
+      .compile()
+    const nestApp = testingModule.createNestApplication()
+    app = nestApp
+    document = SwaggerModule.createDocument(nestApp, createOpenApiConfig())
   })
 
   afterAll(async () => {
-    await app.close()
+    await app?.close()
   })
 
   it('has intentional API metadata and a documented bearer scheme', () => {
@@ -332,6 +383,7 @@ describe('generated OpenAPI contract', () => {
   })
 
   it('can still create a document with the standard builder API', () => {
+    if (!app) throw new Error('OpenAPI test application was not created')
     expect(
       SwaggerModule.createDocument(
         app,
