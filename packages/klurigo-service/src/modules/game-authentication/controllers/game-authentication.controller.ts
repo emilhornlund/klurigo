@@ -8,15 +8,12 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common'
-import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger'
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   IpAddress,
   Public,

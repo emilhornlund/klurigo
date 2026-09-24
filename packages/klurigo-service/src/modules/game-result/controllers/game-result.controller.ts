@@ -3,15 +3,17 @@ import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiExtraModels,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger'
 
+import {
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   PrincipalId,
   RequiredAuthorities,
@@ -87,10 +89,7 @@ export class GameResultController {
       ],
     },
   })
-  @ApiUnauthorizedResponse({
-    description:
-      'Unauthorized access to the endpoint. Token is missing or invalid.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to the game results.',
   })

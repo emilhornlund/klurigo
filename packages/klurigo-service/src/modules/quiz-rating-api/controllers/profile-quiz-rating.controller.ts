@@ -1,16 +1,18 @@
 import { Authority, QuizRatingAuthorType, TokenScope } from '@klurigo/common'
 import { Body, Controller, HttpCode, HttpStatus, Put } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
-  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   Principal,
   RequiredAuthorities,
@@ -75,9 +77,7 @@ export class ProfileQuizRatingController {
     description: 'The created or updated quiz rating.',
     type: QuizRatingResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authentication required.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Insufficient permissions to rate the quiz.',
   })

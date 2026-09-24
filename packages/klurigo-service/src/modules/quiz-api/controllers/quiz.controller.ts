@@ -12,22 +12,24 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiExtraModels,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   Principal,
   RequiredAuthorities,
@@ -115,9 +117,7 @@ export class QuizController {
     description: 'Successfully created the quiz.',
     type: QuizResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user token lacks the Quiz authority.',
   })
@@ -203,9 +203,7 @@ export class QuizController {
     description: 'Successfully retrieved the paginated list of public quizzes.',
     type: PaginatedQuizResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user token lacks the required scope or authority.',
   })
@@ -244,9 +242,7 @@ export class QuizController {
     description: 'Successfully retrieved the quiz.',
     type: QuizResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to this quiz.',
   })
@@ -289,9 +285,7 @@ export class QuizController {
     description: 'Successfully updated the quiz.',
     type: QuizResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to this quiz.',
   })
@@ -322,9 +316,7 @@ export class QuizController {
   @ApiNoContentResponse({
     description: 'Successfully deleted the quiz.',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to this quiz.',
   })
@@ -370,9 +362,7 @@ export class QuizController {
     },
     example: [QuestionResponseMultiChoiceExample],
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user does not have access to the quiz.',
   })

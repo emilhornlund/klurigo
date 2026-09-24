@@ -1,16 +1,18 @@
 import { Authority, TokenScope } from '@klurigo/common'
 import { Controller, Get, Query, ValidationPipe } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   Principal,
   RequiredAuthorities,
@@ -112,9 +114,7 @@ export class ProfileQuizController {
     description: "Successfully retrieved the associated user's quizzes.",
     type: PaginatedQuizResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The token lacks the required quiz or user authority.',
   })

@@ -12,19 +12,21 @@ import {
   Put,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiNotFoundErrorResponse as ApiNotFoundResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   Principal,
   RequiredAuthorities,
@@ -74,9 +76,7 @@ export class UserProfileController {
     description: 'Successfully retrieved the associated user’s profile.',
     type: UserProfileResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access to the endpoint.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user token lacks the required authority or scope.',
   })
@@ -121,9 +121,7 @@ export class UserProfileController {
     description: 'Successfully updated the user’s profile.',
     type: UserProfileResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized access. The user must be authenticated.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'The user token lacks the required authority or scope.',
   })

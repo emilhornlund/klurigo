@@ -8,16 +8,18 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 
+import {
+  ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiForbiddenErrorResponse as ApiForbiddenResponse,
+  ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
+} from '../../../app/decorators'
 import {
   RequiredAuthorities,
   RequiresScopes,
@@ -105,9 +107,7 @@ export class QuizRatingController {
     description: 'A paginated list of quiz ratings.',
     type: PaginatedQuizRatingResponse,
   })
-  @ApiUnauthorizedResponse({
-    description: 'Authentication required.',
-  })
+  @ApiUnauthorizedResponse()
   @ApiForbiddenResponse({
     description: 'Insufficient permissions to access quiz ratings.',
   })
