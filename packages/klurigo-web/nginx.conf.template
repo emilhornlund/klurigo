@@ -14,11 +14,17 @@ http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
-    add_header X-XSS-Protection "1; mode=block";
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options nosniff;
-    add_header Referrer-Policy "strict-origin";
-    add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy "strict-origin" always;
+    add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+
+    # Quiz media URLs are user supplied, so images and media must support HTTPS
+    # origins. Application scripts remain same-origin, while player scripts are
+    # limited to the providers supported by ReactPlayer.
+    # React components use runtime style attributes for responsive media and
+    # gameplay state, which requires the narrowly scoped unsafe-inline exception.
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
 
     gzip on;
     gzip_http_version 1.1;
@@ -32,6 +38,11 @@ http {
     location / {
       index index.html index.htm;
       expires 60;
+      add_header X-Frame-Options "DENY" always;
+      add_header X-Content-Type-Options nosniff always;
+      add_header Referrer-Policy "strict-origin" always;
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
       add_header Pragma public;
       add_header Cache-Control "public, no-cache";
       try_files $uri $uri/ /index.html?$args;
@@ -66,6 +77,11 @@ http {
 
       gzip off;
 
+      add_header X-Frame-Options "DENY" always;
+      add_header X-Content-Type-Options nosniff always;
+      add_header Referrer-Policy "strict-origin" always;
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
       add_header Cache-Control "no-cache";
       add_header X-Accel-Buffering no;
 
@@ -95,6 +111,12 @@ http {
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
+      add_header X-Frame-Options "DENY" always;
+      add_header X-Content-Type-Options nosniff always;
+      add_header Referrer-Policy "strict-origin" always;
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
+
       # Allow preflight caching
       add_header Access-Control-Allow-Origin $http_origin always;
       add_header Access-Control-Allow-Credentials true always;
@@ -103,6 +125,11 @@ http {
 
       # Handle OPTIONS (preflight) requests quickly
       if ($request_method = OPTIONS) {
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy "strict-origin" always;
+        add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
         add_header Content-Length 0;
         add_header Content-Type text/plain;
         return 204;
@@ -111,6 +138,11 @@ http {
 
     location /uploads/images/ {
       proxy_pass ${KLURIGO_SERVICE_IMAGES_PROXY}/;
+      add_header X-Frame-Options "DENY" always;
+      add_header X-Content-Type-Options nosniff always;
+      add_header Referrer-Policy "strict-origin" always;
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://www.youtube.com https://fast.wistia.com https://open.spotify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://fast.wistia.net https://open.spotify.com https://player.twitch.tv https://www.tiktok.com; connect-src 'self' https://*.sentry.io https://*.youtube.com https://*.youtube-nocookie.com https://*.vimeo.com https://*.wistia.com https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" always;
       add_header Access-Control-Allow-Origin *;
     }
   }
