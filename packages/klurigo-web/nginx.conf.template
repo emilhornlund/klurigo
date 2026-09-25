@@ -100,34 +100,17 @@ http {
       proxy_read_timeout 30s;
       proxy_send_timeout 30s;
 
-      # Preserve Origin and other headers
+      # Preserve Origin so NestJS can apply its configured CORS policy
       proxy_set_header Origin $http_origin;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-      # Allow preflight caching
-      add_header Access-Control-Allow-Origin $http_origin always;
-      add_header Access-Control-Allow-Credentials true always;
-      add_header Access-Control-Allow-Methods 'GET, POST, PUT, PATCH, DELETE, OPTIONS' always;
-      add_header Access-Control-Allow-Headers 'Authorization, Content-Type, Accept, Origin, X-Requested-With' always;
       add_header X-Frame-Options "DENY";
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
       add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
       add_header Content-Security-Policy $klurigo_content_security_policy always;
-
-      # Handle OPTIONS (preflight) requests quickly
-      if ($request_method = OPTIONS) {
-        add_header Content-Length 0;
-        add_header Content-Type text/plain;
-        add_header X-Frame-Options "DENY";
-        add_header X-Content-Type-Options nosniff;
-        add_header Referrer-Policy "strict-origin";
-        add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
-        add_header Content-Security-Policy $klurigo_content_security_policy always;
-        return 204;
-      }
     }
 
     location /uploads/images/ {
