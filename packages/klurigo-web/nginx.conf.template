@@ -18,6 +18,8 @@ http {
     add_header X-Content-Type-Options nosniff;
     add_header Referrer-Policy "strict-origin";
     add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+    set $klurigo_content_security_policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.pexels.com https:; media-src 'self' data: blob: https:; frame-src 'self' https://youtube.com https://*.youtube.com https://*.youtube-nocookie.com https://*.youtubeeducation.com https://vimeo.com https://*.vimeo.com https://*.wistia.com https://*.wistia.net https://wi.st https://*.spotify.com https://*.twitch.tv https://*.tiktok.com; connect-src 'self' https: https://api.pexels.com https://*.sentry.io wss:; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com; frame-ancestors 'none';";
+    add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
 
     gzip on;
     gzip_http_version 1.1;
@@ -37,6 +39,7 @@ http {
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
       add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+      add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
       try_files $uri $uri/ /index.html?$args;
     }
 
@@ -75,6 +78,7 @@ http {
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
       add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+      add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
 
       # Build the full upstream URL using the existing env var:
       # KLURIGO_SERVICE_PROXY = http://klurigo-service:8080/api
@@ -111,6 +115,7 @@ http {
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
       add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+      add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
 
       # Handle OPTIONS (preflight) requests quickly
       if ($request_method = OPTIONS) {
@@ -120,6 +125,7 @@ http {
         add_header X-Content-Type-Options nosniff;
         add_header Referrer-Policy "strict-origin";
         add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+        add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
         return 204;
       }
     }
@@ -131,6 +137,7 @@ http {
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
       add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+      add_header Content-Security-Policy-Report-Only $klurigo_content_security_policy always;
     }
   }
 }
