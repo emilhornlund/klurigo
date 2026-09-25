@@ -34,6 +34,10 @@ http {
       expires 60;
       add_header Pragma public;
       add_header Cache-Control "public, no-cache";
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options nosniff;
+      add_header Referrer-Policy "strict-origin";
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
       try_files $uri $uri/ /index.html?$args;
     }
 
@@ -68,6 +72,10 @@ http {
 
       add_header Cache-Control "no-cache";
       add_header X-Accel-Buffering no;
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options nosniff;
+      add_header Referrer-Policy "strict-origin";
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
 
       # Build the full upstream URL using the existing env var:
       # KLURIGO_SERVICE_PROXY = http://klurigo-service:8080/api
@@ -100,11 +108,19 @@ http {
       add_header Access-Control-Allow-Credentials true always;
       add_header Access-Control-Allow-Methods 'GET, POST, PUT, PATCH, DELETE, OPTIONS' always;
       add_header Access-Control-Allow-Headers 'Authorization, Content-Type, Accept, Origin, X-Requested-With' always;
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options nosniff;
+      add_header Referrer-Policy "strict-origin";
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
 
       # Handle OPTIONS (preflight) requests quickly
       if ($request_method = OPTIONS) {
         add_header Content-Length 0;
         add_header Content-Type text/plain;
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options nosniff;
+        add_header Referrer-Policy "strict-origin";
+        add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
         return 204;
       }
     }
@@ -112,6 +128,10 @@ http {
     location /uploads/images/ {
       proxy_pass ${KLURIGO_SERVICE_IMAGES_PROXY}/;
       add_header Access-Control-Allow-Origin *;
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options nosniff;
+      add_header Referrer-Policy "strict-origin";
+      add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
     }
   }
 }
