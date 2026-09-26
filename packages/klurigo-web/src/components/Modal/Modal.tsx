@@ -106,7 +106,6 @@ const Modal: FC<ModalProps> = ({
                   type="button"
                   variant="outline"
                   surface="light"
-                  size="small"
                   value={closeAction.label}
                   onClick={closeAction.onClick}
                   grow
@@ -120,7 +119,6 @@ const Modal: FC<ModalProps> = ({
                   variant="primary"
                   surface="light"
                   intent={primaryAction.intent ?? 'default'}
-                  size="small"
                   value={primaryAction.label}
                   disabled={primaryAction.disabled}
                   loading={primaryAction.loading}
