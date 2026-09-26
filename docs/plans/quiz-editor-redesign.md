@@ -226,7 +226,7 @@ Suggested commit:
 
 ---
 
-## [ ] 8. Move duration into `QuestionSettings`
+## [x] 8. Move duration into `QuestionSettings`
 
 Move the existing `QuestionFieldType.CommonDuration` control from the question-type forms into the settings panel.
 

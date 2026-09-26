@@ -383,7 +383,9 @@ describe('QuizCreatorPageUI', () => {
       name: 'Question settings',
     })
     const editor = screen.getByRole('main', { name: 'Question editor' })
-    const select = within(settings).getByRole('combobox')
+    const select = within(settings).getByTestId(
+      'test-question-type-select-select',
+    )
     expect(select).toHaveValue(QuestionType.MultiChoice)
     expect(
       within(editor).queryByTestId('test-question-type-select-select'),
@@ -411,6 +413,38 @@ describe('QuizCreatorPageUI', () => {
     expect(
       screen.queryByTestId('test-question-type-select-select'),
     ).not.toBeInTheDocument()
+  })
+
+  it('keeps the duration control only in the settings panel', () => {
+    const question = {
+      type: QuestionType.MultiChoice,
+      question: 'First question',
+      duration: 45,
+    }
+    const onQuestionValueChange = vi.fn()
+    renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions: [question, { ...question, question: 'Second question' }],
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: question,
+      selectedQuestionIndex: 0,
+      onQuestionValueChange,
+    })
+
+    const settings = screen.getByRole('complementary', {
+      name: 'Question settings',
+    })
+    const editor = screen.getByRole('main', { name: 'Question editor' })
+    const duration = within(settings).getByTestId('test-duration-select-select')
+    expect(duration).toHaveValue('45')
+    expect(
+      within(editor).queryByTestId('test-duration-select-select'),
+    ).not.toBeInTheDocument()
+    fireEvent.change(duration, { target: { value: '90' } })
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith(
+      'duration',
+      90,
+    )
   })
 
   it('shows question navigation in the page footer and traverses questions', () => {

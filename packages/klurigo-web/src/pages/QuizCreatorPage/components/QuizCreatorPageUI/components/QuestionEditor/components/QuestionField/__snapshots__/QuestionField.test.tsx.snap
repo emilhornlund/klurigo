@@ -98,7 +98,7 @@ exports[`QuestionField > renders a audio media question field 1`] = `
 exports[`QuestionField > renders a duration question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"

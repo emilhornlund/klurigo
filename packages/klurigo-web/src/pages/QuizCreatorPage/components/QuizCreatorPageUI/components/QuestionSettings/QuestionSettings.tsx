@@ -23,6 +23,7 @@ const QuestionSettings: FC<QuestionSettingsProps> = ({
   mode,
   question,
   questionValidation,
+  onQuestionValueChange,
   onReplaceQuestion,
 }) => (
   <aside className={styles.questionSettings} aria-label="Question settings">
@@ -35,6 +36,12 @@ const QuestionSettings: FC<QuestionSettingsProps> = ({
         onChange={onReplaceQuestion}
       />
     )}
+    <QuestionField
+      type={QuestionFieldType.CommonDuration}
+      value={question.duration}
+      validation={questionValidation}
+      onChange={(newValue) => onQuestionValueChange('duration', newValue)}
+    />
   </aside>
 )
 

@@ -169,7 +169,7 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
       return (
         <QuestionFieldWrapper
           label="Time Limit"
-          layout="half"
+          layout="full"
           info={
             <>
               The time limit for answering the question. The allowed values are:
