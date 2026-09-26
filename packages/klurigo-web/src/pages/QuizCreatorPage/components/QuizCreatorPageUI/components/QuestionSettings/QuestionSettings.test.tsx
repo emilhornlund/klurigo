@@ -138,3 +138,68 @@ describe('QuestionSettings points', () => {
     ).toBeInTheDocument()
   })
 })
+
+describe('QuestionSettings info', () => {
+  it.each([
+    [GameMode.Classic, QuestionType.MultiChoice],
+    [GameMode.Classic, QuestionType.Range],
+    [GameMode.Classic, QuestionType.TrueFalse],
+    [GameMode.Classic, QuestionType.TypeAnswer],
+    [GameMode.Classic, QuestionType.Pin],
+    [GameMode.Classic, QuestionType.Puzzle],
+    [GameMode.ZeroToOneHundred, QuestionType.Range],
+  ])('edits additional content for %s / %s', (mode, type) => {
+    const onQuestionValueChange = vi.fn()
+    render(
+      <QuestionSettings
+        mode={mode}
+        question={{ type, info: 'Existing context' }}
+        questionValidation={validation}
+        onQuestionValueChange={onQuestionValueChange}
+        onReplaceQuestion={vi.fn()}
+      />,
+    )
+
+    const heading = screen.getByRole('heading', { name: 'Additional content' })
+    const info = within(heading.closest('section')!).getByTestId(
+      'test-question-info-textfield-textfield',
+    )
+    expect(info).toHaveValue('Existing context')
+    fireEvent.change(info, { target: { value: 'Updated context' } })
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith(
+      'info',
+      'Updated context',
+    )
+  })
+
+  it('preserves info validation and clearing behavior', () => {
+    const onQuestionValueChange = vi.fn()
+    render(
+      <QuestionSettings
+        mode={GameMode.Classic}
+        question={{ type: QuestionType.MultiChoice, info: 'Existing context' }}
+        questionValidation={
+          {
+            ...validation,
+            valid: false,
+            errors: [{ path: 'info', message: 'Invalid info' }],
+          } as QuizQuestionValidationResult
+        }
+        onQuestionValueChange={onQuestionValueChange}
+        onReplaceQuestion={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByText('Invalid info')).toBeInTheDocument()
+    fireEvent.change(
+      screen.getByTestId('test-question-info-textfield-textfield'),
+      {
+        target: { value: '   ' },
+      },
+    )
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith(
+      'info',
+      undefined,
+    )
+  })
+})

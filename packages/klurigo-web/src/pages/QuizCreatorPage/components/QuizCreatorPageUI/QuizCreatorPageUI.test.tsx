@@ -476,6 +476,43 @@ describe('QuizCreatorPageUI', () => {
     expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith('points', 0)
   })
 
+  it('keeps question info only in the settings panel', () => {
+    const question = {
+      type: QuestionType.MultiChoice,
+      question: 'First question',
+      info: 'Existing context',
+    }
+    const onQuestionValueChange = vi.fn()
+    renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions: [question, { ...question, question: 'Second question' }],
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: question,
+      selectedQuestionIndex: 0,
+      onQuestionValueChange,
+    })
+
+    const settings = screen.getByRole('complementary', {
+      name: 'Question settings',
+    })
+    const editor = screen.getByRole('main', { name: 'Question editor' })
+    expect(
+      within(settings).getByRole('heading', { name: 'Additional content' }),
+    ).toBeInTheDocument()
+    const info = within(settings).getByTestId(
+      'test-question-info-textfield-textfield',
+    )
+    expect(info).toHaveValue('Existing context')
+    expect(
+      within(editor).queryByTestId('test-question-info-textfield-textfield'),
+    ).not.toBeInTheDocument()
+    fireEvent.change(info, { target: { value: 'Updated context' } })
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith(
+      'info',
+      'Updated context',
+    )
+  })
+
   it('shows question navigation in the page footer and traverses questions', () => {
     const onSelectedQuestionIndex = vi.fn()
     const questions = [

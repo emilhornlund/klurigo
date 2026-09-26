@@ -593,59 +593,6 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
         </div>
       </div>
     </div>
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutFull"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Info
-          </span>
-          <button
-            class="iconTooltipButton"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-circle-info"
-              data-icon="circle-info"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="textFieldInputContainer surfaceBrand"
-            >
-              <input
-                class="textfield"
-                data-testid="test-question-info-textfield-textfield"
-                id="question-info-textfield"
-                name="question-info-textfield"
-                placeholder="Info"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -1060,59 +1007,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutFull"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Info
-          </span>
-          <button
-            class="iconTooltipButton"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-circle-info"
-              data-icon="circle-info"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="textFieldInputContainer surfaceBrand"
-            >
-              <input
-                class="textfield"
-                data-testid="test-question-info-textfield-textfield"
-                id="question-info-textfield"
-                name="question-info-textfield"
-                placeholder="Info"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -1393,59 +1287,6 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutFull"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Info
-          </span>
-          <button
-            class="iconTooltipButton"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-circle-info"
-              data-icon="circle-info"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="textFieldInputContainer surfaceBrand"
-            >
-              <input
-                class="textfield"
-                data-testid="test-question-info-textfield-textfield"
-                id="question-info-textfield"
-                name="question-info-textfield"
-                placeholder="Info"
-                type="text"
-                value=""
-              />
             </div>
           </div>
         </div>
@@ -1765,59 +1606,6 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutFull"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Info
-          </span>
-          <button
-            class="iconTooltipButton"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-circle-info"
-              data-icon="circle-info"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="textFieldInputContainer surfaceBrand"
-            >
-              <input
-                class="textfield"
-                data-testid="test-question-info-textfield-textfield"
-                id="question-info-textfield"
-                name="question-info-textfield"
-                placeholder="Info"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -2039,59 +1827,6 @@ exports[`QuestionEditor > renders a zero to one hundred range question editor 1`
                 placeholder=""
                 type="number"
                 value="71"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutFull"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Info
-          </span>
-          <button
-            class="iconTooltipButton"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-circle-info"
-              data-icon="circle-info"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="textFieldInputContainer surfaceBrand"
-            >
-              <input
-                class="textfield"
-                data-testid="test-question-info-textfield-textfield"
-                id="question-info-textfield"
-                name="question-info-textfield"
-                placeholder="Info"
-                type="text"
-                value=""
               />
             </div>
           </div>

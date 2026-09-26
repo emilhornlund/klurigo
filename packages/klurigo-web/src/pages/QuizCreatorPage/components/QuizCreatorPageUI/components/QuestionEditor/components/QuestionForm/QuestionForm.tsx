@@ -60,14 +60,6 @@ export const ClassicMultiChoiceOptionQuestionForm: FC<
           onChange={(newValue) => onChange('options', newValue)}
         />
       </div>
-      <div className={styles.section}>
-        <QuestionField
-          type={QuestionFieldType.CommonInfo}
-          value={question.info}
-          validation={questionValidation}
-          onChange={(newValue) => onChange('info', newValue)}
-        />
-      </div>
     </>
   )
 }
@@ -161,14 +153,6 @@ export const ClassicRangeQuestionForm: FC<
           onChange={(newValue) => onChange('margin', newValue)}
         />
       </div>
-      <div className={styles.section}>
-        <QuestionField
-          type={QuestionFieldType.CommonInfo}
-          value={question.info}
-          validation={questionValidation}
-          onChange={(newValue) => onChange('info', newValue)}
-        />
-      </div>
     </>
   )
 }
@@ -203,14 +187,6 @@ export const ClassicTrueFalseQuestionForm: FC<
           onChange={(newValue) => onChange('correct', newValue)}
         />
       </div>
-      <div className={styles.section}>
-        <QuestionField
-          type={QuestionFieldType.CommonInfo}
-          value={question.info}
-          validation={questionValidation}
-          onChange={(newValue) => onChange('info', newValue)}
-        />
-      </div>
     </>
   )
 }
@@ -243,14 +219,6 @@ export const ClassicTypeAnswerQuestionForm: FC<
           values={question.options}
           validation={questionValidation}
           onChange={(newValue) => onChange('options', newValue)}
-        />
-      </div>
-      <div className={styles.section}>
-        <QuestionField
-          type={QuestionFieldType.CommonInfo}
-          value={question.info}
-          validation={questionValidation}
-          onChange={(newValue) => onChange('info', newValue)}
         />
       </div>
     </>
@@ -296,14 +264,6 @@ export const ClassicPinQuestionForm: FC<QuestionFormProps<QuestionPinDto>> = ({
         onChange={(newValue) => onChange('tolerance', newValue)}
       />
     </div>
-    <div className={styles.section}>
-      <QuestionField
-        type={QuestionFieldType.CommonInfo}
-        value={question.info}
-        validation={questionValidation}
-        onChange={(newValue) => onChange('info', newValue)}
-      />
-    </div>
   </>
 )
 
@@ -334,14 +294,6 @@ export const ClassicPuzzleQuestionForm: FC<
         value={question.values}
         validation={questionValidation}
         onChange={(newValue) => onChange('values', newValue)}
-      />
-    </div>
-    <div className={styles.section}>
-      <QuestionField
-        type={QuestionFieldType.CommonInfo}
-        value={question.info}
-        validation={questionValidation}
-        onChange={(newValue) => onChange('info', newValue)}
       />
     </div>
   </>
@@ -377,14 +329,6 @@ export const ZeroToOneHundredRangeQuestionForm: FC<
           max={100}
           validation={questionValidation}
           onChange={(newValue) => onChange('correct', newValue)}
-        />
-      </div>
-      <div className={styles.section}>
-        <QuestionField
-          type={QuestionFieldType.CommonInfo}
-          value={question.info}
-          validation={questionValidation}
-          onChange={(newValue) => onChange('info', newValue)}
         />
       </div>
     </>

@@ -2,6 +2,7 @@ import type { QuestionDto } from '@klurigo/common'
 import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 
+import { Typography } from '../../../../../../components'
 import type {
   QuizQuestionModel,
   QuizQuestionModelFieldChangeFunction,
@@ -50,6 +51,17 @@ const QuestionSettings: FC<QuestionSettingsProps> = ({
         onChange={(newValue) => onQuestionValueChange('points', newValue)}
       />
     )}
+    <section className={styles.additionalContent}>
+      <Typography variant="title5" align="left">
+        Additional content
+      </Typography>
+      <QuestionField
+        type={QuestionFieldType.CommonInfo}
+        value={question.info}
+        validation={questionValidation}
+        onChange={(newValue) => onQuestionValueChange('info', newValue)}
+      />
+    </section>
   </aside>
 )
 

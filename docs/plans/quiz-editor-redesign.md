@@ -264,7 +264,7 @@ Suggested commit:
 
 ---
 
-## [ ] 10. Move question info into `QuestionSettings`
+## [x] 10. Move question info into `QuestionSettings`
 
 Move the existing `QuestionFieldType.CommonInfo` field into the settings panel.
 

@@ -1,5 +1,13 @@
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
 .questionSettings {
   display: flex;
   flex-direction: column;
   min-width: 0;
+
+  .additionalContent {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$space-compact-desktop;
+  }
 }
