@@ -99,29 +99,31 @@ Suggested commit:
 
 ---
 
-# Phase 2 — Establish component boundaries
+# Phase 2 — Establish repo-aligned editor boundaries
 
-## [ ] 4. Extract the editor header
+## [ ] 4. Extract the page header actions into `QuizEditorHeader`
 
-Create a dedicated component for page-level quiz actions.
+Move the existing quiz title and page-level actions from the inline `Page.header` JSX into a dedicated component.
 
-The header should contain:
+The component must contain the existing:
 
-- Quiz title.
-- Settings.
-- Preview, if currently supported.
-- Save.
-- Exit.
+- Quiz title field.
+- Quiz settings action.
+- Save action.
+- Exit action.
 
 Requirements:
 
-- Preserve existing behavior.
-- Keep question-specific controls out of the header.
-- Do not significantly redesign the individual controls yet.
+- Preserve the existing `QuizSettingsModal` behavior.
+- Preserve the existing save/loading/disabled behavior.
+- Preserve the existing mobile behavior for the title and button labels.
+- Keep quiz-level settings separate from question-level settings.
+- Do not introduce a Preview action.
+- Do not move the quiz title into the question navigator.
 
-Suggested component:
+Suggested location:
 
-`QuizEditorHeader`
+`QuizCreatorPage/components/QuizCreatorPageUI/components/QuizEditorHeader`
 
 Suggested commit:
 
@@ -129,90 +131,9 @@ Suggested commit:
 
 ---
 
-## [ ] 5. Extract the question navigator
+## [ ] 5. Extract the bottom navigation into `QuestionNavigation`
 
-Create a dedicated component for navigating between questions.
-
-Responsibilities:
-
-- Display the quiz questions.
-- Show which question is active.
-- Allow selecting another question.
-- Preserve existing question ordering behavior.
-- Preserve existing question creation behavior where applicable.
-
-Requirements:
-
-- Move existing functionality without changing behavior.
-- Do not fully redesign the question items yet.
-
-Suggested component:
-
-`QuestionNavigator`
-
-Suggested commit:
-
-`refactor(quiz-creator): extract question navigator`
-
----
-
-## [ ] 6. Extract the main question editor
-
-Create a dedicated component for editing the active question content.
-
-The region should eventually contain:
-
-- Question content.
-- Media.
-- Answer options.
-
-Requirements:
-
-- Move existing functionality without changing behavior.
-- Do not redesign the answer options yet.
-- Keep configuration such as time limit and points outside this component once those fields are moved.
-
-Suggested component:
-
-`QuestionEditor`
-
-Suggested commit:
-
-`refactor(quiz-creator): extract question editor`
-
----
-
-## [ ] 7. Extract the question settings panel
-
-Create a dedicated component for question configuration.
-
-The region should eventually contain:
-
-- Question type.
-- Time limit.
-- Points.
-- Additional content / info.
-- Advanced settings.
-- Question deletion.
-
-Requirements:
-
-- Establish the component boundary first.
-- Existing controls may remain visually unchanged initially.
-
-Suggested component:
-
-`QuestionSettings`
-
-Suggested commit:
-
-`refactor(quiz-creator): extract question settings`
-
----
-
-## [ ] 8. Extract the bottom question navigation
-
-Move the bottom navigation into its own component.
+Move the footer introduced in task 3 into a dedicated component.
 
 Responsibilities:
 
@@ -220,9 +141,17 @@ Responsibilities:
 - Current question position.
 - Next question.
 
-Suggested component:
+Requirements:
 
-`QuestionNavigation`
+- Preserve the current selected-question index behavior.
+- Disable Previous on the first question.
+- Disable Next on the last question.
+- Keep it hidden while `AdvancedQuestionEditor` is active.
+- Keep it integrated through the existing `Page.footer` API.
+
+Suggested location:
+
+`QuizCreatorPage/components/QuizCreatorPageUI/components/QuestionNavigation`
 
 Suggested commit:
 
@@ -230,17 +159,66 @@ Suggested commit:
 
 ---
 
-# Phase 3 — Move existing functionality into the correct regions
+## [ ] 6. Introduce the `QuestionSettings` component boundary
 
-## [ ] 9. Move question type into the settings panel
+Replace the current placeholder right-hand panel with a dedicated `QuestionSettings` component.
 
-Move the existing question type selector from the primary editor area into `QuestionSettings`.
+Do not move fields yet.
+
+The initial component should establish the boundary and receive only the data/actions required for the currently selected question.
 
 Requirements:
 
-- Preserve the existing question type behavior.
-- Preserve validation and state handling.
-- Do not redesign the selector yet.
+- Reuse the existing selected `QuizQuestionModel`.
+- Reuse the existing `QuizQuestionValidationResult`.
+- Reuse `onQuestionValueChange`.
+- Reuse `onReplaceQuestion` where required.
+- Do not introduce separate duplicated question state.
+- Do not introduce an "advanced settings" model.
+- Do not modify `AdvancedQuestionEditor`.
+
+Suggested location:
+
+`QuizCreatorPage/components/QuizCreatorPageUI/components/QuestionSettings`
+
+Suggested commit:
+
+`refactor(quiz-creator): introduce question settings panel`
+
+---
+
+# Phase 3 — Move existing common question fields
+
+The existing `QuestionEditor` must remain the main dispatcher for the supported question types.
+
+Do not replace or re-extract it.
+
+The current editor supports:
+
+- Classic multiple choice.
+- Classic range.
+- Classic true/false.
+- Classic type answer.
+- Classic pin.
+- Classic puzzle.
+- Zero-to-one-hundred range.
+
+Only move fields that already exist.
+
+---
+
+## [ ] 7. Move question type selection into `QuestionSettings`
+
+Move the existing `QuestionFieldType.CommonType` control from `QuestionEditor` into the right-hand settings panel.
+
+Requirements:
+
+- Only show it where question type selection is currently supported.
+- Preserve the existing `onReplaceQuestion` behavior.
+- Preserve all existing replacement/reset semantics.
+- Preserve validation.
+- Remove the old type control from `QuestionEditor`.
+- Do not duplicate the selector in both places.
 
 Suggested commit:
 
@@ -248,81 +226,75 @@ Suggested commit:
 
 ---
 
-## [ ] 10. Move time limit into the settings panel
+## [ ] 8. Move duration into `QuestionSettings`
 
-Move the existing time limit control into `QuestionSettings`.
+Move the existing `QuestionFieldType.CommonDuration` control from the question-type forms into the settings panel.
 
 Requirements:
 
-- Preserve existing values.
-- Preserve existing state handling.
-- Do not visually redesign the control yet.
+- Show the control only for question types that currently expose `duration`.
+- Preserve the current value and validation.
+- Continue updating the existing `duration` field through `onQuestionValueChange`.
+- Remove the corresponding duration field from each affected `QuestionForm`.
+- Do not change duration semantics or allowed values.
 
 Suggested commit:
 
-`refactor(quiz-creator): move time limit into settings panel`
+`refactor(quiz-creator): move question duration into settings panel`
 
 ---
 
-## [ ] 11. Move points into the settings panel
+## [ ] 9. Move points into `QuestionSettings`
 
-Move the existing points control into `QuestionSettings`.
+Move `QuestionFieldType.CommonPoints` into the settings panel for question types that currently support points.
 
 Requirements:
 
-- Preserve existing values and behavior.
-- Keep the existing points model unchanged.
-- Do not visually redesign the control yet.
+- Do not assume every question type has points.
+- Preserve the existing question model exactly.
+- Preserve existing validation.
+- Continue updating the existing `points` field.
+- Remove the old points control from the affected question forms.
+
+In particular, do not add points to question types where the current editor does not expose them.
 
 Suggested commit:
 
-`refactor(quiz-creator): move points into settings panel`
+`refactor(quiz-creator): move question points into settings panel`
 
 ---
 
-## [ ] 12. Move additional information into the settings panel
+## [ ] 10. Move question info into `QuestionSettings`
 
-Move the existing question info/additional content field into `QuestionSettings`.
-
-Create a logical "Additional content" section for it.
+Move the existing `QuestionFieldType.CommonInfo` field into the settings panel.
 
 Requirements:
 
-- Preserve existing state and persistence behavior.
-- Do not introduce new content fields as part of this step.
-- Do not redesign the input significantly yet.
+- Preserve the existing `info` property.
+- Preserve current validation and persistence.
+- Do not create new explanation/content fields.
+- Remove the old info field from each affected question form.
+- Use a clear section heading such as `Additional content`.
 
 Suggested commit:
 
-`refactor(quiz-creator): move additional content into settings panel`
+`refactor(quiz-creator): move question info into settings panel`
 
 ---
 
-## [ ] 13. Move advanced settings into the settings panel
+## [ ] 11. Move question deletion into `QuestionSettings`
 
-Move the existing advanced question settings into `QuestionSettings`.
-
-Requirements:
-
-- Preserve all current advanced settings.
-- Do not introduce new settings.
-- Do not turn the section into an accordion yet unless it is already one.
-
-Suggested commit:
-
-`refactor(quiz-creator): move advanced settings into settings panel`
-
----
-
-## [ ] 14. Move question deletion into the settings panel
-
-Place the existing delete-question action at the bottom of the settings area.
+Relocate the existing delete-question action from `QuestionPicker` into the bottom of the settings panel.
 
 Requirements:
 
-- Preserve current confirmation and deletion behavior.
-- Keep it visually separate from ordinary settings.
-- Do not change deletion semantics.
+- Preserve the existing confirmation dialog behavior and message.
+- Preserve the minimum-one-question restriction.
+- Reuse the existing `onDeleteQuestionIndex`.
+- Delete the currently selected question.
+- Remove the duplicate delete action from `QuestionPicker`.
+- Keep duplication in the navigator.
+- Keep deletion visually separate from ordinary fields.
 
 Suggested commit:
 
@@ -330,392 +302,470 @@ Suggested commit:
 
 ---
 
-# Phase 4 — Redesign the question navigator
+# Phase 4 — Adapt the existing `QuestionPicker` into the left navigator
 
-## [ ] 15. Replace the existing top question thumbnails with a left sidebar
+Do not replace `QuestionPicker` with a second navigation implementation.
 
-Transform the current question navigation into the vertical sidebar used by the new layout.
+The redesign should evolve the existing component.
 
-Each question item should be able to show:
+---
+
+## [ ] 12. Convert `QuestionPicker` from horizontal navigation to a vertical sidebar
+
+Change the existing question picker presentation to fit the left workspace column.
+
+Each item must continue to expose the information already available:
 
 - Question number.
-- Question label/title.
+- Question text/fallback label.
 - Question type.
-- Active/selected state.
+- Active state.
+- Validation state.
 
 Requirements:
 
-- Keep question selection behavior unchanged.
-- Make the active question visually clear.
-- Remove the old horizontal/floating question navigation presentation.
-- Do not add unrelated functionality.
+- Preserve question selection.
+- Preserve validation indication.
+- Preserve duplication.
+- Preserve drag-and-drop reordering.
+- Preserve the add-question action.
+- Remove assumptions that navigation scrolls horizontally.
+- Update selected-question auto-scroll behavior for a vertical container.
+- Do not introduce a second navigator component with duplicated state.
 
 Suggested commit:
 
-`feat(quiz-creator): redesign question navigator`
+`feat(quiz-creator): adapt question picker to sidebar navigation`
 
 ---
 
-## [ ] 16. Add the quiz title area to the navigator
+## [ ] 13. Adapt question reordering to the vertical navigator
 
-Add the quiz title/header area at the top of the left navigator.
-
-It should support the existing quiz title/edit behavior where appropriate.
+Update the existing question drag-and-drop behavior for the new sidebar layout.
 
 Requirements:
 
-- Reuse existing quiz title state.
-- Do not duplicate title state between the header and navigator.
-- Keep ownership of quiz metadata clear.
+- Preserve `onDropQuestionIndex`.
+- Preserve question ordering semantics.
+- Keep normal question selection separate from dragging.
+- Preserve keyboard accessibility where currently supported.
+- Add/update behavioral tests for reordering in the vertical layout.
 
 Suggested commit:
 
-`feat(quiz-creator): add quiz header to question navigator`
+`refactor(quiz-creator): adapt question reordering to sidebar`
 
 ---
 
-## [ ] 17. Redesign the add-question action
+## [ ] 14. Redesign the add-question action in the navigator
 
-Replace the current question-add presentation with a clear sidebar action.
+Adapt the existing `onAddQuestion` action to the sidebar.
 
 Requirements:
 
-- Add a prominent "Add question" action.
-- Preserve existing question creation behavior.
-- Keep the action within the navigator.
+- Keep the existing game-mode-specific creation behavior.
+- Do not add new question types.
+- Do not introduce slide creation.
+- Keep the action visually distinct from existing questions.
+- Keep it within `QuestionPicker`.
 
 Suggested commit:
 
-`feat(quiz-creator): redesign question creation action`
+`style(quiz-creator): refine question creation action`
 
 ---
 
-## [ ] 18. Add slide creation if already supported by the domain
+## [ ] 15. Refine navigator question actions
 
-If the application already supports slides/non-question content, expose that action in the navigator.
+Adapt existing per-question actions to the new vertical item design.
+
+Preserve:
+
+- Duplicate question.
+- Validation indication.
+- Active selection.
+
+Deletion is no longer part of the navigator after task 11.
 
 Requirements:
 
-- Use existing functionality.
-- Do not introduce a new slide domain model as part of the redesign.
-- Skip this task if slides do not already exist.
+- Do not remove duplication.
+- Do not introduce new question actions.
+- Ensure actions do not interfere with drag-and-drop or selection.
 
 Suggested commit:
 
-`feat(quiz-creator): add slide creation action to navigator`
+`style(quiz-creator): refine navigator question actions`
 
 ---
 
-## [ ] 19. Refine question reordering in the sidebar
+# Phase 5 — Restructure the existing `QuestionEditor`
 
-Adapt existing drag-and-drop/reordering behavior to the vertical question navigator.
+The existing `QuestionEditor` remains responsible for selecting the appropriate question-type form.
+
+The existing question-type-specific forms remain responsible for their domain-specific fields.
+
+---
+
+## [ ] 16. Establish a consistent content layout inside `QuestionEditor`
+
+Refactor the existing question forms so their remaining editor content fits the new central workspace.
+
+After tasks 7–10, the center should primarily contain:
+
+- Question text.
+- Existing media controls where supported.
+- Question-type-specific answer/configuration controls.
 
 Requirements:
 
-- Preserve the current ordering semantics.
-- Provide an appropriate drag handle.
-- Ensure selection still works independently of dragging.
-- Add or update tests for reordering.
+- Keep all existing question models unchanged.
+- Preserve the current `QuestionField` abstraction.
+- Do not collapse all question types into one generic form.
+- Keep each existing question-type form independently testable.
 
 Suggested commit:
 
-`refactor(quiz-creator): adapt question reordering to navigator`
+`refactor(quiz-creator): align question forms with editor workspace`
 
 ---
 
-# Phase 5 — Redesign the primary question editor
+## [ ] 17. Redesign the question text area
 
-## [ ] 20. Redesign the question content area
-
-Replace the current small question input presentation with the larger central question editing area.
+Refine the existing `QuestionFieldType.CommonQuestion` presentation so the question text becomes the primary focus of the center editor.
 
 Requirements:
 
-- Make the question text the primary focus of the editor.
+- Preserve the existing `question` field.
+- Preserve validation.
+- Preserve keyboard/focus behavior.
+- Use existing Klurigo input primitives.
+- Do not change question-length rules or persistence.
+
+Suggested commit:
+
+`style(quiz-creator): refine question text editor`
+
+---
+
+# Phase 6 — Redesign existing media handling
+
+## [ ] 18. Redesign `MediaQuestionField`
+
+Update the existing media editor presentation to fit the new central workspace.
+
+Requirements:
+
+- Work with the media types and behavior already implemented by `MediaQuestionField`.
+- Preserve existing media selection, editing and removal behavior.
 - Preserve existing validation.
-- Preserve existing question state handling.
-- Keep keyboard and focus behavior working.
-- Do not change the underlying question data model.
+- Do not add image/video/audio/GIF capabilities unless they already exist in the current component.
+- Do not introduce a parallel media model.
 
 Suggested commit:
 
-`feat(quiz-creator): redesign question content editor`
+`feat(quiz-creator): redesign question media editor`
 
 ---
 
-## [ ] 21. Move the question type indicator into the editor header area
+## [ ] 19. Preserve Pin-specific image editing separately
 
-The central editor may display the current question type near the "Question" heading for context.
+The Pin question does not use the normal `CommonMedia` flow.
+
+Keep its existing:
+
+- Image URL.
+- Position.
+- Tolerance-related editing.
 
 Requirements:
 
-- Treat this as a presentation of the active question type.
-- Do not create duplicate conflicting state.
-- The actual configuration control should remain in the settings panel.
+- Do not force Pin questions through `MediaQuestionField`.
+- Preserve the existing `PinQuestionField`.
+- Adapt its layout to the new editor without changing its model.
 
 Suggested commit:
 
-`feat(quiz-creator): show question type in editor header`
+`style(quiz-creator): adapt pin question editor layout`
 
 ---
 
-# Phase 6 — Redesign media handling
+# Phase 7 — Redesign existing answer and question-type controls
 
-## [ ] 22. Replace the single "Add media" action with explicit media actions
+## [ ] 20. Redesign multiple-choice options using the existing `MultiChoiceOptions`
 
-Provide clearer media actions such as:
+Update the presentation of the existing multiple-choice option editor.
 
-- Add image.
-- Add video.
-- Add audio.
-- Add GIF.
+Preserve:
 
-Only expose media types already supported by the application.
+- `QUIZ_MULTI_CHOICE_OPTIONS_MIN`.
+- `QUIZ_MULTI_CHOICE_OPTIONS_MAX`.
+- Correct-answer checkboxes.
+- Multiple correct answers.
+- Existing validation.
+- Existing local stable option IDs.
+- Existing trailing-empty-option behavior.
+- Existing `@dnd-kit` reordering.
 
 Requirements:
 
-- Reuse existing media behavior.
-- Do not add unsupported media types just because they exist in the mockup.
-- Keep this change focused on presentation and interaction.
+- Use a vertical answer-row layout.
+- Keep the existing data model.
+- Do not introduce a separate "Add answer" state model.
+- Do not introduce explicit delete semantics unless implemented as a separate feature.
 
 Suggested commit:
 
-`feat(quiz-creator): redesign question media actions`
+`feat(quiz-creator): redesign multiple choice options`
 
 ---
 
-## [ ] 23. Add a dedicated media area
+## [ ] 21. Adapt multiple-choice drag-and-drop to the redesigned rows
 
-Create a clear media region below the question input.
+Update the existing `@dnd-kit` layout for vertical answer rows.
 
 Requirements:
 
-- Display existing attached media.
-- Provide an empty state when no media is attached.
-- Support existing media selection/removal behavior.
-- Only add drag-and-drop upload if the current application supports it or it is implemented as a separate explicit feature.
+- Preserve Mouse, Touch and Keyboard sensors.
+- Preserve focus restoration after dragging.
+- Preserve option ordering.
+- Keep the drag handle distinct from text input interaction.
+- Update behavioral tests.
 
 Suggested commit:
 
-`feat(quiz-creator): add dedicated question media area`
+`refactor(quiz-creator): adapt answer reordering to vertical rows`
 
 ---
 
-# Phase 7 — Redesign the answer editor
+## [ ] 22. Improve multiple-choice validation presentation
 
-## [ ] 24. Change multiple-choice answers to a vertical list
-
-Replace the current two-column answer layout with a vertical answer list.
-
-Requirements:
-
-- Preserve existing answer state.
-- Preserve existing validation.
-- Preserve correct-answer selection.
-- Preserve ordering.
-- Do not change answer semantics.
-
-Suggested commit:
-
-`feat(quiz-creator): redesign multiple choice answer layout`
-
----
-
-## [ ] 25. Add visual answer identifiers
-
-Give each answer a clear visual identifier such as:
-
-- A.
-- B.
-- C.
-- D.
-
-Use the existing Klurigo visual system where possible.
-
-Requirements:
-
-- Identifiers must not become part of persisted answer text.
-- Identifiers should follow answer order.
-
-Suggested commit:
-
-`style(quiz-creator): add answer option identifiers`
-
----
-
-## [ ] 26. Redesign correct-answer selection
-
-Replace the current correct-answer control presentation with a clearer interaction.
-
-Requirements:
-
-- Preserve single-correct-answer behavior where applicable.
-- Preserve multi-correct-answer behavior where applicable.
-- Keep accessible labels and keyboard interaction.
-- Do not change correctness rules as part of the visual redesign.
-
-Suggested commit:
-
-`feat(quiz-creator): redesign correct answer controls`
-
----
-
-## [ ] 27. Add answer-level delete actions
-
-Provide an explicit delete action for removable answers.
-
-Requirements:
-
-- Respect minimum-answer constraints.
-- Preserve existing deletion behavior.
-- Disable or hide deletion where an answer cannot legally be removed.
-
-Suggested commit:
-
-`feat(quiz-creator): redesign answer deletion controls`
-
----
-
-## [ ] 28. Adapt answer reordering to the new layout
-
-Move answer drag handles into the new vertical answer rows.
-
-Requirements:
-
-- Preserve ordering semantics.
-- Make drag handles visually clear.
-- Ensure input interaction does not accidentally initiate dragging.
-
-Suggested commit:
-
-`refactor(quiz-creator): adapt answer reordering to redesigned editor`
-
----
-
-## [ ] 29. Add answer-level media controls if already supported
-
-Expose existing answer-media functionality directly from each answer row.
-
-Requirements:
-
-- Do not introduce new answer-media capabilities in this redesign task.
-- Reuse existing upload/removal behavior.
-
-Suggested commit:
-
-`feat(quiz-creator): expose answer media controls`
-
----
-
-## [ ] 30. Add the "Add another answer" action
-
-Provide a clear action below the answer list.
-
-Requirements:
-
-- Respect maximum-answer constraints.
-- Preserve existing answer creation behavior.
-- Disable the action when no additional answers can be added.
-
-Suggested commit:
-
-`feat(quiz-creator): redesign add answer action`
-
----
-
-## [ ] 31. Improve answer validation presentation
-
-Replace the current repeated large validation banners with validation presentation that fits the redesigned answer rows.
+Refine how existing multiple-choice validation is displayed.
 
 Requirements:
 
 - Preserve all existing validation rules.
-- Avoid rendering the same quiz-level error repeatedly for every answer when the error applies to the answer group.
-- Keep field-specific errors attached to the relevant field.
+- Keep option-specific errors attached to their relevant option.
+- Avoid visually repeating the same group-level error on every row where possible.
 - Keep errors accessible.
+- Do not change validation semantics.
 
 Suggested commit:
 
-`refactor(quiz-creator): improve answer validation presentation`
+`refactor(quiz-creator): refine multiple choice validation`
 
 ---
 
-# Phase 8 — Redesign the settings panel
+## [ ] 23. Redesign true/false controls
 
-## [ ] 32. Apply the new settings panel structure
+Adapt the existing `TrueFalseOptions` component to the new central editor layout.
 
-Organize the right-hand settings panel into clear groups.
+Requirements:
 
-Suggested structure:
+- Preserve the current `correct` field.
+- Preserve validation.
+- Do not convert it to the multiple-choice data model.
+- Keep the interaction accessible.
+
+Suggested commit:
+
+`style(quiz-creator): redesign true false controls`
+
+---
+
+## [ ] 24. Redesign type-answer controls
+
+Adapt the existing `TypeAnswerOptions` component to the new central editor layout.
+
+Requirements:
+
+- Preserve existing option semantics.
+- Preserve validation.
+- Preserve the current question model.
+- Do not reuse multiple-choice behavior where the domain differs.
+
+Suggested commit:
+
+`style(quiz-creator): redesign type answer controls`
+
+---
+
+## [ ] 25. Redesign range question controls
+
+Adapt the existing Classic Range controls:
+
+- Minimum.
+- Maximum.
+- Correct answer.
+- Margin.
+
+Requirements:
+
+- Preserve `calculateRangeBounds`.
+- Preserve `calculateRangeStep`.
+- Preserve `QuestionRangeAnswerMargin`.
+- Preserve the existing explanatory footer for accepted ranges.
+- Keep range-specific fields in the central editor rather than treating them as generic question settings.
+- Preserve validation.
+
+Suggested commit:
+
+`style(quiz-creator): redesign range question controls`
+
+---
+
+## [ ] 26. Redesign zero-to-one-hundred range controls
+
+Adapt the existing Zero-to-One-Hundred Range editor.
+
+Requirements:
+
+- Preserve the fixed 0–100 domain.
+- Preserve the existing `correct` field.
+- Preserve duration through the settings panel.
+- Do not add points if the current model/editor does not expose points.
+- Preserve validation.
+
+Suggested commit:
+
+`style(quiz-creator): redesign zero to one hundred controls`
+
+---
+
+## [ ] 27. Redesign puzzle controls
+
+Adapt the existing `PuzzleValues` editor to the new central layout.
+
+Requirements:
+
+- Preserve the existing puzzle data model.
+- Preserve validation.
+- Do not redesign puzzle semantics.
+- Do not replace the existing component unless there is a concrete implementation reason.
+
+Suggested commit:
+
+`style(quiz-creator): redesign puzzle controls`
+
+---
+
+## [ ] 28. Finish Pin-specific controls
+
+Adapt the remaining Pin-specific configuration to the redesigned central editor.
+
+Keep these Pin-specific fields in the central editor:
+
+- Pin image.
+- Pin position.
+- Pin tolerance.
+
+Move only the existing common question fields into `QuestionSettings`:
+
+- Duration.
+- Points.
+- Info.
+
+Requirements:
+
+- Preserve the existing `PinQuestionField`.
+- Preserve position and tolerance semantics.
+- Preserve validation.
+- Do not move Pin-specific fields into `QuestionSettings`.
+- Do not force Pin questions through `MediaQuestionField`.
+- Do not change the Pin question model.
+
+Suggested commit:
+
+`style(quiz-creator): refine pin question controls`
+
+---
+
+# Phase 8 — Finish the question settings panel
+
+## [ ] 29. Apply the final `QuestionSettings` structure
+
+Organize the right-hand panel around fields that actually exist.
+
+Example structure:
 
     Question settings
     - Question type
-    - Time limit
-    - Points
+    - Duration
+    - Points (only where supported)
 
     Additional content
-    - Info / explanation
-
-    Advanced
-    - Advanced question options
+    - Info
 
     Delete question
 
 Requirements:
 
-- Do not change the underlying settings behavior.
-- Keep related settings grouped together.
+- Render controls conditionally from the selected question type.
+- Do not show unsupported fields.
+- Do not introduce an `Advanced` section.
+- Do not move `AdvancedQuestionEditor` into this panel.
+- Keep the panel driven by the existing selected-question state.
 
 Suggested commit:
 
-`feat(quiz-creator): redesign question settings panel`
+`feat(quiz-creator): finalize question settings panel`
 
 ---
 
-## [ ] 33. Make advanced settings collapsible
+# Phase 9 — Preserve and integrate the existing advanced JSON editor
 
-Convert the advanced settings area into a collapsible section.
+## [ ] 30. Preserve `AdvancedQuestionEditor` as a separate editor mode
+
+The existing advanced editor is a JSON editor for the complete questions array.
+
+It must remain conceptually separate from `QuestionSettings`.
 
 Requirements:
 
-- Preserve all current advanced settings.
-- Keep the default state sensible.
-- Ensure controls remain accessible when expanded.
-- Add tests for expanding and collapsing the section.
+- Preserve the `Show Advanced Editor` / `Show Simple Editor` behavior.
+- Preserve `parseQuestionsJson`.
+- Preserve JSON validation feedback.
+- Preserve synchronization between JSON edits and question state.
+- Keep the three-column simple editor hidden while advanced mode is active.
+- Keep bottom question navigation hidden while advanced mode is active.
+- Do not rename it to "Advanced settings".
 
 Suggested commit:
 
-`feat(quiz-creator): add collapsible advanced settings`
+`refactor(quiz-creator): integrate advanced editor with redesigned layout`
 
 ---
 
-## [ ] 34. Redesign the delete-question action
+## [ ] 31. Refine the advanced editor presentation
 
-Give the delete action a clear destructive presentation at the bottom of the settings panel.
+Adapt the existing JSON editor visually to the new full-bleed page.
 
 Requirements:
 
-- Use existing destructive design tokens/components.
-- Preserve confirmation behavior.
-- Keep it visually separated from normal settings.
+- Keep the existing `Textarea type="code"` implementation.
+- Preserve its current data flow.
+- Preserve validation behavior.
+- Do not redesign the JSON editing feature itself.
 
 Suggested commit:
 
-`style(quiz-creator): refine question deletion action`
+`style(quiz-creator): refine advanced question editor`
 
 ---
 
-# Phase 9 — Redesign the editor header
+# Phase 10 — Refine the page header and quiz settings integration
 
-## [ ] 35. Refine the quiz title control
+## [ ] 32. Refine the quiz title control
 
-Adjust the quiz title input so it fits naturally in the new editor header.
+Adapt the existing header title field to the redesigned page.
 
 Requirements:
 
-- Preserve validation.
-- Preserve save behavior.
-- Avoid allowing it to dominate the header visually.
+- Keep the title in the editor header.
+- Preserve existing validation.
+- Preserve mobile behavior.
+- Preserve save/unsaved-change tracking.
+- Do not duplicate the title in the question navigator.
 
 Suggested commit:
 
@@ -723,22 +773,17 @@ Suggested commit:
 
 ---
 
-## [ ] 36. Refine header actions
+## [ ] 33. Refine Settings, Save and Exit actions
 
-Align and normalize the header actions:
-
-- Settings.
-- Preview.
-- Save.
-- Exit.
+Apply consistent visual hierarchy to the existing actions.
 
 Requirements:
 
-- Use consistent button sizing.
-- Use appropriate action hierarchy.
-- Make Save the primary action where appropriate.
-- Keep Exit visually distinct without making it destructive.
-- Preserve existing behavior.
+- Preserve `QuizSettingsModal`.
+- Preserve Save disabled/loading behavior.
+- Preserve Exit navigation and unsaved-changes blocking.
+- Do not introduce Preview.
+- Keep all actions reachable on constrained widths.
 
 Suggested commit:
 
@@ -746,39 +791,23 @@ Suggested commit:
 
 ---
 
-## [ ] 37. Add preview action if the functionality already exists
+# Phase 11 — Apply the Klurigo visual system
 
-If preview functionality already exists elsewhere, expose it from the editor header.
+## [ ] 34. Apply reusable surfaces to the editor workspace
 
-Requirements:
-
-- Reuse existing preview functionality.
-- Do not implement a completely new preview system as part of the layout redesign.
-- Skip this task if there is no existing preview capability.
-
-Suggested commit:
-
-`feat(quiz-creator): expose quiz preview from editor header`
-
----
-
-# Phase 10 — Apply the visual system
-
-## [ ] 38. Apply consistent editor workspace surfaces
-
-Introduce consistent surfaces for:
+Apply existing Klurigo surface primitives to:
 
 - Question navigator.
-- Question editor.
+- Main question editor.
 - Question settings.
 - Bottom navigation where appropriate.
 
 Requirements:
 
-- Prefer reusable existing surface primitives/mixins.
-- Use the shared `Surface` component if it has been introduced and is appropriate.
-- Avoid duplicating the same surface SCSS across multiple editor sections.
-- Keep interactive and non-interactive surfaces visually distinct.
+- Prefer the existing `Surface` component where appropriate.
+- Reuse existing surface-box/design primitives.
+- Avoid duplicating equivalent SCSS between the three regions.
+- Distinguish interactive and non-interactive surfaces.
 
 Suggested commit:
 
@@ -786,59 +815,39 @@ Suggested commit:
 
 ---
 
-## [ ] 39. Apply the editor background treatment
+## [ ] 35. Refine workspace background and spacing
 
-Introduce the lighter workspace background shown by the redesign direction instead of using the old solid primary background for the entire editing area.
-
-Requirements:
-
-- Use existing design tokens.
-- Ensure surfaces remain visually distinct from the page background.
-- Maintain sufficient contrast.
-
-Suggested commit:
-
-`style(quiz-creator): refine editor workspace background`
-
----
-
-## [ ] 40. Refine spacing throughout the editor
-
-Normalize:
-
-- Panel padding.
-- Gaps between sections.
-- Form field spacing.
-- Header spacing.
-- Answer row spacing.
-- Footer spacing.
+Apply the intended full-screen workspace treatment.
 
 Requirements:
 
-- Use the existing spacing system/tokens.
-- Avoid arbitrary one-off spacing values where tokens already exist.
+- Use existing color tokens.
+- Use existing semantic spacing tokens.
+- Keep surfaces distinguishable from the page background.
+- Avoid one-off pixel values where existing tokens are suitable.
 
 Suggested commit:
 
-`style(quiz-creator): refine editor spacing`
+`style(quiz-creator): refine editor workspace styling`
 
 ---
 
-## [ ] 41. Refine editor typography
+## [ ] 36. Refine editor typography
 
-Improve hierarchy between:
+Review hierarchy for:
 
-- Page-level information.
+- Quiz title.
 - Section headings.
-- Field labels.
-- Supporting text.
 - Question text.
+- Field labels.
 - Answer text.
+- Supporting text.
+- Validation messages.
 
 Requirements:
 
 - Reuse the existing typography system.
-- Avoid introducing editor-specific font sizes without a clear reason.
+- Avoid introducing unnecessary editor-specific font sizes.
 
 Suggested commit:
 
@@ -846,38 +855,23 @@ Suggested commit:
 
 ---
 
-## [ ] 42. Refine borders and shadows
+## [ ] 37. Refine interaction states
 
-Apply consistent borders and elevation to the editor surfaces.
+Review:
 
-Requirements:
-
-- Use existing color/elevation tokens.
-- Avoid excessive shadowing.
-- Keep nested components visually understandable.
-
-Suggested commit:
-
-`style(quiz-creator): refine editor borders and elevation`
-
----
-
-## [ ] 43. Refine interactive states
-
-Review and improve:
-
-- Hover states.
-- Focus states.
-- Active states.
-- Selected question state.
-- Disabled controls.
-- Dragging states.
-- Destructive actions.
+- Hover.
+- Focus.
+- Selected question.
+- Validation state.
+- Disabled actions.
+- Dragging.
+- Destructive delete action.
 
 Requirements:
 
-- Maintain keyboard-visible focus.
-- Do not rely exclusively on color to communicate state.
+- Preserve keyboard-visible focus.
+- Do not rely only on color.
+- Reuse existing interaction tokens/patterns.
 
 Suggested commit:
 
@@ -885,21 +879,22 @@ Suggested commit:
 
 ---
 
-# Phase 11 — Responsive behavior
+# Phase 12 — Responsive behavior
 
-## [ ] 44. Define responsive behavior for the three-column workspace
+## [ ] 38. Define responsive behavior for the workspace
 
-The desktop layout should remain:
+Desktop remains:
 
     Question navigator | Question editor | Question settings
 
-For smaller widths, define an intentional alternative rather than allowing the columns to collapse accidentally.
+Define intentional behavior for smaller viewports using the existing Klurigo responsive helpers.
 
 Requirements:
 
-- Determine appropriate breakpoints using the existing responsive system.
-- Prevent the central editor from becoming unusably narrow.
-- Keep all editor functionality reachable.
+- Do not simply shrink all three columns until unusable.
+- Preserve access to every editor function.
+- Keep the central question editor usable.
+- Reuse existing breakpoints/helpers.
 
 Suggested commit:
 
@@ -907,21 +902,18 @@ Suggested commit:
 
 ---
 
-## [ ] 45. Adapt the question navigator for smaller screens
+## [ ] 39. Adapt the question navigator for constrained widths
 
-Define how question navigation should work when the full left sidebar cannot remain visible.
-
-Possible approaches include:
-
-- Collapsible sidebar.
-- Drawer.
-- Compact question selector.
+Define how the existing `QuestionPicker` behaves when a permanent sidebar no longer fits.
 
 Requirements:
 
-- Choose an approach consistent with existing Klurigo patterns.
-- Preserve question selection and creation.
-- Do not duplicate desktop and mobile editor state.
+- Preserve selection.
+- Preserve creation.
+- Preserve duplication.
+- Preserve reordering where practical.
+- Preserve validation indication.
+- Do not maintain a separate mobile question state.
 
 Suggested commit:
 
@@ -929,21 +921,16 @@ Suggested commit:
 
 ---
 
-## [ ] 46. Adapt question settings for smaller screens
+## [ ] 40. Adapt question settings for constrained widths
 
-Define how the right settings panel behaves when there is insufficient horizontal space.
-
-Possible approaches include:
-
-- Move below the editor.
-- Collapsible panel.
-- Drawer.
+Define how `QuestionSettings` remains reachable without making the central editor unusably narrow.
 
 Requirements:
 
-- Keep settings reachable.
-- Preserve state while opening/closing the settings UI.
-- Avoid shrinking the main question editor excessively.
+- Preserve selected-question state.
+- Preserve all currently applicable settings.
+- Do not duplicate settings state between desktop and mobile UI.
+- Use an interaction consistent with existing Klurigo patterns.
 
 Suggested commit:
 
@@ -951,65 +938,87 @@ Suggested commit:
 
 ---
 
-## [ ] 47. Adapt the bottom navigation for smaller screens
+## [ ] 41. Adapt header and footer controls for constrained widths
 
-Ensure previous/next navigation remains usable on constrained widths.
+Verify:
+
+- Settings remains reachable.
+- Save remains reachable.
+- Exit remains reachable.
+- Previous remains reachable.
+- Next remains reachable.
+- Current question position remains visible where practical.
 
 Requirements:
 
-- Keep both navigation directions accessible.
-- Keep the current question position visible where practical.
 - Avoid horizontal overflow.
+- Preserve the existing mobile button-label behavior where appropriate.
 
 Suggested commit:
 
-`style(quiz-creator): adapt question navigation for smaller screens`
+`style(quiz-creator): adapt editor navigation for smaller screens`
 
 ---
 
-# Phase 12 — Tests and cleanup
+# Phase 13 — Tests and cleanup
 
-## [ ] 48. Update component tests throughout the redesign
+## [ ] 42. Update tests alongside every structural change
 
-As components are extracted and redesigned:
+Do not defer behavioral coverage until the end.
 
-- Move tests with their components where appropriate.
-- Preserve behavioral coverage.
-- Add tests for new interaction paths.
-- Avoid replacing meaningful behavioral assertions with snapshot-only tests.
+Preserve or add coverage for:
 
-This should happen continuously throughout the branch rather than only at the end.
+- Question selection.
+- Question creation.
+- Question duplication.
+- Question deletion.
+- Question reordering.
+- Previous/next navigation.
+- Question type replacement.
+- Duration updates.
+- Points updates where supported.
+- Info updates.
+- Save state.
+- Advanced/simple editor switching.
+- JSON editor synchronization.
+- Unsaved-change behavior.
 
----
-
-## [ ] 49. Update editor snapshots
-
-Update snapshots only after the intended structural/visual changes are complete.
-
-Requirements:
-
-- Review snapshot changes manually.
-- Do not blindly accept snapshots.
-- Verify that removed UI was intentionally removed.
-
-Suggested commit if needed:
-
-`test(quiz-creator): update redesigned editor snapshots`
+Do not replace behavioral tests with snapshots alone.
 
 ---
 
-## [ ] 50. Add or update responsive tests
+## [ ] 43. Add coverage for every supported question editor
 
-Add coverage for important constrained viewport scenarios.
+Verify the redesigned editor for:
 
-At minimum verify:
+- Classic MultiChoice.
+- Classic Range.
+- Classic TrueFalse.
+- Classic TypeAnswer.
+- Classic Pin.
+- Classic Puzzle.
+- ZeroToOneHundred Range.
 
-- Header actions remain reachable.
-- Question navigation remains reachable.
-- Question settings remain reachable.
-- Question content remains editable.
-- Answer controls do not overflow.
-- Save and Exit remain reachable.
+The tests must verify that fields remain connected to the same underlying question properties after being moved or redesigned.
+
+Suggested commit:
+
+`test(quiz-creator): cover redesigned question editors`
+
+---
+
+## [ ] 44. Add responsive editor coverage
+
+At minimum verify constrained layouts keep these functions reachable:
+
+- Header actions.
+- Question selection.
+- Add question.
+- Main question input.
+- Question settings.
+- Previous/next navigation.
+- Save.
+- Exit.
 
 Suggested commit:
 
@@ -1017,11 +1026,53 @@ Suggested commit:
 
 ---
 
-## [ ] 51. Run the complete frontend test suite
+## [ ] 45. Review and update snapshots
 
-Before considering the redesign complete, run the full `klurigo-web` test suite.
+Update snapshots only after intended structural changes are complete.
 
-This must include all existing relevant checks used by the project, including:
+Requirements:
+
+- Review every changed snapshot.
+- Do not blindly accept snapshot updates.
+- Verify that removed controls were intentionally relocated rather than lost.
+- Verify advanced editor snapshots separately from the simple editor.
+
+Suggested commit:
+
+`test(quiz-creator): update redesigned editor snapshots`
+
+---
+
+## [ ] 46. Remove obsolete old-layout styling
+
+Remove code made unnecessary by the redesign.
+
+Review specifically:
+
+- Horizontal `QuestionPicker` layout assumptions.
+- Old question-picker scrolling behavior.
+- Old `QuestionEditor` section layout styles.
+- Duplicate workspace styling.
+- Temporary placeholder settings content.
+- Compatibility wrappers introduced during migration.
+- Unused props/imports.
+
+Requirements:
+
+- Do not remove existing domain behavior while cleaning layout code.
+- Keep the component hierarchy consistent with the rest of `QuizCreatorPage`.
+
+Suggested commit:
+
+`refactor(quiz-creator): clean up legacy editor layout`
+
+---
+
+## [ ] 47. Run the complete frontend verification
+
+Before considering the redesign complete, run the complete `klurigo-web` verification used by the repository.
+
+Include:
 
 - Unit/component tests.
 - Type checking.
@@ -1030,57 +1081,31 @@ This must include all existing relevant checks used by the project, including:
 - Production build.
 - Frontend E2E tests.
 
-Do not consider the redesign complete based only on tests covering the changed components.
+Do not consider the branch complete based only on `QuizCreatorPage` tests.
 
-Fix any regressions introduced by the redesign before continuing.
-
----
-
-## [ ] 52. Perform final cleanup
-
-Review the completed implementation for:
-
-- Dead CSS.
-- Obsolete old-layout components.
-- Duplicate styling.
-- Duplicate layout logic.
-- Unused props.
-- Unused imports.
-- Temporary compatibility code.
-- Old question-navigation styles.
-- Old narrow-layout assumptions.
-- Unnecessary wrappers introduced during the migration.
-
-Suggested commit:
-
-`refactor(quiz-creator): clean up legacy editor layout`
+Fix regressions before continuing.
 
 ---
 
-## [ ] 53. Perform final visual review
+## [ ] 48. Perform final repository-grounded review
 
-Compare the completed editor against the intended redesign direction.
+Review the implementation against both the redesign direction and the actual editor behavior.
 
-Review:
+Verify:
 
-- Overall page hierarchy.
-- Header.
-- Question navigator.
-- Main editor.
-- Question settings.
-- Answer editor.
-- Media area.
-- Bottom navigation.
-- Spacing.
-- Surfaces.
-- Typography.
-- Interactive states.
-- Validation.
-- Responsive behavior.
+- `QuizCreatorPage` data flow remains unchanged unless intentionally required.
+- `QuestionDataSource` remains the authoritative question state.
+- `QuizSettingsDataSource` remains the authoritative quiz-settings state.
+- `QuestionEditor` still dispatches all supported question types.
+- `QuestionPicker` still owns navigation/reordering/duplication behavior.
+- `QuestionSettings` only contains real existing question properties.
+- `AdvancedQuestionEditor` remains the whole-question-array JSON editor.
+- `QuizSettingsModal` remains quiz-level settings.
+- No existing question type loses editable fields.
+- No unsupported fields or capabilities were invented.
+- Save/exit/unsaved-change behavior remains intact.
 
-Do not require pixel-perfect reproduction of the mockup if doing so conflicts with existing Klurigo design primitives or functionality.
-
-The final result should feel like a native evolution of Klurigo rather than an isolated mockup copied into the application.
+The finished editor should feel like a redesign of the existing Klurigo editor, not a replacement implementation built from the mockup.
 
 ---
 
