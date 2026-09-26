@@ -1,45 +1,43 @@
 @use '../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../styles/helpers' as helpers;
-@use '../../../../styles/spacing.semantic' as spacing;
+@use '../../../../styles/mixins/page-gap' as pageGap;
 
 .gameResultsPage {
+  @include pageGap.page-gap;
+
   display: flex;
   flex-direction: column;
   flex: 1;
 
   @include helpers.mobile {
-    row-gap: spacing.$space-page-mobile;
     width: 100%;
   }
 
   @include helpers.tablet {
-    row-gap: spacing.$space-page-tablet;
     width: 100%;
   }
 
   @include helpers.desktop {
-    row-gap: spacing.$space-page-desktop;
     width: calc(#{breakpoints.$breakpoint-desktop} * 0.8);
   }
 
   section {
+    @include pageGap.page-gap;
+
     display: flex;
     flex-direction: column;
     flex: 1;
 
     @include helpers.mobile {
       max-width: breakpoints.$breakpoint-mobile;
-      row-gap: spacing.$space-page-mobile;
     }
 
     @include helpers.tablet {
       max-width: breakpoints.$breakpoint-tablet;
-      row-gap: spacing.$space-page-tablet;
     }
 
     @include helpers.desktop {
       max-width: breakpoints.$breakpoint-desktop;
-      row-gap: spacing.$space-page-desktop;
     }
   }
 }

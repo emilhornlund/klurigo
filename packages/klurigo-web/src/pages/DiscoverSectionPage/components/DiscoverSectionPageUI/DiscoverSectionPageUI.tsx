@@ -2,7 +2,7 @@ import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import type { DiscoveryQuizCardDto, DiscoverySectionKey } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { Button, Page, Typography } from '../../../../components'
+import { Button, Page, Stack, Typography } from '../../../../components'
 import { QuizDiscoveryCard } from '../../../../components'
 import {
   DISCOVERY_SECTION_DESCRIPTIONS,
@@ -55,7 +55,7 @@ const DiscoverSectionPageUI: FC<DiscoverSectionPageUIProps> = ({
 
   return (
     <Page align="start" discover profile>
-      <div className={styles.container}>
+      <Stack width="full" spacing="page">
         {isError || !sectionKey || (!isLoading && quizzes.length === 0) ? (
           <Typography
             variant="body2"
@@ -102,7 +102,7 @@ const DiscoverSectionPageUI: FC<DiscoverSectionPageUIProps> = ({
             )}
           </>
         )}
-      </div>
+      </Stack>
     </Page>
   )
 }

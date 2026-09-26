@@ -5,6 +5,7 @@
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
+@use '../../styles/mixins/page-gap' as pageGap;
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
@@ -262,6 +263,8 @@
       display: block;
 
       .contentInner {
+        @include pageGap.page-gap;
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -324,10 +327,6 @@
 
       > .contentWrapper {
         width: 100%;
-
-        > .contentInner {
-          row-gap: spacing.$space-page-mobile;
-        }
       }
     }
 
@@ -350,10 +349,6 @@
         &.fullWidth {
           width: 100%;
         }
-
-        > .contentInner {
-          row-gap: spacing.$space-page-tablet;
-        }
       }
     }
 
@@ -375,10 +370,6 @@
 
         &.fullWidth {
           width: 100%;
-        }
-
-        > .contentInner {
-          row-gap: spacing.$space-page-desktop;
         }
       }
     }

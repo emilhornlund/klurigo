@@ -2,9 +2,12 @@
 @use '../../../../styles/breakpoints.tokens' as breakpoints;
 @use '../../../../styles/colors.semantic' as colors;
 @use '../../../../styles/helpers' as helpers;
+@use '../../../../styles/mixins/page-gap' as pageGap;
 @use '../../../../styles/spacing.semantic' as spacing;
 
 .layout {
+  @include pageGap.page-gap;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,19 +23,16 @@
   }
 
   @include helpers.mobile {
-    row-gap: spacing.$space-page-mobile;
     padding-bottom: spacing.$space-page-mobile;
     width: 100%;
   }
 
   @include helpers.tablet {
-    row-gap: spacing.$space-page-tablet;
     padding-bottom: spacing.$space-page-tablet;
     width: 100%;
   }
 
   @include helpers.desktop {
-    row-gap: spacing.$space-page-desktop;
     padding-bottom: spacing.$space-page-desktop;
     width: breakpoints.$breakpoint-desktop * 0.85;
   }

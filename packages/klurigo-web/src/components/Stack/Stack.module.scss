@@ -1,6 +1,7 @@
 @use '../../styles/helpers' as helpers;
 @use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/mixins/page-gap' as pageGap;
 
 .stack {
   display: flex;
@@ -40,6 +41,10 @@
   @include helpers.desktop {
     gap: spacing.$space-compact-desktop;
   }
+}
+
+.spacing-page {
+  @include pageGap.page-gap;
 }
 
 .align-start {
