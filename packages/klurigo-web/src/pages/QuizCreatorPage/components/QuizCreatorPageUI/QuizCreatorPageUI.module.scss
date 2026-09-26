@@ -20,14 +20,6 @@
   min-width: 0;
 }
 
-.questionNavigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: spacing.$space-compact-desktop;
-}
-
 .quizCreatorPage {
   flex: 1;
   height: 100%;

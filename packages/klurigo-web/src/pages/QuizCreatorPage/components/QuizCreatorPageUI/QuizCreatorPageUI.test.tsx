@@ -396,43 +396,36 @@ describe('QuizCreatorPageUI', () => {
     expect(onSelectedQuestionIndex).toHaveBeenNthCalledWith(2, 2)
   })
 
-  it('disables question navigation at the first and last questions', () => {
+  it('hides question navigation while the advanced editor is active', () => {
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
       configurable: true,
       value: vi.fn(),
     })
-    const questions = [
-      { type: QuestionType.MultiChoice, question: 'First question' },
-      { type: QuestionType.MultiChoice, question: 'Second question' },
-    ]
-    const props = {
-      gameMode: GameMode.Classic,
-      questions,
-      questionValidations: questions.map(() => makeValidation()),
-      selectedQuestion: questions[0],
-      selectedQuestionIndex: 0,
+    const question = {
+      type: QuestionType.MultiChoice,
+      question: 'First question',
     }
-    const { unmount } = renderQuizCreatorPageUI(props)
-
-    expect(
-      screen.getByRole('button', { name: 'Previous question' }),
-    ).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled()
-
-    unmount()
     renderQuizCreatorPageUI({
-      ...props,
-      selectedQuestion: questions[1],
-      selectedQuestionIndex: 1,
+      gameMode: GameMode.Classic,
+      questions: [question],
+      questionValidations: [makeValidation()],
+      selectedQuestion: question,
+      selectedQuestionIndex: 0,
     })
 
     expect(
       screen.getByRole('navigation', { name: 'Question navigation' }),
-    ).toHaveTextContent('Question 2 of 2')
+    ).toBeInTheDocument()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show Advanced Editor' }),
+    )
     expect(
-      screen.getByRole('button', { name: 'Previous question' }),
-    ).toBeEnabled()
-    expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled()
+      screen.queryByRole('navigation', { name: 'Question navigation' }),
+    ).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Show Simple Editor' }))
+    expect(
+      screen.getByRole('navigation', { name: 'Question navigation' }),
+    ).toBeInTheDocument()
   })
 
   it('disables the save button when canSaveQuiz is false', () => {

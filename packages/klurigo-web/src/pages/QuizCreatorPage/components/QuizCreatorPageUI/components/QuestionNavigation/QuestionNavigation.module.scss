@@ -1,0 +1,9 @@
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.questionNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: spacing.$space-compact-desktop;
+}

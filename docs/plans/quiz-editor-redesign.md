@@ -131,7 +131,7 @@ Suggested commit:
 
 ---
 
-## [ ] 5. Extract the bottom navigation into `QuestionNavigation`
+## [x] 5. Extract the bottom navigation into `QuestionNavigation`
 
 Move the footer introduced in task 3 into a dedicated component.
 

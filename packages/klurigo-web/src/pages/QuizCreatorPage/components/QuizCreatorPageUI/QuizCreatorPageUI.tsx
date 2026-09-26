@@ -1,9 +1,4 @@
-import {
-  faChevronLeft,
-  faChevronRight,
-  faCode,
-  faSliders,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCode, faSliders } from '@fortawesome/free-solid-svg-icons'
 import type { QuestionDto } from '@klurigo/common'
 import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
@@ -25,6 +20,7 @@ import {
   AdvancedQuestionEditor,
   GameModeSelectionModal,
   QuestionEditor,
+  QuestionNavigation,
   QuestionPicker,
   QuizEditorHeader,
 } from './components'
@@ -100,30 +96,11 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
       }
       footer={
         gameMode && selectedQuestion && !showAdvancedQuestionEditor ? (
-          <nav
-            className={styles.questionNavigation}
-            aria-label="Question navigation">
-            <Button
-              id="previous-question-button"
-              type="button"
-              size="small"
-              value="Previous question"
-              icon={faChevronLeft}
-              disabled={selectedQuestionIndex <= 0}
-              onClick={() => onSelectedQuestionIndex(selectedQuestionIndex - 1)}
-            />
-            <span>{`Question ${selectedQuestionIndex + 1} of ${questions.length}`}</span>
-            <Button
-              id="next-question-button"
-              type="button"
-              size="small"
-              value="Next question"
-              icon={faChevronRight}
-              iconPosition="trailing"
-              disabled={selectedQuestionIndex >= questions.length - 1}
-              onClick={() => onSelectedQuestionIndex(selectedQuestionIndex + 1)}
-            />
-          </nav>
+          <QuestionNavigation
+            selectedQuestionIndex={selectedQuestionIndex}
+            totalQuestions={questions.length}
+            onSelectedQuestionIndex={onSelectedQuestionIndex}
+          />
         ) : undefined
       }
       disableContentFadeAnimation>
