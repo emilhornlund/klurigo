@@ -19,7 +19,7 @@ const PlayerGameBeginState: FC<PlayerGameBeginStateProps> = ({
     player: { nickname },
   },
 }) => (
-  <GamePage>
+  <GamePage layout="contained">
     <PageProminentIcon src={BellRingIcon} alt="BellRing" />
     <NicknameChip value={nickname} />
     <Typography variant="title" width="medium" align="center" color="inverse">

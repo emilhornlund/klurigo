@@ -74,7 +74,7 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <Page align="start" discover profile>
+      <Page layout="contained" align="start" discover profile>
         <LoadingSpinner />
       </Page>
     )
@@ -82,7 +82,7 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 
   if (isError || !profile) {
     return (
-      <Page align="center" discover profile>
+      <Page layout="contained" align="center" discover profile>
         <Typography
           variant="body"
           align="center"
@@ -95,7 +95,7 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
   }
 
   return (
-    <Page align="start" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <Typography
         variant="title"
         align="center"

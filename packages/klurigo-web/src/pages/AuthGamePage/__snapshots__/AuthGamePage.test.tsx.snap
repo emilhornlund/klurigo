@@ -34,10 +34,10 @@ exports[`AuthGamePage > authenticates with both id and pin and navigates to /joi
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -91,10 +91,10 @@ exports[`AuthGamePage > authenticates with gameId and navigates to /join on succ
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -148,10 +148,10 @@ exports[`AuthGamePage > authenticates with gamePIN and navigates to /join on suc
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -205,10 +205,10 @@ exports[`AuthGamePage > does nothing when no id or pin 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -262,10 +262,10 @@ exports[`AuthGamePage > navigates home and notifies on failure 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -319,10 +319,10 @@ exports[`AuthGamePage > runs only once even if user clicks back/forward causing 
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

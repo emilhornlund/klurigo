@@ -5,20 +5,21 @@ import { describe, expect, test } from 'vitest'
 import Page from './Page'
 
 describe('Page', () => {
-  test('should render Page with default props', async () => {
+  test('should render contained Page', () => {
     const { container } = render(
       <MemoryRouter>
-        <Page>Content</Page>
+        <Page layout="contained">Content</Page>
       </MemoryRouter>,
     )
 
     expect(container).toMatchSnapshot()
   })
 
-  test('should render Page with header', async () => {
+  test('should render Page with header', () => {
     const { container } = render(
       <MemoryRouter>
         <Page
+          layout="contained"
           header={
             <>
               <a href="#">Link1</a>
@@ -33,24 +34,10 @@ describe('Page', () => {
     expect(container).toMatchSnapshot()
   })
 
-  test('should render Page with profile', async () => {
+  test('should render Page with profile', () => {
     const { container } = render(
       <MemoryRouter>
-        <Page profile>Content</Page>
-      </MemoryRouter>,
-    )
-
-    expect(container).toMatchSnapshot()
-  })
-
-  test('should render Page with full bleed layout', async () => {
-    const { container } = render(
-      <MemoryRouter>
-        <Page
-          layout="fullBleed"
-          width="full"
-          height="full"
-          footer={<a>Footer</a>}>
+        <Page layout="contained" profile>
           Content
         </Page>
       </MemoryRouter>,
@@ -59,23 +46,43 @@ describe('Page', () => {
     expect(container).toMatchSnapshot()
   })
 
-  test('should render Page with large width', async () => {
+  test('should render full bleed treatment independently of layout', () => {
     const { container } = render(
       <MemoryRouter>
-        <Page width="large">Content</Page>
+        <Page layout="fill" fullBleed footer={<a>Footer</a>}>
+          Content
+        </Page>
       </MemoryRouter>,
     )
 
     expect(container).toMatchSnapshot()
   })
 
-  test('should render Page with full width', async () => {
-    const { container } = render(
-      <MemoryRouter>
-        <Page width="full">Content</Page>
-      </MemoryRouter>,
-    )
+  test.each(['contained', 'compact', 'fill', 'compactFill'] as const)(
+    '%s applies its geometry class',
+    (layout) => {
+      const { container } = render(
+        <MemoryRouter>
+          <Page layout={layout} align="start">
+            Content
+          </Page>
+        </MemoryRouter>,
+      )
 
-    expect(container).toMatchSnapshot()
-  })
+      const content = container.querySelector('.content')
+      expect(content).toHaveClass(layout, 'startAlign')
+      expect(content).not.toHaveClass('fullBleed')
+      for (const otherLayout of [
+        'contained',
+        'compact',
+        'fill',
+        'compactFill',
+      ]) {
+        if (otherLayout !== layout) expect(content).not.toHaveClass(otherLayout)
+      }
+      expect(content?.querySelector('.contentWrapper')).toHaveClass(
+        'contentWrapper',
+      )
+    },
+  )
 })

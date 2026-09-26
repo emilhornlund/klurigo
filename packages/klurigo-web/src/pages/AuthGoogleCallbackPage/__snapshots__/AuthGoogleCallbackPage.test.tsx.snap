@@ -34,10 +34,10 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -101,10 +101,10 @@ exports[`AuthGoogleCallbackPage > shows error and redirects to /auth/login when 
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

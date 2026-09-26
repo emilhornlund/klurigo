@@ -27,10 +27,10 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

@@ -83,7 +83,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
 
   if (error) {
     return (
-      <Page>
+      <Page layout="contained">
         <Badge size="large" backgroundColor="red">
           <FontAwesomeIcon icon={faXmark} />
         </Badge>
@@ -108,7 +108,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
   }
 
   return (
-    <Page>
+    <Page layout="contained">
       <Typography variant="title" align="center" color="inverse">
         Lock It Down!
       </Typography>

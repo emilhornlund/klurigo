@@ -4,7 +4,7 @@ import { LoadingSpinner, Page, Typography } from '../../../../components'
 
 const AuthGoogleCallbackPageUI: FC = () => {
   return (
-    <Page>
+    <Page layout="contained">
       <Typography variant="title" width="small" align="center" color="inverse">
         Hold tight—calling in the Google cavalry!
       </Typography>

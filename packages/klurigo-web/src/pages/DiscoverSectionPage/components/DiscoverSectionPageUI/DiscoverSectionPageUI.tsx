@@ -54,7 +54,7 @@ const DiscoverSectionPageUI: FC<DiscoverSectionPageUIProps> = ({
     : undefined
 
   return (
-    <Page align="start" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <Stack width="full" spacing="page">
         {isError || !sectionKey || (!isLoading && quizzes.length === 0) ? (
           <Typography

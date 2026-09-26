@@ -57,6 +57,7 @@ const GameJoinPage: FC = () => {
 
   return (
     <Page
+      layout="contained"
       align="center"
       header={
         <IconButtonArrowLeft

@@ -14,6 +14,7 @@ const ErrorPage: FC = () => {
 
   return (
     <Page
+      layout="contained"
       header={
         <IconButtonArrowLeft
           id="go-back"

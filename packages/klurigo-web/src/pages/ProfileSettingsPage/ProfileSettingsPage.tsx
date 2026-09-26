@@ -81,7 +81,7 @@ const ProfileSettingsPage: FC = () => {
 
   if (!data || isLoadingUserProfile || isError) {
     return (
-      <Page profile>
+      <Page layout="contained" profile>
         <LoadingSpinner />
       </Page>
     )

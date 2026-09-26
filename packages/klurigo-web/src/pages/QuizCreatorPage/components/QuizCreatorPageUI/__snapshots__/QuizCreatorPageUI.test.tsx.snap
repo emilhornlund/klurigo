@@ -133,10 +133,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content fill centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner disableAnimation"
@@ -1457,10 +1457,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content fill centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner disableAnimation"
@@ -1647,10 +1647,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content fill centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner disableAnimation"
@@ -1837,10 +1837,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content fill centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner disableAnimation"
@@ -2029,10 +2029,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content fill centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner disableAnimation"

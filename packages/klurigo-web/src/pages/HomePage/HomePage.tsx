@@ -131,7 +131,7 @@ const HomePage: FC = () => {
   }
 
   return (
-    <Page discover profile>
+    <Page layout="contained" discover profile>
       <div className={styles.icon}>
         <PageProminentIcon src={KlurigoIcon} alt="Klurigo" />
       </div>

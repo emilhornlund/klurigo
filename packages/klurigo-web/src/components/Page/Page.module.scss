@@ -311,7 +311,8 @@
       }
     }
 
-    &.fullHeight {
+    &.fill,
+    &.compactFill {
       > .contentWrapper {
         height: 100%;
 
@@ -333,21 +334,12 @@
     @include helpers.tablet {
       padding: spacing.$space-page-tablet;
 
-      > .contentWrapper {
-        &.smallWidth {
-          width: breakpoints.$breakpoint-mobile;
-        }
-
-        &.mediumWidth {
+      &.contained,
+      &.compact,
+      &.fill,
+      &.compactFill {
+        > .contentWrapper {
           width: breakpoints.$breakpoint-tablet;
-        }
-
-        &.largeWidth {
-          width: breakpoints.$breakpoint-tablet;
-        }
-
-        &.fullWidth {
-          width: 100%;
         }
       }
     }
@@ -355,21 +347,17 @@
     @include helpers.desktop {
       padding: spacing.$space-page-desktop;
 
-      > .contentWrapper {
-        &.smallWidth {
-          width: breakpoints.$breakpoint-mobile;
-        }
-
-        &.mediumWidth {
-          width: breakpoints.$breakpoint-tablet;
-        }
-
-        &.largeWidth {
+      &.contained,
+      &.fill {
+        > .contentWrapper {
           width: breakpoints.$breakpoint-desktop;
         }
+      }
 
-        &.fullWidth {
-          width: 100%;
+      &.compact,
+      &.compactFill {
+        > .contentWrapper {
+          width: breakpoints.$breakpoint-tablet;
         }
       }
     }

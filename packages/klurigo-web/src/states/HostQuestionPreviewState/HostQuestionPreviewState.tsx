@@ -26,7 +26,7 @@ const HostQuestionPreviewState: FC<HostQuestionPreviewStateProps> = ({
   },
 }) => (
   <GamePage
-    height="full"
+    layout="fill"
     align="space-between"
     footer={
       <HostGameFooter

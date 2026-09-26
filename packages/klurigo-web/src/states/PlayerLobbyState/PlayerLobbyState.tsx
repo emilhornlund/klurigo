@@ -69,6 +69,7 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
   return (
     <>
       <GamePage
+        layout="contained"
         header={
           <IconButtonArrowLeft
             id="leave-game-button"

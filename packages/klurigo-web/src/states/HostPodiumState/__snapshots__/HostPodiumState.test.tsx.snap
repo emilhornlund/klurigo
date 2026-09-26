@@ -55,10 +55,10 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -611,10 +611,10 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1167,10 +1167,10 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1723,10 +1723,10 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -2334,10 +2334,10 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -2866,10 +2866,10 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content compact centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

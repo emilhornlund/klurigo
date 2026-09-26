@@ -1,162 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Page > should render Page with default props 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content centerAlign"
-    >
-      <div
-        class="contentWrapper largeWidth"
-      >
-        <div
-          class="contentInner"
-        >
-          Content
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Page > should render Page with full bleed layout 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header fullBleed"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content fullBleed fullHeight centerAlign"
-    >
-      <div
-        class="contentWrapper fullWidth"
-      >
-        <div
-          class="contentInner"
-        >
-          Content
-        </div>
-      </div>
-    </div>
-    <div
-      class="footer fullBleed"
-    >
-      <a>
-        Footer
-      </a>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Page > should render Page with full width 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content centerAlign"
-    >
-      <div
-        class="contentWrapper fullWidth"
-      >
-        <div
-          class="contentInner"
-        >
-          Content
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`Page > should render Page with header 1`] = `
 <div>
   <div
@@ -201,60 +44,10 @@ exports[`Page > should render Page with header 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
-      >
-        <div
-          class="contentInner"
-        >
-          Content
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Page > should render Page with large width 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content centerAlign"
-    >
-      <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -301,10 +94,10 @@ exports[`Page > should render Page with profile 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -312,6 +105,113 @@ exports[`Page > should render Page with profile 1`] = `
           Content
         </div>
       </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Page > should render contained Page 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content contained centerAlign"
+    >
+      <div
+        class="contentWrapper"
+      >
+        <div
+          class="contentInner"
+        >
+          Content
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Page > should render full bleed treatment independently of layout 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header fullBleed"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content fill fullBleed centerAlign"
+    >
+      <div
+        class="contentWrapper"
+      >
+        <div
+          class="contentInner"
+        >
+          Content
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer fullBleed"
+    >
+      <a>
+        Footer
+      </a>
     </div>
   </div>
 </div>

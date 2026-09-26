@@ -27,13 +27,11 @@ import { Menu, MenuItem, MenuSeparator } from '../Menu'
 
 import styles from './Page.module.scss'
 
-type PageLayout = 'contained' | 'fullBleed'
-type PageWidth = 'small' | 'medium' | 'large' | 'full'
+type PageLayout = 'contained' | 'compact' | 'fill' | 'compactFill'
 
 export interface PageProps {
-  layout?: PageLayout
-  width?: PageWidth
-  height?: 'normal' | 'full'
+  layout: PageLayout
+  fullBleed?: boolean
   align?: 'start' | 'center' | 'space-between'
   noPadding?: boolean
   discover?: boolean
@@ -46,9 +44,8 @@ export interface PageProps {
 }
 
 const Page: FC<PageProps> = ({
-  layout = 'contained',
-  width = 'large',
-  height = 'normal',
+  layout,
+  fullBleed = false,
   align = 'center',
   noPadding = false,
   discover = false,
@@ -111,7 +108,7 @@ const Page: FC<PageProps> = ({
       <div
         className={classNames(
           styles.header,
-          layout === 'fullBleed' ? styles.fullBleed : undefined,
+          fullBleed ? styles.fullBleed : undefined,
         )}>
         <button className={styles.logo} onClick={() => navigate('/')}>
           <img className={styles.icon} src={KlurigoIcon} alt="Klurigo" />
@@ -173,21 +170,14 @@ const Page: FC<PageProps> = ({
       <div
         className={classNames(
           styles.content,
-          layout === 'fullBleed' ? styles.fullBleed : undefined,
-          height === 'full' ? styles.fullHeight : undefined,
+          styles[layout],
+          fullBleed ? styles.fullBleed : undefined,
           align === 'start' ? styles.startAlign : undefined,
           align === 'center' ? styles.centerAlign : undefined,
           align === 'space-between' ? styles.spaceBetweenAlign : undefined,
           noPadding ? styles.noPadding : undefined,
         )}>
-        <div
-          className={classNames(
-            styles.contentWrapper,
-            width === 'small' ? styles.smallWidth : undefined,
-            width === 'medium' ? styles.mediumWidth : undefined,
-            width === 'large' ? styles.largeWidth : undefined,
-            width === 'full' ? styles.fullWidth : undefined,
-          )}>
+        <div className={styles.contentWrapper}>
           <div
             className={classNames(
               styles.contentInner,
@@ -201,7 +191,7 @@ const Page: FC<PageProps> = ({
         <div
           className={classNames(
             styles.footer,
-            layout === 'fullBleed' ? styles.fullBleed : undefined,
+            fullBleed ? styles.fullBleed : undefined,
           )}>
           {footer}
         </div>

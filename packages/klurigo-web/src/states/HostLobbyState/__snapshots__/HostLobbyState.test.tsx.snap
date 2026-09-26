@@ -109,10 +109,10 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content compactFill centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -371,10 +371,10 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content compactFill centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -689,10 +689,10 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content compactFill centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -949,10 +949,10 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content compactFill centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1393,10 +1393,10 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight centerAlign"
+      class="content compactFill centerAlign"
     >
       <div
-        class="contentWrapper mediumWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

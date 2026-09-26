@@ -75,7 +75,7 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
   const filterActive = isFilterActive(filter)
 
   return (
-    <Page align="start" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <Stack width="full" spacing="page">
         <div className={styles.heading}>
           <Typography

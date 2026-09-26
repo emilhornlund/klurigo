@@ -19,8 +19,9 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default = {
+export const Contained = {
   args: {
+    layout: 'contained',
     header: (
       <>
         <a>About</a>
@@ -37,13 +38,33 @@ export const Default = {
   },
 } satisfies Story
 
+export const Compact = {
+  args: {
+    layout: 'compact',
+    children: <Typography align="center">Compact content</Typography>,
+  },
+} satisfies Story
+
+export const Fill = {
+  args: {
+    layout: 'fill',
+    children: <Typography align="center">Fill content</Typography>,
+  },
+} satisfies Story
+
+export const CompactFill = {
+  args: {
+    layout: 'compactFill',
+    children: <Typography align="center">Compact fill content</Typography>,
+  },
+} satisfies Story
+
 export const FullBleed = {
   name: 'Full Bleed',
   decorators: [withMockAuth],
   args: {
-    layout: 'fullBleed',
-    height: 'full',
-    width: 'full',
+    layout: 'fill',
+    fullBleed: true,
     header: (
       <Button
         id="secondary-button"

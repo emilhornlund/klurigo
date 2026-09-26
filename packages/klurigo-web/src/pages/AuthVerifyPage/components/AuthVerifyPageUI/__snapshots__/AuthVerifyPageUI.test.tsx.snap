@@ -34,10 +34,10 @@ exports[`AuthVerifyPageUI > renders error state 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -111,10 +111,10 @@ exports[`AuthVerifyPageUI > renders verified state (logged in) with home link 1`
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -195,10 +195,10 @@ exports[`AuthVerifyPageUI > renders verified state (not logged in) with login li
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -279,10 +279,10 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper largeWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

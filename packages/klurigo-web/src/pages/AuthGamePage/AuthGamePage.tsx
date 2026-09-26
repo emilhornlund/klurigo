@@ -32,7 +32,7 @@ const AuthGamePage: FC = () => {
   }, [searchParams, authenticateGame, navigate])
 
   return (
-    <Page>
+    <Page layout="contained">
       <LoadingSpinner />
     </Page>
   )

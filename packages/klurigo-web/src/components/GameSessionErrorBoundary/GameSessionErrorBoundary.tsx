@@ -17,7 +17,7 @@ const GameSessionErrorFallback: FC<GameSessionErrorFallbackProps> = ({
   onReload,
   onReturnHome,
 }) => (
-  <Page hideLogin>
+  <Page layout="contained" hideLogin>
     <div
       className={styles.fallback}
       data-testid="game-session-error-fallback"

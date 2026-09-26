@@ -56,6 +56,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => {
 
   return (
     <GamePage
+      layout="contained"
       footer={
         <PlayerGameFooter
           currentQuestion={currentQuestion}
