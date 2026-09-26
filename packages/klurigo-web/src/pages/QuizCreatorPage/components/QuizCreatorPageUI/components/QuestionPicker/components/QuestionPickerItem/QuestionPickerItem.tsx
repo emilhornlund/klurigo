@@ -1,5 +1,5 @@
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { faCircleExclamation, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionType } from '@klurigo/common'
 import type { DragEvent, FC, MouseEvent } from 'react'
@@ -15,11 +15,9 @@ export interface QuestionPickerItemProps {
   type: QuestionType
   active?: boolean
   valid: boolean
-  canDelete: boolean
   onClick?: () => void
   onDrop?: (id: number) => void
   onDuplicate?: () => void
-  onDelete?: () => void
 }
 
 const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
@@ -28,11 +26,9 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
   type,
   active,
   valid,
-  canDelete,
   onClick,
   onDrop,
   onDuplicate,
-  onDelete,
 }) => {
   const handleClickQuestionPickerItem = (event: MouseEvent) => {
     event.preventDefault()
@@ -55,12 +51,6 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
     event.preventDefault()
     event.stopPropagation()
     onDuplicate?.()
-  }
-
-  const handleClickDelete = (event: MouseEvent) => {
-    event.preventDefault()
-    event.stopPropagation()
-    onDelete?.()
   }
 
   return (
@@ -108,16 +98,6 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
             <div className={styles.validationErrorSymbol}>
               <FontAwesomeIcon icon={faCircleExclamation} />
             </div>
-          )}
-          {active && (
-            <button
-              type="button"
-              disabled={!canDelete}
-              aria-label="Delete question"
-              className={styles.deleteButton}
-              onClick={handleClickDelete}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
           )}
         </div>
       </div>

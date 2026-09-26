@@ -12,6 +12,12 @@ const validation = {
   errors: [],
 } as unknown as QuizQuestionValidationResult
 
+const deletionProps = {
+  selectedQuestionIndex: 0,
+  questionCount: 2,
+  onDeleteQuestionIndex: vi.fn(),
+}
+
 describe('QuestionSettings duration', () => {
   it.each([
     [GameMode.Classic, QuestionType.MultiChoice],
@@ -30,6 +36,7 @@ describe('QuestionSettings duration', () => {
         questionValidation={validation}
         onQuestionValueChange={onQuestionValueChange}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -56,6 +63,7 @@ describe('QuestionSettings duration', () => {
         }
         onQuestionValueChange={vi.fn()}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -86,6 +94,7 @@ describe('QuestionSettings points', () => {
         questionValidation={validation}
         onQuestionValueChange={onQuestionValueChange}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -112,6 +121,7 @@ describe('QuestionSettings points', () => {
         }
         onQuestionValueChange={vi.fn()}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -127,6 +137,7 @@ describe('QuestionSettings points', () => {
         questionValidation={validation}
         onQuestionValueChange={vi.fn()}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -157,6 +168,7 @@ describe('QuestionSettings info', () => {
         questionValidation={validation}
         onQuestionValueChange={onQuestionValueChange}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -187,6 +199,7 @@ describe('QuestionSettings info', () => {
         }
         onQuestionValueChange={onQuestionValueChange}
         onReplaceQuestion={vi.fn()}
+        {...deletionProps}
       />,
     )
 
@@ -201,5 +214,95 @@ describe('QuestionSettings info', () => {
       'info',
       undefined,
     )
+  })
+})
+
+describe('QuestionSettings deletion', () => {
+  const question = { type: QuestionType.MultiChoice }
+
+  it('disables deletion when the selected question is the only one', () => {
+    render(
+      <QuestionSettings
+        mode={GameMode.Classic}
+        question={question}
+        questionValidation={validation}
+        onQuestionValueChange={vi.fn()}
+        onReplaceQuestion={vi.fn()}
+        selectedQuestionIndex={0}
+        questionCount={1}
+        onDeleteQuestionIndex={vi.fn()}
+      />,
+    )
+
+    expect(
+      screen.getByRole('button', { name: 'Delete question' }),
+    ).toBeDisabled()
+    expect(
+      screen.queryByRole('dialog', { name: 'Delete quiz question' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('confirms deletion of the currently selected question and allows cancellation', () => {
+    const onDeleteQuestionIndex = vi.fn()
+    render(
+      <QuestionSettings
+        mode={GameMode.Classic}
+        question={question}
+        questionValidation={validation}
+        onQuestionValueChange={vi.fn()}
+        onReplaceQuestion={vi.fn()}
+        selectedQuestionIndex={1}
+        questionCount={3}
+        onDeleteQuestionIndex={onDeleteQuestionIndex}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete question' }))
+    const dialog = screen.getByRole('dialog', { name: 'Delete quiz question' })
+    expect(dialog).toHaveTextContent(
+      "Are you sure you want to delete this question? This action can't be undone.",
+    )
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Close' }))
+    expect(onDeleteQuestionIndex).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete question' }))
+    fireEvent.click(
+      within(
+        screen.getByRole('dialog', { name: 'Delete quiz question' }),
+      ).getByRole('button', { name: 'Delete' }),
+    )
+    expect(onDeleteQuestionIndex).toHaveBeenCalledExactlyOnceWith(1)
+    expect(
+      screen.queryByRole('dialog', { name: 'Delete quiz question' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not delete if the question count falls to one while confirmation is open', () => {
+    const onDeleteQuestionIndex = vi.fn()
+    const props = {
+      mode: GameMode.Classic,
+      question,
+      questionValidation: validation,
+      onQuestionValueChange: vi.fn(),
+      onReplaceQuestion: vi.fn(),
+      selectedQuestionIndex: 0,
+      onDeleteQuestionIndex,
+    }
+    const { rerender } = render(
+      <QuestionSettings {...props} questionCount={2} />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete question' }))
+    rerender(<QuestionSettings {...props} questionCount={1} />)
+    fireEvent.click(
+      within(
+        screen.getByRole('dialog', { name: 'Delete quiz question' }),
+      ).getByRole('button', { name: 'Delete' }),
+    )
+
+    expect(onDeleteQuestionIndex).not.toHaveBeenCalled()
+    expect(
+      screen.getByRole('dialog', { name: 'Delete quiz question' }),
+    ).toBeInTheDocument()
   })
 })

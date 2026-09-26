@@ -282,7 +282,7 @@ Suggested commit:
 
 ---
 
-## [ ] 11. Move question deletion into `QuestionSettings`
+## [x] 11. Move question deletion into `QuestionSettings`
 
 Relocate the existing delete-question action from `QuestionPicker` into the bottom of the settings panel.
 

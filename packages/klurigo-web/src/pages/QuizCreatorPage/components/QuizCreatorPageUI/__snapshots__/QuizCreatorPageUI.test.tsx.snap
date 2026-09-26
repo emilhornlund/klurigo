@@ -214,25 +214,6 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                               />
                             </svg>
                           </button>
-                          <button
-                            aria-label="Delete question"
-                            class="deleteButton"
-                            type="button"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="svg-inline--fa fa-trash"
-                              data-icon="trash"
-                              data-prefix="fas"
-                              role="img"
-                              viewBox="0 0 448 512"
-                            >
-                              <path
-                                d="M136.7 5.9L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-8.7-26.1C306.9-7.2 294.7-16 280.9-16L167.1-16c-13.8 0-26 8.8-30.4 21.9zM416 144L32 144 53.1 467.1C54.7 492.4 75.7 512 101 512L347 512c25.3 0 46.3-19.6 47.9-44.9L416 144z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -602,21 +583,21 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-0-textfield"
-                                    id="multi-choice-option-_r_1c_-0"
-                                    name="multi-choice-option-_r_1c_-0"
+                                    data-testid="test-multi-choice-option-_r_17_-0-textfield"
+                                    id="multi-choice-option-_r_17_-0"
+                                    name="multi-choice-option-_r_17_-0"
                                     placeholder="Option 1"
                                     type="text"
                                     value="Vincent van Gogh"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-0-checkbox"
+                                    for="multi-choice-option-_r_17_-0-checkbox"
                                   >
                                     <input
                                       checked=""
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-0-checkbox"
+                                      id="multi-choice-option-_r_17_-0-checkbox"
                                       type="checkbox"
                                     />
                                     <span
@@ -678,20 +659,20 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-1-textfield"
-                                    id="multi-choice-option-_r_1c_-1"
-                                    name="multi-choice-option-_r_1c_-1"
+                                    data-testid="test-multi-choice-option-_r_17_-1-textfield"
+                                    id="multi-choice-option-_r_17_-1"
+                                    name="multi-choice-option-_r_17_-1"
                                     placeholder="Option 2"
                                     type="text"
                                     value="Pablo Picasso"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-1-checkbox"
+                                    for="multi-choice-option-_r_17_-1-checkbox"
                                   >
                                     <input
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-1-checkbox"
+                                      id="multi-choice-option-_r_17_-1-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -736,20 +717,20 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-2-textfield"
-                                    id="multi-choice-option-_r_1c_-2"
-                                    name="multi-choice-option-_r_1c_-2"
+                                    data-testid="test-multi-choice-option-_r_17_-2-textfield"
+                                    id="multi-choice-option-_r_17_-2"
+                                    name="multi-choice-option-_r_17_-2"
                                     placeholder="Option 3"
                                     type="text"
                                     value="Leonardo da Vinci"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-2-checkbox"
+                                    for="multi-choice-option-_r_17_-2-checkbox"
                                   >
                                     <input
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-2-checkbox"
+                                      id="multi-choice-option-_r_17_-2-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -794,20 +775,20 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-3-textfield"
-                                    id="multi-choice-option-_r_1c_-3"
-                                    name="multi-choice-option-_r_1c_-3"
+                                    data-testid="test-multi-choice-option-_r_17_-3-textfield"
+                                    id="multi-choice-option-_r_17_-3"
+                                    name="multi-choice-option-_r_17_-3"
                                     placeholder="Option 4"
                                     type="text"
                                     value="Claude Monet"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-3-checkbox"
+                                    for="multi-choice-option-_r_17_-3-checkbox"
                                   >
                                     <input
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-3-checkbox"
+                                      id="multi-choice-option-_r_17_-3-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -852,20 +833,20 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-4-textfield"
-                                    id="multi-choice-option-_r_1c_-4"
-                                    name="multi-choice-option-_r_1c_-4"
+                                    data-testid="test-multi-choice-option-_r_17_-4-textfield"
+                                    id="multi-choice-option-_r_17_-4"
+                                    name="multi-choice-option-_r_17_-4"
                                     placeholder="Option 5"
                                     type="text"
                                     value="Michelangelo"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-4-checkbox"
+                                    for="multi-choice-option-_r_17_-4-checkbox"
                                   >
                                     <input
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-4-checkbox"
+                                      id="multi-choice-option-_r_17_-4-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -910,20 +891,20 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <input
                                     class="textfield"
-                                    data-testid="test-multi-choice-option-_r_1c_-5-textfield"
-                                    id="multi-choice-option-_r_1c_-5"
-                                    name="multi-choice-option-_r_1c_-5"
+                                    data-testid="test-multi-choice-option-_r_17_-5-textfield"
+                                    id="multi-choice-option-_r_17_-5"
+                                    name="multi-choice-option-_r_17_-5"
                                     placeholder="Option 6"
                                     type="text"
                                     value="Rembrandt"
                                   />
                                   <label
                                     class="checkboxLabel"
-                                    for="multi-choice-option-_r_1c_-5-checkbox"
+                                    for="multi-choice-option-_r_17_-5-checkbox"
                                   >
                                     <input
                                       class="checkbox"
-                                      id="multi-choice-option-_r_1c_-5-checkbox"
+                                      id="multi-choice-option-_r_17_-5-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -1294,6 +1275,37 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                     </div>
                   </div>
                 </section>
+                <div
+                  class="deleteQuestion"
+                >
+                  <div
+                    class="buttonContainer variantPrimary surfaceLight intentDanger sizeSmall"
+                  >
+                    <button
+                      data-testid="test-delete-question-button-button"
+                      id="delete-question-button"
+                      name="delete-question-button"
+                      type="button"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-trash icon"
+                        data-icon="trash"
+                        data-prefix="fas"
+                        role="img"
+                        viewBox="0 0 448 512"
+                      >
+                        <path
+                          d="M136.7 5.9L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-8.7-26.1C306.9-7.2 294.7-16 280.9-16L167.1-16c-13.8 0-26 8.8-30.4 21.9zM416 144L32 144 53.1 467.1C54.7 492.4 75.7 512 101 512L347 512c25.3 0 46.3-19.6 47.9-44.9L416 144z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span>
+                        Delete question
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </aside>
             </div>
             <div

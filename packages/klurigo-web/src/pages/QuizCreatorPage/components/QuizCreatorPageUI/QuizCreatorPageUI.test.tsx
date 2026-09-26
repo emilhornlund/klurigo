@@ -513,6 +513,46 @@ describe('QuizCreatorPageUI', () => {
     )
   })
 
+  it('deletes only the selected question from settings after confirmation', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+      configurable: true,
+      value: vi.fn(),
+    })
+    const questions = [
+      { type: QuestionType.MultiChoice, question: 'First question' },
+      { type: QuestionType.TrueFalse, question: 'Second question' },
+    ]
+    const onDeleteQuestionIndex = vi.fn()
+    renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions,
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: questions[1],
+      selectedQuestionIndex: 1,
+      onDeleteQuestionIndex,
+    })
+
+    const settings = screen.getByRole('complementary', {
+      name: 'Question settings',
+    })
+    const navigator = screen.getByRole('navigation', { name: 'Questions' })
+    expect(
+      within(navigator).queryByRole('button', { name: 'Delete question' }),
+    ).not.toBeInTheDocument()
+    expect(
+      within(navigator).getByRole('button', { name: 'Duplicate question' }),
+    ).toBeInTheDocument()
+    fireEvent.click(
+      within(settings).getByRole('button', { name: 'Delete question' }),
+    )
+    fireEvent.click(
+      within(
+        screen.getByRole('dialog', { name: 'Delete quiz question' }),
+      ).getByRole('button', { name: 'Delete' }),
+    )
+    expect(onDeleteQuestionIndex).toHaveBeenCalledExactlyOnceWith(1)
+  })
+
   it('shows question navigation in the page footer and traverses questions', () => {
     const onSelectedQuestionIndex = vi.fn()
     const questions = [

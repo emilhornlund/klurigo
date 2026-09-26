@@ -131,7 +131,6 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
                 onSelectQuestion={onSelectedQuestionIndex}
                 onDropQuestion={onDropQuestionIndex}
                 onDuplicateQuestion={onDuplicateQuestionIndex}
-                onDeleteQuestion={onDeleteQuestionIndex}
               />
             </nav>
             <main
@@ -150,6 +149,9 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
               questionValidation={questionValidations[selectedQuestionIndex]}
               onQuestionValueChange={onQuestionValueChange}
               onReplaceQuestion={onReplaceQuestion}
+              selectedQuestionIndex={selectedQuestionIndex}
+              questionCount={questions.length}
+              onDeleteQuestionIndex={onDeleteQuestionIndex}
             />
           </div>
         )}

@@ -2,9 +2,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionType } from '@klurigo/common'
 import type { FC, MouseEvent } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-import { ConfirmDialog } from '../../../../../../components'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { QuestionPickerItem } from './components'
 import styles from './QuestionPicker.module.scss'
@@ -22,7 +20,6 @@ export interface QuestionPickerProps {
   onSelectQuestion: (index: number) => void
   onDropQuestion: (index: number) => void
   onDuplicateQuestion: (index: number) => void
-  onDeleteQuestion: (index: number) => void
 }
 
 const QuestionPicker: FC<QuestionPickerProps> = ({
@@ -32,11 +29,8 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
   onSelectQuestion,
   onDropQuestion,
   onDuplicateQuestion,
-  onDeleteQuestion,
 }) => {
   const questionPickerItemContainerRef = useRef<HTMLDivElement>(null)
-
-  const [deleteQuestionIndex, setDeleteQuestionIndex] = useState<number>()
 
   const selectedItemIndex = useMemo(
     () => Math.min(selectedQuestionIndex, questions.length - 1),
@@ -63,18 +57,6 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
     onAddQuestion()
   }
 
-  const handleDeleteQuestion = () => {
-    if (
-      deleteQuestionIndex !== undefined &&
-      deleteQuestionIndex >= 0 &&
-      deleteQuestionIndex < questions.length &&
-      questions.length > 1
-    ) {
-      onDeleteQuestion?.(deleteQuestionIndex)
-      setDeleteQuestionIndex(undefined)
-    }
-  }
-
   return (
     <div className={styles.questionPickerWrapper}>
       <div
@@ -88,11 +70,9 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
             type={type}
             active={isActive(index)}
             valid={valid}
-            canDelete={questions.length > 1}
             onClick={() => onSelectQuestion(index)}
             onDrop={onDropQuestion}
             onDuplicate={() => onDuplicateQuestion(index)}
-            onDelete={() => setDeleteQuestionIndex(index)}
           />
         ))}
       </div>
@@ -105,15 +85,6 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
           <FontAwesomeIcon icon={faPlusCircle} widthAuto />
         </button>
       </div>
-      <ConfirmDialog
-        title="Delete quiz question"
-        message="Are you sure you want to delete this question? This action can't be undone."
-        open={deleteQuestionIndex !== undefined}
-        confirmTitle="Delete"
-        onConfirm={handleDeleteQuestion}
-        onClose={() => setDeleteQuestionIndex(undefined)}
-        destructive
-      />
     </div>
   )
 }

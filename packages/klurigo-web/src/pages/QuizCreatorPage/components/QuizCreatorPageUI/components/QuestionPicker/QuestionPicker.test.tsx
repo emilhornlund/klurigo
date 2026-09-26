@@ -8,8 +8,6 @@ import QuestionPicker from './QuestionPicker'
 
 type QuestionPickerItemProps = {
   index: number
-  canDelete: boolean
-  onDelete?: () => void
   onClick?: () => void
   onDrop?: (index: number) => void
   onDuplicate?: () => void
@@ -29,34 +27,9 @@ vi.mock('./components', () => ({
         <button type="button" onClick={props.onDuplicate}>
           duplicate-{props.index}
         </button>
-        <button type="button" onClick={props.onDelete}>
-          delete-{props.index}
-        </button>
       </>
     )
   },
-}))
-
-vi.mock('../../../../../../components', () => ({
-  ConfirmDialog: ({
-    open,
-    onConfirm,
-    onClose,
-  }: {
-    open: boolean
-    onConfirm: () => void
-    onClose: () => void
-  }) =>
-    open ? (
-      <div>
-        <button type="button" onClick={onConfirm}>
-          confirm
-        </button>
-        <button type="button" onClick={onClose}>
-          close
-        </button>
-      </div>
-    ) : null,
 }))
 
 describe('QuestionPicker', () => {
@@ -68,191 +41,55 @@ describe('QuestionPicker', () => {
     })
   })
 
-  it('passes canDelete=false when there is only one question', () => {
+  it('passes question selection and duplication to each item', () => {
+    const onSelectQuestion = vi.fn()
+    const onDuplicateQuestion = vi.fn()
     render(
       <QuestionPicker
         questions={[
-          {
-            type: QuestionType.MultiChoice,
-            text: 'Question 1',
-            valid: true,
-          },
+          { type: QuestionType.MultiChoice, text: 'Question 1', valid: true },
+          { type: QuestionType.TrueFalse, text: 'Question 2', valid: false },
         ]}
         selectedQuestionIndex={0}
         onAddQuestion={vi.fn()}
-        onSelectQuestion={vi.fn()}
+        onSelectQuestion={onSelectQuestion}
         onDropQuestion={vi.fn()}
-        onDuplicateQuestion={vi.fn()}
-        onDeleteQuestion={vi.fn()}
+        onDuplicateQuestion={onDuplicateQuestion}
       />,
     )
 
-    expect(questionPickerItemMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        index: 0,
-        canDelete: false,
-      }),
-    )
-  })
+    fireEvent.click(screen.getByRole('button', { name: 'select-1' }))
+    fireEvent.click(screen.getByRole('button', { name: 'duplicate-0' }))
 
-  it('passes canDelete=true when there are multiple questions', () => {
-    render(
-      <QuestionPicker
-        questions={[
-          {
-            type: QuestionType.MultiChoice,
-            text: 'Question 1',
-            valid: true,
-          },
-          {
-            type: QuestionType.TrueFalse,
-            text: 'Question 2',
-            valid: true,
-          },
-        ]}
-        selectedQuestionIndex={0}
-        onAddQuestion={vi.fn()}
-        onSelectQuestion={vi.fn()}
-        onDropQuestion={vi.fn()}
-        onDuplicateQuestion={vi.fn()}
-        onDeleteQuestion={vi.fn()}
-      />,
-    )
-
-    expect(questionPickerItemMock).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        index: 0,
-        canDelete: true,
-      }),
-    )
     expect(questionPickerItemMock).toHaveBeenNthCalledWith(
       2,
-      expect.objectContaining({
-        index: 1,
-        canDelete: true,
-      }),
+      expect.objectContaining({ index: 1, valid: false }),
     )
-  })
-
-  it('deletes the selected question only when the index is still in range', () => {
-    const onDeleteQuestion = vi.fn()
-
-    render(
-      <QuestionPicker
-        questions={[
-          {
-            type: QuestionType.MultiChoice,
-            text: 'Question 1',
-            valid: true,
-          },
-          {
-            type: QuestionType.TrueFalse,
-            text: 'Question 2',
-            valid: true,
-          },
-        ]}
-        selectedQuestionIndex={0}
-        onAddQuestion={vi.fn()}
-        onSelectQuestion={vi.fn()}
-        onDropQuestion={vi.fn()}
-        onDuplicateQuestion={vi.fn()}
-        onDeleteQuestion={onDeleteQuestion}
-      />,
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'delete-1' }))
-    fireEvent.click(screen.getByRole('button', { name: 'confirm' }))
-
-    expect(onDeleteQuestion).toHaveBeenCalledWith(1)
-  })
-
-  it('does not delete when the pending delete index becomes out of range', () => {
-    const onDeleteQuestion = vi.fn()
-
-    const { rerender } = render(
-      <QuestionPicker
-        questions={[
-          {
-            type: QuestionType.MultiChoice,
-            text: 'Question 1',
-            valid: true,
-          },
-          {
-            type: QuestionType.TrueFalse,
-            text: 'Question 2',
-            valid: true,
-          },
-        ]}
-        selectedQuestionIndex={0}
-        onAddQuestion={vi.fn()}
-        onSelectQuestion={vi.fn()}
-        onDropQuestion={vi.fn()}
-        onDuplicateQuestion={vi.fn()}
-        onDeleteQuestion={onDeleteQuestion}
-      />,
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'delete-1' }))
-
-    rerender(
-      <QuestionPicker
-        questions={[
-          {
-            type: QuestionType.MultiChoice,
-            text: 'Question 1',
-            valid: true,
-          },
-        ]}
-        selectedQuestionIndex={0}
-        onAddQuestion={vi.fn()}
-        onSelectQuestion={vi.fn()}
-        onDropQuestion={vi.fn()}
-        onDuplicateQuestion={vi.fn()}
-        onDeleteQuestion={onDeleteQuestion}
-      />,
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'confirm' }))
-
-    expect(onDeleteQuestion).not.toHaveBeenCalled()
-  })
-
-  it('handles add, select, duplicate, drop, and closing the delete dialog', () => {
-    const onAddQuestion = vi.fn()
-    const onSelectQuestion = vi.fn()
-    const onDropQuestion = vi.fn()
-    const onDuplicateQuestion = vi.fn()
-    const onDeleteQuestion = vi.fn()
-
-    render(
-      <QuestionPicker
-        questions={[
-          { type: QuestionType.MultiChoice, valid: true },
-          { type: QuestionType.TrueFalse, valid: true },
-        ]}
-        selectedQuestionIndex={1}
-        onAddQuestion={onAddQuestion}
-        onSelectQuestion={onSelectQuestion}
-        onDropQuestion={onDropQuestion}
-        onDuplicateQuestion={onDuplicateQuestion}
-        onDeleteQuestion={onDeleteQuestion}
-      />,
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'select-0' }))
-    fireEvent.click(screen.getByRole('button', { name: 'duplicate-0' }))
-    fireEvent.click(screen.getByRole('button', { name: 'delete-0' }))
-    fireEvent.click(screen.getByRole('button', { name: 'close' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Add question' }))
-
-    const firstItem = questionPickerItemMock.mock.calls[0][0]
-    firstItem.onDrop?.(1)
-
-    expect(onSelectQuestion).toHaveBeenCalledWith(0)
+    expect(onSelectQuestion).toHaveBeenCalledWith(1)
     expect(onDuplicateQuestion).toHaveBeenCalledWith(0)
-    expect(onDeleteQuestion).not.toHaveBeenCalled()
-    expect(onAddQuestion).toHaveBeenCalledTimes(1)
-    expect(onDropQuestion).toHaveBeenCalledWith(1)
+    expect(
+      screen.queryByRole('button', { name: 'Delete question' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('keeps add and drop actions in the navigator', () => {
+    const onAddQuestion = vi.fn()
+    const onDropQuestion = vi.fn()
+    render(
+      <QuestionPicker
+        questions={[{ type: QuestionType.MultiChoice, valid: true }]}
+        selectedQuestionIndex={0}
+        onAddQuestion={onAddQuestion}
+        onSelectQuestion={vi.fn()}
+        onDropQuestion={onDropQuestion}
+        onDuplicateQuestion={vi.fn()}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add question' }))
+    questionPickerItemMock.mock.calls[0][0].onDrop?.(0)
+
+    expect(onAddQuestion).toHaveBeenCalledOnce()
+    expect(onDropQuestion).toHaveBeenCalledWith(0)
   })
 })

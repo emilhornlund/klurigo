@@ -16,27 +16,14 @@ const renderQuestionPickerItem = (
       type={QuestionType.MultiChoice}
       active
       valid
-      canDelete
       onClick={vi.fn()}
       onDrop={vi.fn()}
       onDuplicate={vi.fn()}
-      onDelete={vi.fn()}
       {...overrides}
     />,
   )
 
 describe('QuestionPickerItem', () => {
-  it('disables delete when canDelete is false', () => {
-    const { container } = renderQuestionPickerItem({ canDelete: false })
-
-    const deleteButton = container
-      .querySelector('svg[data-icon="trash"]')
-      ?.closest('button')
-
-    expect(deleteButton).toBeTruthy()
-    expect(deleteButton as HTMLButtonElement).toBeDisabled()
-  })
-
   it('shows the validation error indicator when the question is invalid', () => {
     const { container } = renderQuestionPickerItem({ valid: false })
 
@@ -58,17 +45,6 @@ describe('QuestionPickerItem', () => {
     fireEvent.click(duplicateButton as HTMLButtonElement)
 
     expect(onDuplicate).toHaveBeenCalledTimes(1)
-  })
-
-  it('does not select the question when an action button is clicked', () => {
-    const onClick = vi.fn()
-    const onDelete = vi.fn()
-    const { getByRole } = renderQuestionPickerItem({ onClick, onDelete })
-
-    fireEvent.click(getByRole('button', { name: 'Delete question' }))
-
-    expect(onDelete).toHaveBeenCalledTimes(1)
-    expect(onClick).not.toHaveBeenCalled()
   })
 
   it('does not select the question when it is duplicated', () => {
@@ -99,7 +75,6 @@ describe('QuestionPickerItem', () => {
         type={QuestionType.MultiChoice}
         active
         valid
-        canDelete
         onDrop={onDrop}
       />,
     )
@@ -126,7 +101,9 @@ describe('QuestionPickerItem', () => {
     expect(getByText('Multi Choice')).toBeInTheDocument()
     expect(getByText('3')).toBeInTheDocument()
     expect(getByRole('button', { name: 'Duplicate question' })).toBeVisible()
-    expect(getByRole('button', { name: 'Delete question' })).toBeVisible()
+    expect(
+      container.querySelector('svg[data-icon="trash"]'),
+    ).not.toBeInTheDocument()
     expect(container.querySelector('#question-picker-item-2')).toHaveAttribute(
       'draggable',
       'true',

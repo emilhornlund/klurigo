@@ -236,8 +236,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
     }
 
     .questionPickerItemOverlayBottom {
-      .cloneButton,
-      .deleteButton {
+      .cloneButton {
         @include button.button-reset;
 
         outline: none;
@@ -269,18 +268,6 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
           &:not(:disabled) {
             color: colors.$color-text-control-default-hover;
             background-color: colors.$color-surface-control-accent-hover;
-          }
-        }
-      }
-
-      .deleteButton {
-        color: colors.$color-text-inverse;
-        background-color: colors.$color-surface-control-danger;
-
-        &:hover {
-          &:not(:disabled) {
-            color: colors.$color-text-inverse;
-            background-color: colors.$color-surface-control-danger-hover;
           }
         }
       }
