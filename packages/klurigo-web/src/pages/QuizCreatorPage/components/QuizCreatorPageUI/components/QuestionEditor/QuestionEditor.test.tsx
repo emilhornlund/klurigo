@@ -50,7 +50,6 @@ describe('QuestionEditor', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onTypeChange={() => undefined}
         onQuestionValueChange={() => undefined}
       />,
     )
@@ -78,7 +77,6 @@ describe('QuestionEditor', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onTypeChange={() => undefined}
         onQuestionValueChange={() => undefined}
       />,
     )
@@ -102,7 +100,6 @@ describe('QuestionEditor', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onTypeChange={() => undefined}
         onQuestionValueChange={() => undefined}
       />,
     )
@@ -126,7 +123,6 @@ describe('QuestionEditor', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onTypeChange={() => undefined}
         onQuestionValueChange={() => undefined}
       />,
     )
@@ -150,7 +146,6 @@ describe('QuestionEditor', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onTypeChange={() => undefined}
         onQuestionValueChange={() => undefined}
       />,
     )

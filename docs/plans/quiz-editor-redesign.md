@@ -207,7 +207,7 @@ Only move fields that already exist.
 
 ---
 
-## [ ] 7. Move question type selection into `QuestionSettings`
+## [x] 7. Move question type selection into `QuestionSettings`
 
 Move the existing `QuestionFieldType.CommonType` control from `QuestionEditor` into the right-hand settings panel.
 

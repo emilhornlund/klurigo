@@ -9,82 +9,6 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
       class="section"
     >
       <div
-        class="questionFieldContainer layoutHalf"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Type
-          </span>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="selectInputContainer surfaceBrand"
-            >
-              <select
-                data-testid="test-question-type-select-select"
-                id="question-type-select"
-                name="question-type-select"
-              >
-                <option
-                  value="MULTI_CHOICE"
-                >
-                  Multi Choice
-                </option>
-                <option
-                  value="RANGE"
-                >
-                  Range
-                </option>
-                <option
-                  value="TRUE_FALSE"
-                >
-                  True or False
-                </option>
-                <option
-                  value="TYPE_ANSWER"
-                >
-                  Type Answer
-                </option>
-                <option
-                  value="PIN"
-                >
-                  Pin
-                </option>
-                <option
-                  value="PUZZLE"
-                >
-                  Puzzle
-                </option>
-              </select>
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-chevron-down selectIcon"
-                data-icon="chevron-down"
-                data-prefix="fas"
-                role="img"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="section"
-    >
-      <div
         class="questionFieldContainer layoutFull"
       >
         <div
@@ -297,21 +221,21 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-0-textfield"
-                      id="multi-choice-option-_r_e_-0"
-                      name="multi-choice-option-_r_e_-0"
+                      data-testid="test-multi-choice-option-_r_c_-0-textfield"
+                      id="multi-choice-option-_r_c_-0"
+                      name="multi-choice-option-_r_c_-0"
                       placeholder="Option 1"
                       type="text"
                       value="Vincent van Gogh"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-0-checkbox"
+                      for="multi-choice-option-_r_c_-0-checkbox"
                     >
                       <input
                         checked=""
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-0-checkbox"
+                        id="multi-choice-option-_r_c_-0-checkbox"
                         type="checkbox"
                       />
                       <span
@@ -373,20 +297,20 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-1-textfield"
-                      id="multi-choice-option-_r_e_-1"
-                      name="multi-choice-option-_r_e_-1"
+                      data-testid="test-multi-choice-option-_r_c_-1-textfield"
+                      id="multi-choice-option-_r_c_-1"
+                      name="multi-choice-option-_r_c_-1"
                       placeholder="Option 2"
                       type="text"
                       value="Pablo Picasso"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-1-checkbox"
+                      for="multi-choice-option-_r_c_-1-checkbox"
                     >
                       <input
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-1-checkbox"
+                        id="multi-choice-option-_r_c_-1-checkbox"
                         type="checkbox"
                       />
                     </label>
@@ -431,20 +355,20 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-2-textfield"
-                      id="multi-choice-option-_r_e_-2"
-                      name="multi-choice-option-_r_e_-2"
+                      data-testid="test-multi-choice-option-_r_c_-2-textfield"
+                      id="multi-choice-option-_r_c_-2"
+                      name="multi-choice-option-_r_c_-2"
                       placeholder="Option 3"
                       type="text"
                       value="Leonardo da Vinci"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-2-checkbox"
+                      for="multi-choice-option-_r_c_-2-checkbox"
                     >
                       <input
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-2-checkbox"
+                        id="multi-choice-option-_r_c_-2-checkbox"
                         type="checkbox"
                       />
                     </label>
@@ -489,20 +413,20 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-3-textfield"
-                      id="multi-choice-option-_r_e_-3"
-                      name="multi-choice-option-_r_e_-3"
+                      data-testid="test-multi-choice-option-_r_c_-3-textfield"
+                      id="multi-choice-option-_r_c_-3"
+                      name="multi-choice-option-_r_c_-3"
                       placeholder="Option 4"
                       type="text"
                       value="Claude Monet"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-3-checkbox"
+                      for="multi-choice-option-_r_c_-3-checkbox"
                     >
                       <input
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-3-checkbox"
+                        id="multi-choice-option-_r_c_-3-checkbox"
                         type="checkbox"
                       />
                     </label>
@@ -547,20 +471,20 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-4-textfield"
-                      id="multi-choice-option-_r_e_-4"
-                      name="multi-choice-option-_r_e_-4"
+                      data-testid="test-multi-choice-option-_r_c_-4-textfield"
+                      id="multi-choice-option-_r_c_-4"
+                      name="multi-choice-option-_r_c_-4"
                       placeholder="Option 5"
                       type="text"
                       value="Michelangelo"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-4-checkbox"
+                      for="multi-choice-option-_r_c_-4-checkbox"
                     >
                       <input
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-4-checkbox"
+                        id="multi-choice-option-_r_c_-4-checkbox"
                         type="checkbox"
                       />
                     </label>
@@ -605,20 +529,20 @@ exports[`QuestionEditor > renders a classic multi choice option question editor 
                   >
                     <input
                       class="textfield"
-                      data-testid="test-multi-choice-option-_r_e_-5-textfield"
-                      id="multi-choice-option-_r_e_-5"
-                      name="multi-choice-option-_r_e_-5"
+                      data-testid="test-multi-choice-option-_r_c_-5-textfield"
+                      id="multi-choice-option-_r_c_-5"
+                      name="multi-choice-option-_r_c_-5"
                       placeholder="Option 6"
                       type="text"
                       value="Rembrandt"
                     />
                     <label
                       class="checkboxLabel"
-                      for="multi-choice-option-_r_e_-5-checkbox"
+                      for="multi-choice-option-_r_c_-5-checkbox"
                     >
                       <input
                         class="checkbox"
-                        id="multi-choice-option-_r_e_-5-checkbox"
+                        id="multi-choice-option-_r_c_-5-checkbox"
                         type="checkbox"
                       />
                     </label>
@@ -918,82 +842,6 @@ exports[`QuestionEditor > renders a classic range question editor 1`] = `
   <div
     class="questionEditorContainer"
   >
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutHalf"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Type
-          </span>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="selectInputContainer surfaceBrand"
-            >
-              <select
-                data-testid="test-question-type-select-select"
-                id="question-type-select"
-                name="question-type-select"
-              >
-                <option
-                  value="MULTI_CHOICE"
-                >
-                  Multi Choice
-                </option>
-                <option
-                  value="RANGE"
-                >
-                  Range
-                </option>
-                <option
-                  value="TRUE_FALSE"
-                >
-                  True or False
-                </option>
-                <option
-                  value="TYPE_ANSWER"
-                >
-                  Type Answer
-                </option>
-                <option
-                  value="PIN"
-                >
-                  Pin
-                </option>
-                <option
-                  value="PUZZLE"
-                >
-                  Puzzle
-                </option>
-              </select>
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-chevron-down selectIcon"
-                data-icon="chevron-down"
-                data-prefix="fas"
-                role="img"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div
       class="section"
     >
@@ -1652,82 +1500,6 @@ exports[`QuestionEditor > renders a classic true or false question editor 1`] = 
       class="section"
     >
       <div
-        class="questionFieldContainer layoutHalf"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Type
-          </span>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="selectInputContainer surfaceBrand"
-            >
-              <select
-                data-testid="test-question-type-select-select"
-                id="question-type-select"
-                name="question-type-select"
-              >
-                <option
-                  value="MULTI_CHOICE"
-                >
-                  Multi Choice
-                </option>
-                <option
-                  value="RANGE"
-                >
-                  Range
-                </option>
-                <option
-                  value="TRUE_FALSE"
-                >
-                  True or False
-                </option>
-                <option
-                  value="TYPE_ANSWER"
-                >
-                  Type Answer
-                </option>
-                <option
-                  value="PIN"
-                >
-                  Pin
-                </option>
-                <option
-                  value="PUZZLE"
-                >
-                  Puzzle
-                </option>
-              </select>
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-chevron-down selectIcon"
-                data-icon="chevron-down"
-                data-prefix="fas"
-                role="img"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="section"
-    >
-      <div
         class="questionFieldContainer layoutFull"
       >
         <div
@@ -2249,82 +2021,6 @@ exports[`QuestionEditor > renders a classic type answer question editor 1`] = `
   <div
     class="questionEditorContainer"
   >
-    <div
-      class="section"
-    >
-      <div
-        class="questionFieldContainer layoutHalf"
-      >
-        <div
-          class="label"
-        >
-          <span>
-            Type
-          </span>
-        </div>
-        <div
-          class="content"
-        >
-          <div
-            class="inputContainer"
-          >
-            <div
-              class="selectInputContainer surfaceBrand"
-            >
-              <select
-                data-testid="test-question-type-select-select"
-                id="question-type-select"
-                name="question-type-select"
-              >
-                <option
-                  value="MULTI_CHOICE"
-                >
-                  Multi Choice
-                </option>
-                <option
-                  value="RANGE"
-                >
-                  Range
-                </option>
-                <option
-                  value="TRUE_FALSE"
-                >
-                  True or False
-                </option>
-                <option
-                  value="TYPE_ANSWER"
-                >
-                  Type Answer
-                </option>
-                <option
-                  value="PIN"
-                >
-                  Pin
-                </option>
-                <option
-                  value="PUZZLE"
-                >
-                  Puzzle
-                </option>
-              </select>
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-chevron-down selectIcon"
-                data-icon="chevron-down"
-                data-prefix="fas"
-                role="img"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div
       class="section"
     >

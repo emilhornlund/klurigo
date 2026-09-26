@@ -1,5 +1,5 @@
 import type { QuestionDto } from '@klurigo/common'
-import { GameMode, QuestionType } from '@klurigo/common'
+import { GameMode } from '@klurigo/common'
 import type { FC } from 'react'
 
 import {
@@ -24,8 +24,6 @@ import {
   ClassicRangeQuestionForm,
   ClassicTrueFalseQuestionForm,
   ClassicTypeAnswerQuestionForm,
-  QuestionField,
-  QuestionFieldType,
   ZeroToOneHundredRangeQuestionForm,
 } from './components'
 import styles from './QuestionEditor.module.scss'
@@ -34,7 +32,6 @@ export interface QuestionEditorProps {
   mode?: GameMode
   question: QuizQuestionModel
   questionValidation: QuizQuestionValidationResult
-  onTypeChange: (type: QuestionType) => void
   onQuestionValueChange: QuizQuestionModelFieldChangeFunction<QuestionDto>
 }
 
@@ -42,22 +39,10 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
   mode,
   question,
   questionValidation,
-  onTypeChange,
   onQuestionValueChange,
 }) => {
   return (
     <div className={styles.questionEditorContainer}>
-      {mode === GameMode.Classic && (
-        <div className={styles.section}>
-          <QuestionField
-            type={QuestionFieldType.CommonType}
-            value={question.type}
-            validation={questionValidation}
-            onChange={onTypeChange}
-          />
-        </div>
-      )}
-
       {mode && isClassicMultiChoiceQuestion(mode, question) && (
         <ClassicMultiChoiceOptionQuestionForm
           question={question}

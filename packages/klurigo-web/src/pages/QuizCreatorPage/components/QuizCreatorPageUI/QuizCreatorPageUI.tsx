@@ -142,10 +142,10 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
                 question={selectedQuestion}
                 questionValidation={questionValidations[selectedQuestionIndex]}
                 onQuestionValueChange={onQuestionValueChange}
-                onTypeChange={onReplaceQuestion}
               />
             </main>
             <QuestionSettings
+              mode={gameMode}
               question={selectedQuestion}
               questionValidation={questionValidations[selectedQuestionIndex]}
               onQuestionValueChange={onQuestionValueChange}

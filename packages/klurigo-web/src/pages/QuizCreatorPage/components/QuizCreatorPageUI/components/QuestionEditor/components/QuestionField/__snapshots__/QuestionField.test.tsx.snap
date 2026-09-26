@@ -766,7 +766,7 @@ exports[`QuestionField > renders a multiple choice options question field 1`] = 
 exports[`QuestionField > renders a multiple choice type question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"
@@ -1210,7 +1210,7 @@ exports[`QuestionField > renders a range min question field 1`] = `
 exports[`QuestionField > renders a range type question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"
@@ -1399,7 +1399,7 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
 exports[`QuestionField > renders a true or false question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"
@@ -1617,7 +1617,7 @@ exports[`QuestionField > renders a type answer options question field 1`] = `
 exports[`QuestionField > renders a type answer question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"

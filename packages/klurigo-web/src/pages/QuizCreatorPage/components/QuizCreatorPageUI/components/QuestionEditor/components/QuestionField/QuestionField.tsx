@@ -354,7 +354,7 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
       )
     case QuestionFieldType.CommonType:
       return (
-        <QuestionFieldWrapper label="Type" layout="half" footer={props.footer}>
+        <QuestionFieldWrapper label="Type" layout="full" footer={props.footer}>
           <Select
             id="question-type-select"
             value={props.value}
