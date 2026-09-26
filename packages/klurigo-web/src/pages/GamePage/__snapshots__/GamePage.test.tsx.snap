@@ -30,7 +30,7 @@ exports[`GamePage > should render GamePage (snapshot) 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

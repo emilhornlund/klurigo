@@ -37,7 +37,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -223,7 +223,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

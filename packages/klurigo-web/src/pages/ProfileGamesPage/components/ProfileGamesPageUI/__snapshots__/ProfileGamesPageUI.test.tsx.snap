@@ -176,7 +176,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

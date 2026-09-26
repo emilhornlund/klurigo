@@ -30,7 +30,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

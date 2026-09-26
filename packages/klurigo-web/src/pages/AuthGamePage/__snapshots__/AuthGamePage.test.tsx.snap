@@ -37,7 +37,7 @@ exports[`AuthGamePage > authenticates with both id and pin and navigates to /joi
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -94,7 +94,7 @@ exports[`AuthGamePage > authenticates with gameId and navigates to /join on succ
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -151,7 +151,7 @@ exports[`AuthGamePage > authenticates with gamePIN and navigates to /join on suc
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -208,7 +208,7 @@ exports[`AuthGamePage > does nothing when no id or pin 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -265,7 +265,7 @@ exports[`AuthGamePage > navigates home and notifies on failure 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -322,7 +322,7 @@ exports[`AuthGamePage > runs only once even if user clicks back/forward causing 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

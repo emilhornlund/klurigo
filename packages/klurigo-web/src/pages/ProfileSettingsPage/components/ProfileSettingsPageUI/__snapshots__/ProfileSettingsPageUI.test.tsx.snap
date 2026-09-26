@@ -37,7 +37,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -239,7 +239,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -540,7 +540,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -741,7 +741,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1041,7 +1041,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1262,7 +1262,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

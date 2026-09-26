@@ -37,7 +37,7 @@ exports[`GameResultsPage > does not query when gameID is missing 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -94,7 +94,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1134,7 +1134,7 @@ exports[`GameResultsPage > navigates back on query error and keeps spinner 1`] =
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1191,7 +1191,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

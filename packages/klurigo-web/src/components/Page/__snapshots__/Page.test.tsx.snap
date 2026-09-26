@@ -1,6 +1,113 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`should render Page with default props 1`] = `
+exports[`Page > should render Page with default props 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content centerAlign"
+    >
+      <div
+        class="contentWrapper largeWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          Content
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Page > should render Page with full bleed layout 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header fullBleed"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content fullBleed fullHeight centerAlign"
+    >
+      <div
+        class="contentWrapper fullWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          Content
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer fullBleed"
+    >
+      <a>
+        Footer
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Page > should render Page with full width 1`] = `
 <div>
   <div
     class="main"
@@ -50,7 +157,7 @@ exports[`should render Page with default props 1`] = `
 </div>
 `;
 
-exports[`should render Page with header 1`] = `
+exports[`Page > should render Page with header 1`] = `
 <div>
   <div
     class="main"
@@ -97,7 +204,7 @@ exports[`should render Page with header 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -110,7 +217,7 @@ exports[`should render Page with header 1`] = `
 </div>
 `;
 
-exports[`should render Page with profile 1`] = `
+exports[`Page > should render Page with large width 1`] = `
 <div>
   <div
     class="main"
@@ -147,7 +254,57 @@ exports[`should render Page with profile 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
+      >
+        <div
+          class="contentInner"
+        >
+          Content
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Page > should render Page with profile 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <div
+      class="content centerAlign"
+    >
+      <div
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

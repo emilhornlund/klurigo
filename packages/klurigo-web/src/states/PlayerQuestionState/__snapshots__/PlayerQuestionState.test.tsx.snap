@@ -30,7 +30,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -184,7 +184,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -356,7 +356,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -492,7 +492,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -665,7 +665,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -801,7 +801,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

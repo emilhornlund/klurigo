@@ -37,7 +37,7 @@ exports[`AuthGoogleCallbackPageUI > should render AuthGoogleCallbackPageUI 1`] =
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

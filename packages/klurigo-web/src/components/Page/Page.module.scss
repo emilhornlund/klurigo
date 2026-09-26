@@ -5,6 +5,7 @@
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -57,13 +58,32 @@
       padding: spacing.$space-compact-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
+
     @include helpers.tablet {
       padding: spacing.$space-compact-tablet;
       column-gap: spacing.$space-compact-tablet;
     }
+
     @include helpers.desktop {
       padding: spacing.$space-compact-desktop;
       column-gap: spacing.$space-compact-desktop;
+    }
+
+    &.fullBleed {
+      z-index: 1;
+      box-shadow: shadows.$shadow-page-header;
+
+      @include helpers.mobile {
+        padding-inline: spacing.$space-page-mobile;
+      }
+
+      @include helpers.tablet {
+        padding-inline: spacing.$space-page-tablet;
+      }
+
+      @include helpers.desktop {
+        padding-inline: spacing.$space-page-desktop;
+      }
     }
 
     .logo {
@@ -211,12 +231,13 @@
     }
 
     @include helpers.tablet {
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-tablet;
       }
     }
+
     @include helpers.desktop {
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-desktop;
       }
     }
@@ -232,6 +253,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
+
+    &.fullBleed {
+      background: pageColors.$color-page-full-bleed-background;
+    }
 
     .contentWrapper {
       display: block;
@@ -318,8 +343,12 @@
           width: breakpoints.$breakpoint-tablet;
         }
 
-        &.fullWidth {
+        &.largeWidth {
           width: breakpoints.$breakpoint-tablet;
+        }
+
+        &.fullWidth {
+          width: 100%;
         }
 
         > .contentInner {
@@ -340,8 +369,12 @@
           width: breakpoints.$breakpoint-tablet;
         }
 
-        &.fullWidth {
+        &.largeWidth {
           width: breakpoints.$breakpoint-desktop;
+        }
+
+        &.fullWidth {
+          width: 100%;
         }
 
         > .contentInner {
@@ -370,7 +403,7 @@
         spacing.$space-compact-tablet;
       column-gap: spacing.$space-compact-tablet;
 
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-tablet;
       }
     }
@@ -380,8 +413,24 @@
         spacing.$space-compact-desktop;
       column-gap: spacing.$space-compact-desktop;
 
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-desktop;
+      }
+    }
+
+    &.fullBleed {
+      background: pageColors.$color-page-full-bleed-background;
+
+      @include helpers.mobile {
+        padding-inline: spacing.$space-page-mobile;
+      }
+
+      @include helpers.tablet {
+        padding-inline: spacing.$space-page-tablet;
+      }
+
+      @include helpers.desktop {
+        padding-inline: spacing.$space-page-desktop;
       }
     }
 

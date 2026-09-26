@@ -58,7 +58,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -300,7 +300,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -522,7 +522,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -779,7 +779,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1036,7 +1036,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1320,7 +1320,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1624,7 +1624,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1888,7 +1888,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2131,7 +2131,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2373,7 +2373,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       class="content fullHeight spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

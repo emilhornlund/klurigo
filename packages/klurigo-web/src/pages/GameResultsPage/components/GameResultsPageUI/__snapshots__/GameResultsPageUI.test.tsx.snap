@@ -37,7 +37,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1084,7 +1084,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2092,7 +2092,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -3127,7 +3127,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -3746,7 +3746,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -4245,7 +4245,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -5280,7 +5280,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -6276,7 +6276,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -6715,7 +6715,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -7094,7 +7094,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

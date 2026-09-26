@@ -37,7 +37,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -258,7 +258,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
       class="content startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

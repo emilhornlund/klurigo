@@ -30,7 +30,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -478,7 +478,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -815,7 +815,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1263,7 +1263,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1711,7 +1711,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2048,7 +2048,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2396,7 +2396,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2546,7 +2546,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2696,7 +2696,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2953,7 +2953,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -3221,7 +3221,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -3680,7 +3680,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

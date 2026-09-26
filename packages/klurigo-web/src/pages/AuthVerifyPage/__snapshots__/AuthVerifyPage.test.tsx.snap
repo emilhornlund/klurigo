@@ -37,7 +37,7 @@ exports[`AuthVerifyPage > navigates home when token is missing 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -97,7 +97,7 @@ exports[`AuthVerifyPage > renders verified state (logged in) with home link 1`] 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -181,7 +181,7 @@ exports[`AuthVerifyPage > renders verified state (logged out) with login link 1`
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -265,7 +265,7 @@ exports[`AuthVerifyPage > shows error state when verification fails 1`] = `
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -342,7 +342,7 @@ exports[`AuthVerifyPage > shows loading while verifying with token present 1`] =
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

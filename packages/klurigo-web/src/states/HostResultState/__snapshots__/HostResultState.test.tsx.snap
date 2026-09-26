@@ -58,7 +58,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -306,7 +306,7 @@ exports[`HostResultState > should render HostResultState with question type mult
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -683,7 +683,7 @@ exports[`HostResultState > should render HostResultState with question type mult
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1150,7 +1150,7 @@ exports[`HostResultState > should render HostResultState with question type mult
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1437,7 +1437,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -1641,7 +1641,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2051,7 +2051,7 @@ exports[`HostResultState > should render HostResultState with question type rang
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2636,7 +2636,7 @@ exports[`HostResultState > should render HostResultState with question type true
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -2906,7 +2906,7 @@ exports[`HostResultState > should render HostResultState with question type type
       class="content fullHeight centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"

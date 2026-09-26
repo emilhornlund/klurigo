@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
+import { withMockAuth } from '../../../.storybook/mockAuthContext'
+import Button from '../Button'
+import Typography from '../Typography'
+
 import Page from './Page'
 
 const meta = {
@@ -30,5 +34,28 @@ export const Default = {
     ),
     profile: true,
     children: <div>Content</div>,
+  },
+} satisfies Story
+
+export const FullBleed = {
+  name: 'Full Bleed',
+  decorators: [withMockAuth],
+  args: {
+    layout: 'fullBleed',
+    height: 'full',
+    width: 'full',
+    header: (
+      <Button
+        id="secondary-button"
+        type="button"
+        size="small"
+        variant="primary"
+        intent="accent">
+        Action
+      </Button>
+    ),
+    footer: <Typography align="center">Footer</Typography>,
+    profile: true,
+    children: <Typography align="center">Content</Typography>,
   },
 } satisfies Story

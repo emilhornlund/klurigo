@@ -37,7 +37,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
@@ -104,7 +104,7 @@ exports[`AuthGoogleCallbackPage > shows error and redirects to /auth/login when 
       class="content centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper largeWidth"
       >
         <div
           class="contentInner"
