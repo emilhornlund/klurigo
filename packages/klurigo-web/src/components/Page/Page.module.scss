@@ -312,7 +312,8 @@
     }
 
     &.fill,
-    &.compactFill {
+    &.compactFill,
+    &.fullBleed {
       > .contentWrapper {
         height: 100%;
 
@@ -320,6 +321,12 @@
           flex: 1;
           height: 100%;
         }
+      }
+    }
+
+    &.fullBleed {
+      > .contentWrapper {
+        width: 100%;
       }
     }
 
@@ -372,13 +379,13 @@
     color: colors.$color-text-inverse;
 
     @include helpers.mobile() {
-      padding: 0 spacing.$space-compact-mobile spacing.$space-compact-mobile
+      padding: 0 spacing.$space-compact-mobile spacing.$space-page-mobile
         spacing.$space-compact-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      padding: 0 spacing.$space-compact-tablet spacing.$space-compact-tablet
+      padding: 0 spacing.$space-compact-tablet spacing.$space-page-tablet
         spacing.$space-compact-tablet;
       column-gap: spacing.$space-compact-tablet;
 
@@ -388,7 +395,7 @@
     }
 
     @include helpers.desktop {
-      padding: 0 spacing.$space-compact-desktop spacing.$space-compact-desktop
+      padding: 0 spacing.$space-compact-desktop spacing.$space-page-desktop
         spacing.$space-compact-desktop;
       column-gap: spacing.$space-compact-desktop;
 

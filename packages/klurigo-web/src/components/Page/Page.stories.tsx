@@ -63,8 +63,7 @@ export const FullBleed = {
   name: 'Full Bleed',
   decorators: [withMockAuth],
   args: {
-    layout: 'fill',
-    fullBleed: true,
+    layout: 'fullBleed',
     header: (
       <Button
         id="secondary-button"

@@ -27,11 +27,10 @@ import { Menu, MenuItem, MenuSeparator } from '../Menu'
 
 import styles from './Page.module.scss'
 
-type PageLayout = 'contained' | 'compact' | 'fill' | 'compactFill'
+type PageLayout = 'contained' | 'compact' | 'fill' | 'compactFill' | 'fullBleed'
 
 export interface PageProps {
   layout: PageLayout
-  fullBleed?: boolean
   align?: 'start' | 'center' | 'space-between'
   noPadding?: boolean
   discover?: boolean
@@ -45,7 +44,6 @@ export interface PageProps {
 
 const Page: FC<PageProps> = ({
   layout,
-  fullBleed = false,
   align = 'center',
   noPadding = false,
   discover = false,
@@ -108,7 +106,7 @@ const Page: FC<PageProps> = ({
       <div
         className={classNames(
           styles.header,
-          fullBleed ? styles.fullBleed : undefined,
+          layout === 'fullBleed' ? styles.fullBleed : undefined,
         )}>
         <button className={styles.logo} onClick={() => navigate('/')}>
           <img className={styles.icon} src={KlurigoIcon} alt="Klurigo" />
@@ -171,7 +169,6 @@ const Page: FC<PageProps> = ({
         className={classNames(
           styles.content,
           styles[layout],
-          fullBleed ? styles.fullBleed : undefined,
           align === 'start' ? styles.startAlign : undefined,
           align === 'center' ? styles.centerAlign : undefined,
           align === 'space-between' ? styles.spaceBetweenAlign : undefined,
@@ -191,7 +188,7 @@ const Page: FC<PageProps> = ({
         <div
           className={classNames(
             styles.footer,
-            fullBleed ? styles.fullBleed : undefined,
+            layout === 'fullBleed' ? styles.fullBleed : undefined,
           )}>
           {footer}
         </div>

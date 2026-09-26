@@ -160,7 +160,7 @@ exports[`Page > should render contained Page 1`] = `
 </div>
 `;
 
-exports[`Page > should render full bleed treatment independently of layout 1`] = `
+exports[`Page > should render full bleed layout with full-width and full-height geometry 1`] = `
 <div>
   <div
     class="main"
@@ -194,7 +194,7 @@ exports[`Page > should render full bleed treatment independently of layout 1`] =
       </div>
     </div>
     <div
-      class="content fill fullBleed centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"
