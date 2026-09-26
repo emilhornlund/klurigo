@@ -447,6 +447,19 @@ describe('QuizCreatorPageUI', () => {
     expect(container.querySelector('#save-button')).toBeEnabled()
   })
 
+  it('opens and closes quiz-level settings from the header', () => {
+    renderQuizCreatorPageUI({ gameMode: GameMode.Classic })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
+    const settings = screen.getByRole('dialog', { name: 'Settings' })
+    expect(settings).toBeInTheDocument()
+
+    fireEvent.click(within(settings).getByRole('button', { name: 'Close' }))
+    expect(
+      screen.queryByRole('dialog', { name: 'Settings' }),
+    ).not.toBeInTheDocument()
+  })
+
   it('calls onExit when the exit button is clicked', () => {
     const onExit = vi.fn()
 

@@ -1,10 +1,7 @@
 import {
-  faArrowRightFromBracket,
   faChevronLeft,
   faChevronRight,
   faCode,
-  faFloppyDisk,
-  faGear,
   faSliders,
 } from '@fortawesome/free-solid-svg-icons'
 import type { QuestionDto } from '@klurigo/common'
@@ -12,9 +9,7 @@ import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
-import { Button, Page, Stack, TextField } from '../../../../components'
-import { DeviceType } from '../../../../utils/device-size.types'
-import { useDeviceSizeType } from '../../../../utils/useDeviceSizeType'
+import { Button, Page, Stack } from '../../../../components'
 import type {
   QuizQuestionModel,
   QuizQuestionModelFieldChangeFunction,
@@ -31,6 +26,7 @@ import {
   GameModeSelectionModal,
   QuestionEditor,
   QuestionPicker,
+  QuizEditorHeader,
 } from './components'
 import QuizSettingsModal from './components/QuizSettingsModal'
 import styles from './QuizCreatorPageUI.module.scss'
@@ -82,8 +78,6 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   onSaveQuiz,
   onExit,
 }) => {
-  const deviceType = useDeviceSizeType()
-
   const [showQuizSettingsModal, setShowQuizSettingsModal] = useState(false)
 
   const [showAdvancedQuestionEditor, setShowAdvancedQuestionEditor] =
@@ -93,63 +87,16 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
     <Page
       layout="fullBleed"
       header={
-        <>
-          {deviceType !== DeviceType.Mobile && (
-            <TextField
-              id="quiz-title-textfield"
-              type="text"
-              surface="light"
-              size="small"
-              placeholder="Title"
-              value={quizSettings.title}
-              onChange={(value) =>
-                onQuizSettingsValueChange('title', value as string)
-              }
-              customErrorMessage={
-                quizSettingsValidation.errors.filter(
-                  ({ path }) => path === 'title',
-                )?.[0]?.message
-              }
-              showErrorMessage={false}
-              forceValidate
-            />
-          )}
-          <Button
-            id="settings-button"
-            type="button"
-            size="small"
-            variant="primary"
-            surface="brand"
-            value="Settings"
-            hideValue="mobile"
-            icon={faGear}
-            onClick={() => setShowQuizSettingsModal(true)}
-          />
-          <Button
-            id="save-button"
-            type="button"
-            size="small"
-            variant="primary"
-            intent="accent"
-            value="Save"
-            hideValue="mobile"
-            icon={faFloppyDisk}
-            loading={!!isSavingQuiz}
-            disabled={!canSaveQuiz}
-            onClick={onSaveQuiz}
-          />
-          <Button
-            id="exit-button"
-            type="button"
-            size="small"
-            variant="primary"
-            surface="brand"
-            value="Exit"
-            hideValue="mobile"
-            icon={faArrowRightFromBracket}
-            onClick={onExit}
-          />
-        </>
+        <QuizEditorHeader
+          quizSettings={quizSettings}
+          quizSettingsValidation={quizSettingsValidation}
+          onQuizSettingsValueChange={onQuizSettingsValueChange}
+          canSaveQuiz={canSaveQuiz}
+          isSavingQuiz={isSavingQuiz}
+          onOpenSettings={() => setShowQuizSettingsModal(true)}
+          onSaveQuiz={onSaveQuiz}
+          onExit={onExit}
+        />
       }
       footer={
         gameMode && selectedQuestion && !showAdvancedQuestionEditor ? (

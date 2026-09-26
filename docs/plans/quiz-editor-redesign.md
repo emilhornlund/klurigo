@@ -101,7 +101,7 @@ Suggested commit:
 
 # Phase 2 — Establish repo-aligned editor boundaries
 
-## [ ] 4. Extract the page header actions into `QuizEditorHeader`
+## [x] 4. Extract the page header actions into `QuizEditorHeader`
 
 Move the existing quiz title and page-level actions from the inline `Page.header` JSX into a dedicated component.
 
