@@ -20,12 +20,12 @@ import { Link } from 'react-router-dom'
 import {
   IconButtonArrowRight,
   Page,
+  Stack,
   TextField,
   Typography,
 } from '../../../../components'
 import NicknameTextField from '../../../../components/NicknameTextField'
 
-import styles from './AuthRegisterPageUI.module.scss'
 import { getMessage, getTitle } from './text.utils'
 
 export type CreateUserFormFields = CreateUserRequestDto
@@ -106,7 +106,7 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
       <Typography variant="body" width="small" align="center" color="inverse">
         {message}
       </Typography>
-      <form className={styles.createUserForm} onSubmit={handleSubmit}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
         <TextField
           id="email"
           type="text"
@@ -184,7 +184,7 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
       <Typography
         variant="link"
         width="small"

@@ -29,6 +29,7 @@ import {
   Page,
   PageDivider,
   ResponsiveImage,
+  Stack,
   Surface,
   Typography,
 } from '../../../../components'
@@ -117,7 +118,12 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
           </Typography>
         )}
 
-        <div className={styles.actions}>
+        <Stack
+          direction="horizontal"
+          spacing="compact"
+          align="center"
+          justify="center"
+          width="full">
           {isOwner && (
             <>
               <Button
@@ -155,7 +161,7 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
             icon={faPlay}
             onClick={() => setShowConfirmHostGameModal(true)}
           />
-        </div>
+        </Stack>
 
         {quiz.imageCoverURL && (
           <div className={styles.thumbnailContainer}>

@@ -13,10 +13,10 @@ import {
   Badge,
   Button,
   Page,
+  Stack,
   TextField,
   Typography,
 } from '../../../../components'
-import styles from '../../../../styles/form.module.scss'
 
 export type AuthPasswordResetFormFields = AuthPasswordResetRequestDto
 
@@ -116,7 +116,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
         Choose your dazzling new password and confirm it below. Let’s keep those
         sneaky hackers out!
       </Typography>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
         <TextField
           id="password"
           type="password"
@@ -173,7 +173,7 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
     </Page>
   )
 }

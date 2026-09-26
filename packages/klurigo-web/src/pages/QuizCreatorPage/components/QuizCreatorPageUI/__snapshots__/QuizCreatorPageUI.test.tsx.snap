@@ -142,7 +142,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           class="contentInner disableAnimation"
         >
           <div
-            class="quizCreatorPage"
+            class="stack vertical spacing-stack align-stretch justify-start width-full quizCreatorPage"
           >
             <div
               class="questionPickerWrapper"
@@ -1466,7 +1466,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           class="contentInner disableAnimation"
         >
           <div
-            class="quizCreatorPage"
+            class="stack vertical spacing-stack align-stretch justify-start width-full quizCreatorPage"
           >
             <div
               class="editorToggleSection"
@@ -1656,7 +1656,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           class="contentInner disableAnimation"
         >
           <div
-            class="quizCreatorPage"
+            class="stack vertical spacing-stack align-stretch justify-start width-full quizCreatorPage"
           >
             <div
               class="editorToggleSection"
@@ -1846,7 +1846,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           class="contentInner disableAnimation"
         >
           <div
-            class="quizCreatorPage"
+            class="stack vertical spacing-stack align-stretch justify-start width-full quizCreatorPage"
           >
             <div
               class="editorToggleSection"
@@ -2038,7 +2038,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           class="contentInner disableAnimation"
         >
           <div
-            class="quizCreatorPage"
+            class="stack vertical spacing-stack align-stretch justify-start width-full quizCreatorPage"
           >
             <div
               class="floatingOverlay"
@@ -2070,7 +2070,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                   </h4>
                 </div>
                 <div
-                  class="content"
+                  class="stack vertical spacing-stack align-stretch justify-start content"
                 >
                   <p
                     class="typography body2 alignLeft widthFull colorDefault noOpacity"
@@ -2078,7 +2078,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                     Choose the game mode for your quiz. Each mode offers a unique way for participants to play and enjoy!
                   </p>
                   <div
-                    class="gameModeSelectionModalWrapper"
+                    class="stack horizontal spacing-compact align-stretch justify-start gameModeSelectionModalWrapper"
                   >
                     <div
                       class="buttonContainer variantPrimary surfaceLight intentDefault grow"

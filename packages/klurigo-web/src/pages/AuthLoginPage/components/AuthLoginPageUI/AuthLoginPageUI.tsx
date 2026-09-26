@@ -17,11 +17,11 @@ import {
   IconButtonArrowRight,
   Page,
   PageDivider,
+  Stack,
   TextField,
   Typography,
 } from '../../../../components'
 
-import styles from './AuthLoginPageUI.module.scss'
 import { getMessage, getTitle } from './text.utils'
 
 export type LoginFormFields = AuthLoginRequestDto
@@ -90,7 +90,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
       <Typography variant="body" width="small" align="center" color="inverse">
         {message}
       </Typography>
-      <form className={styles.loginForm} onSubmit={handleSubmit}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
         <TextField
           id="email"
           type="text"
@@ -140,7 +140,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
       <Typography
         variant="link"
         width="small"
@@ -154,7 +154,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
 
       <PageDivider />
 
-      <div className={styles.authProviderButton}>
+      <Stack width="content">
         <Button
           id="google-login-button"
           type="button"
@@ -166,7 +166,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
           loading={false}
           onClick={onGoogleClick}
         />
-      </div>
+      </Stack>
     </Page>
   )
 }

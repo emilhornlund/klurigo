@@ -92,8 +92,6 @@
     }
 
     .content {
-      display: flex;
-      flex-direction: column;
       min-height: 0;
       overflow-y: auto;
 
@@ -102,17 +100,14 @@
       padding-bottom: 8px;
 
       @include helpers.mobile {
-        row-gap: spacing.$space-stack-mobile;
         @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
-        row-gap: spacing.$space-stack-tablet;
         @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
-        row-gap: spacing.$space-stack-desktop;
         @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
     }

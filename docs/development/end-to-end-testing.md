@@ -64,6 +64,10 @@ these Chromium-only projects:
   15-second expect timeout, a 90-second test timeout, and three workers.
   It is configured with one repeat.
 
+The full run also uses three workers globally because Playwright assigns
+`parallelIndex` across both projects, and the GameSession fixture resolver has
+three isolated slots.
+
 The ordinary project excludes `**/game-session/**/*.spec.ts`; the dedicated
 GameSession project includes that pattern. Each GameSession test creates its
 own game and uses the isolated fixture slot assigned to its worker, so the

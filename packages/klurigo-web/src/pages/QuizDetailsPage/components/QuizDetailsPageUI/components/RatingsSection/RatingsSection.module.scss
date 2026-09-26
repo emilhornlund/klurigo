@@ -3,66 +3,48 @@
 @use '../../../../../../styles/helpers' as helpers;
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
-.section {
+.summary {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
+  justify-self: center;
+  align-self: center;
 
   @include helpers.mobile {
-    gap: spacing.$space-compact-mobile;
+    gap: spacing.$space-page-mobile * 1.5;
   }
 
   @include helpers.tablet {
-    gap: spacing.$space-compact-tablet;
+    gap: spacing.$space-page-tablet * 1.5;
   }
 
   @include helpers.desktop {
-    gap: spacing.$space-compact-desktop;
+    gap: spacing.$space-page-desktop * 1.5;
   }
 
-  .summary {
+  .score {
     display: flex;
-    flex-direction: row;
-    justify-self: center;
-    align-self: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .summaryRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     @include helpers.mobile {
-      gap: spacing.$space-page-mobile * 1.5;
+      gap: spacing.$space-inline-mobile;
     }
 
     @include helpers.tablet {
-      gap: spacing.$space-page-tablet * 1.5;
+      gap: spacing.$space-inline-tablet;
     }
 
     @include helpers.desktop {
-      gap: spacing.$space-page-desktop * 1.5;
-    }
-
-    .score {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .summaryRight {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      @include helpers.mobile {
-        gap: spacing.$space-inline-mobile;
-      }
-
-      @include helpers.tablet {
-        gap: spacing.$space-inline-tablet;
-      }
-
-      @include helpers.desktop {
-        gap: spacing.$space-inline-desktop;
-      }
+      gap: spacing.$space-inline-desktop;
     }
   }
 }

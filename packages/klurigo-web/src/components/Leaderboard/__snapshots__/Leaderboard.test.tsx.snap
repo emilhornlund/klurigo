@@ -3,7 +3,7 @@
 exports[`Leaderboard Component > Basic Rendering > should render Leaderboard excluding podium 1`] = `
 <div>
   <div
-    class="leaderboard"
+    class="stack vertical spacing-stack align-stretch justify-start width-full"
   >
     <div
       class="surface row"
@@ -69,7 +69,7 @@ exports[`Leaderboard Component > Basic Rendering > should render Leaderboard exc
 exports[`Leaderboard Component > Basic Rendering > should render Leaderboard including podium 1`] = `
 <div>
   <div
-    class="leaderboard"
+    class="stack vertical spacing-stack align-stretch justify-start width-full"
   >
     <div
       class="surface row gold topPosition"

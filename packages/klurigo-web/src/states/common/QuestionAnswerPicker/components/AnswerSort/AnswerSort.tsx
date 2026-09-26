@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 
 import type { SortableTableValue } from '../../../../../components'
-import { Button, SortableTable } from '../../../../../components'
+import { Button, SortableTable, Stack } from '../../../../../components'
 
 import styles from './AnswerSort.module.scss'
 
@@ -40,7 +40,11 @@ const AnswerSort: FC<AnswerSortProps> = ({
     onSubmit(internalValues.map((value) => value.value))
 
   return (
-    <div className={styles.answerSort}>
+    <Stack
+      className={styles.answerSort}
+      spacing="compact"
+      align="center"
+      justify="center">
       <div className={styles.table}>
         <SortableTable
           values={internalValues}
@@ -64,7 +68,7 @@ const AnswerSort: FC<AnswerSortProps> = ({
           </Button>
         </div>
       )}
-    </div>
+    </Stack>
   )
 }
 

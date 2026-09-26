@@ -15,6 +15,7 @@ import {
 } from '../../../../models'
 import Modal from '../../../Modal'
 import Select from '../../../Select'
+import Stack from '../../../Stack'
 import Typography from '../../../Typography'
 
 import styles from './FilterModal.module.scss'
@@ -73,7 +74,7 @@ const FilterModal: FC<FilterModalProps> = ({
       open={open}
       closeAction={{ label: 'Close', onClick: onClose }}
       primaryAction={{ label: 'Apply', onClick: handleApplyFilter }}>
-      <div className={styles.filterModalContainer}>
+      <Stack>
         <Typography variant="body2" noOpacity>
           Narrow down your search and find the perfect quiz!
         </Typography>
@@ -213,7 +214,7 @@ const FilterModal: FC<FilterModalProps> = ({
             }
           />
         </div>
-      </div>
+      </Stack>
     </Modal>
   )
 }

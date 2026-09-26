@@ -478,7 +478,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
         </div>
       </div>
       <div
-        class="content"
+        class="stack vertical spacing-stack align-stretch justify-start content"
       >
         <p
           class="typography body2 alignLeft widthFull colorDefault noOpacity"

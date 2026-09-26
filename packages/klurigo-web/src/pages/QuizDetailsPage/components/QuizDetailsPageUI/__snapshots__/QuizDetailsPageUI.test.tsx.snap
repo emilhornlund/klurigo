@@ -63,7 +63,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
           Test your knowledge of world capitals, landmarks, and continents in this fun and educational geography quiz.
         </div>
         <div
-          class="actions"
+          class="stack horizontal spacing-compact align-center justify-center width-full"
         >
           <button
             id="host-game-button"

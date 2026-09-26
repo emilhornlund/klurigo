@@ -7,11 +7,13 @@ import {
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import Stack from '../../../../../../components/Stack'
 import type { QuizSettingsValidationResult } from '../../../../utils/QuizSettingsDataSource'
 
 import QuizSettingsModal from './QuizSettingsModal'
 
 vi.mock('../../../../../../components', () => ({
+  Stack,
   Button: ({
     id,
     value,

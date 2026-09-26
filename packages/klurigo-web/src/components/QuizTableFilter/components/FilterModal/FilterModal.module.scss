@@ -1,36 +1,19 @@
 @use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/spacing.semantic' as spacing;
 
-.filterModalContainer {
+.row {
   display: flex;
   flex-direction: column;
 
   @include helpers.mobile {
-    gap: spacing.$space-stack-mobile;
+    row-gap: spacing.$space-inline-mobile;
   }
 
   @include helpers.tablet {
-    gap: spacing.$space-stack-tablet;
+    row-gap: spacing.$space-inline-tablet;
   }
 
   @include helpers.desktop {
-    gap: spacing.$space-stack-desktop;
-  }
-
-  .row {
-    display: flex;
-    flex-direction: column;
-
-    @include helpers.mobile {
-      row-gap: spacing.$space-inline-mobile;
-    }
-
-    @include helpers.tablet {
-      row-gap: spacing.$space-inline-tablet;
-    }
-
-    @include helpers.desktop {
-      row-gap: spacing.$space-inline-desktop;
-    }
+    row-gap: spacing.$space-inline-desktop;
   }
 }

@@ -3,6 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
+import Stack from '../../../../../../components/Stack'
+
 import UserDetailsForm from './UserDetailsForm'
 
 type TextFieldProps = {
@@ -15,6 +17,7 @@ type TextFieldProps = {
 }
 
 vi.mock('../../../../../../components', () => ({
+  Stack,
   Button: ({
     id,
     type,

@@ -82,7 +82,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             </div>
           </div>
           <div
-            class="callToActionCard"
+            class="stack vertical spacing-compact align-stretch justify-start callToActionCard"
           >
             <button
               class="surface interactive button"
@@ -122,7 +122,7 @@ exports[`HomePage > renders the "Resume game" button if an active game exists 1`
             </button>
           </div>
           <form
-            class="joinForm form"
+            class="stack vertical spacing-stack align-stretch justify-start width-content form"
           >
             <div
               class="inputContainer"
@@ -268,7 +268,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
             </div>
           </div>
           <form
-            class="joinForm form"
+            class="stack vertical spacing-stack align-stretch justify-start width-content form"
           >
             <div
               class="inputContainer"

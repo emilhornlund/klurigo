@@ -35,6 +35,8 @@ validateGameSessionFixtureCapacity({
 export default defineConfig({
   testDir: './e2e-tests',
   fullyParallel: true,
+  // parallelIndex is shared across projects; keep every worker within the seeded fixture slots.
+  workers: GAME_SESSION_WORKERS,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',

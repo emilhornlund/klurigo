@@ -4,9 +4,6 @@
 @use '../../styles/spacing.semantic' as spacing;
 
 .callToActionCard {
-  display: flex;
-  flex-direction: column;
-
   @media (prefers-reduced-motion: no-preference) {
     animation: fadeInUp 0.5s ease-out;
     animation-delay: 0.6s;
@@ -15,20 +12,17 @@
 
   @include helpers.mobile {
     width: 100%;
-    row-gap: spacing.$space-compact-mobile;
   }
   @include helpers.tablet {
     width: calc(
       #{breakpoints.$breakpoint-mobile} + (#{spacing.$space-compact-tablet} * 2)
     );
-    row-gap: spacing.$space-compact-tablet;
   }
   @include helpers.desktop {
     width: calc(
       #{breakpoints.$breakpoint-mobile} +
         (#{spacing.$space-compact-desktop} * 2)
     );
-    row-gap: spacing.$space-compact-desktop;
   }
 
   .button {

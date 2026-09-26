@@ -55,26 +55,6 @@
     }
   }
 
-  .actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-
-    @include helpers.mobile {
-      column-gap: spacing.$space-compact-mobile;
-    }
-
-    @include helpers.tablet {
-      column-gap: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-compact-desktop;
-    }
-  }
-
   .details {
     display: grid;
     margin-top: auto;

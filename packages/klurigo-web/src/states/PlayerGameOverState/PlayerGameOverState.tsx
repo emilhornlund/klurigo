@@ -10,6 +10,7 @@ import {
   IconButtonArrowLeft,
   IconButtonArrowRight,
   ScoreChip,
+  Stack,
   StreakBadge,
   Typography,
 } from '../../components'
@@ -109,7 +110,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
 
       <div className={styles.spacing} />
 
-      <div className={styles.rankContainer}>
+      <Stack spacing="compact" align="center">
         <Badge
           size="large"
           backgroundColor={getBadgePositionBackgroundColor(rank)}
@@ -120,7 +121,7 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
         <Typography variant="body" width="small" align="center" color="inverse">
           out of {totalPlayers} players
         </Typography>
-      </div>
+      </Stack>
 
       <ScoreChip value={score} />
 
