@@ -54,7 +54,7 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
       data-testid="pin-answer"
     >
       <div
-        class="interactive"
+        class="stack vertical spacing-compact align-center justify-start interactive"
       >
         <div
           class="container fallbackAspectRatio"
@@ -116,7 +116,7 @@ exports[`QuestionAnswerPicker > renders Puzzle and forwards values on submit wit
     class="questionAnswerPicker"
   >
     <div
-      class="answerSort"
+      class="stack vertical spacing-compact align-center justify-center answerSort"
     >
       <div
         class="table"

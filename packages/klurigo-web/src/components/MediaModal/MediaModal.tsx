@@ -9,6 +9,7 @@ import ResponsiveImage from '../ResponsiveImage'
 import ResponsivePlayer from '../ResponsivePlayer'
 import SegmentedControl from '../SegmentedControl'
 import Select from '../Select'
+import Stack from '../Stack'
 import TextField from '../TextField'
 
 import { PexelsImageProvider, UploadImageProvider } from './components'
@@ -78,8 +79,8 @@ const MediaModal: FC<MediaModalProps> = ({
       closeAction={{ label: 'Close', onClick: onClose }}
       primaryAction={{ label: 'Apply', disabled: !isValid, onClick: onApply }}
       open>
-      <div className={styles.mediaModal}>
-        <div className={styles.content}>
+      <Stack className={styles.mediaModal} spacing="compact">
+        <Stack className={styles.content}>
           {!imageOnly && (
             <div className={classNames(styles.column, styles.half)}>
               <Select
@@ -164,8 +165,8 @@ const MediaModal: FC<MediaModalProps> = ({
               )}
             </>
           )}
-        </div>
-      </div>
+        </Stack>
+      </Stack>
     </Modal>
   )
 }

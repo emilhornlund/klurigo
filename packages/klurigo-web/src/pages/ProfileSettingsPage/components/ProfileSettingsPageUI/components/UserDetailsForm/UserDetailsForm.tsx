@@ -15,9 +15,15 @@ import {
 import type { FC, FormEvent, MouseEvent } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { Button, TextField, Typography } from '../../../../../../components'
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from '../../../../../../components'
 import NicknameTextField from '../../../../../../components/NicknameTextField'
-import styles from '../../../../../../styles/form.module.scss'
+
+import styles from './UserDetailsForm.module.scss'
 
 export type UpdateUserDetailsFormFields = Pick<
   UserProfileResponseDto,
@@ -100,8 +106,8 @@ const UserDetailsForm: FC<UserDetailsFormProps> = ({
         information helps personalize your quiz experience and lets others
         recognize you during games.
       </Typography>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div className={styles.formField}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
+        <Stack spacing="compact">
           <TextField
             id="email"
             type="text"
@@ -132,7 +138,7 @@ const UserDetailsForm: FC<UserDetailsFormProps> = ({
               </button>
             </span>
           )}
-        </div>
+        </Stack>
         <TextField
           id="givenName"
           type="text"
@@ -180,7 +186,7 @@ const UserDetailsForm: FC<UserDetailsFormProps> = ({
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
     </>
   )
 }

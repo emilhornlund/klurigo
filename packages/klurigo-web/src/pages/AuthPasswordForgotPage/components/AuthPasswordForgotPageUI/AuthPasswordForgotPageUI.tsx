@@ -10,10 +10,10 @@ import { useMemo, useState } from 'react'
 import {
   IconButtonArrowRight,
   Page,
+  Stack,
   TextField,
   Typography,
 } from '../../../../components'
-import styles from '../../../../styles/form.module.scss'
 
 export type AuthPasswordForgotFormFields = AuthPasswordForgotRequestDto
 
@@ -78,7 +78,7 @@ const AuthPasswordForgotPageUI: FC<AuthPasswordForgotPageUIProps> = ({
         Don’t panic – it happens! Drop your email below and we’ll beam you a
         shiny new password link.
       </Typography>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
         <TextField
           id="email"
           type="text"
@@ -101,7 +101,7 @@ const AuthPasswordForgotPageUI: FC<AuthPasswordForgotPageUIProps> = ({
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
     </Page>
   )
 }

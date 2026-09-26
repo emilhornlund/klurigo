@@ -7,7 +7,7 @@ exports[`AnswerPin > renders interactive mode 1`] = `
     data-testid="pin-answer"
   >
     <div
-      class="interactive"
+      class="stack vertical spacing-compact align-center justify-start interactive"
     >
       <div>
         <div

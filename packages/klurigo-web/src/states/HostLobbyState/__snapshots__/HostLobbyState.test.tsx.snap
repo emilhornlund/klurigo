@@ -528,7 +528,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
         </div>
       </div>
       <div
-        class="content"
+        class="stack vertical spacing-stack align-stretch justify-start content"
       >
         <p
           class="typography body2 alignLeft widthFull colorDefault noOpacity"

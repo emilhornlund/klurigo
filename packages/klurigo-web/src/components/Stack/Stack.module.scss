@@ -1,0 +1,93 @@
+@use '../../styles/helpers' as helpers;
+@use '../../styles/breakpoints.tokens' as breakpoints;
+@use '../../styles/spacing.semantic' as spacing;
+
+.stack {
+  display: flex;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.horizontal {
+  flex-direction: row;
+}
+
+.spacing-stack {
+  @include helpers.mobile {
+    gap: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-stack-desktop;
+  }
+}
+
+.spacing-compact {
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-stretch {
+  align-items: stretch;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-space-between {
+  justify-content: space-between;
+}
+
+.width-content {
+  @include helpers.mobile {
+    width: 100%;
+  }
+
+  @include helpers.tablet {
+    width: breakpoints.$breakpoint-mobile;
+  }
+
+  @include helpers.desktop {
+    width: breakpoints.$breakpoint-mobile;
+  }
+}
+
+.width-full {
+  width: 100%;
+}

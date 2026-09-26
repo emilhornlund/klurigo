@@ -2,6 +2,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { type FC } from 'react'
 
+import Stack from '../Stack'
 import Surface from '../Surface'
 import Typography from '../Typography'
 
@@ -47,7 +48,7 @@ const CallToActionCard: FC<CallToActionCardProps> = ({
   text,
   onClick,
 }) => (
-  <div className={styles.callToActionCard}>
+  <Stack className={styles.callToActionCard} spacing="compact">
     <Surface
       as="button"
       type="button"
@@ -66,7 +67,7 @@ const CallToActionCard: FC<CallToActionCardProps> = ({
         <FontAwesomeIcon icon={faArrowRight} />
       </Surface>
     </Surface>
-  </div>
+  </Stack>
 )
 
 export default CallToActionCard

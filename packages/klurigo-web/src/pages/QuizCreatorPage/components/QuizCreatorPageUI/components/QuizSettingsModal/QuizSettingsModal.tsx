@@ -13,6 +13,7 @@ import {
   MediaModal,
   Modal,
   ResponsiveImage,
+  Stack,
   Typography,
 } from '../../../../../../components'
 import Select from '../../../../../../components/Select'
@@ -63,7 +64,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
       title="Settings"
       closeAction={{ label: 'Close', onClick: onClose }}
       open>
-      <div className={styles.quizSettingsModalWrapper}>
+      <Stack>
         <div className={styles.quizSettingsRow}>
           <Typography variant="control" noOpacity bold>
             Title
@@ -207,7 +208,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
             }
           />
         </div>
-      </div>
+      </Stack>
       {showMediaModal && (
         <MediaModal
           title="Add Image Cover"

@@ -3,7 +3,7 @@
 exports[`AnswerSort > disables interaction and hides submit button in non-interactive mode 1`] = `
 <div>
   <div
-    class="answerSort"
+    class="stack vertical spacing-compact align-center justify-center answerSort"
   >
     <div
       class="table"
@@ -63,7 +63,7 @@ exports[`AnswerSort > disables interaction and hides submit button in non-intera
 exports[`AnswerSort > handles empty list 1`] = `
 <div>
   <div
-    class="answerSort"
+    class="stack vertical spacing-compact align-center justify-center answerSort"
   >
     <div
       class="table"
@@ -113,7 +113,7 @@ exports[`AnswerSort > handles empty list 1`] = `
 exports[`AnswerSort > renders interactive table with initial values 1`] = `
 <div>
   <div
-    class="answerSort"
+    class="stack vertical spacing-compact align-center justify-center answerSort"
   >
     <div
       class="table"

@@ -3,6 +3,7 @@ import { type FC } from 'react'
 
 import {
   HorizontalRail,
+  Stack,
   StarRating,
   Typography,
 } from '../../../../../../components'
@@ -92,7 +93,11 @@ const RatingsSection: FC<RatingsSectionProps> = ({
   }
 
   return (
-    <section className={styles.section} data-testid="ratings-section">
+    <Stack
+      as="section"
+      width="full"
+      spacing="compact"
+      data-testid="ratings-section">
       <Typography variant="title3" align="center" color="inverse">
         Ratings &amp; Reviews
       </Typography>
@@ -123,7 +128,7 @@ const RatingsSection: FC<RatingsSectionProps> = ({
       </div>
 
       {renderRail()}
-    </section>
+    </Stack>
   )
 }
 

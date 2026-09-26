@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
+import Stack from '../Stack'
 import StreakBadge from '../StreakBadge'
 import Surface from '../Surface'
 
@@ -45,7 +46,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
       : []
 
   return (
-    <div className={styles.leaderboard}>
+    <Stack width="full">
       {displayedValues.map(
         ({ position, nickname, score, streaks, previousPosition }, index) => {
           const rowStyle = { '--row-index': index } as React.CSSProperties
@@ -100,7 +101,7 @@ const Leaderboard: FC<LeaderboardProps> = ({
           )
         },
       )}
-    </div>
+    </Stack>
   )
 }
 

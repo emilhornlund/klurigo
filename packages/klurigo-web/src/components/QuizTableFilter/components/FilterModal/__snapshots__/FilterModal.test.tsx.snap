@@ -57,10 +57,10 @@ exports[`FilterModal > should render FilterModal 1`] = `
         </div>
       </div>
       <div
-        class="content"
+        class="stack vertical spacing-stack align-stretch justify-start content"
       >
         <div
-          class="filterModalContainer"
+          class="stack vertical spacing-stack align-stretch justify-start"
         >
           <p
             class="typography body2 alignLeft widthFull colorDefault noOpacity"

@@ -53,7 +53,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
             Please sign in to continue.
           </p>
           <form
-            class="loginForm"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="inputContainer"
@@ -139,7 +139,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
             class="pageDivider"
           />
           <div
-            class="authProviderButton"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="buttonContainer variantPrimary surfaceBrand intentDefault"
@@ -229,7 +229,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
             Please sign in to continue.
           </p>
           <form
-            class="loginForm"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="inputContainer"
@@ -316,7 +316,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
             class="pageDivider"
           />
           <div
-            class="authProviderButton"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="buttonContainer variantPrimary surfaceBrand intentDefault"
@@ -406,7 +406,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
             Please sign in to continue.
           </p>
           <form
-            class="loginForm"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="inputContainer"
@@ -493,7 +493,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
             class="pageDivider"
           />
           <div
-            class="authProviderButton"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="buttonContainer variantPrimary surfaceBrand intentDefault"
@@ -583,7 +583,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
             Please sign in to continue.
           </p>
           <form
-            class="loginForm"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="inputContainer"
@@ -670,7 +670,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
             class="pageDivider"
           />
           <div
-            class="authProviderButton"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="buttonContainer variantPrimary surfaceBrand intentDefault"
@@ -760,7 +760,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
             Please sign in to continue.
           </p>
           <form
-            class="loginForm"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="inputContainer"
@@ -840,7 +840,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
             class="pageDivider"
           />
           <div
-            class="authProviderButton"
+            class="stack vertical spacing-stack align-stretch justify-start width-content"
           >
             <div
               class="buttonContainer variantPrimary surfaceBrand intentDefault"

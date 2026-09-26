@@ -1,5 +1,4 @@
 @use '../../styles/helpers' as helpers;
-@use '../../styles/spacing.semantic' as spacing;
 
 .spacing {
   @include helpers.mobile {
@@ -12,23 +11,5 @@
 
   @include helpers.desktop {
     height: 35px;
-  }
-}
-
-.rankContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @include helpers.mobile {
-    gap: spacing.$space-compact-mobile;
-  }
-
-  @include helpers.tablet {
-    gap: spacing.$space-compact-tablet;
-  }
-
-  @include helpers.desktop {
-    gap: spacing.$space-compact-desktop;
   }
 }

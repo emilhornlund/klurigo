@@ -3,23 +3,7 @@
 @use '../../../../../styles/spacing.semantic' as spacing;
 
 .answerSort {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   flex: 1;
-
-  @include helpers.mobile {
-    row-gap: spacing.$space-compact-mobile;
-  }
-
-  @include helpers.tablet {
-    row-gap: spacing.$space-compact-tablet;
-  }
-
-  @include helpers.desktop {
-    row-gap: spacing.$space-compact-desktop;
-  }
 
   .table {
     display: flex;

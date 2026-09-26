@@ -3,7 +3,12 @@ import type { GameQuestionPlayerAnswerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 
-import { Button, PinImage, ResponsiveImage } from '../../../../../components'
+import {
+  Button,
+  PinImage,
+  ResponsiveImage,
+  Stack,
+} from '../../../../../components'
 
 import styles from './AnswerPin.module.scss'
 
@@ -46,7 +51,7 @@ const AnswerPin: FC<AnswerPinProps> = ({
 
   return (
     <div className={styles.answerPin} data-testid="pin-answer">
-      <div className={styles.interactive}>
+      <Stack className={styles.interactive} spacing="compact" align="center">
         <PinImage
           value={position}
           imageURL={imageURL}
@@ -66,7 +71,7 @@ const AnswerPin: FC<AnswerPinProps> = ({
             Submit My Pin
           </Button>
         </div>
-      </div>
+      </Stack>
     </div>
   )
 }

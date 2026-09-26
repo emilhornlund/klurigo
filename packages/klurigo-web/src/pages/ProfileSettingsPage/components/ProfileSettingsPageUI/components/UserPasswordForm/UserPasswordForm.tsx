@@ -8,8 +8,12 @@ import {
 import type { FC, FormEvent } from 'react'
 import { useMemo, useState } from 'react'
 
-import { Button, TextField, Typography } from '../../../../../../components'
-import styles from '../../../../../../styles/form.module.scss'
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from '../../../../../../components'
 
 export type UpdateUserPasswordFormFields = AuthPasswordChangeRequestDto
 
@@ -81,7 +85,7 @@ const UserPasswordForm: FC<UserPasswordFormProps> = ({ loading, onChange }) => {
         Enhance your account security with a fresh password—verify your current
         one, choose a new one, and confirm to complete the update.
       </Typography>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <Stack as="form" width="content" onSubmit={handleSubmit}>
         <TextField
           id="oldPassword"
           type="password"
@@ -157,7 +161,7 @@ const UserPasswordForm: FC<UserPasswordFormProps> = ({ loading, onChange }) => {
           loading={loading}
           disabled={!isFormValid || loading}
         />
-      </form>
+      </Stack>
     </>
   )
 }

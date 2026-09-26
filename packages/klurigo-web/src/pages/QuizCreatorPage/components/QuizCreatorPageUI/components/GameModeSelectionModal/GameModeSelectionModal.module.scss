@@ -1,26 +1,7 @@
-@use 'sass:color';
-
 @use '../../../../../../styles/helpers' as helpers;
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
-$outline-offset: helpers.pxToRem(2px);
-
 .gameModeSelectionModalWrapper {
-  display: flex;
-  flex-direction: row;
-
-  @include helpers.mobile {
-    column-gap: spacing.$space-compact-mobile;
-  }
-
-  @include helpers.tablet {
-    column-gap: spacing.$space-compact-tablet;
-  }
-
-  @include helpers.desktop {
-    column-gap: spacing.$space-compact-desktop;
-  }
-
   div[class*='buttonContainer'] {
     button {
       white-space: normal;

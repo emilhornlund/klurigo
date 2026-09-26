@@ -12,13 +12,13 @@ import {
   Page,
   PageProminentIcon,
   RotatingMessage,
+  Stack,
   Typography,
 } from '../../components'
 import { useAuthContext } from '../../context/auth'
 import { useGameContext } from '../../context/game'
 import { useUserContext } from '../../context/user'
 
-import styles from './GameJoinPage.module.scss'
 import { MESSAGES, TITLES } from './text.utils'
 
 const GameJoinPage: FC = () => {
@@ -106,10 +106,11 @@ const GameJoinPage: FC = () => {
         />
       )}
 
-      <form
+      <Stack
+        as="form"
+        width="content"
         data-testid="join-form"
         name="join-game-form"
-        className={styles.joinForm}
         onSubmit={handleSubmit}>
         <NicknameTextField
           value={nickname}
@@ -127,7 +128,7 @@ const GameJoinPage: FC = () => {
           loading={isJoiningGame}
           disabled={!nicknameValid}
         />
-      </form>
+      </Stack>
     </Page>
   )
 }

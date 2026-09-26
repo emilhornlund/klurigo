@@ -13,6 +13,7 @@ import { useId } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import Button, { type ButtonProps } from '../Button'
+import Stack from '../Stack'
 import Typography from '../Typography'
 
 import styles from './Modal.module.scss'
@@ -95,7 +96,7 @@ const Modal: FC<ModalProps> = ({
             )}
           </div>
 
-          <div className={styles.content}>{children}</div>
+          <Stack className={styles.content}>{children}</Stack>
 
           {(closeAction?.label || primaryAction) && (
             <div className={styles.actions}>

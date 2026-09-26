@@ -11,6 +11,8 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
+import Stack from '../../../../components/Stack'
+
 import QuizDetailsPageUI from './QuizDetailsPageUI'
 
 vi.mock('./components/RatingsSection', () => ({
@@ -123,6 +125,7 @@ vi.mock('../../../../components', async () => {
     Page,
     PageDivider,
     ResponsiveImage,
+    Stack,
     Surface,
     Typography,
   }

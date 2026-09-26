@@ -10,7 +10,7 @@ import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
-import { Button, Page, TextField } from '../../../../components'
+import { Button, Page, Stack, TextField } from '../../../../components'
 import { DeviceType } from '../../../../utils/device-size.types'
 import { useDeviceSizeType } from '../../../../utils/useDeviceSizeType'
 import type {
@@ -150,7 +150,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
         </>
       }
       disableContentFadeAnimation>
-      <div className={styles.quizCreatorPage}>
+      <Stack className={styles.quizCreatorPage} width="full">
         {!gameMode && <GameModeSelectionModal onSelect={onSelectGameMode} />}
 
         {gameMode && showQuizSettingsModal && (
@@ -217,7 +217,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             </div>
           </div>
         )}
-      </div>
+      </Stack>
     </Page>
   )
 }

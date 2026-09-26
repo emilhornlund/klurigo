@@ -1,7 +1,7 @@
 import { GameMode } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { Button, Modal, Typography } from '../../../../../../components'
+import { Button, Modal, Stack, Typography } from '../../../../../../components'
 
 import styles from './GameModeSelectionModal.module.scss'
 
@@ -18,7 +18,10 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
         Choose the game mode for your quiz. Each mode offers a unique way for
         participants to play and enjoy!
       </Typography>
-      <div className={styles.gameModeSelectionModalWrapper}>
+      <Stack
+        direction="horizontal"
+        spacing="compact"
+        className={styles.gameModeSelectionModalWrapper}>
         <Button
           id="game-mode-classic-button"
           type="button"
@@ -67,7 +70,7 @@ const GameModeSelectionModal: FC<GameModeSelectionModalProps> = ({
             </Typography>
           </div>
         </Button>
-      </div>
+      </Stack>
     </Modal>
   )
 }

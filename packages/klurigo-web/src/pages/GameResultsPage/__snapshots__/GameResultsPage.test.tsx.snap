@@ -599,7 +599,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                     </div>
                   </div>
                   <div
-                    class="leaderboard"
+                    class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
                   <div
                     class="pageDivider"
@@ -1696,7 +1696,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                     </div>
                   </div>
                   <div
-                    class="leaderboard"
+                    class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
                   <div
                     class="pageDivider"

@@ -4,39 +4,11 @@
 @use '../../styles/spacing.semantic' as spacing;
 
 .mediaModal {
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
 
-  @include helpers.mobile {
-    gap: spacing.$space-compact-mobile;
-  }
-
-  @include helpers.tablet {
-    gap: spacing.$space-compact-tablet;
-  }
-
-  @include helpers.desktop {
-    gap: spacing.$space-compact-desktop;
-  }
-
   .content {
-    display: flex;
-    flex-direction: column;
     overflow: scroll;
     flex: 1;
-
-    @include helpers.mobile {
-      gap: spacing.$space-stack-mobile;
-    }
-
-    @include helpers.tablet {
-      gap: spacing.$space-stack-tablet;
-    }
-
-    @include helpers.desktop {
-      gap: spacing.$space-stack-desktop;
-    }
 
     .column {
       display: flex;

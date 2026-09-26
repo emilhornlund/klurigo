@@ -12,11 +12,11 @@ import {
   Page,
   PageProminentIcon,
   RotatingMessage,
+  Stack,
   TextField,
   Typography,
 } from '../../components'
 import { useAuthContext } from '../../context/auth'
-import { classNames } from '../../utils/helpers'
 
 import styles from './HomePage.module.scss'
 
@@ -167,8 +167,10 @@ const HomePage: FC = () => {
         />
       )}
 
-      <form
-        className={classNames(styles.joinForm, styles.form)}
+      <Stack
+        as="form"
+        width="content"
+        className={styles.form}
         onSubmit={handleJoinSubmit}>
         <TextField
           id="game-pin"
@@ -190,7 +192,7 @@ const HomePage: FC = () => {
           value="Join the game"
           disabled={!gamePINValid}
         />
-      </form>
+      </Stack>
       {isUserAuthenticated ? (
         <Typography
           variant="link"
