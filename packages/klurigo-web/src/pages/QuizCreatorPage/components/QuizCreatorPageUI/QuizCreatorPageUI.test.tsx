@@ -4,7 +4,7 @@ import {
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import type { ComponentProps } from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -311,6 +311,54 @@ describe('QuizCreatorPageUI', () => {
 
     expect(container.querySelector('.content')).toHaveClass('fullBleed')
     expect(container.querySelector('.header')).toHaveClass('fullBleed')
+  })
+
+  it('places the existing question controls in the three workspace regions', () => {
+    const onAddQuestion = vi.fn()
+    const onQuestionValueChange = vi.fn()
+    const { container } = renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions: [
+        { type: QuestionType.MultiChoice, question: 'First question' },
+        { type: QuestionType.MultiChoice, question: 'Second question' },
+      ],
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: {
+        type: QuestionType.MultiChoice,
+        question: 'First question',
+      },
+      onAddQuestion,
+      onQuestionValueChange,
+    })
+
+    const workspace = screen.getByTestId('editor-workspace')
+    const navigator = within(workspace).getByRole('navigation', {
+      name: 'Questions',
+    })
+    const editor = within(workspace).getByRole('main', {
+      name: 'Question editor',
+    })
+    const settings = within(workspace).getByRole('complementary', {
+      name: 'Question settings',
+    })
+
+    expect(Array.from(workspace.children)).toEqual([
+      navigator,
+      editor,
+      settings,
+    ])
+    fireEvent.click(
+      within(navigator).getByRole('button', { name: 'Add question' }),
+    )
+    expect(onAddQuestion).toHaveBeenCalledOnce()
+    fireEvent.change(editor.querySelector('#question-text-textfield')!, {
+      target: { value: 'Edited question' },
+    })
+    expect(onQuestionValueChange).toHaveBeenCalledWith(
+      'question',
+      'Edited question',
+    )
+    expect(container.querySelector('#save-button')).toBeInTheDocument()
   })
 
   it('disables the save button when canSaveQuiz is false', () => {

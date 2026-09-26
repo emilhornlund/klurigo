@@ -163,28 +163,39 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
         )}
 
         {gameMode && selectedQuestion && !showAdvancedQuestionEditor && (
-          <>
-            <QuestionPicker
-              questions={questions.map((question, index) => ({
-                type: question.type as QuestionType,
-                text: question.question,
-                valid: questionValidations[index].valid,
-              }))}
-              selectedQuestionIndex={selectedQuestionIndex}
-              onAddQuestion={onAddQuestion}
-              onSelectQuestion={onSelectedQuestionIndex}
-              onDropQuestion={onDropQuestionIndex}
-              onDuplicateQuestion={onDuplicateQuestionIndex}
-              onDeleteQuestion={onDeleteQuestionIndex}
-            />
-            <QuestionEditor
-              mode={gameMode}
-              question={selectedQuestion}
-              questionValidation={questionValidations[selectedQuestionIndex]}
-              onQuestionValueChange={onQuestionValueChange}
-              onTypeChange={onReplaceQuestion}
-            />
-          </>
+          <div className={styles.workspace} data-testid="editor-workspace">
+            <nav className={styles.questionNavigator} aria-label="Questions">
+              <QuestionPicker
+                questions={questions.map((question, index) => ({
+                  type: question.type as QuestionType,
+                  text: question.question,
+                  valid: questionValidations[index].valid,
+                }))}
+                selectedQuestionIndex={selectedQuestionIndex}
+                onAddQuestion={onAddQuestion}
+                onSelectQuestion={onSelectedQuestionIndex}
+                onDropQuestion={onDropQuestionIndex}
+                onDuplicateQuestion={onDuplicateQuestionIndex}
+                onDeleteQuestion={onDeleteQuestionIndex}
+              />
+            </nav>
+            <main
+              className={styles.questionEditor}
+              aria-label="Question editor">
+              <QuestionEditor
+                mode={gameMode}
+                question={selectedQuestion}
+                questionValidation={questionValidations[selectedQuestionIndex]}
+                onQuestionValueChange={onQuestionValueChange}
+                onTypeChange={onReplaceQuestion}
+              />
+            </main>
+            <aside
+              className={styles.questionSettings}
+              aria-label="Question settings">
+              Question settings
+            </aside>
+          </div>
         )}
 
         {gameMode && showAdvancedQuestionEditor && (

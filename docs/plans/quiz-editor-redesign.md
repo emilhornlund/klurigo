@@ -42,7 +42,7 @@ Suggested commit:
 
 ---
 
-## [ ] 2. Create the main three-column editor workspace
+## [x] 2. Create the main three-column editor workspace
 
 Restructure the page into three primary regions:
 

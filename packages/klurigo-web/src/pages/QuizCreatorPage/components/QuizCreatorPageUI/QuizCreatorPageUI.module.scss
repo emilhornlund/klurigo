@@ -2,6 +2,24 @@
 @use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/spacing.semantic' as spacing;
 
+.workspace {
+  display: grid;
+  grid-template-columns:
+    minmax(#{helpers.pxToRem(220px)}, 1fr)
+    minmax(#{helpers.pxToRem(440px)}, 2fr)
+    minmax(#{helpers.pxToRem(220px)}, 1fr);
+  align-items: start;
+  gap: spacing.$space-compact-desktop;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.questionNavigator,
+.questionEditor,
+.questionSettings {
+  min-width: 0;
+}
+
 .quizCreatorPage {
   flex: 1;
   height: 100%;
