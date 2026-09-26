@@ -304,6 +304,15 @@ describe('QuizCreatorPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
+  it('uses the full-bleed page layout', () => {
+    const { container } = renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+    })
+
+    expect(container.querySelector('.content')).toHaveClass('fullBleed')
+    expect(container.querySelector('.header')).toHaveClass('fullBleed')
+  })
+
   it('disables the save button when canSaveQuiz is false', () => {
     const { container } = renderQuizCreatorPageUI({ canSaveQuiz: false })
 

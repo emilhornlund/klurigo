@@ -6,7 +6,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
     class="main"
   >
     <div
-      class="header"
+      class="header fullBleed"
     >
       <button
         class="logo"
@@ -133,7 +133,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
       </div>
     </div>
     <div
-      class="content fill centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"
@@ -1330,7 +1330,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
     class="main"
   >
     <div
-      class="header"
+      class="header fullBleed"
     >
       <button
         class="logo"
@@ -1457,7 +1457,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
       </div>
     </div>
     <div
-      class="content fill centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"
@@ -1520,7 +1520,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
     class="main"
   >
     <div
-      class="header"
+      class="header fullBleed"
     >
       <button
         class="logo"
@@ -1647,7 +1647,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
       </div>
     </div>
     <div
-      class="content fill centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"
@@ -1710,7 +1710,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
     class="main"
   >
     <div
-      class="header"
+      class="header fullBleed"
     >
       <button
         class="logo"
@@ -1837,7 +1837,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
       </div>
     </div>
     <div
-      class="content fill centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"
@@ -1901,7 +1901,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
   >
     <div
       aria-hidden="true"
-      class="header"
+      class="header fullBleed"
       data-floating-ui-inert=""
     >
       <button
@@ -2029,7 +2029,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
       </div>
     </div>
     <div
-      class="content fill centerAlign"
+      class="content fullBleed centerAlign"
     >
       <div
         class="contentWrapper"

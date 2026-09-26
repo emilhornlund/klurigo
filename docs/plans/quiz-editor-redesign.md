@@ -24,7 +24,7 @@ Do not try to reproduce the complete redesigned mockup in one change.
 
 # Phase 1 — Establish the page layout
 
-## [ ] 1. Switch the quiz editor to the full-bleed page layout
+## [x] 1. Switch the quiz editor to the full-bleed page layout
 
 Use the full available application workspace instead of the existing narrow centered layout.
 
