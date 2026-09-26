@@ -447,6 +447,35 @@ describe('QuizCreatorPageUI', () => {
     )
   })
 
+  it('keeps Classic points only in the settings panel', () => {
+    const question = {
+      type: QuestionType.MultiChoice,
+      question: 'First question',
+      points: 2000,
+    }
+    const onQuestionValueChange = vi.fn()
+    renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions: [question, { ...question, question: 'Second question' }],
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: question,
+      selectedQuestionIndex: 0,
+      onQuestionValueChange,
+    })
+
+    const settings = screen.getByRole('complementary', {
+      name: 'Question settings',
+    })
+    const editor = screen.getByRole('main', { name: 'Question editor' })
+    const points = within(settings).getByTestId('test-points-select-select')
+    expect(points).toHaveValue('2000')
+    expect(
+      within(editor).queryByTestId('test-points-select-select'),
+    ).not.toBeInTheDocument()
+    fireEvent.change(points, { target: { value: '0' } })
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith('points', 0)
+  })
+
   it('shows question navigation in the page footer and traverses questions', () => {
     const onSelectedQuestionIndex = vi.fn()
     const questions = [

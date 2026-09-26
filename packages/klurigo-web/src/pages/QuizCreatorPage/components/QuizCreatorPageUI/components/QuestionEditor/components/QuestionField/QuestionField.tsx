@@ -290,7 +290,7 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
       return (
         <QuestionFieldWrapper
           label="Points"
-          layout="half"
+          layout="full"
           info={
             <>
               The maximum number of points awarded for a correct answer. The

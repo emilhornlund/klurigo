@@ -68,3 +68,73 @@ describe('QuestionSettings duration', () => {
     expect(within(settings).getByText('Invalid duration')).toBeInTheDocument()
   })
 })
+
+describe('QuestionSettings points', () => {
+  it.each([
+    QuestionType.MultiChoice,
+    QuestionType.Range,
+    QuestionType.TrueFalse,
+    QuestionType.TypeAnswer,
+    QuestionType.Pin,
+    QuestionType.Puzzle,
+  ])('edits existing points for Classic %s questions', (type) => {
+    const onQuestionValueChange = vi.fn()
+    render(
+      <QuestionSettings
+        mode={GameMode.Classic}
+        question={{ type, points: 0 }}
+        questionValidation={validation}
+        onQuestionValueChange={onQuestionValueChange}
+        onReplaceQuestion={vi.fn()}
+      />,
+    )
+
+    const select = screen.getByTestId('test-points-select-select')
+    expect(select).toHaveValue('0')
+    fireEvent.change(select, { target: { value: '2000' } })
+    expect(onQuestionValueChange).toHaveBeenCalledExactlyOnceWith(
+      'points',
+      2000,
+    )
+  })
+
+  it('preserves the default points value and validation message', () => {
+    render(
+      <QuestionSettings
+        mode={GameMode.Classic}
+        question={{ type: QuestionType.MultiChoice }}
+        questionValidation={
+          {
+            ...validation,
+            valid: false,
+            errors: [{ path: 'points', message: 'Invalid points' }],
+          } as QuizQuestionValidationResult
+        }
+        onQuestionValueChange={vi.fn()}
+        onReplaceQuestion={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByTestId('test-points-select-select')).toHaveValue('1000')
+    expect(screen.getByText('Invalid points')).toBeInTheDocument()
+  })
+
+  it('does not offer points in Zero-to-One-Hundred mode', () => {
+    render(
+      <QuestionSettings
+        mode={GameMode.ZeroToOneHundred}
+        question={{ type: QuestionType.Range, duration: 30 }}
+        questionValidation={validation}
+        onQuestionValueChange={vi.fn()}
+        onReplaceQuestion={vi.fn()}
+      />,
+    )
+
+    expect(
+      screen.queryByTestId('test-points-select-select'),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByTestId('test-duration-select-select'),
+    ).toBeInTheDocument()
+  })
+})

@@ -244,7 +244,7 @@ Suggested commit:
 
 ---
 
-## [ ] 9. Move points into `QuestionSettings`
+## [x] 9. Move points into `QuestionSettings`
 
 Move `QuestionFieldType.CommonPoints` into the settings panel for question types that currently support points.
 

@@ -843,7 +843,7 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
 exports[`QuestionField > renders a points question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="questionFieldContainer layoutFull"
   >
     <div
       class="label"

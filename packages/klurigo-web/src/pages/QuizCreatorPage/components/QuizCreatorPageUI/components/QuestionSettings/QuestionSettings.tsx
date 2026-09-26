@@ -42,6 +42,14 @@ const QuestionSettings: FC<QuestionSettingsProps> = ({
       validation={questionValidation}
       onChange={(newValue) => onQuestionValueChange('duration', newValue)}
     />
+    {mode === GameMode.Classic && (
+      <QuestionField
+        type={QuestionFieldType.CommonPoints}
+        value={'points' in question ? question.points : undefined}
+        validation={questionValidation}
+        onChange={(newValue) => onQuestionValueChange('points', newValue)}
+      />
+    )}
   </aside>
 )
 
