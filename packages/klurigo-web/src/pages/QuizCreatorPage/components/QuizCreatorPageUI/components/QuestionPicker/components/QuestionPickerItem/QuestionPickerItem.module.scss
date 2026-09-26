@@ -6,8 +6,8 @@
 @use '../../../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../../../styles/spacing.semantic' as spacing;
 
-$small-question-picker-item-width: helpers.pxToRem(120px);
-$normal-question-picker-item-width: helpers.pxToRem(160px);
+$small-question-picker-item-height: helpers.pxToRem(84px);
+$normal-question-picker-item-height: helpers.pxToRem(112px);
 
 $small-question-picker-item-border-width: helpers.pxToRem(2px);
 $normal-question-picker-item-border-width: helpers.pxToRem(3px);
@@ -21,26 +21,20 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
 
   @include helpers.mobile {
-    column-gap: spacing.$space-compact-mobile;
-    min-width: $small-question-picker-item-width;
-    max-width: $small-question-picker-item-width;
-    height: $small-question-picker-item-width * 0.7;
+    height: $small-question-picker-item-height;
   }
 
   @include helpers.tablet {
-    column-gap: spacing.$space-compact-tablet;
-    min-width: $normal-question-picker-item-width;
-    max-width: $normal-question-picker-item-width;
-    height: $normal-question-picker-item-width * 0.7;
+    height: $normal-question-picker-item-height;
   }
 
   @include helpers.desktop {
-    column-gap: spacing.$space-compact-desktop;
-    min-width: $normal-question-picker-item-width;
-    max-width: $normal-question-picker-item-width;
-    height: $normal-question-picker-item-width * 0.7;
+    height: $normal-question-picker-item-height;
   }
 
   .questionPickerItemButton {
@@ -63,7 +57,7 @@ $normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
       row-gap: spacing.$space-inline-mobile;
       padding: spacing.$space-compact-mobile;
       border-width: $small-question-picker-item-border-width;
-      height: $small-question-picker-item-width * 0.7;
+      height: $small-question-picker-item-height;
     }
 
     @include helpers.tablet {

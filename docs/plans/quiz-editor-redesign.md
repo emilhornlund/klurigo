@@ -310,7 +310,7 @@ The redesign should evolve the existing component.
 
 ---
 
-## [ ] 12. Convert `QuestionPicker` from horizontal navigation to a vertical sidebar
+## [x] 12. Convert `QuestionPicker` from horizontal navigation to a vertical sidebar
 
 Change the existing question picker presentation to fit the left workspace column.
 

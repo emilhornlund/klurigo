@@ -8,7 +8,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import type { ComponentProps } from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ValidationResult } from '../../../../validation'
 
@@ -60,6 +60,13 @@ const renderQuizCreatorPageUI = (
   )
 
 describe('QuizCreatorPageUI', () => {
+  beforeEach(() => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+      configurable: true,
+      value: vi.fn(),
+    })
+  })
+
   it('renders QuizCreatorPageUI without mode', () => {
     const { container } = render(
       <MemoryRouter>
@@ -514,10 +521,6 @@ describe('QuizCreatorPageUI', () => {
   })
 
   it('deletes only the selected question from settings after confirmation', () => {
-    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
-      configurable: true,
-      value: vi.fn(),
-    })
     const questions = [
       { type: QuestionType.MultiChoice, question: 'First question' },
       { type: QuestionType.TrueFalse, question: 'Second question' },
@@ -589,10 +592,6 @@ describe('QuizCreatorPageUI', () => {
   })
 
   it('hides question navigation while the advanced editor is active', () => {
-    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
-      configurable: true,
-      value: vi.fn(),
-    })
     const question = {
       type: QuestionType.MultiChoice,
       question: 'First question',

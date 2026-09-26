@@ -20,14 +20,14 @@ vi.mock('./components', () => ({
   QuestionPickerItem: (props: QuestionPickerItemProps) => {
     questionPickerItemMock(props)
     return (
-      <>
+      <div data-testid={`question-picker-item-${props.index}`}>
         <button type="button" onClick={props.onClick}>
           select-{props.index}
         </button>
         <button type="button" onClick={props.onDuplicate}>
           duplicate-{props.index}
         </button>
-      </>
+      </div>
     )
   },
 }))
@@ -91,5 +91,34 @@ describe('QuestionPicker', () => {
 
     expect(onAddQuestion).toHaveBeenCalledOnce()
     expect(onDropQuestion).toHaveBeenCalledWith(0)
+  })
+
+  it('scrolls vertically to the selected item, including questions in the middle', () => {
+    const questions = [
+      { type: QuestionType.MultiChoice, valid: true },
+      { type: QuestionType.Range, valid: true },
+      { type: QuestionType.TrueFalse, valid: false },
+    ]
+    const props = {
+      questions,
+      onAddQuestion: vi.fn(),
+      onSelectQuestion: vi.fn(),
+      onDropQuestion: vi.fn(),
+      onDuplicateQuestion: vi.fn(),
+    }
+    const { container, rerender } = render(
+      <QuestionPicker {...props} selectedQuestionIndex={0} />,
+    )
+    const list = container.querySelector('.questionPickerItemContainer')!
+    const scrollTo = vi.mocked(list.scrollTo)
+    Object.defineProperty(list.children[1], 'offsetTop', { value: 140 })
+    scrollTo.mockClear()
+
+    rerender(<QuestionPicker {...props} selectedQuestionIndex={1} />)
+
+    expect(scrollTo).toHaveBeenCalledExactlyOnceWith({
+      top: 140,
+      behavior: 'smooth',
+    })
   })
 })

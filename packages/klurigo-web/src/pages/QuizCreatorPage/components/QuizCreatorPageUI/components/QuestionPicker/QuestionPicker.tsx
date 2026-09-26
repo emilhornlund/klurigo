@@ -44,13 +44,14 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
 
   useEffect(() => {
     const container = questionPickerItemContainerRef.current
-    if (container && selectedItemIndex === questions.length - 1) {
+    const selectedItem = container?.children.item(selectedItemIndex)
+    if (container && selectedItem instanceof HTMLElement) {
       container.scrollTo({
-        left: container.scrollWidth,
+        top: selectedItem.offsetTop,
         behavior: 'smooth',
       })
     }
-  }, [questions, selectedItemIndex])
+  }, [questions.length, selectedItemIndex])
 
   const handleAddItemButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
