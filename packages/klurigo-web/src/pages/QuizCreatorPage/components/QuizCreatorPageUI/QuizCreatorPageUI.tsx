@@ -1,5 +1,7 @@
 import {
   faArrowRightFromBracket,
+  faChevronLeft,
+  faChevronRight,
   faCode,
   faFloppyDisk,
   faGear,
@@ -148,6 +150,34 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             onClick={onExit}
           />
         </>
+      }
+      footer={
+        gameMode && selectedQuestion && !showAdvancedQuestionEditor ? (
+          <nav
+            className={styles.questionNavigation}
+            aria-label="Question navigation">
+            <Button
+              id="previous-question-button"
+              type="button"
+              size="small"
+              value="Previous question"
+              icon={faChevronLeft}
+              disabled={selectedQuestionIndex <= 0}
+              onClick={() => onSelectedQuestionIndex(selectedQuestionIndex - 1)}
+            />
+            <span>{`Question ${selectedQuestionIndex + 1} of ${questions.length}`}</span>
+            <Button
+              id="next-question-button"
+              type="button"
+              size="small"
+              value="Next question"
+              icon={faChevronRight}
+              iconPosition="trailing"
+              disabled={selectedQuestionIndex >= questions.length - 1}
+              onClick={() => onSelectedQuestionIndex(selectedQuestionIndex + 1)}
+            />
+          </nav>
+        ) : undefined
       }
       disableContentFadeAnimation>
       <Stack className={styles.quizCreatorPage} width="full">

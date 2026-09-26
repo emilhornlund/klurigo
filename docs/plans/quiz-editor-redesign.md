@@ -73,7 +73,7 @@ Suggested commit:
 
 ---
 
-## [ ] 3. Create the persistent bottom question navigation
+## [x] 3. Create the persistent bottom question navigation
 
 Move question traversal into a dedicated footer below the main editor workspace.
 

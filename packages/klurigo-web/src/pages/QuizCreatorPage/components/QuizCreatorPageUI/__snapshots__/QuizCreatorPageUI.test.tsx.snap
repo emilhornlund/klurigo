@@ -1341,6 +1341,73 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
         </div>
       </div>
     </div>
+    <div
+      class="footer fullBleed"
+    >
+      <nav
+        aria-label="Question navigation"
+        class="questionNavigation"
+      >
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
+            data-testid="test-previous-question-button-button"
+            disabled=""
+            id="previous-question-button"
+            name="previous-question-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-chevron-left icon"
+              data-icon="chevron-left"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 320 512"
+            >
+              <path
+                d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Previous question
+            </span>
+          </button>
+        </div>
+        <span>
+          Question 1 of 4
+        </span>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
+            data-testid="test-next-question-button-button"
+            id="next-question-button"
+            name="next-question-button"
+            type="button"
+          >
+            <span>
+              Next question
+            </span>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-chevron-right icon"
+              data-icon="chevron-right"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 320 512"
+            >
+              <path
+                d="M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
   </div>
 </div>
 `;

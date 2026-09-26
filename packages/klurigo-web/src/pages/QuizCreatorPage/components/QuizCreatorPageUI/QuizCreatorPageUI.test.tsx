@@ -361,6 +361,80 @@ describe('QuizCreatorPageUI', () => {
     expect(container.querySelector('#save-button')).toBeInTheDocument()
   })
 
+  it('shows question navigation in the page footer and traverses questions', () => {
+    const onSelectedQuestionIndex = vi.fn()
+    const questions = [
+      { type: QuestionType.MultiChoice, question: 'First question' },
+      { type: QuestionType.MultiChoice, question: 'Second question' },
+      { type: QuestionType.MultiChoice, question: 'Third question' },
+    ]
+    const { container } = renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      questions,
+      questionValidations: questions.map(() => makeValidation()),
+      selectedQuestion: questions[1],
+      selectedQuestionIndex: 1,
+      onSelectedQuestionIndex,
+    })
+
+    const navigation = screen.getByRole('navigation', {
+      name: 'Question navigation',
+    })
+    expect(navigation).toHaveTextContent('Question 2 of 3')
+    expect(container.querySelector('.footer')).toContainElement(navigation)
+    expect(screen.getByTestId('editor-workspace')).not.toContainElement(
+      navigation,
+    )
+
+    fireEvent.click(
+      within(navigation).getByRole('button', { name: 'Previous question' }),
+    )
+    fireEvent.click(
+      within(navigation).getByRole('button', { name: 'Next question' }),
+    )
+    expect(onSelectedQuestionIndex).toHaveBeenNthCalledWith(1, 0)
+    expect(onSelectedQuestionIndex).toHaveBeenNthCalledWith(2, 2)
+  })
+
+  it('disables question navigation at the first and last questions', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+      configurable: true,
+      value: vi.fn(),
+    })
+    const questions = [
+      { type: QuestionType.MultiChoice, question: 'First question' },
+      { type: QuestionType.MultiChoice, question: 'Second question' },
+    ]
+    const props = {
+      gameMode: GameMode.Classic,
+      questions,
+      questionValidations: questions.map(() => makeValidation()),
+      selectedQuestion: questions[0],
+      selectedQuestionIndex: 0,
+    }
+    const { unmount } = renderQuizCreatorPageUI(props)
+
+    expect(
+      screen.getByRole('button', { name: 'Previous question' }),
+    ).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Next question' })).toBeEnabled()
+
+    unmount()
+    renderQuizCreatorPageUI({
+      ...props,
+      selectedQuestion: questions[1],
+      selectedQuestionIndex: 1,
+    })
+
+    expect(
+      screen.getByRole('navigation', { name: 'Question navigation' }),
+    ).toHaveTextContent('Question 2 of 2')
+    expect(
+      screen.getByRole('button', { name: 'Previous question' }),
+    ).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Next question' })).toBeDisabled()
+  })
+
   it('disables the save button when canSaveQuiz is false', () => {
     const { container } = renderQuizCreatorPageUI({ canSaveQuiz: false })
 
