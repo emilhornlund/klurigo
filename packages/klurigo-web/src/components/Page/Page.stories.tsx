@@ -10,7 +10,7 @@ import Page from './Page'
 const meta = {
   title: 'Components/Page',
   component: Page,
-  decorators: [withRouter],
+  decorators: [withRouter, withMockAuth],
   parameters: {
     layout: 'fullscreen',
   },
@@ -19,63 +19,112 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const Header = () => (
+  <>
+    <a href="#">Link</a>
+    <Button
+      id="header-action"
+      type="button"
+      size="small"
+      variant="primary"
+      intent="accent">
+      Action
+    </Button>
+  </>
+)
+
+const Footer = ({ inverse = true }: { inverse?: boolean }) => (
+  <div
+    style={{
+      width: '100%',
+      padding: '1rem',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: `2px dashed ${inverse ? 'white' : 'black'}`,
+      boxSizing: 'border-box',
+    }}>
+    <Typography
+      align="center"
+      color={inverse ? 'inverse' : undefined}
+      noOpacity>
+      Footer
+    </Typography>
+  </div>
+)
+
+const Content = ({
+  label,
+  inverse = true,
+}: {
+  label: string
+  inverse?: boolean
+}) => (
+  <div
+    style={{
+      width: '100%',
+      minHeight: '160px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: `2px dashed ${inverse ? 'white' : 'black'}`,
+      boxSizing: 'border-box',
+    }}>
+    <Typography
+      align="center"
+      color={inverse ? 'inverse' : undefined}
+      noOpacity>
+      {label}
+    </Typography>
+  </div>
+)
+
 export const Contained = {
   args: {
     layout: 'contained',
-    header: (
-      <>
-        <a>About</a>
-        <a>GitHub</a>
-      </>
-    ),
-    footer: (
-      <>
-        <a>Some link</a>
-      </>
-    ),
+    header: <Header />,
+    footer: <Footer />,
     profile: true,
-    children: <div>Content</div>,
+    children: <Content label="Contained" />,
   },
 } satisfies Story
 
 export const Compact = {
   args: {
     layout: 'compact',
-    children: <Typography align="center">Compact content</Typography>,
+    header: <Header />,
+    footer: <Footer />,
+    profile: true,
+    children: <Content label="Compact" />,
   },
 } satisfies Story
 
 export const Fill = {
   args: {
     layout: 'fill',
-    children: <Typography align="center">Fill content</Typography>,
+    header: <Header />,
+    footer: <Footer />,
+    profile: true,
+    children: <Content label="Fill" />,
   },
 } satisfies Story
 
 export const CompactFill = {
   args: {
     layout: 'compactFill',
-    children: <Typography align="center">Compact fill content</Typography>,
+    header: <Header />,
+    footer: <Footer />,
+    profile: true,
+    children: <Content label="Compact Fill" />,
   },
 } satisfies Story
 
 export const FullBleed = {
-  name: 'Full Bleed',
-  decorators: [withMockAuth],
   args: {
     layout: 'fullBleed',
-    header: (
-      <Button
-        id="secondary-button"
-        type="button"
-        size="small"
-        variant="primary"
-        intent="accent">
-        Action
-      </Button>
-    ),
-    footer: <Typography align="center">Footer</Typography>,
+    header: <Header />,
+    footer: <Footer inverse={false} />,
     profile: true,
-    children: <Typography align="center">Content</Typography>,
+    children: <Content label="Full Bleed" inverse={false} />,
   },
 } satisfies Story
