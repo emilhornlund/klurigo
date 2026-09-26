@@ -490,7 +490,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
         class="actions"
       >
         <div
-          class="buttonContainer variantOutline surfaceLight intentDefault sizeSmall grow"
+          class="buttonContainer variantOutline surfaceLight intentDefault grow"
         >
           <button
             data-testid="test-modal-close-action-button-button"
@@ -504,7 +504,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           </button>
         </div>
         <div
-          class="buttonContainer variantPrimary surfaceLight intentDanger sizeSmall grow"
+          class="buttonContainer variantPrimary surfaceLight intentDanger grow"
         >
           <button
             data-testid="test-modal-primary-action-button-button"
