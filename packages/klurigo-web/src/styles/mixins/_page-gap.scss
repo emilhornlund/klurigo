@@ -1,0 +1,16 @@
+@use '../helpers' as helpers;
+@use '../spacing.semantic' as spacing;
+
+@mixin page-gap {
+  @include helpers.mobile {
+    row-gap: spacing.$space-page-mobile;
+  }
+
+  @include helpers.tablet {
+    row-gap: spacing.$space-page-tablet;
+  }
+
+  @include helpers.desktop {
+    row-gap: spacing.$space-page-desktop;
+  }
+}

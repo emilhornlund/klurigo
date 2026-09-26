@@ -27,7 +27,7 @@ const PlayerQuestionPreviewState: FC<PlayerQuestionPreviewStateProps> = ({
   },
 }) => (
   <GamePage
-    height="full"
+    layout="fill"
     align="space-between"
     footer={
       <PlayerGameFooter

@@ -89,7 +89,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
 
   return (
     <Page
-      height="full"
+      layout="fill"
       header={
         <>
           {deviceType !== DeviceType.Mobile && (

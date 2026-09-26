@@ -63,7 +63,7 @@ const HostResultState: FC<HostResultStateProps> = ({
 
   return (
     <GamePage
-      height="full"
+      layout="fill"
       header={
         <IconButtonArrowRight
           id={'next-button'}

@@ -26,7 +26,9 @@ describe('GamePage', () => {
 
   it('renders Page with header and children and sets hideLogin', () => {
     const { container } = render(
-      <GamePage header={<div data-testid="custom-header">H</div>}>
+      <GamePage
+        layout="contained"
+        header={<div data-testid="custom-header">H</div>}>
         <div data-testid="slot">Body</div>
       </GamePage>,
     )

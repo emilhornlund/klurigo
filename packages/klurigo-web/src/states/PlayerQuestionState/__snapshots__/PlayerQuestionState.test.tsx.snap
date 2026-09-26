@@ -27,10 +27,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -181,10 +181,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -353,10 +353,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -489,10 +489,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -662,10 +662,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -798,10 +798,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

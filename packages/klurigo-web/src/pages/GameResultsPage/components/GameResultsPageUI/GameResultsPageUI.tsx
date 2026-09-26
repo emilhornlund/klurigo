@@ -66,7 +66,7 @@ const GameResultsPageUI: FC<GameResultsPageUIProps> = ({
   )
 
   return (
-    <Page align="start" height="normal" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <div className={styles.gameResultsPage}>
         <Typography variant="title" align="center" color="inverse">
           {results.name}

@@ -99,7 +99,7 @@ const AuthRegisterPageUI: FC<AuthRegisterPageUIProps> = ({
   }
 
   return (
-    <Page align="start">
+    <Page layout="contained" align="start">
       <Typography variant="title" width="medium" align="center" color="inverse">
         {title}
       </Typography>

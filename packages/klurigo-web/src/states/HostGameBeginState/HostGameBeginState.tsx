@@ -10,7 +10,7 @@ export interface HostGameBeginStateProps {
 }
 
 const HostGameBeginState: FC<HostGameBeginStateProps> = () => (
-  <GamePage>
+  <GamePage layout="contained">
     <PageProminentIcon src={MegaphoneIcon} alt="Megaphone" />
     <Typography variant="title" width="medium" align="center" color="inverse">
       Loading Game

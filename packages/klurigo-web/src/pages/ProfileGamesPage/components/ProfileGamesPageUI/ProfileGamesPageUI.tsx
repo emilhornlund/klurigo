@@ -52,7 +52,7 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
 
   if (!isLoading && !isError && games.length === 0) {
     return (
-      <Page align="start" width="medium" discover profile>
+      <Page layout="compact" align="start" discover profile>
         <Typography variant="title" align="center" color="inverse">
           No Games Yet
         </Typography>
@@ -121,7 +121,7 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
   }
 
   return (
-    <Page align="start" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <Typography variant="title" align="center" color="inverse">
         Game History
       </Typography>

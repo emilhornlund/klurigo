@@ -95,14 +95,14 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
 
   if (!quiz || isLoadingQuiz) {
     return (
-      <Page align="start" height="full" profile>
+      <Page layout="fill" align="start" profile>
         <LoadingSpinner />
       </Page>
     )
   }
 
   return (
-    <Page align="start" height="full" noPadding discover profile>
+    <Page layout="fill" align="start" noPadding discover profile>
       <div className={styles.layout}>
         <Typography variant="title" width="full" align="center" color="inverse">
           {quiz.title}

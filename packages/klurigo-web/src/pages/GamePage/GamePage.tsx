@@ -321,7 +321,7 @@ const GamePage: FC = () => {
 
   if (showConnectionPage) {
     return (
-      <Page hideLogin>
+      <Page layout="contained" hideLogin>
         {!initialConnectionTimedOut &&
         (connectionStatus === ConnectionStatus.INITIALIZED ||
           connectionStatus === ConnectionStatus.CONNECTED) ? (

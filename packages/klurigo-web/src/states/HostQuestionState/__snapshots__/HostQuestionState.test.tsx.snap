@@ -55,10 +55,10 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -297,10 +297,10 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -519,10 +519,10 @@ exports[`HostQuestionState > renders with audio media 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -776,10 +776,10 @@ exports[`HostQuestionState > renders with video media 1`] = `
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1033,10 +1033,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1317,10 +1317,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1621,10 +1621,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1885,10 +1885,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -2128,10 +2128,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -2370,10 +2370,10 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fullHeight spaceBetweenAlign"
+      class="content fill spaceBetweenAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

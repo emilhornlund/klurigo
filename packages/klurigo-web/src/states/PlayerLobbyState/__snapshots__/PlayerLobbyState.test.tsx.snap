@@ -55,10 +55,10 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -161,10 +161,10 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -267,10 +267,10 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -375,10 +375,10 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -585,10 +585,10 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
       </div>
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

@@ -28,7 +28,7 @@ const ProfileSettingsPageUI: FC<ProfileSettingsPageUIProps> = ({
   onChangePassword,
   onClickResendVerificationEmail,
 }) => (
-  <Page align="start" discover profile>
+  <Page layout="contained" align="start" discover profile>
     <UserDetailsForm
       authProvider={authProvider}
       values={values}

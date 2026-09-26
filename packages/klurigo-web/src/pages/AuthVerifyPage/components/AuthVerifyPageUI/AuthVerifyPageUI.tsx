@@ -16,7 +16,7 @@ const AuthVerifyPageUI: FC<AuthVerifyPageUIProps> = ({
   loggedIn,
   error,
 }) => (
-  <Page>
+  <Page layout="contained">
     {verified && !error && (
       <>
         <Badge size="large" backgroundColor="green">

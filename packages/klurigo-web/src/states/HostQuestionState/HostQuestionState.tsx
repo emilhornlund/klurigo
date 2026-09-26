@@ -53,7 +53,7 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
 
   return (
     <GamePage
-      height="full"
+      layout="fill"
       align="space-between"
       header={
         <IconButtonArrowRight

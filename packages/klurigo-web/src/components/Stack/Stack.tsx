@@ -12,7 +12,7 @@ type StackDirection = 'vertical' | 'horizontal'
 type StackAlignment = 'start' | 'center' | 'end' | 'stretch'
 type StackJustification = 'start' | 'center' | 'end' | 'space-between'
 type StackWidth = 'auto' | 'content' | 'full'
-type StackSpacing = 'stack' | 'compact'
+type StackSpacing = 'stack' | 'compact' | 'page'
 
 type StackProps<T extends ElementType = 'div'> = {
   as?: T

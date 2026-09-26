@@ -43,7 +43,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
 
   return (
     <GamePage
-      height="full"
+      layout="fill"
       align="space-between"
       footer={
         <PlayerGameFooter

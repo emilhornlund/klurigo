@@ -6,6 +6,7 @@ import {
   Button,
   Page,
   QuizDiscoveryCard,
+  Stack,
   Typography,
 } from '../../../../components'
 import type { FilterOptions } from '../../../../components/QuizTableFilter'
@@ -74,8 +75,8 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
   const filterActive = isFilterActive(filter)
 
   return (
-    <Page align="start" discover profile>
-      <div className={styles.container}>
+    <Page layout="contained" align="start" discover profile>
+      <Stack width="full" spacing="page">
         <div className={styles.heading}>
           <Typography
             variant="title"
@@ -178,7 +179,7 @@ const DiscoverRailsPageUI: FC<DiscoverRailsPageUIProps> = ({
             )}
           </div>
         )}
-      </div>
+      </Stack>
     </Page>
   )
 }

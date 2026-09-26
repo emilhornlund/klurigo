@@ -159,8 +159,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
   return (
     <>
       <GamePage
-        width="medium"
-        height="full"
+        layout="compactFill"
         header={
           <>
             <Button

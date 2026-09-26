@@ -5,6 +5,8 @@
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
+@use '../../styles/mixins/page-gap' as pageGap;
+@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -57,13 +59,32 @@
       padding: spacing.$space-compact-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
+
     @include helpers.tablet {
       padding: spacing.$space-compact-tablet;
       column-gap: spacing.$space-compact-tablet;
     }
+
     @include helpers.desktop {
       padding: spacing.$space-compact-desktop;
       column-gap: spacing.$space-compact-desktop;
+    }
+
+    &.fullBleed {
+      z-index: 1;
+      box-shadow: shadows.$shadow-page-header;
+
+      @include helpers.mobile {
+        padding-inline: spacing.$space-page-mobile;
+      }
+
+      @include helpers.tablet {
+        padding-inline: spacing.$space-page-tablet;
+      }
+
+      @include helpers.desktop {
+        padding-inline: spacing.$space-page-desktop;
+      }
     }
 
     .logo {
@@ -211,12 +232,13 @@
     }
 
     @include helpers.tablet {
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-tablet;
       }
     }
+
     @include helpers.desktop {
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-desktop;
       }
     }
@@ -233,10 +255,16 @@
     overflow-y: auto;
     width: 100%;
 
+    &.fullBleed {
+      background: pageColors.$color-page-full-bleed-background;
+    }
+
     .contentWrapper {
       display: block;
 
       .contentInner {
+        @include pageGap.page-gap;
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -283,7 +311,9 @@
       }
     }
 
-    &.fullHeight {
+    &.fill,
+    &.compactFill,
+    &.fullBleed {
       > .contentWrapper {
         height: 100%;
 
@@ -294,36 +324,29 @@
       }
     }
 
+    &.fullBleed {
+      > .contentWrapper {
+        width: 100%;
+      }
+    }
+
     @include helpers.mobile {
       padding: spacing.$space-page-mobile;
 
       > .contentWrapper {
         width: 100%;
-
-        > .contentInner {
-          row-gap: spacing.$space-page-mobile;
-        }
       }
     }
 
     @include helpers.tablet {
       padding: spacing.$space-page-tablet;
 
-      > .contentWrapper {
-        &.smallWidth {
-          width: breakpoints.$breakpoint-mobile;
-        }
-
-        &.mediumWidth {
+      &.contained,
+      &.compact,
+      &.fill,
+      &.compactFill {
+        > .contentWrapper {
           width: breakpoints.$breakpoint-tablet;
-        }
-
-        &.fullWidth {
-          width: breakpoints.$breakpoint-tablet;
-        }
-
-        > .contentInner {
-          row-gap: spacing.$space-page-tablet;
         }
       }
     }
@@ -331,21 +354,17 @@
     @include helpers.desktop {
       padding: spacing.$space-page-desktop;
 
-      > .contentWrapper {
-        &.smallWidth {
-          width: breakpoints.$breakpoint-mobile;
-        }
-
-        &.mediumWidth {
-          width: breakpoints.$breakpoint-tablet;
-        }
-
-        &.fullWidth {
+      &.contained,
+      &.fill {
+        > .contentWrapper {
           width: breakpoints.$breakpoint-desktop;
         }
+      }
 
-        > .contentInner {
-          row-gap: spacing.$space-page-desktop;
+      &.compact,
+      &.compactFill {
+        > .contentWrapper {
+          width: breakpoints.$breakpoint-tablet;
         }
       }
     }
@@ -360,28 +379,44 @@
     color: colors.$color-text-inverse;
 
     @include helpers.mobile() {
-      padding: 0 spacing.$space-compact-mobile spacing.$space-compact-mobile
+      padding: 0 spacing.$space-compact-mobile spacing.$space-page-mobile
         spacing.$space-compact-mobile;
       column-gap: spacing.$space-compact-mobile;
     }
 
     @include helpers.tablet {
-      padding: 0 spacing.$space-compact-tablet spacing.$space-compact-tablet
+      padding: 0 spacing.$space-compact-tablet spacing.$space-page-tablet
         spacing.$space-compact-tablet;
       column-gap: spacing.$space-compact-tablet;
 
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-tablet;
       }
     }
 
     @include helpers.desktop {
-      padding: 0 spacing.$space-compact-desktop spacing.$space-compact-desktop
+      padding: 0 spacing.$space-compact-desktop spacing.$space-page-desktop
         spacing.$space-compact-desktop;
       column-gap: spacing.$space-compact-desktop;
 
-      &:not(&.fullWidth) {
+      &:not(&.fullBleed) {
         width: breakpoints.$breakpoint-desktop;
+      }
+    }
+
+    &.fullBleed {
+      background: pageColors.$color-page-full-bleed-background;
+
+      @include helpers.mobile {
+        padding-inline: spacing.$space-page-mobile;
+      }
+
+      @include helpers.tablet {
+        padding-inline: spacing.$space-page-tablet;
+      }
+
+      @include helpers.desktop {
+        padding-inline: spacing.$space-page-desktop;
       }
     }
 

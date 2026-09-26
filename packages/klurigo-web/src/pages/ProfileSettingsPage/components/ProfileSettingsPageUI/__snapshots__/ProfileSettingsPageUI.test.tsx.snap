@@ -34,10 +34,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -236,10 +236,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -537,10 +537,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -738,10 +738,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1038,10 +1038,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -1259,10 +1259,10 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

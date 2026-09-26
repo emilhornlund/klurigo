@@ -34,10 +34,10 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

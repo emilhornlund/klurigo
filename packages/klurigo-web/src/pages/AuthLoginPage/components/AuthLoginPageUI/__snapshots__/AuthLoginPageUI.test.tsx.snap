@@ -34,10 +34,10 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -210,10 +210,10 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -387,10 +387,10 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -564,10 +564,10 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"
@@ -741,10 +741,10 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
       </div>
     </div>
     <div
-      class="content startAlign"
+      class="content contained startAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

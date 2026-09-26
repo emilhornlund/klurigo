@@ -27,10 +27,10 @@ exports[`HostGameBeginState > should render HostGameBeginState 1`] = `
       />
     </div>
     <div
-      class="content centerAlign"
+      class="content contained centerAlign"
     >
       <div
-        class="contentWrapper fullWidth"
+        class="contentWrapper"
       >
         <div
           class="contentInner"

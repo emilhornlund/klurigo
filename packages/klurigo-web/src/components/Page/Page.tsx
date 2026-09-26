@@ -27,23 +27,99 @@ import { Menu, MenuItem, MenuSeparator } from '../Menu'
 
 import styles from './Page.module.scss'
 
+/**
+ * Defines the page-level geometry used by {@link Page}.
+ *
+ * Layouts:
+ * - `contained`: Standard bounded page width with normal content height.
+ * - `compact`: Narrower bounded page width with normal content height.
+ * - `fill`: Standard bounded page width that fills the available content height.
+ * - `compactFill`: Narrower bounded page width that fills the available content height.
+ * - `fullBleed`: Full-width and full-height content with edge-to-edge page treatment.
+ */
+type PageLayout = 'contained' | 'compact' | 'fill' | 'compactFill' | 'fullBleed'
+
 export interface PageProps {
-  width?: 'small' | 'medium' | 'full'
-  height?: 'normal' | 'full'
+  /**
+   * Controls the page-level content geometry.
+   *
+   * - `contained`: Standard bounded width and normal height.
+   * - `compact`: Compact bounded width and normal height.
+   * - `fill`: Standard bounded width and full available height.
+   * - `compactFill`: Compact bounded width and full available height.
+   * - `fullBleed`: Full width, full available height, and edge-to-edge treatment.
+   */
+  layout: PageLayout
+
+  /**
+   * Controls how content is distributed vertically within the page.
+   *
+   * @default 'center'
+   */
   align?: 'start' | 'center' | 'space-between'
+
+  /**
+   * Removes the bottom page padding.
+   *
+   * @default false
+   */
   noPadding?: boolean
+
+  /**
+   * Displays navigation to the quiz discovery experience when available.
+   *
+   * @default false
+   */
   discover?: boolean
+
+  /**
+   * Displays authenticated profile navigation when available.
+   *
+   * @default false
+   */
   profile?: boolean
+
+  /**
+   * Hides the login action for unauthenticated users.
+   *
+   * @default false
+   */
   hideLogin?: boolean
+
+  /**
+   * Disables the content fade-in animation.
+   *
+   * @default false
+   */
   disableContentFadeAnimation?: boolean
+
+  /**
+   * Optional content rendered in the page header.
+   */
   header?: ReactNode
+
+  /**
+   * Optional content rendered in the page footer.
+   */
   footer?: ReactNode
+
+  /**
+   * Main page content.
+   */
   children: ReactNode | ReactNode[]
 }
 
+/**
+ * Shared application page shell.
+ *
+ * Provides the Klurigo header, responsive page geometry, optional navigation,
+ * profile controls, content alignment, and footer.
+ *
+ * Use `layout` to select the page geometry rather than applying page-level
+ * width or height constraints in individual consumers.
+ */
 const Page: FC<PageProps> = ({
-  width = 'full',
-  height = 'normal',
+  layout,
   align = 'center',
   noPadding = false,
   discover = false,
@@ -103,7 +179,11 @@ const Page: FC<PageProps> = ({
 
   return (
     <div className={styles.main}>
-      <div className={classNames(styles.header)}>
+      <div
+        className={classNames(
+          styles.header,
+          layout === 'fullBleed' ? styles.fullBleed : undefined,
+        )}>
         <button className={styles.logo} onClick={() => navigate('/')}>
           <img className={styles.icon} src={KlurigoIcon} alt="Klurigo" />
           <span className={styles.text}>Klurigo</span>
@@ -164,19 +244,13 @@ const Page: FC<PageProps> = ({
       <div
         className={classNames(
           styles.content,
-          height === 'full' ? styles.fullHeight : undefined,
+          styles[layout],
           align === 'start' ? styles.startAlign : undefined,
           align === 'center' ? styles.centerAlign : undefined,
           align === 'space-between' ? styles.spaceBetweenAlign : undefined,
           noPadding ? styles.noPadding : undefined,
         )}>
-        <div
-          className={classNames(
-            styles.contentWrapper,
-            width === 'small' ? styles.smallWidth : undefined,
-            width === 'medium' ? styles.mediumWidth : undefined,
-            width === 'full' ? styles.fullWidth : undefined,
-          )}>
+        <div className={styles.contentWrapper}>
           <div
             className={classNames(
               styles.contentInner,
@@ -186,7 +260,15 @@ const Page: FC<PageProps> = ({
           </div>
         </div>
       </div>
-      {footer && <div className={classNames(styles.footer)}>{footer}</div>}
+      {footer && (
+        <div
+          className={classNames(
+            styles.footer,
+            layout === 'fullBleed' ? styles.fullBleed : undefined,
+          )}>
+          {footer}
+        </div>
+      )}
     </div>
   )
 }

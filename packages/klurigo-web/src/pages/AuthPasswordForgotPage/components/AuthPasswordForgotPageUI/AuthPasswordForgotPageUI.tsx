@@ -70,7 +70,7 @@ const AuthPasswordForgotPageUI: FC<AuthPasswordForgotPageUIProps> = ({
   }
 
   return (
-    <Page>
+    <Page layout="contained">
       <Typography variant="title" align="center" color="inverse">
         Uh-oh, Lost Your Key?
       </Typography>

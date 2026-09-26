@@ -35,7 +35,7 @@ const GameResultsPage: FC = () => {
 
   if (!data || !currentParticipantId || isLoading || isError) {
     return (
-      <Page>
+      <Page layout="contained">
         <LoadingSpinner />
       </Page>
     )

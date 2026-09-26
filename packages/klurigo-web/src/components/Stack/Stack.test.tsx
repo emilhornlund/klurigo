@@ -42,6 +42,21 @@ describe('Stack', () => {
     expect(screen.getByTestId('stack')).toHaveClass('spacing-compact')
   })
 
+  it('supports full-width content with responsive page spacing', () => {
+    render(
+      <Stack data-testid="stack" width="full" spacing="page">
+        Content
+      </Stack>,
+    )
+
+    expect(screen.getByTestId('stack')).toHaveClass(
+      'vertical',
+      'align-stretch',
+      'width-full',
+      'spacing-page',
+    )
+  })
+
   it('supports horizontal layout', () => {
     render(
       <Stack data-testid="stack" direction="horizontal">

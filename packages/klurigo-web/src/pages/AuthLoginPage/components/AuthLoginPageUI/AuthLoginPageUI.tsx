@@ -83,7 +83,7 @@ const AuthLoginPageUI: FC<AuthLoginPageUIProps> = ({
   }
 
   return (
-    <Page align="start">
+    <Page layout="contained" align="start">
       <Typography variant="title" width="medium" align="center" color="inverse">
         {title}
       </Typography>

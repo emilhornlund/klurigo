@@ -427,7 +427,7 @@ const QuizCreatorPage: FC = () => {
       isQuizQuestionsError)
   ) {
     return (
-      <Page profile>
+      <Page layout="contained" profile>
         <LoadingSpinner />
       </Page>
     )

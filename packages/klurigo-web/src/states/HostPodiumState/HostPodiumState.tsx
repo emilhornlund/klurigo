@@ -33,7 +33,7 @@ const HostPodiumState: FC<HostPodiumStateProps> = ({
 
   return (
     <GamePage
-      width="medium"
+      layout="compact"
       align="center"
       header={
         <IconButtonArrowLeft

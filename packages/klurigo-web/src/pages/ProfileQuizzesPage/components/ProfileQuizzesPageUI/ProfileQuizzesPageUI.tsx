@@ -90,7 +90,7 @@ const ProfileQuizzesPageUI: FC<ProfileQuizzesPageUIProps> = ({
   )
 
   return (
-    <Page align="start" discover profile>
+    <Page layout="contained" align="start" discover profile>
       <Typography variant="title" align="center" color="inverse">
         Your Quiz Shelf
       </Typography>
