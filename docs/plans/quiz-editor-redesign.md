@@ -159,7 +159,7 @@ Suggested commit:
 
 ---
 
-## [ ] 6. Introduce the `QuestionSettings` component boundary
+## [x] 6. Introduce the `QuestionSettings` component boundary
 
 Replace the current placeholder right-hand panel with a dedicated `QuestionSettings` component.
 

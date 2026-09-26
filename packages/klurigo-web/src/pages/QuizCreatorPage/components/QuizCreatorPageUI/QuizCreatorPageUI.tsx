@@ -22,6 +22,7 @@ import {
   QuestionEditor,
   QuestionNavigation,
   QuestionPicker,
+  QuestionSettings,
   QuizEditorHeader,
 } from './components'
 import QuizSettingsModal from './components/QuizSettingsModal'
@@ -144,11 +145,12 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
                 onTypeChange={onReplaceQuestion}
               />
             </main>
-            <aside
-              className={styles.questionSettings}
-              aria-label="Question settings">
-              Question settings
-            </aside>
+            <QuestionSettings
+              question={selectedQuestion}
+              questionValidation={questionValidations[selectedQuestionIndex]}
+              onQuestionValueChange={onQuestionValueChange}
+              onReplaceQuestion={onReplaceQuestion}
+            />
           </div>
         )}
 

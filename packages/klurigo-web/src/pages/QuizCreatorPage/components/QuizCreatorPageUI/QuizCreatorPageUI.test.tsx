@@ -416,15 +416,24 @@ describe('QuizCreatorPageUI', () => {
     expect(
       screen.getByRole('navigation', { name: 'Question navigation' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('complementary', { name: 'Question settings' }),
+    ).toHaveTextContent('Question settings')
     fireEvent.click(
       screen.getByRole('button', { name: 'Show Advanced Editor' }),
     )
     expect(
       screen.queryByRole('navigation', { name: 'Question navigation' }),
     ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('complementary', { name: 'Question settings' }),
+    ).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Show Simple Editor' }))
     expect(
       screen.getByRole('navigation', { name: 'Question navigation' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('complementary', { name: 'Question settings' }),
     ).toBeInTheDocument()
   })
 
