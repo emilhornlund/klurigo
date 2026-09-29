@@ -1,4 +1,4 @@
-import { TokenScope } from '@klurigo/common'
+import { GameStatus, TokenScope } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
@@ -95,6 +95,29 @@ describe('createGameResource', () => {
     await expect(game.joinGame('g1', 'Emil')).rejects.toBe(err)
     expect(notifyError).toHaveBeenCalledWith(
       'Couldn’t join the game. Check the code and try again.',
+    )
+  })
+
+  it('getGame gets game details with game scope; notifies and rethrows on failure', async () => {
+    const { api, apiGet } = makeApi()
+    const { deps, notifyError } = makeDeps()
+
+    const game = createGameResource(api, deps)
+    const details = { id: 'g1', status: GameStatus.Active }
+
+    apiGet.mockResolvedValue(details)
+    await expect(game.getGame('g1')).resolves.toEqual(details)
+
+    expect(apiGet).toHaveBeenCalledWith('/games/g1', {
+      scope: TokenScope.Game,
+    })
+
+    const err = new Error('fail')
+    apiGet.mockRejectedValueOnce(err)
+
+    await expect(game.getGame('g1')).rejects.toBe(err)
+    expect(notifyError).toHaveBeenCalledWith(
+      'We couldn’t verify that game right now. Please try again.',
     )
   })
 

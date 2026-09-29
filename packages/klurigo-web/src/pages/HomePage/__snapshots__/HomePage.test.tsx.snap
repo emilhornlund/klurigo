@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`HomePage > renders the "Resume game" button if an active game exists 1`] = `
+exports[`HomePage > renders the "Resume game" button if the backend confirms an active game 1`] = `
 <div>
   <div
     class="main"

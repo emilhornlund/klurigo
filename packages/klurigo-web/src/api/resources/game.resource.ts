@@ -1,6 +1,7 @@
 import {
   type CreateGameResponseDto,
   type CreateQuizRatingDto,
+  type GameDetailsDto,
   type GameParticipantPlayerDto,
   type GameResultDto,
   type GameSettingsDto,
@@ -82,6 +83,24 @@ export const createGameResource = (
       .catch((error) => {
         deps.notifyError(
           'Couldn’t join the game. Check the code and try again.',
+        )
+        throw error
+      })
+
+  /**
+   * Retrieves the current lifecycle status of a game.
+   *
+   * @param gameId - The unique identifier of the game to retrieve.
+   * @returns A promise resolving to the game's current details.
+   */
+  const getGame = (gameId: string): Promise<GameDetailsDto> =>
+    api
+      .apiGet<GameDetailsDto>(`/games/${gameId}`, {
+        scope: TokenScope.Game,
+      })
+      .catch((error) => {
+        deps.notifyError(
+          'We couldn’t verify that game right now. Please try again.',
         )
         throw error
       })
@@ -320,6 +339,7 @@ export const createGameResource = (
 
   return {
     createGame,
+    getGame,
     joinGame,
     leaveGame,
     getPlayers,

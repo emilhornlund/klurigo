@@ -1,3 +1,4 @@
+import { GameStatus } from '@klurigo/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -72,6 +73,10 @@ describe('HomePage', () => {
 
     quizServiceClientMock.mockReturnValue({
       authenticateGame: vi.fn().mockResolvedValue(undefined),
+      getGame: vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status: GameStatus.Active,
+      }),
     })
   })
 
@@ -140,7 +145,7 @@ describe('HomePage', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('renders the "Resume game" button if an active game exists', () => {
+  it('renders the "Resume game" button if the backend confirms an active game', async () => {
     authContextMock.mockReturnValue({
       isUserAuthenticated: false,
       game: {
@@ -153,6 +158,12 @@ describe('HomePage', () => {
 
     const { container } = renderHome()
 
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
+
     expect(
       screen.getByRole('button', { name: /resume game/i }),
     ).toBeInTheDocument()
@@ -161,6 +172,100 @@ describe('HomePage', () => {
     ).toBeInTheDocument()
 
     expect(container).toMatchSnapshot()
+  })
+
+  it('does not render Resume game before the backend confirms the game is active', async () => {
+    let resolveGame: (game: { id: string; status: GameStatus }) => void = () =>
+      undefined
+    const getGame = vi.fn(
+      () =>
+        new Promise<{ id: string; status: GameStatus }>((resolve) => {
+          resolveGame = resolve
+        }),
+    )
+
+    authContextMock.mockReturnValue({
+      isUserAuthenticated: false,
+      game: { ACCESS: { gameId: 'game-123' } },
+      revokeGame: vi.fn(),
+    })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame: vi.fn(),
+      getGame,
+    })
+
+    renderHome()
+
+    expect(
+      screen.queryByRole('button', { name: /resume game/i }),
+    ).not.toBeInTheDocument()
+
+    resolveGame({ id: 'game-123', status: GameStatus.Active })
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
+  })
+
+  it.each([GameStatus.Expired, GameStatus.Completed, GameStatus.Terminated])(
+    'does not render Resume game for a %s game and clears stale authentication',
+    async (status) => {
+      const revokeGame = vi.fn().mockResolvedValue(undefined)
+      const getGame = vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status,
+      })
+
+      authContextMock.mockReturnValue({
+        isUserAuthenticated: false,
+        game: { ACCESS: { gameId: 'game-123' } },
+        revokeGame,
+      })
+      quizServiceClientMock.mockReturnValue({
+        authenticateGame: vi.fn(),
+        getGame,
+      })
+
+      renderHome()
+
+      expect(
+        screen.queryByRole('button', { name: /resume game/i }),
+      ).not.toBeInTheDocument()
+
+      await waitFor(() => {
+        expect(revokeGame).toHaveBeenCalledWith({ redirect: false })
+      })
+      expect(
+        screen.queryByRole('button', { name: /resume game/i }),
+      ).not.toBeInTheDocument()
+    },
+  )
+
+  it('does not render Resume game when game validation fails', async () => {
+    const revokeGame = vi.fn()
+    const getGame = vi.fn().mockRejectedValue(new Error('Network down'))
+
+    authContextMock.mockReturnValue({
+      isUserAuthenticated: false,
+      game: { ACCESS: { gameId: 'game-123' } },
+      revokeGame,
+    })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame: vi.fn(),
+      getGame,
+    })
+
+    renderHome()
+
+    await waitFor(() => {
+      expect(getGame).toHaveBeenCalledWith('game-123')
+    })
+    expect(
+      screen.queryByRole('button', { name: /resume game/i }),
+    ).not.toBeInTheDocument()
+    expect(revokeGame).not.toHaveBeenCalled()
   })
 
   it('clicking "Resume game" authenticates the game and navigates to /game on success', async () => {
@@ -178,9 +283,21 @@ describe('HomePage', () => {
       revokeGame: vi.fn(),
     })
 
-    quizServiceClientMock.mockReturnValue({ authenticateGame })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame,
+      getGame: vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status: GameStatus.Active,
+      }),
+    })
 
     renderHome()
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
 
     await user.click(screen.getByRole('button', { name: /resume game/i }))
 
@@ -208,13 +325,25 @@ describe('HomePage', () => {
       revokeGame,
     })
 
-    quizServiceClientMock.mockReturnValue({ authenticateGame })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame,
+      getGame: vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status: GameStatus.Active,
+      }),
+    })
 
     const preventUnhandled = (event: PromiseRejectionEvent) =>
       event.preventDefault()
     window.addEventListener('unhandledrejection', preventUnhandled)
 
     renderHome()
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
 
     await user.click(screen.getByRole('button', { name: /resume game/i }))
 
@@ -316,13 +445,25 @@ describe('HomePage', () => {
       revokeGame,
     })
 
-    quizServiceClientMock.mockReturnValue({ authenticateGame })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame,
+      getGame: vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status: GameStatus.Active,
+      }),
+    })
 
     const preventUnhandled = (event: PromiseRejectionEvent) =>
       event.preventDefault()
     window.addEventListener('unhandledrejection', preventUnhandled)
 
     renderHome()
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
 
     await user.click(screen.getByRole('button', { name: /resume game/i }))
 
@@ -354,13 +495,25 @@ describe('HomePage', () => {
       revokeGame,
     })
 
-    quizServiceClientMock.mockReturnValue({ authenticateGame })
+    quizServiceClientMock.mockReturnValue({
+      authenticateGame,
+      getGame: vi.fn().mockResolvedValue({
+        id: 'game-123',
+        status: GameStatus.Active,
+      }),
+    })
 
     const preventUnhandled = (event: PromiseRejectionEvent) =>
       event.preventDefault()
     window.addEventListener('unhandledrejection', preventUnhandled)
 
     renderHome()
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /resume game/i }),
+      ).toBeInTheDocument()
+    })
 
     await user.click(screen.getByRole('button', { name: /resume game/i }))
 
