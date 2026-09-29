@@ -1,4 +1,5 @@
 export * from './create-game.response'
+export * from './game-details.response'
 export * from './game-history-host.response'
 export * from './game-history-player.response'
 export * from './paginated-game-history.response'
