@@ -90,6 +90,158 @@ describe('GameController (e2e)', () => {
     await cleanupTestApp(app)
   })
 
+  describe('/api/games/:gameID (GET)', () => {
+    it.each(Object.values(GameStatus))(
+      'returns a game with its %s lifecycle status',
+      async (status) => {
+        const game = await gameModel.create(
+          createMockGameDocument({
+            status,
+            participants: [
+              createMockGameHostParticipantDocument({
+                participantId: hostUser._id,
+              }),
+            ],
+          }),
+        )
+        const accessToken = await authenticateGame(
+          app,
+          game._id,
+          hostUser._id,
+          GameParticipantType.HOST,
+        )
+
+        await supertest(app.getHttpServer())
+          .get(`/api/games/${game._id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect((res) => {
+            expect(res.body).toEqual({
+              id: game._id,
+              status,
+            })
+          })
+      },
+    )
+
+    it('allows a player game token', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+          ],
+        }),
+      )
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect({ id: game._id, status: GameStatus.Active })
+    })
+
+    it('allows an anonymous participant game token', async () => {
+      const game = await gameModel.create(createMockGameDocument())
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        uuidv4(),
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect({ id: game._id, status: GameStatus.Active })
+    })
+
+    it('rejects a game token belonging to another game', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({ _id: uuidv4() }),
+      )
+      const otherGame = await gameModel.create(
+        createMockGameDocument({ _id: uuidv4() }),
+      )
+      const accessToken = await authenticateGame(
+        app,
+        otherGame._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(403)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message: 'Forbidden',
+            status: 403,
+            timestamp: expect.anything(),
+          })
+        })
+    })
+
+    it('rejects a request without authentication', async () => {
+      const game = await gameModel.create(createMockGameDocument())
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .expect(401)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('status', 401)
+          expect(res.body).toHaveProperty('timestamp')
+        })
+    })
+
+    it('rejects invalid authentication', async () => {
+      const game = await gameModel.create(createMockGameDocument())
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set('Authorization', 'Bearer invalid-token')
+        .expect(401)
+        .expect((res) => {
+          expect(res.body).toHaveProperty('status', 401)
+          expect(res.body).toHaveProperty('timestamp')
+        })
+    })
+
+    it('returns the existing not-found error for a nonexistent game', async () => {
+      const gameId = uuidv4()
+      const accessToken = await authenticateGame(
+        app,
+        gameId,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${gameId}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(404)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message: `Game not found by id '${gameId}'`,
+            status: 404,
+            timestamp: expect.anything(),
+          })
+        })
+    })
+  })
+
   describe('/api/games/:gameID/players (POST)', () => {
     it('should succeed in joining an existing active classic mode game', async () => {
       const { id: quizId } = await quizService.createQuiz(

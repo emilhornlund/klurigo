@@ -1,5 +1,6 @@
 import {
   CreateGameResponseDto,
+  GameDetailsDto,
   GameHistoryBaseDto,
   GameParticipantPlayerDto,
   GameParticipantType,
@@ -133,6 +134,25 @@ export class GameService {
     await this.gameTaskTransitionScheduler.scheduleTaskTransition(gameDocument)
 
     return { id: gameDocument._id }
+  }
+
+  /**
+   * Retrieves the public lifecycle details for a game, including games in any
+   * persisted status.
+   *
+   * @param gameId - The unique identifier of the game.
+   * @returns The game's identifier and current lifecycle status.
+   */
+  public async getGame(gameId: string): Promise<GameDetailsDto> {
+    const gameDocument = await this.gameRepository.findGameByIDOrThrow(
+      gameId,
+      false,
+    )
+
+    return {
+      id: gameDocument._id,
+      status: gameDocument.status,
+    }
   }
 
   /**

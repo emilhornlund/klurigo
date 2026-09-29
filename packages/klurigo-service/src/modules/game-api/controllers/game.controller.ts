@@ -70,6 +70,7 @@ import {
   TrueFalseQuestionCorrectAnswerRequest,
   TypeAnswerQuestionCorrectAnswerRequest,
 } from './models/requests'
+import { GameDetailsResponse } from './models/response'
 import { GameParticipantPlayerResponse } from './models/response/game-participant-player.response'
 
 /**
@@ -106,6 +107,41 @@ export class GameController {
     private readonly gameService: GameService,
     private readonly gameEventSubscriber: GameEventSubscriber,
   ) {}
+
+  /**
+   * Retrieves the current lifecycle state of the authenticated participant's game.
+   *
+   * @param gameId - The unique identifier of the game.
+   * @returns The game's identifier and current lifecycle status.
+   */
+  @Get('/:gameID')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Retrieve game details',
+    description:
+      'Returns the current lifecycle status of the game associated with the authenticated participant.',
+  })
+  @ApiOkResponse({
+    description: 'Successfully retrieved the game details.',
+    type: GameDetailsResponse,
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid game ID format.',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({
+    description: 'The participant is not allowed to access this game.',
+  })
+  @ApiNotFoundResponse({
+    description: 'No game found with the specified unique identifier.',
+  })
+  @AuthorizedGame()
+  @ApiGameIdParam()
+  public async getGame(
+    @RouteGameIdParam() gameId: string,
+  ): Promise<GameDetailsResponse> {
+    return this.gameService.getGame(gameId)
+  }
 
   /**
    * Allows a participant to join an existing game as a player.

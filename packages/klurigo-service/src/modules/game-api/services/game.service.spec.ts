@@ -388,6 +388,39 @@ describe(GameService.name, () => {
     })
   })
 
+  describe('getGame', () => {
+    it.each(Object.values(GameStatus))(
+      'returns the game id and %s status without exposing the document',
+      async (status) => {
+        gameRepository.findGameByIDOrThrow.mockResolvedValueOnce({
+          _id: 'game-1',
+          status,
+          name: 'Private game data',
+        })
+
+        await expect(service.getGame('game-1')).resolves.toEqual({
+          id: 'game-1',
+          status,
+        })
+
+        expect(gameRepository.findGameByIDOrThrow).toHaveBeenCalledWith(
+          'game-1',
+          false,
+        )
+      },
+    )
+
+    it('propagates the existing not-found error', async () => {
+      gameRepository.findGameByIDOrThrow.mockRejectedValueOnce(
+        new Error("Game not found by id 'game-1'"),
+      )
+
+      await expect(service.getGame('game-1')).rejects.toThrow(
+        "Game not found by id 'game-1'",
+      )
+    })
+  })
+
   describe('deleteQuiz', () => {
     it('finds games by quiz id and deletes each one', async () => {
       gameRepository.find.mockResolvedValueOnce([
