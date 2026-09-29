@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { MailerModule } from '@nestjs-modules/mailer'
+import { MailerModule, type MailerOptions } from '@nestjs-modules/mailer'
 
 import { EnvironmentVariables } from '../../app/config'
 
@@ -24,7 +24,9 @@ import { EmailService } from './services'
             pass: config.get('EMAIL_PASSWORD'),
           },
         },
-        defaults: { from: '"No Reply" <no-reply@klurigo.com>' },
+        defaults: {
+          from: '"No Reply" <no-reply@klurigo.com>',
+        } as MailerOptions['defaults'],
       }),
       inject: [ConfigService],
     }),
