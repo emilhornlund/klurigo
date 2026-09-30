@@ -1,5 +1,6 @@
 import {
   GameParticipantType,
+  GameStatus,
   GameTokenDto,
   TokenDto,
   TokenScope,
@@ -368,6 +369,80 @@ describe('AuthController (e2e)', () => {
         .expect((res) => {
           expectGameTokenPair(game._id, GameParticipantType.HOST, res, userId)
         })
+    })
+
+    it.each([GameStatus.Expired, GameStatus.Completed, GameStatus.Terminated])(
+      'should return 401 and preserve the refresh token when the game is %s',
+      async (status) => {
+        const game = await gameModel.create(createMockGameDocument())
+        const userId = uuidv4()
+        const { refreshToken } =
+          await gameAuthenticationService.authenticateGame(
+            { gamePIN: game.pin },
+            MOCK_IP_ADDRESS,
+            MOCK_USER_AGENT,
+            userId,
+          )
+
+        await gameModel.findByIdAndUpdate(game._id, { status })
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken })
+          .expect(401)
+
+        await gameModel.findByIdAndUpdate(game._id, {
+          status: GameStatus.Active,
+        })
+
+        const retryResponse = await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken })
+          .expect(200)
+
+        expectGameTokenPair(
+          game._id,
+          GameParticipantType.HOST,
+          retryResponse,
+          userId,
+        )
+      },
+    )
+
+    it('should return 401 and preserve the refresh token when the game no longer exists', async () => {
+      const game = await gameModel.create(createMockGameDocument())
+      const userId = uuidv4()
+      const { refreshToken } = await gameAuthenticationService.authenticateGame(
+        { gamePIN: game.pin },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+        userId,
+      )
+
+      await gameModel.deleteOne({ _id: game._id })
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken })
+        .expect(401)
+
+      await gameModel.create(createMockGameDocument({ _id: game._id }))
+
+      const retryResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken })
+        .expect(200)
+
+      expectGameTokenPair(
+        game._id,
+        GameParticipantType.HOST,
+        retryResponse,
+        userId,
+      )
     })
 
     it('should return 401 unauthorized when token has expired', async () => {

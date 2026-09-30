@@ -27,6 +27,9 @@ describe('AuthService', () => {
     verifyUserCredentialsOrThrow: jest.Mock
     verifyOrCreateGoogleUser: jest.Mock
   }
+  let gameRepository: {
+    findGameByIDOrThrow: jest.Mock
+  }
   let tokenService: {
     signTokenPair: jest.Mock
     verifyToken: jest.Mock
@@ -47,6 +50,10 @@ describe('AuthService', () => {
       verifyOrCreateGoogleUser: jest.fn(),
     }
 
+    gameRepository = {
+      findGameByIDOrThrow: jest.fn().mockResolvedValue({}),
+    }
+
     tokenService = {
       signTokenPair: jest.fn(),
       verifyToken: jest.fn(),
@@ -61,6 +68,7 @@ describe('AuthService', () => {
 
     service = new AuthService(
       userService as any,
+      gameRepository as any,
       tokenService as any,
       eventEmitter,
       googleAuthService as any,
@@ -362,6 +370,7 @@ describe('AuthService', () => {
         ua,
         {},
       )
+      expect(gameRepository.findGameByIDOrThrow).not.toHaveBeenCalled()
       expect(tokenService.revoke).toHaveBeenCalledWith('rt')
 
       expect(emitSpy).toHaveBeenCalledWith(
@@ -405,10 +414,35 @@ describe('AuthService', () => {
         ua,
         { gameId: 'g-1', participantType: 'Player' },
       )
+      expect(gameRepository.findGameByIDOrThrow).toHaveBeenCalledWith('g-1')
       expect(tokenService.revoke).toHaveBeenCalledWith('rt')
 
       expect(emitSpy).not.toHaveBeenCalled()
       expect(result).toBe(tokenPair)
+    })
+
+    it('should reject a Game-scoped refresh when the game is no longer active', async () => {
+      const payload: TokenDto = {
+        sub: 'u-1',
+        jti: 'jti-1',
+        scope: TokenScope.Game,
+        authorities: [Authority.RefreshAuth],
+        gameId: 'g-1',
+        participantType: 'Player',
+      } as any
+
+      tokenService.verifyToken.mockResolvedValue(payload)
+      tokenService.tokenExistsOrThrow.mockResolvedValue(undefined)
+      gameRepository.findGameByIDOrThrow.mockRejectedValue(
+        new Error('Active game not found by id g-1'),
+      )
+
+      await expect(
+        service.refresh({ refreshToken: 'rt' } as any, ip, ua),
+      ).rejects.toBeInstanceOf(UnauthorizedException)
+
+      expect(tokenService.signTokenPair).not.toHaveBeenCalled()
+      expect(tokenService.revoke).not.toHaveBeenCalled()
     })
 
     it('should not revoke the supplied token if issuing the replacement pair fails', async () => {
