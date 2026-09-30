@@ -1,6 +1,6 @@
-import { GAME_PIN_LENGTH, GAME_PIN_REGEX } from '@klurigo/common'
+import { GAME_PIN_LENGTH, GAME_PIN_REGEX, GameStatus } from '@klurigo/common'
 import { type FC, type FormEvent } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useEffectEvent, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
@@ -40,7 +40,7 @@ const MESSAGES = [
  *
  * Responsibilities:
  * - Presents the primary join flow where a player enters a Game PIN and proceeds to game authentication.
- * - If the current client already has an active game session, presents a "Resume game" call-to-action
+ * - If the backend confirms the persisted game session is active, presents a "Resume game" call-to-action
  *   to re-authenticate and continue without re-entering the PIN.
  * - Provides a secondary call-to-action to either create a quiz (authenticated) or log in (unauthenticated).
  */
@@ -48,8 +48,7 @@ const HomePage: FC = () => {
   /**
    * Auth state for the current client.
    *
-   * `game` may contain game-scoped tokens and metadata, used here to determine whether there is an active
-   * session that can be resumed.
+   * `game` may contain game-scoped tokens and metadata, including a candidate game ID for validation.
    */
   const { isUserAuthenticated, game, revokeGame } = useAuthContext()
 
@@ -58,7 +57,7 @@ const HomePage: FC = () => {
    *
    * `authenticateGame` is used to re-authenticate a previously joined game session by game id.
    */
-  const { authenticateGame } = useKlurigoServiceClient()
+  const { authenticateGame, getGame } = useKlurigoServiceClient()
 
   /**
    * Router navigation helper used to move the user into the relevant flow:
@@ -80,12 +79,53 @@ const HomePage: FC = () => {
   const [gamePINValid, setGamePINValid] = useState<boolean>(false)
 
   /**
-   * The active game id for the current client session, if present.
+   * The persisted game ID for the current client session, if present.
    *
-   * When set, the UI renders a "Resume game" button that allows the client to re-authenticate and
-   * continue the active session.
+   * Its presence alone does not prove that the game is still active.
    */
   const activeGameId = useMemo(() => game?.ACCESS?.gameId, [game])
+
+  /**
+   * A persisted game ID is only a candidate until the backend confirms it is active.
+   */
+  const [isGameConfirmedActive, setIsGameConfirmedActive] = useState(false)
+
+  const validateGame = useEffectEvent(
+    async (gameId: string, isCurrent: () => boolean) => {
+      try {
+        const gameDetails = await getGame(gameId)
+        if (!isCurrent()) return
+
+        if (gameDetails.status === GameStatus.Active) {
+          setIsGameConfirmedActive(true)
+          return
+        }
+
+        await revokeGame({ redirect: false })
+      } catch (error) {
+        if (
+          isCurrent() &&
+          error instanceof ApiError &&
+          [400, 401, 403, 404].includes(error.status)
+        ) {
+          await revokeGame({ redirect: false })
+        }
+      }
+    },
+  )
+
+  useEffect(() => {
+    let cancelled = false
+    setIsGameConfirmedActive(false)
+
+    if (activeGameId) {
+      void validateGame(activeGameId, () => !cancelled)
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [activeGameId])
 
   /**
    * Resumes an already active game session.
@@ -159,7 +199,7 @@ const HomePage: FC = () => {
         />
       </div>
 
-      {activeGameId && (
+      {activeGameId && isGameConfirmedActive && (
         <CallToActionCard
           title="Resume game"
           text="Jump back in where you left off"
