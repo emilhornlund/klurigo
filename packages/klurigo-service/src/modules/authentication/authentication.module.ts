@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 
+import { GameCoreModule } from '../game-core'
 import { TokenModule } from '../token'
 import { UserModule } from '../user'
 
@@ -11,7 +12,13 @@ import { AuthGuard } from './guards'
 import { AuthService, GoogleAuthService } from './services'
 
 @Module({
-  imports: [EventEmitterModule, HttpModule, TokenModule, UserModule],
+  imports: [
+    EventEmitterModule,
+    GameCoreModule,
+    HttpModule,
+    TokenModule,
+    UserModule,
+  ],
   controllers: [AuthController],
   providers: [
     AuthService,

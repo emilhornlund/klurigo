@@ -8,6 +8,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { MurLock } from 'murlock'
 
+import { GameRepository } from '../../game-core/repositories'
 import { TokenService } from '../../token/services'
 import { UserService } from '../../user/services'
 
@@ -29,12 +30,14 @@ export class AuthService {
    * Initializes the AuthService.
    *
    * @param userService - Service for user credential verification.
+   * @param gameRepository - Repository for validating game-scoped refresh tokens.
    * @param tokenService - Service for signing, verifying, and revoking JWTs, and validating token persistence.
    * @param eventEmitter - EventEmitter2 instance for emitting authentication-related events.
    * @param googleAuthService - Service responsible for handling Google OAuth flows.
    */
   constructor(
     private readonly userService: UserService,
+    private readonly gameRepository: GameRepository,
     private readonly tokenService: TokenService,
     private readonly eventEmitter: EventEmitter2,
     private readonly googleAuthService: GoogleAuthService,
@@ -160,6 +163,18 @@ export class AuthService {
 
     if (payload.scope === TokenScope.Game) {
       const { gameId, participantType } = payload as GameTokenDto
+
+      try {
+        await this.gameRepository.findGameByIDOrThrow(gameId)
+      } catch (error) {
+        const { message, stack } = error as Error
+        this.logger.debug(
+          `Failed to refresh token since active game '${gameId}' was not found: '${message}'.`,
+          stack,
+        )
+        throw new UnauthorizedException()
+      }
+
       additionalClaims = { gameId, participantType }
     }
 
