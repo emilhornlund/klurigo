@@ -3,13 +3,10 @@
 exports[`QuestionField > renders a audio media question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutFull"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
-    />
-    <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="mediaQuestionField"
@@ -64,9 +61,9 @@ exports[`QuestionField > renders a audio media question field 1`] = `
               class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
-                data-testid="test-add-media-button-button"
-                id="add-media-button"
-                name="add-media-button"
+                data-testid="test-replace-media-button-button"
+                id="replace-media-button"
+                name="replace-media-button"
                 type="button"
               >
                 <svg
@@ -98,13 +95,13 @@ exports[`QuestionField > renders a audio media question field 1`] = `
 exports[`QuestionField > renders a duration question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Time Limit
+        Time limit
       </span>
       <button
         class="iconTooltipButton"
@@ -125,7 +122,7 @@ exports[`QuestionField > renders a duration question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -212,13 +209,10 @@ exports[`QuestionField > renders a duration question field 1`] = `
 exports[`QuestionField > renders a image media question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutFull"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
-    />
-    <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="mediaQuestionField"
@@ -281,9 +275,9 @@ exports[`QuestionField > renders a image media question field 1`] = `
               class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
-                data-testid="test-add-media-button-button"
-                id="add-media-button"
-                name="add-media-button"
+                data-testid="test-replace-media-button-button"
+                id="replace-media-button"
+                name="replace-media-button"
                 type="button"
               >
                 <svg
@@ -339,444 +333,20 @@ exports[`QuestionField > renders a image media question field 1`] = `
 </div>
 `;
 
-exports[`QuestionField > renders a multiple choice options question field 1`] = `
-<div>
-  <div
-    class="questionFieldContainer layoutFull"
-  >
-    <div
-      class="label"
-    >
-      <span>
-        Options
-      </span>
-      <button
-        class="iconTooltipButton"
-      >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-circle-info"
-          data-icon="circle-info"
-          data-prefix="fas"
-          role="img"
-          viewBox="0 0 512 512"
-        >
-          <path
-            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      class="content"
-    >
-      <div
-        class="optionsContainer"
-      >
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-0-textfield"
-                  id="multi-choice-option-_r_18_-0"
-                  name="multi-choice-option-_r_18_-0"
-                  placeholder="Option 1"
-                  type="text"
-                  value="Stockholm"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-0-checkbox"
-                >
-                  <input
-                    checked=""
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-0-checkbox"
-                    type="checkbox"
-                  />
-                  <span
-                    class="checkboxIcon"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="svg-inline--fa fa-check"
-                      data-icon="check"
-                      data-prefix="fas"
-                      role="img"
-                      viewBox="0 0 448 512"
-                    >
-                      <path
-                        d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-1-textfield"
-                  id="multi-choice-option-_r_18_-1"
-                  name="multi-choice-option-_r_18_-1"
-                  placeholder="Option 2"
-                  type="text"
-                  value="Paris"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-1-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-1-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-2-textfield"
-                  id="multi-choice-option-_r_18_-2"
-                  name="multi-choice-option-_r_18_-2"
-                  placeholder="Option 3"
-                  type="text"
-                  value="Copenhagen"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-2-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-2-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-3-textfield"
-                  id="multi-choice-option-_r_18_-3"
-                  name="multi-choice-option-_r_18_-3"
-                  placeholder="Option 4"
-                  type="text"
-                  value="London"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-3-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-3-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-4-textfield"
-                  id="multi-choice-option-_r_18_-4"
-                  name="multi-choice-option-_r_18_-4"
-                  placeholder="Option 5"
-                  type="text"
-                  value="Oslo"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-4-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-4-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="option"
-          style="transition: transform 0ms linear;"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-multi-choice-option-_r_18_-5-textfield"
-                  id="multi-choice-option-_r_18_-5"
-                  name="multi-choice-option-_r_18_-5"
-                  placeholder="Option 6"
-                  type="text"
-                  value="Berlin"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="multi-choice-option-_r_18_-5-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="multi-choice-option-_r_18_-5-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-describedby="DndDescribedBy-0"
-            aria-disabled="false"
-            aria-roledescription="sortable"
-            class="handle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-grip icon"
-              data-icon="grip"
-              data-prefix="fas"
-              role="img"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M88 96c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM280 224l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm192 0l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zm0 192l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40zM280 288c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0zM88 416l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          id="DndDescribedBy-0"
-          style="display: none;"
-        >
-          
-    To pick up a draggable item, press the space bar.
-    While dragging, use the arrow keys to move the item.
-    Press space again to drop the item in its new position, or press escape to cancel.
-  
-        </div>
-        <div
-          aria-atomic="true"
-          aria-live="assertive"
-          id="DndLiveRegion-0"
-          role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`QuestionField > renders a multiple choice type question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Type
+        Question type
       </span>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -792,7 +362,7 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
             <option
               value="MULTI_CHOICE"
             >
-              Multi Choice
+              Multiple choice
             </option>
             <option
               value="RANGE"
@@ -802,12 +372,12 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
             <option
               value="TRUE_FALSE"
             >
-              True or False
+              True or false
             </option>
             <option
               value="TYPE_ANSWER"
             >
-              Type Answer
+              Type answer
             </option>
             <option
               value="PIN"
@@ -843,10 +413,10 @@ exports[`QuestionField > renders a multiple choice type question field 1`] = `
 exports[`QuestionField > renders a points question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
         Points
@@ -870,7 +440,7 @@ exports[`QuestionField > renders a points question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -919,53 +489,17 @@ exports[`QuestionField > renders a points question field 1`] = `
 </div>
 `;
 
-exports[`QuestionField > renders a question text question field 1`] = `
-<div>
-  <div
-    class="questionFieldContainer layoutFull"
-  >
-    <div
-      class="label"
-    >
-      <span>
-        Question
-      </span>
-    </div>
-    <div
-      class="content"
-    >
-      <div
-        class="inputContainer"
-      >
-        <div
-          class="textFieldInputContainer surfaceBrand"
-        >
-          <input
-            class="textfield"
-            data-testid="test-question-text-textfield-textfield"
-            id="question-text-textfield"
-            name="question-text-textfield"
-            placeholder="Question"
-            type="text"
-            value="Who painted The Starry Night?"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`QuestionField > renders a range correct question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutHalf"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Correct
+        Correct answer
+         *
       </span>
       <button
         class="iconTooltipButton"
@@ -986,10 +520,10 @@ exports[`QuestionField > renders a range correct question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
-        class="inputContainer"
+        class="inputContainer grow"
       >
         <div
           class="textFieldInputContainer surfaceBrand"
@@ -998,6 +532,8 @@ exports[`QuestionField > renders a range correct question field 1`] = `
             class="textfield"
             data-testid="test-range-correct-textfield-textfield"
             id="range-correct-textfield"
+            max="100"
+            min="0"
             name="range-correct-textfield"
             placeholder=""
             type="number"
@@ -1013,13 +549,13 @@ exports[`QuestionField > renders a range correct question field 1`] = `
 exports[`QuestionField > renders a range margin question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutHalf"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Margin
+        Accepted margin
       </span>
       <button
         class="iconTooltipButton"
@@ -1040,10 +576,10 @@ exports[`QuestionField > renders a range margin question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
-        class="inputContainer"
+        class="inputContainer grow"
       >
         <div
           class="selectInputContainer surfaceBrand"
@@ -1102,13 +638,13 @@ exports[`QuestionField > renders a range margin question field 1`] = `
 exports[`QuestionField > renders a range max question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutHalf"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Max
+        Maximum value
       </span>
       <button
         class="iconTooltipButton"
@@ -1129,10 +665,10 @@ exports[`QuestionField > renders a range max question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
-        class="inputContainer"
+        class="inputContainer grow"
       >
         <div
           class="textFieldInputContainer surfaceBrand"
@@ -1142,7 +678,7 @@ exports[`QuestionField > renders a range max question field 1`] = `
             data-testid="test-range-max-textfield-textfield"
             id="range-max-textfield"
             name="range-max-textfield"
-            placeholder="Max"
+            placeholder="Maximum"
             type="number"
             value="100"
           />
@@ -1156,13 +692,13 @@ exports[`QuestionField > renders a range max question field 1`] = `
 exports[`QuestionField > renders a range min question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutHalf"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Min
+        Minimum value
       </span>
       <button
         class="iconTooltipButton"
@@ -1183,10 +719,10 @@ exports[`QuestionField > renders a range min question field 1`] = `
       </button>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
-        class="inputContainer"
+        class="inputContainer grow"
       >
         <div
           class="textFieldInputContainer surfaceBrand"
@@ -1196,7 +732,7 @@ exports[`QuestionField > renders a range min question field 1`] = `
             data-testid="test-range-min-textfield-textfield"
             id="range-min-textfield"
             name="range-min-textfield"
-            placeholder="Min"
+            placeholder="Minimum"
             type="number"
             value="0"
           />
@@ -1210,17 +746,17 @@ exports[`QuestionField > renders a range min question field 1`] = `
 exports[`QuestionField > renders a range type question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Type
+        Question type
       </span>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -1236,7 +772,7 @@ exports[`QuestionField > renders a range type question field 1`] = `
             <option
               value="MULTI_CHOICE"
             >
-              Multi Choice
+              Multiple choice
             </option>
             <option
               value="RANGE"
@@ -1246,12 +782,12 @@ exports[`QuestionField > renders a range type question field 1`] = `
             <option
               value="TRUE_FALSE"
             >
-              True or False
+              True or false
             </option>
             <option
               value="TYPE_ANSWER"
             >
-              Type Answer
+              Type answer
             </option>
             <option
               value="PIN"
@@ -1277,118 +813,6 @@ exports[`QuestionField > renders a range type question field 1`] = `
               fill="currentColor"
             />
           </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`QuestionField > renders a true or false options question field 1`] = `
-<div>
-  <div
-    class="questionFieldContainer layoutFull"
-  >
-    <div
-      class="label"
-    >
-      <span>
-        Options
-      </span>
-    </div>
-    <div
-      class="content"
-    >
-      <div
-        class="optionsContainer"
-      >
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-true-false-option-0-textfield-textfield"
-                  id="true-false-option-0-textfield"
-                  name="true-false-option-0-textfield"
-                  readonly=""
-                  type="text"
-                  value="True"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="true-false-option-0-textfield-checkbox"
-                >
-                  <input
-                    checked=""
-                    class="checkbox"
-                    id="true-false-option-0-textfield-checkbox"
-                    type="checkbox"
-                  />
-                  <span
-                    class="checkboxIcon"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="svg-inline--fa fa-check"
-                      data-icon="check"
-                      data-prefix="fas"
-                      role="img"
-                      viewBox="0 0 448 512"
-                    >
-                      <path
-                        d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-true-false-option-1-textfield-textfield"
-                  id="true-false-option-1-textfield"
-                  name="true-false-option-1-textfield"
-                  readonly=""
-                  type="text"
-                  value="False"
-                />
-                <label
-                  class="checkboxLabel"
-                  for="true-false-option-1-textfield-checkbox"
-                >
-                  <input
-                    class="checkbox"
-                    id="true-false-option-1-textfield-checkbox"
-                    type="checkbox"
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -1399,17 +823,17 @@ exports[`QuestionField > renders a true or false options question field 1`] = `
 exports[`QuestionField > renders a true or false question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Type
+        Question type
       </span>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -1425,7 +849,7 @@ exports[`QuestionField > renders a true or false question field 1`] = `
             <option
               value="MULTI_CHOICE"
             >
-              Multi Choice
+              Multiple choice
             </option>
             <option
               value="RANGE"
@@ -1435,12 +859,12 @@ exports[`QuestionField > renders a true or false question field 1`] = `
             <option
               value="TRUE_FALSE"
             >
-              True or False
+              True or false
             </option>
             <option
               value="TYPE_ANSWER"
             >
-              Type Answer
+              Type answer
             </option>
             <option
               value="PIN"
@@ -1473,161 +897,20 @@ exports[`QuestionField > renders a true or false question field 1`] = `
 </div>
 `;
 
-exports[`QuestionField > renders a type answer options question field 1`] = `
-<div>
-  <div
-    class="questionFieldContainer layoutFull"
-  >
-    <div
-      class="label"
-    >
-      <span>
-        Options
-      </span>
-      <button
-        class="iconTooltipButton"
-      >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-circle-info"
-          data-icon="circle-info"
-          data-prefix="fas"
-          role="img"
-          viewBox="0 0 512 512"
-        >
-          <path
-            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      class="content"
-    >
-      <div
-        class="optionsContainer"
-      >
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-type-answer-option-0-textfield-textfield"
-                  id="type-answer-option-0-textfield"
-                  name="type-answer-option-0-textfield"
-                  placeholder="Option 1"
-                  type="text"
-                  value="first"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-type-answer-option-1-textfield-textfield"
-                  id="type-answer-option-1-textfield"
-                  name="type-answer-option-1-textfield"
-                  placeholder="Option 2"
-                  type="text"
-                  value="second"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-type-answer-option-2-textfield-textfield"
-                  id="type-answer-option-2-textfield"
-                  name="type-answer-option-2-textfield"
-                  placeholder="Option 3"
-                  type="text"
-                  value="third"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="option"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="inputContainer"
-            >
-              <div
-                class="textFieldInputContainer surfaceBrand"
-              >
-                <input
-                  class="textfield"
-                  data-testid="test-type-answer-option-3-textfield-textfield"
-                  id="type-answer-option-3-textfield"
-                  name="type-answer-option-3-textfield"
-                  placeholder="Option 4"
-                  type="text"
-                  value="fourth"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`QuestionField > renders a type answer question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutHalf"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
+      class="stack horizontal spacing-compact align-center justify-start label"
     >
       <span>
-        Type
+        Question type
       </span>
     </div>
     <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="inputContainer"
@@ -1643,7 +926,7 @@ exports[`QuestionField > renders a type answer question field 1`] = `
             <option
               value="MULTI_CHOICE"
             >
-              Multi Choice
+              Multiple choice
             </option>
             <option
               value="RANGE"
@@ -1653,12 +936,12 @@ exports[`QuestionField > renders a type answer question field 1`] = `
             <option
               value="TRUE_FALSE"
             >
-              True or False
+              True or false
             </option>
             <option
               value="TYPE_ANSWER"
             >
-              Type Answer
+              Type answer
             </option>
             <option
               value="PIN"
@@ -1694,13 +977,10 @@ exports[`QuestionField > renders a type answer question field 1`] = `
 exports[`QuestionField > renders a video media question field 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutFull"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
-    />
-    <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="mediaQuestionField"
@@ -1755,9 +1035,9 @@ exports[`QuestionField > renders a video media question field 1`] = `
               class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
-                data-testid="test-add-media-button-button"
-                id="add-media-button"
-                name="add-media-button"
+                data-testid="test-replace-media-button-button"
+                id="replace-media-button"
+                name="replace-media-button"
                 type="button"
               >
                 <svg
@@ -1789,13 +1069,10 @@ exports[`QuestionField > renders a video media question field 1`] = `
 exports[`QuestionField > renders an image media question field with blur effect 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutFull"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
-    />
-    <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="mediaQuestionField"
@@ -1858,9 +1135,9 @@ exports[`QuestionField > renders an image media question field with blur effect 
               class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
-                data-testid="test-add-media-button-button"
-                id="add-media-button"
-                name="add-media-button"
+                data-testid="test-replace-media-button-button"
+                id="replace-media-button"
+                name="replace-media-button"
                 type="button"
               >
                 <svg
@@ -1919,13 +1196,10 @@ exports[`QuestionField > renders an image media question field with blur effect 
 exports[`QuestionField > renders an image media question field with square effect 1`] = `
 <div>
   <div
-    class="questionFieldContainer layoutFull"
+    class="stack vertical spacing-compact align-stretch justify-start layoutFull"
   >
     <div
-      class="label"
-    />
-    <div
-      class="content"
+      class="stack vertical spacing-compact align-stretch justify-start width-full"
     >
       <div
         class="mediaQuestionField"
@@ -1988,9 +1262,9 @@ exports[`QuestionField > renders an image media question field with square effec
               class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
             >
               <button
-                data-testid="test-add-media-button-button"
-                id="add-media-button"
-                name="add-media-button"
+                data-testid="test-replace-media-button-button"
+                id="replace-media-button"
+                name="replace-media-button"
                 type="button"
               >
                 <svg

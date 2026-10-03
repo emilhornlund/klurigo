@@ -1,16 +1,38 @@
 import { QuestionType } from '@klurigo/common'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import type { ComponentProps } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
 import QuestionPickerItem from './QuestionPickerItem'
 
+vi.mock('@dnd-kit/sortable', () => ({
+  useSortable: ({ id }: { id: string }) => ({
+    attributes: {
+      role: 'button',
+      tabIndex: 0,
+      'aria-roledescription': 'sortable',
+    },
+    listeners: { onKeyDown: vi.fn() },
+    setActivatorNodeRef: vi.fn(),
+    setNodeRef: vi.fn(),
+    transform: null,
+    transition: undefined,
+    isDragging: false,
+    sortableId: id,
+  }),
+}))
+
+vi.mock('@dnd-kit/utilities', () => ({
+  CSS: { Transform: { toString: vi.fn() } },
+}))
+
 const renderQuestionPickerItem = (
   overrides: Partial<ComponentProps<typeof QuestionPickerItem>> = {},
 ) =>
   render(
     <QuestionPickerItem
+      id="question-0"
       index={0}
       text="What is the capital of Sweden?"
       type={QuestionType.MultiChoice}
@@ -18,25 +40,12 @@ const renderQuestionPickerItem = (
       valid
       canDelete
       onClick={vi.fn()}
-      onDrop={vi.fn()}
       onDuplicate={vi.fn()}
-      onDelete={vi.fn()}
       {...overrides}
     />,
   )
 
 describe('QuestionPickerItem', () => {
-  it('disables delete when canDelete is false', () => {
-    const { container } = renderQuestionPickerItem({ canDelete: false })
-
-    const deleteButton = container
-      .querySelector('svg[data-icon="trash"]')
-      ?.closest('button')
-
-    expect(deleteButton).toBeTruthy()
-    expect(deleteButton as HTMLButtonElement).toBeDisabled()
-  })
-
   it('shows the validation error indicator when the question is invalid', () => {
     const { container } = renderQuestionPickerItem({ valid: false })
 
@@ -60,14 +69,35 @@ describe('QuestionPickerItem', () => {
     expect(onDuplicate).toHaveBeenCalledTimes(1)
   })
 
-  it('does not select the question when an action button is clicked', () => {
+  it('deletes only when enabled and does not also select the active item', () => {
     const onClick = vi.fn()
     const onDelete = vi.fn()
-    const { getByRole } = renderQuestionPickerItem({ onClick, onDelete })
+    const { getByRole, rerender } = renderQuestionPickerItem({
+      onClick,
+      onDelete,
+      canDelete: false,
+    })
 
+    const deleteButton = getByRole('button', { name: 'Delete question' })
+    expect(deleteButton).toBeDisabled()
+    fireEvent.click(deleteButton)
+    expect(onDelete).not.toHaveBeenCalled()
+
+    rerender(
+      <QuestionPickerItem
+        id="question-0"
+        index={0}
+        text="What is the capital of Sweden?"
+        type={QuestionType.MultiChoice}
+        active
+        valid
+        canDelete
+        onClick={onClick}
+        onDelete={onDelete}
+      />,
+    )
     fireEvent.click(getByRole('button', { name: 'Delete question' }))
-
-    expect(onDelete).toHaveBeenCalledTimes(1)
+    expect(onDelete).toHaveBeenCalledOnce()
     expect(onClick).not.toHaveBeenCalled()
   })
 
@@ -82,36 +112,27 @@ describe('QuestionPickerItem', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
-  it('forwards valid drops and ignores malformed item IDs', () => {
-    const onDrop = vi.fn()
-    const { container, rerender } = renderQuestionPickerItem({ onDrop })
-    const wrapper = container.querySelector('.questionPickerItemWrapper')
+  it('keeps question selection on a keyboard-operable button and exposes a sortable grip', () => {
+    const onClick = vi.fn()
+    renderQuestionPickerItem({ onClick })
 
-    expect(wrapper).toBeTruthy()
-    fireEvent.dragOver(wrapper!)
-    fireEvent.drop(wrapper!)
-    expect(onDrop).toHaveBeenCalledWith(0)
+    fireEvent.click(
+      screen.getByRole('button', { name: /what is the capital/i }),
+    )
 
-    rerender(
-      <QuestionPickerItem
-        index={0}
-        text="Question"
-        type={QuestionType.MultiChoice}
-        active
-        valid
-        canDelete
-        onDrop={onDrop}
-      />,
-    )
-    const malformedWrapper = container.querySelector(
-      '.questionPickerItemWrapper',
-    )
-    Object.defineProperty(malformedWrapper, 'id', {
-      configurable: true,
-      value: 'not-a-question-picker-item',
-    })
-    fireEvent.drop(malformedWrapper!)
-    expect(onDrop).toHaveBeenCalledTimes(1)
+    expect(onClick).toHaveBeenCalledOnce()
+    expect(
+      screen.getByRole('button', { name: 'Reorder question 1' }),
+    ).toHaveAttribute('aria-roledescription', 'sortable')
+  })
+
+  it('does not select a question when its reorder handle is clicked', () => {
+    const onClick = vi.fn()
+    renderQuestionPickerItem({ onClick })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reorder question 1' }))
+
+    expect(onClick).not.toHaveBeenCalled()
   })
 
   it('provides accessible names for active actions and displays the item details', () => {
@@ -123,13 +144,19 @@ describe('QuestionPickerItem', () => {
     })
 
     expect(getByText('Question text')).toBeInTheDocument()
-    expect(getByText('Multi Choice')).toBeInTheDocument()
+    expect(getByText('Multiple choice')).toBeInTheDocument()
     expect(getByText('3')).toBeInTheDocument()
     expect(getByRole('button', { name: 'Duplicate question' })).toBeVisible()
-    expect(getByRole('button', { name: 'Delete question' })).toBeVisible()
-    expect(container.querySelector('#question-picker-item-2')).toHaveAttribute(
-      'draggable',
-      'true',
+    expect(getByRole('button', { name: /question text/i })).toHaveAttribute(
+      'aria-current',
+      'step',
     )
+    expect(
+      getByRole('img', { name: 'Question 3 has validation errors' }),
+    ).toBeInTheDocument()
+    expect(getByRole('button', { name: 'Delete question' })).toBeEnabled()
+    expect(
+      container.querySelector('#question-picker-item-2'),
+    ).not.toBeInTheDocument()
   })
 })

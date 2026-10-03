@@ -19,6 +19,7 @@ export interface TextFieldProps {
   type: 'text' | 'number' | 'password'
   surface?: 'brand' | 'light'
   size?: 'normal' | 'small'
+  grow?: boolean
   placeholder?: string
   value?: string | number
   min?: number
@@ -46,6 +47,7 @@ const TextField: FC<TextFieldProps> = ({
   type,
   surface = 'brand',
   size = 'normal',
+  grow,
   placeholder,
   value,
   min,
@@ -169,7 +171,11 @@ const TextField: FC<TextFieldProps> = ({
   }
 
   return (
-    <div className={styles.inputContainer}>
+    <div
+      className={classNames(
+        styles.inputContainer,
+        grow ? styles.grow : undefined,
+      )}>
       <div
         className={classNames(
           styles.textFieldInputContainer,

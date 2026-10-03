@@ -173,7 +173,7 @@
     &:has(> button:focus-visible) {
       outline: controls.$control-border-width-outside solid
         colors.$color-focus-ring;
-      outline-offset: controls.$control-border-width-outside;
+      outline-offset: controls.$control-focus-outline-offset;
     }
 
     /*

@@ -1,5 +1,14 @@
 .advancedQuestionEditor {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100%;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  > div {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
 }

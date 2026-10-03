@@ -14,6 +14,7 @@ export interface SelectProps {
   name?: string
   surface?: 'brand' | 'light'
   size?: 'normal' | 'small'
+  grow?: boolean
   value?: string | undefined
   values?: { key: string; value: string; valueLabel: string }[]
   required?: boolean | string
@@ -30,6 +31,7 @@ const Select: FC<SelectProps> = ({
   name = id,
   surface = 'brand',
   size = 'normal',
+  grow,
   value,
   values,
   required,
@@ -108,7 +110,11 @@ const Select: FC<SelectProps> = ({
   }
 
   return (
-    <div className={styles.inputContainer}>
+    <div
+      className={classNames(
+        styles.inputContainer,
+        grow ? styles.grow : undefined,
+      )}>
       <div
         className={classNames(
           styles.selectInputContainer,

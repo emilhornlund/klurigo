@@ -1,38 +1,19 @@
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
-import type {
-  QuestionMediaDto,
-  QuestionMultiChoiceOptionDto,
-} from '@klurigo/common'
-import {
-  QuestionPinTolerance,
-  QuestionRangeAnswerMargin,
-  QuestionType,
-} from '@klurigo/common'
-import type { FC, ReactNode } from 'react'
+import type { QuestionMediaDto } from '@klurigo/common'
+import { QuestionRangeAnswerMargin, QuestionType } from '@klurigo/common'
+import type { FC } from 'react'
 
-import { Select, TextField } from '../../../../../../../../components'
-import IconTooltip from '../../../../../../../../components/IconTooltip'
+import { Select, Textarea, TextField } from '../../../../../../../../components'
 import {
-  QuestionPinToleranceLabels,
   QuestionRangeAnswerMarginLabels,
   QuestionTypeLabels,
 } from '../../../../../../../../models'
-import {
-  classNames,
-  trimToUndefined,
-} from '../../../../../../../../utils/helpers'
+import { trimToUndefined } from '../../../../../../../../utils/helpers'
 import type { QuizQuestionValidationResult } from '../../../../../../utils/QuestionDataSource'
 import { getValidationErrorMessage } from '../../../../../../validation-rules'
+import { FieldWrapper } from '../shared'
 
 import MediaQuestionField from './MediaQuestionField'
-import MultiChoiceOptions from './MultiChoiceOptions'
-import PinQuestionField, {
-  type PinQuestionFieldProps,
-} from './PinQuestionField'
-import PuzzleValues from './PuzzleValues'
 import styles from './QuestionField.module.scss'
-import TrueFalseOptions from './TrueFalseOptions'
-import TypeAnswerOptions from './TypeAnswerOptions'
 import { QuestionFieldType } from './types'
 
 export type QuestionFieldProps = (
@@ -74,32 +55,12 @@ export type QuestionFieldProps = (
       onChange: (value: QuestionType) => void
     }
   | {
-      type: typeof QuestionFieldType.MultiChoiceOptions
-      values?: QuestionMultiChoiceOptionDto[]
-      validation: QuizQuestionValidationResult
-      onChange: (value: QuestionMultiChoiceOptionDto[]) => void
-    }
-  | ({
-      type: typeof QuestionFieldType.Pin
-      validation: QuizQuestionValidationResult
-    } & PinQuestionFieldProps)
-  | {
-      type: typeof QuestionFieldType.PinTolerance
-      value?: QuestionPinTolerance
-      validation: QuizQuestionValidationResult
-      onChange: (value?: QuestionPinTolerance) => void
-    }
-  | {
-      type: typeof QuestionFieldType.PuzzleValues
-      value?: string[]
-      validation: QuizQuestionValidationResult
-      onChange: (values?: string[]) => void
-    }
-  | {
       type: typeof QuestionFieldType.RangeCorrect
       value?: number
       min?: number
       max?: number
+      label?: string
+      layout?: 'full' | 'half'
       validation: QuizQuestionValidationResult
       onChange: (value: number) => void
     }
@@ -123,53 +84,15 @@ export type QuestionFieldProps = (
       validation: QuizQuestionValidationResult
       onChange: (value: number) => void
     }
-  | {
-      type: typeof QuestionFieldType.TrueFalseOptions
-      value?: boolean
-      validation: QuizQuestionValidationResult
-      onChange: (value?: boolean) => void
-    }
-  | {
-      type: typeof QuestionFieldType.TypeAnswerOptions
-      values?: string[]
-      validation: QuizQuestionValidationResult
-      onChange: (values?: string[]) => void
-    }
-) & { footer?: string }
-
-const QuestionFieldWrapper: FC<{
-  label?: string
-  footer?: string
-  layout?: 'full' | 'half'
-  info?: ReactNode | ReactNode[] | string
-  className?: string
-  children: ReactNode
-}> = ({ label, footer, layout = 'full', info, className, children }) => (
-  <div
-    className={classNames(
-      styles.questionFieldContainer,
-      {
-        full: styles.layoutFull,
-        half: styles.layoutHalf,
-        'half-exclusive': styles.layoutHalfExclusive,
-      }[layout],
-    )}>
-    <div className={styles.label}>
-      {label && <span>{label}</span>}
-      {info && <IconTooltip icon={faCircleInfo}>{info}</IconTooltip>}
-    </div>
-    <div className={classNames(styles.content, className)}>{children}</div>
-    {footer && <div className={styles.footer}>{footer}</div>}
-  </div>
-)
+) & { footer?: string; validationRevealed?: boolean }
 
 const QuestionField: FC<QuestionFieldProps> = (props) => {
   switch (props.type) {
     case QuestionFieldType.CommonDuration:
       return (
-        <QuestionFieldWrapper
-          label="Time Limit"
-          layout="half"
+        <FieldWrapper
+          label="Time limit"
+          layout="full"
           info={
             <>
               The time limit for answering the question. The allowed values are:
@@ -248,49 +171,48 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
               'duration',
             )}
             onChange={(value) => props.onChange(parseInt(value))}
-            forceValidate
+            forceValidate={props.validationRevealed}
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.CommonInfo:
       return (
-        <QuestionFieldWrapper
-          label="Info"
+        <FieldWrapper
+          label="Explanation"
           layout="full"
-          info="Text displayed with the question results — use it to explain the answer, share context, or add a fun fact."
+          className={styles.infoContent}
+          info="Shown after the question. Use it to explain the answer, add context or share a fun fact."
           footer={props.footer}>
-          <TextField
-            id="question-info-textfield"
-            type="text"
-            placeholder="Info"
+          <Textarea
+            id="question-info-textarea"
+            surface="light"
+            placeholder="Explain the answer or add a fun fact..."
             value={props.value}
             customErrorMessage={getValidationErrorMessage(
               props.validation,
               'info',
             )}
-            onChange={(value) =>
-              props.onChange(trimToUndefined(value as string))
-            }
-            forceValidate
+            onChange={(value) => props.onChange(trimToUndefined(value))}
+            forceValidate={props.validationRevealed}
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.CommonMedia:
       return (
-        <QuestionFieldWrapper layout="full" footer={props.footer}>
+        <FieldWrapper layout="full" footer={props.footer}>
           <MediaQuestionField
             value={props.value}
             duration={props.duration}
             validation={props.validation}
             onChange={props.onChange}
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.CommonPoints:
       return (
-        <QuestionFieldWrapper
+        <FieldWrapper
           label="Points"
-          layout="half"
+          layout="full"
           info={
             <>
               The maximum number of points awarded for a correct answer. The
@@ -328,33 +250,34 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
               'points',
             )}
             onChange={(value) => props.onChange(parseInt(value))}
-            forceValidate
+            forceValidate={props.validationRevealed}
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.CommonQuestion:
       return (
-        <QuestionFieldWrapper
+        <FieldWrapper
           label="Question"
           layout="full"
-          footer={props.footer}>
-          <TextField
-            id="question-text-textfield"
-            type="text"
-            placeholder="Question"
+          className={styles.questionTextContent}
+          footer={props.footer}
+          required>
+          <Textarea
+            id="question-text-textarea"
+            placeholder="Write your question here..."
             value={props.value}
             customErrorMessage={getValidationErrorMessage(
               props.validation,
               'question',
             )}
-            onChange={(value) => props.onChange(value as string)}
-            forceValidate
+            onChange={props.onChange}
+            forceValidate={props.validationRevealed}
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.CommonType:
       return (
-        <QuestionFieldWrapper label="Type" layout="half" footer={props.footer}>
+        <FieldWrapper label="Question type" layout="full" footer={props.footer}>
           <Select
             id="question-type-select"
             value={props.value}
@@ -368,122 +291,52 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
               'type',
             )}
             onChange={(value) => props.onChange(value as QuestionType)}
+            forceValidate={props.validationRevealed}
           />
-        </QuestionFieldWrapper>
-      )
-    case QuestionFieldType.MultiChoiceOptions:
-      return (
-        <QuestionFieldWrapper
-          label="Options"
-          layout="full"
-          info="The list of possible answers for a question."
-          footer={props.footer}>
-          <MultiChoiceOptions {...props} />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
 
-    case QuestionFieldType.Pin:
-      return (
-        <QuestionFieldWrapper layout="full" footer={props.footer}>
-          <PinQuestionField {...props} />
-        </QuestionFieldWrapper>
-      )
-    case QuestionFieldType.PinTolerance:
-      return (
-        <QuestionFieldWrapper
-          label="Tolerance"
-          layout="half"
-          info={
-            <>
-              Each level sets the maximum distance from the correct location
-              that still counts as correct. Within this distance, points are
-              awarded on a sliding scale: closer pins earn more points.
-              <ul>
-                <li>
-                  Low: Smallest margin of error — strictest, only near-exact
-                  placements score.
-                </li>
-                <li>Medium: Moderate margin of error — balanced strictness</li>
-                <li>
-                  High: Wide margin of error — forgiving, but still excludes
-                  extreme outliers.
-                </li>
-                <li>
-                  Maximum: Largest margin of error — all placements score, but
-                  closer pins earn more points.
-                </li>
-              </ul>
-            </>
-          }
-          footer={props.footer}>
-          <Select
-            id="pin-tolerance-select"
-            value={props.value}
-            values={Object.values(QuestionPinTolerance).map((type) => ({
-              key: type,
-              value: type,
-              valueLabel: QuestionPinToleranceLabels[type],
-            }))}
-            customErrorMessage={getValidationErrorMessage(
-              props.validation,
-              'tolerance',
-            )}
-            onChange={(value) => props.onChange(value as QuestionPinTolerance)}
-          />
-        </QuestionFieldWrapper>
-      )
-    case QuestionFieldType.PuzzleValues:
-      return (
-        <QuestionFieldWrapper
-          label="Values"
-          layout="full"
-          info={
-            <>
-              Add at least 3 answers in the correct order. They will be
-              automatically randomized during the game.
-            </>
-          }
-          footer={props.footer}>
-          <PuzzleValues {...props} />
-        </QuestionFieldWrapper>
-      )
     case QuestionFieldType.RangeCorrect:
       return (
-        <QuestionFieldWrapper
-          label="Correct"
-          layout="half"
-          info="The correct value for the range question, which must be within the range of min and max."
-          footer={props.footer}>
+        <FieldWrapper
+          label={props.label ?? 'Correct answer'}
+          layout={props.layout ?? 'half'}
+          info="The target answer. It must be between the minimum and maximum values."
+          footer={props.footer}
+          required>
           <TextField
             id="range-correct-textfield"
             type="number"
             placeholder=""
             value={props.value}
+            min={props.min}
+            max={props.max}
             customErrorMessage={getValidationErrorMessage(
               props.validation,
               'correct',
             )}
             onChange={(value) => props.onChange(value as number)}
+            forceValidate={props.validationRevealed}
+            grow
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.RangeMargin:
       return (
-        <QuestionFieldWrapper
-          label="Margin"
+        <FieldWrapper
+          label="Accepted margin"
           layout="half"
           info={
             <>
-              Specifies the margin of error allowed for a range question.
-              Determines how close a player’s answer must be to the correct
-              value to be considered correct or partially correct. The margin
-              can be one of the following:
+              Controls how far from the correct answer a player can be and still
+              be accepted. The percentage is based on the full range between the
+              minimum and maximum values.
               <ul>
                 <li>None: Only the exact correct answer is accepted.</li>
-                <li>Low: Accepts answers within ±5% of the correct value. </li>
-                <li>Medium: Accepts answers within ±10%.</li>
-                <li>High: Accepts answers within ±20%. </li>
-                <li>Maximum: Any answer is considered correct.</li>
+                <li>Low: Accepts approximately ±5% of the full range.</li>
+                <li>Medium: Accepts approximately ±10% of the full range.</li>
+                <li>High: Accepts approximately ±20% of the full range.</li>
+                <li>Maximum: Any answer within the range is accepted.</li>
               </ul>
             </>
           }
@@ -503,69 +356,54 @@ const QuestionField: FC<QuestionFieldProps> = (props) => {
             onChange={(value) =>
               props.onChange(value as QuestionRangeAnswerMargin)
             }
-            forceValidate
+            forceValidate={props.validationRevealed}
+            grow
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.RangeMax:
       return (
-        <QuestionFieldWrapper
-          label="Max"
+        <FieldWrapper
+          label="Maximum value"
           layout="half"
-          info="The maximum possible value for the range question."
+          info="The highest value players can select."
           footer={props.footer}>
           <TextField
             id="range-max-textfield"
             type="number"
-            placeholder="Max"
+            placeholder="Maximum"
             value={props.value}
             customErrorMessage={getValidationErrorMessage(
               props.validation,
               'max',
             )}
             onChange={(value) => props.onChange(value as number)}
+            forceValidate={props.validationRevealed}
+            grow
           />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
     case QuestionFieldType.RangeMin:
       return (
-        <QuestionFieldWrapper
-          label="Min"
+        <FieldWrapper
+          label="Minimum value"
           layout="half"
-          info="The minimum possible value for the range question."
+          info="The lowest value players can select."
           footer={props.footer}>
           <TextField
             id="range-min-textfield"
             type="number"
-            placeholder="Min"
+            placeholder="Minimum"
             value={props.value}
             customErrorMessage={getValidationErrorMessage(
               props.validation,
               'min',
             )}
             onChange={(value) => props.onChange(value as number)}
-            forceValidate
+            forceValidate={props.validationRevealed}
+            grow
           />
-        </QuestionFieldWrapper>
-      )
-    case QuestionFieldType.TrueFalseOptions:
-      return (
-        <QuestionFieldWrapper
-          label="Options"
-          layout="full"
-          footer={props.footer}>
-          <TrueFalseOptions {...props} />
-        </QuestionFieldWrapper>
-      )
-    case QuestionFieldType.TypeAnswerOptions:
-      return (
-        <QuestionFieldWrapper
-          label="Options"
-          layout="full"
-          info="The list of allowed typed answers for a question."
-          footer={props.footer}>
-          <TypeAnswerOptions {...props} />
-        </QuestionFieldWrapper>
+        </FieldWrapper>
       )
   }
 }

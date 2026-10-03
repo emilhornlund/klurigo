@@ -3,7 +3,6 @@
 @use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/select' as select;
-@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -44,6 +43,10 @@ $desktop-select-small-padding-right: calc(
 .inputContainer {
   display: flex;
   flex-direction: column;
+
+  &.grow {
+    width: 100%;
+  }
 
   /*
    * Base layout
@@ -171,7 +174,9 @@ $desktop-select-small-padding-right: calc(
 
     &:has(> select:focus-visible) {
       border-color: colors.$color-focus-control-default;
-      box-shadow: shadows.$shadow-focus-control-default;
+      outline: controls.$control-border-width-outside solid
+        colors.$color-focus-ring;
+      outline-offset: controls.$control-focus-outline-offset;
     }
 
     /*

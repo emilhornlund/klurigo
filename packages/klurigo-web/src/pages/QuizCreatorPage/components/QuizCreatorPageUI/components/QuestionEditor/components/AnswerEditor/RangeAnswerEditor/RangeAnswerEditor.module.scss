@@ -1,0 +1,148 @@
+@use '../../../../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../../../../styles/controls.tokens' as controls;
+@use '../../../../../../../../../styles/helpers' as helpers;
+@use '../../../../../../../../../styles/spacing.semantic' as spacing;
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include helpers.mobile {
+    row-gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    row-gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    row-gap: spacing.$space-compact-desktop;
+  }
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: colors.$color-surface-subtle;
+  border: controls.$control-border-width-outside solid
+    colors.$color-border-muted;
+  border-radius: radius.$radius-surface-sm;
+
+  @include helpers.mobile {
+    row-gap: spacing.$space-content-gap-mobile;
+    padding: spacing.$space-content-padding-mobile;
+  }
+
+  @include helpers.tablet {
+    row-gap: spacing.$space-content-gap-tablet;
+    padding: spacing.$space-content-padding-tablet;
+  }
+
+  @include helpers.desktop {
+    row-gap: spacing.$space-content-gap-desktop;
+    padding: spacing.$space-content-padding-desktop;
+  }
+}
+
+.previewValues {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.trackContainer {
+  width: 100%;
+
+  @include helpers.mobile {
+    padding-top: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    padding-top: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    padding-top: spacing.$space-stack-desktop;
+  }
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: helpers.pxToRem(8px);
+  background-color: colors.$color-surface-control-muted;
+  border-radius: radius.$radius-round;
+}
+
+.acceptedRange {
+  position: absolute;
+  inset-block: 0;
+  background-color: colors.$color-surface-action;
+  border-radius: inherit;
+}
+
+.correctMarker {
+  position: absolute;
+  top: 50%;
+  width: helpers.pxToRem(16px);
+  height: helpers.pxToRem(16px);
+  background-color: colors.$color-surface-action;
+  border: controls.$control-border-width-outside solid
+    colors.$color-surface-default;
+  border-radius: radius.$radius-circle;
+  transform: translate(-50%, -50%);
+}
+
+.correctValue {
+  position: absolute;
+  bottom: calc(100% + #{spacing.$space-inline-mobile});
+  left: 50%;
+  background-color: colors.$color-surface-default;
+  border: controls.$control-border-width-outside solid
+    colors.$color-border-muted;
+  border-radius: radius.$radius-control-sm;
+  white-space: nowrap;
+  transform: translateX(-50%);
+
+  > * {
+    width: auto;
+  }
+
+  @include helpers.mobile {
+    padding: spacing.$space-inline-tight-mobile spacing.$space-inline-mobile;
+  }
+
+  @include helpers.tablet {
+    padding: spacing.$space-inline-tight-tablet spacing.$space-inline-tablet;
+  }
+
+  @include helpers.desktop {
+    padding: spacing.$space-inline-tight-desktop spacing.$space-inline-desktop;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+
+  @include helpers.mobile {
+    column-gap: spacing.$space-compact-mobile;
+    row-gap: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    column-gap: spacing.$space-compact-tablet;
+    row-gap: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    column-gap: spacing.$space-compact-desktop;
+    row-gap: spacing.$space-stack-desktop;
+  }
+}

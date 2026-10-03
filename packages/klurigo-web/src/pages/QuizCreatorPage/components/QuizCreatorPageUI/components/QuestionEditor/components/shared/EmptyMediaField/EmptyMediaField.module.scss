@@ -1,0 +1,113 @@
+@use '../../../../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../../../../styles/controls.tokens' as controls;
+@use '../../../../../../../../../styles/helpers' as helpers;
+@use '../../../../../../../../../styles/spacing.semantic' as spacing;
+
+.emptyMedia {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.emptyMediaArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: helpers.pxToRem(160px);
+  border: controls.$control-border-width-outside dashed
+    colors.$color-border-muted;
+  border-radius: radius.$radius-control-md;
+  background-color: colors.$color-surface-muted;
+  color: colors.$color-text-default;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  @include helpers.mobile {
+    gap: spacing.$space-inline-mobile;
+    padding: spacing.$space-content-padding-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-inline-tablet;
+    padding: spacing.$space-content-padding-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+    padding: spacing.$space-content-padding-desktop;
+  }
+
+  &:hover {
+    border-color: colors.$color-border-action;
+    background-color: colors.$color-action-subtle;
+
+    .emptyMediaIcon {
+      color: colors.$color-action-default;
+    }
+  }
+
+  &:focus-visible {
+    outline: controls.$control-border-width-outside solid
+      colors.$color-focus-ring;
+    outline-offset: controls.$control-focus-outline-offset;
+    border-color: colors.$color-border-action;
+    background-color: colors.$color-action-subtle;
+
+    .emptyMediaIcon {
+      color: colors.$color-action-default;
+    }
+  }
+}
+
+.emptyMediaIcon {
+  color: colors.$color-text-muted;
+  transition: color 0.15s ease;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(28px);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(32px);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(36px);
+  }
+}
+
+.emptyMediaTitle {
+  color: colors.$color-text-subtle;
+  font-weight: bold;
+}
+
+.emptyMediaDescription {
+  color: colors.$color-text-muted;
+}
+
+.error {
+  display: flex;
+  width: 100%;
+
+  > * {
+    width: 100%;
+  }
+}

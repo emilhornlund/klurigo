@@ -24,6 +24,7 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
     gameMode,
     setGameMode,
     questions,
+    questionIds,
     setQuestions,
     questionValidations,
     selectedQuestion,
@@ -31,11 +32,18 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
     selectQuestion,
     addQuestion,
     updateSelectedQuestionField,
-    moveSelectedQuestionTo,
+    moveQuestion,
     duplicateQuestion,
     deleteQuestion,
     replaceQuestion,
   } = useQuestionDataSource()
+
+  const hasUnsavedChanges =
+    !!gameMode ||
+    (quizSettings.title?.trim() ?? '') !== '' ||
+    (quizSettings.description?.trim() ?? '') !== '' ||
+    !!quizSettings.imageCoverURL ||
+    questions.length > 0
 
   const handleAddQuestion = (): void => {
     if (gameMode === GameMode.Classic) {
@@ -54,15 +62,16 @@ const QuizCreatorPageUIStoryComponent: FC<QuizCreatorPageUIProps> = () => {
       quizSettingsValidation={quizSettingsValidation}
       onQuizSettingsValueChange={onQuizSettingsValueChange}
       questions={questions}
+      questionIds={questionIds}
       questionValidations={questionValidations}
       selectedQuestion={selectedQuestion}
       selectedQuestionIndex={selectedQuestionIndex}
-      canSaveQuiz={false}
+      canSaveQuiz={hasUnsavedChanges}
       onSetQuestions={setQuestions}
       onSelectedQuestionIndex={selectQuestion}
       onAddQuestion={handleAddQuestion}
       onQuestionValueChange={updateSelectedQuestionField}
-      onDropQuestionIndex={moveSelectedQuestionTo}
+      onMoveQuestion={moveQuestion}
       onDuplicateQuestionIndex={duplicateQuestion}
       onDeleteQuestionIndex={deleteQuestion}
       onReplaceQuestion={replaceQuestion}
@@ -90,6 +99,7 @@ export const Default = {
     quizSettings: {},
     quizSettingsValidation: {} as QuizSettingsValidationResult,
     questions: [],
+    questionIds: [],
     questionValidations: [] as QuizQuestionValidationResult[],
     selectedQuestion: undefined,
     selectedQuestionIndex: -1,
@@ -99,7 +109,7 @@ export const Default = {
     onSelectedQuestionIndex: () => undefined,
     onAddQuestion: () => undefined,
     onQuestionValueChange: () => undefined,
-    onDropQuestionIndex: () => undefined,
+    onMoveQuestion: () => undefined,
     onDuplicateQuestionIndex: () => undefined,
     onDeleteQuestionIndex: () => undefined,
     onReplaceQuestion: () => undefined,

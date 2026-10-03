@@ -218,6 +218,17 @@ describe('useQuestionDataSource', () => {
       expect(result.current.questions).toEqual(questions)
       expect(result.current.selectedQuestionIndex).toBe(0)
     })
+
+    it('clears selection when atomically replacing with an empty collection', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+      act(() => result.current.setGameModeWithoutReset(GameMode.Classic))
+
+      act(() => result.current.setQuestionsAndSelect([]))
+
+      expect(result.current.questions).toEqual([])
+      expect(result.current.questionIds).toEqual([])
+      expect(result.current.selectedQuestionIndex).toBe(-1)
+    })
   })
 
   describe('selectQuestion', () => {
@@ -438,117 +449,111 @@ describe('useQuestionDataSource', () => {
 
       expect(copy.options?.[0].value).toBe('A')
     })
-  })
 
-  describe('moveSelectedQuestionTo', () => {
-    it('throws for invalid target index', () => {
+    it('duplicates plain question data when structuredClone is unavailable', () => {
       const { result } = renderHook(() => useQuestionDataSource())
+      const nativeStructuredClone = globalThis.structuredClone
 
       act(() => result.current.setGameMode(GameMode.Classic))
-      act(() => {
-        result.current.setQuestions([
-          makeValidClassicMultiChoice(),
-          makeValidClassicTrueFalse(),
-          makeValidClassicRange(),
-        ])
-      })
-      act(() => result.current.selectQuestion(1))
+      act(() => result.current.setQuestions([makeValidClassicMultiChoice()]))
+      act(() => result.current.selectQuestion(0))
 
-      expectThrowInAct(
-        () => result.current.moveSelectedQuestionTo(99),
-        'Invalid question index',
+      try {
+        // @ts-expect-error Simulate a runtime that lacks the browser API.
+        globalThis.structuredClone = undefined
+        act(() => result.current.duplicateQuestion(0))
+      } finally {
+        globalThis.structuredClone = nativeStructuredClone
+      }
+
+      expect(result.current.questions).toHaveLength(2)
+      expect(result.current.questions[1]).toEqual(result.current.questions[0])
+      expect(result.current.questions[1]).not.toBe(result.current.questions[0])
+    })
+  })
+
+  describe('moveQuestion', () => {
+    const makeQuestions = () => [
+      makeValidClassicMultiChoice(),
+      makeValidClassicTrueFalse(),
+      makeValidClassicRange(),
+    ]
+
+    it('rejects moves before the game mode has been initialized', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+
+      expect(() => result.current.moveQuestion(0, 0)).toThrow(
+        'Invalid game mode',
       )
     })
 
-    it('throws when no valid question is selected (selectedQuestionIndex = -1)', () => {
+    it('guards invalid source and target indexes', () => {
       const { result } = renderHook(() => useQuestionDataSource())
-
       act(() => result.current.setGameMode(GameMode.Classic))
-      act(() => {
-        result.current.setQuestions([
-          makeValidClassicMultiChoice(),
-          makeValidClassicTrueFalse(),
-        ])
-      })
-
-      expect(result.current.selectedQuestionIndex).toBe(0)
-
-      act(() => result.current.deleteQuestion(0))
-      act(() => result.current.deleteQuestion(0))
-
-      expect(result.current.selectedQuestionIndex).toBe(-1)
+      act(() => result.current.setQuestions(makeQuestions()))
 
       expectThrowInAct(
-        () => result.current.moveSelectedQuestionTo(0),
+        () => result.current.moveQuestion(-1, 1),
+        'Invalid question index',
+      )
+      expectThrowInAct(
+        () => result.current.moveQuestion(0, 99),
         'Invalid question index',
       )
     })
 
     it('does nothing when moving to the same index', () => {
       const { result } = renderHook(() => useQuestionDataSource())
-
       act(() => result.current.setGameMode(GameMode.Classic))
-      act(() => {
-        result.current.setQuestions([
-          makeValidClassicMultiChoice(),
-          makeValidClassicTrueFalse(),
-          makeValidClassicRange(),
-        ])
-      })
-      act(() => result.current.selectQuestion(1))
-
+      act(() => result.current.setQuestions(makeQuestions()))
       const before = result.current.questions
 
-      act(() => result.current.moveSelectedQuestionTo(1))
+      act(() => result.current.moveQuestion(1, 1))
 
-      expect(result.current.selectedQuestionIndex).toBe(1)
+      expect(result.current.selectedQuestionIndex).toBe(0)
       expect(result.current.questions).toEqual(before)
     })
 
-    it('moves the selected question forward in the list and preserves relative order', () => {
+    it('moves the selected question and keeps selection with it', () => {
       const { result } = renderHook(() => useQuestionDataSource())
-
       act(() => result.current.setGameMode(GameMode.Classic))
-      act(() => {
-        result.current.setQuestions([
-          makeValidClassicMultiChoice(), // 0
-          makeValidClassicTrueFalse(), // 1
-          makeValidClassicRange(), // 2
-        ])
-      })
-
+      act(() => result.current.setQuestions(makeQuestions()))
       act(() => result.current.selectQuestion(0))
-      act(() => result.current.moveSelectedQuestionTo(2))
+      act(() => result.current.moveQuestion(0, 2))
 
       expect(result.current.selectedQuestionIndex).toBe(2)
-      expect(result.current.questions.map((q) => q.type)).toEqual([
-        QuestionType.TrueFalse,
-        QuestionType.Range,
+      expect(result.current.selectedQuestion?.type).toBe(
         QuestionType.MultiChoice,
-      ])
+      )
     })
 
-    it('moves the selected question backward in the list and preserves relative order', () => {
+    it('moves a non-selected question without changing selection', () => {
       const { result } = renderHook(() => useQuestionDataSource())
-
       act(() => result.current.setGameMode(GameMode.Classic))
-      act(() => {
-        result.current.setQuestions([
-          makeValidClassicMultiChoice(), // 0
-          makeValidClassicTrueFalse(), // 1
-          makeValidClassicRange(), // 2
-        ])
-      })
-
-      act(() => result.current.selectQuestion(2))
-      act(() => result.current.moveSelectedQuestionTo(0))
+      act(() => result.current.setQuestions(makeQuestions()))
+      act(() => result.current.moveQuestion(2, 1))
 
       expect(result.current.selectedQuestionIndex).toBe(0)
       expect(result.current.questions.map((q) => q.type)).toEqual([
-        QuestionType.Range,
         QuestionType.MultiChoice,
+        QuestionType.Range,
         QuestionType.TrueFalse,
       ])
+    })
+
+    it('adjusts selection when another item crosses it in both directions', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+      act(() => result.current.setGameMode(GameMode.Classic))
+      act(() => result.current.setQuestions(makeQuestions()))
+      act(() => result.current.selectQuestion(1))
+
+      act(() => result.current.moveQuestion(0, 2))
+      expect(result.current.selectedQuestionIndex).toBe(0)
+      expect(result.current.selectedQuestion?.type).toBe(QuestionType.TrueFalse)
+
+      act(() => result.current.moveQuestion(2, 0))
+      expect(result.current.selectedQuestionIndex).toBe(1)
+      expect(result.current.selectedQuestion?.type).toBe(QuestionType.TrueFalse)
     })
   })
 
@@ -709,6 +714,21 @@ describe('useQuestionDataSource', () => {
       expect(result.current.questions).toHaveLength(1)
       expect(result.current.selectedQuestion?.type).toBe(QuestionType.Range)
       expect(result.current.questionValidations).toHaveLength(1)
+    })
+
+    it('adds and selects only the mode-supported Range question', () => {
+      const { result } = renderHook(() => useQuestionDataSource())
+
+      act(() => result.current.setGameMode(GameMode.ZeroToOneHundred))
+      const initialQuestionCount = result.current.questions.length
+      act(() => result.current.addQuestion(QuestionType.Range))
+
+      expect(result.current.questions).toHaveLength(initialQuestionCount + 1)
+      expect(result.current.questions[initialQuestionCount]).toMatchObject({
+        type: QuestionType.Range,
+      })
+      expect(result.current.selectedQuestionIndex).toBe(initialQuestionCount)
+      expect(result.current.selectedQuestion?.type).toBe(QuestionType.Range)
     })
 
     it('addQuestion throws in ZeroToOneHundred mode for non-Range type', () => {

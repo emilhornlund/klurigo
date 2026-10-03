@@ -1,10 +1,11 @@
 @use '../../../../../../styles/helpers' as helpers;
 @use '../../../../../../styles/spacing.semantic' as spacing;
 
-.questionEditorContainer,
-.section {
+.questionEditorContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
 
   @include helpers.mobile {
     row-gap: spacing.$space-stack-mobile;
@@ -16,23 +17,5 @@
 
   @include helpers.desktop {
     row-gap: spacing.$space-stack-desktop;
-  }
-
-  .section {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    @include helpers.mobile {
-      gap: spacing.$space-compact-mobile;
-    }
-
-    @include helpers.tablet {
-      gap: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      gap: spacing.$space-compact-desktop;
-    }
   }
 }

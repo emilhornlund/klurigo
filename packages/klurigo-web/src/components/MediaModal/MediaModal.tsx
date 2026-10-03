@@ -20,7 +20,7 @@ const IMAGE_PROVIDER_UPLOAD_VALUE = 'upload'
 
 export interface MediaModalProps {
   title?: string
-  imageOnly?: boolean
+  lockedType?: boolean
   type?: MediaType
   url?: string
   customErrorMessages?: {
@@ -34,7 +34,7 @@ export interface MediaModalProps {
 
 const MediaModal: FC<MediaModalProps> = ({
   title,
-  imageOnly = false,
+  lockedType = false,
   type = MediaType.Image,
   url,
   customErrorMessages,
@@ -49,6 +49,10 @@ const MediaModal: FC<MediaModalProps> = ({
     type: boolean
     url: boolean
   }>({ type: true, url: false })
+
+  const modalTitle =
+    title ??
+    `${url ? 'Replace' : 'Add'} ${lockedType ? MediaTypeLabels[type] : 'Media'}`
 
   const isValid = useMemo(
     () => Object.values(internalValid).every((value) => value),
@@ -74,14 +78,14 @@ const MediaModal: FC<MediaModalProps> = ({
 
   return (
     <Modal
-      title={title || 'Add Media'}
+      title={modalTitle}
       size="normal"
       closeAction={{ label: 'Close', onClick: onClose }}
       primaryAction={{ label: 'Apply', disabled: !isValid, onClick: onApply }}
       open>
       <Stack className={styles.mediaModal} spacing="compact">
         <Stack className={styles.content}>
-          {!imageOnly && (
+          {!lockedType && (
             <div className={classNames(styles.column, styles.half)}>
               <Select
                 id="media-type-select"

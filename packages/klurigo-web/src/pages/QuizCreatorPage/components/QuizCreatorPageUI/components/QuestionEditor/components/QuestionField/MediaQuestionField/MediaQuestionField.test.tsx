@@ -1,5 +1,6 @@
 import { MediaType, QuestionImageRevealEffectType } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ValidationResult } from '../../../../../../../../../validation'
@@ -7,6 +8,7 @@ import type { ValidationResult } from '../../../../../../../../../validation'
 import MediaQuestionField from './MediaQuestionField'
 
 vi.mock('../../../../../../../../../components', () => ({
+  Stack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   Button: ({
     id,
     value,
@@ -24,12 +26,14 @@ vi.mock('../../../../../../../../../components', () => ({
   MediaModal: ({
     type,
     url,
+    lockedType,
     customErrorMessages,
     onChange,
     onClose,
   }: {
     type?: string
     url?: string
+    lockedType?: boolean
     customErrorMessages?: Record<string, string | undefined>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange: (v: any) => void
@@ -40,6 +44,7 @@ vi.mock('../../../../../../../../../components', () => ({
       data-testid="media-modal"
       data-type={type ?? ''}
       data-url={url ?? ''}
+      data-locked-type={lockedType ? 'true' : 'false'}
       data-err-type={customErrorMessages?.type ?? ''}
       data-err-url={customErrorMessages?.url ?? ''}>
       <button
@@ -82,6 +87,50 @@ vi.mock('../../../../../../../../../components', () => ({
 }))
 
 vi.mock('./components', () => ({
+  EmptyMediaField: ({
+    variant,
+    title,
+    description,
+    errorMessage,
+    onClick,
+    onAddImage,
+    onAddVideo,
+    onAddAudio,
+  }: {
+    variant: 'media' | 'image'
+    title: string
+    description: string
+    errorMessage?: string
+    onClick: () => void
+    onAddImage?: () => void
+    onAddVideo?: () => void
+    onAddAudio?: () => void
+  }) => (
+    <div>
+      {variant === 'media' && (
+        <>
+          <button id="add-image-button" type="button" onClick={onAddImage}>
+            Add image
+          </button>
+          <button id="add-video-button" type="button" onClick={onAddVideo}>
+            Add video
+          </button>
+          <button id="add-audio-button" type="button" onClick={onAddAudio}>
+            Add audio
+          </button>
+        </>
+      )}
+
+      <button type="button" onClick={onClick}>
+        {title}
+      </button>
+
+      <span>{description}</span>
+
+      {errorMessage && <span>{errorMessage}</span>}
+    </div>
+  ),
+
   ImageEffectModal: ({
     value,
     onClose,
@@ -127,15 +176,27 @@ describe('MediaQuestionField', () => {
     vi.clearAllMocks()
   })
 
-  it('renders "Add media" when no value and opens MediaModal on click', () => {
+  it('offers explicit image, video, and audio actions that lock the modal type', () => {
     const onChange = vi.fn()
 
     render(
       <MediaQuestionField onChange={onChange} validation={makeValidation()} />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: /add media/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add image' }))
+    expect(screen.getByRole('button', { name: 'Add image' })).toHaveAttribute(
+      'id',
+      'add-image-button',
+    )
     expect(screen.getByTestId('media-modal')).toBeInTheDocument()
+    expect(screen.getByTestId('media-modal')).toHaveAttribute(
+      'data-locked-type',
+      'true',
+    )
+    expect(screen.getByTestId('media-modal')).toHaveAttribute(
+      'data-type',
+      MediaType.Image,
+    )
 
     fireEvent.click(screen.getByRole('button', { name: /choose-media/i }))
     expect(onChange).toHaveBeenCalledWith({
@@ -145,6 +206,34 @@ describe('MediaQuestionField', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /close-media/i }))
     expect(screen.queryByTestId('media-modal')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add video' }))
+    expect(screen.getByTestId('media-modal')).toHaveAttribute(
+      'data-type',
+      MediaType.Video,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /close-media/i }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add audio' }))
+    expect(screen.getByTestId('media-modal')).toHaveAttribute(
+      'data-type',
+      MediaType.Audio,
+    )
+  })
+
+  it('keeps the empty media area action available for opening the general picker', () => {
+    render(
+      <MediaQuestionField onChange={vi.fn()} validation={makeValidation()} />,
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /add media to question/i }),
+    )
+
+    expect(screen.getByTestId('media-modal')).toHaveAttribute(
+      'data-locked-type',
+      'false',
+    )
   })
 
   it('passes validation errors to MediaModal as customErrorMessages', () => {
@@ -160,7 +249,7 @@ describe('MediaQuestionField', () => {
       />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: /add media/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add image' }))
 
     const modal = screen.getByTestId('media-modal')
     expect(modal).toHaveAttribute('data-err-type', 'Type error')

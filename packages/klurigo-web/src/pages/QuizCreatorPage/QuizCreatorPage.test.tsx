@@ -91,7 +91,7 @@ const getQuizQuestionsMock = vi.fn<(quizId: string) => Promise<unknown[]>>()
 
 const setGameModeMock = vi.fn<(mode: GameMode) => void>()
 const setGameModeWithoutResetMock = vi.fn<(mode: GameMode) => void>()
-const moveSelectedQuestionToMock = vi.fn<(index: number) => void>()
+const moveQuestionMock = vi.fn<(fromIndex: number, toIndex: number) => void>()
 const addQuestionMock = vi.fn<(type: QuestionType) => void>()
 const duplicateQuestionMock = vi.fn<(index: number) => void>()
 const deleteQuestionMock = vi.fn<(index: number) => void>()
@@ -249,6 +249,7 @@ vi.mock('./utils/QuestionDataSource', async () => {
         setGameMode: setGameModeWrapped,
         setGameModeWithoutReset: setGameModeWithoutResetWrapped,
         questions,
+        questionIds: questions.map((_, index) => `question-${index}`),
         setQuestions: setQuestionsWrapped,
         setQuestionsAndSelect: setQuestionsAndSelectWrapped,
         questionValidations: mockQuestionValidations,
@@ -258,7 +259,7 @@ vi.mock('./utils/QuestionDataSource', async () => {
         selectQuestion: selectQuestionWrapped,
         addQuestion: addQuestionMock,
         updateSelectedQuestionField: vi.fn(),
-        moveSelectedQuestionTo: moveSelectedQuestionToMock,
+        moveQuestion: moveQuestionMock,
         duplicateQuestion: duplicateQuestionMock,
         deleteQuestion: deleteQuestionMock,
         replaceQuestion: replaceQuestionMock,
@@ -734,7 +735,7 @@ describe('QuizCreatorPage', () => {
     expect(createQuizMock).not.toHaveBeenCalled()
   })
 
-  it('only enables saving when the quiz is valid and has unsaved changes', async () => {
+  it('keeps Save enabled for dirty quizzes even when settings are invalid', async () => {
     mockAllQuizSettingsValid = false
 
     const { rerender } = render(<QuizCreatorPage />)
@@ -745,7 +746,7 @@ describe('QuizCreatorPage', () => {
 
     await flushPromises()
 
-    expect(latestUIProps?.canSaveQuiz).toBe(false)
+    expect(latestUIProps?.canSaveQuiz).toBe(true)
 
     mockAllQuizSettingsValid = true
 

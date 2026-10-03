@@ -5,6 +5,24 @@ import { describe, expect, it } from 'vitest'
 import QuestionTypePointsBar from './QuestionTypePointsBar'
 
 describe('QuestionTypePointsBar', () => {
+  it.each([
+    [QuestionType.MultiChoice, 'Multiple choice'],
+    [QuestionType.Range, 'Range'],
+    [QuestionType.TrueFalse, 'True or false'],
+    [QuestionType.TypeAnswer, 'Type answer'],
+    [QuestionType.Pin, 'Pin'],
+    [QuestionType.Puzzle, 'Puzzle'],
+  ])('uses the renamed question type label %s', (questionType, label) => {
+    render(
+      <QuestionTypePointsBar
+        mode={GameMode.Classic}
+        questionType={questionType}
+      />,
+    )
+
+    expect(screen.getByText(label)).toBeInTheDocument()
+  })
+
   it('renders null for non-classic mode', () => {
     const { container } = render(
       <QuestionTypePointsBar
@@ -25,7 +43,7 @@ describe('QuestionTypePointsBar', () => {
         questionPoints={0}
       />,
     )
-    expect(screen.getByText('Multi Choice')).toBeInTheDocument()
+    expect(screen.getByText('Multiple choice')).toBeInTheDocument()
     expect(screen.getByText('Zero Points')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
@@ -38,7 +56,7 @@ describe('QuestionTypePointsBar', () => {
         questionPoints={1000}
       />,
     )
-    expect(screen.getByText('True or False')).toBeInTheDocument()
+    expect(screen.getByText('True or false')).toBeInTheDocument()
     expect(screen.getByText('Standard Points')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
@@ -63,7 +81,7 @@ describe('QuestionTypePointsBar', () => {
         questionType={QuestionType.TypeAnswer}
       />,
     )
-    expect(screen.getByText('Type Answer')).toBeInTheDocument()
+    expect(screen.getByText('Type answer')).toBeInTheDocument()
     expect(screen.queryByText('Zero Points')).toBeNull()
     expect(screen.queryByText('Standard Points')).toBeNull()
     expect(screen.queryByText('Double Points')).toBeNull()

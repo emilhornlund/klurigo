@@ -71,7 +71,7 @@ exports[`QuestionTypePointsBar > renders only question type label when points ar
           fill="currentColor"
         />
       </svg>
-      Type Answer
+      Type answer
     </p>
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
@@ -117,7 +117,7 @@ exports[`QuestionTypePointsBar > renders question type label and zero points 1`]
           fill="currentColor"
         />
       </svg>
-      Multi Choice
+      Multiple choice
     </p>
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
@@ -164,7 +164,7 @@ exports[`QuestionTypePointsBar > renders standard points for 1000 1`] = `
           fill="currentColor"
         />
       </svg>
-      True or False
+      True or false
     </p>
     <p
       class="typography body2 alignLeft widthFull colorInverse noOpacity noWrap bold"
