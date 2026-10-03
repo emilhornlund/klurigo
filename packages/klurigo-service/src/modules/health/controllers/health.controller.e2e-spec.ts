@@ -1,5 +1,4 @@
 import { INestApplication } from '@nestjs/common'
-import { HealthCheckError } from '@nestjs/terminus'
 import type { MongooseHealthIndicator } from '@nestjs/terminus'
 import request from 'supertest'
 
@@ -67,16 +66,8 @@ describe('HealthController (e2e)', () => {
     }
     const mongoosePingCheck = jest.spyOn(mongoose, 'pingCheck')
     const redisPingCheck = jest.spyOn(redis, 'pingCheck')
-    mongoosePingCheck.mockRejectedValue(
-      new HealthCheckError('MongoDB check failed', {
-        mongodb: { status: 'down' },
-      }),
-    )
-    redisPingCheck.mockRejectedValue(
-      new HealthCheckError('Redis check failed', {
-        redis: { status: 'down' },
-      }),
-    )
+    mongoosePingCheck.mockResolvedValue({ mongodb: { status: 'down' } })
+    redisPingCheck.mockResolvedValue({ redis: { status: 'down' } })
 
     try {
       await request(app.getHttpServer())
@@ -100,11 +91,9 @@ describe('HealthController (e2e)', () => {
     const { mongoose } = app.get(HealthController) as unknown as {
       mongoose: MongooseHealthIndicator
     }
-    const pingCheck = jest.spyOn(mongoose, 'pingCheck').mockRejectedValue(
-      new HealthCheckError('MongoDB check failed', {
-        mongodb: { status: 'down' },
-      }),
-    )
+    const pingCheck = jest
+      .spyOn(mongoose, 'pingCheck')
+      .mockResolvedValue({ mongodb: { status: 'down' } })
 
     try {
       await request(app.getHttpServer())
@@ -123,11 +112,9 @@ describe('HealthController (e2e)', () => {
     const { redis } = app.get(HealthController) as unknown as {
       redis: RedisHealthIndicator
     }
-    const pingCheck = jest.spyOn(redis, 'pingCheck').mockRejectedValue(
-      new HealthCheckError('Redis check failed', {
-        redis: { status: 'down' },
-      }),
-    )
+    const pingCheck = jest
+      .spyOn(redis, 'pingCheck')
+      .mockResolvedValue({ redis: { status: 'down' } })
 
     try {
       await request(app.getHttpServer())

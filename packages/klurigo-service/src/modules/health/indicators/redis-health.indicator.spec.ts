@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@nestjs/terminus'
+import { HealthIndicatorService } from '@nestjs/terminus'
 import Redis from 'ioredis'
 
 import { RedisHealthIndicator } from './redis-health.indicator'
@@ -12,7 +12,10 @@ describe('RedisHealthIndicator', () => {
       ping: jest.fn(),
     } as unknown as Pick<Redis, 'ping'>
 
-    indicator = new RedisHealthIndicator(redis as Redis)
+    indicator = new RedisHealthIndicator(
+      new HealthIndicatorService(),
+      redis as Redis,
+    )
   })
 
   it('returns status up when redis.ping succeeds', async () => {
@@ -25,26 +28,17 @@ describe('RedisHealthIndicator', () => {
     expect(redis.ping).toHaveBeenCalledTimes(1)
   })
 
-  it('throws HealthCheckError with status down without exposing the redis error', async () => {
+  it('returns status down without exposing the redis error', async () => {
     ;(redis.ping as jest.Mock).mockRejectedValue(
       new Error('redis://:secret-password@redis:6379 connection timeout'),
     )
 
-    try {
-      await indicator.pingCheck('redis')
-      fail('Expected pingCheck to throw')
-    } catch (err) {
-      expect(err).toBeInstanceOf(HealthCheckError)
+    const result = await indicator.pingCheck('redis')
 
-      const hcErr = err as HealthCheckError
-      expect(hcErr.message).toBe('Redis check failed')
-      expect(hcErr.causes).toEqual({
-        redis: {
-          status: 'down',
-        },
-      })
-      expect(JSON.stringify(hcErr.causes)).not.toContain('secret-password')
-    }
+    expect(result).toEqual({
+      redis: { status: 'down' },
+    })
+    expect(JSON.stringify(result)).not.toContain('secret-password')
 
     expect(redis.ping).toHaveBeenCalledTimes(1)
   })

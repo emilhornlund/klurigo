@@ -1,8 +1,8 @@
 import { GameParticipantType, GameStatus } from '@klurigo/common'
-import { User } from '@sentry/nestjs'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Quiz } from '../../quiz-core/repositories/models/schemas'
+import { User } from '../../user/repositories/models/schemas'
 import { Game, LobbyTaskWithBase } from '../repositories/models/schemas'
 
 /**
