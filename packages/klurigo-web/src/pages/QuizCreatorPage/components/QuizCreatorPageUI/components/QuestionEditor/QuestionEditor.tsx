@@ -1,5 +1,5 @@
 import type { QuestionDto } from '@klurigo/common'
-import { GameMode, QuestionType } from '@klurigo/common'
+import { GameMode } from '@klurigo/common'
 import type { FC } from 'react'
 
 import {
@@ -18,14 +18,12 @@ import type {
 } from '../../../../utils/QuestionDataSource'
 
 import {
-  ClassicMultiChoiceOptionQuestionForm,
+  ClassicMultiChoiceQuestionForm,
   ClassicPinQuestionForm,
   ClassicPuzzleQuestionForm,
   ClassicRangeQuestionForm,
   ClassicTrueFalseQuestionForm,
   ClassicTypeAnswerQuestionForm,
-  QuestionField,
-  QuestionFieldType,
   ZeroToOneHundredRangeQuestionForm,
 } from './components'
 import styles from './QuestionEditor.module.scss'
@@ -34,7 +32,7 @@ export interface QuestionEditorProps {
   mode?: GameMode
   question: QuizQuestionModel
   questionValidation: QuizQuestionValidationResult
-  onTypeChange: (type: QuestionType) => void
+  validationRevealed: boolean
   onQuestionValueChange: QuizQuestionModelFieldChangeFunction<QuestionDto>
 }
 
@@ -42,26 +40,16 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
   mode,
   question,
   questionValidation,
-  onTypeChange,
+  validationRevealed,
   onQuestionValueChange,
 }) => {
   return (
     <div className={styles.questionEditorContainer}>
-      {mode === GameMode.Classic && (
-        <div className={styles.section}>
-          <QuestionField
-            type={QuestionFieldType.CommonType}
-            value={question.type}
-            validation={questionValidation}
-            onChange={onTypeChange}
-          />
-        </div>
-      )}
-
       {mode && isClassicMultiChoiceQuestion(mode, question) && (
-        <ClassicMultiChoiceOptionQuestionForm
+        <ClassicMultiChoiceQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -70,6 +58,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ClassicRangeQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -78,6 +67,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ClassicTrueFalseQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -86,6 +76,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ClassicTypeAnswerQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -94,6 +85,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ClassicPinQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -102,6 +94,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ClassicPuzzleQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}
@@ -110,6 +103,7 @@ const QuestionEditor: FC<QuestionEditorProps> = ({
         <ZeroToOneHundredRangeQuestionForm
           question={question}
           questionValidation={questionValidation}
+          validationRevealed={validationRevealed}
           onChange={onQuestionValueChange}
         />
       )}

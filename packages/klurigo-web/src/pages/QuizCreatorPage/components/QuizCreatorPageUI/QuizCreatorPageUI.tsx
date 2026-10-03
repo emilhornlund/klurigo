@@ -1,18 +1,9 @@
-import {
-  faArrowRightFromBracket,
-  faCode,
-  faFloppyDisk,
-  faGear,
-  faSliders,
-} from '@fortawesome/free-solid-svg-icons'
 import type { QuestionDto } from '@klurigo/common'
 import { GameMode, QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
-import { Button, Page, Stack, TextField } from '../../../../components'
-import { DeviceType } from '../../../../utils/device-size.types'
-import { useDeviceSizeType } from '../../../../utils/useDeviceSizeType'
+import { Page, Stack } from '../../../../components'
 import type {
   QuizQuestionModel,
   QuizQuestionModelFieldChangeFunction,
@@ -26,11 +17,16 @@ import type {
 
 import {
   AdvancedQuestionEditor,
+  EditorPanel,
   GameModeSelectionModal,
   QuestionEditor,
+  QuestionNavigation,
   QuestionPicker,
+  QuestionSettings,
+  QuizEditorHeader,
 } from './components'
 import QuizSettingsModal from './components/QuizSettingsModal'
+import { addRevealedQuestionId } from './questionValidation'
 import styles from './QuizCreatorPageUI.module.scss'
 
 export interface QuizCreatorPageUIProps {
@@ -40,6 +36,7 @@ export interface QuizCreatorPageUIProps {
   quizSettingsValidation: QuizSettingsValidationResult
   onQuizSettingsValueChange: QuizSettingsModelFieldChangeFunction
   questions: QuizQuestionModel[]
+  questionIds: string[]
   questionValidations: QuizQuestionValidationResult[]
   onSetQuestions: (questions: QuizQuestionModel[]) => void
   selectedQuestion?: QuizQuestionModel
@@ -49,7 +46,7 @@ export interface QuizCreatorPageUIProps {
   onSelectedQuestionIndex: (index: number) => void
   onAddQuestion: () => void
   onQuestionValueChange: QuizQuestionModelFieldChangeFunction<QuestionDto>
-  onDropQuestionIndex: (index: number) => void
+  onMoveQuestion: (fromIndex: number, toIndex: number) => void
   onDuplicateQuestionIndex: (index: number) => void
   onDeleteQuestionIndex: (index: number) => void
   onReplaceQuestion: (type: QuestionType) => void
@@ -64,6 +61,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   quizSettingsValidation,
   onQuizSettingsValueChange,
   questions,
+  questionIds,
   questionValidations,
   onSetQuestions,
   selectedQuestion,
@@ -73,81 +71,135 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   onSelectedQuestionIndex,
   onAddQuestion,
   onQuestionValueChange,
-  onDropQuestionIndex,
+  onMoveQuestion,
   onDuplicateQuestionIndex,
   onDeleteQuestionIndex,
   onReplaceQuestion,
   onSaveQuiz,
   onExit,
 }) => {
-  const deviceType = useDeviceSizeType()
-
   const [showQuizSettingsModal, setShowQuizSettingsModal] = useState(false)
+
+  const [revealedQuestionIds, setRevealedQuestionIds] = useState<Set<string>>(
+    () => new Set(),
+  )
 
   const [showAdvancedQuestionEditor, setShowAdvancedQuestionEditor] =
     useState(false)
 
+  const selectedQuestionId = questionIds[selectedQuestionIndex]
+  const validationRevealed =
+    selectedQuestionId !== undefined &&
+    revealedQuestionIds.has(selectedQuestionId)
+
+  const revealQuestionValidation = useCallback((questionId: string) => {
+    setRevealedQuestionIds((current) =>
+      addRevealedQuestionId(current, questionId),
+    )
+  }, [])
+
+  const handleSelectedQuestionIndex = useCallback(
+    (nextIndex: number) => {
+      const currentQuestionId = questionIds[selectedQuestionIndex]
+      const currentQuestionValidation =
+        questionValidations[selectedQuestionIndex]
+
+      if (currentQuestionId && !currentQuestionValidation?.valid) {
+        revealQuestionValidation(currentQuestionId)
+      }
+
+      onSelectedQuestionIndex(nextIndex)
+    },
+    [
+      onSelectedQuestionIndex,
+      questionIds,
+      questionValidations,
+      revealQuestionValidation,
+      selectedQuestionIndex,
+    ],
+  )
+
+  const handleDeleteQuestionIndex = useCallback(
+    (index: number) => {
+      const questionId = questionIds[index]
+      if (questionId) {
+        setRevealedQuestionIds((current) => {
+          if (!current.has(questionId)) return current
+          const next = new Set(current)
+          next.delete(questionId)
+          return next
+        })
+      }
+      onDeleteQuestionIndex(index)
+    },
+    [onDeleteQuestionIndex, questionIds],
+  )
+
+  const handleReplaceQuestion = useCallback(
+    (type: QuestionType) => {
+      if (selectedQuestionId) {
+        setRevealedQuestionIds((current) => {
+          if (!current.has(selectedQuestionId)) return current
+          const next = new Set(current)
+          next.delete(selectedQuestionId)
+          return next
+        })
+      }
+      onReplaceQuestion(type)
+    },
+    [onReplaceQuestion, selectedQuestionId],
+  )
+
+  const handleSaveQuiz = useCallback(() => {
+    const invalidQuestionIndices = questionValidations.flatMap(
+      (validation, index) => (validation.valid ? [] : [index]),
+    )
+    const invalidQuestions = invalidQuestionIndices.flatMap((index) => {
+      const questionId = questionIds[index]
+      return questionId === undefined ? [] : [{ index, questionId }]
+    })
+
+    if (invalidQuestions.length > 0) {
+      setRevealedQuestionIds((current) =>
+        invalidQuestions.reduce(
+          (revealed, questionId) =>
+            addRevealedQuestionId(revealed, questionId.questionId),
+          current,
+        ),
+      )
+      onSelectedQuestionIndex(invalidQuestions[0].index)
+    }
+
+    onSaveQuiz()
+  }, [onSaveQuiz, onSelectedQuestionIndex, questionIds, questionValidations])
+
   return (
     <Page
-      layout="fill"
+      layout="fullBleed"
       header={
-        <>
-          {deviceType !== DeviceType.Mobile && (
-            <TextField
-              id="quiz-title-textfield"
-              type="text"
-              surface="light"
-              size="small"
-              placeholder="Title"
-              value={quizSettings.title}
-              onChange={(value) =>
-                onQuizSettingsValueChange('title', value as string)
-              }
-              customErrorMessage={
-                quizSettingsValidation.errors.filter(
-                  ({ path }) => path === 'title',
-                )?.[0]?.message
-              }
-              showErrorMessage={false}
-              forceValidate
-            />
-          )}
-          <Button
-            id="settings-button"
-            type="button"
-            size="small"
-            variant="primary"
-            surface="brand"
-            value="Settings"
-            hideValue="mobile"
-            icon={faGear}
-            onClick={() => setShowQuizSettingsModal(true)}
+        <QuizEditorHeader
+          quizSettings={quizSettings}
+          quizSettingsValidation={quizSettingsValidation}
+          onQuizSettingsValueChange={onQuizSettingsValueChange}
+          canSaveQuiz={canSaveQuiz}
+          isSavingQuiz={isSavingQuiz}
+          showAdvancedQuestionEditor={showAdvancedQuestionEditor}
+          onOpenSettings={() => setShowQuizSettingsModal(true)}
+          onToggleAdvancedQuestionEditor={() =>
+            setShowAdvancedQuestionEditor(!showAdvancedQuestionEditor)
+          }
+          onSaveQuiz={handleSaveQuiz}
+          onExit={onExit}
+        />
+      }
+      footer={
+        gameMode && selectedQuestion && !showAdvancedQuestionEditor ? (
+          <QuestionNavigation
+            selectedQuestionIndex={selectedQuestionIndex}
+            totalQuestions={questions.length}
+            onSelectedQuestionIndex={handleSelectedQuestionIndex}
           />
-          <Button
-            id="save-button"
-            type="button"
-            size="small"
-            variant="primary"
-            intent="accent"
-            value="Save"
-            hideValue="mobile"
-            icon={faFloppyDisk}
-            loading={!!isSavingQuiz}
-            disabled={!canSaveQuiz}
-            onClick={onSaveQuiz}
-          />
-          <Button
-            id="exit-button"
-            type="button"
-            size="small"
-            variant="primary"
-            surface="brand"
-            value="Exit"
-            hideValue="mobile"
-            icon={faArrowRightFromBracket}
-            onClick={onExit}
-          />
-        </>
+        ) : undefined
       }
       disableContentFadeAnimation>
       <Stack className={styles.quizCreatorPage} width="full">
@@ -163,28 +215,46 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
         )}
 
         {gameMode && selectedQuestion && !showAdvancedQuestionEditor && (
-          <>
-            <QuestionPicker
-              questions={questions.map((question, index) => ({
-                type: question.type as QuestionType,
-                text: question.question,
-                valid: questionValidations[index].valid,
-              }))}
-              selectedQuestionIndex={selectedQuestionIndex}
-              onAddQuestion={onAddQuestion}
-              onSelectQuestion={onSelectedQuestionIndex}
-              onDropQuestion={onDropQuestionIndex}
-              onDuplicateQuestion={onDuplicateQuestionIndex}
-              onDeleteQuestion={onDeleteQuestionIndex}
-            />
-            <QuestionEditor
+          <div className={styles.workspace} data-testid="editor-workspace">
+            <EditorPanel
+              as="nav"
+              title="Questions"
+              className={styles.questionNavigator}>
+              <QuestionPicker
+                questions={questions.map((question, index) => ({
+                  id: questionIds[index],
+                  type: question.type as QuestionType,
+                  text: question.question,
+                  valid: questionValidations[index].valid,
+                }))}
+                selectedQuestionIndex={selectedQuestionIndex}
+                onAddQuestion={onAddQuestion}
+                onSelectQuestion={handleSelectedQuestionIndex}
+                onMoveQuestion={onMoveQuestion}
+                onDuplicateQuestion={onDuplicateQuestionIndex}
+                onDeleteQuestion={handleDeleteQuestionIndex}
+              />
+            </EditorPanel>
+            <EditorPanel as="main" className={styles.questionEditor}>
+              <QuestionEditor
+                key={selectedQuestionId}
+                mode={gameMode}
+                question={selectedQuestion}
+                questionValidation={questionValidations[selectedQuestionIndex]}
+                validationRevealed={validationRevealed}
+                onQuestionValueChange={onQuestionValueChange}
+              />
+            </EditorPanel>
+            <QuestionSettings
+              key={selectedQuestionId}
               mode={gameMode}
               question={selectedQuestion}
               questionValidation={questionValidations[selectedQuestionIndex]}
+              validationRevealed={validationRevealed}
               onQuestionValueChange={onQuestionValueChange}
-              onTypeChange={onReplaceQuestion}
+              onReplaceQuestion={handleReplaceQuestion}
             />
-          </>
+          </div>
         )}
 
         {gameMode && showAdvancedQuestionEditor && (
@@ -194,28 +264,6 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             questionValidations={questionValidations}
             onChange={onSetQuestions}
           />
-        )}
-
-        {gameMode && (
-          <div className={styles.editorToggleSection}>
-            <div className={styles.divider} />
-            <div className={styles.toggleButtonWrapper}>
-              <Button
-                id="toggle-editor-button"
-                type="button"
-                size="small"
-                value={
-                  showAdvancedQuestionEditor
-                    ? 'Show Simple Editor'
-                    : 'Show Advanced Editor'
-                }
-                icon={showAdvancedQuestionEditor ? faSliders : faCode}
-                onClick={() =>
-                  setShowAdvancedQuestionEditor(!showAdvancedQuestionEditor)
-                }
-              />
-            </div>
-          </div>
         )}
       </Stack>
     </Page>

@@ -3,19 +3,20 @@ import {
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
-import { render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import type { ValidationResult } from '../../../../../../../../validation'
+import fieldStyles from '../QuestionField/QuestionField.module.scss'
 
 import {
-  ClassicMultiChoiceOptionQuestionForm,
+  ClassicMultiChoiceQuestionForm,
   ClassicRangeQuestionForm,
   ClassicTrueFalseQuestionForm,
   ClassicTypeAnswerQuestionForm,
   ZeroToOneHundredRangeQuestionForm,
-} from './QuestionForm'
+} from './index'
 
 type AnyValidation = ValidationResult<Record<string, unknown>>
 
@@ -34,7 +35,7 @@ function makeValidation(
 describe('QuestionForm', () => {
   it('renders a classic multi choice option question form', () => {
     const { container } = render(
-      <ClassicMultiChoiceOptionQuestionForm
+      <ClassicMultiChoiceQuestionForm
         question={{
           type: QuestionType.MultiChoice,
           question: 'Who painted The Starry Night?',
@@ -62,7 +63,8 @@ describe('QuestionForm', () => {
   })
 
   it('renders a classic range question form', () => {
-    const { container } = render(
+    const onChange = vi.fn()
+    render(
       <ClassicRangeQuestionForm
         question={{
           type: QuestionType.Range,
@@ -80,11 +82,32 @@ describe('QuestionForm', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onChange={() => undefined}
+        onChange={onChange}
       />,
     )
 
-    expect(container).toMatchSnapshot()
+    fireEvent.change(screen.getByTestId('test-range-min-textfield-textfield'), {
+      target: { value: '10' },
+    })
+    fireEvent.change(screen.getByTestId('test-range-max-textfield-textfield'), {
+      target: { value: '90' },
+    })
+    fireEvent.change(
+      screen.getByTestId('test-range-correct-textfield-textfield'),
+      { target: { value: '45' } },
+    )
+    fireEvent.change(screen.getByTestId('test-range-margin-select-select'), {
+      target: { value: QuestionRangeAnswerMargin.Low },
+    })
+
+    expect(onChange).toHaveBeenNthCalledWith(1, 'min', 10)
+    expect(onChange).toHaveBeenNthCalledWith(2, 'max', 90)
+    expect(onChange).toHaveBeenNthCalledWith(3, 'correct', 45)
+    expect(onChange).toHaveBeenNthCalledWith(
+      4,
+      'margin',
+      QuestionRangeAnswerMargin.Low,
+    )
   })
 
   it('renders a classic true or false question form', () => {
@@ -132,7 +155,8 @@ describe('QuestionForm', () => {
   })
 
   it('renders a zero to one hundred range question form', () => {
-    const { container } = render(
+    const onChange = vi.fn()
+    render(
       <ZeroToOneHundredRangeQuestionForm
         question={{
           type: QuestionType.Range,
@@ -146,10 +170,17 @@ describe('QuestionForm', () => {
           duration: 30,
         }}
         questionValidation={makeValidation()}
-        onChange={() => undefined}
+        onChange={onChange}
       />,
     )
 
-    expect(container).toMatchSnapshot()
+    const correctInput = screen.getByTestId(
+      'test-range-correct-textfield-textfield',
+    )
+    expect(correctInput.closest(`.${fieldStyles.layoutFull}`)).toBeTruthy()
+    expect(correctInput).toHaveAttribute('min', '0')
+    expect(correctInput).toHaveAttribute('max', '100')
+    fireEvent.change(correctInput, { target: { value: '55' } })
+    expect(onChange).toHaveBeenCalledWith('correct', 55)
   })
 })

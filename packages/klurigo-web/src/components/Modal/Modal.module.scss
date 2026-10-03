@@ -95,19 +95,24 @@
       min-height: 0;
       overflow-y: auto;
 
-      margin-inline: -4px;
-      padding-inline: 4px;
-      padding-bottom: 8px;
-
       @include helpers.mobile {
+        margin: calc(-1 * #{spacing.$space-stack-mobile});
+        padding: spacing.$space-stack-mobile;
+
         @include helpers.fontSize(typography.$font-size-body2-mobile);
       }
 
       @include helpers.tablet {
+        margin: calc(-1 * #{spacing.$space-stack-tablet});
+        padding: spacing.$space-stack-tablet;
+
         @include helpers.fontSize(typography.$font-size-body2-tablet);
       }
 
       @include helpers.desktop {
+        margin: calc(-1 * #{spacing.$space-stack-desktop});
+        padding: spacing.$space-stack-desktop;
+
         @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
     }

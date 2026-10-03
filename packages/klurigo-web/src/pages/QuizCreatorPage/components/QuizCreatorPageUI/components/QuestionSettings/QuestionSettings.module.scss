@@ -1,0 +1,20 @@
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.questionSettings {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  @include helpers.mobile {
+    gap: spacing.$space-page-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-page-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-page-desktop;
+  }
+}

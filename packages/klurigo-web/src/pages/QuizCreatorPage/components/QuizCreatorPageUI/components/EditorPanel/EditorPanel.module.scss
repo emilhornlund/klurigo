@@ -1,0 +1,59 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/controls.tokens' as controls;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.editorPanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: controls.$control-border-width-outside solid
+    colors.$color-border-muted;
+  border-radius: radius.$radius-surface-md;
+  background-color: colors.$color-surface-default;
+  color: colors.$color-text-default;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+    padding: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+    padding: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+    padding: spacing.$space-stack-desktop;
+  }
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+    margin: calc(-1 * #{spacing.$space-stack-mobile});
+    padding: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+    margin: calc(-1 * #{spacing.$space-stack-tablet});
+    padding: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    min-height: 0;
+    gap: spacing.$space-compact-desktop;
+    margin: calc(-1 * #{spacing.$space-stack-desktop});
+    padding: spacing.$space-stack-desktop;
+    overflow-y: auto;
+  }
+}

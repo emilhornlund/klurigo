@@ -2,7 +2,7 @@ export type { QuestionFieldProps } from './QuestionField'
 export type { QuestionFormProps } from './QuestionForm'
 export { default as QuestionField } from './QuestionField'
 export {
-  ClassicMultiChoiceOptionQuestionForm,
+  ClassicMultiChoiceQuestionForm,
   ClassicRangeQuestionForm,
   ClassicTrueFalseQuestionForm,
   ClassicTypeAnswerQuestionForm,

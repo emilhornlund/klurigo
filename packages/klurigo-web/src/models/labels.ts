@@ -231,10 +231,10 @@ export const QuizCategoryLabels: { [key in QuizCategory]: string } = {
 }
 
 export const QuestionTypeLabels: { [key in QuestionType]: string } = {
-  [QuestionType.MultiChoice]: 'Multi Choice',
+  [QuestionType.MultiChoice]: 'Multiple choice',
   [QuestionType.Range]: 'Range',
-  [QuestionType.TrueFalse]: 'True or False',
-  [QuestionType.TypeAnswer]: 'Type Answer',
+  [QuestionType.TrueFalse]: 'True or false',
+  [QuestionType.TypeAnswer]: 'Type answer',
   [QuestionType.Pin]: 'Pin',
   [QuestionType.Puzzle]: 'Puzzle',
 }

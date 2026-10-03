@@ -1,8 +1,14 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { faCircleExclamation, faTrash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCircleExclamation,
+  faGripVertical,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { QuestionType } from '@klurigo/common'
-import type { DragEvent, FC, MouseEvent } from 'react'
+import type { FC, MouseEvent } from 'react'
 
 import { QuestionTypeLabels } from '../../../../../../../../models'
 import { classNames } from '../../../../../../../../utils/helpers'
@@ -10,6 +16,7 @@ import { classNames } from '../../../../../../../../utils/helpers'
 import styles from './QuestionPickerItem.module.scss'
 
 export interface QuestionPickerItemProps {
+  id: string
   index: number
   text: string
   type: QuestionType
@@ -17,12 +24,12 @@ export interface QuestionPickerItemProps {
   valid: boolean
   canDelete: boolean
   onClick?: () => void
-  onDrop?: (id: number) => void
   onDuplicate?: () => void
   onDelete?: () => void
 }
 
 const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
+  id,
   index,
   text,
   type,
@@ -30,25 +37,28 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
   valid,
   canDelete,
   onClick,
-  onDrop,
   onDuplicate,
   onDelete,
 }) => {
+  const {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : undefined,
+  }
+
   const handleClickQuestionPickerItem = (event: MouseEvent) => {
     event.preventDefault()
     onClick?.()
-  }
-
-  const handleDragQuestionPickerItem = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const handleDropQuestionPickerItem = (event: DragEvent<HTMLDivElement>) => {
-    const result = event.currentTarget.id.match(/^question-picker-item-(\d+)$/)
-    if (result?.length === 2) {
-      const dropIndex = parseInt(result[1])
-      onDrop?.(dropIndex)
-    }
   }
 
   const handleClickDuplicate = (event: MouseEvent) => {
@@ -65,62 +75,69 @@ const QuestionPickerItem: FC<QuestionPickerItemProps> = ({
 
   return (
     <div
-      id={`question-picker-item-${index}`}
-      draggable={active}
-      className={classNames(styles.questionPickerItemWrapper)}
-      onClick={handleClickQuestionPickerItem}
-      onDragOver={handleDragQuestionPickerItem}
-      onDrop={handleDropQuestionPickerItem}>
+      ref={setNodeRef}
+      className={classNames(
+        styles.questionPickerItem,
+        active ? styles.active : undefined,
+      )}
+      style={style}>
       <button
         type="button"
-        className={classNames(
-          styles.questionPickerItemButton,
-          active ? styles.questionPickerItemActive : undefined,
-        )}>
-        <div className={styles.questionPickerItemText}>
-          <span>{text}</span>
-        </div>
-        <div className={styles.questionPickerItemType}>
-          {QuestionTypeLabels[type]}
-        </div>
+        className={styles.questionButton}
+        aria-current={active ? 'step' : undefined}
+        onClick={handleClickQuestionPickerItem}>
+        <span className={styles.questionNumber}>{index + 1}</span>
+
+        <span className={styles.questionDetails}>
+          <span className={styles.questionText}>{text}</span>
+
+          <span className={styles.questionTypeRow}>
+            <span className={styles.questionType}>
+              {QuestionTypeLabels[type]}
+            </span>
+
+            {!valid && (
+              <span
+                className={styles.validationError}
+                role="img"
+                aria-label={`Question ${index + 1} has validation errors`}>
+                <FontAwesomeIcon icon={faCircleExclamation} />
+              </span>
+            )}
+          </span>
+        </span>
+
+        <span
+          ref={setActivatorNodeRef}
+          className={styles.dragHandle}
+          aria-label={`Reorder question ${index + 1}`}
+          onClick={(event) => event.stopPropagation()}
+          {...attributes}
+          {...listeners}>
+          <FontAwesomeIcon icon={faGripVertical} />
+        </span>
       </button>
-      <div className={styles.questionPickerItemOverlay}>
-        <div className={styles.questionPickerItemOverlayTop}>
-          <div
-            className={classNames(
-              styles.questionPickerItemOverlayNumber,
-              active ? styles.questionPickerItemActive : undefined,
-            )}>
-            {index + 1}
-          </div>
+
+      {active && (
+        <div className={styles.questionActions}>
+          <button
+            type="button"
+            aria-label="Duplicate question"
+            className={styles.duplicateButton}
+            onClick={handleClickDuplicate}>
+            <FontAwesomeIcon icon={faCopy} />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Delete question"
+            className={styles.deleteButton}
+            disabled={!canDelete}
+            onClick={handleClickDelete}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
         </div>
-        <div className={styles.questionPickerItemOverlayBottom}>
-          {active && (
-            <button
-              type="button"
-              aria-label="Duplicate question"
-              className={styles.cloneButton}
-              onClick={handleClickDuplicate}>
-              <FontAwesomeIcon icon={faCopy} />
-            </button>
-          )}
-          {!valid && (
-            <div className={styles.validationErrorSymbol}>
-              <FontAwesomeIcon icon={faCircleExclamation} />
-            </div>
-          )}
-          {active && (
-            <button
-              type="button"
-              disabled={!canDelete}
-              aria-label="Delete question"
-              className={styles.deleteButton}
-              onClick={handleClickDelete}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   )
 }

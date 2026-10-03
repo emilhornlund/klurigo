@@ -73,7 +73,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
             id="quiz-title-textfield"
             type="text"
             surface="light"
-            placeholder="Title"
+            placeholder="Untitled quiz"
             value={title}
             customErrorMessage={getValidationErrorMessage(validation, 'title')}
             onChange={(value) => onValueChange('title', value as string)}
@@ -220,7 +220,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
             onValueChange('imageCoverURL', value.url)
           }
           onClose={() => setShowMediaModal(false)}
-          imageOnly
+          lockedType
         />
       )}
     </Modal>

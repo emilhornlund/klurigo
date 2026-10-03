@@ -11,7 +11,7 @@
   @include button.button-reset;
 
   outline: none;
-  color: colors.$color-text-inverse;
+  color: colors.$color-text-default;
 
   @include helpers.mobile {
     @include helpers.fontSize(typography.$font-size-control-normal-mobile);
@@ -26,16 +26,16 @@
   }
 
   &:hover {
-    color: colors.$color-text-inverse-subtle;
+    color: colors.$color-text-subtle;
   }
 }
 
 .iconTooltip {
   display: flex;
   flex-direction: column;
-  color: colors.$color-text-default;
+  color: colors.$color-text-inverse;
   z-index: layers.$z-index-tooltip;
-  background-color: colors.$color-surface-info;
+  background-color: colors.$color-surface-overlay-strong;
   max-width: breakpoints.$breakpoint-mobile;
   border-radius: radius.$radius-control-sm;
 

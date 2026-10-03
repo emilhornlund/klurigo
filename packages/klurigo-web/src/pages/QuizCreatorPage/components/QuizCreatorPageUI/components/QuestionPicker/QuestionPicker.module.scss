@@ -1,93 +1,49 @@
-@use 'sass:color';
-
-@use '../../../../../../styles/border-radius.tokens' as radius;
-@use '../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../styles/helpers' as helpers;
-@use '../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../styles/spacing.semantic' as spacing;
-
-$outline-offset: helpers.pxToRem(2px);
 
 .questionPickerWrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  width: 100%;
 
   @include helpers.mobile {
-    column-gap: spacing.$space-compact-mobile;
+    gap: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
-    column-gap: spacing.$space-compact-tablet;
+    gap: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
-    column-gap: spacing.$space-compact-desktop;
+    gap: spacing.$space-compact-desktop;
   }
+}
 
-  .questionPickerItemContainer {
-    display: flex;
+.questionPickerItemContainer {
+  display: flex;
+  min-width: 0;
+
+  @include helpers.mobile {
     flex-direction: row;
+    column-gap: spacing.$space-compact-mobile;
     overflow-x: auto;
     overflow-y: hidden;
-    position: relative;
-    background-color: colors.$color-surface-default;
-    border-radius: radius.$radius-surface-md;
-    outline: colors.$color-focus-outline solid $outline-offset;
-    outline-offset: $outline-offset;
-    border: $outline-offset solid transparent;
-    margin: calc($outline-offset * 2);
-
-    @include helpers.mobile {
-      column-gap: spacing.$space-inline-mobile;
-      padding: spacing.$space-compact-mobile;
-    }
-
-    @include helpers.tablet {
-      column-gap: spacing.$space-inline-tablet;
-      padding: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-compact-desktop;
-      padding: spacing.$space-compact-desktop;
-    }
   }
 
-  .addQuestionButtonWrapper {
-    display: flex;
+  @include helpers.tablet {
+    flex-direction: row;
+    column-gap: spacing.$space-compact-tablet;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  @include helpers.desktop {
     flex-direction: column;
-
-    .addQuestionButton {
-      @include button.button-reset;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      outline: colors.$color-focus-ring solid $outline-offset;
-      border: $outline-offset solid transparent;
-      border-radius: radius.$radius-circle;
-      background-color: transparent;
-      color: colors.$color-text-warning;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(28px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(32px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(32px);
-      }
-
-      &:hover {
-        color: colors.$color-text-warning-soft;
-        outline-color: colors.$color-border-warning;
-      }
-    }
+    row-gap: spacing.$space-compact-desktop;
+    max-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }

@@ -1,0 +1,325 @@
+@use '../../../../../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../../../../../styles/controls.tokens' as controls;
+@use '../../../../../../../../../../styles/helpers' as helpers;
+@use '../../../../../../../../../../styles/layers.tokens' as layers;
+@use '../../../../../../../../../../styles/spacing.semantic' as spacing;
+
+.optionsContainer {
+  display: grid;
+  grid-template-columns: var(
+    --answer-option-columns,
+    auto auto minmax(0, 1fr) auto auto
+  );
+  align-items: stretch;
+  width: 100%;
+  overflow: visible;
+
+  @include helpers.mobile {
+    column-gap: spacing.$space-compact-mobile;
+    row-gap: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    column-gap: spacing.$space-compact-tablet;
+    row-gap: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    column-gap: spacing.$space-compact-desktop;
+    row-gap: spacing.$space-stack-desktop;
+  }
+
+  .option {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: start;
+    width: 100%;
+    transition: transform 120ms ease;
+
+    &.dragging {
+      position: relative;
+      z-index: layers.$z-index-reorder;
+      will-change: transform;
+      transition: none;
+    }
+
+    .handle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: start;
+      color: colors.$color-text-emphasis;
+      cursor: grab;
+
+      @include helpers.mobile {
+        width: helpers.pxToRem(24px);
+        min-height: controls.$control-normal-height-mobile;
+      }
+
+      @include helpers.tablet {
+        width: helpers.pxToRem(26px);
+        min-height: controls.$control-normal-height-tablet;
+      }
+
+      @include helpers.desktop {
+        width: helpers.pxToRem(26px);
+        min-height: controls.$control-normal-height-desktop;
+      }
+
+      &.dragging {
+        cursor: grabbing;
+      }
+
+      .icon {
+        @include helpers.mobile {
+          @include helpers.fontSize(16px);
+        }
+
+        @include helpers.tablet {
+          @include helpers.fontSize(18px);
+        }
+
+        @include helpers.desktop {
+          @include helpers.fontSize(18px);
+        }
+      }
+    }
+
+    .optionIdentifier {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: start;
+      flex-shrink: 0;
+      border-radius: radius.$radius-control-md;
+      color: colors.$color-text-inverse;
+      font-weight: bold;
+
+      @include helpers.mobile {
+        width: controls.$control-normal-height-mobile;
+        height: controls.$control-normal-height-mobile;
+      }
+
+      @include helpers.tablet {
+        width: controls.$control-normal-height-tablet;
+        height: controls.$control-normal-height-tablet;
+      }
+
+      @include helpers.desktop {
+        width: controls.$control-normal-height-desktop;
+        height: controls.$control-normal-height-desktop;
+      }
+    }
+
+    .orderIdentifier {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: start;
+      flex-shrink: 0;
+      border: controls.$control-border-width-outside solid
+        colors.$color-border-muted;
+      border-radius: radius.$radius-control-md;
+      background-color: colors.$color-surface-subtle;
+      color: colors.$color-text-emphasis;
+      font-weight: bold;
+
+      @include helpers.mobile {
+        width: controls.$control-normal-height-mobile;
+        height: controls.$control-normal-height-mobile;
+      }
+
+      @include helpers.tablet {
+        width: controls.$control-normal-height-tablet;
+        height: controls.$control-normal-height-tablet;
+      }
+
+      @include helpers.desktop {
+        width: controls.$control-normal-height-desktop;
+        height: controls.$control-normal-height-desktop;
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      width: 100%;
+
+      @include helpers.mobile {
+        row-gap: spacing.$space-compact-mobile;
+      }
+
+      @include helpers.tablet {
+        row-gap: spacing.$space-compact-tablet;
+      }
+
+      @include helpers.desktop {
+        row-gap: spacing.$space-compact-desktop;
+      }
+    }
+
+    .correctAnswer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: start;
+
+      @include helpers.mobile {
+        min-height: controls.$control-normal-height-mobile;
+      }
+
+      @include helpers.tablet {
+        min-height: controls.$control-normal-height-tablet;
+      }
+
+      @include helpers.desktop {
+        min-height: controls.$control-normal-height-desktop;
+      }
+    }
+
+    .correctAnswerLabel {
+      position: relative;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      border: controls.$control-border-width-outside solid
+        colors.$color-text-emphasis;
+      border-radius: radius.$radius-circle;
+      background-color: transparent;
+      cursor: pointer;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+
+      input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+      }
+
+      &:hover {
+        border-color: colors.$color-border-action;
+        background-color: colors.$color-action-subtle;
+      }
+
+      &:has(input:checked) {
+        border-color: colors.$color-border-control-success;
+        background-color: colors.$color-surface-success-soft;
+      }
+
+      &:has(input:checked):hover {
+        border-color: colors.$color-border-control-success-soft;
+        background-color: colors.$color-surface-control-success-hover;
+      }
+
+      &:has(input:focus-visible) {
+        outline: controls.$control-border-width-outside solid
+          colors.$color-focus-ring;
+        outline-offset: controls.$control-border-width-outside;
+      }
+
+      @include helpers.mobile {
+        width: calc(#{controls.$control-normal-height-mobile} * 0.7);
+        height: calc(#{controls.$control-normal-height-mobile} * 0.7);
+      }
+
+      @include helpers.tablet {
+        width: calc(#{controls.$control-normal-height-tablet} * 0.7);
+        height: calc(#{controls.$control-normal-height-tablet} * 0.7);
+      }
+
+      @include helpers.desktop {
+        width: calc(#{controls.$control-normal-height-desktop} * 0.7);
+        height: calc(#{controls.$control-normal-height-desktop} * 0.7);
+      }
+    }
+
+    .correctAnswerIcon {
+      color: colors.$color-text-inverse;
+    }
+
+    .deleteAction {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: start;
+
+      svg {
+        color: colors.$color-text-emphasis;
+      }
+
+      button:hover:not(:disabled) svg {
+        color: colors.$color-text-danger;
+      }
+
+      button:disabled svg {
+        color: colors.$color-text-control-disabled;
+      }
+
+      @include helpers.mobile {
+        min-height: controls.$control-normal-height-mobile;
+      }
+
+      @include helpers.tablet {
+        min-height: controls.$control-normal-height-tablet;
+      }
+
+      @include helpers.desktop {
+        min-height: controls.$control-normal-height-desktop;
+      }
+    }
+
+    &:nth-child(1) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-danger;
+      }
+    }
+
+    &:nth-child(2) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-accent;
+      }
+    }
+
+    &:nth-child(3) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-action;
+      }
+    }
+
+    &:nth-child(4) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-success;
+      }
+    }
+
+    &:nth-child(5) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-action-alt;
+      }
+    }
+
+    &:nth-child(6) {
+      .optionIdentifier {
+        background-color: colors.$color-surface-info;
+      }
+    }
+  }
+
+  .groupError {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    width: 100%;
+  }
+
+  .groupErrorContent {
+    grid-column: var(--answer-option-content-column, 3);
+    min-width: 0;
+  }
+}

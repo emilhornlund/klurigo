@@ -67,6 +67,7 @@ const QuizCreatorPage: FC = () => {
     setGameMode,
     setGameModeWithoutReset,
     questions,
+    questionIds,
     setQuestions,
     setQuestionsAndSelect,
     questionValidations,
@@ -76,7 +77,7 @@ const QuizCreatorPage: FC = () => {
     selectQuestion,
     addQuestion,
     updateSelectedQuestionField,
-    moveSelectedQuestionTo,
+    moveQuestion,
     duplicateQuestion,
     deleteQuestion,
     replaceQuestion,
@@ -442,18 +443,17 @@ const QuizCreatorPage: FC = () => {
         quizSettingsValidation={quizSettingsValidation}
         onQuizSettingsValueChange={onQuizSettingsValueChange}
         questions={questions}
+        questionIds={questionIds}
         questionValidations={questionValidations}
         selectedQuestion={selectedQuestion}
         selectedQuestionIndex={selectedQuestionIndex}
-        canSaveQuiz={
-          allQuizSettingsValid && allQuestionsValid && hasUnsavedChanges
-        }
+        canSaveQuiz={hasUnsavedChanges}
         isSavingQuiz={isSavingQuiz}
         onSetQuestions={setQuestions}
         onSelectedQuestionIndex={selectQuestion}
         onAddQuestion={handleAddQuestion}
         onQuestionValueChange={updateSelectedQuestionField}
-        onDropQuestionIndex={moveSelectedQuestionTo}
+        onMoveQuestion={moveQuestion}
         onDuplicateQuestionIndex={duplicateQuestion}
         onDeleteQuestionIndex={deleteQuestion}
         onReplaceQuestion={replaceQuestion}

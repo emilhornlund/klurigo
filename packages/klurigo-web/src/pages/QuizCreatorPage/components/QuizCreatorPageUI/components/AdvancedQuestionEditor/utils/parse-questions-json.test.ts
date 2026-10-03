@@ -154,6 +154,32 @@ describe('parseQuestionsJson', () => {
     expect(guards.isZeroToOneHundredRangeQuestion).not.toHaveBeenCalled()
   })
 
+  it('accepts every supported question type at its matching guard', () => {
+    const supportedGuards = [
+      guards.isClassicMultiChoiceQuestion,
+      guards.isClassicTrueFalseQuestion,
+      guards.isClassicRangeQuestion,
+      guards.isClassicTypeAnswerQuestion,
+      guards.isClassicPinQuestion,
+      guards.isClassicPuzzleQuestion,
+      guards.isZeroToOneHundredRangeQuestion,
+    ]
+
+    supportedGuards.forEach((matchingGuard) => {
+      resetGuards()
+      allFalse()
+      matchingGuard.mockReturnValue(true)
+      const question = { type: 'supported' }
+
+      expect(
+        parseQuestionsJson(
+          Array.from({ length: QUIZ_QUESTION_MIN }, () => question),
+          GameMode.Classic,
+        )[0],
+      ).toBe(question)
+    })
+  })
+
   it('supports ZeroToOneHundred range questions via isZeroToOneHundredRangeQuestion', () => {
     resetGuards()
     allFalse()

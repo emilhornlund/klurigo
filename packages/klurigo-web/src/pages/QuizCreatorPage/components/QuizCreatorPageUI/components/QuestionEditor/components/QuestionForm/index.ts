@@ -1,10 +1,8 @@
-export type { QuestionFormProps } from './QuestionForm'
-export {
-  ClassicMultiChoiceOptionQuestionForm,
-  ClassicRangeQuestionForm,
-  ClassicTrueFalseQuestionForm,
-  ClassicTypeAnswerQuestionForm,
-  ClassicPinQuestionForm,
-  ClassicPuzzleQuestionForm,
-  ZeroToOneHundredRangeQuestionForm,
-} from './QuestionForm'
+export type { QuestionFormProps } from './shared'
+export { ClassicMultiChoiceQuestionForm } from './ClassicMultiChoiceQuestionForm'
+export { ClassicTrueFalseQuestionForm } from './ClassicTrueFalseQuestionForm'
+export { ClassicTypeAnswerQuestionForm } from './ClassicTypeAnswerQuestionForm'
+export { ClassicPuzzleQuestionForm } from './ClassicPuzzleQuestionForm'
+export { ClassicPinQuestionForm } from './ClassicPinQuestionForm'
+export { ClassicRangeQuestionForm } from './ClassicRangeQuestionForm'
+export { ZeroToOneHundredRangeQuestionForm } from './ZeroToOneHundredRangeQuestionForm'

@@ -1,0 +1,70 @@
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.questionNavigationPanel {
+  width: 100%;
+}
+
+.questionNavigation {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  @include helpers.mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.previousAction {
+  display: flex;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.nextAction {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.questionPosition {
+  white-space: nowrap;
+}
+
+@include helpers.mobile {
+  .questionNavigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: spacing.$space-compact-mobile;
+    column-gap: spacing.$space-compact-mobile;
+  }
+
+  .questionPosition {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .previousAction {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .nextAction {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .previousAction > *,
+  .nextAction > * {
+    width: 100%;
+  }
+}

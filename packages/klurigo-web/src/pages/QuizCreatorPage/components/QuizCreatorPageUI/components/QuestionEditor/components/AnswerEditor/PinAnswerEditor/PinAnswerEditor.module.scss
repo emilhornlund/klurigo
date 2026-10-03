@@ -1,0 +1,72 @@
+@use '../../../../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../../../../styles/helpers' as helpers;
+@use '../../../../../../../../../styles/spacing.semantic' as spacing;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+
+  .pinInstruction {
+    color: colors.$color-text-muted;
+
+    @include helpers.mobile {
+      margin-top: spacing.$space-inline-mobile;
+    }
+
+    @include helpers.tablet {
+      margin-top: spacing.$space-inline-tablet;
+    }
+
+    @include helpers.desktop {
+      margin-top: spacing.$space-inline-desktop;
+    }
+  }
+
+  .overlay {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+
+    @include helpers.mobile {
+      padding: spacing.$space-inline-mobile;
+    }
+
+    @include helpers.tablet {
+      padding: spacing.$space-inline-tablet;
+    }
+
+    @include helpers.desktop {
+      padding: spacing.$space-inline-desktop;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: row;
+      background-color: colors.$color-surface-floating;
+      border-radius: radius.$radius-control-md;
+
+      @include helpers.mobile {
+        padding: spacing.$space-inline-mobile;
+        column-gap: spacing.$space-inline-mobile;
+      }
+
+      @include helpers.tablet {
+        padding: spacing.$space-inline-tablet;
+        column-gap: spacing.$space-inline-tablet;
+      }
+
+      @include helpers.desktop {
+        padding: spacing.$space-inline-desktop;
+        column-gap: spacing.$space-inline-desktop;
+      }
+    }
+  }
+}

@@ -1,306 +1,315 @@
-@use 'sass:color';
-
 @use '../../../../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../../../../styles/colors.semantic' as colors;
 @use '../../../../../../../../styles/helpers' as helpers;
 @use '../../../../../../../../styles/mixins/_button' as button;
 @use '../../../../../../../../styles/spacing.semantic' as spacing;
 
-$small-question-picker-item-width: helpers.pxToRem(120px);
-$normal-question-picker-item-width: helpers.pxToRem(160px);
+$outline-offset: helpers.pxToRem(2px);
 
-$small-question-picker-item-border-width: helpers.pxToRem(2px);
-$normal-question-picker-item-border-width: helpers.pxToRem(3px);
-
-$small-question-picker-item-indicator-size: helpers.pxToRem(16px);
-$normal-question-picker-item-indicator-size: helpers.pxToRem(22px);
-
-.questionPickerItemWrapper {
-  position: relative;
+.questionPickerItem {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex-shrink: 0;
+  min-width: 0;
+  overflow: hidden;
+  border: helpers.pxToRem(2px) solid transparent;
+  border-radius: radius.$radius-control-sm;
+  background-color: colors.$color-surface-default;
+  color: colors.$color-text-default;
+
+  @include helpers.mobile {
+    width: helpers.pxToRem(180px);
+    flex-basis: helpers.pxToRem(180px);
+  }
+
+  @include helpers.tablet {
+    width: helpers.pxToRem(200px);
+    flex-basis: helpers.pxToRem(200px);
+  }
+
+  @include helpers.desktop {
+    width: 100%;
+  }
+
+  &:hover {
+    border-color: colors.$color-border-muted;
+    background-color: colors.$color-surface-muted;
+  }
+
+  &.active {
+    border-color: colors.$color-border-action;
+    background-color: colors.$color-action-subtle;
+  }
+}
+
+.questionButton {
+  @include button.button-reset;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
+  width: 100%;
+  min-width: 0;
+  color: colors.$color-text-default;
+  text-align: left;
 
   @include helpers.mobile {
     column-gap: spacing.$space-compact-mobile;
-    min-width: $small-question-picker-item-width;
-    max-width: $small-question-picker-item-width;
-    height: $small-question-picker-item-width * 0.7;
+    padding: spacing.$space-compact-mobile;
   }
 
   @include helpers.tablet {
     column-gap: spacing.$space-compact-tablet;
-    min-width: $normal-question-picker-item-width;
-    max-width: $normal-question-picker-item-width;
-    height: $normal-question-picker-item-width * 0.7;
+    padding: spacing.$space-compact-tablet;
   }
 
   @include helpers.desktop {
     column-gap: spacing.$space-compact-desktop;
-    min-width: $normal-question-picker-item-width;
-    max-width: $normal-question-picker-item-width;
-    height: $normal-question-picker-item-width * 0.7;
+    padding: spacing.$space-compact-desktop;
   }
 
-  .questionPickerItemButton {
-    @include button.button-reset;
+  &:focus-visible {
+    outline: colors.$color-focus-ring solid $outline-offset;
+    outline-offset: -$outline-offset;
+  }
+}
 
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: colors.$color-text-default;
-    border-style: solid;
-    border-color: colors.$color-border-default;
-    border-radius: radius.$radius-control-sm;
-    background-color: colors.$color-surface-default;
-    width: 100%;
-    max-height: 100%;
+.questionNumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: radius.$radius-control-sm;
+  background-color: colors.$color-surface-subtle;
+  color: colors.$color-text-subtle;
+  font-weight: bold;
 
-    @include helpers.mobile {
-      row-gap: spacing.$space-inline-mobile;
-      padding: spacing.$space-compact-mobile;
-      border-width: $small-question-picker-item-border-width;
-      height: $small-question-picker-item-width * 0.7;
-    }
+  @include helpers.mobile {
+    width: helpers.pxToRem(32px);
+    height: helpers.pxToRem(32px);
 
-    @include helpers.tablet {
-      row-gap: spacing.$space-inline-tablet;
-      padding: spacing.$space-compact-tablet;
-      border-width: $normal-question-picker-item-border-width;
-    }
-
-    @include helpers.desktop {
-      row-gap: spacing.$space-inline-desktop;
-      padding: spacing.$space-compact-desktop;
-      border-width: $normal-question-picker-item-border-width;
-    }
-
-    &.questionPickerItemActive,
-    &:hover {
-      border-color: colors.$color-border-action;
-      background-color: colors.$color-action-tint;
-      color: colors.$color-text-default;
-    }
-
-    &.questionPickerItemActive {
-      cursor: move;
-    }
-
-    .questionPickerItemText {
-      display: flex;
-      flex: 1;
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-
-      span {
-        overflow: hidden;
-
-        @include helpers.mobile {
-          line-height: helpers.pxToRem(14px);
-          max-height: calc(
-            #{helpers.pxToRem(14px)} * 3 + #{helpers.pxToRem(2px)}
-          );
-          @include helpers.fontSize(10px);
-        }
-
-        @include helpers.tablet {
-          line-height: helpers.pxToRem(16px);
-          max-height: calc(
-            #{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)}
-          );
-          @include helpers.fontSize(12px);
-        }
-
-        @include helpers.desktop {
-          line-height: helpers.pxToRem(16px);
-          max-height: calc(
-            #{helpers.pxToRem(16px)} * 3 + #{helpers.pxToRem(2px)}
-          );
-          @include helpers.fontSize(12px);
-        }
-      }
-    }
-
-    .questionPickerItemType {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      text-align: center;
-
-      @include helpers.mobile {
-        @include helpers.fontSize(8px);
-      }
-
-      @include helpers.tablet {
-        @include helpers.fontSize(10px);
-      }
-
-      @include helpers.desktop {
-        @include helpers.fontSize(10px);
-      }
-    }
+    @include helpers.fontSize(12px);
   }
 
-  .questionPickerItemOverlay {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    pointer-events: none;
-    width: 100%;
+  @include helpers.tablet {
+    width: helpers.pxToRem(36px);
+    height: helpers.pxToRem(36px);
 
-    @include helpers.mobile {
-      height: calc(
-        100% + $small-question-picker-item-indicator-size -
-          $small-question-picker-item-border-width * 2
-      );
-    }
+    @include helpers.fontSize(14px);
+  }
 
-    @include helpers.tablet {
-      height: calc(
-        100% + $normal-question-picker-item-indicator-size -
-          $normal-question-picker-item-border-width * 2
-      );
-    }
+  @include helpers.desktop {
+    width: helpers.pxToRem(40px);
+    height: helpers.pxToRem(40px);
 
-    @include helpers.desktop {
-      height: calc(
-        100% + $normal-question-picker-item-indicator-size -
-          $normal-question-picker-item-border-width * 2
-      );
-    }
+    @include helpers.fontSize(14px);
+  }
 
-    .questionPickerItemOverlayTop,
-    .questionPickerItemOverlayBottom {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      width: 100%;
+  .active & {
+    background-color: colors.$color-surface-action;
+    color: colors.$color-text-inverse;
+  }
+}
 
-      div,
-      button {
-        @include button.button-reset;
+.questionDetails {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: radius.$radius-circle;
+  @include helpers.mobile {
+    row-gap: spacing.$space-inline-mobile;
+  }
 
-        @include helpers.mobile {
-          width: $small-question-picker-item-indicator-size;
-          height: $small-question-picker-item-indicator-size;
-        }
+  @include helpers.tablet {
+    row-gap: spacing.$space-inline-tablet;
+  }
 
-        @include helpers.tablet {
-          width: $normal-question-picker-item-indicator-size;
-          height: $normal-question-picker-item-indicator-size;
-        }
+  @include helpers.desktop {
+    row-gap: spacing.$space-inline-desktop;
+  }
+}
 
-        @include helpers.desktop {
-          width: $normal-question-picker-item-indicator-size;
-          height: $normal-question-picker-item-indicator-size;
-        }
-      }
-    }
+.questionText {
+  overflow: hidden;
+  color: colors.$color-text-default;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-    .questionPickerItemOverlayTop {
-      .questionPickerItemOverlayNumber {
-        background-color: colors.$color-surface-control-muted;
-        color: colors.$color-text-control-default;
-        font-weight: bold;
+  @include helpers.mobile {
+    @include helpers.fontSize(12px);
+  }
 
-        @include helpers.mobile {
-          @include helpers.fontSize(10px);
-        }
+  @include helpers.tablet {
+    @include helpers.fontSize(14px);
+  }
 
-        @include helpers.tablet {
-          @include helpers.fontSize(12px);
-        }
+  @include helpers.desktop {
+    @include helpers.fontSize(14px);
+  }
+}
 
-        @include helpers.desktop {
-          @include helpers.fontSize(12px);
-        }
+.questionType {
+  min-width: 0;
+  overflow: hidden;
+  color: colors.$color-text-muted;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-        &.questionPickerItemActive {
-          background-color: colors.$color-surface-accent;
-        }
-      }
-    }
+  .active & {
+    color: colors.$color-action-default;
+  }
 
-    .questionPickerItemOverlayBottom {
-      .cloneButton,
-      .deleteButton {
-        @include button.button-reset;
+  @include helpers.mobile {
+    @include helpers.fontSize(10px);
+  }
 
-        outline: none;
-        pointer-events: auto;
+  @include helpers.tablet {
+    @include helpers.fontSize(12px);
+  }
 
-        @include helpers.mobile {
-          @include helpers.fontSize(10px);
-        }
+  @include helpers.desktop {
+    @include helpers.fontSize(12px);
+  }
+}
 
-        @include helpers.tablet {
-          @include helpers.fontSize(12px);
-        }
+.questionTypeRow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 
-        @include helpers.desktop {
-          @include helpers.fontSize(12px);
-        }
+  @include helpers.mobile {
+    column-gap: spacing.$space-inline-tight-mobile;
+  }
 
-        &:disabled {
-          color: colors.$color-text-control-disabled;
-          background-color: colors.$color-surface-control-disabled;
-        }
-      }
+  @include helpers.tablet {
+    column-gap: spacing.$space-inline-tight-tablet;
+  }
 
-      .cloneButton {
-        color: colors.$color-text-control-default;
-        background-color: colors.$color-surface-control-accent;
+  @include helpers.desktop {
+    column-gap: spacing.$space-inline-tight-desktop;
+  }
+}
 
-        &:hover {
-          &:not(:disabled) {
-            color: colors.$color-text-control-default-hover;
-            background-color: colors.$color-surface-control-accent-hover;
-          }
-        }
-      }
+.dragHandle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: colors.$color-text-muted;
+  cursor: grab;
+  touch-action: none;
 
-      .deleteButton {
-        color: colors.$color-text-inverse;
-        background-color: colors.$color-surface-control-danger;
+  @include helpers.mobile {
+    @include helpers.fontSize(12px);
+  }
 
-        &:hover {
-          &:not(:disabled) {
-            color: colors.$color-text-inverse;
-            background-color: colors.$color-surface-control-danger-hover;
-          }
-        }
-      }
+  @include helpers.tablet {
+    @include helpers.fontSize(14px);
+  }
 
-      .validationErrorSymbol {
-        color: colors.$color-status-warning;
-        background-color: colors.$color-surface-default;
+  @include helpers.desktop {
+    @include helpers.fontSize(14px);
+  }
+}
 
-        @include helpers.mobile {
-          @include helpers.fontSize(16px);
-        }
+.questionActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
-        @include helpers.tablet {
-          @include helpers.fontSize(22px);
-        }
+  @include helpers.mobile {
+    column-gap: spacing.$space-inline-mobile;
+    padding: 0 spacing.$space-compact-mobile spacing.$space-compact-mobile;
+  }
 
-        @include helpers.desktop {
-          @include helpers.fontSize(22px);
-        }
-      }
-    }
+  @include helpers.tablet {
+    column-gap: spacing.$space-inline-tablet;
+    padding: 0 spacing.$space-compact-tablet spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    column-gap: spacing.$space-inline-desktop;
+    padding: 0 spacing.$space-compact-desktop spacing.$space-compact-desktop;
+  }
+}
+
+.duplicateButton,
+.deleteButton {
+  @include button.button-reset;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: radius.$radius-circle;
+  background-color: colors.$color-surface-default;
+
+  @include helpers.mobile {
+    width: helpers.pxToRem(24px);
+    height: helpers.pxToRem(24px);
+
+    @include helpers.fontSize(11px);
+  }
+
+  @include helpers.tablet {
+    width: helpers.pxToRem(26px);
+    height: helpers.pxToRem(26px);
+
+    @include helpers.fontSize(12px);
+  }
+
+  @include helpers.desktop {
+    width: helpers.pxToRem(26px);
+    height: helpers.pxToRem(26px);
+
+    @include helpers.fontSize(12px);
+  }
+
+  &:focus-visible {
+    outline: colors.$color-focus-ring solid $outline-offset;
+    outline-offset: $outline-offset;
+  }
+
+  &:disabled {
+    color: colors.$color-text-control-disabled;
+    background-color: colors.$color-surface-subtle;
+  }
+}
+
+.duplicateButton {
+  color: colors.$color-action-default;
+
+  &:hover:not(:disabled) {
+    color: colors.$color-action-default;
+    background-color: colors.$color-action-tint;
+  }
+}
+
+.deleteButton {
+  color: colors.$color-text-danger;
+
+  &:hover:not(:disabled) {
+    color: colors.$color-text-danger;
+    background-color: colors.$color-surface-danger-subtle;
+  }
+}
+
+.validationError {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: colors.$color-status-warning;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(11px);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(12px);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(12px);
   }
 }

@@ -1,39 +1,62 @@
-@use '../../../../styles/colors.semantic' as colors;
+@use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/helpers' as helpers;
+@use '../../../../styles/shadows.tokens' as shadows;
 @use '../../../../styles/spacing.semantic' as spacing;
 
+.workspace {
+  display: grid;
+  width: 100%;
+  align-items: start;
+
+  @include helpers.mobile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: spacing.$space-page-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: minmax(0, 1fr);
+    gap: spacing.$space-page-tablet;
+  }
+
+  @include helpers.desktop {
+    flex: 1;
+    min-height: 0;
+    grid-template-columns:
+      minmax(#{helpers.pxToRem(220px)}, 0.7fr)
+      minmax(#{helpers.pxToRem(440px)}, 2.3fr)
+      minmax(#{helpers.pxToRem(280px)}, 1fr);
+    gap: spacing.$space-page-desktop;
+  }
+}
+
+.questionNavigator,
+.questionEditor {
+  min-width: 0;
+
+  @include helpers.desktop {
+    max-height: 100%;
+  }
+}
+
+.questionEditor {
+  border-radius: radius.$radius-surface-lg;
+  box-shadow: shadows.$shadow-surface-subtle;
+}
+
 .quizCreatorPage {
-  flex: 1;
-  height: 100%;
+  width: 100%;
 
-  .editorToggleSection {
-    display: flex;
-    flex-direction: column;
-    row-gap: spacing.$space-compact-desktop;
+  @include helpers.mobile {
+    padding-bottom: spacing.$space-page-mobile;
+  }
 
-    @include helpers.mobile {
-      padding-bottom: spacing.$space-compact-mobile;
-    }
+  @include helpers.tablet {
+    padding-bottom: spacing.$space-page-tablet;
+  }
 
-    @include helpers.tablet {
-      padding-bottom: spacing.$space-compact-tablet;
-    }
-
-    @include helpers.desktop {
-      padding-bottom: spacing.$space-compact-desktop;
-    }
-
-    .divider {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid colors.$color-border-contrast;
-    }
-
-    .toggleButtonWrapper {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-    }
+  @include helpers.desktop {
+    flex: 1;
+    height: 100%;
+    min-height: 0;
   }
 }

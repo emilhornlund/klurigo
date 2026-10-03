@@ -3,7 +3,6 @@
 @use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/textarea' as textarea;
-@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -17,7 +16,7 @@
    */
 
   .textareaInputContainer {
-    align-items: center;
+    align-items: stretch;
     background-color: colors.$color-surface-control-default;
     border: controls.$control-border-width-outside solid transparent;
     border-radius: radius.$radius-control-md;
@@ -25,7 +24,7 @@
     flex-direction: row;
     flex-grow: 1;
     flex-shrink: 1;
-    justify-content: center;
+    justify-content: stretch;
     overflow: hidden;
     position: relative;
     transition:
@@ -45,6 +44,7 @@
       min-width: 0;
       outline: none;
       resize: none;
+      text-align: left;
       width: 100%;
 
       @include helpers.mobile {
@@ -100,7 +100,9 @@
 
     &:has(> textarea:focus-visible) {
       border-color: colors.$color-focus-control-default;
-      box-shadow: shadows.$shadow-focus-control-default;
+      outline: controls.$control-border-width-outside solid
+        colors.$color-focus-ring;
+      outline-offset: controls.$control-focus-outline-offset;
     }
 
     /*

@@ -57,4 +57,9 @@
       padding: spacing.$space-inline-desktop;
     }
   }
+
+  &.fullWidth {
+    display: flex;
+    width: 100%;
+  }
 }

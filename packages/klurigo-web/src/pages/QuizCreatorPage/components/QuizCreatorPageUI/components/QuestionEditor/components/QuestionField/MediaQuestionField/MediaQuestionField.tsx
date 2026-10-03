@@ -1,5 +1,4 @@
 import {
-  faPlus,
   faRetweet,
   faTrash,
   faWandMagicSparkles,
@@ -16,8 +15,10 @@ import {
   ResponsivePlayer,
 } from '../../../../../../../../../components'
 import type { RevealEffect } from '../../../../../../../../../components/ResponsiveImage'
+import colors from '../../../../../../../../../styles/colors.tokens.module.scss'
 import type { QuizQuestionValidationResult } from '../../../../../../../utils/QuestionDataSource'
 import { getValidationErrorMessage } from '../../../../../../../validation-rules'
+import { EmptyMediaField } from '../../shared'
 
 import { ImageEffectModal } from './components'
 import styles from './MediaQuestionField.module.scss'
@@ -36,7 +37,13 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
   onChange,
 }) => {
   const [showMediaModal, setShowMediaModal] = useState(false)
+  const [mediaType, setMediaType] = useState<MediaType | undefined>()
   const [showImageEffectModal, setShowImageEffectModal] = useState(false)
+
+  const handleAddMedia = (type?: MediaType) => {
+    setMediaType(type)
+    setShowMediaModal(true)
+  }
 
   const handleDelete = () => {
     onChange(undefined)
@@ -78,6 +85,7 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
                 <ResponsiveImage
                   imageURL={value.url}
                   {...(value.effect ? { revealEffect } : {})}
+                  borderColor={colors.colorBorderMuted}
                 />
               )}
               {(value.type === MediaType.Video ||
@@ -103,7 +111,7 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
                 onClick={handleDelete}
               />
               <Button
-                id="add-media-button"
+                id="replace-media-button"
                 type="button"
                 variant="primary"
                 surface="brand"
@@ -112,7 +120,7 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
                 value="Replace"
                 hideValue="mobile"
                 icon={faRetweet}
-                onClick={() => setShowMediaModal(true)}
+                onClick={() => handleAddMedia(value.type)}
               />
               {value.type === MediaType.Image && (
                 <Button
@@ -131,29 +139,31 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
             </div>
           </div>
         ) : (
-          <Button
-            id="add-media-button"
-            type="button"
-            variant="primary"
-            surface="brand"
-            intent="accent"
-            size="small"
-            value="Add media"
-            icon={faPlus}
-            onClick={() => setShowMediaModal(true)}
+          <EmptyMediaField
+            variant="media"
+            title="Add media to question"
+            description="Click to choose media"
+            onAddImage={() => handleAddMedia(MediaType.Image)}
+            onAddVideo={() => handleAddMedia(MediaType.Video)}
+            onAddAudio={() => handleAddMedia(MediaType.Audio)}
+            onClick={() => handleAddMedia()}
           />
         )}
       </div>
       {showMediaModal && (
         <MediaModal
-          type={value?.type}
+          type={value?.type ?? mediaType}
+          lockedType={mediaType !== undefined}
           url={value?.url}
           customErrorMessages={{
             type: getValidationErrorMessage(validation, 'media.type'),
             url: getValidationErrorMessage(validation, 'media.url'),
           }}
           onChange={onChange}
-          onClose={() => setShowMediaModal(false)}
+          onClose={() => {
+            setShowMediaModal(false)
+            setMediaType(undefined)
+          }}
         />
       )}
       {value?.type === MediaType.Image && showImageEffectModal && (

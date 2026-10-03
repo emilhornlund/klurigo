@@ -1,0 +1,33 @@
+@use '../../../../../../../../../styles/helpers' as helpers;
+@use '../../../../../../../../../styles/spacing.semantic' as spacing;
+@use '../../../../../../../../../styles/typography.tokens' as typography;
+
+.layoutFull {
+  width: 100%;
+}
+
+.layoutHalf {
+  @include helpers.mobile {
+    width: 100%;
+  }
+  @include helpers.tablet {
+    width: calc(50% - (#{spacing.$space-compact-desktop} * 0.5));
+  }
+  @include helpers.desktop {
+    width: calc(50% - (#{spacing.$space-compact-desktop} * 0.5));
+  }
+}
+
+.label {
+  font-weight: bold;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+  }
+  @include helpers.tablet {
+    @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+  }
+  @include helpers.desktop {
+    @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+  }
+}

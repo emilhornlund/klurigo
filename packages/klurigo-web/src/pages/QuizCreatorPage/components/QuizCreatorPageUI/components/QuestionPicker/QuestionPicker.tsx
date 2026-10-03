@@ -1,15 +1,33 @@
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { DragEndEvent } from '@dnd-kit/core'
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { QuestionType } from '@klurigo/common'
-import type { FC, MouseEvent } from 'react'
+import type { FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { ConfirmDialog } from '../../../../../../components'
+import { Button, ConfirmDialog } from '../../../../../../components'
+import { DeviceType } from '../../../../../../utils/device-size.types'
+import { useDeviceSizeType } from '../../../../../../utils/useDeviceSizeType'
 
 import { QuestionPickerItem } from './components'
 import styles from './QuestionPicker.module.scss'
 
 export type QuestionPickerItem = {
+  id: string
   type: QuestionType
   text?: string
   valid: boolean
@@ -20,7 +38,7 @@ export interface QuestionPickerProps {
   selectedQuestionIndex: number
   onAddQuestion: () => void
   onSelectQuestion: (index: number) => void
-  onDropQuestion: (index: number) => void
+  onMoveQuestion: (fromIndex: number, toIndex: number) => void
   onDuplicateQuestion: (index: number) => void
   onDeleteQuestion: (index: number) => void
 }
@@ -30,13 +48,29 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
   selectedQuestionIndex,
   onAddQuestion,
   onSelectQuestion,
-  onDropQuestion,
+  onMoveQuestion,
   onDuplicateQuestion,
   onDeleteQuestion,
 }) => {
   const questionPickerItemContainerRef = useRef<HTMLDivElement>(null)
-
   const [deleteQuestionIndex, setDeleteQuestionIndex] = useState<number>()
+
+  const deviceType = useDeviceSizeType()
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  )
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return
+
+    const fromIndex = questions.findIndex(({ id }) => id === active.id)
+    const toIndex = questions.findIndex(({ id }) => id === over.id)
+    if (fromIndex >= 0 && toIndex >= 0) onMoveQuestion(fromIndex, toIndex)
+  }
 
   const selectedItemIndex = useMemo(
     () => Math.min(selectedQuestionIndex, questions.length - 1),
@@ -50,61 +84,80 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
 
   useEffect(() => {
     const container = questionPickerItemContainerRef.current
-    if (container && selectedItemIndex === questions.length - 1) {
+    const selectedItem = container?.children.item(selectedItemIndex)
+
+    if (container && selectedItem instanceof HTMLElement) {
       container.scrollTo({
-        left: container.scrollWidth,
+        ...(deviceType === DeviceType.Desktop
+          ? { top: selectedItem.offsetTop }
+          : { left: selectedItem.offsetLeft }),
         behavior: 'smooth',
       })
     }
-  }, [questions, selectedItemIndex])
-
-  const handleAddItemButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    onAddQuestion()
-  }
+  }, [deviceType, questions.length, selectedItemIndex])
 
   const handleDeleteQuestion = () => {
     if (
-      deleteQuestionIndex !== undefined &&
-      deleteQuestionIndex >= 0 &&
-      deleteQuestionIndex < questions.length &&
-      questions.length > 1
+      deleteQuestionIndex === undefined ||
+      deleteQuestionIndex < 0 ||
+      deleteQuestionIndex >= questions.length ||
+      questions.length <= 1
     ) {
-      onDeleteQuestion?.(deleteQuestionIndex)
-      setDeleteQuestionIndex(undefined)
+      return
     }
+
+    onDeleteQuestion(deleteQuestionIndex)
+    setDeleteQuestionIndex(undefined)
   }
 
   return (
     <div className={styles.questionPickerWrapper}>
-      <div
-        ref={questionPickerItemContainerRef}
-        className={styles.questionPickerItemContainer}>
-        {questions.map(({ type, text, valid }, index) => (
-          <QuestionPickerItem
-            key={`question-picker-item-${index}`}
-            index={index}
-            text={text || 'Question'}
-            type={type}
-            active={isActive(index)}
-            valid={valid}
-            canDelete={questions.length > 1}
-            onClick={() => onSelectQuestion(index)}
-            onDrop={onDropQuestion}
-            onDuplicate={() => onDuplicateQuestion(index)}
-            onDelete={() => setDeleteQuestionIndex(index)}
-          />
-        ))}
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}>
+        <SortableContext
+          items={questions.map(({ id }) => id)}
+          strategy={
+            deviceType === DeviceType.Desktop
+              ? verticalListSortingStrategy
+              : horizontalListSortingStrategy
+          }>
+          <div
+            ref={questionPickerItemContainerRef}
+            className={styles.questionPickerItemContainer}>
+            {questions.map(({ id, type, text, valid }, index) => (
+              <QuestionPickerItem
+                key={id}
+                id={id}
+                index={index}
+                text={text || 'Question'}
+                type={type}
+                active={isActive(index)}
+                valid={valid}
+                canDelete={questions.length > 1}
+                onClick={() => onSelectQuestion(index)}
+                onDuplicate={() => onDuplicateQuestion(index)}
+                onDelete={() => setDeleteQuestionIndex(index)}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+
       <div className={styles.addQuestionButtonWrapper}>
-        <button
+        <Button
+          id="add-question-button"
           type="button"
-          aria-label="Add question"
-          className={styles.addQuestionButton}
-          onClick={handleAddItemButtonClick}>
-          <FontAwesomeIcon icon={faPlusCircle} widthAuto />
-        </button>
+          variant="primary"
+          surface="light"
+          icon={faPlus}
+          value="Add question"
+          onClick={onAddQuestion}
+          grow
+        />
       </div>
+
       <ConfirmDialog
         title="Delete quiz question"
         message="Are you sure you want to delete this question? This action can't be undone."

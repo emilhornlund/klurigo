@@ -7,9 +7,9 @@ import MediaModal from './MediaModal'
 
 vi.mock('../../models', () => ({
   MediaTypeLabels: {
-    Image: 'Image',
-    Video: 'Video',
-    Audio: 'Audio',
+    IMAGE: 'Image',
+    VIDEO: 'Video',
+    AUDIO: 'Audio',
   },
 }))
 
@@ -305,11 +305,11 @@ describe('MediaModal', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('imageOnly hides media type Select', () => {
+  it('lockedType hides media type Select', () => {
     const onChange = vi.fn()
     const onClose = vi.fn()
 
-    render(<MediaModal imageOnly onChange={onChange} onClose={onClose} />)
+    render(<MediaModal lockedType onChange={onChange} onClose={onClose} />)
 
     expect(screen.queryByTestId('select-media-type-select')).toBeNull()
   })
@@ -415,5 +415,68 @@ describe('MediaModal', () => {
     expect(
       screen.getByTestId('textfield-media-url-textfield-error'),
     ).toHaveTextContent('URL error')
+  })
+
+  it('uses the provided locked media type', () => {
+    const onChange = vi.fn()
+    const onClose = vi.fn()
+
+    render(
+      <MediaModal
+        type={MediaType.Video}
+        lockedType
+        onChange={onChange}
+        onClose={onClose}
+      />,
+    )
+
+    expect(screen.queryByTestId('select-media-type-select')).toBeNull()
+    expect(screen.queryByTestId('pexels-provider')).toBeNull()
+
+    const url = 'https://example.com/video.mp4'
+    fireEvent.change(screen.getByTestId('input-media-url-textfield'), {
+      target: { value: url },
+    })
+    fireEvent.click(
+      screen.getByTestId('test-modal-primary-action-button-button'),
+    )
+    expect(onChange).toHaveBeenCalledWith({ type: MediaType.Video, url })
+  })
+
+  it.each([
+    [MediaType.Image, 'Add Image'],
+    [MediaType.Video, 'Add Video'],
+    [MediaType.Audio, 'Add Audio'],
+  ])('uses the locked media type in the add title', (type, expectedTitle) => {
+    const onChange = vi.fn()
+    const onClose = vi.fn()
+
+    render(
+      <MediaModal
+        type={type}
+        lockedType
+        onChange={onChange}
+        onClose={onClose}
+      />,
+    )
+
+    expect(screen.getByTestId('modal-title')).toHaveTextContent(expectedTitle)
+  })
+
+  it('uses the locked media type in the replace title', () => {
+    const onChange = vi.fn()
+    const onClose = vi.fn()
+
+    render(
+      <MediaModal
+        type={MediaType.Video}
+        url="https://example.com/video.mp4"
+        lockedType
+        onChange={onChange}
+        onClose={onClose}
+      />,
+    )
+
+    expect(screen.getByTestId('modal-title')).toHaveTextContent('Replace Video')
   })
 })

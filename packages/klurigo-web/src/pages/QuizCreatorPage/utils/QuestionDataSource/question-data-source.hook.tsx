@@ -1,6 +1,6 @@
 import type { QuestionDto } from '@klurigo/common'
 import { GameMode, QuestionType } from '@klurigo/common'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { buildPartialQuestionDto } from '../../../../utils/questions'
 import { validateDiscriminatedDto } from '../../../../validation'
@@ -71,6 +71,16 @@ export const useQuestionDataSource = () => {
    * Questions are stored as partials to allow incremental form editing before the DTO is complete.
    */
   const [questions, setQuestions] = useState<Array<QuizQuestionModel>>([])
+  const [questionIds, setQuestionIds] = useState<string[]>([])
+  const nextQuestionId = useRef(0)
+  const createQuestionIds = useCallback(
+    (count: number) =>
+      Array.from(
+        { length: count },
+        () => `question-${nextQuestionId.current++}`,
+      ),
+    [],
+  )
 
   /**
    * The index of the currently selected question.
@@ -191,61 +201,55 @@ export const useQuestionDataSource = () => {
       if (!mode) {
         throw new Error('Invalid game mode')
       }
-
-      setQuestions((prevQuestions) => {
-        const nextIndex = prevQuestions.length
-        setSelectedIndex(nextIndex)
-        return [...prevQuestions, buildPartialQuestionDto(mode, type)]
-      })
+      const questionId = `question-${nextQuestionId.current++}`
+      setQuestions((previousQuestions) => [
+        ...previousQuestions,
+        buildPartialQuestionDto(mode, type),
+      ])
+      setQuestionIds((previousIds) => [...previousIds, questionId])
+      setSelectedIndex(questions.length)
     },
-    [mode],
+    [mode, questions.length],
   )
 
-  /**
-   * Moves the currently selected question to a new index.
-   *
-   * Removes the selected question from its current position and inserts it at
-   * the target index. The relative order of all other questions is preserved.
-   *
-   * After the move, the selected question index becomes the target index.
-   *
-   * Intended for drag-and-drop reordering.
-   *
-   * @param index - The target index to move the selected question to.
-   * @throws Error when the game mode is not set.
-   * @throws Error when the selected index is invalid.
-   * @throws Error when the target index is invalid.
-   */
-  const moveSelectedQuestionTo = useCallback(
-    (index: number): void => {
+  /** Moves any question to a new index while preserving the selected question. */
+  const moveQuestion = useCallback(
+    (fromIndex: number, toIndex: number): void => {
       if (!mode) {
         throw new Error('Invalid game mode')
       }
+      if (
+        !isValidIndex(fromIndex, questions.length) ||
+        !isValidIndex(toIndex, questions.length)
+      ) {
+        throw new Error('Invalid question index')
+      }
+      if (fromIndex === toIndex) return
 
-      setQuestions((prevQuestions) => {
-        const fromIndex = selectedQuestionIndex
+      const updatedQuestions = [...questions]
+      const [movedQuestion] = updatedQuestions.splice(fromIndex, 1)
+      updatedQuestions.splice(toIndex, 0, movedQuestion)
+      const updatedIds = [...questionIds]
+      const [movedId] = updatedIds.splice(fromIndex, 1)
+      updatedIds.splice(toIndex, 0, movedId)
 
-        if (!isValidIndex(fromIndex, prevQuestions.length)) {
-          throw new Error('Invalid question index')
-        }
-        if (!isValidIndex(index, prevQuestions.length)) {
-          throw new Error('Invalid question index')
-        }
-
-        if (fromIndex === index) {
-          return prevQuestions
-        }
-
-        const updated = [...prevQuestions]
-        const [moved] = updated.splice(fromIndex, 1)
-
-        updated.splice(index, 0, moved)
-
-        setSelectedIndex(index)
-        return updated
-      })
+      setQuestions(updatedQuestions)
+      setQuestionIds(updatedIds)
+      if (selectedQuestionIndex === fromIndex) {
+        setSelectedIndex(toIndex)
+      } else if (
+        fromIndex < selectedQuestionIndex &&
+        toIndex >= selectedQuestionIndex
+      ) {
+        setSelectedIndex(selectedQuestionIndex - 1)
+      } else if (
+        fromIndex > selectedQuestionIndex &&
+        toIndex <= selectedQuestionIndex
+      ) {
+        setSelectedIndex(selectedQuestionIndex + 1)
+      }
     },
-    [mode, selectedQuestionIndex],
+    [mode, questions, questionIds, selectedQuestionIndex],
   )
 
   /**
@@ -260,20 +264,19 @@ export const useQuestionDataSource = () => {
       if (!mode) {
         throw new Error('Invalid game mode')
       }
+      if (!isValidIndex(index, questions.length)) {
+        throw new Error('Invalid question index')
+      }
 
-      setQuestions((prevQuestions) => {
-        if (!isValidIndex(index, prevQuestions.length)) {
-          throw new Error('Invalid question index')
-        }
-
-        const duplicated = deepClone(prevQuestions[index])
-        const updated = [...prevQuestions]
-        updated.splice(index + 1, 0, duplicated)
-
-        return updated
-      })
+      const duplicateId = `question-${nextQuestionId.current++}`
+      const updatedQuestions = [...questions]
+      updatedQuestions.splice(index + 1, 0, deepClone(questions[index]))
+      const updatedIds = [...questionIds]
+      updatedIds.splice(index + 1, 0, duplicateId)
+      setQuestions(updatedQuestions)
+      setQuestionIds(updatedIds)
     },
-    [mode],
+    [mode, questions, questionIds],
   )
 
   /**
@@ -293,35 +296,27 @@ export const useQuestionDataSource = () => {
       if (!mode) {
         throw new Error('Invalid game mode')
       }
+      if (!isValidIndex(index, questions.length)) {
+        throw new Error('Invalid question index')
+      }
 
-      setQuestions((prevQuestions) => {
-        if (!isValidIndex(index, prevQuestions.length)) {
-          throw new Error('Invalid question index')
+      const updatedQuestions = [...questions]
+      updatedQuestions.splice(index, 1)
+      const updatedIds = [...questionIds]
+      updatedIds.splice(index, 1)
+      setQuestions(updatedQuestions)
+      setQuestionIds(updatedIds)
+      setSelectedIndex((previousSelected) => {
+        if (updatedQuestions.length === 0) return -1
+        if (previousSelected === index) {
+          return Math.min(index, updatedQuestions.length - 1)
         }
-
-        const updated = [...prevQuestions]
-        updated.splice(index, 1)
-
-        setSelectedIndex((prevSelected) => {
-          if (updated.length === 0) {
-            return -1
-          }
-
-          if (prevSelected === index) {
-            return Math.min(index, updated.length - 1)
-          }
-
-          if (prevSelected > index) {
-            return prevSelected - 1
-          }
-
-          return prevSelected
-        })
-
-        return updated
+        return previousSelected > index
+          ? previousSelected - 1
+          : previousSelected
       })
     },
-    [mode],
+    [mode, questions, questionIds],
   )
 
   /**
@@ -369,16 +364,20 @@ export const useQuestionDataSource = () => {
    *
    * @param gameMode - The mode to activate for the editor.
    */
-  const setGameMode = useCallback((gameMode: GameMode): void => {
-    const initialType =
-      gameMode === GameMode.Classic
-        ? QuestionType.MultiChoice
-        : QuestionType.Range
+  const setGameMode = useCallback(
+    (gameMode: GameMode): void => {
+      const initialType =
+        gameMode === GameMode.Classic
+          ? QuestionType.MultiChoice
+          : QuestionType.Range
 
-    setMode(gameMode)
-    setQuestions([buildPartialQuestionDto(gameMode, initialType)])
-    setSelectedIndex(0)
-  }, [])
+      setMode(gameMode)
+      setQuestions([buildPartialQuestionDto(gameMode, initialType)])
+      setQuestionIds(createQuestionIds(1))
+      setSelectedIndex(0)
+    },
+    [createQuestionIds],
+  )
 
   /**
    * Sets the active game mode without changing the questions.
@@ -405,9 +404,18 @@ export const useQuestionDataSource = () => {
   const setQuestionsAndSelect = useCallback(
     (nextQuestions: QuizQuestionModel[]): void => {
       setQuestions(nextQuestions)
+      setQuestionIds(createQuestionIds(nextQuestions.length))
       setSelectedIndex(nextQuestions.length > 0 ? 0 : -1)
     },
-    [],
+    [createQuestionIds],
+  )
+
+  const replaceQuestions = useCallback(
+    (nextQuestions: QuizQuestionModel[]): void => {
+      setQuestions(nextQuestions)
+      setQuestionIds(createQuestionIds(nextQuestions.length))
+    },
+    [createQuestionIds],
   )
 
   return {
@@ -416,7 +424,8 @@ export const useQuestionDataSource = () => {
     setGameModeWithoutReset,
 
     questions,
-    setQuestions,
+    questionIds,
+    setQuestions: replaceQuestions,
     setQuestionsAndSelect,
 
     questionValidations,
@@ -428,7 +437,7 @@ export const useQuestionDataSource = () => {
 
     addQuestion,
     updateSelectedQuestionField,
-    moveSelectedQuestionTo,
+    moveQuestion,
     duplicateQuestion,
     deleteQuestion,
     replaceQuestion,

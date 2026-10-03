@@ -4,11 +4,9 @@
 @use '../../styles/spacing.semantic' as spacing;
 
 .mediaModal {
-  overflow: hidden;
-
   .content {
-    overflow: scroll;
     flex: 1;
+    min-height: 0;
 
     .column {
       display: flex;
@@ -82,22 +80,28 @@
         .resultsGrid {
           display: grid;
           flex: 1 1 auto;
+          min-height: 0;
           overflow-y: auto;
           overflow-x: hidden;
-          min-height: 0;
 
           @include helpers.mobile {
             gap: spacing.$space-compact-mobile;
+            margin: calc(-1 * #{spacing.$space-stack-mobile});
+            padding: spacing.$space-stack-mobile;
             grid-template-columns: 1fr 1fr;
           }
 
           @include helpers.tablet {
             gap: spacing.$space-compact-tablet;
+            margin: calc(-1 * #{spacing.$space-stack-tablet});
+            padding: spacing.$space-stack-tablet;
             grid-template-columns: 1fr 1fr 1fr;
           }
 
           @include helpers.desktop {
             gap: spacing.$space-compact-desktop;
+            margin: calc(-1 * #{spacing.$space-stack-desktop});
+            padding: spacing.$space-stack-desktop;
             grid-template-columns: 1fr 1fr 1fr;
           }
 
