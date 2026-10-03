@@ -5,10 +5,12 @@ module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/scripts'],
   testRegex: '.*\\.(e2e-)?spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+    '^.+\\.ts$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+    '^.+\\.js$': '<rootDir>/scripts/jest-javascript-transformer.cjs',
   },
   moduleNameMapper: {
     '^@klurigo/common(.*)$': '<rootDir>/../common/src$1',
+    '^@nestjs/terminus$': '<rootDir>/scripts/jest-terminus-shim.cjs',
   },
   collectCoverageFrom: [
     '**/*.{ts,js}',
@@ -20,7 +22,7 @@ module.exports = {
   ],
   coverageDirectory: '<rootDir>/coverage',
   testEnvironment: 'node',
-  transformIgnorePatterns: ['/node_modules/(?!(?:@klurigo/common|uuid)/)'],
+  transformIgnorePatterns: [],
   detectOpenHandles: true,
   setupFilesAfterEnv: ['jest-extended/all'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],

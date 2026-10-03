@@ -17,7 +17,12 @@ if (process.env.NODE_ENV === 'production') {
     dsn: process.env.SENTRY_DSN,
     release: process.env.SENTRY_RELEASE,
     environment: getSentryEnvironment(),
-    sendDefaultPii: true,
+    dataCollection: {
+      userInfo: true,
+      cookies: true,
+      httpHeaders: true,
+      urlQueryParams: true,
+    },
     integrations: [
       Sentry.consoleLoggingIntegration({ levels: ['warn', 'error'] }),
       Sentry.httpIntegration(),

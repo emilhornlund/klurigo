@@ -1,5 +1,4 @@
 import KeyvRedis from '@keyv/redis'
-import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
 import { BullModule } from '@nestjs/bullmq'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Logger, Module } from '@nestjs/common'
@@ -9,8 +8,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
-import { RedisModule } from '@nestjs-modules/ioredis'
+import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
 import { SentryModule } from '@sentry/nestjs/setup'
+import type Redis from 'ioredis'
 import Keyv from 'keyv'
 import { MurLockModule } from 'murlock'
 
@@ -37,6 +37,7 @@ import { AppController } from './controllers'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { TimeoutInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
+import { RedisThrottlerStorage } from './throttler/redis-throttler.storage'
 
 const isProdEnv = process.env.NODE_ENV === 'production'
 const isTestEnv = process.env.NODE_ENV === 'test'
@@ -144,9 +145,8 @@ const isTestEnv = process.env.NODE_ENV === 'test'
       ? []
       : [
           ThrottlerModule.forRootAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (config: ConfigService<EnvironmentVariables>) => ({
+            inject: [getRedisConnectionToken()],
+            useFactory: (redis: Redis) => ({
               throttlers: [
                 {
                   name: 'short',
@@ -164,12 +164,7 @@ const isTestEnv = process.env.NODE_ENV === 'test'
                   limit: 100,
                 },
               ],
-              storage: new ThrottlerStorageRedisService({
-                host: config.get('REDIS_HOST'),
-                port: config.get('REDIS_PORT'),
-                password: config.get('REDIS_PASSWORD'),
-                db: Number(config.get('REDIS_DB')),
-              }),
+              storage: new RedisThrottlerStorage(redis),
             }),
           }),
         ]),
