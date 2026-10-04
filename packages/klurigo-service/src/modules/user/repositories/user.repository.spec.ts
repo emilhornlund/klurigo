@@ -74,6 +74,10 @@ describe(UserRepository.name, () => {
     })
   })
 
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
   describe('findUserById and findUserByIdOrThrow', () => {
     it('returns the user from the base repository', async () => {
       const user = makeUser()
@@ -166,7 +170,12 @@ describe(UserRepository.name, () => {
         email: 'local@example.com',
         hashedPassword: 'hashed-password',
         defaultNickname: 'Local',
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
       })
+
+      const createdDetails = createMock.mock.calls[0][0] as LocalUser
+      expect(createdDetails.updatedAt).toEqual(createdDetails.createdAt)
     })
 
     it('creates a Google user with a generated id and Google discriminator', async () => {
@@ -188,7 +197,45 @@ describe(UserRepository.name, () => {
         email: 'google@example.com',
         googleUserId: 'google-account-1',
         defaultNickname: 'Google',
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
       })
+
+      const createdDetails = createMock.mock.calls[0][0] as GoogleUser
+      expect(createdDetails.updatedAt).toEqual(createdDetails.createdAt)
+    })
+
+    it('creates users with timestamps from their creation time', async () => {
+      jest.useFakeTimers()
+      const firstCreatedAt = new Date('2026-01-01T00:00:00.000Z')
+      const secondCreatedAt = new Date('2026-01-01T00:01:00.000Z')
+      uuidMock.mockReturnValueOnce('local-1').mockReturnValueOnce('local-2')
+      createMock
+        .mockResolvedValueOnce(makeLocalUser({ _id: 'local-1' }))
+        .mockResolvedValueOnce(makeLocalUser({ _id: 'local-2' }))
+
+      jest.setSystemTime(firstCreatedAt)
+      await repository.createLocalUser({
+        email: 'first@example.com',
+        hashedPassword: 'hashed-password',
+        defaultNickname: 'First',
+      })
+
+      jest.setSystemTime(secondCreatedAt)
+      await repository.createLocalUser({
+        email: 'second@example.com',
+        hashedPassword: 'hashed-password',
+        defaultNickname: 'Second',
+      })
+
+      const firstDetails = createMock.mock.calls[0][0] as LocalUser
+      const secondDetails = createMock.mock.calls[1][0] as LocalUser
+
+      expect(firstDetails.createdAt).toEqual(firstCreatedAt)
+      expect(firstDetails.updatedAt).toEqual(firstCreatedAt)
+      expect(secondDetails.createdAt).toEqual(secondCreatedAt)
+      expect(secondDetails.updatedAt).toEqual(secondCreatedAt)
+      expect(firstDetails.createdAt).not.toEqual(secondDetails.createdAt)
     })
   })
 
@@ -208,6 +255,9 @@ describe(UserRepository.name, () => {
     it('uses the normal update path when the discriminator is unchanged', async () => {
       const existing = makeLocalUser()
       const updated = makeLocalUser({ email: 'new@example.com' })
+      const updatedAt = new Date('2026-01-02T00:00:00.000Z')
+      jest.useFakeTimers()
+      jest.setSystemTime(updatedAt)
       findByIdMock.mockResolvedValueOnce(existing)
       updateMock.mockResolvedValueOnce(updated)
 
@@ -221,6 +271,7 @@ describe(UserRepository.name, () => {
       expect(updateMock).toHaveBeenCalledWith('user-1', {
         email: 'new@example.com',
         givenName: 'Updated',
+        updatedAt,
       })
       expect(model.findByIdAndUpdate).not.toHaveBeenCalled()
     })
@@ -228,6 +279,9 @@ describe(UserRepository.name, () => {
     it('uses discriminator overwrite when changing auth providers', async () => {
       const existing = makeLocalUser()
       const updated = makeGoogleUser({ email: 'google@example.com' })
+      const updatedAt = new Date('2026-01-02T00:00:00.000Z')
+      jest.useFakeTimers()
+      jest.setSystemTime(updatedAt)
       const execMock = jest.fn().mockResolvedValue(updated)
       findByIdMock.mockResolvedValueOnce(existing)
       model.findByIdAndUpdate.mockReturnValueOnce({ exec: execMock })
@@ -244,6 +298,7 @@ describe(UserRepository.name, () => {
         {
           authProvider: AuthProvider.Google,
           email: 'google@example.com',
+          updatedAt,
         },
         {
           returnDocument: 'after',
@@ -308,6 +363,7 @@ describe(UserRepository.name, () => {
       expect(setMock).toHaveBeenCalledWith({
         email: 'new@example.com',
         unverifiedEmail: 'unverified@example.com',
+        updatedAt: expect.any(Date),
       })
     })
 

@@ -43,6 +43,7 @@ export class GameEventListener {
       try {
         await this.userRepository.update(user._id, {
           defaultNickname: event.nickname,
+          updatedAt: new Date(),
         })
       } catch (error) {
         this.logger.error(
