@@ -108,6 +108,37 @@ describe('Modal', () => {
     expect(onClose).toHaveBeenCalledTimes(2)
   })
 
+  it('should use the close action when Escape is pressed', () => {
+    const onClose = vi.fn()
+
+    render(
+      <Modal
+        title="Test modal"
+        open
+        closeAction={{
+          onClick: onClose,
+        }}>
+        Content
+      </Modal>,
+    )
+
+    fireEvent.keyDown(document, { key: 'Escape' })
+
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not dismiss when Escape is pressed without a close action', () => {
+    render(
+      <Modal title="Test modal" open>
+        Content
+      </Modal>,
+    )
+
+    fireEvent.keyDown(document, { key: 'Escape' })
+
+    expect(screen.getByText('Test modal')).toBeInTheDocument()
+  })
+
   it('should render a primary action', () => {
     const onClick = vi.fn()
 

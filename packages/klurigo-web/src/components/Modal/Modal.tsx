@@ -50,10 +50,12 @@ const Modal: FC<ModalProps> = ({
 }) => {
   const { refs, context } = useFloating({
     open,
+    onOpenChange: closeAction?.onClick,
   })
 
   const click = useClick(context)
   const dismiss = useDismiss(context, {
+    escapeKey: Boolean(closeAction),
     outsidePressEvent: 'mousedown',
   })
   const role = useRole(context)
