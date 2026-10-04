@@ -18,8 +18,14 @@ describe('QuestionNavigation', () => {
     expect(
       screen.getByRole('navigation', { name: 'Question navigation' }),
     ).toHaveTextContent('Question 2 of 3')
-    fireEvent.click(screen.getByRole('button', { name: 'Previous question' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next question' }))
+    const previousButton = screen.getByRole('button', {
+      name: 'Previous question',
+    })
+    const nextButton = screen.getByRole('button', { name: 'Next question' })
+    expect(previousButton).toHaveAttribute('aria-label', 'Previous question')
+    expect(nextButton).toHaveAttribute('aria-label', 'Next question')
+    fireEvent.click(previousButton)
+    fireEvent.click(nextButton)
     expect(onSelectedQuestionIndex).toHaveBeenNthCalledWith(1, 0)
     expect(onSelectedQuestionIndex).toHaveBeenNthCalledWith(2, 2)
   })

@@ -1690,6 +1690,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
               class="buttonContainer variantOutline surfaceLight intentDefault"
             >
               <button
+                aria-label="Previous question"
                 data-testid="test-previous-question-button-button"
                 disabled=""
                 id="previous-question-button"
@@ -1727,6 +1728,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
               class="buttonContainer variantPrimary surfaceLight intentDefault"
             >
               <button
+                aria-label="Next question"
                 data-testid="test-next-question-button-button"
                 id="next-question-button"
                 name="next-question-button"

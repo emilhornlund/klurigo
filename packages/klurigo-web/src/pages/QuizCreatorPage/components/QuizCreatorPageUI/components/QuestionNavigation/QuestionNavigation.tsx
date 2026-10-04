@@ -29,6 +29,8 @@ const QuestionNavigation: FC<QuestionNavigationProps> = ({
         variant="outline"
         surface="light"
         value="Previous question"
+        hideValue="mobile"
+        aria-label="Previous question"
         icon={faArrowLeft}
         disabled={selectedQuestionIndex <= 0}
         onClick={() => onSelectedQuestionIndex(selectedQuestionIndex - 1)}
@@ -49,6 +51,8 @@ const QuestionNavigation: FC<QuestionNavigationProps> = ({
         variant="primary"
         surface="light"
         value="Next question"
+        hideValue="mobile"
+        aria-label="Next question"
         icon={faArrowRight}
         iconPosition="trailing"
         disabled={selectedQuestionIndex >= totalQuestions - 1}
