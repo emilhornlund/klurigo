@@ -120,23 +120,3 @@ export const Error = {
     forceValidate: true,
   },
 } satisfies Story
-
-export const Checkbox = {
-  args: {
-    checked: true,
-  },
-} satisfies Story
-
-export const CheckboxDisabled = {
-  args: {
-    checked: true,
-    disabled: true,
-  },
-} satisfies Story
-
-export const CheckboxSmall = {
-  args: {
-    checked: true,
-    size: 'small',
-  },
-} satisfies Story
