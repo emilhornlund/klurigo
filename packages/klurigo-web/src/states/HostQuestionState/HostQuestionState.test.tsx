@@ -310,6 +310,54 @@ describe('HostQuestionState', () => {
     expect(container).toMatchSnapshot()
   })
 
+  it('opens skip confirmation without calling completeTask', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <HostQuestionState
+          event={{
+            type: GameEventType.GameQuestionHost,
+            game: { pin: '123456' },
+            question: {
+              type: QuestionType.TrueFalse,
+              question: 'Skip me?',
+              duration: 30,
+            },
+            countdown: {
+              initiatedTime: new Date(now).toISOString(),
+              expiryTime: new Date(now + 30 * 1000).toISOString(),
+              serverTime: new Date(now).toISOString(),
+            },
+            submissions: { current: 2, total: 4 },
+            pagination: { current: 1, total: 2 },
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    act(() => {
+      fireEvent.click(
+        container.querySelector('#skip-button') as HTMLButtonElement,
+      )
+    })
+
+    expect(screen.getByRole('dialog')).toHaveTextContent('Skip this question?')
+    expect(
+      screen.getByText(/end the current question immediately/),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Skip Question' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+    expect(h.completeTask).not.toHaveBeenCalled()
+
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    })
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(h.completeTask).not.toHaveBeenCalled()
+  })
+
   it('clicks Skip and calls completeTask', async () => {
     let resolve!: () => void
     h.completeTask.mockImplementation(
@@ -345,7 +393,15 @@ describe('HostQuestionState', () => {
       fireEvent.click(skip)
     })
 
+    expect(h.completeTask).not.toHaveBeenCalled()
+
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: 'Skip Question' }))
+    })
+
     expect(h.completeTask).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(skip).toBeDisabled()
 
     await act(async () => {
       resolve()
@@ -354,6 +410,7 @@ describe('HostQuestionState', () => {
       await Promise.resolve()
     })
 
+    expect(skip).not.toBeDisabled()
     expect(container).toMatchSnapshot()
   })
 

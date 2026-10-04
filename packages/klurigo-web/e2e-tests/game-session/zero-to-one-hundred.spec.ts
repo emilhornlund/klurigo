@@ -585,6 +585,10 @@ test.describe('Game session: Zero to One Hundred', () => {
       })
       await expect(page.locator('#skip-button')).toBeVisible()
       await page.locator('#skip-button').click()
+      await expect(page.getByRole('dialog')).toContainText(
+        'Skip this question?',
+      )
+      await page.getByRole('button', { name: 'Skip Question' }).click()
 
       const [playerAResult, playerBResult, hostResult] = await Promise.all([
         playerAResultPromise,

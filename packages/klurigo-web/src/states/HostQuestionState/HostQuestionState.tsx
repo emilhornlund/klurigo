@@ -6,6 +6,7 @@ import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 
 import {
+  ConfirmDialog,
   IconButtonArrowRight,
   ProgressBar,
   Surface,
@@ -35,6 +36,8 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
     pagination: { current: currentQuestion, total: totalQuestions },
   },
 }) => {
+  const [showConfirmSkipQuestionDialog, setShowConfirmSkipQuestionDialog] =
+    useState<boolean>(false)
   const [isSkippingQuestion, setIsSkippingQuestion] = useState<boolean>(false)
 
   const { completeTask } = useGameContext()
@@ -46,77 +49,89 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
     return { type: MediaType.Image, url: question.imageURL }
   }, [question])
 
-  const handleSkipQuestion = () => {
+  const handleConfirmSkipQuestion = () => {
+    setShowConfirmSkipQuestionDialog(false)
     setIsSkippingQuestion(true)
     completeTask?.().finally(() => setIsSkippingQuestion(false))
   }
 
   return (
-    <GamePage
-      layout="fill"
-      align="space-between"
-      header={
-        <IconButtonArrowRight
-          id={'skip-button'}
-          type="button"
-          variant="primary"
-          intent="accent"
-          size="small"
-          value="Skip"
-          loading={isSkippingQuestion}
-          onClick={handleSkipQuestion}
-        />
-      }
-      footer={
-        <HostGameFooter
-          gamePIN={pin}
-          currentQuestion={currentQuestion}
-          totalQuestions={totalQuestions}
-        />
-      }>
-      <div className={classNames(styles.row, styles.flexibleHeight)}>
-        <div className={styles.column}>
-          <Typography
-            variant="title"
-            align="center"
-            color="inverse"
-            maxLines={3}>
-            {question.question}
-          </Typography>
-        </div>
-      </div>
-
-      {!!totalSubmissions && (
+    <>
+      <GamePage
+        layout="fill"
+        align="space-between"
+        header={
+          <IconButtonArrowRight
+            id={'skip-button'}
+            type="button"
+            variant="primary"
+            intent="accent"
+            size="small"
+            value="Skip"
+            loading={isSkippingQuestion}
+            onClick={() => setShowConfirmSkipQuestionDialog(true)}
+          />
+        }
+        footer={
+          <HostGameFooter
+            gamePIN={pin}
+            currentQuestion={currentQuestion}
+            totalQuestions={totalQuestions}
+          />
+        }>
         <div className={classNames(styles.row, styles.flexibleHeight)}>
           <div className={styles.column}>
-            <Surface className={classNames(styles.iconInfo)}>
-              <FontAwesomeIcon icon={faUserGroup} />
-              <span>
-                {currentSubmission} / {totalSubmissions}
-              </span>
-            </Surface>
+            <Typography
+              variant="title"
+              align="center"
+              color="inverse"
+              maxLines={3}>
+              {question.question}
+            </Typography>
           </div>
         </div>
-      )}
 
-      <QuestionMedia
-        type={question.type}
-        media={media}
-        alt={question.question}
-        countdown={countdown}
+        {!!totalSubmissions && (
+          <div className={classNames(styles.row, styles.flexibleHeight)}>
+            <div className={styles.column}>
+              <Surface className={classNames(styles.iconInfo)}>
+                <FontAwesomeIcon icon={faUserGroup} />
+                <span>
+                  {currentSubmission} / {totalSubmissions}
+                </span>
+              </Surface>
+            </div>
+          </div>
+        )}
+
+        <QuestionMedia
+          type={question.type}
+          media={media}
+          alt={question.question}
+          countdown={countdown}
+        />
+        <div
+          className={classNames(
+            styles.row,
+            styles.fullWidth,
+            question.type === QuestionType.Pin || !media
+              ? styles.fullHeight
+              : styles.flexibleHeight,
+          )}>
+          <QuestionAnswerPicker question={question} interactive={false} />
+        </div>
+        <ProgressBar countdown={countdown} />
+      </GamePage>
+      <ConfirmDialog
+        title="Skip this question?"
+        message="This will end the current question immediately for all players and move the game forward."
+        open={showConfirmSkipQuestionDialog}
+        confirmTitle="Skip Question"
+        closeTitle="Cancel"
+        onConfirm={handleConfirmSkipQuestion}
+        onClose={() => setShowConfirmSkipQuestionDialog(false)}
       />
-      <div
-        className={classNames(
-          styles.row,
-          styles.fullWidth,
-          question.type === QuestionType.Pin || !media
-            ? styles.fullHeight
-            : styles.flexibleHeight,
-        )}>
-        <QuestionAnswerPicker question={question} interactive={false} />
-      </div>
-      <ProgressBar countdown={countdown} />
-    </GamePage>
+    </>
   )
 }
 
