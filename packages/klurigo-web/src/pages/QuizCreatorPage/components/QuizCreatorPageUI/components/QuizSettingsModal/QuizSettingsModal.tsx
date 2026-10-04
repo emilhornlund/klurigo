@@ -66,8 +66,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
       open>
       <Stack>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Title
+          <Typography variant="control" noOpacity bold asChild>
+            <label htmlFor="quiz-title-textfield">Title</label>
           </Typography>
           <TextField
             id="quiz-title-textfield"
@@ -81,8 +81,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Description
+          <Typography variant="control" noOpacity bold asChild>
+            <label htmlFor="quiz-description-textarea">Description</label>
           </Typography>
           <Textarea
             id="quiz-description-textarea"
@@ -98,8 +98,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Image Cover
+          <Typography variant="control" noOpacity bold asChild>
+            <span>Image Cover</span>
           </Typography>
           {imageCoverURL && <ResponsiveImage imageURL={imageCoverURL} />}
           <div className={styles.actions}>
@@ -128,8 +128,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           </div>
         </div>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Category
+          <Typography variant="control" noOpacity bold asChild>
+            <label htmlFor="category-select">Category</label>
           </Typography>
           <Select
             id="category-select"
@@ -156,8 +156,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Visibility
+          <Typography variant="control" noOpacity bold asChild>
+            <label htmlFor="visibility-select">Visibility</label>
           </Typography>
           <Select
             id="visibility-select"
@@ -181,8 +181,8 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
           />
         </div>
         <div className={styles.quizSettingsRow}>
-          <Typography variant="control" noOpacity bold>
-            Language
+          <Typography variant="control" noOpacity bold asChild>
+            <label htmlFor="language-select">Language</label>
           </Typography>
           <Select
             id="language-select"

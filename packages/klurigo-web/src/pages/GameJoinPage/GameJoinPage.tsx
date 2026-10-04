@@ -111,6 +111,7 @@ const GameJoinPage: FC = () => {
         as="form"
         width="content"
         data-testid="join-form"
+        aria-label="Join game"
         name="join-game-form"
         onSubmit={handleSubmit}>
         <NicknameTextField

@@ -394,7 +394,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               </button>
             </div>
           </form>
-          <div
+          <hr
             class="pageDivider"
           />
           <h2
@@ -895,7 +895,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </button>
             </div>
           </form>
-          <div
+          <hr
             class="pageDivider"
           />
           <h2
@@ -1436,7 +1436,7 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </button>
             </div>
           </form>
-          <div
+          <hr
             class="pageDivider"
           />
           <h2

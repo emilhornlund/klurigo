@@ -70,6 +70,7 @@ const Modal: FC<ModalProps> = ({
     <FloatingOverlay lockScroll className={styles.floatingOverlay}>
       <FloatingFocusManager context={context}>
         <div
+          role="dialog"
           aria-labelledby={titleId}
           className={classNames(
             styles.modalContainer,
@@ -91,6 +92,7 @@ const Modal: FC<ModalProps> = ({
                 surface="brand"
                 icon={faXmark}
                 iconColor="gray"
+                aria-label="Close dialog"
                 onClick={closeAction.onClick}
               />
             )}
@@ -122,6 +124,7 @@ const Modal: FC<ModalProps> = ({
                   value={primaryAction.label}
                   disabled={primaryAction.disabled}
                   loading={primaryAction.loading}
+                  aria-label={primaryAction.label}
                   onClick={primaryAction.onClick}
                   grow
                 />

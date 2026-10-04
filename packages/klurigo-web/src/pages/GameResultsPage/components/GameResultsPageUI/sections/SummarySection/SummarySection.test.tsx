@@ -46,91 +46,6 @@ vi.mock('../../../../../../api', () => ({
   }),
 }))
 
-vi.mock('../../../../../../components', () => ({
-  Surface: ({
-    as: Component = 'div',
-    children,
-    ...props
-  }: {
-    as?: 'div' | 'button'
-    children?: React.ReactNode
-  }) => <Component {...props}>{children}</Component>,
-  CircularProgressBar: () => <div data-testid="circular-progress" />,
-  Podium: () => <div data-testid="podium" />,
-  Leaderboard: () => <div data-testid="leaderboard" />,
-  PageDivider: () => <div data-testid="page-divider" />,
-  Typography: ({
-    children,
-    variant = 'body',
-    className,
-    ...props
-  }: {
-    children?: React.ReactNode
-    variant?: string
-    className?: string
-    noOpacity?: boolean
-    bold?: boolean
-  }) => {
-    const tagByVariant = {
-      extraLargeTitle: 'h1',
-      title: 'h1',
-      title2: 'h2',
-      title3: 'h3',
-      title4: 'h4',
-      title5: 'h5',
-      body: 'p',
-      body2: 'p',
-      control: 'p',
-      control2: 'p',
-      link: 'a',
-      link2: 'a',
-    } as const
-
-    const Tag = tagByVariant[variant as keyof typeof tagByVariant] ?? 'p'
-
-    return (
-      <Tag
-        className={[variant, className].filter(Boolean).join(' ')}
-        {...props}>
-        {children}
-      </Tag>
-    )
-  },
-
-  CircularProgressBarKind: { Correct: 'Correct' },
-  CircularProgressBarSize: { Medium: 'Medium' },
-
-  ConfirmDialog: ({
-    open,
-    loading,
-    title,
-    message,
-    onConfirm,
-    onClose,
-  }: {
-    open: boolean
-    loading: boolean
-    title: string
-    message: string
-    onConfirm: () => void
-    onClose: () => void
-  }) =>
-    open ? (
-      <div data-testid="confirm-dialog">
-        <div>{title}</div>
-        <div>{message}</div>
-        <div data-testid="confirm-loading">{loading ? 'loading' : 'idle'}</div>
-        <button type="button" onClick={onConfirm}>
-          confirm
-        </button>
-        <button type="button" onClick={onClose}>
-          close
-        </button>
-      </div>
-    ) : null,
-  NicknameChip: ({ value }: { value: string }) => <div>{value}</div>,
-}))
-
 const h = vi.hoisted(() => {
   return {
     getCorrectPercentage: vi.fn(),
@@ -147,42 +62,6 @@ vi.mock('../../utils', () => ({
   getQuizDifficultyMessage: h.getQuizDifficultyMessage,
   formatRoundedDuration: h.formatRoundedDuration,
   formatRoundedSeconds: h.formatRoundedSeconds,
-}))
-
-vi.mock('./RatingCard', () => ({
-  default: ({
-    canRateQuiz,
-    stars,
-    comment,
-    onRatingChange,
-    onCommentChange,
-  }: {
-    canRateQuiz: boolean
-    stars?: number
-    comment?: string
-    onRatingChange: (next: number) => void
-    onCommentChange: (next: string) => void
-  }) => (
-    <div data-testid="rating-card">
-      <div data-testid="rating-can-rate">{String(canRateQuiz)}</div>
-      <div data-testid="rating-stars">{stars ?? 'unset'}</div>
-      <div data-testid="rating-comment">{comment ?? ''}</div>
-
-      <button
-        type="button"
-        data-testid="rating-set-stars"
-        onClick={() => onRatingChange(5)}>
-        set-stars
-      </button>
-
-      <button
-        type="button"
-        data-testid="rating-set-comment"
-        onClick={() => onCommentChange('hello')}>
-        set-comment
-      </button>
-    </div>
-  ),
 }))
 
 beforeEach(() => {
@@ -481,14 +360,22 @@ describe('SummarySection', () => {
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
 
-    expect(await screen.findByTestId('confirm-dialog')).toBeInTheDocument()
-    expect(screen.getByTestId('confirm-loading')).toHaveTextContent('idle')
+    const dialog = await screen.findByRole('dialog', { name: 'Host Game' })
+    expect(dialog).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('button', { name: 'Confirm' }),
+    ).toBeEnabled()
 
-    await user.click(screen.getByRole('button', { name: 'confirm' }))
+    await user.click(within(dialog).getByRole('button', { name: 'Confirm' }))
 
     // Now loading should remain true because createGame is still pending
     await waitFor(() => {
-      expect(screen.getByTestId('confirm-loading')).toHaveTextContent('loading')
+      expect(
+        within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+          'button',
+          { name: 'Confirm' },
+        ),
+      ).toBeDisabled()
     })
 
     expect(createGameMock).toHaveBeenCalledWith('quizId')
@@ -501,7 +388,12 @@ describe('SummarySection', () => {
     })
 
     // Still loading until authenticate finishes
-    expect(screen.getByTestId('confirm-loading')).toHaveTextContent('loading')
+    expect(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: 'Confirm' },
+      ),
+    ).toBeDisabled()
 
     authenticateDeferred.resolve()
 
@@ -510,7 +402,12 @@ describe('SummarySection', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByTestId('confirm-loading')).toHaveTextContent('idle')
+      expect(
+        within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+          'button',
+          { name: 'Confirm' },
+        ),
+      ).toBeEnabled()
     })
   })
 
@@ -608,12 +505,24 @@ describe('SummarySection', () => {
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
-    expect(await screen.findByTestId('confirm-dialog')).toBeInTheDocument()
+    expect(
+      await screen.findByRole('dialog', { name: 'Host Game' }),
+    ).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'confirm' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: 'Confirm' },
+      ),
+    )
 
     await waitFor(() => {
-      expect(screen.getByTestId('confirm-loading')).toHaveTextContent('loading')
+      expect(
+        within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+          'button',
+          { name: 'Confirm' },
+        ),
+      ).toBeDisabled()
     })
 
     expect(createGameMock).toHaveBeenCalledWith('quizId')
@@ -621,7 +530,12 @@ describe('SummarySection', () => {
     createGameDeferred.reject(new Error('boom'))
 
     await waitFor(() => {
-      expect(screen.getByTestId('confirm-loading')).toHaveTextContent('idle')
+      expect(
+        within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+          'button',
+          { name: 'Confirm' },
+        ),
+      ).toBeEnabled()
     })
 
     expect(authenticateGameMock).not.toHaveBeenCalled()
@@ -668,12 +582,19 @@ describe('SummarySection', () => {
     )
 
     await user.click(screen.getByRole('button', { name: /play again/i }))
-    expect(await screen.findByTestId('confirm-dialog')).toBeInTheDocument()
+    expect(
+      await screen.findByRole('dialog', { name: 'Host Game' }),
+    ).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'close' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: 'Close' },
+      ),
+    )
 
     await waitFor(() => {
-      expect(screen.queryByTestId('confirm-dialog')).toBeNull()
+      expect(screen.queryByRole('dialog', { name: 'Host Game' })).toBeNull()
     })
   })
 
@@ -718,17 +639,20 @@ describe('SummarySection', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByTestId('rating-card')).toBeInTheDocument()
-    expect(screen.getByTestId('rating-can-rate')).toHaveTextContent('true')
-    expect(screen.getByTestId('rating-stars')).toHaveTextContent('4')
-    expect(screen.getByTestId('rating-comment')).toHaveTextContent('Nice quiz')
+    expect(screen.getByText('Rate this quiz')).toBeInTheDocument()
+    expect(
+      screen.getAllByRole('button', { name: /Rate \d star/ }),
+    ).toHaveLength(5)
+    expect(screen.getByPlaceholderText('Optional comment...')).toHaveValue(
+      'Nice quiz',
+    )
 
-    await user.click(screen.getByTestId('rating-set-stars'))
+    await user.click(screen.getByRole('button', { name: 'Rate 5 stars' }))
     expect(onRatingChange).toHaveBeenCalledTimes(1)
     expect(onRatingChange).toHaveBeenCalledWith(5)
 
-    await user.click(screen.getByTestId('rating-set-comment'))
+    await user.clear(screen.getByPlaceholderText('Optional comment...'))
     expect(onCommentChange).toHaveBeenCalledTimes(1)
-    expect(onCommentChange).toHaveBeenCalledWith('hello')
+    expect(onCommentChange).toHaveBeenCalledWith('')
   })
 })

@@ -52,7 +52,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
           >
             Host live quizzes and play together with others. Your games will appear here once you start.
           </p>
-          <div
+          <hr
             class="pageDivider"
           />
           <h2
@@ -92,7 +92,7 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI empty state with 
               </span>
             </button>
           </div>
-          <div
+          <hr
             class="pageDivider"
           />
           <h2

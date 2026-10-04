@@ -166,6 +166,7 @@ exports[`HostQuestionPreviewState > should render HostQuestionPreviewState 1`] =
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"

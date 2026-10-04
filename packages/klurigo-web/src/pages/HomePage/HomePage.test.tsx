@@ -29,30 +29,6 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-vi.mock('../../components', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../components')>('../../components')
-
-  return {
-    ...actual,
-    RotatingMessage: ({
-      messages,
-      renderMessage,
-    }: {
-      messages: string[]
-      renderMessage?: (message: string) => React.ReactNode
-    }) => {
-      const message = messages[0] ?? ''
-      if (!message) return null
-      return (
-        <div data-testid="rotating-message">
-          {renderMessage ? renderMessage(message) : message}
-        </div>
-      )
-    },
-  }
-})
-
 const renderHome = () => {
   return render(
     <MemoryRouter>
@@ -85,7 +61,6 @@ describe('HomePage', () => {
 
     expect(screen.getByText('Let’s play')).toBeInTheDocument()
 
-    expect(screen.getByTestId('rotating-message')).toBeInTheDocument()
     expect(
       screen.getByText('Ready to show off your skills? Let’s go!'),
     ).toBeInTheDocument()
@@ -391,11 +366,11 @@ describe('HomePage', () => {
     const joinButton = screen.getByRole('button', { name: /join the game/i })
     expect(joinButton).toBeDisabled()
 
-    await user.type(screen.getByTestId('test-game-pin-textfield'), '123')
+    await user.type(screen.getByPlaceholderText('Game PIN'), '123')
     expect(joinButton).toBeDisabled()
 
-    await user.clear(screen.getByTestId('test-game-pin-textfield'))
-    await user.type(screen.getByTestId('test-game-pin-textfield'), '123456')
+    await user.clear(screen.getByPlaceholderText('Game PIN'))
+    await user.type(screen.getByPlaceholderText('Game PIN'), '123456')
     expect(joinButton).not.toBeDisabled()
   })
 
@@ -417,7 +392,7 @@ describe('HomePage', () => {
 
     renderHome()
 
-    await user.type(screen.getByTestId('test-game-pin-textfield'), '123456')
+    await user.type(screen.getByPlaceholderText('Game PIN'), '123456')
 
     const joinButton = screen.getByRole('button', { name: /join the game/i })
     expect(joinButton).not.toBeDisabled()

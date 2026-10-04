@@ -135,7 +135,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
           >
             New here? Join the fun and create your account!
           </a>
-          <div
+          <hr
             class="pageDivider"
           />
           <div
@@ -312,7 +312,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
           >
             New here? Join the fun and create your account!
           </a>
-          <div
+          <hr
             class="pageDivider"
           />
           <div
@@ -489,7 +489,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
           >
             New here? Join the fun and create your account!
           </a>
-          <div
+          <hr
             class="pageDivider"
           />
           <div
@@ -666,7 +666,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
           >
             New here? Join the fun and create your account!
           </a>
-          <div
+          <hr
             class="pageDivider"
           />
           <div
@@ -836,7 +836,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
           >
             New here? Join the fun and create your account!
           </a>
-          <div
+          <hr
             class="pageDivider"
           />
           <div

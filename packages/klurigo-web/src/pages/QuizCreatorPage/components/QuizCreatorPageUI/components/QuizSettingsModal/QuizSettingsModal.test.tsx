@@ -7,159 +7,46 @@ import {
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import Stack from '../../../../../../components/Stack'
 import type { QuizSettingsValidationResult } from '../../../../utils/QuizSettingsDataSource'
 
 import QuizSettingsModal from './QuizSettingsModal'
 
-vi.mock('../../../../../../components', () => ({
-  Stack,
-  Button: ({
-    id,
-    value,
-    onClick,
-  }: {
-    id?: string
-    value?: string
-    onClick?: () => void
-  }) => (
-    <button id={id} onClick={onClick}>
-      {value ?? id}
-    </button>
-  ),
-  MediaModal: ({
-    onChange,
-    onClose,
-  }: {
-    onChange: (v: { type: string; url: string }) => void
-    onClose: () => void
-  }) => (
-    <div data-testid="media-modal">
-      <button
-        data-testid="media-modal-pick"
-        onClick={() =>
-          onChange({ type: MediaType.Image, url: 'https://cdn/new.jpg' })
-        }>
-        pick
-      </button>
-      <button data-testid="media-modal-close" onClick={onClose}>
-        close
-      </button>
-    </div>
-  ),
-  Modal: ({
-    title,
-    open,
-    closeAction,
-    children,
-  }: {
-    title: string
-    open: boolean
-    closeAction: { label?: string; onClick: () => void }
-    children: React.ReactNode
-  }) =>
-    open ? (
-      <div data-testid="modal">
-        <div data-testid="modal-title">{title}</div>
-        <button data-testid="modal-close" onClick={closeAction.onClick}>
-          close
+vi.mock('../../../../../../components', async () => {
+  const actual = await vi.importActual<
+    typeof import('../../../../../../components')
+  >('../../../../../../components')
+
+  return {
+    ...actual,
+    // Media selection is an infrastructure boundary in this form test. The
+    // real media providers have their own focused tests.
+    MediaModal: ({
+      onChange,
+      onClose,
+    }: {
+      onChange: (value: { type: string; url: string }) => void
+      onClose: () => void
+    }) => (
+      <div role="dialog" aria-label="Add image cover">
+        <button
+          type="button"
+          onClick={() =>
+            onChange({ type: MediaType.Image, url: 'https://cdn/new.jpg' })
+          }>
+          Pick image
         </button>
-        {children}
-        {closeAction.label && (
-          <button
-            data-testid="test-modal-close-action-button-button"
-            onClick={closeAction.onClick}>
-            {closeAction.label}
-          </button>
-        )}
+        <button type="button" onClick={onClose}>
+          Close media picker
+        </button>
       </div>
-    ) : null,
-  ResponsiveImage: ({ imageURL }: { imageURL?: string }) => (
-    <div data-testid="responsive-image" data-url={imageURL ?? ''} />
-  ),
-  Typography: ({
-    children,
-    variant = 'body',
-    className,
-  }: {
-    children?: React.ReactNode
-    variant?: string
-    className?: string
-  }) => {
-    const Tag = ['title', 'title2', 'title3', 'title4', 'title5'].includes(
-      variant,
-    )
-      ? 'h2'
-      : 'p'
-
-    return (
-      <Tag className={[variant, className].filter(Boolean).join(' ')}>
-        {children}
-      </Tag>
-    )
-  },
-}))
-
-vi.mock('../../../../../../components/Select', () => ({
-  default: ({
-    id,
-    value,
-    values,
-    onChange,
-  }: {
-    id: string
-    value?: string
-    values: Array<{ key: string; value: string; valueLabel: string }>
-    onChange?: (v: string) => void
-  }) => (
-    <select
-      data-testid={`select-${id}`}
-      value={value ?? ''}
-      onChange={(e) => onChange?.(e.target.value)}>
-      {values.map((v) => (
-        <option key={v.key} value={v.value}>
-          {v.valueLabel}
-        </option>
-      ))}
-    </select>
-  ),
-}))
-
-vi.mock('../../../../../../components/Textarea', () => ({
-  default: ({
-    id,
-    value,
-    onChange,
-  }: {
-    id: string
-    value?: string
-    onChange?: (v: string) => void
-  }) => (
-    <textarea
-      data-testid={`textarea-${id}`}
-      value={value ?? ''}
-      onChange={(e) => onChange?.(e.target.value)}
-    />
-  ),
-}))
-
-vi.mock('../../../../../../components/TextField', () => ({
-  default: ({
-    id,
-    value,
-    onChange,
-  }: {
-    id: string
-    value?: string
-    onChange?: (v: string) => void
-  }) => (
-    <input
-      data-testid={`textfield-${id}`}
-      value={value ?? ''}
-      onChange={(e) => onChange?.(e.target.value)}
-    />
-  ),
-}))
+    ),
+    // Image loading is covered by ResponsiveImage tests; keep this form test
+    // deterministic while exercising the real form controls and modal.
+    ResponsiveImage: ({ imageURL }: { imageURL?: string }) => (
+      <img alt="Quiz cover" src={imageURL} />
+    ),
+  }
+})
 
 vi.mock('../../../../../../models', () => ({
   LanguageLabels: Object.fromEntries(
@@ -203,7 +90,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    expect(screen.getByTestId('modal-title')).toHaveTextContent('Settings')
+    expect(screen.getByRole('dialog', { name: 'Settings' })).toBeInTheDocument()
   })
 
   it('calls onClose when the Close button is clicked', () => {
@@ -216,7 +103,7 @@ describe('QuizSettingsModal', () => {
         onClose={onClose}
       />,
     )
-    fireEvent.click(screen.getByTestId('test-modal-close-action-button-button'))
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
@@ -229,13 +116,13 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    expect(document.getElementById('add-image-cover-button')).toHaveTextContent(
-      'Add',
-    )
+    expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument()
     expect(
-      document.getElementById('delete-image-cover-button'),
+      screen.queryByRole('button', { name: 'Delete' }),
     ).not.toBeInTheDocument()
-    expect(screen.queryByTestId('responsive-image')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('img', { name: 'Quiz cover' }),
+    ).not.toBeInTheDocument()
   })
 
   it('shows Replace, Delete buttons and ResponsiveImage when imageCoverURL is present', () => {
@@ -247,14 +134,10 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    expect(document.getElementById('add-image-cover-button')).toHaveTextContent(
-      'Replace',
-    )
-    expect(
-      document.getElementById('delete-image-cover-button'),
-    ).toBeInTheDocument()
-    expect(screen.getByTestId('responsive-image')).toHaveAttribute(
-      'data-url',
+    expect(screen.getByRole('button', { name: 'Replace' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Quiz cover' })).toHaveAttribute(
+      'src',
       'https://cdn/cover.jpg',
     )
   })
@@ -269,9 +152,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.click(
-      document.getElementById('delete-image-cover-button') as HTMLElement,
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
     expect(onValueChange).toHaveBeenCalledWith('imageCoverURL', undefined)
   })
 
@@ -284,11 +165,13 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    expect(screen.queryByTestId('media-modal')).not.toBeInTheDocument()
-    fireEvent.click(
-      document.getElementById('add-image-cover-button') as HTMLElement,
-    )
-    expect(screen.getByTestId('media-modal')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('dialog', { name: 'Add image cover' }),
+    ).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }))
+    expect(
+      screen.getByRole('dialog', { name: 'Add image cover' }),
+    ).toBeInTheDocument()
   })
 
   it('calls onValueChange with imageCoverURL when MediaModal image is picked', () => {
@@ -301,10 +184,8 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.click(
-      document.getElementById('add-image-cover-button') as HTMLElement,
-    )
-    fireEvent.click(screen.getByTestId('media-modal-pick'))
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Pick image' }))
     expect(onValueChange).toHaveBeenCalledWith(
       'imageCoverURL',
       'https://cdn/new.jpg',
@@ -320,12 +201,14 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.click(
-      document.getElementById('add-image-cover-button') as HTMLElement,
-    )
-    expect(screen.getByTestId('media-modal')).toBeInTheDocument()
-    fireEvent.click(screen.getByTestId('media-modal-close'))
-    expect(screen.queryByTestId('media-modal')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Add' }))
+    expect(
+      screen.getByRole('dialog', { name: 'Add image cover' }),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Close media picker' }))
+    expect(
+      screen.queryByRole('dialog', { name: 'Add image cover' }),
+    ).not.toBeInTheDocument()
   })
 
   it('calls onValueChange when title field changes', () => {
@@ -338,7 +221,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('textfield-quiz-title-textfield'), {
+    fireEvent.change(screen.getByLabelText('Title'), {
       target: { value: 'New Title' },
     })
     expect(onValueChange).toHaveBeenCalledWith('title', 'New Title')
@@ -354,7 +237,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('textarea-quiz-description-textarea'), {
+    fireEvent.change(screen.getByLabelText('Description'), {
       target: { value: 'New description' },
     })
     expect(onValueChange).toHaveBeenCalledWith('description', 'New description')
@@ -370,7 +253,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('select-category-select'), {
+    fireEvent.change(screen.getByLabelText('Category'), {
       target: { value: QuizCategory.History },
     })
     expect(onValueChange).toHaveBeenCalledWith('category', QuizCategory.History)
@@ -386,7 +269,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('select-category-select'), {
+    fireEvent.change(screen.getByLabelText('Category'), {
       target: { value: 'none' },
     })
     expect(onValueChange).toHaveBeenCalledWith('category', undefined)
@@ -402,7 +285,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('select-visibility-select'), {
+    fireEvent.change(screen.getByLabelText('Visibility'), {
       target: { value: QuizVisibility.Private },
     })
     expect(onValueChange).toHaveBeenCalledWith(
@@ -421,7 +304,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('select-language-select'), {
+    fireEvent.change(screen.getByLabelText('Language'), {
       target: { value: LanguageCode.Swedish },
     })
     expect(onValueChange).toHaveBeenCalledWith(
@@ -440,7 +323,7 @@ describe('QuizSettingsModal', () => {
         onClose={vi.fn()}
       />,
     )
-    fireEvent.change(screen.getByTestId('select-language-select'), {
+    fireEvent.change(screen.getByLabelText('Language'), {
       target: { value: 'none' },
     })
     expect(onValueChange).toHaveBeenCalledWith('languageCode', undefined)
