@@ -126,10 +126,14 @@ export class UserRepository extends BaseRepository<User> {
       '_id' | 'authProvider' | 'createdAt' | 'updatedAt'
     >,
   ): Promise<LocalUser> {
+    const now = new Date()
+
     return this.createUser<LocalUser>({
       ...details,
       _id: uuidv4(),
       authProvider: AuthProvider.Local,
+      createdAt: now,
+      updatedAt: now,
     })
   }
 
@@ -145,10 +149,14 @@ export class UserRepository extends BaseRepository<User> {
       '_id' | 'authProvider' | 'createdAt' | 'updatedAt'
     >,
   ): Promise<GoogleUser> {
+    const now = new Date()
+
     return this.createUser<GoogleUser>({
       ...details,
       _id: uuidv4(),
       authProvider: AuthProvider.Google,
+      createdAt: now,
+      updatedAt: now,
     })
   }
 
@@ -164,6 +172,10 @@ export class UserRepository extends BaseRepository<User> {
     details: Partial<T>,
   ): Promise<T> {
     const normalizedDetails = UserRepository.normalizeEmailFields(details)
+    const updatedDetails = {
+      ...normalizedDetails,
+      updatedAt: new Date(),
+    }
 
     // Check if user exists first
     const existingUser = await this.findById(id)
@@ -172,11 +184,11 @@ export class UserRepository extends BaseRepository<User> {
     }
 
     if (
-      normalizedDetails.authProvider &&
-      normalizedDetails.authProvider !== existingUser.authProvider
+      updatedDetails.authProvider &&
+      updatedDetails.authProvider !== existingUser.authProvider
     ) {
       const updatedUser = await this.userModel
-        .findByIdAndUpdate(id, normalizedDetails, {
+        .findByIdAndUpdate(id, updatedDetails, {
           returnDocument: 'after',
           overwriteDiscriminatorKey: true,
           runValidators: true,
@@ -186,7 +198,7 @@ export class UserRepository extends BaseRepository<User> {
       return updatedUser as T
     }
 
-    const updatedUser = await this.update(id, normalizedDetails)
+    const updatedUser = await this.update(id, updatedDetails)
     if (!updatedUser) {
       throw new UserNotFoundException(id)
     }
@@ -214,7 +226,10 @@ export class UserRepository extends BaseRepository<User> {
     }
 
     const updatedUser = await user
-      .set(UserRepository.normalizeEmailFields(details))
+      .set({
+        ...UserRepository.normalizeEmailFields(details),
+        updatedAt: new Date(),
+      })
       .save()
     if (isGoogleUser(updatedUser)) {
       return updatedUser

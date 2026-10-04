@@ -53,9 +53,13 @@ describe(GameEventListener.name, () => {
       expect(userRepository.findUserById).toHaveBeenCalledWith('user-123')
 
       expect(userRepository.update).toHaveBeenCalledTimes(1)
-      expect(userRepository.update).toHaveBeenCalledWith('user-123', {
-        defaultNickname: 'CoolPlayer',
-      })
+      expect(userRepository.update).toHaveBeenCalledWith(
+        'user-123',
+        expect.objectContaining({
+          defaultNickname: 'CoolPlayer',
+          updatedAt: expect.any(Date),
+        }),
+      )
     })
 
     it('does not call update when user does not exist', async () => {

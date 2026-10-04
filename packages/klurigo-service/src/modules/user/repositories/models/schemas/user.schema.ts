@@ -1,6 +1,6 @@
 import { AuthProvider } from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Model, now } from 'mongoose'
+import { Model } from 'mongoose'
 
 import { SkipValidation } from '../../../../../app/decorators'
 import type {
@@ -18,7 +18,6 @@ import type {
   _id: true,
   collection: 'users',
   discriminatorKey: 'authProvider',
-  timestamps: true,
 })
 export class User implements SharedUserBase {
   /**
@@ -89,13 +88,13 @@ export class User implements SharedUserBase {
   /**
    * Timestamp when the user was created (ISO-8601 string).
    */
-  @Prop({ type: Date, default: now() })
+  @Prop({ type: Date })
   createdAt: Date
 
   /**
    * Timestamp when the user was last updated (ISO-8601 string).
    */
-  @Prop({ type: Date, default: now() })
+  @Prop({ type: Date })
   updatedAt: Date
 }
 
