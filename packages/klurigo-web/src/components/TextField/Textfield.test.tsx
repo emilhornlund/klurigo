@@ -262,52 +262,6 @@ describe('TextField', () => {
     })
   })
 
-  describe('checkbox', () => {
-    it('should render the checkbox when checked is provided', () => {
-      render(<TextField id="my-text-field" type="text" checked={false} />)
-
-      expect(
-        document.getElementById('my-text-field-checkbox'),
-      ).toBeInTheDocument()
-    })
-
-    it('should render the check icon when checked', () => {
-      render(<TextField id="my-text-field" type="text" checked />)
-
-      const checkbox = document.getElementById(
-        'my-text-field-checkbox',
-      ) as HTMLInputElement
-
-      expect(checkbox).toBeChecked()
-      expect(
-        checkbox.parentElement?.querySelector(`.${styles.checkboxIcon}`),
-      ).toBeInTheDocument()
-    })
-
-    it('should call onCheck when the checkbox changes', () => {
-      const onCheck = vi.fn()
-
-      render(
-        <TextField
-          id="my-text-field"
-          type="text"
-          checked={false}
-          onCheck={onCheck}
-        />,
-      )
-
-      fireEvent.click(document.getElementById('my-text-field-checkbox')!)
-
-      expect(onCheck).toHaveBeenCalledWith(true)
-    })
-
-    it('should disable the checkbox together with the text field', () => {
-      render(<TextField id="my-text-field" type="text" checked disabled />)
-
-      expect(document.getElementById('my-text-field-checkbox')).toBeDisabled()
-    })
-  })
-
   describe('validation callbacks', () => {
     it('should call onValid when validity changes', () => {
       const onValid = vi.fn()

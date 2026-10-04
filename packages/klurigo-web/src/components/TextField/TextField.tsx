@@ -1,5 +1,3 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { ChangeEvent, FC } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
@@ -27,7 +25,6 @@ export interface TextFieldProps {
   minLength?: number
   maxLength?: number
   regex?: RegExp | { value: RegExp; message: string }
-  checked?: boolean
   required?: boolean | string
   disabled?: boolean
   readOnly?: boolean
@@ -38,7 +35,6 @@ export interface TextFieldProps {
   onChange?: (value?: string | number) => void
   onValid?: (valid: boolean) => void
   onAdditionalValidation?: (value: string | number) => boolean | string
-  onCheck?: (checked: boolean) => void
 }
 
 const TextField: FC<TextFieldProps> = ({
@@ -55,7 +51,6 @@ const TextField: FC<TextFieldProps> = ({
   minLength,
   maxLength,
   regex,
-  checked,
   required,
   disabled,
   readOnly,
@@ -66,7 +61,6 @@ const TextField: FC<TextFieldProps> = ({
   onChange,
   onValid,
   onAdditionalValidation,
-  onCheck,
 }) => {
   const [internalValue, setInternalValue] = useState<string | number>()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -208,23 +202,6 @@ const TextField: FC<TextFieldProps> = ({
           }}
           data-testid={`test-${id}-textfield`}
         />
-        {checked !== undefined && (
-          <label htmlFor={`${id}-checkbox`} className={styles.checkboxLabel}>
-            <input
-              id={`${id}-checkbox`}
-              type="checkbox"
-              checked={checked}
-              disabled={disabled}
-              className={styles.checkbox}
-              onChange={(event) => onCheck?.(event.target.checked)}
-            />
-            {checked && (
-              <span className={styles.checkboxIcon}>
-                <FontAwesomeIcon icon={faCheck} />
-              </span>
-            )}
-          </label>
-        )}
       </div>
       {showError && showErrorMessage && (
         <InputError message={errorMessage ?? 'Unknown error'} size={size} />
