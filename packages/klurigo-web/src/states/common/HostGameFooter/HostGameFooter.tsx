@@ -74,6 +74,7 @@ const HostGameFooter: FC<HostGameFooterProps> = ({
             variant="plain"
             surface="brand"
             icon={faGear}
+            aria-label="Settings"
             onClick={toggleSettingsMenu}
           />
           <Menu

@@ -20,7 +20,9 @@ describe('ConfirmDialog', () => {
       screen.getByText('Are you sure you want to delete this item?'),
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /confirm/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Close dialog' }),
+    ).toBeInTheDocument()
   })
 
   it('does not render when not open', () => {
@@ -34,7 +36,7 @@ describe('ConfirmDialog', () => {
       screen.queryByRole('button', { name: /confirm/i }),
     ).not.toBeInTheDocument()
     expect(
-      screen.queryByRole('button', { name: /close/i }),
+      screen.queryByRole('button', { name: 'Close dialog' }),
     ).not.toBeInTheDocument()
   })
 
@@ -50,7 +52,7 @@ describe('ConfirmDialog', () => {
     const onClose = vi.fn()
     render(<ConfirmDialog {...defaultProps} onClose={onClose} />)
 
-    fireEvent.click(screen.getByRole('button', { name: /close/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close dialog' }))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

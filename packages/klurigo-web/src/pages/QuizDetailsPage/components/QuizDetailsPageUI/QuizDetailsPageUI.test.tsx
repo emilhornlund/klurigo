@@ -3,133 +3,14 @@ import {
   LanguageCode,
   QuizCategory,
   type QuizRatingDto,
-  type QuizRatingSummaryDto,
   QuizVisibility,
 } from '@klurigo/common'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
-import Stack from '../../../../components/Stack'
-
 import QuizDetailsPageUI from './QuizDetailsPageUI'
-
-vi.mock('./components/RatingsSection', () => ({
-  default: ({
-    summary,
-    ratings,
-    isLoading,
-  }: {
-    summary: QuizRatingSummaryDto
-    ratings: QuizRatingDto[]
-    isLoading?: boolean
-  }) => (
-    <div data-testid="ratings-section">
-      <span data-testid="ratings-summary-stars">{summary.stars}</span>
-      <span data-testid="ratings-count">{ratings.length}</span>
-      {isLoading && <span data-testid="ratings-loading" />}
-    </div>
-  ),
-}))
-
-vi.mock('../../../../components', async () => {
-  const Button = ({
-    id,
-    value,
-    onClick,
-  }: {
-    id?: string
-    value?: string
-    onClick?: () => void
-  }) => (
-    <button type="button" id={id} onClick={onClick}>
-      {value}
-    </button>
-  )
-
-  const Page = ({
-    header,
-    children,
-  }: {
-    header?: React.ReactNode
-    children?: React.ReactNode
-  }) => (
-    <div data-testid="page">
-      <div data-testid="page-header">{header}</div>
-      <div data-testid="page-body">{children}</div>
-    </div>
-  )
-
-  const Typography = ({ children }: { children?: React.ReactNode }) => (
-    <div data-testid="typography">{children}</div>
-  )
-
-  const LoadingSpinner = () => <div data-testid="loading-spinner" />
-
-  const PageDivider = () => <hr data-testid="page-divider" />
-
-  const Surface = ({
-    as: Component = 'div',
-    children,
-    ...props
-  }: {
-    as?: 'div' | 'button'
-    children?: React.ReactNode
-  }) => <Component {...props}>{children}</Component>
-
-  const ResponsiveImage = ({ imageURL }: { imageURL: string }) => (
-    <img data-testid="responsive-image" alt="cover" src={imageURL} />
-  )
-
-  const ConfirmDialog = ({
-    title,
-    message,
-    open,
-    loading,
-    destructive,
-    onConfirm,
-    onClose,
-  }: {
-    title: string
-    message: string
-    open: boolean
-    loading?: boolean
-    destructive?: boolean
-    onConfirm: () => void
-    onClose: () => void
-  }) => {
-    if (!open) return null
-
-    return (
-      <div
-        data-testid={`confirm-dialog-${title}`}
-        data-loading={loading ? 'true' : 'false'}
-        data-destructive={destructive ? 'true' : 'false'}>
-        <div>{title}</div>
-        <div>{message}</div>
-        <button type="button" onClick={onConfirm}>
-          confirm
-        </button>
-        <button type="button" onClick={onClose}>
-          close
-        </button>
-      </div>
-    )
-  }
-
-  return {
-    Button,
-    ConfirmDialog,
-    LoadingSpinner,
-    Page,
-    PageDivider,
-    ResponsiveImage,
-    Stack,
-    Surface,
-    Typography,
-  }
-})
 
 const created = new Date('2025-02-14T15:31:14.000Z')
 const updated = new Date('2025-03-08T15:31:14.000Z')
@@ -249,7 +130,9 @@ describe('QuizDetailsPageUI', () => {
   it('renders image only when imageCoverURL is present', () => {
     renderUI({ quiz: makeQuiz({ imageCoverURL: undefined }) })
 
-    expect(screen.queryByTestId('responsive-image')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('img', { name: 'The Ultimate Geography Challenge' }),
+    ).not.toBeInTheDocument()
   })
 
   it('renders singular Question when numberOfQuestions is 1', () => {
@@ -280,14 +163,21 @@ describe('QuizDetailsPageUI', () => {
     renderUI({ onHostGame })
 
     fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
-    expect(screen.getByTestId('confirm-dialog-Host Game')).toBeInTheDocument()
+    expect(
+      screen.getByRole('dialog', { name: 'Host Game' }),
+    ).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'confirm' }))
+    fireEvent.click(screen.getByRole('button', { name: /confirm/i }))
     expect(onHostGame).toHaveBeenCalledTimes(1)
 
-    fireEvent.click(screen.getByRole('button', { name: 'close' }))
+    fireEvent.click(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: 'Close' },
+      ),
+    )
     expect(
-      screen.queryByTestId('confirm-dialog-Host Game'),
+      screen.queryByRole('dialog', { name: 'Host Game' }),
     ).not.toBeInTheDocument()
   })
 
@@ -296,9 +186,11 @@ describe('QuizDetailsPageUI', () => {
     renderUI({ isOwner: true, onDeleteQuiz })
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
-    expect(screen.getByTestId('confirm-dialog-Delete Quiz')).toBeInTheDocument()
+    expect(
+      screen.getByRole('dialog', { name: 'Delete Quiz' }),
+    ).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'confirm' }))
+    fireEvent.click(screen.getByRole('button', { name: /confirm/i }))
     expect(onDeleteQuiz).toHaveBeenCalledTimes(1)
   })
 
@@ -318,22 +210,25 @@ describe('QuizDetailsPageUI', () => {
     })
 
     fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
-    expect(screen.getByTestId('confirm-dialog-Host Game')).toHaveAttribute(
-      'data-loading',
-      'true',
-    )
+    expect(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: /confirm/i },
+      ),
+    ).toBeDisabled()
 
-    fireEvent.click(screen.getByRole('button', { name: 'close' }))
+    fireEvent.click(
+      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
+        'button',
+        { name: 'Close' },
+      ),
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
-    expect(screen.getByTestId('confirm-dialog-Delete Quiz')).toHaveAttribute(
-      'data-loading',
-      'true',
-    )
-    expect(screen.getByTestId('confirm-dialog-Delete Quiz')).toHaveAttribute(
-      'data-destructive',
-      'true',
-    )
+    const deleteDialog = screen.getByRole('dialog', { name: 'Delete Quiz' })
+    expect(
+      within(deleteDialog).getByRole('button', { name: /confirm/i }),
+    ).toBeDisabled()
   })
 
   describe('Gameplay Summary Details', () => {
@@ -808,10 +703,8 @@ describe('QuizDetailsPageUI', () => {
       })
 
       expect(screen.getByTestId('ratings-section')).toBeInTheDocument()
-      expect(screen.getByTestId('page-divider')).toBeInTheDocument()
-      expect(screen.getByTestId('ratings-summary-stars')).toHaveTextContent(
-        '4.5',
-      )
+      expect(screen.getByRole('separator')).toBeInTheDocument()
+      expect(screen.getByLabelText('Average rating: 4.5')).toBeInTheDocument()
     })
 
     it('hides RatingsSection and PageDivider when ratingSummary.stars is 0', () => {
@@ -820,7 +713,7 @@ describe('QuizDetailsPageUI', () => {
       })
 
       expect(screen.queryByTestId('ratings-section')).not.toBeInTheDocument()
-      expect(screen.queryByTestId('page-divider')).not.toBeInTheDocument()
+      expect(screen.queryByRole('separator')).not.toBeInTheDocument()
     })
 
     it('passes empty array to RatingsSection when ratings prop is undefined', () => {
@@ -831,7 +724,9 @@ describe('QuizDetailsPageUI', () => {
         ratings: undefined,
       })
 
-      expect(screen.getByTestId('ratings-count')).toHaveTextContent('0')
+      expect(screen.getByTestId('ratings-empty-state')).toHaveTextContent(
+        'No written reviews yet',
+      )
     })
 
     it('passes ratings array to RatingsSection when provided', () => {
@@ -846,7 +741,7 @@ describe('QuizDetailsPageUI', () => {
         ],
       })
 
-      expect(screen.getByTestId('ratings-count')).toHaveTextContent('3')
+      expect(screen.getAllByTestId('rating-card')).toHaveLength(3)
     })
 
     it('passes isLoadingRatings to RatingsSection', () => {
@@ -857,7 +752,7 @@ describe('QuizDetailsPageUI', () => {
         isLoadingRatings: true,
       })
 
-      expect(screen.getByTestId('ratings-loading')).toBeInTheDocument()
+      expect(screen.getAllByTestId('ratings-skeleton-card')).toHaveLength(3)
     })
   })
 })

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import type React from 'react'
+import type { ReactElement } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -45,64 +45,9 @@ vi.mock('./text.utils', () => ({
   MESSAGES: ['Pick a nickname and jump in!', 'Another message'],
 }))
 
-vi.mock('../../components', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../components')>('../../components')
-
-  return {
-    ...actual,
-
-    RotatingMessage: ({
-      messages,
-      renderMessage,
-    }: {
-      messages: string[]
-      renderMessage?: (message: string) => React.ReactNode
-    }) => {
-      const message = messages[0] ?? ''
-      if (!message) return null
-      return (
-        <div data-testid="rotating-message">
-          {renderMessage ? renderMessage(message) : message}
-        </div>
-      )
-    },
-
-    NicknameTextField: ({
-      value,
-      placeholder,
-      disabled,
-      onChange,
-      onValid,
-    }: {
-      value: string
-      placeholder?: string
-      disabled?: boolean
-      onChange: (value: string) => void
-      onValid: (valid: boolean) => void
-    }) => {
-      const validate = (v: string) => v.trim().length > 0
-
-      return (
-        <input
-          data-testid="nickname-input"
-          placeholder={placeholder ?? 'Nickname'}
-          disabled={disabled}
-          value={value}
-          onChange={(e) => {
-            const next = e.target.value
-            onChange(next)
-            onValid(validate(next))
-          }}
-        />
-      )
-    },
-  }
-})
-
 import GameJoinPage from './GameJoinPage'
 
-const renderWithRouter = (ui: React.ReactElement, route = '/join') =>
+const renderWithRouter = (ui: ReactElement, route = '/join') =>
   render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>)
 
 beforeEach(() => {
@@ -139,7 +84,7 @@ describe('GameJoinPage', () => {
     const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
     expect(joinBtn).toBeDisabled()
 
-    fireEvent.change(screen.getByTestId('nickname-input'), {
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
       target: { value: 'Emil' },
     })
 
@@ -157,7 +102,7 @@ describe('GameJoinPage', () => {
 
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    fireEvent.change(screen.getByTestId('nickname-input'), {
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
       target: { value: 'Emil' },
     })
 
@@ -175,7 +120,7 @@ describe('GameJoinPage', () => {
     providedGameID = undefined
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    fireEvent.change(screen.getByTestId('nickname-input'), {
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
       target: { value: 'Someone' },
     })
 
@@ -191,7 +136,7 @@ describe('GameJoinPage', () => {
     providedDefaultNickname = undefined
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    const input = screen.getByTestId('nickname-input') as HTMLInputElement
+    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
     const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
 
     expect(input.value).toBe('')
@@ -208,7 +153,7 @@ describe('GameJoinPage', () => {
     const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
 
     expect(input.value).toBe('PreFilledNick')
-    expect(joinBtn).toBeDisabled()
+    expect(joinBtn).not.toBeDisabled()
 
     fireEvent.change(input, { target: { value: 'PreFilledNick2' } })
 
@@ -222,13 +167,13 @@ describe('GameJoinPage', () => {
   it('does not submit when nickname is blank or whitespace', () => {
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    const input = screen.getByTestId('nickname-input')
+    const input = screen.getByPlaceholderText('Nickname')
     const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
 
     fireEvent.change(input, { target: { value: '   ' } })
     expect(joinBtn).toBeDisabled()
 
-    fireEvent.submit(screen.getByTestId('join-form'))
+    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
 
     expect(mockJoinGame).not.toHaveBeenCalled()
     expect(container).toMatchSnapshot()
@@ -244,7 +189,7 @@ describe('GameJoinPage', () => {
 
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    const input = screen.getByTestId('nickname-input') as HTMLInputElement
+    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'Runner' } })
 
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
@@ -263,7 +208,7 @@ describe('GameJoinPage', () => {
 
     renderWithRouter(<GameJoinPage />)
 
-    const input = screen.getByTestId('nickname-input') as HTMLInputElement
+    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'Runner' } })
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
 
@@ -283,11 +228,11 @@ describe('GameJoinPage', () => {
 
     const { container } = renderWithRouter(<GameJoinPage />)
 
-    fireEvent.change(screen.getByTestId('nickname-input'), {
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
       target: { value: 'KeyUser' },
     })
 
-    fireEvent.submit(screen.getByTestId('join-form'))
+    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
 
     expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'KeyUser')
 
@@ -312,7 +257,7 @@ describe('GameJoinPage', () => {
     fireEvent.change(input, { target: { value: 'Speedy' } })
 
     await act(async () => {
-      fireEvent.submit(screen.getByTestId('join-form'))
+      fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
     })
 
     expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Speedy')
@@ -384,7 +329,7 @@ describe('GameJoinPage', () => {
 
     renderWithRouter(<GameJoinPage />)
 
-    fireEvent.change(screen.getByTestId('nickname-input'), {
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
       target: { value: 'GuestUser' },
     })
 

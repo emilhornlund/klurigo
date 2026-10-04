@@ -72,13 +72,17 @@ exports[`HomePage > renders the "Resume game" button if the backend confirms an 
             class="message"
           >
             <div
-              data-testid="rotating-message"
+              class="messageContainer"
             >
-              <p
-                class="typography body alignCenter widthSmall colorInverse"
+              <div
+                class="message visible"
               >
-                Ready to show off your skills? Let’s go!
-              </p>
+                <p
+                  class="typography body alignCenter widthSmall colorInverse"
+                >
+                  Ready to show off your skills? Let’s go!
+                </p>
+              </div>
             </div>
           </div>
           <div
@@ -258,13 +262,17 @@ exports[`HomePage > renders the base layout and the rotating message container 1
             class="message"
           >
             <div
-              data-testid="rotating-message"
+              class="messageContainer"
             >
-              <p
-                class="typography body alignCenter widthSmall colorInverse"
+              <div
+                class="message visible"
               >
-                Ready to show off your skills? Let’s go!
-              </p>
+                <p
+                  class="typography body alignCenter widthSmall colorInverse"
+                >
+                  Ready to show off your skills? Let’s go!
+                </p>
+              </div>
             </div>
           </div>
           <form

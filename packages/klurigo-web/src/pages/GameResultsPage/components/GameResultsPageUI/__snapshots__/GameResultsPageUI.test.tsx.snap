@@ -556,7 +556,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>
@@ -1603,7 +1603,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>
@@ -2599,7 +2599,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>
@@ -4752,7 +4752,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>
@@ -5787,7 +5787,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>
@@ -7601,7 +7601,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
                   />
-                  <div
+                  <hr
                     class="pageDivider"
                   />
                 </div>

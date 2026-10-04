@@ -26,6 +26,7 @@ export interface ButtonProps {
   iconColor?: string
   onClick?: () => void
   children?: ReactNode
+  'aria-label'?: string
 }
 
 const Button: FC<ButtonProps> = ({
@@ -46,6 +47,7 @@ const Button: FC<ButtonProps> = ({
   iconColor,
   onClick,
   children,
+  'aria-label': ariaLabel,
 }) => {
   const deviceType = useDeviceSizeType()
 
@@ -79,6 +81,7 @@ const Button: FC<ButtonProps> = ({
         name={name ?? id}
         type={type}
         disabled={loading || disabled}
+        aria-label={ariaLabel}
         onClick={onClick}
         data-testid={`test-${id}-button`}>
         {loading ? (

@@ -455,6 +455,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
         >
           <button
+            aria-label="Close dialog"
             data-testid="test-close-modal-button-button"
             id="close-modal-button"
             name="close-modal-button"
@@ -507,6 +508,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           class="buttonContainer variantPrimary surfaceLight intentDanger grow"
         >
           <button
+            aria-label="Leave Game"
             data-testid="test-modal-primary-action-button-button"
             id="modal-primary-action-button"
             name="modal-primary-action-button"

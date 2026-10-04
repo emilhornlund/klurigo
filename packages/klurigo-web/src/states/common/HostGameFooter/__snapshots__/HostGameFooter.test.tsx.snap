@@ -7,13 +7,21 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
   <div
     class="leading"
   >
-    <span
-      data-testid="fa-icon"
+    <svg
+      aria-hidden="true"
+      class="svg-inline--fa fa-circle-question"
+      data-icon="circle-question"
+      data-prefix="fas"
+      role="img"
+      viewBox="0 0 512 512"
     >
-      true
-    </span>
+      <path
+        d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+        fill="currentColor"
+      />
+    </svg>
     <p
-      class="body2"
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       1
        / 
@@ -24,13 +32,21 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
     class="center"
   >
     <p
-      class="body2"
+      class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
     >
-      <span
-        data-testid="fa-icon"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-lock-open"
+        data-icon="lock-open"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 576 512"
       >
-        true
-      </span>
+        <path
+          d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+          fill="currentColor"
+        />
+      </svg>
        
       123456
     </p>
@@ -39,25 +55,29 @@ exports[`HostGameFooter > matches snapshot (menu closed) 1`] = `
     class="trailing"
   >
     <div>
-      <button
-        id="settings-button"
-        type="button"
-      >
-        Button
-      </button>
       <div
-        data-testid="menu"
+        class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
       >
-        <div
-          data-testid="menu-open"
-        >
-          false
-        </div>
         <button
-          data-testid="menu-close"
+          aria-label="Settings"
+          data-testid="test-settings-button-button"
+          id="settings-button"
+          name="settings-button"
           type="button"
         >
-          close
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-gear icon"
+            data-icon="gear"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M195.1 9.5C198.1-5.3 211.2-16 226.4-16l59.8 0c15.2 0 28.3 10.7 31.3 25.5L332 79.5c14.1 6 27.3 13.7 39.3 22.8l67.8-22.5c14.4-4.8 30.2 1.2 37.8 14.4l29.9 51.8c7.6 13.2 4.9 29.8-6.5 39.9L447 233.3c.9 7.4 1.3 15 1.3 22.7s-.5 15.3-1.3 22.7l53.4 47.5c11.4 10.1 14 26.8 6.5 39.9l-29.9 51.8c-7.6 13.1-23.4 19.2-37.8 14.4l-67.8-22.5c-12.1 9.1-25.3 16.7-39.3 22.8l-14.4 69.9c-3.1 14.9-16.2 25.5-31.3 25.5l-59.8 0c-15.2 0-28.3-10.7-31.3-25.5l-14.4-69.9c-14.1-6-27.2-13.7-39.3-22.8L73.5 432.3c-14.4 4.8-30.2-1.2-37.8-14.4L5.8 366.1c-7.6-13.2-4.9-29.8 6.5-39.9l53.4-47.5c-.9-7.4-1.3-15-1.3-22.7s.5-15.3 1.3-22.7L12.3 185.8c-11.4-10.1-14-26.8-6.5-39.9L35.7 94.1c7.6-13.2 23.4-19.2 37.8-14.4l67.8 22.5c12.1-9.1 25.3-16.7 39.3-22.8L195.1 9.5zM256.3 336a80 80 0 1 0 -.6-160 80 80 0 1 0 .6 160z"
+              fill="currentColor"
+            />
+          </svg>
         </button>
       </div>
     </div>
@@ -72,13 +92,21 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
   <div
     class="leading"
   >
-    <span
-      data-testid="fa-icon"
+    <svg
+      aria-hidden="true"
+      class="svg-inline--fa fa-circle-question"
+      data-icon="circle-question"
+      data-prefix="fas"
+      role="img"
+      viewBox="0 0 512 512"
     >
-      true
-    </span>
+      <path
+        d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+        fill="currentColor"
+      />
+    </svg>
     <p
-      class="body2"
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       1
        / 
@@ -89,13 +117,21 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
     class="center"
   >
     <p
-      class="body2"
+      class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
     >
-      <span
-        data-testid="fa-icon"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-lock-open"
+        data-icon="lock-open"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 576 512"
       >
-        true
-      </span>
+        <path
+          d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+          fill="currentColor"
+        />
+      </svg>
        
       123456
     </p>
@@ -104,48 +140,110 @@ exports[`HostGameFooter > matches snapshot (menu open) 1`] = `
     class="trailing"
   >
     <div>
-      <button
-        id="settings-button"
-        type="button"
-      >
-        Button
-      </button>
       <div
-        data-testid="menu"
+        class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
       >
-        <div
-          data-testid="menu-open"
-        >
-          true
-        </div>
         <button
-          data-testid="menu-close"
+          aria-label="Settings"
+          data-testid="test-settings-button-button"
+          id="settings-button"
+          name="settings-button"
           type="button"
         >
-          close
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-gear icon"
+            data-icon="gear"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M195.1 9.5C198.1-5.3 211.2-16 226.4-16l59.8 0c15.2 0 28.3 10.7 31.3 25.5L332 79.5c14.1 6 27.3 13.7 39.3 22.8l67.8-22.5c14.4-4.8 30.2 1.2 37.8 14.4l29.9 51.8c7.6 13.2 4.9 29.8-6.5 39.9L447 233.3c.9 7.4 1.3 15 1.3 22.7s-.5 15.3-1.3 22.7l53.4 47.5c11.4 10.1 14 26.8 6.5 39.9l-29.9 51.8c-7.6 13.1-23.4 19.2-37.8 14.4l-67.8-22.5c-12.1 9.1-25.3 16.7-39.3 22.8l-14.4 69.9c-3.1 14.9-16.2 25.5-31.3 25.5l-59.8 0c-15.2 0-28.3-10.7-31.3-25.5l-14.4-69.9c-14.1-6-27.2-13.7-39.3-22.8L73.5 432.3c-14.4 4.8-30.2-1.2-37.8-14.4L5.8 366.1c-7.6-13.2-4.9-29.8 6.5-39.9l53.4-47.5c-.9-7.4-1.3-15-1.3-22.7s.5-15.3 1.3-22.7L12.3 185.8c-11.4-10.1-14-26.8-6.5-39.9L35.7 94.1c7.6-13.2 23.4-19.2 37.8-14.4l67.8 22.5c12.1-9.1 25.3-16.7 39.3-22.8L195.1 9.5zM256.3 336a80 80 0 1 0 -.6-160 80 80 0 1 0 .6 160z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="menu"
+        style="position: fixed; top: -8px; left: 0px; transform: translate(-100%, -100%); visibility: visible;"
+      >
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-users icon"
+              data-icon="users"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 640 512"
+            >
+              <path
+                d="M320 16a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM96 88a72 72 0 1 1 0 144 72 72 0 1 1 0-144zM0 416c0-70.7 57.3-128 128-128 12.8 0 25.2 1.9 36.9 5.4-32.9 36.8-52.9 85.4-52.9 138.6l0 16c0 11.4 2.4 22.2 6.7 32L32 480c-17.7 0-32-14.3-32-32l0-32zm521.3 64c4.3-9.8 6.7-20.6 6.7-32l0-16c0-53.2-20-101.8-52.9-138.6 11.7-3.5 24.1-5.4 36.9-5.4 70.7 0 128 57.3 128 128l0 32c0 17.7-14.3 32-32 32l-86.7 0zM472 160a72 72 0 1 1 144 0 72 72 0 1 1 -144 0zM160 432c0-88.4 71.6-160 160-160s160 71.6 160 160l0 16c0 17.7-14.3 32-32 32l-256 0c-17.7 0-32-14.3-32-32l0-16z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Players
+            </span>
+          </div>
+        </button>
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-maximize icon"
+              data-icon="maximize"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M168 32L24 32C10.7 32 0 42.7 0 56L0 200c0 9.7 5.8 18.5 14.8 22.2S34.1 223.8 41 217l40-40 79 79-79 79-40-40c-6.9-6.9-17.2-8.9-26.2-5.2S0 302.3 0 312L0 456c0 13.3 10.7 24 24 24l144 0c9.7 0 18.5-5.8 22.2-14.8s1.7-19.3-5.2-26.2l-40-40 79-79 79 79-40 40c-6.9 6.9-8.9 17.2-5.2 26.2S270.3 480 280 480l144 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2l-40 40-79-79 79-79 40 40c6.9 6.9 17.2 8.9 26.2 5.2S448 209.7 448 200l0-144c0-13.3-10.7-24-24-24L280 32c-9.7 0-18.5 5.8-22.2 14.8S256.2 66.1 263 73l40 40-79 79-79-79 40-40c6.9-6.9 8.9-17.2 5.2-26.2S177.7 32 168 32z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Maximize
+            </span>
+          </div>
         </button>
         <div
-          data-testid="menu-content"
+          class="menuSeparator"
+        />
+        <button
+          class="menuItemButton"
         >
-          <button
-            type="button"
-          >
-            Players
-          </button>
-          <button
-            type="button"
-          >
-            Maximize
-          </button>
           <div
-            data-testid="menu-separator"
-          />
-          <button
-            type="button"
+            class="content"
           >
-            Quit
-          </button>
-        </div>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-right-from-bracket icon"
+              data-icon="right-from-bracket"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M505 273c9.4-9.4 9.4-24.6 0-33.9L361 95c-6.9-6.9-17.2-8.9-26.2-5.2S320 102.3 320 112l0 80-112 0c-26.5 0-48 21.5-48 48l0 32c0 26.5 21.5 48 48 48l112 0 0 80c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2L505 273zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Quit
+            </span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -157,15 +255,25 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
   class="surface main"
 >
   <div
+    aria-hidden="true"
     class="leading"
+    data-floating-ui-inert=""
   >
-    <span
-      data-testid="fa-icon"
+    <svg
+      aria-hidden="true"
+      class="svg-inline--fa fa-circle-question"
+      data-icon="circle-question"
+      data-prefix="fas"
+      role="img"
+      viewBox="0 0 512 512"
     >
-      true
-    </span>
+      <path
+        d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+        fill="currentColor"
+      />
+    </svg>
     <p
-      class="body2"
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       1
        / 
@@ -173,83 +281,222 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
     </p>
   </div>
   <div
+    aria-hidden="true"
     class="center"
+    data-floating-ui-inert=""
   >
     <p
-      class="body2"
+      class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
     >
-      <span
-        data-testid="fa-icon"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-lock-open"
+        data-icon="lock-open"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 576 512"
       >
-        true
-      </span>
+        <path
+          d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+          fill="currentColor"
+        />
+      </svg>
        
       123456
     </p>
   </div>
   <div
+    aria-hidden="true"
     class="trailing"
+    data-floating-ui-inert=""
   >
     <div>
-      <button
-        id="settings-button"
-        type="button"
-      >
-        Button
-      </button>
       <div
-        data-testid="menu"
+        class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
       >
-        <div
-          data-testid="menu-open"
-        >
-          true
-        </div>
         <button
-          data-testid="menu-close"
+          aria-label="Settings"
+          data-testid="test-settings-button-button"
+          id="settings-button"
+          name="settings-button"
           type="button"
         >
-          close
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-gear icon"
+            data-icon="gear"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M195.1 9.5C198.1-5.3 211.2-16 226.4-16l59.8 0c15.2 0 28.3 10.7 31.3 25.5L332 79.5c14.1 6 27.3 13.7 39.3 22.8l67.8-22.5c14.4-4.8 30.2 1.2 37.8 14.4l29.9 51.8c7.6 13.2 4.9 29.8-6.5 39.9L447 233.3c.9 7.4 1.3 15 1.3 22.7s-.5 15.3-1.3 22.7l53.4 47.5c11.4 10.1 14 26.8 6.5 39.9l-29.9 51.8c-7.6 13.1-23.4 19.2-37.8 14.4l-67.8-22.5c-12.1 9.1-25.3 16.7-39.3 22.8l-14.4 69.9c-3.1 14.9-16.2 25.5-31.3 25.5l-59.8 0c-15.2 0-28.3-10.7-31.3-25.5l-14.4-69.9c-14.1-6-27.2-13.7-39.3-22.8L73.5 432.3c-14.4 4.8-30.2-1.2-37.8-14.4L5.8 366.1c-7.6-13.2-4.9-29.8 6.5-39.9l53.4-47.5c-.9-7.4-1.3-15-1.3-22.7s.5-15.3 1.3-22.7L12.3 185.8c-11.4-10.1-14-26.8-6.5-39.9L35.7 94.1c7.6-13.2 23.4-19.2 37.8-14.4l67.8 22.5c12.1-9.1 25.3-16.7 39.3-22.8L195.1 9.5zM256.3 336a80 80 0 1 0 -.6-160 80 80 0 1 0 .6 160z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="menu"
+        style="position: fixed; top: -8px; left: 0px; transform: translate(-100%, -100%); visibility: visible;"
+      >
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-users icon"
+              data-icon="users"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 640 512"
+            >
+              <path
+                d="M320 16a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM96 88a72 72 0 1 1 0 144 72 72 0 1 1 0-144zM0 416c0-70.7 57.3-128 128-128 12.8 0 25.2 1.9 36.9 5.4-32.9 36.8-52.9 85.4-52.9 138.6l0 16c0 11.4 2.4 22.2 6.7 32L32 480c-17.7 0-32-14.3-32-32l0-32zm521.3 64c4.3-9.8 6.7-20.6 6.7-32l0-16c0-53.2-20-101.8-52.9-138.6 11.7-3.5 24.1-5.4 36.9-5.4 70.7 0 128 57.3 128 128l0 32c0 17.7-14.3 32-32 32l-86.7 0zM472 160a72 72 0 1 1 144 0 72 72 0 1 1 -144 0zM160 432c0-88.4 71.6-160 160-160s160 71.6 160 160l0 16c0 17.7-14.3 32-32 32l-256 0c-17.7 0-32-14.3-32-32l0-16z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Players
+            </span>
+          </div>
+        </button>
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-maximize icon"
+              data-icon="maximize"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M168 32L24 32C10.7 32 0 42.7 0 56L0 200c0 9.7 5.8 18.5 14.8 22.2S34.1 223.8 41 217l40-40 79 79-79 79-40-40c-6.9-6.9-17.2-8.9-26.2-5.2S0 302.3 0 312L0 456c0 13.3 10.7 24 24 24l144 0c9.7 0 18.5-5.8 22.2-14.8s1.7-19.3-5.2-26.2l-40-40 79-79 79 79-40 40c-6.9 6.9-8.9 17.2-5.2 26.2S270.3 480 280 480l144 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2l-40 40-79-79 79-79 40 40c6.9 6.9 17.2 8.9 26.2 5.2S448 209.7 448 200l0-144c0-13.3-10.7-24-24-24L280 32c-9.7 0-18.5 5.8-22.2 14.8S256.2 66.1 263 73l40 40-79 79-79-79 40-40c6.9-6.9 8.9-17.2 5.2-26.2S177.7 32 168 32z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Maximize
+            </span>
+          </div>
         </button>
         <div
-          data-testid="menu-content"
+          class="menuSeparator"
+        />
+        <button
+          class="menuItemButton"
         >
-          <button
-            type="button"
-          >
-            Players
-          </button>
-          <button
-            type="button"
-          >
-            Maximize
-          </button>
           <div
-            data-testid="menu-separator"
-          />
-          <button
-            type="button"
+            class="content"
           >
-            Quit
-          </button>
-        </div>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-right-from-bracket icon"
+              data-icon="right-from-bracket"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M505 273c9.4-9.4 9.4-24.6 0-33.9L361 95c-6.9-6.9-17.2-8.9-26.2-5.2S320 102.3 320 112l0 80-112 0c-26.5 0-48 21.5-48 48l0 32c0 26.5 21.5 48 48 48l112 0 0 80c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2L505 273zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Quit
+            </span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
   <div
-    data-testid="player-management-modal"
+    class="floatingOverlay"
+    style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
   >
+    <span
+      data-floating-ui-focus-guard=""
+      data-type="inside"
+      role="button"
+      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      tabindex="0"
+    />
     <div
-      data-testid="player-management-modal-open"
+      aria-labelledby="_r_a0_"
+      class="modalContainer sizeLarge"
+      data-floating-ui-focusable=""
+      id="_r_9u_"
+      role="dialog"
+      tabindex="-1"
     >
-      true
+      <div
+        class="header"
+      >
+        <h4
+          class="typography title4 alignLeft widthFull colorDefault noOpacity"
+          id="_r_a0_"
+        >
+          Who’s Playing?
+        </h4>
+        <div
+          class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
+        >
+          <button
+            aria-label="Close dialog"
+            data-testid="test-close-modal-button-button"
+            id="close-modal-button"
+            name="close-modal-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-xmark icon"
+              color="gray"
+              data-icon="xmark"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 384 512"
+            >
+              <path
+                d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        class="stack vertical spacing-stack align-stretch justify-start content"
+      >
+        <div
+          class="playerManagementModal"
+        >
+          <p
+            class="typography body2 alignLeft widthFull colorDefault"
+          >
+            Here’s everyone in the game. If someone shouldn’t be here, you can politely show them the exit.
+          </p>
+          <div
+            class="flow"
+          />
+        </div>
+      </div>
     </div>
-    <button
-      data-testid="player-management-modal-close"
-      type="button"
-    >
-      close
-    </button>
+    <span
+      data-floating-ui-focus-guard=""
+      data-type="inside"
+      role="button"
+      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      tabindex="0"
+    />
   </div>
 </div>
 `;
@@ -259,15 +506,25 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
   class="surface main"
 >
   <div
+    aria-hidden="true"
     class="leading"
+    data-floating-ui-inert=""
   >
-    <span
-      data-testid="fa-icon"
+    <svg
+      aria-hidden="true"
+      class="svg-inline--fa fa-circle-question"
+      data-icon="circle-question"
+      data-prefix="fas"
+      role="img"
+      viewBox="0 0 512 512"
     >
-      true
-    </span>
+      <path
+        d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+        fill="currentColor"
+      />
+    </svg>
     <p
-      class="body2"
+      class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
     >
       1
        / 
@@ -275,88 +532,248 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
     </p>
   </div>
   <div
+    aria-hidden="true"
     class="center"
+    data-floating-ui-inert=""
   >
     <p
-      class="body2"
+      class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
     >
-      <span
-        data-testid="fa-icon"
+      <svg
+        aria-hidden="true"
+        class="svg-inline--fa fa-lock-open"
+        data-icon="lock-open"
+        data-prefix="fas"
+        role="img"
+        viewBox="0 0 576 512"
       >
-        true
-      </span>
+        <path
+          d="M384 96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-70.7-57.3-128-128-128S320 25.3 320 96l0 64-160 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64l-32 0 0-64z"
+          fill="currentColor"
+        />
+      </svg>
        
       123456
     </p>
   </div>
   <div
+    aria-hidden="true"
     class="trailing"
+    data-floating-ui-inert=""
   >
     <div>
-      <button
-        id="settings-button"
-        type="button"
-      >
-        Button
-      </button>
       <div
-        data-testid="menu"
+        class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
       >
-        <div
-          data-testid="menu-open"
-        >
-          true
-        </div>
         <button
-          data-testid="menu-close"
+          aria-label="Settings"
+          data-testid="test-settings-button-button"
+          id="settings-button"
+          name="settings-button"
           type="button"
         >
-          close
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-gear icon"
+            data-icon="gear"
+            data-prefix="fas"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M195.1 9.5C198.1-5.3 211.2-16 226.4-16l59.8 0c15.2 0 28.3 10.7 31.3 25.5L332 79.5c14.1 6 27.3 13.7 39.3 22.8l67.8-22.5c14.4-4.8 30.2 1.2 37.8 14.4l29.9 51.8c7.6 13.2 4.9 29.8-6.5 39.9L447 233.3c.9 7.4 1.3 15 1.3 22.7s-.5 15.3-1.3 22.7l53.4 47.5c11.4 10.1 14 26.8 6.5 39.9l-29.9 51.8c-7.6 13.1-23.4 19.2-37.8 14.4l-67.8-22.5c-12.1 9.1-25.3 16.7-39.3 22.8l-14.4 69.9c-3.1 14.9-16.2 25.5-31.3 25.5l-59.8 0c-15.2 0-28.3-10.7-31.3-25.5l-14.4-69.9c-14.1-6-27.2-13.7-39.3-22.8L73.5 432.3c-14.4 4.8-30.2-1.2-37.8-14.4L5.8 366.1c-7.6-13.2-4.9-29.8 6.5-39.9l53.4-47.5c-.9-7.4-1.3-15-1.3-22.7s.5-15.3 1.3-22.7L12.3 185.8c-11.4-10.1-14-26.8-6.5-39.9L35.7 94.1c7.6-13.2 23.4-19.2 37.8-14.4l67.8 22.5c12.1-9.1 25.3-16.7 39.3-22.8L195.1 9.5zM256.3 336a80 80 0 1 0 -.6-160 80 80 0 1 0 .6 160z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="menu"
+        style="position: fixed; top: -8px; left: 0px; transform: translate(-100%, -100%); visibility: visible;"
+      >
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-users icon"
+              data-icon="users"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 640 512"
+            >
+              <path
+                d="M320 16a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM96 88a72 72 0 1 1 0 144 72 72 0 1 1 0-144zM0 416c0-70.7 57.3-128 128-128 12.8 0 25.2 1.9 36.9 5.4-32.9 36.8-52.9 85.4-52.9 138.6l0 16c0 11.4 2.4 22.2 6.7 32L32 480c-17.7 0-32-14.3-32-32l0-32zm521.3 64c4.3-9.8 6.7-20.6 6.7-32l0-16c0-53.2-20-101.8-52.9-138.6 11.7-3.5 24.1-5.4 36.9-5.4 70.7 0 128 57.3 128 128l0 32c0 17.7-14.3 32-32 32l-86.7 0zM472 160a72 72 0 1 1 144 0 72 72 0 1 1 -144 0zM160 432c0-88.4 71.6-160 160-160s160 71.6 160 160l0 16c0 17.7-14.3 32-32 32l-256 0c-17.7 0-32-14.3-32-32l0-16z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Players
+            </span>
+          </div>
+        </button>
+        <button
+          class="menuItemButton"
+        >
+          <div
+            class="content"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-maximize icon"
+              data-icon="maximize"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M168 32L24 32C10.7 32 0 42.7 0 56L0 200c0 9.7 5.8 18.5 14.8 22.2S34.1 223.8 41 217l40-40 79 79-79 79-40-40c-6.9-6.9-17.2-8.9-26.2-5.2S0 302.3 0 312L0 456c0 13.3 10.7 24 24 24l144 0c9.7 0 18.5-5.8 22.2-14.8s1.7-19.3-5.2-26.2l-40-40 79-79 79 79-40 40c-6.9 6.9-8.9 17.2-5.2 26.2S270.3 480 280 480l144 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2l-40 40-79-79 79-79 40 40c6.9 6.9 17.2 8.9 26.2 5.2S448 209.7 448 200l0-144c0-13.3-10.7-24-24-24L280 32c-9.7 0-18.5 5.8-22.2 14.8S256.2 66.1 263 73l40 40-79 79-79-79 40-40c6.9-6.9 8.9-17.2 5.2-26.2S177.7 32 168 32z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Maximize
+            </span>
+          </div>
         </button>
         <div
-          data-testid="menu-content"
+          class="menuSeparator"
+        />
+        <button
+          class="menuItemButton"
         >
-          <button
-            type="button"
-          >
-            Players
-          </button>
-          <button
-            type="button"
-          >
-            Maximize
-          </button>
           <div
-            data-testid="menu-separator"
-          />
-          <button
-            type="button"
+            class="content"
           >
-            Quit
-          </button>
-        </div>
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-right-from-bracket icon"
+              data-icon="right-from-bracket"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M505 273c9.4-9.4 9.4-24.6 0-33.9L361 95c-6.9-6.9-17.2-8.9-26.2-5.2S320 102.3 320 112l0 80-112 0c-26.5 0-48 21.5-48 48l0 32c0 26.5 21.5 48 48 48l112 0 0 80c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2L505 273zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Quit
+            </span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
   <div
-    data-testid="confirm-dialog"
+    class="floatingOverlay"
+    style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
   >
-    <div>
-      Are you sure you want to quit the game?
-    </div>
-    <div>
-      This will immediately end the game for all participants, and it cannot be resumed.
-    </div>
-    <button
-      type="button"
+    <span
+      data-floating-ui-focus-guard=""
+      data-type="inside"
+      role="button"
+      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      tabindex="0"
+    />
+    <div
+      aria-labelledby="_r_aq_"
+      class="modalContainer sizeNormal"
+      data-floating-ui-focusable=""
+      id="_r_ao_"
+      role="dialog"
+      tabindex="-1"
     >
-      Quit Game
-    </button>
-    <button
-      type="button"
-    >
-      Cancel
-    </button>
+      <div
+        class="header"
+      >
+        <h4
+          class="typography title4 alignLeft widthFull colorDefault noOpacity"
+          id="_r_aq_"
+        >
+          Are you sure you want to quit the game?
+        </h4>
+        <div
+          class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
+        >
+          <button
+            aria-label="Close dialog"
+            data-testid="test-close-modal-button-button"
+            id="close-modal-button"
+            name="close-modal-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-xmark icon"
+              color="gray"
+              data-icon="xmark"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 384 512"
+            >
+              <path
+                d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        class="stack vertical spacing-stack align-stretch justify-start content"
+      >
+        <p
+          class="typography body2 alignLeft widthFull colorDefault noOpacity"
+        >
+          This will immediately end the game for all participants, and it cannot be resumed.
+        </p>
+      </div>
+      <div
+        class="actions"
+      >
+        <div
+          class="buttonContainer variantOutline surfaceLight intentDefault grow"
+        >
+          <button
+            data-testid="test-modal-close-action-button-button"
+            id="modal-close-action-button"
+            name="modal-close-action-button"
+            type="button"
+          >
+            <span>
+              Close
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceLight intentDanger grow"
+        >
+          <button
+            aria-label="Quit Game"
+            data-testid="test-modal-primary-action-button-button"
+            id="modal-primary-action-button"
+            name="modal-primary-action-button"
+            type="button"
+          >
+            <span>
+              Quit Game
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <span
+      data-floating-ui-focus-guard=""
+      data-type="inside"
+      role="button"
+      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      tabindex="0"
+    />
   </div>
 </div>
 `;

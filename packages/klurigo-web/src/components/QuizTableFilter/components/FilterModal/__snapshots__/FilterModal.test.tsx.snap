@@ -34,6 +34,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
           class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
         >
           <button
+            aria-label="Close dialog"
             data-testid="test-close-modal-button-button"
             id="close-modal-button"
             name="close-modal-button"
@@ -1391,6 +1392,7 @@ exports[`FilterModal > should render FilterModal 1`] = `
           class="buttonContainer variantPrimary surfaceLight intentDefault grow"
         >
           <button
+            aria-label="Apply"
             data-testid="test-modal-primary-action-button-button"
             id="modal-primary-action-button"
             name="modal-primary-action-button"

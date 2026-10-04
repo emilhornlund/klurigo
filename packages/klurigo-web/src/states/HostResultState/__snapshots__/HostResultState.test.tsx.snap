@@ -220,6 +220,7 @@ exports[`HostResultState > clicks Next to initiate leaderboard task 1`] = `
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -597,6 +598,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -1064,6 +1066,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -1351,6 +1354,7 @@ exports[`HostResultState > should render HostResultState with question type mult
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -1555,6 +1559,7 @@ exports[`HostResultState > should render HostResultState with question type pin 
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -1965,6 +1970,7 @@ exports[`HostResultState > should render HostResultState with question type puzz
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -2550,6 +2556,7 @@ exports[`HostResultState > should render HostResultState with question type rang
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -2820,6 +2827,7 @@ exports[`HostResultState > should render HostResultState with question type true
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
@@ -3197,6 +3205,7 @@ exports[`HostResultState > should render HostResultState with question type type
               class="buttonContainer variantPlain surfaceBrand intentDefault iconOnly"
             >
               <button
+                aria-label="Settings"
                 data-testid="test-settings-button-button"
                 id="settings-button"
                 name="settings-button"
