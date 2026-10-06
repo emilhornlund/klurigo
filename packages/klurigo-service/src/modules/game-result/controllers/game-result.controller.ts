@@ -68,8 +68,7 @@ export class GameResultController {
    * - The user must have permission to access the requested game results.
    *
    * @param gameID The unique identifier of the game.
-   * @param participantId The authenticated participant's ID (extracted via `@PrincipalId`),
-   * used to ensure the caller’s own metrics are included even if outside the top 5.
+   * @param participantId The authenticated participant's ID (extracted via `@PrincipalId`).
    * @returns The game result object for the requested game and mode.
    */
   @Get()
