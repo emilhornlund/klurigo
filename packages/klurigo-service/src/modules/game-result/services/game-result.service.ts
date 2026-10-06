@@ -54,13 +54,10 @@ export class GameResultService {
 
   /**
    * Retrieves the result of a completed quiz game.
-   * Player metrics are filtered to include:
-   * - Top 5 by rank, and
-   * - The requesting participant’s own metrics (if not already in the top 5).
+   * Player metrics include all ranked players, sorted by ascending rank.
    *
    * @param gameID - The ID of the game to retrieve.
-   * @param participantId - participantId The authenticated participant’s ID. Used to ensure
-   * the caller’s metric is included even if outside the top 5.
+   * @param participantId - The authenticated participant’s ID.
    *
    * @returns The structured result of the game.
    *
@@ -145,9 +142,7 @@ export class GameResultService {
             mode: GameMode.Classic,
             playerMetrics: players
               .map(GameResultService.toClassicModePlayerMetricDto)
-              .filter((metric) =>
-                GameResultService.playerMetricFilter(metric, participantId),
-              )
+              .filter((metric) => metric.rank > 0)
               .sort((a, b) => a.rank - b.rank),
             questionMetrics: questions.map(
               GameResultService.toClassicModeQuestionMetricDto,
@@ -157,9 +152,7 @@ export class GameResultService {
             mode: GameMode.ZeroToOneHundred,
             playerMetrics: players
               .map(GameResultService.toZeroToOneHundredModePlayerMetricDto)
-              .filter((metric) =>
-                GameResultService.playerMetricFilter(metric, participantId),
-              )
+              .filter((metric) => metric.rank > 0)
               .sort((a, b) => a.rank - b.rank),
             questionMetrics: questions.map(
               GameResultService.toZeroToOneHundredModeQuestionMetricDto,
@@ -266,28 +259,6 @@ export class GameResultService {
     }
 
     return { stars: rating.stars, comment: rating.comment }
-  }
-
-  /**
-   * Returns whether a player metric should be included in the response.
-   *
-   * Inclusion rule:
-   * - Include ranks 1–5 (top 5), OR
-   * - Include the requesting participant’s metric (by `participantId`) regardless of rank.
-   *
-   * @param playerMetricDto A player’s metric DTO.
-   * @param participantId The authenticated participant’s ID.
-   *
-   * @returns `true` if the metric should be included; otherwise `false`.
-   *
-   * @private
-   */
-  private static playerMetricFilter(
-    playerMetricDto: GameResultPlayerMetricDto,
-    participantId: string,
-  ): boolean {
-    const { rank, player } = playerMetricDto
-    return (rank > 0 && rank <= 5) || player.id === participantId
   }
 
   /**

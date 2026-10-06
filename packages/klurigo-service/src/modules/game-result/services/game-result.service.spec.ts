@@ -407,7 +407,7 @@ describe(GameResultService.name, () => {
     })
 
     describe('Classic mode mapping', () => {
-      it('filters player metrics to top 5 plus requesting participant, and sorts by rank', async () => {
+      it('returns all ranked player metrics sorted by rank', async () => {
         const participantId = 'p-8'
 
         const players: PlayerMetric[] = [
@@ -508,19 +508,21 @@ describe(GameResultService.name, () => {
 
         expect(result.mode).toBe(GameMode.Classic)
 
-        // Included ranks: 1..5 plus participant rank 8; excluded rank 6 and 7.
+        // All ranked players are included, including players below the top 5.
         expect(result.playerMetrics.map((m) => m.player.id)).toEqual([
           'p-1',
           'p-2',
           'p-3',
           'p-4',
           'p-5',
+          'p-6',
+          'p-7',
           participantId,
         ])
 
         // Sorted by ascending rank.
         expect(result.playerMetrics.map((m) => m.rank)).toEqual([
-          1, 2, 3, 4, 5, 8,
+          1, 2, 3, 4, 5, 6, 7, 8,
         ])
 
         // Classic-only fields present with safe defaults.
@@ -532,6 +534,15 @@ describe(GameResultService.name, () => {
         expect(me && 'incorrect' in me ? me.incorrect : undefined).toBe(5)
         expect(me).toHaveProperty('longestCorrectStreak', 0)
 
+        expect(
+          result.playerMetrics.find((m) => m.player.id === 'p-7'),
+        ).toMatchObject({
+          rank: 7,
+          score: 70,
+          correct: 1,
+          incorrect: 2,
+        })
+
         expect(result.questionMetrics).toHaveLength(2)
 
         const q1 = result.questionMetrics[0]
@@ -542,7 +553,7 @@ describe(GameResultService.name, () => {
         expect(q2).toMatchObject({ text: 'Q2', correct: 0, incorrect: 0 })
       })
 
-      it('does not include rank 0 unless it belongs to requesting participant', async () => {
+      it('excludes rank 0 players, including the requesting participant', async () => {
         const participantId = 'p-me'
 
         const doc = asGameResultDocument({
@@ -579,10 +590,45 @@ describe(GameResultService.name, () => {
 
         const ids = result.playerMetrics.map((m) => m.player.id)
 
-        expect(ids).toHaveLength(2)
-        expect(ids).toContain(participantId)
+        expect(ids).toHaveLength(1)
+        expect(ids).not.toContain(participantId)
         expect(ids).toContain('p-1')
         expect(ids).not.toContain('p-0')
+      })
+
+      it('returns the same ranked leaderboard regardless of requesting participant', async () => {
+        const doc = asGameResultDocument({
+          mode: GameMode.Classic,
+          players: [
+            asPlayerMetric({ participantId: 'p-6', rank: 6, score: 60 }),
+            asPlayerMetric({ participantId: 'p-1', rank: 1, score: 10 }),
+            asPlayerMetric({ participantId: 'p-0', rank: 0, score: 0 }),
+          ],
+          questions: [asQuestionMetric({ text: 'Q1' })],
+        })
+
+        gameResultRepository.findGameResult.mockResolvedValue(
+          doc as unknown as GameResult,
+        )
+        userRepository.findUserById.mockResolvedValue(
+          undefined as unknown as FindUserReturn,
+        )
+
+        const resultForRankedPlayer = await service.getGameResult(
+          doc.game._id,
+          'p-1',
+        )
+        const resultForOtherParticipant = await service.getGameResult(
+          doc.game._id,
+          'p-other',
+        )
+
+        expect(resultForOtherParticipant.playerMetrics).toEqual(
+          resultForRankedPlayer.playerMetrics,
+        )
+        expect(
+          resultForOtherParticipant.playerMetrics.map((m) => m.rank),
+        ).toEqual([1, 6])
       })
 
       it('uses 0 defaults for correct/incorrect when player metric values are undefined', async () => {
@@ -625,7 +671,7 @@ describe(GameResultService.name, () => {
     })
 
     describe('Zero-to-One-Hundred mode mapping', () => {
-      it('maps averagePrecision with default 0 and applies the same filter/sort rules', async () => {
+      it('returns all ranked metrics sorted by rank and maps averagePrecision', async () => {
         const participantId = 'p-9'
 
         const doc = asGameResultDocument({
@@ -649,6 +695,12 @@ describe(GameResultService.name, () => {
               nickname: 'P6',
               rank: 6,
               averagePrecision: 10,
+            }),
+            asPlayerMetric({
+              participantId: 'p-0',
+              nickname: 'NoRank',
+              rank: 0,
+              averagePrecision: 100,
             }),
             asPlayerMetric({
               participantId,
@@ -679,13 +731,14 @@ describe(GameResultService.name, () => {
 
         expect(result.mode).toBe(GameMode.ZeroToOneHundred)
 
-        // Included: rank 1..5 (so 1 and 2) plus participant rank 9; excluded rank 6.
+        // All ranked players are included, including rank 6 and the requester.
         expect(result.playerMetrics.map((m) => m.player.id)).toEqual([
           'p-1',
           'p-2',
+          'p-6',
           participantId,
         ])
-        expect(result.playerMetrics.map((m) => m.rank)).toEqual([1, 2, 9])
+        expect(result.playerMetrics.map((m) => m.rank)).toEqual([1, 2, 6, 9])
 
         const p2 = result.playerMetrics.find((m) => m.player.id === 'p-2')
         expect(p2).toBeDefined()
@@ -693,6 +746,16 @@ describe(GameResultService.name, () => {
           p2 && 'averagePrecision' in p2 ? p2.averagePrecision : undefined,
         ).toBe(0)
         expect(p2).not.toHaveProperty('longestCorrectStreak')
+
+        expect(
+          result.playerMetrics.find((m) => m.player.id === 'p-6'),
+        ).toMatchObject({
+          rank: 6,
+          averagePrecision: 10,
+        })
+        expect(result.playerMetrics.map((m) => m.player.id)).not.toContain(
+          'p-0',
+        )
 
         expect(result.questionMetrics).toHaveLength(2)
         expect(result.questionMetrics[0]).toMatchObject({
