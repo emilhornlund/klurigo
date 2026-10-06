@@ -86,15 +86,14 @@ const QuestionPicker: FC<QuestionPickerProps> = ({
     const container = questionPickerItemContainerRef.current
     const selectedItem = container?.children.item(selectedItemIndex)
 
-    if (container && selectedItem instanceof HTMLElement) {
-      container.scrollTo({
-        ...(deviceType === DeviceType.Desktop
-          ? { top: selectedItem.offsetTop }
-          : { left: selectedItem.offsetLeft }),
+    if (selectedItem instanceof HTMLElement) {
+      selectedItem.scrollIntoView({
         behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
       })
     }
-  }, [deviceType, questions.length, selectedItemIndex])
+  }, [questions.length, selectedItemIndex])
 
   const handleDeleteQuestion = () => {
     if (

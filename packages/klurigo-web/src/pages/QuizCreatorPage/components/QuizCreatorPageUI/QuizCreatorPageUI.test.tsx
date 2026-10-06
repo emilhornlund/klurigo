@@ -64,7 +64,7 @@ const renderQuizCreatorPageUI = (
 
 describe('QuizCreatorPageUI', () => {
   beforeEach(() => {
-    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
       configurable: true,
       value: vi.fn(),
     })
