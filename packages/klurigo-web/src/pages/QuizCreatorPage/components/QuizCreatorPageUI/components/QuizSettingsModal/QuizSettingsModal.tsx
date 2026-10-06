@@ -102,7 +102,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
             <span>Image Cover</span>
           </Typography>
           {imageCoverURL && <ResponsiveImage imageURL={imageCoverURL} />}
-          <div className={styles.actions}>
+          <Stack spacing="compact">
             <Button
               id="add-image-cover-button"
               type="button"
@@ -125,7 +125,7 @@ const QuizSettingsModal: FC<QuizSettingsModalProps> = ({
                 onClick={handleDeleteImageCover}
               />
             )}
-          </div>
+          </Stack>
         </div>
         <div className={styles.quizSettingsRow}>
           <Typography variant="control" noOpacity bold asChild>
