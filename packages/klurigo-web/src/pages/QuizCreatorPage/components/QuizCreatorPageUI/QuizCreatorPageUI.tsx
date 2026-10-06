@@ -4,6 +4,7 @@ import type { FC } from 'react'
 import { useCallback, useState } from 'react'
 
 import { Page, Stack } from '../../../../components'
+import { classNames } from '../../../../utils/helpers'
 import type {
   QuizQuestionModel,
   QuizQuestionModelFieldChangeFunction,
@@ -202,7 +203,12 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
         ) : undefined
       }
       disableContentFadeAnimation>
-      <Stack className={styles.quizCreatorPage} width="full">
+      <Stack
+        className={classNames(
+          styles.quizCreatorPage,
+          showAdvancedQuestionEditor ? styles.advancedMode : undefined,
+        )}
+        width="full">
         {!gameMode && <GameModeSelectionModal onSelect={onSelectGameMode} />}
 
         {gameMode && showQuizSettingsModal && (

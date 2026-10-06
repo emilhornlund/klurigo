@@ -953,7 +953,7 @@ describe('QuizCreatorPageUI', () => {
       correct: true,
     }
     const onSetQuestions = vi.fn()
-    renderQuizCreatorPageUI({
+    const { container } = renderQuizCreatorPageUI({
       gameMode: GameMode.Classic,
       questions: [question],
       questionValidations: [makeValidation()],
@@ -962,6 +962,9 @@ describe('QuizCreatorPageUI', () => {
       onSetQuestions,
     })
 
+    const quizCreatorPage = container.querySelector('.quizCreatorPage')
+    expect(quizCreatorPage).toBeInTheDocument()
+    expect(quizCreatorPage).not.toHaveClass('advancedMode')
     expect(screen.getByTestId('editor-workspace')).toBeInTheDocument()
     expect(
       screen.getByRole('navigation', { name: 'Question navigation' }),
@@ -970,6 +973,7 @@ describe('QuizCreatorPageUI', () => {
       screen.getByRole('complementary', { name: 'Question settings' }),
     ).toHaveTextContent('Question settings')
     fireEvent.click(screen.getByRole('button', { name: 'Code' }))
+    expect(quizCreatorPage).toHaveClass('advancedMode')
     expect(screen.queryByTestId('editor-workspace')).not.toBeInTheDocument()
     expect(
       screen.queryByRole('navigation', { name: 'Question navigation' }),
@@ -993,6 +997,7 @@ describe('QuizCreatorPageUI', () => {
     ])
 
     fireEvent.click(screen.getByRole('button', { name: 'Visual' }))
+    expect(quizCreatorPage).not.toHaveClass('advancedMode')
     expect(document.getElementById('json-textarea')).not.toBeInTheDocument()
     expect(screen.getByTestId('editor-workspace')).toBeInTheDocument()
     expect(

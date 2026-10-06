@@ -54,6 +54,18 @@
     padding-bottom: spacing.$space-page-tablet;
   }
 
+  &.advancedMode {
+    @include helpers.mobile {
+      flex: 1;
+      min-height: 0;
+    }
+
+    @include helpers.tablet {
+      flex: 1;
+      min-height: 0;
+    }
+  }
+
   @include helpers.desktop {
     flex: 1;
     height: 100%;
