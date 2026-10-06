@@ -39,21 +39,24 @@
 
   @include helpers.mobile {
     gap: spacing.$space-compact-mobile;
-    margin: calc(-1 * #{spacing.$space-stack-mobile});
-    padding: spacing.$space-stack-mobile;
+    margin: 0 calc(-1 * #{spacing.$space-stack-mobile})
+      calc(-1 * #{spacing.$space-stack-mobile});
+    padding: 0 spacing.$space-stack-mobile spacing.$space-stack-mobile;
   }
 
   @include helpers.tablet {
     gap: spacing.$space-compact-tablet;
-    margin: calc(-1 * #{spacing.$space-stack-tablet});
-    padding: spacing.$space-stack-tablet;
+    margin: 0 calc(-1 * #{spacing.$space-stack-tablet})
+      calc(-1 * #{spacing.$space-stack-tablet});
+    padding: 0 spacing.$space-stack-tablet spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
     min-height: 0;
     gap: spacing.$space-compact-desktop;
-    margin: calc(-1 * #{spacing.$space-stack-desktop});
-    padding: spacing.$space-stack-desktop;
+    margin: 0 calc(-1 * #{spacing.$space-stack-desktop})
+      calc(-1 * #{spacing.$space-stack-desktop});
+    padding: 0 spacing.$space-stack-desktop spacing.$space-stack-desktop;
     overflow-y: auto;
   }
 }
