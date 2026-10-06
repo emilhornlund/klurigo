@@ -1,6 +1,6 @@
 import type { GameResultDto } from '@klurigo/common'
 import { GameMode } from '@klurigo/common'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import PlayerSection from './PlayerSection'
@@ -136,8 +136,12 @@ describe('PlayerSection', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('inserts a separator for rank gaps and a trailing separator when length >= 5 (e.g., 1..5, 7)', () => {
-    const metrics = buildMetrics([1, 2, 3, 4, 5, 7])
+  it('renders every supplied player in order without separators and marks a lower-ranked participant', () => {
+    const metrics = buildMetrics([1, 2, 3, 4, 5, 6, 7, 8]).map((metric) =>
+      metric.rank === 8
+        ? { ...metric, player: { ...metric.player, id: 'participant-id' } }
+        : metric,
+    ) as GameResultDto['playerMetrics']
 
     const { container } = render(
       <PlayerSection
@@ -149,81 +153,23 @@ describe('PlayerSection', () => {
 
     const rows = container.querySelectorAll('.tableRow')
     const seps = container.querySelectorAll('.tableSeparator')
-    expect(rows.length).toBe(6) // 1..5,7
-    expect(seps.length).toBe(2) // one for gap (5->7) + trailing
-
-    // Verify order: r,r,r,r,r,sep,r,sep
-    const sequence = Array.from(
-      container.querySelectorAll('.tableRow, .tableSeparator'),
-    ).map((el) => (el.classList.contains('tableRow') ? 'row' : 'sep'))
-    expect(sequence).toEqual([
-      'row',
-      'row',
-      'row',
-      'row',
-      'row',
-      'sep',
-      'row',
-      'sep',
-    ])
-  })
-
-  it('adds only a trailing separator when exactly top 5 (e.g., 1..5)', () => {
-    const metrics = buildMetrics([1, 2, 3, 4, 5])
-
-    const { container } = render(
-      <PlayerSection
-        mode={GameMode.Classic}
-        playerMetrics={metrics}
-        currentParticipantId="participant-id"
-      />,
-    )
-
-    const rows = container.querySelectorAll('.tableRow')
-    const seps = container.querySelectorAll('.tableSeparator')
-    expect(rows.length).toBe(5)
-    expect(seps.length).toBe(1)
-
-    // Last element should be the separator
-    const all = Array.from(
-      container.querySelectorAll('.tableRow, .tableSeparator'),
-    )
-    expect(all.length).toBeGreaterThan(0)
-    const last = all[all.length - 1]
-    expect(last.classList.contains('tableSeparator')).toBe(true)
-  })
-
-  it('adds trailing separator when no gaps and >= 6 rows (e.g., 1..6)', () => {
-    const metrics = buildMetrics([1, 2, 3, 4, 5, 6])
-
-    const { container } = render(
-      <PlayerSection
-        mode={GameMode.Classic}
-        playerMetrics={metrics}
-        currentParticipantId="participant-id"
-      />,
-    )
-
-    const rows = container.querySelectorAll('.tableRow')
-    const seps = container.querySelectorAll('.tableSeparator')
-    expect(rows.length).toBe(6)
-    expect(seps.length).toBe(1)
-  })
-
-  it('renders no trailing separator when fewer than 5 rows (e.g., 1..4)', () => {
-    const metrics = buildMetrics([1, 2, 3, 4])
-
-    const { container } = render(
-      <PlayerSection
-        mode={GameMode.Classic}
-        playerMetrics={metrics}
-        currentParticipantId="participant-id"
-      />,
-    )
-
-    const rows = container.querySelectorAll('.tableRow')
-    const seps = container.querySelectorAll('.tableSeparator')
-    expect(rows.length).toBe(4)
+    expect(rows.length).toBe(metrics.length)
     expect(seps.length).toBe(0)
+    expect(
+      Array.from(container.querySelectorAll('.badge')).map(
+        (badge) => badge.textContent,
+      ),
+    ).toEqual(['1', '2', '3', '4', '5', '6', '7', '8'])
+    metrics.forEach((metric) => {
+      expect(screen.getByText(metric.player.nickname)).toBeInTheDocument()
+    })
+    expect(screen.getByText('You')).toBeInTheDocument()
+
+    const lowerRankedRow = rows.item(7) as HTMLElement
+    const details = lowerRankedRow.querySelector('.details') as HTMLElement
+    expect(details.className).not.toContain('active')
+    fireEvent.click(lowerRankedRow)
+    expect(details.className).toContain('active')
+    expect(within(details).getByText('Correct')).toBeInTheDocument()
   })
 })
