@@ -73,7 +73,7 @@ describe('QuestionPicker', () => {
       configurable: true,
       value: 1200,
     })
-    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
       configurable: true,
       value: vi.fn(),
     })
@@ -265,12 +265,13 @@ describe('QuestionPicker', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('scrolls vertically to the selected item, including questions in the middle', () => {
+  it('scrolls the selected question into view using nearest alignment', () => {
     const questions = [
       { id: 'one', type: QuestionType.MultiChoice, valid: true },
       { id: 'two', type: QuestionType.Range, valid: true },
       { id: 'three', type: QuestionType.TrueFalse, valid: false },
     ]
+
     const props = {
       questions,
       onAddQuestion: vi.fn(),
@@ -279,54 +280,25 @@ describe('QuestionPicker', () => {
       onDuplicateQuestion: vi.fn(),
       onDeleteQuestion: vi.fn(),
     }
+
     const { container, rerender } = render(
       <QuestionPicker {...props} selectedQuestionIndex={0} />,
     )
-    const list = container.querySelector('.questionPickerItemContainer')!
-    const scrollTo = vi.mocked(list.scrollTo)
-    Object.defineProperty(list.children[1], 'offsetTop', { value: 140 })
-    scrollTo.mockClear()
+
+    const selectedItem = container.querySelector(
+      '[data-testid="question-picker-item-1"]',
+    )!
+
+    const scrollIntoView = vi.mocked(selectedItem.scrollIntoView)
+
+    scrollIntoView.mockClear()
 
     rerender(<QuestionPicker {...props} selectedQuestionIndex={1} />)
 
-    expect(scrollTo).toHaveBeenCalledExactlyOnceWith({
-      top: 140,
+    expect(scrollIntoView).toHaveBeenCalledExactlyOnceWith({
       behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
     })
-  })
-
-  it('uses horizontal auto-scroll for the navigator on constrained viewports', () => {
-    Object.defineProperty(window, 'innerWidth', {
-      configurable: true,
-      value: 600,
-    })
-    const questions = [
-      { id: 'one', type: QuestionType.MultiChoice, valid: true },
-      { id: 'two', type: QuestionType.Range, valid: true },
-      { id: 'three', type: QuestionType.TrueFalse, valid: false },
-    ]
-    const props = {
-      questions,
-      onAddQuestion: vi.fn(),
-      onSelectQuestion: vi.fn(),
-      onMoveQuestion: vi.fn(),
-      onDuplicateQuestion: vi.fn(),
-      onDeleteQuestion: vi.fn(),
-    }
-    const { container, rerender } = render(
-      <QuestionPicker {...props} selectedQuestionIndex={0} />,
-    )
-    const list = container.querySelector('.questionPickerItemContainer')!
-    const scrollTo = vi.mocked(list.scrollTo)
-    Object.defineProperty(list.children[1], 'offsetLeft', { value: 130 })
-    scrollTo.mockClear()
-
-    rerender(<QuestionPicker {...props} selectedQuestionIndex={1} />)
-
-    expect(scrollTo).toHaveBeenCalledExactlyOnceWith({
-      left: 130,
-      behavior: 'smooth',
-    })
-    expect(screen.getByRole('button', { name: 'Add question' })).toBeVisible()
   })
 })
