@@ -1,4 +1,4 @@
-import KeyvRedis from '@keyv/redis'
+import KeyvRedis, { createClient, type RedisClientType } from '@keyv/redis'
 import { BullModule } from '@nestjs/bullmq'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Logger, Module } from '@nestjs/common'
@@ -129,11 +129,14 @@ const isTestEnv = process.env.NODE_ENV === 'test'
       useFactory: (config: ConfigService<EnvironmentVariables>) => ({
         stores: [
           new Keyv(
-            new KeyvRedis({
-              url: `redis://${config.get<string>('REDIS_HOST')}:${config.get<number>('REDIS_PORT')}`,
-              password: config.get<string>('REDIS_PASSWORD'),
-              database: config.get<number>('REDIS_DB'),
-            }),
+            new KeyvRedis(
+              createClient({
+                url: `redis://${config.get<string>('REDIS_HOST')}:${config.get<number>('REDIS_PORT')}`,
+                password: config.get<string>('REDIS_PASSWORD'),
+                database: config.get<number>('REDIS_DB'),
+              }) as RedisClientType,
+            ),
+            { namespace: 'klurigo-cache' },
           ),
         ],
       }),

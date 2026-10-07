@@ -3,6 +3,8 @@ import { dirname, join } from 'path'
 
 import { UPLOAD_IMAGE_MAX_FILE_SIZE } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
+import { Redis } from 'ioredis'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -14,6 +16,7 @@ import {
   expectErrorResponse,
 } from '../../../../test-utils/utils'
 import { ParseImageFilePipe } from '../pipes'
+import { PexelsMediaSearchService } from '../services'
 
 describe('MediaController (e2e)', () => {
   let app: INestApplication
@@ -50,6 +53,31 @@ describe('MediaController (e2e)', () => {
             offset: 0,
           })
         })
+    })
+
+    it('should cache repeated searches in the namespaced Redis store', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const searchPhotos = jest.spyOn(
+        app.get(PexelsMediaSearchService),
+        'searchPhotos',
+      )
+      const request = () =>
+        supertest(app.getHttpServer())
+          .get('/api/media/photos?search=nature&limit=10&offset=0')
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+
+      await request()
+      await request()
+
+      expect(searchPhotos).toHaveBeenCalledTimes(1)
+
+      const redis = app.get<Redis>(getRedisConnectionToken())
+      const keys = await redis.keys('klurigo-cache::*')
+      expect(keys).toHaveLength(1)
+      expect(keys[0]).toMatch(/^klurigo-cache::MediaService:searchPhotos:/)
+      expect(await redis.pttl(keys[0])).toBeGreaterThan(0)
+      expect(await redis.pttl(keys[0])).toBeLessThanOrEqual(60 * 60 * 1000)
     })
 
     it('should return a 401 error when the request is unauthorized', async () => {
