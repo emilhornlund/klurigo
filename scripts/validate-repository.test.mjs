@@ -25,6 +25,14 @@ const buildWorkflow = readFileSync(
   new URL('../.github/workflows/build.yml', import.meta.url),
   'utf8',
 )
+const dockerWorkflow = readFileSync(
+  new URL('../.github/workflows/docker-build-and-push.yml', import.meta.url),
+  'utf8',
+)
+const serviceDockerfile = readFileSync(
+  new URL('../packages/klurigo-service/Dockerfile', import.meta.url),
+  'utf8',
+)
 const metadataCheck = readFileSync(
   new URL('./validate-workspace-metadata.mjs', import.meta.url),
   'utf8',
@@ -333,4 +341,25 @@ test('keeps static, unit coverage, backend e2e, and frontend e2e commands separa
     backendE2eJob,
     /disable_search: true[\s\S]*fail_ci_if_error: true/,
   )
+})
+
+test('verifies the service image before publishing it', () => {
+  assert.match(
+    serviceDockerfile,
+    /RUN mkdir -p \.\/packages\/klurigo-service\/node_modules/,
+  )
+  assert.match(
+    serviceDockerfile,
+    /COPY --from=build \/app\/packages\/klurigo-service\/node_modules \.\/packages\/klurigo-service\/node_modules/,
+  )
+  assert.match(dockerWorkflow, /load: true/)
+  assert.match(dockerWorkflow, /push: false/)
+  assert.match(dockerWorkflow, /require\.resolve\('\@keyv\/redis'\)/)
+
+  const verificationOffset = dockerWorkflow.indexOf(
+    'Verify klurigo-service runtime dependencies',
+  )
+  const pushOffset = dockerWorkflow.indexOf('docker push')
+  assert.ok(verificationOffset >= 0)
+  assert.ok(pushOffset > verificationOffset)
 })

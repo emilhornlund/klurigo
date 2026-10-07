@@ -64,9 +64,20 @@ jobs:
         with:
           context: .
           file: ./packages/${{ matrix.service }}/Dockerfile
-          push: true
+          load: true
+          push: false
           tags: |
             ${{ env.REGISTRY_HOST }}/${{ matrix.service }}:${{ env.SHORT_SHA }}
           build-args: |
             SENTRY_DSN=${{ env.SENTRY_DSN }}
             SENTRY_RELEASE=${{ matrix.sentry-project }}@${{ github.sha }}
+
+      - name: Verify klurigo-service runtime dependencies
+        if: matrix.service == 'klurigo-service'
+        run: >-
+          docker run --rm
+          ${{ env.REGISTRY_HOST }}/${{ matrix.service }}:${{ env.SHORT_SHA }}
+          node -e "require.resolve('@keyv/redis'); require.resolve('@klurigo/common'); require.resolve('./dist/main.js')"
+
+      - name: Push ${{ matrix.service }}
+        run: docker push ${{ env.REGISTRY_HOST }}/${{ matrix.service }}:${{ env.SHORT_SHA }}
