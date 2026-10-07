@@ -1,10 +1,9 @@
 import { ResizeObserver } from '@juggle/resize-observer'
-import * as matchers from '@testing-library/jest-dom/matchers'
 import { cleanup, configure } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, expect, vi } from 'vitest'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 
 configure({
   asyncUtilTimeout: 2000,
@@ -21,8 +20,6 @@ export const restHandlers = [
 ]
 
 const server = setupServer(...restHandlers)
-
-expect.extend(matchers)
 
 type PendingReq = { method: string; url: string }
 const pending = new Map<Request, PendingReq>()
@@ -108,7 +105,7 @@ function resetTimers() {
 let consoleErrorSpy: ReturnType<typeof vi.spyOn> | undefined
 
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: 'error' })
+  server.listen({ onUnhandledFrame: 'error' })
   trackPendingMswRequests()
   consoleErrorSpy = failOnReactActWarnings()
 })

@@ -6,9 +6,6 @@
     "packages/*",
     "tools/*"
   ],
-  "resolutions": {
-    "@nestjs/terminus": "12.1.0"
-  },
   "scripts": {
     "clean": "concurrently \"yarn workspace @klurigo/common clean\" \"yarn workspace @klurigo/klurigo-service clean\" \"yarn workspace @klurigo/klurigo-web clean\" \"yarn workspace mongodb-migrator clean\"",
     "build": "yarn workspace @klurigo/common build && concurrently --kill-others-on-fail \"yarn workspace @klurigo/klurigo-service build:app\" \"yarn workspace @klurigo/klurigo-web build:app\" \"yarn workspace mongodb-migrator build\" && yarn metadata:check",
@@ -35,9 +32,10 @@
     "typecheck": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common typecheck\" \"yarn workspace @klurigo/klurigo-service typecheck\" \"yarn workspace @klurigo/klurigo-web typecheck\" \"yarn workspace @klurigo/e2e-fixtures typecheck\" \"yarn workspace mongodb-migrator typecheck\""
   },
   "devDependencies": {
+    "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
     "concurrently": "^10.0.5",
-    "eslint": "^9.39.4",
+    "eslint": "^10.12.0",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.6",
@@ -45,8 +43,8 @@
     "knip": "^6.38.0",
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1",
-    "wait-on": "^9.1.0"
+    "typescript-eslint": "^8.71.0",
+    "wait-on": "^9.5.1"
   },
   "engines": {
     "node": ">=24 <25"

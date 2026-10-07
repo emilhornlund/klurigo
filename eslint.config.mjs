@@ -1,3 +1,4 @@
+import { fixupPluginRules } from '@eslint/compat'
 import pluginJs from '@eslint/js'
 import pluginImport from 'eslint-plugin-import'
 import prettier from 'eslint-plugin-prettier'
@@ -56,7 +57,7 @@ export const sharedConfig = [
     files: sourceFiles,
     plugins: {
       prettier,
-      import: pluginImport,
+      import: fixupPluginRules(pluginImport),
     },
     rules: sharedRules,
     settings: {

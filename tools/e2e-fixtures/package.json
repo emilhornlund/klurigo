@@ -15,8 +15,8 @@
     "@klurigo/common": "1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.13.6",
-    "eslint": "^9.39.4",
+    "@types/node": "^24.19.0",
+    "eslint": "^10.12.0",
     "typescript": "^6.0.3"
   },
   "engines": {

@@ -64,8 +64,8 @@ export class QuizRatingGuard implements CanActivate {
       throw new UnauthorizedException()
     }
 
-    const quizId: string = request.params.quizId
-    if (!quizId) {
+    const quizId = request.params.quizId
+    if (typeof quizId !== 'string' || !quizId) {
       throw new BadRequestException()
     }
 
