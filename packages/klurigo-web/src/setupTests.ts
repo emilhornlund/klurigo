@@ -105,7 +105,7 @@ function resetTimers() {
 let consoleErrorSpy: ReturnType<typeof vi.spyOn> | undefined
 
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: 'error' })
+  server.listen({ onUnhandledFrame: 'error' })
   trackPendingMswRequests()
   consoleErrorSpy = failOnReactActWarnings()
 })

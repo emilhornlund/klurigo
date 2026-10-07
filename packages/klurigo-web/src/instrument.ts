@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     release: config.sentryRelease,
     environment: getSentryEnvironment(),
     tunnel: '/tunnel',
-    sendDefaultPii: true,
+    dataCollection: { userInfo: true },
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.consoleLoggingIntegration({ levels: ['warn', 'error'] }),

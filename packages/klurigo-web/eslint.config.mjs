@@ -1,3 +1,4 @@
+import { fixupPluginRules } from '@eslint/compat'
 import pluginReact from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
@@ -17,6 +18,9 @@ export default [
   {
     ...pluginReact.configs.flat.recommended,
     files: reactFiles,
+    plugins: {
+      react: fixupPluginRules(pluginReact),
+    },
   },
   {
     files: reactFiles,

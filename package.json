@@ -32,9 +32,10 @@
     "typecheck": "concurrently --kill-others-on-fail \"yarn workspace @klurigo/common typecheck\" \"yarn workspace @klurigo/klurigo-service typecheck\" \"yarn workspace @klurigo/klurigo-web typecheck\" \"yarn workspace @klurigo/e2e-fixtures typecheck\" \"yarn workspace mongodb-migrator typecheck\""
   },
   "devDependencies": {
+    "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
     "concurrently": "^10.0.5",
-    "eslint": "^9.39.4",
+    "eslint": "^10.12.0",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.6",
