@@ -61,8 +61,8 @@ export class GameAuthGuard implements CanActivate {
         [context.getHandler(), context.getClass()],
       )
 
-    const gameID: string = request.params.gameID
-    if (!gameID) {
+    const gameID = request.params.gameID
+    if (typeof gameID !== 'string' || !gameID) {
       throw new BadRequestException()
     }
 
