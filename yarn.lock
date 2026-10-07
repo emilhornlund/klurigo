@@ -2176,12 +2176,12 @@
   dependencies:
     "@tybys/wasm-util" "^0.10.3"
 
-"@nestjs-modules/ioredis@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@nestjs-modules/ioredis/-/ioredis-2.2.2.tgz#0e5eb1bb5aefc41683cb5e01081ea76fabf59bab"
-  integrity sha512-8y/lzpP7CuBRXboPN9EdCBycg5PwzEY+wW6EkqjR+jYAxidlBVakxVLPPVtzDK7Yr0SiUiZu8hjuGwuB7uhicw==
+"@nestjs-modules/ioredis@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@nestjs-modules/ioredis/-/ioredis-2.3.1.tgz#a197da83472dcc0cc9bc4e0f66a11fb36596eafd"
+  integrity sha512-9qyzqvppnskID7FQjtN5DhobFbqM4FO3RYyev4Dt0F/fh3Bn7T7nyZC8WkwypEb/Lyxhom83djLCDUuNLdsj3Q==
   optionalDependencies:
-    "@nestjs/terminus" "11.1.1"
+    "@nestjs/terminus" "^11.1.1 || ^12.1.0"
 
 "@nestjs-modules/mailer@^2.3.7":
   version "2.3.7"
@@ -2389,7 +2389,7 @@
     path-to-regexp "8.4.2"
     swagger-ui-dist "5.33.0"
 
-"@nestjs/terminus@11.1.1", "@nestjs/terminus@12.1.0", "@nestjs/terminus@^12.1.0":
+"@nestjs/terminus@^11.1.1 || ^12.1.0", "@nestjs/terminus@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@nestjs/terminus/-/terminus-12.1.0.tgz#ec04ea49d9f3bf40d930d90925391c6efc13b228"
   integrity sha512-bag1KT1Pk2KpDhXh6fhf3F7IpRGs8IMSdPaD1+9hclP3hSAIkCYN/YUhkAY+2G7OuoUmyDuKVb7MgNw+L5ZBbQ==
@@ -13636,23 +13636,10 @@ vimeo-video-element@^1.6.1:
   dependencies:
     "@vimeo/player" "2.29.0"
 
-"vite@^6.0.0 || ^7.0.0 || ^8.0.0":
+"vite@^6.0.0 || ^7.0.0 || ^8.0.0", vite@^8.3.3:
   version "8.3.3"
   resolved "https://registry.yarnpkg.com/vite/-/vite-8.3.3.tgz#12651726ab1cca0a9e1e649e3cb4dca5b6b006a9"
   integrity sha512-cTAldKPImjg6c+gk48U19POPn3GCBzZwpdsN8ZMEEcbpes+6/wvfqUd0C2y3qYY4wsj8PwgFwrZ/1jBPVttMSg==
-  dependencies:
-    lightningcss "^1.33.0"
-    picomatch "^4.0.7"
-    postcss "^8.5.28"
-    rolldown "~1.2.11"
-    tinyglobby "^0.2.17"
-  optionalDependencies:
-    fsevents "~2.3.3"
-
-vite@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-8.3.2.tgz#391d1e62761b343435b8e4b512e449a4f90670a3"
-  integrity sha512-SQr1x6W5vVSbROg7vsyXIaxK9b0G7zsT68acdWWRmnBUsgDieLCRG+Rep9WdZgcposvv/GSnr4GUUBqB3vXq6w==
   dependencies:
     lightningcss "^1.33.0"
     picomatch "^4.0.7"
