@@ -9,6 +9,9 @@ RUN corepack enable && yarn toolchain:check
 
 RUN yarn install --ignore-scripts --frozen-lockfile --modules-folder ./node_modules
 
+# Keep a copyable path when Yarn hoists every service dependency to the root.
+RUN mkdir -p ./packages/klurigo-service/node_modules
+
 RUN yarn workspace @klurigo/common build && yarn workspace @klurigo/klurigo-service build
 
 # Optimize Stage
@@ -30,6 +33,7 @@ COPY --from=build /app/packages/common ./node_modules/@klurigo/common
 COPY --from=build /app/packages/klurigo-service/package.json ./packages/klurigo-service/package.json
 COPY --from=build /app/packages/klurigo-service/.env.production ./packages/klurigo-service/.env.production
 COPY --from=build /app/packages/klurigo-service/dist ./packages/klurigo-service/dist
+COPY --from=build /app/packages/klurigo-service/node_modules ./packages/klurigo-service/node_modules
 
 # Production Stage
 FROM node:24-alpine

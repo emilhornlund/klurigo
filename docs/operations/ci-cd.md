@@ -155,7 +155,11 @@ from GameSession tests:
 
 The Docker workflow is called only after the reusable build succeeds on the
 `main` and manual production paths. Its `prepare` job and its matrix image
-build job run on `self-hosted` runners. The matrix builds these two images:
+build job run on `self-hosted` runners. Each image is built and loaded locally,
+then pushed only after its build succeeds. The service image is additionally
+checked from inside the built image with Node.js resolution checks for the
+compiled entry point, `@klurigo/common`, and `@keyv/redis`. The matrix builds
+these two images:
 
 - `klurigo-web` from `packages/klurigo-web/Dockerfile`
 - `klurigo-service` from `packages/klurigo-service/Dockerfile`
