@@ -12,6 +12,7 @@ import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
 import { SentryModule } from '@sentry/nestjs/setup'
 import type Redis from 'ioredis'
 import Keyv from 'keyv'
+import type { Keyv as ESMKeyv } from 'keyv' with { 'resolution-mode': 'import' }
 import { MurLockModule } from 'murlock'
 
 import { AuthenticationModule } from '../modules/authentication'
@@ -128,13 +129,14 @@ const isTestEnv = process.env.NODE_ENV === 'test'
       imports: [ConfigModule],
       useFactory: (config: ConfigService<EnvironmentVariables>) => ({
         stores: [
+          // Nest resolves Keyv through its ESM declaration while this service is CommonJS.
           new Keyv(
             new KeyvRedis({
               url: `redis://${config.get<string>('REDIS_HOST')}:${config.get<number>('REDIS_PORT')}`,
               password: config.get<string>('REDIS_PASSWORD'),
               database: config.get<number>('REDIS_DB'),
             }),
-          ),
+          ) as unknown as ESMKeyv,
         ],
       }),
       inject: [ConfigService],
