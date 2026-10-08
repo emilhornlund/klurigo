@@ -1,4 +1,4 @@
-import KeyvRedis, { createClient, type RedisClientType } from '@keyv/redis'
+import KeyvRedis from '@keyv/redis'
 import { BullModule } from '@nestjs/bullmq'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Logger, Module } from '@nestjs/common'
@@ -41,6 +41,14 @@ import { RedisThrottlerStorage } from './throttler/redis-throttler.storage'
 
 const isProdEnv = process.env.NODE_ENV === 'production'
 const isTestEnv = process.env.NODE_ENV === 'test'
+
+/**
+ * Nest 12 detects Keyv stores through the v5 `opts` marker, which Keyv 6 removed.
+ * Keep the v6 instance from being wrapped in a second Keyv instance.
+ */
+class NestCompatibleKeyv extends Keyv {
+  readonly opts = {}
+}
 
 /**
  * Root application module.
@@ -128,14 +136,12 @@ const isTestEnv = process.env.NODE_ENV === 'test'
       imports: [ConfigModule],
       useFactory: (config: ConfigService<EnvironmentVariables>) => ({
         stores: [
-          new Keyv(
-            new KeyvRedis(
-              createClient({
-                url: `redis://${config.get<string>('REDIS_HOST')}:${config.get<number>('REDIS_PORT')}`,
-                password: config.get<string>('REDIS_PASSWORD'),
-                database: config.get<number>('REDIS_DB'),
-              }) as RedisClientType,
-            ),
+          new NestCompatibleKeyv(
+            new KeyvRedis({
+              url: `redis://${config.get<string>('REDIS_HOST')}:${config.get<number>('REDIS_PORT')}`,
+              password: config.get<string>('REDIS_PASSWORD'),
+              database: config.get<number>('REDIS_DB'),
+            }),
             { namespace: 'klurigo-cache' },
           ),
         ],
