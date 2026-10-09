@@ -1,4 +1,4 @@
-import { GameStatus } from '@klurigo/common'
+import { GameStatus, getQuestionPreviewDurationMs } from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -729,10 +729,7 @@ describe('GameTaskTransitionService', () => {
         questions: [question],
       })
 
-      const wordCount = text.trim().split(/\s+/).length
-      const readingDuration = (wordCount / 220) * 60000
-      const characterDuration = Math.min(text.length * 100, 15000)
-      const expected = Math.max(readingDuration, characterDuration)
+      const expected = getQuestionPreviewDurationMs(text)
 
       expect(service.getTaskTransitionDelay(gameDoc as never)).toBe(expected)
     })
@@ -776,10 +773,7 @@ describe('GameTaskTransitionService', () => {
         questions: [createMockMultiChoiceQuestionDocument({ text })],
       })
 
-      const wordCount = text.trim().split(/\s+/).length
-      const readingDuration = (wordCount / 220) * 60000
-      const characterDuration = Math.min(text.length * 100, 15000)
-      const expected = Math.max(readingDuration, characterDuration)
+      const expected = getQuestionPreviewDurationMs(text)
 
       const duration = (service as any).getQuestionTaskPendingDuration(
         gameDoc as never,

@@ -7,6 +7,7 @@ import {
   type CountdownEvent,
   type GameMode,
   type GameQuestionPlayerAnswerEvent,
+  getQuestionPreviewDurationMs,
   QuestionType,
   type SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
@@ -17,10 +18,8 @@ import {
   Button,
   Page,
   ProgressBar,
-  Stack,
   Typography,
 } from '../../../../../../components'
-import { GamePage, PlayerGameFooter } from '../../../../../../states/common'
 import { PlayerQuestionPreviewView } from '../../../../../../states/PlayerQuestionPreviewState/components'
 import { PlayerQuestionView } from '../../../../../../states/PlayerQuestionState/components'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
@@ -36,17 +35,20 @@ export interface QuizPreviewProps {
   onExit: () => void
 }
 
-const nickname = 'Preview player'
-
-const createCountdown = (duration: number): CountdownEvent => {
+const createCountdownFromMilliseconds = (
+  durationMs: number,
+): CountdownEvent => {
   const initiated = new Date()
-  const expiry = new Date(initiated.getTime() + Math.max(duration, 1) * 1000)
+  const expiry = new Date(initiated.getTime() + Math.max(durationMs, 1))
   return {
     initiatedTime: initiated.toISOString(),
     expiryTime: expiry.toISOString(),
     serverTime: initiated.toISOString(),
   }
 }
+
+const getQuestionDurationMs = (durationSeconds?: number): number =>
+  (durationSeconds ?? 1) * 1000
 
 const toSubmittedAnswer = (
   request: SubmitQuestionAnswerRequestDto,
@@ -161,18 +163,20 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
   >()
   const [complete, setComplete] = useState(false)
   const [countdown, setCountdown] = useState(() =>
-    createCountdown(playerQuestions[0]?.duration ?? 1),
+    createCountdownFromMilliseconds(
+      getQuestionPreviewDurationMs(playerQuestions[0]?.question ?? ''),
+    ),
   )
 
   const question = playerQuestions[questionIndex]
 
   const resetAnswer = () => setSubmittedAnswer(undefined)
-  const resetCountdown = (duration = question?.duration ?? 1) =>
-    setCountdown(createCountdown(duration))
+  const resetCountdown = (durationMs: number) =>
+    setCountdown(createCountdownFromMilliseconds(durationMs))
 
   const handleContinueToQuestion = () => {
     resetAnswer()
-    resetCountdown()
+    resetCountdown(getQuestionDurationMs(question?.duration))
     setPhase('question')
   }
 
@@ -189,21 +193,27 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     const nextQuestionIndex = questionIndex + 1
     setQuestionIndex(nextQuestionIndex)
     resetAnswer()
-    resetCountdown(playerQuestions[nextQuestionIndex]?.duration)
+    resetCountdown(
+      getQuestionPreviewDurationMs(
+        playerQuestions[nextQuestionIndex]?.question ?? '',
+      ),
+    )
     setPhase('question-preview')
   }
 
   const handleBack = () => {
     if (phase === 'question') {
       resetAnswer()
-      resetCountdown()
+      resetCountdown(getQuestionPreviewDurationMs(question?.question ?? ''))
       setPhase('question-preview')
       return
     }
     if (questionIndex > 0) {
       setQuestionIndex((current) => current - 1)
       resetAnswer()
-      resetCountdown(playerQuestions[questionIndex - 1]?.duration)
+      resetCountdown(
+        getQuestionDurationMs(playerQuestions[questionIndex - 1]?.duration),
+      )
       setPhase('question')
     }
   }
@@ -212,14 +222,13 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     setQuestionIndex(0)
     setPhase('question-preview')
     resetAnswer()
-    resetCountdown(playerQuestions[0]?.duration)
+    resetCountdown(
+      getQuestionPreviewDurationMs(playerQuestions[0]?.question ?? ''),
+    )
     setComplete(false)
   }
 
-  const controls = (
-    continueLabel: string,
-    continueDisabled = false,
-  ): ReactNode => (
+  const renderControls = (continueLabel: string, continueDisabled = false) => (
     <PreviewControls
       onExit={onExit}
       currentQuestion={questionIndex + 1}
@@ -237,75 +246,64 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     />
   )
 
+  const page = (content: ReactNode, controls?: ReactNode) => (
+    <Page
+      layout="fullBleed"
+      noPadding
+      hideLogin
+      disableContentFadeAnimation
+      header={controls}>
+      <div className={styles.previewContent} data-testid="quiz-preview-page">
+        {content}
+      </div>
+    </Page>
+  )
+
   if (complete) {
-    return (
-      <Page
-        layout="fill"
-        hideLogin
-        header={<PreviewControls onExit={onExit} />}>
-        <Stack className={styles.complete}>
-          <Typography variant="title" color="inverse">
-            Preview complete
-          </Typography>
-          <Typography variant="body" color="inverse">
-            You reached the end of this quiz without creating a game.
-          </Typography>
-          <div className={styles.completeActions}>
-            <Button
-              id="preview-return"
-              type="button"
-              variant="outline"
-              surface="brand"
-              value="Return to editor"
-              onClick={onExit}
-            />
-            <Button
-              id="preview-restart"
-              type="button"
-              variant="primary"
-              surface="brand"
-              intent="accent"
-              value="Restart preview"
-              onClick={handleRestart}
-            />
-          </div>
-        </Stack>
-      </Page>
+    return page(
+      <div className={styles.complete}>
+        <Typography variant="title" color="inverse">
+          Preview complete
+        </Typography>
+        <Typography variant="body" color="inverse">
+          You reached the end of this quiz without creating a game.
+        </Typography>
+        <div className={styles.completeActions}>
+          <Button
+            id="preview-return"
+            type="button"
+            variant="outline"
+            surface="brand"
+            value="Return to editor"
+            onClick={onExit}
+          />
+          <Button
+            id="preview-restart"
+            type="button"
+            variant="primary"
+            surface="brand"
+            intent="accent"
+            value="Restart preview"
+            onClick={handleRestart}
+          />
+        </div>
+      </div>,
+      <PreviewControls onExit={onExit} />,
     )
   }
 
   if (!question) {
-    return (
-      <Page
-        layout="fill"
-        hideLogin
-        header={<PreviewControls onExit={onExit} />}>
-        <Typography variant="body" color="inverse">
-          Add a complete question to preview this quiz.
-        </Typography>
-      </Page>
+    return page(
+      <Typography variant="body" color="inverse">
+        Add a complete question to preview this quiz.
+      </Typography>,
+      <PreviewControls onExit={onExit} />,
     )
   }
 
-  const pagination = {
-    currentQuestion: questionIndex + 1,
-    totalQuestions: playerQuestions.length,
-  }
-
-  if (phase === 'question-preview') {
-    return (
-      <GamePage
-        layout="fill"
-        align="space-between"
-        header={controls('Continue to question')}
-        footer={
-          <PlayerGameFooter
-            currentQuestion={pagination.currentQuestion}
-            totalQuestions={pagination.totalQuestions}
-            nickname={nickname}
-            totalScore={0}
-          />
-        }>
+  const questionContent =
+    phase === 'question-preview' ? (
+      <div className={styles.questionPreview}>
         <PlayerQuestionPreviewView
           key={`preview-${questionIndex}`}
           mode={mode}
@@ -317,30 +315,8 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
               : undefined
           }
         />
-
-        <ProgressBar countdown={countdown} disableStyling={true} />
-      </GamePage>
-    )
-  }
-
-  return (
-    <GamePage
-      layout="fill"
-      align="space-between"
-      header={controls(
-        questionIndex === playerQuestions.length - 1
-          ? 'Finish preview'
-          : 'Next question',
-        !submittedAnswer,
-      )}
-      footer={
-        <PlayerGameFooter
-          currentQuestion={pagination.currentQuestion}
-          totalQuestions={pagination.totalQuestions}
-          nickname={nickname}
-          totalScore={0}
-        />
-      }>
+      </div>
+    ) : (
       <PlayerQuestionView
         key={`question-${questionIndex}`}
         question={question}
@@ -348,9 +324,32 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
         countdown={countdown}
         onChange={handleAnswer}
       />
+    )
 
-      <ProgressBar countdown={countdown} />
-    </GamePage>
+  return page(
+    <div className={styles.questionStage}>
+      <div
+        className={styles.questionView}
+        data-testid={
+          phase === 'question-preview'
+            ? 'quiz-preview-question-preview'
+            : 'quiz-preview-active-question'
+        }>
+        {questionContent}
+      </div>
+      <ProgressBar
+        countdown={countdown}
+        disableStyling={phase === 'question-preview'}
+      />
+    </div>,
+    renderControls(
+      phase === 'question-preview'
+        ? 'Continue to question'
+        : questionIndex === playerQuestions.length - 1
+          ? 'Finish preview'
+          : 'Next question',
+      phase === 'question' && !submittedAnswer,
+    ),
   )
 }
 
