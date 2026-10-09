@@ -7,52 +7,38 @@
   position: relative;
   border: 0;
   padding: 0;
-  background: none;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    pageColors.$color-page-divider-start 15%,
+    pageColors.$color-page-divider-center 50%,
+    pageColors.$color-page-divider-start 85%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 84% 100%;
 
   @media (prefers-reduced-motion: no-preference) {
     animation: growWidth 0.5s ease-out 0.1s both;
   }
 
   @include helpers.mobile {
+    height: helpers.pxToRem(1px);
     width: 100%;
     margin: spacing.$space-page-mobile 0;
   }
 
   @include helpers.tablet {
+    height: helpers.pxToRem(2px);
     width: breakpoints.$breakpoint-tablet;
     margin: spacing.$space-page-tablet 0;
   }
 
   @include helpers.desktop {
+    height: helpers.pxToRem(2px);
     width: breakpoints.$breakpoint-desktop;
     margin: spacing.$space-page-desktop 0;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 8%;
-    right: 8%;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      pageColors.$color-page-divider-start 15%,
-      pageColors.$color-page-divider-center 50%,
-      pageColors.$color-page-divider-start 85%,
-      transparent 100%
-    );
-
-    @include helpers.mobile {
-      height: helpers.pxToRem(1px);
-    }
-
-    @include helpers.tablet {
-      height: helpers.pxToRem(2px);
-    }
-
-    @include helpers.desktop {
-      height: helpers.pxToRem(2px);
-    }
   }
 }
 
