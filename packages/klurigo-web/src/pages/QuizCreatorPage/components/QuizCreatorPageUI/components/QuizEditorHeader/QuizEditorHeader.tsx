@@ -3,6 +3,7 @@ import {
   faCode,
   faFloppyDisk,
   faGear,
+  faPlay,
   faSliders,
 } from '@fortawesome/free-solid-svg-icons'
 import type { FC } from 'react'
@@ -27,6 +28,8 @@ export interface QuizEditorHeaderProps {
   onToggleAdvancedQuestionEditor: () => void
   onSaveQuiz: () => void
   onExit: () => void
+  onPreview?: () => void
+  canPreview?: boolean
 }
 
 const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
@@ -40,6 +43,8 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
   onToggleAdvancedQuestionEditor,
   onSaveQuiz,
   onExit,
+  onPreview,
+  canPreview = false,
 }) => {
   const deviceType = useDeviceSizeType()
 
@@ -99,6 +104,18 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         loading={!!isSavingQuiz}
         disabled={!canSaveQuiz}
         onClick={onSaveQuiz}
+      />
+      <Button
+        id="preview-button"
+        type="button"
+        size="small"
+        variant="primary"
+        surface="brand"
+        value="Preview"
+        hideValue="mobile"
+        icon={faPlay}
+        disabled={!canPreview}
+        onClick={onPreview}
       />
       <Button
         id="exit-button"

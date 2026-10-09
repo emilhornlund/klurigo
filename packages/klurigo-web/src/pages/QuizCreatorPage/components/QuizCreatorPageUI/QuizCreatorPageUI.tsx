@@ -25,6 +25,7 @@ import {
   QuestionPicker,
   QuestionSettings,
   QuizEditorHeader,
+  QuizPreview,
 } from './components'
 import QuizSettingsModal from './components/QuizSettingsModal'
 import { addRevealedQuestionId } from './questionValidation'
@@ -87,6 +88,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
 
   const [showAdvancedQuestionEditor, setShowAdvancedQuestionEditor] =
     useState(false)
+  const [showQuizPreview, setShowQuizPreview] = useState(false)
 
   const selectedQuestionId = questionIds[selectedQuestionIndex]
   const validationRevealed =
@@ -174,6 +176,21 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
     onSaveQuiz()
   }, [onSaveQuiz, onSelectedQuestionIndex, questionIds, questionValidations])
 
+  const canPreview =
+    questions.length > 0 &&
+    questionValidations.length === questions.length &&
+    questionValidations.every(({ valid }) => valid)
+
+  if (showQuizPreview && gameMode) {
+    return (
+      <QuizPreview
+        mode={gameMode}
+        questions={questions}
+        onExit={() => setShowQuizPreview(false)}
+      />
+    )
+  }
+
   return (
     <Page
       layout="fullBleed"
@@ -190,6 +207,8 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
             setShowAdvancedQuestionEditor(!showAdvancedQuestionEditor)
           }
           onSaveQuiz={handleSaveQuiz}
+          canPreview={canPreview}
+          onPreview={() => setShowQuizPreview(true)}
           onExit={onExit}
         />
       }

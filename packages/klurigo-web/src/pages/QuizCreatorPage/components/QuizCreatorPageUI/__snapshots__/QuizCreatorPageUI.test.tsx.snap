@@ -134,6 +134,33 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
           class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
+            data-testid="test-preview-button-button"
+            id="preview-button"
+            name="preview-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-play icon"
+              data-icon="play"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
             data-testid="test-exit-button-button"
             id="exit-button"
             name="exit-button"
@@ -769,9 +796,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-0-textfield"
-                                        id="multi-choice-option-_r_1m_-0"
-                                        name="multi-choice-option-_r_1m_-0"
+                                        data-testid="test-multi-choice-option-_r_1s_-0-textfield"
+                                        id="multi-choice-option-_r_1s_-0"
+                                        name="multi-choice-option-_r_1s_-0"
                                         placeholder="Option 1"
                                         type="text"
                                         value="Vincent van Gogh"
@@ -784,12 +811,12 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-0-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-0-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 1 as correct"
                                       checked=""
-                                      id="multi-choice-option-_r_1m_-0-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-0-correct-checkbox"
                                       type="checkbox"
                                     />
                                     <svg
@@ -814,9 +841,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-0-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-0-delete-button"
-                                      name="multi-choice-option-_r_1m_-0-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-0-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-0-delete-button"
+                                      name="multi-choice-option-_r_1s_-0-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -878,9 +905,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-1-textfield"
-                                        id="multi-choice-option-_r_1m_-1"
-                                        name="multi-choice-option-_r_1m_-1"
+                                        data-testid="test-multi-choice-option-_r_1s_-1-textfield"
+                                        id="multi-choice-option-_r_1s_-1"
+                                        name="multi-choice-option-_r_1s_-1"
                                         placeholder="Option 2"
                                         type="text"
                                         value="Pablo Picasso"
@@ -893,11 +920,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-1-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-1-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 2 as correct"
-                                      id="multi-choice-option-_r_1m_-1-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-1-correct-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -909,9 +936,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-1-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-1-delete-button"
-                                      name="multi-choice-option-_r_1m_-1-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-1-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-1-delete-button"
+                                      name="multi-choice-option-_r_1s_-1-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -973,9 +1000,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-2-textfield"
-                                        id="multi-choice-option-_r_1m_-2"
-                                        name="multi-choice-option-_r_1m_-2"
+                                        data-testid="test-multi-choice-option-_r_1s_-2-textfield"
+                                        id="multi-choice-option-_r_1s_-2"
+                                        name="multi-choice-option-_r_1s_-2"
                                         placeholder="Option 3"
                                         type="text"
                                         value="Leonardo da Vinci"
@@ -988,11 +1015,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-2-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-2-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 3 as correct"
-                                      id="multi-choice-option-_r_1m_-2-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-2-correct-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -1004,9 +1031,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-2-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-2-delete-button"
-                                      name="multi-choice-option-_r_1m_-2-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-2-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-2-delete-button"
+                                      name="multi-choice-option-_r_1s_-2-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -1068,9 +1095,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-3-textfield"
-                                        id="multi-choice-option-_r_1m_-3"
-                                        name="multi-choice-option-_r_1m_-3"
+                                        data-testid="test-multi-choice-option-_r_1s_-3-textfield"
+                                        id="multi-choice-option-_r_1s_-3"
+                                        name="multi-choice-option-_r_1s_-3"
                                         placeholder="Option 4"
                                         type="text"
                                         value="Claude Monet"
@@ -1083,11 +1110,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-3-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-3-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 4 as correct"
-                                      id="multi-choice-option-_r_1m_-3-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-3-correct-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -1099,9 +1126,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-3-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-3-delete-button"
-                                      name="multi-choice-option-_r_1m_-3-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-3-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-3-delete-button"
+                                      name="multi-choice-option-_r_1s_-3-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -1163,9 +1190,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-4-textfield"
-                                        id="multi-choice-option-_r_1m_-4"
-                                        name="multi-choice-option-_r_1m_-4"
+                                        data-testid="test-multi-choice-option-_r_1s_-4-textfield"
+                                        id="multi-choice-option-_r_1s_-4"
+                                        name="multi-choice-option-_r_1s_-4"
                                         placeholder="Option 5"
                                         type="text"
                                         value="Michelangelo"
@@ -1178,11 +1205,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-4-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-4-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 5 as correct"
-                                      id="multi-choice-option-_r_1m_-4-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-4-correct-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -1194,9 +1221,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-4-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-4-delete-button"
-                                      name="multi-choice-option-_r_1m_-4-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-4-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-4-delete-button"
+                                      name="multi-choice-option-_r_1s_-4-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -1258,9 +1285,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     >
                                       <input
                                         class="textfield"
-                                        data-testid="test-multi-choice-option-_r_1m_-5-textfield"
-                                        id="multi-choice-option-_r_1m_-5"
-                                        name="multi-choice-option-_r_1m_-5"
+                                        data-testid="test-multi-choice-option-_r_1s_-5-textfield"
+                                        id="multi-choice-option-_r_1s_-5"
+                                        name="multi-choice-option-_r_1s_-5"
                                         placeholder="Option 6"
                                         type="text"
                                         value="Rembrandt"
@@ -1273,11 +1300,11 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                 >
                                   <label
                                     class="correctAnswerLabel"
-                                    for="multi-choice-option-_r_1m_-5-correct-checkbox"
+                                    for="multi-choice-option-_r_1s_-5-correct-checkbox"
                                   >
                                     <input
                                       aria-label="Mark Option 6 as correct"
-                                      id="multi-choice-option-_r_1m_-5-correct-checkbox"
+                                      id="multi-choice-option-_r_1s_-5-correct-checkbox"
                                       type="checkbox"
                                     />
                                   </label>
@@ -1289,9 +1316,9 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode 1`] = `
                                     class="buttonContainer variantPlain surfaceLight intentDefault sizeSmall iconOnly"
                                   >
                                     <button
-                                      data-testid="test-multi-choice-option-_r_1m_-5-delete-button-button"
-                                      id="multi-choice-option-_r_1m_-5-delete-button"
-                                      name="multi-choice-option-_r_1m_-5-delete-button"
+                                      data-testid="test-multi-choice-option-_r_1s_-5-delete-button-button"
+                                      id="multi-choice-option-_r_1s_-5-delete-button"
+                                      name="multi-choice-option-_r_1s_-5-delete-button"
                                       type="button"
                                     >
                                       <svg
@@ -1894,6 +1921,34 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for classic mode without 
           class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
+            data-testid="test-preview-button-button"
+            disabled=""
+            id="preview-button"
+            name="preview-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-play icon"
+              data-icon="play"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
             data-testid="test-exit-button-button"
             id="exit-button"
             name="exit-button"
@@ -2072,6 +2127,34 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
           class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
+            data-testid="test-preview-button-button"
+            disabled=""
+            id="preview-button"
+            name="preview-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-play icon"
+              data-icon="play"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
             data-testid="test-exit-button-button"
             id="exit-button"
             name="exit-button"
@@ -2243,6 +2326,34 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI for zero to one hundred m
             </svg>
             <span>
               Save
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
+            data-testid="test-preview-button-button"
+            disabled=""
+            id="preview-button"
+            name="preview-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-play icon"
+              data-icon="play"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Preview
             </span>
           </button>
         </div>
@@ -2430,6 +2541,34 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
           class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
         >
           <button
+            data-testid="test-preview-button-button"
+            disabled=""
+            id="preview-button"
+            name="preview-button"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-play icon"
+              data-icon="play"
+              data-prefix="fas"
+              role="img"
+              viewBox="0 0 448 512"
+            >
+              <path
+                d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+        <div
+          class="buttonContainer variantPrimary surfaceBrand intentDefault sizeSmall"
+        >
+          <button
             data-testid="test-exit-button-button"
             id="exit-button"
             name="exit-button"
@@ -2479,10 +2618,10 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                 tabindex="0"
               />
               <div
-                aria-labelledby="_r_a_"
+                aria-labelledby="_r_c_"
                 class="modalContainer sizeNormal"
                 data-floating-ui-focusable=""
-                id="_r_8_"
+                id="_r_a_"
                 role="dialog"
                 tabindex="-1"
               >
@@ -2491,7 +2630,7 @@ exports[`QuizCreatorPageUI > renders QuizCreatorPageUI without mode 1`] = `
                 >
                   <h4
                     class="typography title4 alignLeft widthFull colorDefault noOpacity"
-                    id="_r_a_"
+                    id="_r_c_"
                   >
                     Choose Your Game Mode
                   </h4>
