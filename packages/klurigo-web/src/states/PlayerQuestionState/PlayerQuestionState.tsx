@@ -5,11 +5,8 @@ import type {
 import type { FC } from 'react'
 import { useState } from 'react'
 
-import { ProgressBar, Typography } from '../../components'
 import { useGameContext } from '../../context/game'
-import { GamePage, PlayerGameFooter, QuestionAnswerPicker } from '../common'
-
-import styles from './PlayerQuestionState.module.scss'
+import { PlayerQuestion } from '../common'
 
 export interface PlayerQuestionStateProps {
   event: GameQuestionPlayerEvent
@@ -42,32 +39,17 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
   }
 
   return (
-    <GamePage
-      layout="fill"
-      align="space-between"
-      footer={
-        <PlayerGameFooter
-          currentQuestion={currentQuestion}
-          totalQuestions={totalQuestions}
-          nickname={nickname}
-          totalScore={totalScore}
-        />
-      }>
-      <div className={styles.fullHeight}>
-        <Typography variant="title" align="center" color="inverse" maxLines={2}>
-          {question.question}
-        </Typography>
-
-        <QuestionAnswerPicker
-          question={question}
-          submittedAnswer={answer}
-          loading={isSubmittingQuestionAnswer}
-          onChange={handleSubmitQuestionAnswer}
-        />
-      </div>
-
-      <ProgressBar countdown={countdown} />
-    </GamePage>
+    <PlayerQuestion
+      question={question}
+      submittedAnswer={answer}
+      countdown={countdown}
+      currentQuestion={currentQuestion}
+      totalQuestions={totalQuestions}
+      nickname={nickname}
+      totalScore={totalScore}
+      loading={isSubmittingQuestionAnswer}
+      onChange={handleSubmitQuestionAnswer}
+    />
   )
 }
 
