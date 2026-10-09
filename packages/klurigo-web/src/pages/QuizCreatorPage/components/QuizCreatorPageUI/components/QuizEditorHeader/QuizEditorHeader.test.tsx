@@ -79,6 +79,29 @@ describe('QuizEditorHeader', () => {
     expect(onExit).toHaveBeenCalledOnce()
   })
 
+  it('forwards the preview action when preview is available', () => {
+    const onPreview = vi.fn()
+
+    render(
+      <QuizEditorHeader
+        quizSettings={{}}
+        quizSettingsValidation={validation}
+        onQuizSettingsValueChange={vi.fn()}
+        canSaveQuiz
+        showAdvancedQuestionEditor={false}
+        onOpenSettings={vi.fn()}
+        onToggleAdvancedQuestionEditor={vi.fn()}
+        onSaveQuiz={vi.fn()}
+        onPreview={onPreview}
+        canPreview
+        onExit={vi.fn()}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
+    expect(onPreview).toHaveBeenCalledOnce()
+  })
+
   it('preserves validation on the title field', () => {
     const { container } = render(
       <QuizEditorHeader

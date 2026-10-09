@@ -1,5 +1,5 @@
 import type { CountdownEvent, GameMode, QuestionType } from '@klurigo/common'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import { ProgressBar } from '../../../components'
 import GamePage from '../GamePage'
@@ -17,6 +17,7 @@ export interface PlayerQuestionPreviewProps {
   totalQuestions: number
   nickname: string
   totalScore: number
+  header?: ReactNode
 }
 
 const PlayerQuestionPreview: FC<PlayerQuestionPreviewProps> = ({
@@ -29,10 +30,12 @@ const PlayerQuestionPreview: FC<PlayerQuestionPreviewProps> = ({
   totalQuestions,
   nickname,
   totalScore,
+  header,
 }) => (
   <GamePage
     layout="fill"
     align="space-between"
+    header={header}
     footer={
       <PlayerGameFooter
         currentQuestion={currentQuestion}

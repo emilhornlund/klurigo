@@ -5,7 +5,7 @@ import type {
   SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import { QuestionType } from '@klurigo/common'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import { ProgressBar, Typography } from '../../../components'
 import GamePage from '../GamePage'
@@ -25,6 +25,7 @@ export interface PlayerQuestionProps {
   totalScore: number
   loading?: boolean
   onChange?: (request: SubmitQuestionAnswerRequestDto) => void
+  header?: ReactNode
 }
 
 const PlayerQuestion: FC<PlayerQuestionProps> = ({
@@ -37,10 +38,12 @@ const PlayerQuestion: FC<PlayerQuestionProps> = ({
   totalScore,
   loading = false,
   onChange,
+  header,
 }) => (
   <GamePage
     layout="fill"
     align="space-between"
+    header={header}
     footer={
       <PlayerGameFooter
         currentQuestion={currentQuestion}
