@@ -44,6 +44,28 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Who painted The Starry Night?
             </h1>
             <div
+              class="questionMedia"
+              data-testid="question-media"
+            >
+              <div
+                class="container fallbackAspectRatio"
+              >
+                <div
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
+                >
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
               class="questionAnswerPicker"
             >
               <div
@@ -197,6 +219,28 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             >
               Who painted The Starry Night?
             </h1>
+            <div
+              class="questionMedia"
+              data-testid="question-media"
+            >
+              <div
+                class="container fallbackAspectRatio"
+              >
+                <div
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
+                >
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                </div>
+              </div>
+            </div>
             <div
               class="questionAnswerPicker"
             >
@@ -369,6 +413,28 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             >
               Who painted The Starry Night?
             </h1>
+            <div
+              class="questionMedia"
+              data-testid="question-media"
+            >
+              <div
+                class="container fallbackAspectRatio"
+              >
+                <div
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
+                >
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
+                </div>
+              </div>
+            </div>
             <div
               class="questionAnswerPicker"
             >
