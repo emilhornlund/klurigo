@@ -5,11 +5,9 @@ import type {
   SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import { QuestionType } from '@klurigo/common'
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 
-import { ProgressBar, Typography } from '../../../../components'
-import GamePage from '../../../common/GamePage'
-import PlayerGameFooter from '../../../common/PlayerGameFooter'
+import { Typography } from '../../../../components'
 import QuestionAnswerPicker from '../../../common/QuestionAnswerPicker'
 import QuestionMedia from '../../../common/QuestionMedia'
 
@@ -19,61 +17,36 @@ export interface PlayerQuestionViewProps {
   question: GameEventQuestion
   submittedAnswer?: GameQuestionPlayerAnswerEvent
   countdown: CountdownEvent
-  currentQuestion: number
-  totalQuestions: number
-  nickname: string
-  totalScore: number
   loading?: boolean
   onChange?: (request: SubmitQuestionAnswerRequestDto) => void
-  header?: ReactNode
 }
 
 const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
   question,
   submittedAnswer,
   countdown,
-  currentQuestion,
-  totalQuestions,
-  nickname,
-  totalScore,
   loading = false,
   onChange,
-  header,
 }) => (
-  <GamePage
-    layout="fill"
-    align="space-between"
-    header={header}
-    footer={
-      <PlayerGameFooter
-        currentQuestion={currentQuestion}
-        totalQuestions={totalQuestions}
-        nickname={nickname}
-        totalScore={totalScore}
-      />
-    }>
-    <div className={styles.fullHeight}>
-      <Typography variant="title" align="center" color="inverse" maxLines={2}>
-        {question.question}
-      </Typography>
+  <div className={styles.fullHeight}>
+    <Typography variant="title" align="center" color="inverse" maxLines={2}>
+      {question.question}
+    </Typography>
 
-      <QuestionMedia
-        type={question.type}
-        media={question.type === QuestionType.Pin ? undefined : question.media}
-        alt={question.question}
-        countdown={countdown}
-      />
+    <QuestionMedia
+      type={question.type}
+      media={question.type === QuestionType.Pin ? undefined : question.media}
+      alt={question.question}
+      countdown={countdown}
+    />
 
-      <QuestionAnswerPicker
-        question={question}
-        submittedAnswer={submittedAnswer}
-        loading={loading}
-        onChange={onChange}
-      />
-    </div>
-
-    <ProgressBar countdown={countdown} />
-  </GamePage>
+    <QuestionAnswerPicker
+      question={question}
+      submittedAnswer={submittedAnswer}
+      loading={loading}
+      onChange={onChange}
+    />
+  </div>
 )
 
 export default PlayerQuestionView

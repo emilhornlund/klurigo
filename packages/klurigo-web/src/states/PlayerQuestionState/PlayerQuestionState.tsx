@@ -5,7 +5,9 @@ import type {
 import type { FC } from 'react'
 import { useState } from 'react'
 
+import { ProgressBar } from '../../components'
 import { useGameContext } from '../../context/game'
+import { GamePage, PlayerGameFooter } from '../common'
 
 import { PlayerQuestionView } from './components'
 
@@ -40,17 +42,27 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
   }
 
   return (
-    <PlayerQuestionView
-      question={question}
-      submittedAnswer={answer}
-      countdown={countdown}
-      currentQuestion={currentQuestion}
-      totalQuestions={totalQuestions}
-      nickname={nickname}
-      totalScore={totalScore}
-      loading={isSubmittingQuestionAnswer}
-      onChange={handleSubmitQuestionAnswer}
-    />
+    <GamePage
+      layout="fill"
+      align="space-between"
+      footer={
+        <PlayerGameFooter
+          currentQuestion={currentQuestion}
+          totalQuestions={totalQuestions}
+          nickname={nickname}
+          totalScore={totalScore}
+        />
+      }>
+      <PlayerQuestionView
+        question={question}
+        submittedAnswer={answer}
+        countdown={countdown}
+        loading={isSubmittingQuestionAnswer}
+        onChange={handleSubmitQuestionAnswer}
+      />
+
+      <ProgressBar countdown={countdown} />
+    </GamePage>
   )
 }
 

@@ -13,7 +13,14 @@ import {
 import type { FC, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
-import { Button, Page, Stack, Typography } from '../../../../../../components'
+import {
+  Button,
+  Page,
+  ProgressBar,
+  Stack,
+  Typography,
+} from '../../../../../../components'
+import { GamePage, PlayerGameFooter } from '../../../../../../states/common'
 import { PlayerQuestionPreviewView } from '../../../../../../states/PlayerQuestionPreviewState/components'
 import { PlayerQuestionView } from '../../../../../../states/PlayerQuestionState/components'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
@@ -287,42 +294,63 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
 
   if (phase === 'question-preview') {
     return (
-      <PlayerQuestionPreviewView
-        key={`preview-${questionIndex}`}
-        mode={mode}
-        questionType={question.type}
-        question={question.question}
-        questionPoints={
-          questions[questionIndex] && 'points' in questions[questionIndex]
-            ? questions[questionIndex].points
-            : undefined
-        }
-        countdown={countdown}
-        {...pagination}
-        nickname={nickname}
-        totalScore={0}
+      <GamePage
+        layout="fill"
+        align="space-between"
         header={controls('Continue to question')}
-      />
+        footer={
+          <PlayerGameFooter
+            currentQuestion={pagination.currentQuestion}
+            totalQuestions={pagination.totalQuestions}
+            nickname={nickname}
+            totalScore={0}
+          />
+        }>
+        <PlayerQuestionPreviewView
+          key={`preview-${questionIndex}`}
+          mode={mode}
+          questionType={question.type}
+          question={question.question}
+          questionPoints={
+            questions[questionIndex] && 'points' in questions[questionIndex]
+              ? questions[questionIndex].points
+              : undefined
+          }
+        />
+
+        <ProgressBar countdown={countdown} disableStyling={true} />
+      </GamePage>
     )
   }
 
   return (
-    <PlayerQuestionView
-      key={`question-${questionIndex}`}
-      question={question}
-      submittedAnswer={submittedAnswer}
-      countdown={countdown}
-      {...pagination}
-      nickname={nickname}
-      totalScore={0}
-      onChange={handleAnswer}
+    <GamePage
+      layout="fill"
+      align="space-between"
       header={controls(
         questionIndex === playerQuestions.length - 1
           ? 'Finish preview'
           : 'Next question',
         !submittedAnswer,
       )}
-    />
+      footer={
+        <PlayerGameFooter
+          currentQuestion={pagination.currentQuestion}
+          totalQuestions={pagination.totalQuestions}
+          nickname={nickname}
+          totalScore={0}
+        />
+      }>
+      <PlayerQuestionView
+        key={`question-${questionIndex}`}
+        question={question}
+        submittedAnswer={submittedAnswer}
+        countdown={countdown}
+        onChange={handleAnswer}
+      />
+
+      <ProgressBar countdown={countdown} />
+    </GamePage>
   )
 }
 
