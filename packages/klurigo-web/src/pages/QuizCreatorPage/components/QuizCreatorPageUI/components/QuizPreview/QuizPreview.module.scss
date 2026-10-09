@@ -1,24 +1,94 @@
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
 .previewChrome {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: flex-end;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .previewControls {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  flex-shrink: 0;
   gap: 0.5rem;
+}
+
+.previewContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.questionStage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: spacing.$space-content-gap-mobile;
+  min-height: 0;
+  width: 100%;
+
+  @include helpers.tablet {
+    gap: spacing.$space-content-gap-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-content-gap-desktop;
+  }
+
+  > :first-child {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+  }
+}
+
+.questionStage > :last-child {
+  flex: 0 0 auto;
+}
+
+.questionView {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.questionPreview {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
 }
 
 .complete {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  justify-content: center;
+  min-height: 0;
+  padding: spacing.$space-page-mobile;
   text-align: center;
+
+  @include helpers.tablet {
+    padding: spacing.$space-page-tablet;
+  }
+
+  @include helpers.desktop {
+    padding: spacing.$space-page-desktop;
+  }
 }
 
 .completeActions {
@@ -26,4 +96,20 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem;
+}
+
+@include helpers.mobile {
+  .previewChrome {
+    gap: spacing.$space-inline-tight-mobile;
+  }
+
+  .previewControls {
+    gap: spacing.$space-inline-tight-mobile;
+
+    // Keep icon-only controls easy to tap while preserving the compact header.
+    > * {
+      min-width: 2.625rem;
+      min-height: 2.625rem;
+    }
+  }
 }

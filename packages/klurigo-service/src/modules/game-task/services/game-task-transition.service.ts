@@ -1,4 +1,8 @@
-import { GameStatus, shuffleArray } from '@klurigo/common'
+import {
+  GameStatus,
+  getQuestionPreviewDurationMs,
+  shuffleArray,
+} from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 
 import { getErrorStack, structuredLog } from '../../../app/utils'
@@ -27,11 +31,6 @@ import {
 @Injectable()
 export class GameTaskTransitionService {
   private readonly logger = new Logger(GameTaskTransitionService.name)
-
-  private static AVERAGE_WPM = 220 // Average reading speed in words per minute
-  private static MILLISECONDS_PER_MINUTE = 60000
-  private static RATIO = 100 // Fallback character-based ratio (milliseconds per character)
-  private static MAX_CHARACTER_DURATION = 15000 // Maximum fallback duration in milliseconds
 
   /**
    * Constructs the GameTaskTransitionService.
@@ -337,19 +336,9 @@ export class GameTaskTransitionService {
       throw error
     }
 
-    const questionText = gameDocument.questions[questionIndex].text
-
-    const wordCount = questionText.trim().split(/\s+/).length
-    const readingDuration =
-      (wordCount / GameTaskTransitionService.AVERAGE_WPM) *
-      GameTaskTransitionService.MILLISECONDS_PER_MINUTE
-
-    const characterDuration = Math.min(
-      questionText.length * GameTaskTransitionService.RATIO,
-      GameTaskTransitionService.MAX_CHARACTER_DURATION,
+    return getQuestionPreviewDurationMs(
+      gameDocument.questions[questionIndex].text,
     )
-
-    return Math.max(readingDuration, characterDuration)
   }
 
   /**
