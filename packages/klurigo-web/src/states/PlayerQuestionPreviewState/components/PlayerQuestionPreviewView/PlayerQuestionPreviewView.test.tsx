@@ -3,17 +3,17 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../components/ProgressBar/ProgressBar', () => ({
+vi.mock('../../../../components/ProgressBar/ProgressBar', () => ({
   default: () => <div data-testid="progressbar" />,
 }))
 
-import PlayerQuestionPreview from './PlayerQuestionPreview'
+import PlayerQuestionPreviewView from './PlayerQuestionPreviewView'
 
-describe('PlayerQuestionPreview', () => {
+describe('PlayerQuestionPreviewView', () => {
   it('renders the player preview presentation without a game event', () => {
     render(
       <MemoryRouter>
-        <PlayerQuestionPreview
+        <PlayerQuestionPreviewView
           mode={GameMode.Classic}
           questionType={QuestionType.MultiChoice}
           question="Who painted The Starry Night?"

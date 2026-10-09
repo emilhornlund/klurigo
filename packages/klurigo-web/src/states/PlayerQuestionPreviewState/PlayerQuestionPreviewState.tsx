@@ -1,7 +1,7 @@
 import type { GameQuestionPreviewPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { PlayerQuestionPreview } from '../common'
+import { PlayerQuestionPreviewView } from './components'
 
 export interface PlayerQuestionPreviewStateProps {
   event: GameQuestionPreviewPlayerEvent
@@ -16,7 +16,7 @@ const PlayerQuestionPreviewState: FC<PlayerQuestionPreviewStateProps> = ({
     pagination: { current: currentQuestion, total: totalQuestions },
   },
 }) => (
-  <PlayerQuestionPreview
+  <PlayerQuestionPreviewView
     mode={mode}
     questionType={questionType}
     question={question}

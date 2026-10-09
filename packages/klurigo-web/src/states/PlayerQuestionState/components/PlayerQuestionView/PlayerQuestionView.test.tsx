@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../components/ProgressBar/ProgressBar', () => ({
+vi.mock('../../../../components/ProgressBar/ProgressBar', () => ({
   default: () => <div data-testid="progressbar" />,
 }))
 
-import PlayerQuestion from './PlayerQuestion'
+import PlayerQuestionView from './PlayerQuestionView'
 
 const countdown = {
   initiatedTime: '2025-10-12T11:59:59.000Z',
@@ -16,14 +16,14 @@ const countdown = {
   serverTime: '2025-10-12T12:00:00.000Z',
 }
 
-describe('PlayerQuestion', () => {
+describe('PlayerQuestionView', () => {
   it('renders media, submitted state, pagination, and answer interactions', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
 
     render(
       <MemoryRouter>
-        <PlayerQuestion
+        <PlayerQuestionView
           question={{
             type: QuestionType.MultiChoice,
             question: 'Which answer is correct?',
@@ -75,11 +75,11 @@ describe('PlayerQuestion', () => {
       ...(questionType === QuestionType.Pin ? { imageURL: '/map.png' } : {}),
       ...(questionType === QuestionType.Puzzle ? { values: ['A', 'B'] } : {}),
       duration: 30,
-    } as Parameters<typeof PlayerQuestion>[0]['question']
+    } as Parameters<typeof PlayerQuestionView>[0]['question']
 
     render(
       <MemoryRouter>
-        <PlayerQuestion
+        <PlayerQuestionView
           question={question}
           countdown={countdown}
           currentQuestion={1}

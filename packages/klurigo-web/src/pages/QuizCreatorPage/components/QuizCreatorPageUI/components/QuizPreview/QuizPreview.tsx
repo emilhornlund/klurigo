@@ -14,10 +14,8 @@ import type { FC, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
 import { Button, Page, Stack, Typography } from '../../../../../../components'
-import {
-  PlayerQuestion,
-  PlayerQuestionPreview,
-} from '../../../../../../states/common'
+import { PlayerQuestionPreviewView } from '../../../../../../states/PlayerQuestionPreviewState/components'
+import { PlayerQuestionView } from '../../../../../../states/PlayerQuestionState/components'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
 
 import { toPlayerQuestions } from './quiz-preview-question'
@@ -289,7 +287,7 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
 
   if (phase === 'question-preview') {
     return (
-      <PlayerQuestionPreview
+      <PlayerQuestionPreviewView
         key={`preview-${questionIndex}`}
         mode={mode}
         questionType={question.type}
@@ -309,7 +307,7 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
   }
 
   return (
-    <PlayerQuestion
+    <PlayerQuestionView
       key={`question-${questionIndex}`}
       question={question}
       submittedAnswer={submittedAnswer}
