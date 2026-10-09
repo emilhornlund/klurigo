@@ -1020,6 +1020,166 @@ describe('QuizCreatorPageUI', () => {
     expect(container.querySelector('#save-button')).toBeEnabled()
   })
 
+  it('requires a selected mode, questions, and valid questions before enabling preview', () => {
+    const question: QuizQuestionModel = {
+      type: QuestionType.MultiChoice,
+      question: 'Preview question',
+      options: [{ value: 'Answer', correct: true }],
+      points: 1000,
+      duration: 30,
+    }
+
+    const { container, rerender } = renderQuizCreatorPageUI({
+      gameMode: undefined,
+      questions: [question],
+      questionValidations: [makeValidation()],
+    })
+    expect(container.querySelector('#preview-button')).toBeDisabled()
+
+    rerender(
+      <MemoryRouter>
+        <QuizCreatorPageUI
+          gameMode={GameMode.Classic}
+          quizSettings={{}}
+          quizSettingsValidation={makeValidation()}
+          onQuizSettingsValueChange={() => undefined}
+          questions={[]}
+          questionIds={[]}
+          questionValidations={[]}
+          selectedQuestion={undefined}
+          selectedQuestionIndex={0}
+          canSaveQuiz={false}
+          onSetQuestions={() => undefined}
+          onSelectedQuestionIndex={() => undefined}
+          onAddQuestion={() => undefined}
+          onQuestionValueChange={() => undefined}
+          onMoveQuestion={() => undefined}
+          onDuplicateQuestionIndex={() => undefined}
+          onDeleteQuestionIndex={() => undefined}
+          onReplaceQuestion={() => undefined}
+          onSaveQuiz={() => undefined}
+          onExit={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+
+    rerender(
+      <MemoryRouter>
+        <QuizCreatorPageUI
+          gameMode={GameMode.Classic}
+          quizSettings={{}}
+          quizSettingsValidation={makeValidation()}
+          onQuizSettingsValueChange={() => undefined}
+          questions={[question]}
+          questionIds={['question-1']}
+          questionValidations={[
+            makeValidation([{ path: 'question', message: 'Invalid' }]),
+          ]}
+          selectedQuestion={question}
+          selectedQuestionIndex={0}
+          canSaveQuiz={false}
+          onSetQuestions={() => undefined}
+          onSelectedQuestionIndex={() => undefined}
+          onAddQuestion={() => undefined}
+          onQuestionValueChange={() => undefined}
+          onMoveQuestion={() => undefined}
+          onDuplicateQuestionIndex={() => undefined}
+          onDeleteQuestionIndex={() => undefined}
+          onReplaceQuestion={() => undefined}
+          onSaveQuiz={() => undefined}
+          onExit={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+
+    rerender(
+      <MemoryRouter>
+        <QuizCreatorPageUI
+          gameMode={GameMode.Classic}
+          quizSettings={{}}
+          quizSettingsValidation={makeValidation([
+            { path: 'title', message: 'Title is required' },
+          ])}
+          onQuizSettingsValueChange={() => undefined}
+          questions={[question]}
+          questionIds={['question-1']}
+          questionValidations={[makeValidation()]}
+          selectedQuestion={question}
+          selectedQuestionIndex={0}
+          canSaveQuiz={false}
+          onSetQuestions={() => undefined}
+          onSelectedQuestionIndex={() => undefined}
+          onAddQuestion={() => undefined}
+          onQuestionValueChange={() => undefined}
+          onMoveQuestion={() => undefined}
+          onDuplicateQuestionIndex={() => undefined}
+          onDeleteQuestionIndex={() => undefined}
+          onReplaceQuestion={() => undefined}
+          onSaveQuiz={() => undefined}
+          onExit={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('button', { name: 'Preview' })).toBeEnabled()
+  })
+
+  it('opens a local preview from question one and restores the editor state', () => {
+    const questions: QuizQuestionModel[] = [
+      {
+        type: QuestionType.MultiChoice,
+        question: 'Unsaved first edit',
+        options: [{ value: 'Answer', correct: true }],
+        points: 1000,
+        duration: 30,
+      },
+      {
+        type: QuestionType.TrueFalse,
+        question: 'Selected second question',
+        correct: true,
+        points: 1000,
+        duration: 30,
+      },
+    ]
+    const onSaveQuiz = vi.fn()
+    const onExit = vi.fn()
+
+    renderQuizCreatorPageUI({
+      gameMode: GameMode.Classic,
+      quizSettings: { title: '' },
+      quizSettingsValidation: makeValidation([
+        { path: 'title', message: 'Title is required' },
+      ]),
+      questions,
+      questionIds: ['first', 'second'],
+      questionValidations: [makeValidation(), makeValidation()],
+      selectedQuestion: questions[1],
+      selectedQuestionIndex: 1,
+      canSaveQuiz: true,
+      onSaveQuiz,
+      onExit,
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
+
+    expect(screen.queryByTestId('editor-workspace')).not.toBeInTheDocument()
+    expect(screen.getByText('Preview')).toBeInTheDocument()
+    expect(screen.getByText('Unsaved first edit')).toBeInTheDocument()
+    expect(screen.getAllByText('1 / 2').length).toBeGreaterThan(0)
+    expect(onSaveQuiz).not.toHaveBeenCalled()
+    expect(onExit).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Exit preview' }))
+
+    expect(screen.getByTestId('editor-workspace')).toBeInTheDocument()
+    expect(
+      screen.getByTestId('test-question-text-textarea-textarea'),
+    ).toHaveValue('Selected second question')
+    expect(onSaveQuiz).not.toHaveBeenCalled()
+    expect(onExit).not.toHaveBeenCalled()
+  })
+
   it('reveals every invalid question and selects the first before invoking Save', () => {
     const questions = [
       { type: QuestionType.MultiChoice, question: '' },

@@ -177,6 +177,7 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
   }, [onSaveQuiz, onSelectedQuestionIndex, questionIds, questionValidations])
 
   const canPreview =
+    !!gameMode &&
     questions.length > 0 &&
     questionValidations.length === questions.length &&
     questionValidations.every(({ valid }) => valid)
