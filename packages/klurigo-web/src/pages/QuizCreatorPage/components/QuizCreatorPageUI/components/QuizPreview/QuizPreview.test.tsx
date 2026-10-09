@@ -49,7 +49,7 @@ describe('QuizPreview', () => {
     renderPreview()
 
     expect(screen.getByText('First unsaved question')).toBeInTheDocument()
-    expect(screen.getByText('1 / 2')).toBeInTheDocument()
+    expect(screen.getAllByText('1 / 2').length).toBeGreaterThan(0)
 
     await user.click(
       screen.getByRole('button', { name: 'Continue to question' }),
@@ -59,7 +59,7 @@ describe('QuizPreview', () => {
     await user.click(screen.getByRole('button', { name: 'First answer' }))
     await user.click(screen.getByRole('button', { name: 'Next question' }))
     expect(screen.getByText('Second question')).toBeInTheDocument()
-    expect(screen.getByText('2 / 2')).toBeInTheDocument()
+    expect(screen.getAllByText('2 / 2').length).toBeGreaterThan(0)
 
     await user.click(
       screen.getByRole('button', { name: 'Continue to question' }),
@@ -109,6 +109,23 @@ describe('QuizPreview', () => {
     await user.click(screen.getByRole('button', { name: 'Restart preview' }))
 
     expect(screen.getByText('First unsaved question')).toBeInTheDocument()
-    expect(screen.getByText('1 / 2')).toBeInTheDocument()
+    expect(screen.getAllByText('1 / 2').length).toBeGreaterThan(0)
+  })
+
+  it('keeps preview controls reachable on a mobile viewport', () => {
+    const width = vi.spyOn(window, 'innerWidth', 'get').mockReturnValue(375)
+    try {
+      renderPreview()
+
+      expect(screen.getByText('Preview')).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Continue to question' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Exit preview' }),
+      ).toBeInTheDocument()
+    } finally {
+      width.mockRestore()
+    }
   })
 })

@@ -102,6 +102,24 @@ describe('QuizEditorHeader', () => {
     expect(onPreview).toHaveBeenCalledOnce()
   })
 
+  it('disables preview when preview is not available', () => {
+    render(
+      <QuizEditorHeader
+        quizSettings={{}}
+        quizSettingsValidation={validation}
+        onQuizSettingsValueChange={vi.fn()}
+        canSaveQuiz
+        showAdvancedQuestionEditor={false}
+        onOpenSettings={vi.fn()}
+        onToggleAdvancedQuestionEditor={vi.fn()}
+        onSaveQuiz={vi.fn()}
+        onExit={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+  })
+
   it('preserves validation on the title field', () => {
     const { container } = render(
       <QuizEditorHeader

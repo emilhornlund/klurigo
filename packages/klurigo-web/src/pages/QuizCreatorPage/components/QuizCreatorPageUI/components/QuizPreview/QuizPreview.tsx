@@ -1,10 +1,15 @@
-import type {
-  CountdownEvent,
-  GameMode,
-  GameQuestionPlayerAnswerEvent,
-  SubmitQuestionAnswerRequestDto,
+import {
+  faArrowLeft,
+  faArrowRight,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  type CountdownEvent,
+  type GameMode,
+  type GameQuestionPlayerAnswerEvent,
+  QuestionType,
+  type SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
-import { QuestionType } from '@klurigo/common'
 import type { FC, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
@@ -65,6 +70,8 @@ const toSubmittedAnswer = (
 
 interface PreviewControlsProps {
   onExit: () => void
+  currentQuestion?: number
+  totalQuestions?: number
   onBack?: () => void
   continueLabel?: string
   onContinue?: () => void
@@ -73,45 +80,67 @@ interface PreviewControlsProps {
 
 const PreviewControls: FC<PreviewControlsProps> = ({
   onExit,
+  currentQuestion,
+  totalQuestions,
   onBack,
   continueLabel,
   onContinue,
   continueDisabled,
 }) => (
-  <div className={styles.previewControls} data-testid="preview-controls">
-    {onBack && (
+  <div className={styles.previewChrome} data-testid="preview-controls">
+    <Typography variant="body2" color="inverse" noOpacity bold>
+      Preview
+    </Typography>
+    {currentQuestion !== undefined && totalQuestions !== undefined && (
+      <Typography variant="body2" color="inverse" noOpacity>
+        {currentQuestion} / {totalQuestions}
+      </Typography>
+    )}
+    <div className={styles.previewControls}>
+      {onBack && (
+        <Button
+          id="preview-back"
+          type="button"
+          variant="outline"
+          surface="brand"
+          size="small"
+          value="Back"
+          hideValue="mobile"
+          aria-label="Back"
+          icon={faArrowLeft}
+          onClick={onBack}
+        />
+      )}
+      {continueLabel && onContinue && (
+        <Button
+          id="preview-continue"
+          type="button"
+          variant="primary"
+          surface="brand"
+          intent="accent"
+          size="small"
+          value={continueLabel}
+          hideValue="mobile"
+          aria-label={continueLabel}
+          icon={faArrowRight}
+          iconPosition="trailing"
+          disabled={continueDisabled}
+          onClick={onContinue}
+        />
+      )}
       <Button
-        id="preview-back"
+        id="preview-exit"
         type="button"
         variant="outline"
         surface="brand"
         size="small"
-        value="Back"
-        onClick={onBack}
+        value="Exit preview"
+        hideValue="mobile"
+        aria-label="Exit preview"
+        icon={faXmark}
+        onClick={onExit}
       />
-    )}
-    {continueLabel && onContinue && (
-      <Button
-        id="preview-continue"
-        type="button"
-        variant="primary"
-        surface="brand"
-        intent="accent"
-        size="small"
-        value={continueLabel}
-        disabled={continueDisabled}
-        onClick={onContinue}
-      />
-    )}
-    <Button
-      id="preview-exit"
-      type="button"
-      variant="outline"
-      surface="brand"
-      size="small"
-      value="Exit preview"
-      onClick={onExit}
-    />
+    </div>
   </div>
 )
 
@@ -188,6 +217,8 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
   ): ReactNode => (
     <PreviewControls
       onExit={onExit}
+      currentQuestion={questionIndex + 1}
+      totalQuestions={playerQuestions.length}
       onBack={
         questionIndex > 0 || phase === 'question' ? handleBack : undefined
       }
