@@ -1,13 +1,13 @@
 import type { CountdownEvent, GameMode, QuestionType } from '@klurigo/common'
 import type { FC, ReactNode } from 'react'
 
-import { ProgressBar } from '../../../components'
-import GamePage from '../GamePage'
-import PlayerGameFooter from '../PlayerGameFooter'
-import QuestionTextPreview from '../QuestionTextPreview'
-import QuestionTypePointsBar from '../QuestionTypePointsBar'
+import { ProgressBar } from '../../../../components'
+import GamePage from '../../../common/GamePage'
+import PlayerGameFooter from '../../../common/PlayerGameFooter'
+import QuestionTextPreview from '../../../common/QuestionTextPreview'
+import QuestionTypePointsBar from '../../../common/QuestionTypePointsBar'
 
-export interface PlayerQuestionPreviewProps {
+export interface PlayerQuestionPreviewViewProps {
   mode: GameMode
   questionType: QuestionType
   question: string
@@ -20,7 +20,7 @@ export interface PlayerQuestionPreviewProps {
   header?: ReactNode
 }
 
-const PlayerQuestionPreview: FC<PlayerQuestionPreviewProps> = ({
+const PlayerQuestionPreviewView: FC<PlayerQuestionPreviewViewProps> = ({
   mode,
   questionType,
   question,
@@ -56,4 +56,4 @@ const PlayerQuestionPreview: FC<PlayerQuestionPreviewProps> = ({
   </GamePage>
 )
 
-export default PlayerQuestionPreview
+export default PlayerQuestionPreviewView

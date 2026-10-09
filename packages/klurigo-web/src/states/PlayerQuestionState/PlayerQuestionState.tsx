@@ -6,7 +6,8 @@ import type { FC } from 'react'
 import { useState } from 'react'
 
 import { useGameContext } from '../../context/game'
-import { PlayerQuestion } from '../common'
+
+import { PlayerQuestionView } from './components'
 
 export interface PlayerQuestionStateProps {
   event: GameQuestionPlayerEvent
@@ -39,7 +40,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
   }
 
   return (
-    <PlayerQuestion
+    <PlayerQuestionView
       question={question}
       submittedAnswer={answer}
       countdown={countdown}

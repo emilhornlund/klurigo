@@ -7,15 +7,15 @@ import type {
 import { QuestionType } from '@klurigo/common'
 import type { FC, ReactNode } from 'react'
 
-import { ProgressBar, Typography } from '../../../components'
-import GamePage from '../GamePage'
-import PlayerGameFooter from '../PlayerGameFooter'
-import QuestionAnswerPicker from '../QuestionAnswerPicker'
-import QuestionMedia from '../QuestionMedia'
+import { ProgressBar, Typography } from '../../../../components'
+import GamePage from '../../../common/GamePage'
+import PlayerGameFooter from '../../../common/PlayerGameFooter'
+import QuestionAnswerPicker from '../../../common/QuestionAnswerPicker'
+import QuestionMedia from '../../../common/QuestionMedia'
 
-import styles from './PlayerQuestion.module.scss'
+import styles from './PlayerQuestionView.module.scss'
 
-export interface PlayerQuestionProps {
+export interface PlayerQuestionViewProps {
   question: GameEventQuestion
   submittedAnswer?: GameQuestionPlayerAnswerEvent
   countdown: CountdownEvent
@@ -28,7 +28,7 @@ export interface PlayerQuestionProps {
   header?: ReactNode
 }
 
-const PlayerQuestion: FC<PlayerQuestionProps> = ({
+const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
   question,
   submittedAnswer,
   countdown,
@@ -76,4 +76,4 @@ const PlayerQuestion: FC<PlayerQuestionProps> = ({
   </GamePage>
 )
 
-export default PlayerQuestion
+export default PlayerQuestionView
