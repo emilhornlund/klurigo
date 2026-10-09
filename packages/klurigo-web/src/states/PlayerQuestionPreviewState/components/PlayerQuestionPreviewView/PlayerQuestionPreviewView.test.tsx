@@ -1,11 +1,7 @@
 import { GameMode, QuestionType } from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
-
-vi.mock('../../../../components/ProgressBar/ProgressBar', () => ({
-  default: () => <div data-testid="progressbar" />,
-}))
+import { describe, expect, it } from 'vitest'
 
 import PlayerQuestionPreviewView from './PlayerQuestionPreviewView'
 
@@ -18,15 +14,6 @@ describe('PlayerQuestionPreviewView', () => {
           questionType={QuestionType.MultiChoice}
           question="Who painted The Starry Night?"
           questionPoints={1000}
-          countdown={{
-            initiatedTime: '2025-10-12T11:59:59.000Z',
-            expiryTime: '2025-10-12T12:00:01.000Z',
-            serverTime: '2025-10-12T12:00:00.000Z',
-          }}
-          currentQuestion={2}
-          totalQuestions={20}
-          nickname="FrostyBear"
-          totalScore={10458}
         />
       </MemoryRouter>,
     )
@@ -35,8 +22,7 @@ describe('PlayerQuestionPreviewView', () => {
       screen.getByText('Who painted The Starry Night?'),
     ).toBeInTheDocument()
     expect(screen.getByText('Standard Points')).toBeInTheDocument()
-    expect(screen.getByText('2 / 20')).toBeInTheDocument()
-    expect(screen.getByText('FrostyBear')).toBeInTheDocument()
-    expect(screen.getByTestId('progressbar')).toBeInTheDocument()
+    expect(screen.queryByText('2 / 20')).not.toBeInTheDocument()
+    expect(screen.queryByText('FrostyBear')).not.toBeInTheDocument()
   })
 })

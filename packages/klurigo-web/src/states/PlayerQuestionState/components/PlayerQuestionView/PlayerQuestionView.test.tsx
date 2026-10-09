@@ -4,10 +4,6 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../../components/ProgressBar/ProgressBar', () => ({
-  default: () => <div data-testid="progressbar" />,
-}))
-
 import PlayerQuestionView from './PlayerQuestionView'
 
 const countdown = {
@@ -17,7 +13,7 @@ const countdown = {
 }
 
 describe('PlayerQuestionView', () => {
-  it('renders media, submitted state, pagination, and answer interactions', async () => {
+  it('renders question presentation and answer interactions', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
 
@@ -36,10 +32,6 @@ describe('PlayerQuestionView', () => {
           }}
           submittedAnswer={{ type: QuestionType.MultiChoice, value: 0 }}
           countdown={countdown}
-          currentQuestion={2}
-          totalQuestions={20}
-          nickname="FrostyBear"
-          totalScore={10458}
           onChange={onChange}
         />
       </MemoryRouter>,
@@ -47,9 +39,9 @@ describe('PlayerQuestionView', () => {
 
     expect(screen.getByText('Which answer is correct?')).toBeInTheDocument()
     expect(screen.getByTestId('question-media')).toBeInTheDocument()
-    expect(screen.getByText('2 / 20')).toBeInTheDocument()
-    expect(screen.getByTestId('progressbar')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Correct' })).toBeDisabled()
+    expect(screen.queryByText('2 / 20')).not.toBeInTheDocument()
+    expect(screen.queryByText('FrostyBear')).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Correct' }))
     expect(onChange).not.toHaveBeenCalled()
@@ -79,19 +71,10 @@ describe('PlayerQuestionView', () => {
 
     render(
       <MemoryRouter>
-        <PlayerQuestionView
-          question={question}
-          countdown={countdown}
-          currentQuestion={1}
-          totalQuestions={6}
-          nickname="FrostyBear"
-          totalScore={0}
-        />
+        <PlayerQuestionView question={question} countdown={countdown} />
       </MemoryRouter>,
     )
 
     expect(screen.getByText('Question text')).toBeInTheDocument()
-    expect(screen.getByTestId('progressbar')).toBeInTheDocument()
-    expect(screen.getByText('1 / 6')).toBeInTheDocument()
   })
 })
