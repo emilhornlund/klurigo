@@ -79,7 +79,7 @@ const isTestEnv = process.env.NODE_ENV === 'test'
         },
         wait: 1000,
         maxAttempts: 3,
-        logLevel: 'log',
+        logLevel: 'warn',
         lockKeyPrefix: 'custom',
         ignoreUnlockFail: false,
       }),
