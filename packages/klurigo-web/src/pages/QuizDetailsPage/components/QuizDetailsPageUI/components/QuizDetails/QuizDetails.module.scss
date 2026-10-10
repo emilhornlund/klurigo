@@ -1,0 +1,75 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.details {
+  display: grid;
+  width: 100%;
+  border-radius: radius.$radius-surface-md;
+
+  @include helpers.mobile {
+    grid-template-columns: 1fr 1fr;
+    gap: spacing.$space-stack-mobile;
+    padding: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: spacing.$space-stack-tablet;
+    padding: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: spacing.$space-stack-desktop;
+    padding: spacing.$space-stack-desktop;
+    border-radius: radius.$radius-surface-lg;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    overflow: hidden;
+
+    @include helpers.mobile {
+      gap: spacing.$space-inline-mobile;
+    }
+
+    @include helpers.tablet {
+      gap: spacing.$space-inline-tablet;
+    }
+
+    @include helpers.desktop {
+      gap: spacing.$space-inline-desktop;
+    }
+
+    .icon {
+      color: colors.$color-text-inverse;
+      width: 100%;
+      opacity: 0.95;
+
+      @include helpers.mobile {
+        @include helpers.fontSize(20px);
+      }
+
+      @include helpers.tablet {
+        @include helpers.fontSize(24px);
+      }
+
+      @include helpers.desktop {
+        @include helpers.fontSize(28px);
+      }
+    }
+
+    p > a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      opacity: 1;
+    }
+  }
+}

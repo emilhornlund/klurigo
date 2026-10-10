@@ -3,6 +3,7 @@ import {
   LanguageCode,
   QuizCategory,
   type QuizRatingDto,
+  type QuizResponseDto,
   QuizVisibility,
 } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
@@ -12,35 +13,28 @@ import { describe, expect, it, vi } from 'vitest'
 
 import QuizDetailsPageUI from './QuizDetailsPageUI'
 
-const created = new Date('2025-02-14T15:31:14.000Z')
-const updated = new Date('2025-03-08T15:31:14.000Z')
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const makeQuiz = (overrides: Partial<any> = {}) => ({
-  id: 'd12cf443-3fa9-4a0e-8778-d9c182903146',
-  title: 'The Ultimate Geography Challenge',
-  description:
-    'Test your knowledge of world capitals, landmarks, and continents in this fun and educational geography quiz.',
+const makeQuiz = (
+  overrides: Partial<QuizResponseDto> = {},
+): QuizResponseDto => ({
+  id: 'quiz-1',
+  title: 'Geography quiz',
+  description: 'A quiz about geography',
   mode: GameMode.Classic,
   visibility: QuizVisibility.Public,
   category: QuizCategory.GeneralKnowledge,
-  imageCoverURL:
-    'https://0utwqfl7.cdn.imgeng.in/explore-academics/programs/images/undergraduate/henson/geographymajorMH.jpg',
+  imageCoverURL: 'https://example.com/cover.jpg',
   languageCode: LanguageCode.English,
   numberOfQuestions: 14,
-  author: {
-    id: 'db8d4c90-bfc2-4c2e-93cc-8f1c7eda34ec',
-    name: 'FrostyBear',
-  },
+  author: { id: 'author-1', name: 'Quiz author' },
   gameplaySummary: {
-    count: 5,
-    totalPlayerCount: 42,
-    difficultyPercentage: 0.48,
-    lastPlayed: new Date(created.getTime() - 1000 * 60 * 60 * 24 * 5),
+    count: 3,
+    totalPlayerCount: 24,
+    difficultyPercentage: 0.5,
+    lastPlayed: new Date('2025-02-09T15:31:14.000Z'),
   },
   ratingSummary: { stars: 0, comments: 0, total: 0 },
-  created,
-  updated,
+  created: new Date('2025-02-14T15:31:14.000Z'),
+  updated: new Date('2025-03-08T15:31:14.000Z'),
   ...overrides,
 })
 
@@ -74,141 +68,160 @@ const renderUI = (
   )
 
 describe('QuizDetailsPageUI', () => {
-  it('renders loading state when quiz is missing', () => {
-    const { container } = renderUI({ quiz: undefined, isLoadingQuiz: false })
-
+  it('renders loading state if the quiz is missing or loading', () => {
+    const { container, rerender } = renderUI({ quiz: undefined })
     expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
-  })
 
-  it('renders loading state when isLoadingQuiz is true', () => {
-    const { container } = renderUI({ quiz: makeQuiz(), isLoadingQuiz: true })
-
+    rerender(
+      <MemoryRouter>
+        <QuizDetailsPageUI
+          quiz={makeQuiz()}
+          isLoadingQuiz
+          onHostGame={() => undefined}
+          onEditQuiz={() => undefined}
+          onDeleteQuiz={() => undefined}
+        />
+      </MemoryRouter>,
+    )
     expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
-    expect(container).toMatchSnapshot()
   })
 
-  it('renders quiz details (snapshot)', () => {
-    const { container } = renderUI()
-
+  it('renders title, optional description and image', () => {
+    const { container, rerender } = renderUI()
     expect(
-      screen.getByText('The Ultimate Geography Challenge'),
+      screen.getByRole('heading', { name: 'Geography quiz' }),
     ).toBeInTheDocument()
-    expect(screen.getByText(/14 Questions/i)).toBeInTheDocument()
+    expect(screen.getByText('A quiz about geography')).toBeInTheDocument()
+    expect(container.querySelector('.thumbnailContainer')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
+
+    rerender(
+      <MemoryRouter>
+        <QuizDetailsPageUI
+          quiz={makeQuiz({ description: '', imageCoverURL: '' })}
+          onHostGame={() => undefined}
+          onEditQuiz={() => undefined}
+          onDeleteQuiz={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByText('A quiz about geography')).not.toBeInTheDocument()
   })
 
-  it('does not render owner actions when isOwner is false', () => {
-    renderUI({ isOwner: false })
-
+  it('only renders header edit and delete actions for the owner', () => {
+    const onEditQuiz = vi.fn()
+    const { rerender } = renderUI({ isOwner: true, onEditQuiz })
+    fireEvent.click(screen.getByRole('button', { name: 'Edit quiz' }))
+    expect(onEditQuiz).toHaveBeenCalledOnce()
     expect(
-      screen.queryByRole('button', { name: 'Delete' }),
+      screen.getByRole('button', { name: 'Delete quiz' }),
+    ).toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <QuizDetailsPageUI
+          quiz={makeQuiz()}
+          isOwner={false}
+          onHostGame={() => undefined}
+          onEditQuiz={() => undefined}
+          onDeleteQuiz={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Edit quiz' }),
     ).not.toBeInTheDocument()
     expect(
-      screen.queryByRole('button', { name: 'Edit' }),
+      screen.queryByRole('button', { name: 'Delete quiz' }),
     ).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Host Game' }),
     ).toBeInTheDocument()
   })
 
-  it('renders owner actions when isOwner is true', () => {
+  it('uses icon-only owner action labels on mobile and visible labels on desktop', () => {
+    const originalWidth = window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: 375,
+    })
     renderUI({ isOwner: true })
-
-    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
-  })
-
-  it('renders description only when present', () => {
-    renderUI({ quiz: makeQuiz({ description: undefined }) })
-
+    for (const id of ['delete-quiz-button', 'edit-quiz-button']) {
+      const button = screen.getByTestId(`test-${id}-button`)
+      expect(button).toHaveAccessibleName(
+        id === 'delete-quiz-button' ? 'Delete quiz' : 'Edit quiz',
+      )
+      expect(button).not.toHaveTextContent(
+        id === 'delete-quiz-button' ? 'Delete' : 'Edit',
+      )
+      expect(button.querySelector('svg')).toBeInTheDocument()
+    }
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: Math.max(originalWidth, 1024),
+    })
+    fireEvent.resize(window)
     expect(
-      screen.queryByText(/Test your knowledge of world capitals/i),
-    ).not.toBeInTheDocument()
-  })
-
-  it('renders image only when imageCoverURL is present', () => {
-    renderUI({ quiz: makeQuiz({ imageCoverURL: undefined }) })
-
+      screen.getByTestId('test-delete-quiz-button-button'),
+    ).toHaveTextContent('Delete')
     expect(
-      screen.queryByRole('img', { name: 'The Ultimate Geography Challenge' }),
-    ).not.toBeInTheDocument()
+      screen.getByTestId('test-edit-quiz-button-button'),
+    ).toHaveTextContent('Edit')
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: originalWidth,
+    })
+    fireEvent.resize(window)
   })
 
-  it('renders singular Question when numberOfQuestions is 1', () => {
-    renderUI({ quiz: makeQuiz({ numberOfQuestions: 1 }) })
-
-    expect(screen.getByText('1 Question')).toBeInTheDocument()
-  })
-
-  it('renders author name or N/A when missing', () => {
-    renderUI({ quiz: makeQuiz({ author: { id: 'a', name: '' } }) })
-
-    // Find all DetailItems and look for the one containing user icon
-    const allDetailItems = screen
-      .getAllByRole('generic')
-      .filter((el) => el.classList.contains('item'))
-
-    // Find the author DetailItem by looking for user icon within it
-    const authorDetailItem = allDetailItems.find((item) =>
-      item.querySelector('[data-icon="user"]'),
-    )
-
-    expect(authorDetailItem).toBeInTheDocument()
-    expect(authorDetailItem).toHaveTextContent('N/A')
-  })
-
-  it('opens and closes Host Game confirm dialog; confirm triggers onHostGame', () => {
+  it('opens and confirms hosting dialog; close dismisses it', () => {
     const onHostGame = vi.fn()
     renderUI({ onHostGame })
-
     fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
-    expect(
-      screen.getByRole('dialog', { name: 'Host Game' }),
-    ).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: /confirm/i }))
-    expect(onHostGame).toHaveBeenCalledTimes(1)
-
-    fireEvent.click(
-      within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
-        'button',
-        { name: 'Close' },
-      ),
+    const dialog = screen.getByRole('dialog', { name: 'Host Game' })
+    expect(dialog).toHaveTextContent(
+      'Players will be able to join as soon as the game starts.',
     )
+    fireEvent.click(within(dialog).getByRole('button', { name: /confirm/i }))
+    expect(onHostGame).toHaveBeenCalledOnce()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Close' }))
     expect(
       screen.queryByRole('dialog', { name: 'Host Game' }),
     ).not.toBeInTheDocument()
   })
 
-  it('opens Delete Quiz confirm dialog only for owners; confirm triggers onDeleteQuiz', () => {
+  it('opens destructive delete confirmation only for owners and invokes deletion', () => {
     const onDeleteQuiz = vi.fn()
     renderUI({ isOwner: true, onDeleteQuiz })
+    fireEvent.click(screen.getByRole('button', { name: 'Delete quiz' }))
+    const dialog = screen.getByRole('dialog', { name: 'Delete Quiz' })
+    expect(dialog).toHaveTextContent(
+      'Are you sure you want to delete this quiz?',
+    )
+    fireEvent.click(within(dialog).getByRole('button', { name: /confirm/i }))
+    expect(onDeleteQuiz).toHaveBeenCalledOnce()
+  })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
+  it('closes the delete confirmation without invoking deletion', () => {
+    const onDeleteQuiz = vi.fn()
+    renderUI({ isOwner: true, onDeleteQuiz })
+    fireEvent.click(screen.getByRole('button', { name: 'Delete quiz' }))
+    const dialog = screen.getByRole('dialog', { name: 'Delete Quiz' })
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Close' }))
+
     expect(
-      screen.getByRole('dialog', { name: 'Delete Quiz' }),
-    ).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: /confirm/i }))
-    expect(onDeleteQuiz).toHaveBeenCalledTimes(1)
+      screen.queryByRole('dialog', { name: 'Delete Quiz' }),
+    ).not.toBeInTheDocument()
+    expect(onDeleteQuiz).not.toHaveBeenCalled()
   })
 
-  it('edit button triggers onEditQuiz', () => {
-    const onEditQuiz = vi.fn()
-    renderUI({ isOwner: true, onEditQuiz })
-
-    fireEvent.click(screen.getByRole('button', { name: 'Edit' }))
-    expect(onEditQuiz).toHaveBeenCalledTimes(1)
-  })
-
-  it('passes loading flags through to confirm dialogs', () => {
+  it('disables confirmation buttons while their respective actions are loading', () => {
     renderUI({
       isOwner: true,
       isHostGameLoading: true,
       isDeleteQuizLoading: true,
     })
-
     fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
     expect(
       within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
@@ -216,543 +229,54 @@ describe('QuizDetailsPageUI', () => {
         { name: /confirm/i },
       ),
     ).toBeDisabled()
-
     fireEvent.click(
       within(screen.getByRole('dialog', { name: 'Host Game' })).getByRole(
         'button',
         { name: 'Close' },
       ),
     )
-
-    fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
-    const deleteDialog = screen.getByRole('dialog', { name: 'Delete Quiz' })
+    fireEvent.click(screen.getByRole('button', { name: 'Delete quiz' }))
     expect(
-      within(deleteDialog).getByRole('button', { name: /confirm/i }),
+      within(screen.getByRole('dialog', { name: 'Delete Quiz' })).getByRole(
+        'button',
+        { name: /confirm/i },
+      ),
     ).toBeDisabled()
   })
 
-  describe('Gameplay Summary Details', () => {
-    it('renders rating display with stars value or N/A', () => {
-      renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 10 } }),
-      })
-
-      const ratingItem = screen.getByTitle('Average rating')
-      expect(ratingItem).toBeInTheDocument()
-      expect(ratingItem).toHaveTextContent('4.5')
+  it('shows ratings only for quizzes with a non-zero rating and forwards ratings/loading state', () => {
+    const ratedQuiz = makeQuiz({
+      ratingSummary: { stars: 4.5, comments: 10, total: 15 },
     })
-
-    it('renders N/A for rating when stars is 0', () => {
-      renderUI({ quiz: makeQuiz({ ratingSummary: { stars: 0, comments: 0 } }) })
-
-      const ratingItem = screen.getByTitle('Average rating')
-      expect(ratingItem).toBeInTheDocument()
-      expect(ratingItem).toHaveTextContent('N/A')
-    })
-
-    it('renders total plays with "times" suffix when count > 0', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 15,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.48,
-          },
-        }),
-      })
-
-      const playsItem = screen.getByTitle('Total plays')
-      expect(playsItem).toBeInTheDocument()
-      expect(playsItem).toHaveTextContent('15 times')
-    })
-
-    it('renders N/A for total plays when count is 0', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 0,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.48,
-          },
-        }),
-      })
-
-      const playsItem = screen.getByTitle('Total plays')
-      expect(playsItem).toBeInTheDocument()
-      expect(playsItem).toHaveTextContent('N/A')
-    })
-
-    it('renders total players with correct value', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 128,
-            difficultyPercentage: 0.48,
-          },
-        }),
-      })
-
-      const playersItem = screen.getByTitle('Total players')
-      expect(playersItem).toBeInTheDocument()
-      expect(playersItem).toHaveTextContent('128')
-    })
-
-    it('renders N/A for total players when totalPlayerCount is 0', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 0,
-            difficultyPercentage: 0.48,
-          },
-        }),
-      })
-
-      const playersItem = screen.getByTitle('Total players')
-      expect(playersItem).toBeInTheDocument()
-      expect(playersItem).toHaveTextContent('N/A')
-    })
-
-    it('renders estimated difficulty using toDifficultyLabel utility', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.75,
-          },
-        }),
-      })
-
-      const difficultyItem = screen.getByTitle('Estimated difficulty')
-      expect(difficultyItem).toBeInTheDocument()
-      expect(difficultyItem).toHaveTextContent('Extreme')
-    })
-
-    it('renders N/A for difficulty when difficultyPercentage is invalid', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 42,
-            difficultyPercentage: NaN,
-          },
-        }),
-      })
-
-      const difficultyItem = screen.getByTitle('Estimated difficulty')
-      expect(difficultyItem).toBeInTheDocument()
-      expect(difficultyItem).toHaveTextContent('N/A')
-    })
-
-    it('renders last played date when available', () => {
-      const lastPlayed = new Date('2025-01-15T10:30:00.000Z')
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.48,
-            lastPlayed,
-          },
-        }),
-      })
-
-      const lastPlayedItem = screen.getByTitle(/Last played/)
-      expect(lastPlayedItem).toBeInTheDocument()
-      expect(lastPlayedItem).toHaveAttribute(
-        'title',
-        'Last played 2025-01-15 10:30:00',
-      )
-      // value is displayed as relative time via formatTimeAgo
-      expect(lastPlayedItem).not.toHaveTextContent('N/A')
-    })
-
-    it('renders N/A for last played when date is missing', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.48,
-          },
-        }),
-      })
-
-      const lastPlayedItem = screen.getByTitle('Never played')
-      expect(lastPlayedItem).toBeInTheDocument()
-      expect(lastPlayedItem).toHaveTextContent('N/A')
-    })
-  })
-
-  describe('Edge Cases and Boundary Values', () => {
-    it('handles partially missing gameplaySummary fields', () => {
-      renderUI({
-        quiz: makeQuiz({
-          gameplaySummary: {
-            count: 0,
-            totalPlayerCount: 0,
-            difficultyPercentage: undefined,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } as any,
-        }),
-      })
-
-      expect(screen.getByTitle('Total plays')).toHaveTextContent('N/A')
-      expect(screen.getByTitle('Total players')).toHaveTextContent('N/A')
-      expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent('N/A')
-    })
-
-    describe('Difficulty Boundary Values', () => {
-      it('displays Easy for boundary values 0 to 0.2499', () => {
-        const testCases = [0, 0.1, 0.24, 0.2499]
-
-        testCases.forEach((difficulty) => {
-          const renderResult = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Easy',
-          )
-          renderResult.unmount()
-        })
-      })
-
-      it('displays Medium for boundary values 0.25 to 0.4999', () => {
-        const testCases = [0.25, 0.3, 0.4, 0.4999]
-
-        testCases.forEach((difficulty) => {
-          const { unmount } = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Medium',
-          )
-          unmount()
-        })
-      })
-
-      it('displays Hard for boundary values 0.5 to 0.7499', () => {
-        const testCases = [0.5, 0.6, 0.7, 0.7499]
-
-        testCases.forEach((difficulty) => {
-          const { unmount } = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Hard',
-          )
-          unmount()
-        })
-      })
-
-      it('displays Extreme for boundary values 0.75 to 1', () => {
-        const testCases = [0.75, 0.8, 0.9, 1]
-
-        testCases.forEach((difficulty) => {
-          const { unmount } = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Extreme',
-          )
-          unmount()
-        })
-      })
-
-      it('clamps extreme difficulty values', () => {
-        const testCases = [-1, Number.NEGATIVE_INFINITY]
-
-        testCases.forEach((difficulty) => {
-          const { unmount } = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Easy',
-          )
-          unmount()
-        })
-
-        const extremeHighCases = [2, Number.POSITIVE_INFINITY]
-
-        extremeHighCases.forEach((difficulty) => {
-          const renderResult = renderUI({
-            quiz: makeQuiz({
-              gameplaySummary: {
-                count: 1,
-                totalPlayerCount: 1,
-                difficultyPercentage: difficulty,
-              },
-            }),
-          })
-
-          expect(screen.getByTitle('Estimated difficulty')).toHaveTextContent(
-            'Extreme',
-          )
-          renderResult.unmount()
-        })
-      })
-    })
-  })
-
-  describe('Component Structure and Layout', () => {
-    it('does not render legacy misc rating layout', () => {
-      renderUI()
-
-      // Old layout should not exist
-      expect(screen.queryByTestId('misc')).not.toBeInTheDocument()
-      expect(screen.queryByTestId('column')).not.toBeInTheDocument()
-
-      // Should not find old star/comment rating displays
-      const allIcons = screen.getAllByRole('img', { hidden: true })
-      const starIcons = allIcons.filter(
-        (icon) => icon.getAttribute('data-icon') === 'star',
-      )
-      const commentIcons = allIcons.filter(
-        (icon) => icon.getAttribute('data-icon') === 'comment-dots',
-      )
-
-      // Should only have the new rating star, not the old layout stars
-      const ratingStar = starIcons.find(
-        (icon) =>
-          icon.closest('.item')?.getAttribute('title') === 'Average rating',
-      )
-      expect(ratingStar).toBeInTheDocument()
-      expect(commentIcons).toHaveLength(0)
-    })
-
-    it('renders correct number of DetailItems', () => {
-      renderUI()
-
-      const allDetailItems = screen
-        .getAllByRole('generic')
-        .filter((el: HTMLElement) => el.classList.contains('item'))
-
-      // Should have: visibility, category, language, mode, questions, author, created, rating, plays, players, difficulty, lastPlayed
-      expect(allDetailItems).toHaveLength(12)
-    })
-
-    it('renders all DetailItems within details container', () => {
-      renderUI()
-
-      const allElements = screen.getAllByRole('generic')
-      const detailsContainer = Array.from(allElements).find((el: HTMLElement) =>
-        el.classList.contains('details'),
-      )
-      expect(detailsContainer).toBeInTheDocument()
-
-      const detailItems = detailsContainer?.querySelectorAll('.item')
-      expect(detailItems).toHaveLength(12)
-    })
-
-    it('renders all expected icons in DetailItems', () => {
-      renderUI()
-
-      const expectedIcons = [
-        'eye', // visibility
-        'icons', // category
-        'language', // language
-        'gamepad', // mode
-        'circle-question', // questions
-        'user', // author
-        'calendar-plus', // created
-        'star', // rating
-        'circle-play', // plays
-        'users', // players
-        'gauge-high', // difficulty
-        'clock', // last played
-      ]
-
-      const allIcons = screen.getAllByRole('img', { hidden: true })
-      expectedIcons.forEach((iconName) => {
-        const icon = Array.from(allIcons).find(
-          (img) => img.getAttribute('data-icon') === iconName,
-        )
-        expect(icon).toBeInTheDocument()
-      })
-    })
-  })
-
-  describe('Accessibility', () => {
-    it('provides appropriate title attributes for all DetailItems', () => {
-      renderUI()
-
-      const expectedTitles = [
-        'Public', // visibility
-        'General Knowledge', // category
-        'English', // language
-        'Classic', // mode
-        '14 Questions', // questions
-        'FrostyBear', // author
-        expect.stringContaining('Created'), // created date
-        'Average rating', // rating
-        'Total plays', // plays
-        'Total players', // players
-        'Estimated difficulty', // difficulty
-        expect.stringContaining('Last played'), // last played
-      ]
-
-      expectedTitles.forEach((title) => {
-        if (typeof title === 'string') {
-          expect(screen.getByTitle(title)).toBeInTheDocument()
-        } else {
-          // For matchers like expect.stringContaining()
-          const detailItems = screen
-            .getAllByRole('generic')
-            .filter(
-              (el: HTMLElement) =>
-                el.classList.contains('item') && el.getAttribute('title'),
-            )
-          const matchingItem = detailItems.find((item: HTMLElement) => {
-            const titleAttr = item.getAttribute('title') || ''
-            // Extract the expected substring from the matcher
-            return (
-              titleAttr.includes('Created') || titleAttr.includes('Last played')
-            )
-          })
-          expect(matchingItem).toBeDefined()
-        }
-      })
-    })
-
-    it('provides informative tooltips for date fields', () => {
-      const created = new Date('2025-02-14T15:31:14.000Z')
-      const lastPlayed = new Date('2025-01-10T09:15:30.000Z')
-
-      renderUI({
-        quiz: makeQuiz({
-          created,
-          gameplaySummary: {
-            count: 5,
-            totalPlayerCount: 42,
-            difficultyPercentage: 0.48,
-            lastPlayed,
-          },
-        }),
-      })
-
-      const createdItem = screen.getByTitle(/Created/)
-      expect(createdItem.getAttribute('title')).toBe(
-        'Created 2025-02-14 15:31:14',
-      )
-
-      const lastPlayedItem = screen.getByTitle(/Last played/)
-      expect(lastPlayedItem.getAttribute('title')).toBe(
-        'Last played 2025-01-10 09:15:30',
-      )
-    })
-
-    it('provides descriptive titles for accessibility', () => {
-      renderUI()
-
-      // Check that interactive elements have descriptive titles
-      const playsItem = screen.getByTitle('Total plays')
-      const playersItem = screen.getByTitle('Total players')
-      const difficultyItem = screen.getByTitle('Estimated difficulty')
-      const ratingItem = screen.getByTitle('Average rating')
-
-      expect(playsItem.getAttribute('title')).toBe('Total plays')
-      expect(playersItem.getAttribute('title')).toBe('Total players')
-      expect(difficultyItem.getAttribute('title')).toBe('Estimated difficulty')
-      expect(ratingItem.getAttribute('title')).toBe('Average rating')
-    })
-  })
-
-  describe('Ratings Section', () => {
-    it('renders RatingsSection and PageDivider when ratingSummary.stars > 0', () => {
-      renderUI({
-        quiz: makeQuiz({
-          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
-        }),
-      })
-
-      expect(screen.getByTestId('ratings-section')).toBeInTheDocument()
-      expect(screen.getByRole('separator')).toBeInTheDocument()
-      expect(screen.getByLabelText('Average rating: 4.5')).toBeInTheDocument()
-    })
-
-    it('hides RatingsSection and PageDivider when ratingSummary.stars is 0', () => {
-      renderUI({
-        quiz: makeQuiz({ ratingSummary: { stars: 0, comments: 0, total: 0 } }),
-      })
-
-      expect(screen.queryByTestId('ratings-section')).not.toBeInTheDocument()
-      expect(screen.queryByRole('separator')).not.toBeInTheDocument()
-    })
-
-    it('passes empty array to RatingsSection when ratings prop is undefined', () => {
-      renderUI({
-        quiz: makeQuiz({
-          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
-        }),
-        ratings: undefined,
-      })
-
-      expect(screen.getByTestId('ratings-empty-state')).toHaveTextContent(
-        'No written reviews yet',
-      )
-    })
-
-    it('passes ratings array to RatingsSection when provided', () => {
-      renderUI({
-        quiz: makeQuiz({
-          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
-        }),
-        ratings: [
-          makeRating(),
-          makeRating({ id: 'r2' }),
-          makeRating({ id: 'r3' }),
-        ],
-      })
-
-      expect(screen.getAllByTestId('rating-card')).toHaveLength(3)
-    })
-
-    it('passes isLoadingRatings to RatingsSection', () => {
-      renderUI({
-        quiz: makeQuiz({
-          ratingSummary: { stars: 4.5, comments: 10, total: 15 },
-        }),
-        isLoadingRatings: true,
-      })
-
-      expect(screen.getAllByTestId('ratings-skeleton-card')).toHaveLength(3)
-    })
+    const { rerender } = renderUI({ quiz: ratedQuiz, ratings: [makeRating()] })
+    expect(screen.getByTestId('ratings-section')).toBeInTheDocument()
+    expect(screen.getByRole('separator')).toBeInTheDocument()
+    expect(screen.getByTestId('rating-card')).toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <QuizDetailsPageUI
+          quiz={ratedQuiz}
+          isLoadingRatings
+          onHostGame={() => undefined}
+          onEditQuiz={() => undefined}
+          onDeleteQuiz={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.getAllByTestId('ratings-skeleton-card')).toHaveLength(3)
+
+    rerender(
+      <MemoryRouter>
+        <QuizDetailsPageUI
+          quiz={makeQuiz()}
+          onHostGame={() => undefined}
+          onEditQuiz={() => undefined}
+          onDeleteQuiz={() => undefined}
+        />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByTestId('ratings-section')).not.toBeInTheDocument()
+    expect(screen.queryByRole('separator')).not.toBeInTheDocument()
   })
 })

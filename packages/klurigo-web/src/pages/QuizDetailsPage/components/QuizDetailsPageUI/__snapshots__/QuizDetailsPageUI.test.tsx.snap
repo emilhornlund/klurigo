@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`QuizDetailsPageUI > renders loading state when isLoadingQuiz is true 1`] = `
+exports[`QuizDetailsPageUI > renders loading state if the quiz is missing or loading 1`] = `
 <div>
   <div
     class="main"
@@ -57,7 +57,7 @@ exports[`QuizDetailsPageUI > renders loading state when isLoadingQuiz is true 1`
 </div>
 `;
 
-exports[`QuizDetailsPageUI > renders loading state when quiz is missing 1`] = `
+exports[`QuizDetailsPageUI > renders title, optional description and image 1`] = `
 <div>
   <div
     class="main"
@@ -91,7 +91,7 @@ exports[`QuizDetailsPageUI > renders loading state when quiz is missing 1`] = `
       </div>
     </div>
     <div
-      class="content fill startAlign"
+      class="content contained startAlign"
     >
       <div
         class="contentWrapper"
@@ -100,105 +100,44 @@ exports[`QuizDetailsPageUI > renders loading state when quiz is missing 1`] = `
           class="contentInner"
         >
           <div
-            class="loadingSpinnerContainer"
-            data-testid="loading-spinner"
-          >
-            <div />
-            <div />
-            <div />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content fill startAlign noPadding"
-    >
-      <div
-        class="contentWrapper"
-      >
-        <div
-          class="contentInner"
-        >
-          <div
-            class="layout"
+            class="stack vertical spacing-page align-stretch justify-start layout"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse"
             >
-              The Ultimate Geography Challenge
+              Geography quiz
             </h1>
             <p
               class="typography body alignCenter widthMedium colorInverse"
             >
-              Test your knowledge of world capitals, landmarks, and continents in this fun and educational geography quiz.
+              A quiz about geography
             </p>
             <div
-              class="stack horizontal spacing-compact align-center justify-center width-full"
+              class="buttonContainer variantPrimary surfaceBrand intentAccent"
             >
-              <div
-                class="buttonContainer variantPrimary surfaceBrand intentAccent sizeSmall"
+              <button
+                data-testid="test-host-game-button-button"
+                id="host-game-button"
+                name="host-game-button"
+                type="button"
               >
-                <button
-                  data-testid="test-host-game-button-button"
-                  id="host-game-button"
-                  name="host-game-button"
-                  type="button"
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-play icon"
+                  data-icon="play"
+                  data-prefix="fas"
+                  role="img"
+                  viewBox="0 0 448 512"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-play icon"
-                    data-icon="play"
-                    data-prefix="fas"
-                    role="img"
-                    viewBox="0 0 448 512"
-                  >
-                    <path
-                      d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <span>
-                    Host Game
-                  </span>
-                </button>
-              </div>
+                  <path
+                    d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>
+                  Host Game
+                </span>
+              </button>
             </div>
             <div
               class="thumbnailContainer"
@@ -341,7 +280,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
               </div>
               <div
                 class="item"
-                title="FrostyBear"
+                title="Quiz author"
               >
                 <svg
                   aria-hidden="true"
@@ -361,9 +300,9 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 >
                   <a
                     data-discover="true"
-                    href="/users/db8d4c90-bfc2-4c2e-93cc-8f1c7eda34ec/profile"
+                    href="/users/author-1/profile"
                   >
-                    FrostyBear
+                    Quiz author
                   </a>
                 </p>
               </div>
@@ -433,7 +372,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 <p
                   class="typography body2 alignCenter widthFull colorInverse bold"
                 >
-                  5 times
+                  3 times
                 </p>
               </div>
               <div
@@ -456,7 +395,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 <p
                   class="typography body2 alignCenter widthFull colorInverse bold"
                 >
-                  42
+                  24
                 </p>
               </div>
               <div
@@ -479,7 +418,7 @@ exports[`QuizDetailsPageUI > renders quiz details (snapshot) 1`] = `
                 <p
                   class="typography body2 alignCenter widthFull colorInverse bold"
                 >
-                  Medium
+                  Hard
                 </p>
               </div>
               <div

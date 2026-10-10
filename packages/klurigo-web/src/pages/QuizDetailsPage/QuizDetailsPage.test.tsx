@@ -17,6 +17,8 @@ type UseQueryResult<T> = {
 }
 
 type QuizDetailsPageUIProps = {
+  onHostGame: () => void
+  onEditQuiz: () => void
   onDeleteQuiz: () => void
 }
 
@@ -29,6 +31,12 @@ const invalidateQueriesMock = vi.fn<
 >(() => Promise.resolve())
 const deleteQuizMock = vi.fn<(quizId: string) => Promise<void>>(() =>
   Promise.resolve(),
+)
+const createGameMock = vi.fn<(quizId: string) => Promise<{ id: string }>>(() =>
+  Promise.resolve({ id: 'game-123' }),
+)
+const authenticateGameMock = vi.fn<(args: { gameId: string }) => Promise<void>>(
+  () => Promise.resolve(),
 )
 
 let mockQuizQueryState: UseQueryResult<QuizResponse>
@@ -72,8 +80,8 @@ vi.mock('../../api', () => ({
     getQuiz: vi.fn(),
     getQuizRatings: vi.fn(),
     deleteQuiz: deleteQuizMock,
-    createGame: vi.fn(),
-    authenticateGame: vi.fn(),
+    createGame: createGameMock,
+    authenticateGame: authenticateGameMock,
   }),
 }))
 
@@ -128,5 +136,28 @@ describe('QuizDetailsPage', () => {
       queryKey: ['myProfileQuizzes'],
     })
     expect(navigateMock).toHaveBeenCalledWith('/profile/quizzes')
+  })
+
+  it('navigates to the quiz edit route when editing', () => {
+    render(<QuizDetailsPage />)
+
+    act(() => {
+      latestUIProps?.onEditQuiz()
+    })
+
+    expect(navigateMock).toHaveBeenCalledWith('/quiz/details/quiz-123/edit')
+  })
+
+  it('creates and authenticates a game before navigating to the game page', async () => {
+    render(<QuizDetailsPage />)
+
+    act(() => {
+      latestUIProps?.onHostGame()
+    })
+    await flushPromises()
+
+    expect(createGameMock).toHaveBeenCalledWith('quiz-123')
+    expect(authenticateGameMock).toHaveBeenCalledWith({ gameId: 'game-123' })
+    expect(navigateMock).toHaveBeenCalledWith('/game')
   })
 })
