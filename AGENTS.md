@@ -36,3 +36,29 @@ authoritative sources for current shipped behavior.
 - Validate changed code with the relevant repository checks. Keep documentation
   and links accurate when behavior or guidance changes.
 - Never commit secrets, API keys, or sensitive configuration.
+
+## Frontend Browser Verification
+
+Chrome DevTools MCP is available to development agents for browser-based inspection of the Klurigo frontend.
+
+For changes affecting the appearance, layout, responsiveness, or interaction of components in `packages/klurigo-web`,
+browser verification is required when the application can be started in the execution environment.
+
+- Follow [browser verification](docs/development/browser-verification.md) to start the application and inspect it with
+  Chrome DevTools MCP.
+- Inspect the actual rendered UI rather than relying exclusively on source code, component structure, or automated
+  tests.
+- Check affected pages at desktop and mobile viewport sizes, including constrained layouts when relevant.
+- Inspect screenshots and page structure for visual regressions, spacing, alignment, clipping, overflow, and
+  inaccessible controls.
+- Exercise the affected interactions and inspect relevant browser console errors and failed network requests.
+- Correct issues discovered during inspection and verify the affected UI again.
+- Use Storybook for isolated component inspection when appropriate, and the running application for integration and
+  user-flow verification.
+- Treat visual inspection as an additional quality gate. It does not replace unit tests, Playwright tests, type
+  checking, linting, or other required validation.
+- Never claim browser verification succeeded unless the affected UI was actually inspected.
+- Report any environmental limitations that prevent browser verification instead of silently skipping it.
+
+Keep browser activity scoped to the task. Do not modify unrelated application state or access production systems during
+verification.
