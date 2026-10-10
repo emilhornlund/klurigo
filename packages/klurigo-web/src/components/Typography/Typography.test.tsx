@@ -541,6 +541,24 @@ describe('Typography', () => {
     })
   })
 
+  it('allows fitted text to use additional lines when requested', () => {
+    vi.mocked(hooks.useTextFit).mockReturnValueOnce({
+      fontSize: 24,
+      lineHeight: 29,
+      maxLines: 5,
+    })
+
+    render(
+      <Typography variant="title" maxLines={4} allowMoreLines minFontSize={24}>
+        A long question that needs an extra line
+      </Typography>,
+    )
+
+    expect(screen.getByRole('heading')).toHaveStyle({
+      '--max-lines': '5',
+    })
+  })
+
   it('does not apply inline text fit styles when fitted values are invalid', () => {
     vi.mocked(hooks.useTextFit).mockReturnValueOnce({
       fontSize: Number.NaN,

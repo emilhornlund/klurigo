@@ -22,6 +22,38 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const layoutStory = (
+  question: string,
+  mediaURL?: string,
+  answers = ['Carthage', 'Alexandria', 'Athens', 'Rome'],
+): Story => ({
+  args: {
+    event: {
+      type: GameEventType.GameQuestionHost,
+      game: { pin: '123456' },
+      question: {
+        type: QuestionType.MultiChoice,
+        question,
+        ...(mediaURL
+          ? { media: { type: MediaType.Image, url: mediaURL } }
+          : {}),
+        answers: answers.map((value) => ({ value })),
+        duration: 30,
+      },
+      countdown: {
+        initiatedTime: '2026-01-01T00:00:00.000Z',
+        expiryTime: '2026-01-01T00:00:30.000Z',
+        serverTime: '2026-01-01T00:00:00.000Z',
+      },
+      submissions: { current: 3, total: 10 },
+      pagination: { current: 1, total: 20 },
+    },
+  },
+})
+
+const landscapeImageURL =
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solar_sys8.jpg/960px-Solar_sys8.jpg'
+
 export const QuestionMultiTwoAnswers = {
   args: {
     event: {
@@ -337,3 +369,34 @@ export const QuestionWithoutPlayers = {
     },
   },
 } satisfies Story
+
+export const ResponsiveShortNoImage = layoutStory('Where is Carthage?')
+
+export const ResponsiveMediumNoImage = layoutStory(
+  'The Church of St. George, carved from solid rock in the 12th century, is found in which Ethiopian town?',
+)
+
+export const ResponsiveLongNoImage = layoutStory(
+  'Which ancient North African city on the coast of modern Tunisia became Rome’s rival during the Punic Wars?',
+)
+
+export const ResponsiveMediumLandscapeImage = layoutStory(
+  'The Church of St. George, carved from solid rock in the 12th century, is found in which Ethiopian town?',
+  landscapeImageURL,
+)
+
+export const ResponsiveLongLandscapeImage = layoutStory(
+  'Which ancient North African city on the coast of modern Tunisia became Rome’s rival during the Punic Wars?',
+  landscapeImageURL,
+)
+
+export const ResponsiveLongAnswerOptions = layoutStory(
+  'Which description best explains why Carthage became Rome’s rival?',
+  undefined,
+  [
+    'It controlled valuable Mediterranean trade routes and built a powerful navy across the western sea.',
+    'It united the Greek city-states under a single ruler and conquered the Italian peninsula.',
+    'It discovered a land route through the Alps and founded permanent settlements in northern Europe.',
+    'It controlled the Nile delta and supplied grain to every major port in the eastern Mediterranean.',
+  ],
+)

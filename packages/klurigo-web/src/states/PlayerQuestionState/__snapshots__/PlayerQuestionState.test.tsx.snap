@@ -27,7 +27,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -39,7 +39,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               Who painted The Starry Night?
             </h1>
@@ -203,7 +203,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -215,7 +215,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               Who painted The Starry Night?
             </h1>
@@ -397,7 +397,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -409,7 +409,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               Who painted The Starry Night?
             </h1>
@@ -555,7 +555,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -567,7 +567,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               What percentage of the earth's surface is covered by water?
             </h1>
@@ -728,7 +728,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -740,7 +740,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               Rabbits can't vomit?
             </h1>
@@ -864,7 +864,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
       />
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -876,7 +876,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
             class="fullHeight"
           >
             <h1
-              class="typography title alignCenter widthFull colorInverse"
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
               Who painted the Mono Lisa?
             </h1>

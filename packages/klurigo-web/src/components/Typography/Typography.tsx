@@ -153,13 +153,25 @@ type SharedProps = {
   children: ReactNode
 
   /**
-   * Maximum number of lines allowed before text is shrunk to fit.
+   * Preferred maximum number of lines before the font is shrunk to fit.
    *
-   * When provided, enables dynamic font-size adjustment using the useTextFit hook.
-   * The Typography component will automatically shrink the font size from the variant's
-   * maximum (defined in SCSS) down to a minimum of 12px to fit within the specified lines.
+   * When provided, enables dynamic font-size adjustment using the useTextFit
+   * hook. The font shrinks from the variant's maximum to `minFontSize` to fit
+   * the preferred line count.
    */
   maxLines?: number
+
+  /**
+   * Allows text to use additional lines when it cannot fit at the minimum font
+   * size within `maxLines`, provided the measured element has enough height.
+   */
+  allowMoreLines?: boolean
+
+  /**
+   * Minimum font size in pixels when `maxLines` fitting is enabled.
+   * Defaults to 12px for general-purpose text.
+   */
+  minFontSize?: number
 
   /**
    * Enables "slot" rendering by delegating the rendered element to the child.
@@ -312,6 +324,8 @@ const Typography: FC<TypographyProps> = (props) => {
     asChild,
     className,
     maxLines,
+    allowMoreLines = false,
+    minFontSize,
     ...rest
   } = props
 
@@ -336,6 +350,8 @@ const Typography: FC<TypographyProps> = (props) => {
     variant,
     textContent,
     maxLines ?? 0,
+    minFontSize,
+    allowMoreLines,
   )
 
   // Create inline style for font-size and line-height override
@@ -350,7 +366,7 @@ const Typography: FC<TypographyProps> = (props) => {
       ? ({
           '--fitted-font-size': `${fittedResult.fontSize}px`,
           '--fitted-line-height': `${fittedResult.lineHeight}px`,
-          '--max-lines': maxLines,
+          '--max-lines': fittedResult.maxLines ?? maxLines,
         } as CSSProperties)
       : undefined
 

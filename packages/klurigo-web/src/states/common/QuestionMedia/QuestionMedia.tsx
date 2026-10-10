@@ -59,6 +59,7 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
         <ResponsiveImage
           imageURL={imageURL}
           alt={alt}
+          fit="fill"
           {...(imageRevealEffect
             ? { revealEffect: { type: imageRevealEffect, countdown } }
             : {})}
