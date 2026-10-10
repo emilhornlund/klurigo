@@ -25,6 +25,8 @@ contributor or application documentation.
 
 - [Development commands](./development/commands.md) - canonical root and
   workspace-scoped command reference and command-specific safety notes.
+- [Browser verification](./development/browser-verification.md) - Chrome DevTools
+  MCP workflow for inspecting and validating frontend changes.
 
 ## Testing
 
