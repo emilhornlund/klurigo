@@ -11,7 +11,7 @@ export interface PlayerGameFooterProps {
   currentQuestion: number
   totalQuestions: number
   nickname: string
-  totalScore: number
+  totalScore?: number
 }
 
 const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
@@ -35,16 +35,18 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
       </Typography>
     }
     trailing={
-      <span>
-        <Typography
-          variant="body2"
-          align="right"
-          className={styles.badge}
-          noOpacity
-          bold>
-          {totalScore}
-        </Typography>
-      </span>
+      totalScore === undefined ? null : (
+        <span>
+          <Typography
+            variant="body2"
+            align="right"
+            className={styles.badge}
+            noOpacity
+            bold>
+            {totalScore}
+          </Typography>
+        </span>
+      )
     }
   />
 )

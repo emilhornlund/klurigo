@@ -1164,13 +1164,19 @@ describe('QuizCreatorPageUI', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
 
     expect(screen.queryByTestId('editor-workspace')).not.toBeInTheDocument()
-    expect(screen.getByText('Preview')).toBeInTheDocument()
+    expect(screen.queryByText('Preview')).not.toBeInTheDocument()
     expect(screen.getByText('Unsaved first edit')).toBeInTheDocument()
-    expect(screen.getAllByText('1 / 2').length).toBeGreaterThan(0)
+    expect(screen.getByRole('button', { name: 'Exit' })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Back' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /Continue|Next|Finish preview/ }),
+    ).not.toBeInTheDocument()
     expect(onSaveQuiz).not.toHaveBeenCalled()
     expect(onExit).not.toHaveBeenCalled()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Exit preview' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Exit' }))
 
     expect(screen.getByTestId('editor-workspace')).toBeInTheDocument()
     expect(
