@@ -109,3 +109,13 @@ export const NoWrittenReviews = {
     ratings: [],
   },
 } satisfies Story
+
+export const ImageCoverFailToLoad = {
+  args: {
+    ...Default.args,
+    quiz: {
+      ...Default.args.quiz,
+      imageCoverURL: 'http://no-image.png',
+    },
+  },
+} satisfies Story
