@@ -122,7 +122,7 @@ describe('useTextFit', () => {
     const ref = { current: el }
 
     const { result } = renderHook(() =>
-      useTextFit(ref, 'title', 'Some long text', 2),
+      useTextFit(ref, 'title', 'Some long text', 2, 24),
     )
 
     await waitFor(() => {
@@ -130,6 +130,7 @@ describe('useTextFit', () => {
     })
 
     expect(result.current?.fontSize).toBeGreaterThan(0)
+    expect(result.current?.fontSize).toBeGreaterThanOrEqual(24)
     expect(result.current?.lineHeight).toBeGreaterThan(0)
 
     document.body.removeChild(el)

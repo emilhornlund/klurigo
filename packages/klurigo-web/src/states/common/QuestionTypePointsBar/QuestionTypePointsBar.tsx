@@ -21,21 +21,37 @@ const QuestionTypePointsBar: FC<QuestionTypePointsBarProps> = ({
   questionPoints,
 }) =>
   mode === GameMode.Classic ? (
-    <Surface className={styles.chip}>
-      <Typography variant="body2" color="inverse" noOpacity bold>
-        <FontAwesomeIcon
-          icon={faQuestionCircle}
-          color={colors.colorTextInverse}
-        />
-        {QuestionTypeLabels[questionType]}
-      </Typography>
-      <Typography variant="body2" color="inverse" noOpacity noWrap bold>
-        <FontAwesomeIcon icon={faStar} color={colors.colorRatingDefault} />
-        {questionPoints === 0 && 'Zero Points'}
-        {questionPoints === 1000 && 'Standard Points'}
-        {questionPoints === 2000 && 'Double Points'}
-      </Typography>
-    </Surface>
+    <div className={styles.metadata}>
+      <Surface className={styles.chip}>
+        <Typography
+          className={styles.metadataText}
+          variant="body2"
+          color="inverse"
+          noOpacity
+          noWrap
+          bold>
+          <FontAwesomeIcon
+            icon={faQuestionCircle}
+            color={colors.colorTextInverse}
+          />
+          {QuestionTypeLabels[questionType]}
+        </Typography>
+      </Surface>
+      <Surface className={styles.chip}>
+        <Typography
+          className={styles.metadataText}
+          variant="body2"
+          color="inverse"
+          noOpacity
+          noWrap
+          bold>
+          <FontAwesomeIcon icon={faStar} color={colors.colorRatingDefault} />
+          {questionPoints === 0 && 'Zero Points'}
+          {questionPoints === 1000 && 'Standard Points'}
+          {questionPoints === 2000 && 'Double Points'}
+        </Typography>
+      </Surface>
+    </div>
   ) : null
 
 export default QuestionTypePointsBar

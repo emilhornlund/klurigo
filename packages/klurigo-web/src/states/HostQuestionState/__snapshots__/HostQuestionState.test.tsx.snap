@@ -55,7 +55,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -64,13 +64,13 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Skip me?
               </h1>
@@ -298,7 +298,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -307,13 +307,13 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Place the pin on the map
               </h1>
@@ -521,7 +521,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -530,13 +530,13 @@ exports[`HostQuestionState > renders with audio media 1`] = `
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Audio clip question?
               </h1>
@@ -588,7 +588,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
             </div>
           </div>
           <div
-            class="row fullWidth flexibleHeight"
+            class="row fullWidth fullHeight"
           >
             <div
               class="questionAnswerPicker"
@@ -779,7 +779,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -788,13 +788,13 @@ exports[`HostQuestionState > renders with video media 1`] = `
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Video clip question?
               </h1>
@@ -846,7 +846,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
             </div>
           </div>
           <div
-            class="row fullWidth flexibleHeight"
+            class="row fullWidth fullHeight"
           >
             <div
               class="questionAnswerPicker"
@@ -1037,7 +1037,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -1046,13 +1046,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1111,7 +1111,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth flexibleHeight"
+            class="row fullWidth fullHeight"
           >
             <div
               class="questionAnswerPicker"
@@ -1322,7 +1322,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -1331,13 +1331,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1396,7 +1396,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth flexibleHeight"
+            class="row fullWidth fullHeight"
           >
             <div
               class="questionAnswerPicker"
@@ -1627,7 +1627,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -1636,13 +1636,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Who painted The Starry Night?
               </h1>
@@ -1701,7 +1701,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth flexibleHeight"
+            class="row fullWidth fullHeight"
           >
             <div
               class="questionAnswerPicker"
@@ -1892,7 +1892,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -1901,13 +1901,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 What percentage of the earth's surface is covered by water?
               </h1>
@@ -2136,7 +2136,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -2145,13 +2145,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Rabbits can't vomit?
               </h1>
@@ -2379,7 +2379,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
       </div>
     </div>
     <div
-      class="content fill spaceBetweenAlign"
+      class="content fill noScroll spaceBetweenAlign"
     >
       <div
         class="contentWrapper"
@@ -2388,13 +2388,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row flexibleHeight"
+            class="row questionRow"
           >
             <div
               class="column"
             >
               <h1
-                class="typography title alignCenter widthFull colorInverse"
+                class="typography title alignCenter widthFull colorInverse questionHeading"
               >
                 Who painted the Mono Lisa?
               </h1>

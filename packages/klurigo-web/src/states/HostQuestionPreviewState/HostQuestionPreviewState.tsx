@@ -28,6 +28,7 @@ const HostQuestionPreviewState: FC<HostQuestionPreviewStateProps> = ({
   <GamePage
     layout="fill"
     align="space-between"
+    scrollable={false}
     footer={
       <HostGameFooter
         gamePIN={gamePIN}

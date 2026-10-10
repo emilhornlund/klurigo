@@ -45,6 +45,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
     <GamePage
       layout="fill"
       align="space-between"
+      scrollable={false}
       footer={
         <PlayerGameFooter
           currentQuestion={currentQuestion}

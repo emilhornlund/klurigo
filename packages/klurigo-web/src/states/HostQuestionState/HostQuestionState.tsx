@@ -10,7 +10,6 @@ import {
   IconButtonArrowRight,
   ProgressBar,
   Surface,
-  Typography,
 } from '../../components'
 import { useGameContext } from '../../context/game'
 import { classNames } from '../../utils/helpers'
@@ -18,6 +17,7 @@ import {
   GamePage,
   HostGameFooter,
   QuestionAnswerPicker,
+  QuestionHeading,
   QuestionMedia,
 } from '../common'
 
@@ -60,6 +60,7 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
       <GamePage
         layout="fill"
         align="space-between"
+        scrollable={false}
         header={
           <IconButtonArrowRight
             id={'skip-button'}
@@ -79,15 +80,9 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
             totalQuestions={totalQuestions}
           />
         }>
-        <div className={classNames(styles.row, styles.flexibleHeight)}>
+        <div className={classNames(styles.row, styles.questionRow)}>
           <div className={styles.column}>
-            <Typography
-              variant="title"
-              align="center"
-              color="inverse"
-              maxLines={3}>
-              {question.question}
-            </Typography>
+            <QuestionHeading text={question.question} />
           </div>
         </div>
 
@@ -114,9 +109,7 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
           className={classNames(
             styles.row,
             styles.fullWidth,
-            question.type === QuestionType.Pin || !media
-              ? styles.fullHeight
-              : styles.flexibleHeight,
+            styles.fullHeight,
           )}>
           <QuestionAnswerPicker question={question} interactive={false} />
         </div>
