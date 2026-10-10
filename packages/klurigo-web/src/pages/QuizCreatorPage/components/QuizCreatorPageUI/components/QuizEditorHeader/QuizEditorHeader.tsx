@@ -1,9 +1,9 @@
 import {
   faArrowRightFromBracket,
   faCode,
+  faEye,
   faFloppyDisk,
   faGear,
-  faPlay,
   faSliders,
 } from '@fortawesome/free-solid-svg-icons'
 import type { FC } from 'react'
@@ -113,7 +113,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         surface="brand"
         value="Preview"
         hideValue="mobile"
-        icon={faPlay}
+        icon={faEye}
         disabled={!canPreview}
         onClick={onPreview}
       />

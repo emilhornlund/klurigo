@@ -100,6 +100,9 @@ describe('QuizEditorHeader', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
     expect(onPreview).toHaveBeenCalledOnce()
+    expect(
+      screen.getByTestId('test-preview-button-button').querySelector('svg'),
+    ).toHaveAttribute('data-icon', 'eye')
   })
 
   it('disables preview when preview is not available', () => {
