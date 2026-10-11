@@ -1,51 +1,65 @@
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/spacing.semantic' as spacing;
 
-.chip {
+.metadata {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  position: relative;
-
-  @include helpers.mobile {
-    column-gap: spacing.$space-content-distribution-mobile;
-    padding: 0 spacing.$space-content-inline-mobile;
-    border-radius: helpers.pxToRem(calc(34px / 2));
-    height: helpers.pxToRem(34px);
-  }
+  width: 100%;
+  column-gap: spacing.$space-content-distribution-mobile;
+  row-gap: spacing.$space-stack-mobile;
 
   @include helpers.tablet {
     column-gap: spacing.$space-content-distribution-tablet;
-    padding: 0 spacing.$space-content-inline-tablet;
-    border-radius: helpers.pxToRem(calc(41px / 2));
-    height: helpers.pxToRem(41px);
+    row-gap: spacing.$space-stack-tablet;
   }
 
   @include helpers.desktop {
     column-gap: spacing.$space-content-distribution-desktop;
-    padding: 0 spacing.$space-content-inline-desktop;
-    border-radius: helpers.pxToRem(calc(48px / 2));
-    height: helpers.pxToRem(48px);
+    row-gap: spacing.$space-stack-desktop;
+  }
+}
+
+.chip {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-height: helpers.pxToRem(34px);
+  padding-inline: spacing.$space-content-inline-mobile;
+  border-radius: helpers.pxToRem(24px);
+
+  @include helpers.tablet {
+    min-height: helpers.pxToRem(41px);
+    padding-inline: spacing.$space-content-inline-tablet;
   }
 
-  .item {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  @include helpers.desktop {
+    min-height: helpers.pxToRem(48px);
+    padding-inline: spacing.$space-content-inline-desktop;
+  }
+}
 
-    @include helpers.mobile {
-      column-gap: spacing.$space-content-item-gap-mobile;
+.metadataText {
+  flex: 0 1 auto;
+  width: auto;
+  white-space: nowrap;
+
+  svg {
+    margin-right: spacing.$space-content-item-gap-mobile;
+  }
+
+  @include helpers.tablet {
+    svg {
+      margin-right: spacing.$space-content-item-gap-tablet;
     }
+  }
 
-    @include helpers.tablet {
-      column-gap: spacing.$space-content-item-gap-tablet;
-    }
-
-    @include helpers.desktop {
-      column-gap: spacing.$space-content-item-gap-desktop;
+  @include helpers.desktop {
+    svg {
+      margin-right: spacing.$space-content-item-gap-desktop;
     }
   }
 }

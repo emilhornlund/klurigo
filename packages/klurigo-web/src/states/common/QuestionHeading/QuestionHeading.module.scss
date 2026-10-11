@@ -1,0 +1,16 @@
+@use '../../../styles/helpers' as helpers;
+
+.questionHeading {
+  flex: 0 1 auto;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  font-size: clamp(2.5rem, min(4vw, 6.5vh), 3.375rem) !important;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+
+  @include helpers.tablet {
+    font-size: clamp(2.875rem, min(4vw, 6.5vh), 3.375rem) !important;
+  }
+}

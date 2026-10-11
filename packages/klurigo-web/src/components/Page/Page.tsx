@@ -66,6 +66,13 @@ export interface PageProps {
   noPadding?: boolean
 
   /**
+   * Allows the page content region to scroll vertically.
+   *
+   * @default true
+   */
+  scrollable?: boolean
+
+  /**
    * Displays navigation to the quiz discovery experience when available.
    *
    * @default false
@@ -122,6 +129,7 @@ const Page: FC<PageProps> = ({
   layout,
   align = 'center',
   noPadding = false,
+  scrollable = true,
   discover = false,
   profile = false,
   hideLogin = false,
@@ -245,6 +253,7 @@ const Page: FC<PageProps> = ({
         className={classNames(
           styles.content,
           styles[layout],
+          !scrollable ? styles.noScroll : undefined,
           align === 'start' ? styles.startAlign : undefined,
           align === 'center' ? styles.centerAlign : undefined,
           align === 'space-between' ? styles.spaceBetweenAlign : undefined,

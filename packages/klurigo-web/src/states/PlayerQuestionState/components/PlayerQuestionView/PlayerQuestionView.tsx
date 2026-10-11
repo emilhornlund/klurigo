@@ -7,9 +7,11 @@ import type {
 import { QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { Typography } from '../../../../components'
-import QuestionAnswerPicker from '../../../common/QuestionAnswerPicker'
-import QuestionMedia from '../../../common/QuestionMedia'
+import {
+  QuestionAnswerPicker,
+  QuestionHeading,
+  QuestionMedia,
+} from '../../../common'
 
 import styles from './PlayerQuestionView.module.scss'
 
@@ -29,9 +31,7 @@ const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
   onChange,
 }) => (
   <div className={styles.fullHeight}>
-    <Typography variant="title" align="center" color="inverse" maxLines={2}>
-      {question.question}
-    </Typography>
+    <QuestionHeading text={question.question} />
 
     <QuestionMedia
       type={question.type}

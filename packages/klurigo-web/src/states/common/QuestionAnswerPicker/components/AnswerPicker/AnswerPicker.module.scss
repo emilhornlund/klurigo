@@ -10,17 +10,17 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 2%;
+  padding: 1%;
 
   .grid {
     display: grid;
     flex: 1;
-    min-height: 0;
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: 1fr;
 
     @include helpers.mobile {
-      gap: spacing.$space-stack-mobile;
+      gap: spacing.$space-compact-mobile;
+      grid-template-columns: 1fr;
     }
 
     @include helpers.tablet {
@@ -38,10 +38,11 @@
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
+      min-width: 0;
       outline: none;
       background-color: colors.$color-surface-default;
       color: colors.$color-text-default;
-      overflow: hidden;
+      overflow: visible;
       transition:
         transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
         background-color 0.2s ease,
@@ -51,12 +52,14 @@
       animation-fill-mode: backwards;
       transform: translateZ(0); // GPU acceleration
       border-radius: radius.$radius-surface-lg;
+      white-space: normal;
+      overflow-wrap: break-word;
 
       @include helpers.mobile {
-        gap: spacing.$space-stack-mobile;
-        padding: spacing.$space-stack-mobile;
-        line-height: typography.$line-height-body2-mobile;
-        @include helpers.fontSize(typography.$font-size-body2-mobile);
+        gap: spacing.$space-compact-mobile;
+        padding: spacing.$space-compact-mobile;
+        line-height: typography.$line-height-title5-mobile;
+        @include helpers.fontSize(typography.$font-size-title5-mobile);
       }
 
       @include helpers.tablet {
@@ -67,8 +70,8 @@
       }
 
       @include helpers.desktop {
-        gap: spacing.$space-stack-desktop;
-        padding: spacing.$space-stack-desktop;
+        gap: spacing.$space-compact-desktop;
+        padding: spacing.$space-compact-mobile spacing.$space-stack-desktop;
         line-height: typography.$line-height-body2-desktop;
         @include helpers.fontSize(typography.$font-size-body2-desktop);
       }
@@ -149,8 +152,8 @@
         }
 
         @include helpers.desktop {
-          min-width: helpers.pxToRem(50px);
-          min-height: helpers.pxToRem(50px);
+          min-width: helpers.pxToRem(44px);
+          min-height: helpers.pxToRem(44px);
           line-height: typography.$line-height-body2-desktop;
           @include helpers.fontSize(typography.$font-size-body2-desktop);
         }

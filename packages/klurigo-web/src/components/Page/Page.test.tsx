@@ -81,11 +81,36 @@ describe('Page', () => {
       /\.content\.fullBleed > \.contentWrapper\s*\{\s*width: 100%;\s*\}/,
     )
     expect(css).toMatch(
-      /\.content\.fullBleed > \.contentWrapper\s*\{\s*height: 100%;\s*\}/,
+      /\.content\.fullBleed > \.contentWrapper\s*\{[^}]*height: 100%;/,
     )
     expect(css).toMatch(
-      /\.content\.fullBleed > \.contentWrapper > \.contentInner\s*\{\s*flex: 1;\s*height: 100%;\s*\}/,
+      /\.content\.fullBleed > \.contentWrapper > \.contentInner\s*\{[^}]*flex: 1;[^}]*height: 100%;/,
     )
+  })
+
+  test('can constrain page content to the viewport without document scrolling', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <Page layout="fill" scrollable={false}>
+          Content
+        </Page>
+      </MemoryRouter>,
+    )
+
+    expect(container.querySelector('.content')).toHaveClass('noScroll')
+  })
+
+  test('noScroll CSS constrains the content flex hierarchy', () => {
+    const css = compile(
+      join(process.cwd(), 'src/components/Page/Page.module.scss'),
+    ).css
+
+    expect(css).toMatch(/\.content\.noScroll\s*\{\s*overflow: hidden;/)
+    expect(css).toMatch(
+      /\.content\.noScroll > \.contentWrapper\s*\{[^}]*min-height: 0;/,
+    )
+    expect(css).toContain('width: min(100%, 768px);')
+    expect(css).toContain('width: min(100%, 1024px);')
   })
 
   test.each(['contained', 'compact', 'fill', 'compactFill'] as const)(

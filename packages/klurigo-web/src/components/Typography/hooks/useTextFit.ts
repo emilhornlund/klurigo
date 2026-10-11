@@ -54,6 +54,7 @@ function getCurrentBreakpoint(): Breakpoint | null {
  * This prevents reading the fitted font size instead of the original.
  */
 const maxFontSizeCache = new WeakMap<HTMLElement, number>()
+const maxLineHeightRatioCache = new WeakMap<HTMLElement, number>()
 
 /**
  * Extracts the current font-size from an element's computed styles.
@@ -77,6 +78,36 @@ function getMaxFontSizeFromElement(element: HTMLElement): number {
   maxFontSizeCache.set(element, maxFontSize)
 
   return maxFontSize
+}
+
+function getMaxLineHeightRatioFromElement(
+  element: HTMLElement,
+  maxFontSize: number,
+): number {
+  const cached = maxLineHeightRatioCache.get(element)
+  if (cached !== undefined) {
+    return cached
+  }
+
+  const lineHeight = parseLineHeight(
+    getComputedStyle(element).lineHeight,
+    maxFontSize,
+  )
+  let ratio = lineHeight / maxFontSize
+  if (
+    !isFinite(ratio) ||
+    ratio <= 0 ||
+    ratio < MIN_LINE_HEIGHT_RATIO ||
+    ratio > 3
+  ) {
+    console.warn(
+      `Invalid or unsafe line-height ratio ${ratio}, using safe default 1.2`,
+    )
+    ratio = 1.2
+  }
+
+  maxLineHeightRatioCache.set(element, ratio)
+  return ratio
 }
 
 /**
@@ -120,6 +151,7 @@ function measureTextHeight(
   element: HTMLElement,
   text: string,
   fontSize: number,
+  lineHeightRatio: number,
 ): number {
   const computed = getComputedStyle(element)
 
@@ -149,8 +181,8 @@ function measureTextHeight(
   // Apply font size override
   measurer.style.fontSize = `${fontSize}px`
 
-  // Copy line-height (critical for multi-line calculation)
-  measurer.style.lineHeight = computed.lineHeight
+  // Keep line-height proportional as candidate font sizes change.
+  measurer.style.lineHeight = `${fontSize * lineHeightRatio}px`
 
   // Remove any clamp/overflow that would hide true height
   measurer.style.overflow = 'visible'
@@ -170,7 +202,8 @@ function measureTextHeight(
 /**
  * Monotonic font-size fitting algorithm.
  * Starts from maxFontSize and decreases until text fits within maxLines,
- * or reaches MIN_FONT_SIZE.
+ * or reaches minFontSize. When allowed, it uses additional lines at that
+ * minimum size if the measured element has enough height.
  *
  * @returns TextFitResult with fitted fontSize and proportional lineHeight, or null if no adjustment needed
  */
@@ -179,68 +212,81 @@ function calculateFittedFontSize(
   text: string,
   maxLines: number,
   maxFontSize: number,
+  minFontSize: number,
+  allowMoreLines: boolean,
 ): TextFitResult | null {
-  const computed = getComputedStyle(element)
-
-  // Get the original line-height at max font size to calculate the ratio
-  const originalLineHeight = parseLineHeight(computed.lineHeight, maxFontSize)
-  let lineHeightRatio = originalLineHeight / maxFontSize
-
-  // Validate ratio - if invalid or too small, use safe default
-  // Ratios < 1.0 cause text clipping because line-height becomes smaller than font-size
-  if (
-    !isFinite(lineHeightRatio) ||
-    lineHeightRatio <= 0 ||
-    lineHeightRatio < MIN_LINE_HEIGHT_RATIO || // ✅ Prevent clipping
-    lineHeightRatio > 3
-  ) {
-    console.warn(
-      `Invalid or unsafe line-height ratio ${lineHeightRatio}, using safe default 1.2`,
-    )
-    lineHeightRatio = 1.2
-  }
+  const lineHeightRatio = getMaxLineHeightRatioFromElement(element, maxFontSize)
+  const originalLineHeight = maxFontSize * lineHeightRatio
 
   // Test at max size first
-  const maxHeight = measureTextHeight(element, text, maxFontSize)
-  const targetHeightAtMax = originalLineHeight * maxLines
+  const maxHeight = measureTextHeight(
+    element,
+    text,
+    maxFontSize,
+    lineHeightRatio,
+  )
+  const maxLinesHeight = originalLineHeight * maxLines
+  const availableHeight = element.clientHeight
+  const fitTolerance = Math.max(2, maxFontSize * 0.05)
+  const targetHeightAtMax =
+    availableHeight > 0
+      ? Math.min(maxLinesHeight, availableHeight)
+      : maxLinesHeight
 
   // If fits at max, no adjustment needed
-  if (maxHeight <= targetHeightAtMax) {
+  if (maxHeight <= targetHeightAtMax + fitTolerance) {
     return null
   }
 
   // Monotonic shrinking: start from max, decrease by step until it fits
   for (
     let fontSize = maxFontSize;
-    fontSize >= MIN_FONT_SIZE;
+    fontSize >= minFontSize;
     fontSize -= STEP_SIZE
   ) {
-    const height = measureTextHeight(element, text, fontSize)
+    const height = measureTextHeight(element, text, fontSize, lineHeightRatio)
     const lineHeight = fontSize * lineHeightRatio // Maintain original ratio
-    const targetHeight = lineHeight * maxLines
+    const targetHeight =
+      availableHeight > 0
+        ? Math.min(lineHeight * maxLines, availableHeight)
+        : lineHeight * maxLines
 
     // Accept first size where text provably fits (strict inequality for safety)
-    if (height <= targetHeight) {
+    if (height <= targetHeight + 0.5) {
       return {
         fontSize: Math.round(fontSize * 10) / 10, // Round to 1 decimal to prevent floating-point issues
         lineHeight:
           Math.round(
             Math.max(lineHeight, fontSize * MIN_LINE_HEIGHT_RATIO) * 10,
           ) / 10,
+        maxLines,
       }
     }
   }
 
-  // Text doesn't fit even at minimum - return min with safe line-height
+  const minLineHeight = Math.max(
+    minFontSize * lineHeightRatio,
+    minFontSize * MIN_LINE_HEIGHT_RATIO,
+  )
+  const minTextHeight = measureTextHeight(
+    element,
+    text,
+    minFontSize,
+    lineHeightRatio,
+  )
+  const fittedLines =
+    allowMoreLines && availableHeight > 0
+      ? minTextHeight <= availableHeight + 0.5
+        ? Math.ceil(minTextHeight / minLineHeight)
+        : Math.max(1, Math.floor(availableHeight / minLineHeight))
+      : maxLines
+
+  // Text doesn't fit at the preferred line count - use more lines at the
+  // minimum size when the element's measured height can display them.
   return {
-    fontSize: MIN_FONT_SIZE,
-    lineHeight:
-      Math.round(
-        Math.max(
-          MIN_FONT_SIZE * lineHeightRatio,
-          MIN_FONT_SIZE * MIN_LINE_HEIGHT_RATIO,
-        ) * 10,
-      ) / 10, // Round to 1 decimal
+    fontSize: minFontSize,
+    lineHeight: Math.round(minLineHeight * 10) / 10,
+    maxLines: allowMoreLines ? Math.max(maxLines, fittedLines) : maxLines,
   }
 }
 
@@ -250,6 +296,7 @@ function calculateFittedFontSize(
 export interface TextFitResult {
   fontSize: number
   lineHeight: number
+  maxLines?: number
 }
 
 /**
@@ -270,6 +317,8 @@ export function useTextFit(
   variant: TypographyVariant,
   text: string,
   maxLines: number,
+  minFontSize = MIN_FONT_SIZE,
+  allowMoreLines = false,
 ): TextFitResult | null {
   const [fittedResult, setFittedResult] = useState<TextFitResult | null>(null)
   const [breakpoint, setBreakpoint] = useState<Breakpoint | null>(
@@ -299,6 +348,7 @@ export function useTextFit(
       // Clear cache when breakpoint changes - new SCSS font size will apply
       if (ref.current) {
         maxFontSizeCache.delete(ref.current)
+        maxLineHeightRatioCache.delete(ref.current)
       }
     }
 
@@ -341,6 +391,7 @@ export function useTextFit(
   useEffect(() => {
     if (ref.current) {
       maxFontSizeCache.delete(ref.current)
+      maxLineHeightRatioCache.delete(ref.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variant])
@@ -360,6 +411,8 @@ export function useTextFit(
         text,
         maxLines,
         maxFontSize,
+        Math.max(1, minFontSize),
+        allowMoreLines,
       )
       setFittedResult((prev) => {
         // Both null - no change
@@ -380,13 +433,67 @@ export function useTextFit(
       })
     })
 
-    return () => cancelAnimationFrame(raf)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [variant, text, maxLines, fontsLoaded, breakpoint, isEnabled])
+    const initialRect = element.getBoundingClientRect()
+    let previousWidth = initialRect.width
+    let previousHeight = initialRect.height
+    let resizeRaf: number | undefined
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(([entry]) => {
+            const nextWidth = entry.contentRect.width
+            const nextHeight = entry.contentRect.height
+            if (
+              Math.abs(nextWidth - previousWidth) < 1 &&
+              Math.abs(nextHeight - previousHeight) < 1
+            ) {
+              return
+            }
+            previousWidth = nextWidth
+            previousHeight = nextHeight
+            if (resizeRaf !== undefined) {
+              cancelAnimationFrame(resizeRaf)
+            }
+            resizeRaf = requestAnimationFrame(() => {
+              const maxFontSize = getMaxFontSizeFromElement(element)
+              const fitted = calculateFittedFontSize(
+                element,
+                text,
+                maxLines,
+                maxFontSize,
+                Math.max(1, minFontSize),
+                allowMoreLines,
+              )
+              setFittedResult((prev) => {
+                if (prev === null && fitted === null) return prev
+                if (prev === null || fitted === null) return fitted
+                return prev.fontSize === fitted.fontSize &&
+                  prev.lineHeight === fitted.lineHeight
+                  ? prev
+                  : fitted
+              })
+            })
+          })
+    observer?.observe(element)
 
-  // NOTE: ResizeObserver was removed because it caused infinite loops
-  // Text fitting now only recalculates when dependencies change (text, maxLines, breakpoint)
-  // This is sufficient for most use cases and prevents the flashing issue
+    return () => {
+      cancelAnimationFrame(raf)
+      if (resizeRaf !== undefined) {
+        cancelAnimationFrame(resizeRaf)
+      }
+      observer?.disconnect()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    variant,
+    text,
+    maxLines,
+    minFontSize,
+    allowMoreLines,
+    fontsLoaded,
+    breakpoint,
+    isEnabled,
+  ])
 
   return fittedResult
 }
