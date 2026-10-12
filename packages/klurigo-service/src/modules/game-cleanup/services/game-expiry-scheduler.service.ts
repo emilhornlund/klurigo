@@ -67,7 +67,12 @@ export class GameExpirySchedulerService {
   ): Promise<void> {
     try {
       const count = await update()
-      this.logger.log(`Updated ${count} ${state} games.`)
+
+      if (count > 0) {
+        this.logger.log(`Updated ${count} ${state} games.`)
+      } else {
+        this.logger.debug(`Updated ${count} ${state} games.`)
+      }
     } catch (error) {
       this.logger.error(
         structuredLog(

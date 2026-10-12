@@ -62,6 +62,9 @@ describe(GameExpirySchedulerService.name, () => {
     const logSpy = jest
       .spyOn((service as any).logger as Logger, 'log')
       .mockImplementation(() => undefined)
+    const debugSpy = jest
+      .spyOn((service as any).logger as Logger, 'debug')
+      .mockImplementation(() => undefined)
 
     await service.clean()
 
@@ -71,6 +74,45 @@ describe(GameExpirySchedulerService.name, () => {
     expect(logSpy).toHaveBeenCalledTimes(2)
     expect(logSpy).toHaveBeenNthCalledWith(1, 'Updated 3 completed games.')
     expect(logSpy).toHaveBeenNthCalledWith(2, 'Updated 7 expired games.')
+    expect(debugSpy).not.toHaveBeenCalled()
+  })
+
+  it('logs zero completed games updated at debug level only', async () => {
+    gameRepository.updateCompletedGames.mockResolvedValueOnce(0 as never)
+    gameRepository.updateExpiredGames.mockResolvedValueOnce(1 as never)
+
+    const logSpy = jest
+      .spyOn((service as any).logger as Logger, 'log')
+      .mockImplementation(() => undefined)
+    const debugSpy = jest
+      .spyOn((service as any).logger as Logger, 'debug')
+      .mockImplementation(() => undefined)
+
+    await service.clean()
+
+    expect(logSpy).toHaveBeenCalledTimes(1)
+    expect(logSpy).toHaveBeenCalledWith('Updated 1 expired games.')
+    expect(debugSpy).toHaveBeenCalledTimes(1)
+    expect(debugSpy).toHaveBeenCalledWith('Updated 0 completed games.')
+  })
+
+  it('logs zero expired games updated at debug level only', async () => {
+    gameRepository.updateCompletedGames.mockResolvedValueOnce(1 as never)
+    gameRepository.updateExpiredGames.mockResolvedValueOnce(0 as never)
+
+    const logSpy = jest
+      .spyOn((service as any).logger as Logger, 'log')
+      .mockImplementation(() => undefined)
+    const debugSpy = jest
+      .spyOn((service as any).logger as Logger, 'debug')
+      .mockImplementation(() => undefined)
+
+    await service.clean()
+
+    expect(logSpy).toHaveBeenCalledTimes(1)
+    expect(logSpy).toHaveBeenCalledWith('Updated 1 completed games.')
+    expect(debugSpy).toHaveBeenCalledTimes(1)
+    expect(debugSpy).toHaveBeenCalledWith('Updated 0 expired games.')
   })
 
   it('continues with expired updates when completed updates fail', async () => {
@@ -87,6 +129,14 @@ describe(GameExpirySchedulerService.name, () => {
     expect(gameRepository.updateCompletedGames).toHaveBeenCalledTimes(1)
     expect(gameRepository.updateExpiredGames).toHaveBeenCalledTimes(1)
     expect(logSpy).toHaveBeenCalledWith('Updated 1 expired games.')
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to update completed games during scheduled cleanup.',
+        operation: 'runUpdate',
+        targetState: 'completed',
+      }),
+      expect.any(String),
+    )
   })
 
   it('logs completed update and continues when expired updates fail', async () => {
