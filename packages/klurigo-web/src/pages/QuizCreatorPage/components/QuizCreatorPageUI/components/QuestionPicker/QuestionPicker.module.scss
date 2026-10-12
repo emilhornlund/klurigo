@@ -42,8 +42,5 @@
   @include helpers.desktop {
     flex-direction: column;
     row-gap: spacing.$space-compact-desktop;
-    max-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
 }
