@@ -34,7 +34,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.5.0",
     "@klurigo/common": "1.0.0",
-    "@sentry/react": "^11.5.0",
+    "@sentry/react": "^11.6.0",
     "@tanstack/react-query": "5.104.1",
     "date-fns": "^4.4.0",
     "event-source-polyfill": "^1.0.31",
@@ -53,7 +53,7 @@
     "@fortawesome/fontawesome-common-types": "^7.3.1",
     "@juggle/resize-observer": "^3.4.0",
     "@klurigo/e2e-fixtures": "1.0.0",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/addon-links": "^10.6.1",
     "@storybook/react": "^10.6.1",
@@ -81,7 +81,7 @@
     "storybook-addon-remix-react-router": "^7.0.0",
     "typescript": "^6.0.3",
     "uuid": "^14.0.2",
-    "vite": "^8.3.3",
+    "vite": "^8.3.4",
     "vitest": "^5.0.3"
   },
   "engines": {
