@@ -19,6 +19,8 @@ export const environmentValidationSchema = Joi.object({
   JWT_SECRET: Joi.string().min(1).required(),
   PEXELS_API_KEY: Joi.string().required(),
   UPLOAD_DIRECTORY: Joi.string().required(),
+  ORPHANED_IMAGE_RETENTION_DAYS: Joi.number().integer().min(1).default(7),
+  ORPHANED_IMAGE_CLEANUP_DRY_RUN: Joi.boolean().default(true),
   EMAIL_ENABLED: Joi.boolean().default(true),
   EMAIL_USERNAME: Joi.string().optional(),
   EMAIL_PASSWORD: Joi.string().optional(),

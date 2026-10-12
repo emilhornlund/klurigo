@@ -49,6 +49,7 @@ type Quiz = {
 
 type QuizModel = {
   findById: jest.Mock
+  find?: jest.Mock
 }
 
 describe('QuizRepository', () => {
@@ -421,6 +422,40 @@ describe('QuizRepository', () => {
 
       const result = await repo.findManyByIds(['q1', 'q2'])
       expect(result).toEqual(docs)
+    })
+  })
+
+  describe('findImageReferences', () => {
+    it('projects every supported persisted image URL field from all quizzes', async () => {
+      const values = [
+        {
+          imageCoverURL: 'https://host/cover.webp',
+          questions: [
+            {
+              media: { url: 'https://host/media.webp' },
+              imageURL: 'https://host/pin.webp',
+            },
+          ],
+        },
+      ]
+      const exec = jest.fn().mockResolvedValue(values)
+      const lean = jest.fn().mockReturnValue({ exec })
+      const find = jest.fn().mockReturnValue({ lean })
+      ;(repo as unknown as { quizModel: { find: jest.Mock } }).quizModel = {
+        find,
+      } as never
+
+      await expect(repo.findImageReferences()).resolves.toEqual([
+        'https://host/cover.webp',
+        'https://host/media.webp',
+        'https://host/pin.webp',
+      ])
+      expect(find).toHaveBeenCalledWith(
+        {},
+        { imageCoverURL: 1, 'questions.media.url': 1, 'questions.imageURL': 1 },
+      )
+      expect(lean).toHaveBeenCalledTimes(1)
+      expect(exec).toHaveBeenCalledTimes(1)
     })
   })
 })

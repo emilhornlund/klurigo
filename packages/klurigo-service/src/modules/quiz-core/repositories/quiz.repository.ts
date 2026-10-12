@@ -231,6 +231,30 @@ export class QuizRepository extends BaseRepository<Quiz> {
       .exec()
   }
 
+  /** Returns image URL fields from every persisted quiz for media cleanup. */
+  public async findImageReferences(): Promise<string[]> {
+    const quizzes = (await this.quizModel
+      .find(
+        {},
+        { imageCoverURL: 1, 'questions.media.url': 1, 'questions.imageURL': 1 },
+      )
+      .lean()
+      .exec()) as unknown as {
+      imageCoverURL?: string
+      questions?: { media?: { url?: string }; imageURL?: string }[]
+    }[]
+
+    return quizzes
+      .flatMap((quiz) => [
+        quiz.imageCoverURL,
+        ...(quiz.questions ?? []).flatMap((question) => [
+          question.media?.url,
+          question.imageURL,
+        ]),
+      ])
+      .filter((url): url is string => typeof url === 'string')
+  }
+
   /**
    * Deletes a quiz by ID.
    *
