@@ -86,6 +86,7 @@ export class OrphanedImageCleanupService {
         }
 
         if (dryRun) {
+          counts.reclaimedBytes += candidate.size
           this.logger.log(
             `Orphaned image cleanup dry-run candidate: ${candidate.relativePath}`,
           )
@@ -113,12 +114,19 @@ export class OrphanedImageCleanupService {
           counts.skipped++
           continue
         }
-        await unlink(candidate.path)
-        counts.deleted++
-        counts.reclaimedBytes += current.size
-        this.logger.log(
-          `Deleted orphaned image: ${candidate.relativePath} (${current.size} bytes)`,
-        )
+        try {
+          await unlink(candidate.path)
+          counts.deleted++
+          counts.reclaimedBytes += current.size
+          this.logger.log(
+            `Deleted orphaned image: ${candidate.relativePath} (${current.size} bytes)`,
+          )
+        } catch (error) {
+          counts.failures++
+          this.logger.error(
+            `Failed to delete orphaned image ${candidate.relativePath}: ${String(error)}`,
+          )
+        }
       }
     } catch (error) {
       counts.failures++
