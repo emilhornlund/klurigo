@@ -115,7 +115,13 @@ http {
 
     location /uploads/images/ {
       proxy_pass ${KLURIGO_SERVICE_IMAGES_PROXY}/;
-      add_header Access-Control-Allow-Origin *;
+
+      proxy_hide_header Cross-Origin-Resource-Policy;
+      proxy_hide_header Access-Control-Allow-Origin;
+      proxy_hide_header Access-Control-Allow-Credentials;
+
+      add_header Cross-Origin-Resource-Policy cross-origin always;
+      add_header Access-Control-Allow-Origin * always;
       add_header X-Frame-Options "DENY";
       add_header X-Content-Type-Options nosniff;
       add_header Referrer-Policy "strict-origin";
