@@ -5,6 +5,7 @@ import {
   rm,
   stat,
   symlink,
+  unlink,
   utimes,
   writeFile,
 } from 'node:fs/promises'
@@ -28,6 +29,11 @@ jest.mock('murlock', () => ({
     ) =>
       descriptor,
 }))
+
+jest.mock('node:fs/promises', () => {
+  const actual = jest.requireActual('node:fs/promises')
+  return { ...actual, unlink: jest.fn(actual.unlink) }
+})
 
 const userId = '11111111-1111-4111-8111-111111111111'
 const imageId = '22222222-2222-4222-8222-222222222222'
@@ -98,6 +104,7 @@ describe(OrphanedImageCleanupService.name, () => {
 
   it('logs dry-run candidates without deleting them', async () => {
     const log = jest.spyOn((service as any).logger, 'log')
+    const candidateSize = (await stat(filePath)).size
 
     await service.clean()
 
@@ -106,6 +113,9 @@ describe(OrphanedImageCleanupService.name, () => {
       expect.stringContaining('dry-run candidate'),
     )
     expect(log).toHaveBeenCalledWith(expect.stringContaining('"scanned":1'))
+    expect(log).toHaveBeenCalledWith(
+      expect.stringContaining(`"reclaimedBytes":${candidateSize}`),
+    )
   })
 
   it('retains unreferenced images younger than the configured retention period', async () => {
@@ -143,6 +153,53 @@ describe(OrphanedImageCleanupService.name, () => {
     expect(log).toHaveBeenCalledWith(expect.stringContaining('"deleted":1'))
     expect(log).toHaveBeenCalledWith(
       expect.stringContaining('"reclaimedBytes":17'),
+    )
+  })
+
+  it('continues deleting eligible files after an individual unlink failure', async () => {
+    config.get.mockImplementation((key: string) => {
+      if (key === 'UPLOAD_DIRECTORY') return directory
+      if (key === 'ORPHANED_IMAGE_RETENTION_DAYS') return 7
+      if (key === 'ORPHANED_IMAGE_CLEANUP_DRY_RUN') return false
+      return undefined
+    })
+    const secondId = '33333333-3333-4333-8333-333333333333'
+    const secondPath = join(directory, userId, `${secondId}.webp`)
+    await writeFile(secondPath, 'second eligible image')
+    const old = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000)
+    await utimes(secondPath, old, old)
+    const actualUnlink =
+      jest.requireActual<typeof import('node:fs/promises')>(
+        'node:fs/promises',
+      ).unlink
+    const unlinkMock = jest.mocked(unlink)
+    unlinkMock.mockImplementation(async (path) => {
+      if (String(path) === filePath) {
+        throw Object.assign(new Error('permission denied'), { code: 'EACCES' })
+      }
+      await actualUnlink(path)
+    })
+    const error = jest.spyOn((service as any).logger, 'error')
+    const log = jest.spyOn((service as any).logger, 'log')
+
+    try {
+      await service.clean()
+    } finally {
+      unlinkMock.mockImplementation(actualUnlink)
+    }
+
+    await expect(stat(filePath)).resolves.toBeDefined()
+    await expect(stat(secondPath)).rejects.toThrow()
+    expect(error).toHaveBeenCalledWith(
+      expect.stringContaining('permission denied'),
+    )
+    expect(log).toHaveBeenCalledWith(
+      expect.stringContaining(
+        '"failures":1,"reclaimedBytes":21,"dryRun":false,"durationMs"',
+      ),
+    )
+    expect(log).toHaveBeenCalledWith(
+      expect.stringContaining('"deleted":1,"failures":1'),
     )
   })
 
