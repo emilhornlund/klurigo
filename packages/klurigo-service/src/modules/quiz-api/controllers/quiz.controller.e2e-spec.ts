@@ -1,6 +1,7 @@
 import { GameMode, QuizResponseDto, QuizVisibility } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
+import { MurLockService } from 'murlock'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -17,6 +18,7 @@ import {
   createTestApp,
 } from '../../../../test-utils/utils'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
+import { QuizRepository } from '../../quiz-core/repositories/quiz.repository'
 import { User, UserModel } from '../../user/repositories'
 import { QuizService } from '../services'
 
@@ -30,12 +32,14 @@ describe('QuizController (e2e)', () => {
   let app: INestApplication
   let quizService: QuizService
   let quizModel: QuizModel
+  let quizRepository: QuizRepository
   let userModel: UserModel
 
   beforeEach(async () => {
     app = await createTestApp()
     quizService = app.get(QuizService)
     quizModel = app.get<QuizModel>(getModelToken(Quiz.name))
+    quizRepository = app.get(QuizRepository)
     userModel = app.get<UserModel>(getModelToken(User.name))
   })
 
@@ -72,6 +76,72 @@ describe('QuizController (e2e)', () => {
           expect(res.body).toHaveProperty('created')
           expect(res.body).toHaveProperty('updated')
         })
+    })
+  })
+
+  describe('uploaded image reference checks', () => {
+    it('queries persisted cover references in raw, encoded, and relative forms', async () => {
+      const { user } = await createDefaultUserAndAuthenticate(app)
+      const userId = String(user._id)
+      const imageId = uuidv4()
+      const relativePath = `${userId}/${imageId}.webp`
+      const quiz = await quizService.createQuiz(
+        { ...originalData, imageCoverURL: `/uploads/images/${relativePath}` },
+        user,
+      )
+
+      await expect(
+        quizRepository.isUploadedImageReferenced(relativePath),
+      ).resolves.toBe(true)
+
+      await quizModel.updateOne(
+        { _id: quiz.id },
+        {
+          $set: {
+            imageCoverURL: `https://cdn.example.test/uploads%2Fimages%2F${userId}%2F${imageId}%2Ewebp?width=200`,
+          },
+        },
+      )
+      await expect(
+        quizRepository.isUploadedImageReferenced(relativePath),
+      ).resolves.toBe(true)
+
+      await quizModel.updateOne(
+        { _id: quiz.id },
+        { $set: { imageCoverURL: relativePath } },
+      )
+      await expect(
+        quizRepository.isUploadedImageReferenced(relativePath),
+      ).resolves.toBe(true)
+      await expect(
+        quizRepository.isUploadedImageReferenced(`${userId}/${uuidv4()}.webp`),
+      ).resolves.toBe(false)
+    })
+
+    it('serializes a quiz write behind the shared cleanup lock', async () => {
+      const lockService = app.get(MurLockService)
+      const create = jest
+        .spyOn(quizRepository, 'create')
+        .mockResolvedValue({ _id: 'locked-quiz' } as never)
+      let release!: () => void
+      const gate = new Promise<void>((resolve) => {
+        release = resolve
+      })
+      const cleanupLock = lockService.runWithLock(
+        'orphaned_image_cleanup_lock',
+        10_000,
+        () => gate,
+      )
+
+      await new Promise((resolve) => setTimeout(resolve, 25))
+      const write = quizRepository.createQuiz({ title: 'lock contender' })
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      expect(create).not.toHaveBeenCalled()
+
+      release()
+      await cleanupLock
+      await expect(write).resolves.toMatchObject({ _id: 'locked-quiz' })
+      expect(create).toHaveBeenCalledTimes(1)
     })
   })
 

@@ -60,6 +60,7 @@ type Quiz = {
 type QuizModel = {
   findById: jest.Mock
   find: jest.Mock
+  exists: jest.Mock
 }
 
 describe('QuizRepository', () => {
@@ -101,6 +102,7 @@ describe('QuizRepository', () => {
     quizModel = {
       findById: jest.fn(),
       find: jest.fn(),
+      exists: jest.fn(),
     }
 
     // QuizRepository expects @InjectModel(Quiz.name) which is a Mongoose model.
@@ -153,6 +155,58 @@ describe('QuizRepository', () => {
           'questions.imageURL': 1,
         },
       )
+    })
+  })
+
+  describe('isUploadedImageReferenced', () => {
+    it.each([
+      '/uploads/images/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+      'https://cdn.example.test/uploads/images/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp?size=large',
+      'https://cdn.example.test/uploads%2Fimages%2F507f1f77bcf86cd799439011%2F550e8400-e29b-41d4-a716-446655440000%2Ewebp#preview',
+      '507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+    ])('uses a Mongo existence query matching %s', async (reference) => {
+      const exec = jest.fn().mockResolvedValue({ _id: 'quiz-1' })
+      quizModel.exists.mockReturnValue({ exec })
+
+      await expect(
+        repo.isUploadedImageReferenced(
+          '507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+        ),
+      ).resolves.toBe(true)
+
+      const query = quizModel.exists.mock.calls[0][0] as {
+        $or: Array<Record<string, RegExp>>
+      }
+      expect(query.$or).toHaveLength(3)
+      for (const field of [
+        'imageCoverURL',
+        'questions.media.url',
+        'questions.imageURL',
+      ]) {
+        const pattern = query.$or.find((condition) => condition[field])?.[field]
+        expect(pattern).toBeInstanceOf(RegExp)
+        expect(pattern?.test(reference)).toBe(true)
+      }
+      expect(exec).toHaveBeenCalledTimes(1)
+    })
+
+    it('fails closed for unsafe relative paths without querying Mongo', async () => {
+      await expect(
+        repo.isUploadedImageReferenced('../unsafe.webp'),
+      ).resolves.toBe(true)
+      expect(quizModel.exists).not.toHaveBeenCalled()
+    })
+
+    it('returns false when MongoDB confirms no image reference exists', async () => {
+      quizModel.exists.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      })
+
+      await expect(
+        repo.isUploadedImageReferenced(
+          '507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+        ),
+      ).resolves.toBe(false)
     })
   })
 

@@ -19,6 +19,15 @@ import { QuizRepository } from '../../quiz-core/repositories/quiz.repository'
 
 import { OrphanedImageCleanupService } from './orphaned-image-cleanup.service'
 
+jest.mock('node:fs/promises', () => {
+  const actual = jest.requireActual('node:fs/promises')
+  return {
+    ...actual,
+    readdir: jest.fn(actual.readdir),
+    rm: jest.fn(actual.rm),
+  }
+})
+
 jest.mock('murlock', () => ({
   MurLock:
     () =>
@@ -106,7 +115,18 @@ describe('OrphanedImageCleanupService', () => {
     const result = await service.cleanOrphanedImages()
 
     expect(result?.deletedFiles).toBe(0)
+    expect(result?.referencedFiles).toBe(1)
     await expect(readFile(image.path)).resolves.toBeTruthy()
+  })
+
+  it('counts only referenced files actually found on disk', async () => {
+    const image = await createImage()
+    references.add(imagePath(image.id))
+    references.add(imagePath(uuidv4()))
+
+    const result = await service.cleanOrphanedImages()
+
+    expect(result).toMatchObject({ scannedFiles: 1, referencedFiles: 1 })
   })
 
   it.each(['quiz deletion', 'question deletion', 'question image replacement'])(
@@ -135,6 +155,15 @@ describe('OrphanedImageCleanupService', () => {
       orphanedCandidates: 0,
       skippedFiles: 1,
     })
+    await expect(readFile(image.path)).resolves.toBeTruthy()
+  })
+
+  it('preserves files exactly on the retention cutoff', async () => {
+    const image = await createImage(uuidv4(), 2.5)
+
+    const result = await service.cleanOrphanedImages()
+
+    expect(result).toMatchObject({ orphanedCandidates: 0, deletedFiles: 0 })
     await expect(readFile(image.path)).resolves.toBeTruthy()
   })
 
@@ -199,6 +228,40 @@ describe('OrphanedImageCleanupService', () => {
     await expect(readFile(image.path)).resolves.toBeTruthy()
   })
 
+  it('aborts the entire run on an incomplete user-directory scan', async () => {
+    const image = await createImage()
+    const readdirMock = readdir as jest.Mock
+    readdirMock
+      .mockImplementationOnce(jest.requireActual('node:fs/promises').readdir)
+      .mockRejectedValueOnce(new Error('permission denied'))
+
+    const result = await service.cleanOrphanedImages()
+
+    expect(result).toBeUndefined()
+    await expect(readFile(image.path)).resolves.toBeTruthy()
+    readdirMock.mockReset()
+    readdirMock.mockImplementation(
+      jest.requireActual('node:fs/promises').readdir,
+    )
+  })
+
+  it('reports a failed remove without claiming reclaimed bytes', async () => {
+    const image = await createImage()
+    const removeMock = rm as jest.Mock
+    removeMock.mockRejectedValueOnce(new Error('disk is read-only'))
+
+    const result = await service.cleanOrphanedImages()
+
+    expect(result).toMatchObject({
+      deletionFailures: 1,
+      deletedFiles: 0,
+      bytesReclaimed: 0,
+    })
+    await expect(readFile(image.path)).resolves.toBeTruthy()
+    removeMock.mockReset()
+    removeMock.mockImplementation(jest.requireActual('node:fs/promises').rm)
+  })
+
   it('preserves a candidate if it becomes referenced at the final recheck', async () => {
     const image = await createImage()
     repository.isUploadedImageReferenced.mockResolvedValueOnce(true)
@@ -210,6 +273,19 @@ describe('OrphanedImageCleanupService', () => {
       deletedFiles: 0,
       skippedFiles: 1,
     })
+    await expect(readFile(image.path)).resolves.toBeTruthy()
+  })
+
+  it('stops before deleting when the maximum lock lease window is reached', async () => {
+    const image = await createImage()
+    repository.isUploadedImageReferenced.mockImplementationOnce(async () => {
+      jest.setSystemTime(new Date(Date.now() + 9 * 60 * 1000))
+      return false
+    })
+
+    const result = await service.cleanOrphanedImages()
+
+    expect(result).toBeUndefined()
     await expect(readFile(image.path)).resolves.toBeTruthy()
   })
 

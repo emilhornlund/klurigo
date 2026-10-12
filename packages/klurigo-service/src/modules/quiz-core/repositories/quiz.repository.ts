@@ -44,6 +44,33 @@ export function normalizeUploadedImageReference(
   return match ? `${match[1]}/${match[2]}.webp` : undefined
 }
 
+function regexEscape(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Matches raw and percent-encoded spellings accepted by the URL normalizer. */
+function encodedPathPattern(value: string): string {
+  return [...value]
+    .map((character) => {
+      const escaped = regexEscape(character)
+      const encoded = `%${character.charCodeAt(0).toString(16).padStart(2, '0')}`
+      return `(?:${escaped}|${regexEscape(encoded)})`
+    })
+    .join('')
+}
+
+function uploadedImageReferencePattern(
+  userId: string,
+  filename: string,
+): RegExp {
+  const slash = '(?:/|%2f)'
+  const user = encodedPathPattern(userId)
+  const file = encodedPathPattern(filename)
+  const uploadPrefix = `uploads${slash}images${slash}`
+  const path = `(?:${user}${slash}${file}|${uploadPrefix}${user}${slash}${file})`
+  return new RegExp(`(?:^|/)${path}(?:[?#].*)?$`, 'i')
+}
+
 /**
  * Repository for accessing and manipulating quiz data.
  *
@@ -144,18 +171,6 @@ export class QuizRepository extends BaseRepository<Quiz> {
     return operation()
   }
 
-  private hasUploadedImageReference(quiz: Partial<Quiz>): boolean {
-    if (normalizeUploadedImageReference(quiz.imageCoverURL)) return true
-    return (quiz.questions ?? []).some((question) =>
-      Boolean(
-        normalizeUploadedImageReference(question.media?.url) ||
-        normalizeUploadedImageReference(
-          'imageURL' in question ? question.imageURL : undefined,
-        ),
-      ),
-    )
-  }
-
   /**
    * Creates a new quiz document.
    *
@@ -164,10 +179,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
    * @returns The created quiz document.
    */
   public async createQuiz(quiz: Partial<Quiz>): Promise<Quiz> {
-    if (this.hasUploadedImageReference(quiz)) {
-      return this.withImageCleanupLock(() => this.create(quiz))
-    }
-    return this.create(quiz)
+    return this.withImageCleanupLock(() => this.create(quiz))
   }
 
   /**
@@ -187,9 +199,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
         { ...quiz, updated: new Date() },
         { populate: { path: 'owner' } },
       )
-    const document = this.hasUploadedImageReference(quiz)
-      ? await this.withImageCleanupLock(update)
-      : await update()
+    const document = await this.withImageCleanupLock(update)
 
     if (!document) {
       throw new QuizNotFoundException(quizId)
@@ -224,9 +234,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
   public async replaceQuiz(quizId: string, quiz: Partial<Quiz>): Promise<Quiz> {
     const replace = () =>
       this.replace(quizId, quiz, { populate: { path: 'owner' } })
-    const document = this.hasUploadedImageReference(quiz)
-      ? await this.withImageCleanupLock(replace)
-      : await replace()
+    const document = await this.withImageCleanupLock(replace)
 
     if (!document) {
       throw new QuizNotFoundException(quizId)
@@ -345,10 +353,7 @@ export class QuizRepository extends BaseRepository<Quiz> {
     ) {
       return true
     }
-    const urlPattern = new RegExp(
-      `(?:^|/)uploads/images/${userId}/${filename}(?:[?#].*)?$|^${userId}/${filename}$`,
-      'i',
-    )
+    const urlPattern = uploadedImageReferencePattern(userId, filename)
     return Boolean(
       await this.quizModel
         .exists({

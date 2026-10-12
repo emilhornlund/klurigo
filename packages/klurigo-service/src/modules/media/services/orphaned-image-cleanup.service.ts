@@ -10,6 +10,10 @@ import { EnvironmentVariables } from '../../../app/config'
 import { QuizRepository } from '../../quiz-core/repositories/quiz.repository'
 
 const CLEANUP_LOCK = 'orphaned_image_cleanup_lock'
+// MurLock renews this lease while the operation runs. Stop well before its
+// original expiry as a fallback if renewal cannot be maintained.
+const LOCK_LEASE_MS = 10 * 60 * 1000
+const LOCK_CUTOFF_MS = 8 * 60 * 1000
 const MANAGED_IMAGE_FILENAME =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.webp$/i
 const SAFE_USER_DIRECTORY = /^[A-Za-z0-9_-]+$/
@@ -45,7 +49,7 @@ export class OrphanedImageCleanupService {
 
   /** Runs daily at 03:30 UTC; the Redis mutex coordinates all service instances. */
   @Cron('0 30 3 * * *', { timeZone: 'UTC' })
-  @MurLock(60 * 60 * 1000, CLEANUP_LOCK)
+  @MurLock(LOCK_LEASE_MS, CLEANUP_LOCK)
   public async cleanOrphanedImages(): Promise<
     OrphanedImageCleanupResult | undefined
   > {
@@ -87,7 +91,6 @@ export class OrphanedImageCleanupService {
       // Any error here aborts before the filesystem can be modified.
       const referenced =
         await this.quizRepository.findReferencedUploadedImages()
-      result.referencedFiles = referenced.size
       const candidates = await this.findCandidates(
         root,
         rootRealPath,
@@ -102,6 +105,7 @@ export class OrphanedImageCleanupService {
       )
 
       for (const candidate of candidates) {
+        this.assertLockTimeRemaining(startedAt)
         // A failed revalidation invalidates confidence for every subsequent
         // deletion, so let it abort the entire run rather than handling it as
         // an individual filesystem failure.
@@ -140,10 +144,12 @@ export class OrphanedImageCleanupService {
             result.skippedFiles += 1
             continue
           }
+          this.assertLockTimeRemaining(startedAt)
           await rm(candidate.fullPath)
           result.deletedFiles += 1
           result.bytesReclaimed += fileStat.size
         } catch (error) {
+          if (Date.now() - startedAt >= LOCK_CUTOFF_MS) throw error
           if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
             result.skippedFiles += 1
             continue
@@ -196,18 +202,10 @@ export class OrphanedImageCleanupService {
       )
         continue
       const userDirectory = join(root, user.name)
-      let userEntries
-      try {
-        const userStat = await lstat(userDirectory)
-        if (!userStat.isDirectory() || userStat.isSymbolicLink()) continue
-        userEntries = await readdir(userDirectory, { withFileTypes: true })
-      } catch (error) {
-        result.skippedFiles += 1
-        this.logger.warn(
-          `Unable to scan upload directory ${user.name}: ${String(error)}`,
-        )
-        continue
-      }
+      const userStat = await lstat(userDirectory)
+      if (!userStat.isDirectory() || userStat.isSymbolicLink()) continue
+      // A partial inventory is unsafe: abort the run before any deletion.
+      const userEntries = await readdir(userDirectory, { withFileTypes: true })
       for (const entry of userEntries) {
         if (!MANAGED_IMAGE_FILENAME.test(entry.name)) continue
         const relativePath = `${user.name}/${entry.name}`
@@ -216,41 +214,43 @@ export class OrphanedImageCleanupService {
           result.skippedFiles += 1
           continue
         }
-        try {
-          const stat = await lstat(fullPath)
-          if (!stat.isFile() || stat.isSymbolicLink()) {
-            result.skippedFiles += 1
-            continue
-          }
-          const realFile = await realpath(fullPath)
-          if (!this.isContained(rootRealPath, realFile)) {
-            result.skippedFiles += 1
-            continue
-          }
-          result.scannedFiles += 1
-          if (references.has(relativePath)) {
-            result.skippedFiles += 1
-            continue
-          }
-          const conservativeMtime = Math.max(
-            stat.mtimeMs,
-            stat.ctimeMs,
-            stat.birthtimeMs || 0,
-          )
-          if (conservativeMtime >= cutoff) {
-            result.skippedFiles += 1
-            continue
-          }
-          candidates.push({ relativePath, fullPath, size: stat.size })
-        } catch (error) {
+        const stat = await lstat(fullPath)
+        if (!stat.isFile() || stat.isSymbolicLink()) {
           result.skippedFiles += 1
-          this.logger.warn(
-            `Unable to inspect upload ${relativePath}: ${String(error)}`,
-          )
+          continue
         }
+        const realFile = await realpath(fullPath)
+        if (!this.isContained(rootRealPath, realFile)) {
+          result.skippedFiles += 1
+          continue
+        }
+        result.scannedFiles += 1
+        if (references.has(relativePath)) {
+          result.referencedFiles += 1
+          result.skippedFiles += 1
+          continue
+        }
+        const conservativeMtime = Math.max(
+          stat.mtimeMs,
+          stat.ctimeMs,
+          stat.birthtimeMs || 0,
+        )
+        if (conservativeMtime >= cutoff) {
+          result.skippedFiles += 1
+          continue
+        }
+        candidates.push({ relativePath, fullPath, size: stat.size })
       }
     }
     return candidates
+  }
+
+  private assertLockTimeRemaining(startedAt: number): void {
+    if (Date.now() - startedAt >= LOCK_CUTOFF_MS) {
+      throw new Error(
+        'Cleanup stopped before its distributed lock lease expires',
+      )
+    }
   }
 
   private isContained(root: string, file: string): boolean {
