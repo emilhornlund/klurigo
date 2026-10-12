@@ -14,6 +14,8 @@ export interface EnvironmentVariables {
   JWT_SECRET: string
   PEXELS_API_KEY: string
   UPLOAD_DIRECTORY: string
+  ORPHANED_IMAGE_RETENTION_DAYS: number
+  ORPHANED_IMAGE_CLEANUP_DRY_RUN: boolean
   EMAIL_ENABLED: boolean
   EMAIL_USERNAME: string
   EMAIL_PASSWORD: string

@@ -24,6 +24,15 @@ describe('environment validation', () => {
     expect(error).toBeUndefined()
   })
 
+  it('defaults orphaned image cleanup to seven-day retention and dry-run mode', () => {
+    const { error, value } =
+      environmentValidationSchema.validate(validEnvironment)
+
+    expect(error).toBeUndefined()
+    expect(value.ORPHANED_IMAGE_RETENTION_DAYS).toBe(7)
+    expect(value.ORPHANED_IMAGE_CLEANUP_DRY_RUN).toBe(true)
+  })
+
   it('rejects a missing JWT signing secret', () => {
     const environmentWithoutSecret = {
       ...validEnvironment,
