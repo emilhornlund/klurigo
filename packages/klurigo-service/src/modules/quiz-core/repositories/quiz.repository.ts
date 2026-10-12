@@ -2,6 +2,7 @@ import { QuizVisibility } from '@klurigo/common'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { QueryFilter } from 'mongoose'
+import { MurLock } from 'murlock'
 
 import {
   BaseRepository,
@@ -11,6 +12,37 @@ import {
 import { QuizNotFoundException } from '../exceptions'
 
 import { Quiz, type QuizModel } from './models/schemas'
+
+const IMAGE_CLEANUP_LOCK = 'orphaned_image_cleanup_lock'
+
+/** Converts a managed upload URL or relative upload path to its disk identifier. */
+export function normalizeUploadedImageReference(
+  value: unknown,
+): string | undefined {
+  if (typeof value !== 'string' || !value.trim()) return undefined
+
+  let pathname = value.trim()
+  const isAbsoluteUrl =
+    /^[a-z][a-z0-9+.-]*:\/\//i.test(pathname) || pathname.startsWith('//')
+  try {
+    pathname = new URL(pathname, 'http://klurigo.local').pathname
+  } catch {
+    return undefined
+  }
+  if (isAbsoluteUrl && !pathname.startsWith('/uploads/images/')) {
+    return undefined
+  }
+
+  try {
+    pathname = decodeURIComponent(pathname).replace(/^\/+/, '')
+  } catch {
+    return undefined
+  }
+  const match = pathname.match(
+    /^(?:uploads\/images\/)?([A-Za-z0-9_-]+)\/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})\.webp$/i,
+  )
+  return match ? `${match[1]}/${match[2]}.webp` : undefined
+}
 
 /**
  * Repository for accessing and manipulating quiz data.
@@ -105,6 +137,25 @@ export class QuizRepository extends BaseRepository<Quiz> {
     return result.documents
   }
 
+  @MurLock(60 * 60 * 1000, IMAGE_CLEANUP_LOCK)
+  private async withImageCleanupLock<T>(
+    operation: () => Promise<T>,
+  ): Promise<T> {
+    return operation()
+  }
+
+  private hasUploadedImageReference(quiz: Partial<Quiz>): boolean {
+    if (normalizeUploadedImageReference(quiz.imageCoverURL)) return true
+    return (quiz.questions ?? []).some((question) =>
+      Boolean(
+        normalizeUploadedImageReference(question.media?.url) ||
+        normalizeUploadedImageReference(
+          'imageURL' in question ? question.imageURL : undefined,
+        ),
+      ),
+    )
+  }
+
   /**
    * Creates a new quiz document.
    *
@@ -113,6 +164,9 @@ export class QuizRepository extends BaseRepository<Quiz> {
    * @returns The created quiz document.
    */
   public async createQuiz(quiz: Partial<Quiz>): Promise<Quiz> {
+    if (this.hasUploadedImageReference(quiz)) {
+      return this.withImageCleanupLock(() => this.create(quiz))
+    }
     return this.create(quiz)
   }
 
@@ -127,11 +181,15 @@ export class QuizRepository extends BaseRepository<Quiz> {
    * @throws QuizNotFoundException If no quiz is found with the given ID.
    */
   public async updateQuiz(quizId: string, quiz: Partial<Quiz>): Promise<Quiz> {
-    const document = await this.update(
-      quizId,
-      { ...quiz, updated: new Date() },
-      { populate: { path: 'owner' } },
-    )
+    const update = () =>
+      this.update(
+        quizId,
+        { ...quiz, updated: new Date() },
+        { populate: { path: 'owner' } },
+      )
+    const document = this.hasUploadedImageReference(quiz)
+      ? await this.withImageCleanupLock(update)
+      : await update()
 
     if (!document) {
       throw new QuizNotFoundException(quizId)
@@ -164,9 +222,11 @@ export class QuizRepository extends BaseRepository<Quiz> {
    * @throws QuizNotFoundException when no quiz exists with the given id.
    */
   public async replaceQuiz(quizId: string, quiz: Partial<Quiz>): Promise<Quiz> {
-    const document = await this.replace(quizId, quiz, {
-      populate: { path: 'owner' },
-    })
+    const replace = () =>
+      this.replace(quizId, quiz, { populate: { path: 'owner' } })
+    const document = this.hasUploadedImageReference(quiz)
+      ? await this.withImageCleanupLock(replace)
+      : await replace()
 
     if (!document) {
       throw new QuizNotFoundException(quizId)
@@ -229,6 +289,77 @@ export class QuizRepository extends BaseRepository<Quiz> {
       .find({ _id: { $in: ids } })
       .populate('owner')
       .exec()
+  }
+
+  /**
+   * Collects every managed-upload URL from all quizzes without hydrating full
+   * documents or filtering by ownership, visibility, or game mode.
+   */
+  public async findReferencedUploadedImages(): Promise<Set<string>> {
+    const references = new Set<string>()
+    type ImageProjection = {
+      imageCoverURL?: string
+      questions?: Array<{
+        media?: { url?: string }
+        imageURL?: string
+      }>
+    }
+    const cursor = this.quizModel
+      .find(
+        {},
+        {
+          imageCoverURL: 1,
+          'questions.media.url': 1,
+          'questions.imageURL': 1,
+        },
+      )
+      .lean()
+      .cursor() as unknown as AsyncIterable<ImageProjection>
+
+    for await (const quiz of cursor) {
+      for (const url of [quiz.imageCoverURL]) {
+        const normalized = normalizeUploadedImageReference(url)
+        if (normalized) references.add(normalized)
+      }
+      for (const question of quiz.questions ?? []) {
+        for (const url of [question.media?.url, question.imageURL]) {
+          const normalized = normalizeUploadedImageReference(url)
+          if (normalized) references.add(normalized)
+        }
+      }
+    }
+
+    return references
+  }
+
+  /** Checks a single upload URL across all image-bearing quiz fields. */
+  public async isUploadedImageReferenced(
+    relativePath: string,
+  ): Promise<boolean> {
+    const [userId, filename] = relativePath.split('/')
+    if (
+      !userId ||
+      !filename ||
+      !/^[A-Za-z0-9_-]+$/.test(userId) ||
+      !/^[0-9a-f-]+\.webp$/i.test(filename)
+    ) {
+      return true
+    }
+    const urlPattern = new RegExp(
+      `(?:^|/)uploads/images/${userId}/${filename}(?:[?#].*)?$|^${userId}/${filename}$`,
+      'i',
+    )
+    return Boolean(
+      await this.quizModel
+        .exists({
+          $or: [
+            { imageCoverURL: urlPattern },
+            { 'questions.media.url': urlPattern },
+            { 'questions.imageURL': urlPattern },
+          ],
+        })
+        .exec(),
+    )
   }
 
   /**

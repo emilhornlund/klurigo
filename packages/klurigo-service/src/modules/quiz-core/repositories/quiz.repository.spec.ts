@@ -2,7 +2,17 @@ import { QuizVisibility } from '@klurigo/common'
 
 import { QuizNotFoundException } from '../exceptions'
 
-import { QuizRepository } from './quiz.repository'
+jest.mock('murlock', () => ({
+  MurLock:
+    () =>
+    (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor) =>
+      descriptor,
+}))
+
+import {
+  normalizeUploadedImageReference,
+  QuizRepository,
+} from './quiz.repository'
 
 /**
  * We mock the shared repository layer so we can unit-test QuizRepository in isolation
@@ -49,9 +59,39 @@ type Quiz = {
 
 type QuizModel = {
   findById: jest.Mock
+  find: jest.Mock
 }
 
 describe('QuizRepository', () => {
+  describe('normalizeUploadedImageReference', () => {
+    it('normalizes managed uploads regardless of host', () => {
+      expect(
+        normalizeUploadedImageReference(
+          'https://previous-klurigo-host.test/uploads/images/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+        ),
+      ).toBe(
+        '507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+      )
+    })
+
+    it('ignores external and malformed image URLs', () => {
+      expect(
+        normalizeUploadedImageReference(
+          'https://images.pexels.com/photos/123/photo.jpg',
+        ),
+      ).toBeUndefined()
+      expect(
+        normalizeUploadedImageReference(
+          'https://images.example.test/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+        ),
+      ).toBeUndefined()
+      expect(
+        normalizeUploadedImageReference('/uploads/images/../../secret.webp'),
+      ).toBeUndefined()
+      expect(normalizeUploadedImageReference('%%%')).toBeUndefined()
+    })
+  })
+
   let quizModel: QuizModel
   let repo: QuizRepository
 
@@ -60,11 +100,60 @@ describe('QuizRepository', () => {
 
     quizModel = {
       findById: jest.fn(),
+      find: jest.fn(),
     }
 
     // QuizRepository expects @InjectModel(Quiz.name) which is a Mongoose model.
     // For unit tests we only need the subset we use (findById + populate chain).
     repo = new QuizRepository(quizModel as unknown as never)
+  })
+
+  describe('findReferencedUploadedImages', () => {
+    it('collects deduplicated local cover, question media, and Pin image references', async () => {
+      const cursor = {
+        async *[Symbol.asyncIterator]() {
+          yield {
+            imageCoverURL:
+              'https://old-host.test/uploads/images/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+            questions: [
+              {
+                media: {
+                  url: '/uploads/images/507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+                },
+              },
+              {
+                imageURL:
+                  'https://current-host.test/uploads/images/507f1f77bcf86cd799439011/6ba7b810-9dad-41d1-80b4-00c04fd430c8.webp',
+              },
+              {
+                media: {
+                  url: 'https://images.pexels.com/photos/123/image.jpg',
+                },
+              },
+            ],
+          }
+        },
+      }
+      const lean = jest
+        .fn()
+        .mockReturnValue({ cursor: jest.fn().mockReturnValue(cursor) })
+      quizModel.find.mockReturnValue({ lean })
+
+      await expect(repo.findReferencedUploadedImages()).resolves.toEqual(
+        new Set([
+          '507f1f77bcf86cd799439011/550e8400-e29b-41d4-a716-446655440000.webp',
+          '507f1f77bcf86cd799439011/6ba7b810-9dad-41d1-80b4-00c04fd430c8.webp',
+        ]),
+      )
+      expect(quizModel.find).toHaveBeenCalledWith(
+        {},
+        {
+          imageCoverURL: 1,
+          'questions.media.url': 1,
+          'questions.imageURL': 1,
+        },
+      )
+    })
   })
 
   describe('findQuizByIdOrThrow', () => {

@@ -11,6 +11,8 @@ const validEnvironment = {
   JWT_SECRET: 'super_secret',
   PEXELS_API_KEY: 'test-key',
   UPLOAD_DIRECTORY: './public/uploads',
+  ORPHANED_IMAGE_RETENTION_DAYS: 7,
+  ORPHANED_IMAGE_CLEANUP_DRY_RUN: true,
   KLURIGO_URL: 'http://test',
   GOOGLE_CLIENT_ID: 'test-client-id',
   GOOGLE_CLIENT_SECRET: 'test-client-secret',

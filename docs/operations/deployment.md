@@ -86,6 +86,19 @@ in this documentation.
 
 ## Boundaries And Limits
 
+### Uploaded Image Cleanup
+
+The service includes a daily orphaned-image reconciliation job. New deployments
+use dry-run mode by default (`ORPHANED_IMAGE_CLEANUP_DRY_RUN=true`) and a
+seven-day minimum retention (`ORPHANED_IMAGE_RETENTION_DAYS=7`). Operators
+should inspect its structured logs and potential-reclamation totals over
+several runs before setting dry-run to `false`. The setting is runtime
+application configuration in the external Compose/environment setup; this
+repository does not control those production values. Every service instance must
+share the upload volume and Redis lock configuration for safe multi-instance
+operation. See [Orphaned Image Cleanup](../development/orphaned-image-cleanup.md)
+for the full procedure, log fields, schedule, and safety details.
+
 The checked-in Dockerfiles define application image behavior, while the
 production application environment files contribute application-side
 configuration. GitHub Actions builds those images and updates only the image

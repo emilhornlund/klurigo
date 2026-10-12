@@ -36,6 +36,8 @@ contributor or application documentation.
   infrastructure, lifecycle cleanup, isolation, and coverage.
 - [Backend game lifecycle](./development/game-lifecycle.md) - supported task
   progression, guarded commands, and client-visible conflict behavior.
+- [Orphaned image cleanup](./development/orphaned-image-cleanup.md) - upload
+  retention, the daily reconciliation job, and operational controls.
 - [End-to-end testing](./development/end-to-end-testing.md) - Playwright
   setup, seeded fixtures, browser projects, GameSession execution, and CI.
 

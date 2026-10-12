@@ -10,9 +10,14 @@ import { diskStorage } from 'multer'
 import { v4 as uuidv4 } from 'uuid'
 
 import { EnvironmentVariables } from '../../app/config'
+import { QuizCoreModule } from '../quiz-core/quiz-core.module'
 
 import { MediaController } from './controllers'
-import { MediaService, PexelsMediaSearchService } from './services'
+import {
+  MediaService,
+  OrphanedImageCleanupService,
+  PexelsMediaSearchService,
+} from './services'
 
 /**
  * Module for managing media-related operations.
@@ -21,6 +26,7 @@ import { MediaService, PexelsMediaSearchService } from './services'
   imports: [
     HttpModule,
     ConfigModule,
+    QuizCoreModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService<EnvironmentVariables>) => ({
@@ -47,7 +53,13 @@ import { MediaService, PexelsMediaSearchService } from './services'
     }),
   ],
   controllers: [MediaController],
-  providers: [Logger, ConfigService, MediaService, PexelsMediaSearchService],
+  providers: [
+    Logger,
+    ConfigService,
+    MediaService,
+    PexelsMediaSearchService,
+    OrphanedImageCleanupService,
+  ],
   exports: [MediaService],
 })
 export class MediaModule {}
