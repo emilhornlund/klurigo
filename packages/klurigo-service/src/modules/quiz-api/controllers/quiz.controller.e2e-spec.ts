@@ -154,14 +154,12 @@ describe('QuizController (e2e)', () => {
         publicQuizzes.push(await quizService.createQuiz(originalData, user))
       }
 
-      await Promise.all(
-        [...Array(5).keys()].map(() =>
-          quizService.createQuiz(
-            { ...originalData, visibility: QuizVisibility.Private },
-            user,
-          ),
-        ),
-      )
+      for (let i = 0; i < 5; i++) {
+        await quizService.createQuiz(
+          { ...originalData, visibility: QuizVisibility.Private },
+          user,
+        )
+      }
 
       const allResultsSortedByCreatedDate = publicQuizzes
         .sort((a, b) => b.created.getTime() - a.created.getTime())
@@ -184,11 +182,9 @@ describe('QuizController (e2e)', () => {
     it('should return quizzes filtered by search term', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
 
-      await Promise.all([
-        ...[...Array(10).keys()].map(() =>
-          quizService.createQuiz({ ...originalData }, user),
-        ),
-      ])
+      for (let i = 0; i < 10; i++) {
+        await quizService.createQuiz({ ...originalData }, user)
+      }
 
       const uniqueQuiz = await quizService.createQuiz(
         { ...originalData, title: 'Unique Quiz Title' },
@@ -216,11 +212,9 @@ describe('QuizController (e2e)', () => {
     it('should return quizzes filtered by mode', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
 
-      await Promise.all(
-        [...Array(10).keys()].map(() =>
-          quizService.createQuiz({ ...originalData }, user),
-        ),
-      )
+      for (let i = 0; i < 10; i++) {
+        await quizService.createQuiz({ ...originalData }, user)
+      }
 
       const zeroToOneHundredQuizzes: QuizResponseDto[] = []
       for (let i = 0; i < 10; i++) {
