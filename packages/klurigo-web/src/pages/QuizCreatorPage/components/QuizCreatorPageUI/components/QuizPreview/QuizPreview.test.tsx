@@ -159,7 +159,18 @@ const questions: QuizQuestionModel[] = [
 const answerTypeCases: {
   question: QuizQuestionModel
   readingText: string
+  answerButton: string
 }[] = [
+  {
+    question: questions[0],
+    readingText: 'First unsaved question',
+    answerButton: 'First answer',
+  },
+  {
+    question: questions[1],
+    readingText: 'Second question',
+    answerButton: 'True',
+  },
   {
     question: {
       type: QuestionType.Range,
@@ -170,6 +181,7 @@ const answerTypeCases: {
       duration: 30,
     },
     readingText: 'Range question',
+    answerButton: 'Submit answer',
   },
   {
     question: {
@@ -179,6 +191,7 @@ const answerTypeCases: {
       duration: 30,
     },
     readingText: 'Type answer question',
+    answerButton: 'Submit answer',
   },
   {
     question: {
@@ -190,6 +203,7 @@ const answerTypeCases: {
       duration: 30,
     },
     readingText: 'Pin question',
+    answerButton: 'Submit answer',
   },
   {
     question: {
@@ -199,6 +213,7 @@ const answerTypeCases: {
       duration: 30,
     },
     readingText: 'Puzzle question',
+    answerButton: 'Submit answer',
   },
 ]
 
@@ -281,11 +296,12 @@ describe('QuizPreview', () => {
     )
   })
 
-  it('automatically advances through preview and question phases when countdowns expire', () => {
+  it('automatically advances through questions and exits when the final countdown expires', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-10-09T12:00:00.000Z'))
     try {
-      renderPreview()
+      const onExit = vi.fn()
+      renderPreview(onExit)
 
       const previewDuration = getQuestionPreviewDurationMs(
         'First unsaved question',
@@ -319,17 +335,19 @@ describe('QuizPreview', () => {
       )
       expect(screen.getByRole('button', { name: 'True' })).toBeInTheDocument()
       act(() => vi.advanceTimersByTime(30000))
-      expect(screen.getByText('Preview complete')).toBeInTheDocument()
+      expect(onExit).toHaveBeenCalledOnce()
+      expect(screen.queryByText('Preview complete')).not.toBeInTheDocument()
     } finally {
       vi.useRealTimers()
     }
   })
 
-  it('advances to the next question after a local answer without adding score to the footer', () => {
+  it('advances to the next question after a local answer without exiting or adding score to the footer', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-10-09T12:00:00.000Z'))
     try {
-      renderPreview()
+      const onExit = vi.fn()
+      renderPreview(onExit)
       act(() =>
         vi.advanceTimersByTime(
           getQuestionPreviewDurationMs('First unsaved question'),
@@ -345,55 +363,36 @@ describe('QuizPreview', () => {
       expect(screen.getByTestId('player-game-footer')).not.toHaveTextContent(
         '1000',
       )
+      expect(onExit).not.toHaveBeenCalled()
     } finally {
       vi.useRealTimers()
     }
   })
 
   it.each(answerTypeCases)(
-    'converts and accepts local $question.type answers',
-    ({ question, readingText }) => {
+    'exits after submitting a final $question.type answer',
+    ({ question, readingText, answerButton }) => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date('2026-10-09T12:00:00.000Z'))
       try {
+        const onExit = vi.fn()
         render(
           <QuizPreview
             mode={GameMode.Classic}
             questions={[question]}
-            onExit={vi.fn()}
+            onExit={onExit}
           />,
         )
         act(() =>
           vi.advanceTimersByTime(getQuestionPreviewDurationMs(readingText)),
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Submit answer' }))
+        fireEvent.click(screen.getByRole('button', { name: answerButton }))
 
-        expect(screen.getByText('Preview complete')).toBeInTheDocument()
+        expect(onExit).toHaveBeenCalledOnce()
+        expect(screen.queryByText('Preview complete')).not.toBeInTheDocument()
       } finally {
         vi.useRealTimers()
       }
     },
   )
-
-  it('completes immediately when an answer is submitted on the final question', () => {
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date('2026-10-09T12:00:00.000Z'))
-    try {
-      render(
-        <QuizPreview
-          mode={GameMode.Classic}
-          questions={[questions[1]]}
-          onExit={vi.fn()}
-        />,
-      )
-      act(() =>
-        vi.advanceTimersByTime(getQuestionPreviewDurationMs('Second question')),
-      )
-      fireEvent.click(screen.getByRole('button', { name: 'True' }))
-
-      expect(screen.getByText('Preview complete')).toBeInTheDocument()
-    } finally {
-      vi.useRealTimers()
-    }
-  })
 })

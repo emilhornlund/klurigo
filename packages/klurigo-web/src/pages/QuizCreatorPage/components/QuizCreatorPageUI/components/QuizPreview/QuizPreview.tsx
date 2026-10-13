@@ -92,7 +92,6 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
   const [submittedAnswer, setSubmittedAnswer] = useState<
     GameQuestionPlayerAnswerEvent | undefined
   >()
-  const [complete, setComplete] = useState(false)
   const question = playerQuestions[questionIndex]
   const [countdown, setCountdown] = useState(() =>
     createCountdownFromMilliseconds(
@@ -101,7 +100,7 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
   )
 
   useEffect(() => {
-    if (complete || !question) return
+    if (!question) return
 
     const remainingMs = Math.max(
       new Date(countdown.expiryTime).getTime() - Date.now(),
@@ -120,7 +119,7 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
       }
 
       if (questionIndex === playerQuestions.length - 1) {
-        setComplete(true)
+        onExit()
         return
       }
 
@@ -137,13 +136,13 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     }, remainingMs)
 
     return () => window.clearTimeout(timeout)
-  }, [complete, countdown, phase, playerQuestions, question, questionIndex])
+  }, [countdown, onExit, phase, playerQuestions, question, questionIndex])
 
   const handleAnswer = (request: SubmitQuestionAnswerRequestDto) => {
     setSubmittedAnswer(toSubmittedAnswer(request))
 
     if (questionIndex === playerQuestions.length - 1) {
-      setComplete(true)
+      onExit()
       return
     }
 
@@ -177,25 +176,6 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
         <Typography variant="body" color="inverse">
           Add a complete question to preview this quiz.
         </Typography>
-      </GamePage>
-    )
-  }
-
-  if (complete) {
-    return (
-      <GamePage
-        layout="fill"
-        align="space-between"
-        footer={footer}
-        header={<ExitPreviewButton onExit={onExit} />}>
-        <div>
-          <Typography variant="title" color="inverse">
-            Preview complete
-          </Typography>
-          <Typography variant="body" color="inverse">
-            You reached the end of this quiz without creating a game.
-          </Typography>
-        </div>
       </GamePage>
     )
   }
