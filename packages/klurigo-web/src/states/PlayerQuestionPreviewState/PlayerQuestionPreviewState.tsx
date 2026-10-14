@@ -2,7 +2,7 @@ import type { GameQuestionPreviewPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 
 import { ProgressBar } from '../../components'
-import { GamePage, PlayerGameFooter } from '../common'
+import { GamePage } from '../common'
 
 import { PlayerQuestionPreviewView } from './components'
 
@@ -13,24 +13,11 @@ export interface PlayerQuestionPreviewStateProps {
 const PlayerQuestionPreviewState: FC<PlayerQuestionPreviewStateProps> = ({
   event: {
     game: { mode },
-    player: { nickname, score: totalScore },
     question: { type: questionType, question, points: questionPoints },
     countdown,
-    pagination: { current: currentQuestion, total: totalQuestions },
   },
 }) => (
-  <GamePage
-    layout="fill"
-    align="space-between"
-    scrollable={false}
-    footer={
-      <PlayerGameFooter
-        currentQuestion={currentQuestion}
-        totalQuestions={totalQuestions}
-        nickname={nickname}
-        totalScore={totalScore}
-      />
-    }>
+  <GamePage layout="fill" align="space-between" scrollable={false}>
     <PlayerQuestionPreviewView
       mode={mode}
       questionType={questionType}

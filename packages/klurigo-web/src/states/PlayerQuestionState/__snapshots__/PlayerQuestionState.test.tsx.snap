@@ -36,7 +36,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="fullHeight hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -44,7 +44,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Who painted The Starry Night?
             </h1>
             <div
-              class="questionMedia"
+              class="questionMedia mediaArea"
               data-testid="question-media"
             >
               <div
@@ -66,7 +66,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               </div>
             </div>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -120,58 +120,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         </div>
       </div>
     </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -212,7 +160,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="fullHeight hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -220,7 +168,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Who painted The Starry Night?
             </h1>
             <div
-              class="questionMedia"
+              class="questionMedia mediaArea"
               data-testid="question-media"
             >
               <div
@@ -242,10 +190,10 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               </div>
             </div>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
-                class="answerPicker"
+                class="answerPicker manyAnswers"
               >
                 <div
                   class="grid"
@@ -314,58 +262,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         </div>
       </div>
     </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -406,7 +302,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="fullHeight hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -414,7 +310,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Who painted The Starry Night?
             </h1>
             <div
-              class="questionMedia"
+              class="questionMedia mediaArea"
               data-testid="question-media"
             >
               <div
@@ -436,7 +332,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               </div>
             </div>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -469,58 +365,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           <div
             data-testid="progressbar"
           />
-        </div>
-      </div>
-    </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
         </div>
       </div>
     </div>
@@ -572,7 +416,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               What percentage of the earth's surface is covered by water?
             </h1>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerRange"
@@ -645,58 +489,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
         </div>
       </div>
     </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 `;
@@ -745,7 +537,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Rabbits can't vomit?
             </h1>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -778,58 +570,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           <div
             data-testid="progressbar"
           />
-        </div>
-      </div>
-    </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
         </div>
       </div>
     </div>
@@ -881,7 +621,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
               Who painted the Mono Lisa?
             </h1>
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerInput"
@@ -963,58 +703,6 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           <div
             data-testid="progressbar"
           />
-        </div>
-      </div>
-    </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="surface main"
-      >
-        <div
-          class="leading"
-        >
-          <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-circle-question"
-            data-icon="circle-question"
-            data-prefix="fas"
-            role="img"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
-              fill="currentColor"
-            />
-          </svg>
-          <p
-            class="typography body2 alignLeft widthFull colorInverse noOpacity bold"
-          >
-            1
-             / 
-            20
-          </p>
-        </div>
-        <div
-          class="center"
-        >
-          <p
-            class="typography body2 alignCenter widthFull colorInverse noOpacity bold"
-          >
-            FrostyBear
-          </p>
-        </div>
-        <div
-          class="trailing"
-        >
-          <span>
-            <p
-              class="typography body2 alignRight widthFull colorDefault noOpacity bold badge"
-            >
-              10458
-            </p>
-          </span>
         </div>
       </div>
     </div>

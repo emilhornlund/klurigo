@@ -39,12 +39,82 @@ describe('PlayerQuestionView', () => {
 
     expect(screen.getByText('Which answer is correct?')).toBeInTheDocument()
     expect(screen.getByTestId('question-media')).toBeInTheDocument()
+    expect(screen.getByTestId('question-media').parentElement).toHaveClass(
+      'hasMedia',
+    )
+    expect(screen.getByTestId('question-media')).toHaveClass('mediaArea')
+    expect(
+      screen
+        .getByTestId('question-media')
+        .parentElement?.querySelector('[class*=answerArea]'),
+    ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Correct' })).toBeDisabled()
     expect(screen.queryByText('2 / 20')).not.toBeInTheDocument()
     expect(screen.queryByText('FrostyBear')).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Correct' }))
     expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it.each([MediaType.Audio, MediaType.Video])(
+    'renders %s media between the question heading and answer controls',
+    (mediaType) => {
+      const { container } = render(
+        <MemoryRouter>
+          <PlayerQuestionView
+            question={{
+              type: QuestionType.MultiChoice,
+              question: 'Question with media',
+              media: {
+                type: mediaType,
+                url: `https://media.test/${mediaType}`,
+              },
+              answers: [{ value: 'Answer' }],
+              duration: 30,
+            }}
+            countdown={countdown}
+          />
+        </MemoryRouter>,
+      )
+
+      const heading = screen.getByText('Question with media')
+      const media = screen.getByTestId('question-media')
+      const answer = screen.getByRole('button', { name: 'Answer' })
+
+      expect(heading.compareDocumentPosition(media)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      )
+      expect(media.compareDocumentPosition(answer)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      )
+      expect(media.querySelector('[class*="playerWrapper"]')).toBeTruthy()
+      expect(container.querySelector('img')).toBeNull()
+    },
+  )
+
+  it('keeps the heading and answer controls when a question has no media', () => {
+    render(
+      <MemoryRouter>
+        <PlayerQuestionView
+          question={{
+            type: QuestionType.MultiChoice,
+            question: 'Question without media',
+            answers: [{ value: 'Answer' }],
+            duration: 30,
+          }}
+          countdown={countdown}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Question without media')).toBeInTheDocument()
+    expect(screen.queryByTestId('question-media')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Answer' })).toBeInTheDocument()
+    expect(
+      screen
+        .getByRole('button', { name: 'Answer' })
+        .closest('[class*=answerArea]'),
+    ).toBeInTheDocument()
   })
 
   it.each([
@@ -69,12 +139,19 @@ describe('PlayerQuestionView', () => {
       duration: 30,
     } as Parameters<typeof PlayerQuestionView>[0]['question']
 
-    render(
+    const { container } = render(
       <MemoryRouter>
         <PlayerQuestionView question={question} countdown={countdown} />
       </MemoryRouter>,
     )
 
     expect(screen.getByText('Question text')).toBeInTheDocument()
+    if (questionType === QuestionType.Pin) {
+      expect(screen.getByTestId('pin-answer')).toBeInTheDocument()
+      expect(container.firstElementChild).toHaveClass('pinQuestion')
+    }
+    if (questionType === QuestionType.Puzzle) {
+      expect(container.firstElementChild).toHaveClass('puzzleQuestion')
+    }
   })
 })

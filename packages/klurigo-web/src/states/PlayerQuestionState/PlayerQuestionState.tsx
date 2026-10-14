@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 import { ProgressBar } from '../../components'
 import { useGameContext } from '../../context/game'
-import { GamePage, PlayerGameFooter } from '../common'
+import { GamePage } from '../common'
 
 import { PlayerQuestionView } from './components'
 
@@ -16,16 +16,7 @@ export interface PlayerQuestionStateProps {
 }
 
 const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
-  event: {
-    player: {
-      nickname,
-      score: { total: totalScore },
-    },
-    question,
-    answer,
-    countdown,
-    pagination: { current: currentQuestion, total: totalQuestions },
-  },
+  event: { question, answer, countdown },
 }) => {
   const [isSubmittingQuestionAnswer, setIsSubmittingQuestionAnswer] =
     useState<boolean>(false)
@@ -42,18 +33,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
   }
 
   return (
-    <GamePage
-      layout="fill"
-      align="space-between"
-      scrollable={false}
-      footer={
-        <PlayerGameFooter
-          currentQuestion={currentQuestion}
-          totalQuestions={totalQuestions}
-          nickname={nickname}
-          totalScore={totalScore}
-        />
-      }>
+    <GamePage layout="fill" align="space-between" scrollable={false}>
       <PlayerQuestionView
         question={question}
         submittedAnswer={answer}

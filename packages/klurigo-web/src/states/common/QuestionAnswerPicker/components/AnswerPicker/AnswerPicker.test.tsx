@@ -349,6 +349,7 @@ describe('AnswerPicker', () => {
 
       const buttons = screen.getAllByRole('button')
       expect(buttons).toHaveLength(7)
+      expect(buttons[0].closest('[class*=manyAnswers]')).toBeInTheDocument()
 
       answers.forEach((answer, index) => {
         expect(buttons[index]).toHaveTextContent(answer)

@@ -48,6 +48,14 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
     }
     return { type: MediaType.Image, url: question.imageURL }
   }, [question])
+  const hasQuestionMedia =
+    question.type !== QuestionType.Pin &&
+    'media' in question &&
+    Boolean(question.media?.url)
+  const isFlexibleAnswer =
+    hasQuestionMedia ||
+    question.type === QuestionType.Pin ||
+    question.type === QuestionType.Puzzle
 
   const handleConfirmSkipQuestion = () => {
     setShowConfirmSkipQuestionDialog(false)
@@ -100,6 +108,11 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
         )}
 
         <QuestionMedia
+          className={
+            hasQuestionMedia && question.type !== QuestionType.Puzzle
+              ? styles.mediaArea
+              : undefined
+          }
           type={question.type}
           media={media}
           alt={question.question}
@@ -109,7 +122,8 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
           className={classNames(
             styles.row,
             styles.fullWidth,
-            styles.fullHeight,
+            styles.answerRow,
+            isFlexibleAnswer ? styles.flexibleAnswerRow : undefined,
           )}>
           <QuestionAnswerPicker question={question} interactive={false} />
         </div>

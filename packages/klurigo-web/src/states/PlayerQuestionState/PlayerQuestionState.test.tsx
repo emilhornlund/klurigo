@@ -76,6 +76,7 @@ describe('PlayerQuestionState', () => {
       },
     })
 
+    expect(screen.queryByText('FrostyBear')).not.toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
 

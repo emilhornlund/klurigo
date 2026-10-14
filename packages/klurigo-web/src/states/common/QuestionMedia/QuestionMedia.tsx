@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 
 import ResponsiveImage from '../../../components/ResponsiveImage'
 import ResponsivePlayer from '../../../components/ResponsivePlayer'
+import { classNames } from '../../../utils/helpers'
 
 import styles from './QuestionMedia.module.scss'
 
@@ -17,6 +18,7 @@ export type QuestionMediaProps = {
   media?: QuestionMediaEvent
   alt?: string
   countdown?: CountdownEvent
+  className?: string
 }
 
 const QuestionMedia: FC<QuestionMediaProps> = ({
@@ -24,6 +26,7 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
   media,
   alt,
   countdown,
+  className,
 }) => {
   const imageURL = useMemo(() => {
     if (type !== QuestionType.Pin && media?.type === MediaType.Image) {
@@ -54,7 +57,9 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
   if (!imageURL && !audioOrVideoURL) return null
 
   return (
-    <div className={styles.questionMedia} data-testid="question-media">
+    <div
+      className={classNames(styles.questionMedia, className)}
+      data-testid="question-media">
       {imageURL && (
         <ResponsiveImage
           imageURL={imageURL}

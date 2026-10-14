@@ -156,6 +156,10 @@ export const QuestionSlider = {
       question: {
         type: QuestionType.Range,
         question: "What percentage of the earth's surface is covered by water?",
+        media: {
+          type: MediaType.Video,
+          url: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+        },
         min: 0,
         max: 100,
         step: 1,
@@ -182,6 +186,10 @@ export const QuestionTrueFalse = {
       question: {
         type: QuestionType.TrueFalse,
         question: "Rabbits can't vomit?",
+        media: {
+          type: MediaType.Audio,
+          url: 'https://onlinetestcase.com/wp-content/uploads/2023/06/500-KB-MP3.mp3',
+        },
         duration: 30,
       },
       countdown: {

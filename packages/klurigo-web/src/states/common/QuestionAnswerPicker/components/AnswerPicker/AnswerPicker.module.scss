@@ -224,6 +224,39 @@
       }
     }
   }
+
+  &.manyAnswers,
+  &.compactManyAnswers {
+    @media (max-height: 700px) {
+      .grid {
+        @include helpers.mobile {
+          gap: spacing.$space-inline-mobile;
+        }
+
+        .answerButton {
+          @include helpers.mobile {
+            padding-block: spacing.$space-inline-mobile;
+          }
+        }
+      }
+    }
+  }
+
+  &.compactManyAnswers {
+    @media (max-height: 700px) {
+      .grid {
+        @include helpers.mobile {
+          gap: spacing.$space-inline-tight-mobile;
+        }
+
+        .answerButton {
+          @include helpers.mobile {
+            padding-block: spacing.$space-inline-tight-mobile;
+          }
+        }
+      }
+    }
+  }
 }
 
 @keyframes slideInUp {

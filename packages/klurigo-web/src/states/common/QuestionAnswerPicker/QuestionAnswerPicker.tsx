@@ -6,6 +6,8 @@ import type {
 import { QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
 
+import { classNames } from '../../../utils/helpers'
+
 import {
   AnswerInput,
   AnswerPicker,
@@ -20,6 +22,7 @@ export interface QuestionAnswerPickerProps {
   submittedAnswer?: GameQuestionPlayerAnswerEvent
   interactive?: boolean
   loading?: boolean
+  className?: string
   onChange?: (request: SubmitQuestionAnswerRequestDto) => void
 }
 
@@ -28,9 +31,10 @@ const QuestionAnswerPicker: FC<QuestionAnswerPickerProps> = ({
   submittedAnswer,
   interactive = true,
   loading = false,
+  className,
   onChange,
 }) => (
-  <div className={styles.questionAnswerPicker}>
+  <div className={classNames(styles.questionAnswerPicker, className)}>
     {question.type === QuestionType.MultiChoice && (
       <AnswerPicker
         answers={question.answers.map(({ value }) => value)}
