@@ -1,5 +1,5 @@
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -44,6 +44,7 @@ describe('PlayerQuestionPreviewState', () => {
       </MemoryRouter>,
     )
 
+    expect(screen.queryByText('FrostyBear')).not.toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
 })

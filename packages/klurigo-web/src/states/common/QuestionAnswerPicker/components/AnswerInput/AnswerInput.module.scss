@@ -9,13 +9,13 @@
   .interactive {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     flex: 1;
 
     form {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-end;
 
       @include helpers.mobile {
         gap: spacing.$space-compact-mobile;

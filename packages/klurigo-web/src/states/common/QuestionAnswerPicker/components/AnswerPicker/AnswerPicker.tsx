@@ -56,7 +56,15 @@ const AnswerPicker: FC<AnswerPickerProps> = ({
   }
 
   return (
-    <div className={styles.answerPicker}>
+    <div
+      className={classNames(
+        styles.answerPicker,
+        answers.length > 4
+          ? interactive
+            ? styles.manyAnswers
+            : styles.compactManyAnswers
+          : undefined,
+      )}>
       <div className={styles.grid}>
         {answers.map((value, optionIndex) => (
           <button

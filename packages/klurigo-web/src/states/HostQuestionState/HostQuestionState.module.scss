@@ -34,10 +34,18 @@
     width: 100%;
   }
 
-  &.fullHeight {
+  &.answerRow {
+    align-items: stretch;
+    flex: 0 1 auto;
+    min-height: min-content;
+    margin-top: auto;
+    overflow: visible;
+  }
+
+  &.flexibleAnswerRow {
     flex: 1 1 0;
     min-height: min-content;
-    overflow: visible;
+    margin-top: 0;
   }
 
   .column {
@@ -84,4 +92,8 @@
       }
     }
   }
+}
+
+.mediaArea {
+  flex: 4 1 0;
 }

@@ -11,8 +11,7 @@ import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Button, ProgressBar, Typography } from '../../../../../../components'
-import { useUserContext } from '../../../../../../context/user'
-import { GamePage, PlayerGameFooter } from '../../../../../../states/common'
+import { GamePage } from '../../../../../../states/common'
 import { PlayerQuestionPreviewView } from '../../../../../../states/PlayerQuestionPreviewState/components'
 import { PlayerQuestionView } from '../../../../../../states/PlayerQuestionState/components'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
@@ -82,7 +81,6 @@ const ExitPreviewButton: FC<{ onExit: () => void }> = ({ onExit }) => (
 )
 
 const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
-  const { currentUser } = useUserContext()
   const playerQuestions = useMemo(
     () => toPlayerQuestions(mode, questions),
     [mode, questions],
@@ -158,20 +156,11 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     )
   }
 
-  const footer = (
-    <PlayerGameFooter
-      currentQuestion={questionIndex + 1}
-      totalQuestions={playerQuestions.length}
-      nickname={currentUser?.defaultNickname || 'Player'}
-    />
-  )
-
   if (!question) {
     return (
       <GamePage
         layout="fill"
         align="space-between"
-        footer={footer}
         header={<ExitPreviewButton onExit={onExit} />}>
         <Typography variant="body" color="inverse">
           Add a complete question to preview this quiz.
@@ -184,7 +173,6 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
     <GamePage
       layout="fill"
       align="space-between"
-      footer={footer}
       header={<ExitPreviewButton onExit={onExit} />}>
       {phase === 'question-preview' ? (
         <PlayerQuestionPreviewView

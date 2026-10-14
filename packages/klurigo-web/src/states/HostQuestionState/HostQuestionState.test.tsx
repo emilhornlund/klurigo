@@ -62,6 +62,7 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
+    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeTruthy()
     expect(container).toMatchSnapshot()
   })
 
@@ -218,6 +219,8 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
+    expect(container.querySelector('[class*="answerRow"]')).toBeTruthy()
+    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeNull()
     expect(container).toMatchSnapshot()
   })
 
@@ -307,6 +310,7 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
+    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeTruthy()
     expect(container).toMatchSnapshot()
   })
 

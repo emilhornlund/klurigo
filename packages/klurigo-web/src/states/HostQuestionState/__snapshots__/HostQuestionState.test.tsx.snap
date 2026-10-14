@@ -107,7 +107,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -350,7 +350,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -573,7 +573,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
             </div>
           </div>
           <div
-            class="questionMedia"
+            class="questionMedia mediaArea"
             data-testid="question-media"
           >
             <div
@@ -588,7 +588,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -831,7 +831,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
             </div>
           </div>
           <div
-            class="questionMedia"
+            class="questionMedia mediaArea"
             data-testid="question-media"
           >
             <div
@@ -846,7 +846,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -1089,7 +1089,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="questionMedia"
+            class="questionMedia mediaArea"
             data-testid="question-media"
           >
             <div
@@ -1111,7 +1111,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -1374,7 +1374,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="questionMedia"
+            class="questionMedia mediaArea"
             data-testid="question-media"
           >
             <div
@@ -1396,13 +1396,13 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
             >
               <div
-                class="answerPicker"
+                class="answerPicker compactManyAnswers"
               >
                 <div
                   class="grid"
@@ -1679,7 +1679,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="questionMedia"
+            class="questionMedia mediaArea"
             data-testid="question-media"
           >
             <div
@@ -1701,7 +1701,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow flexibleAnswerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -1944,7 +1944,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -2188,7 +2188,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow"
           >
             <div
               class="questionAnswerPicker"
@@ -2431,7 +2431,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
             </div>
           </div>
           <div
-            class="row fullWidth fullHeight"
+            class="row fullWidth answerRow"
           >
             <div
               class="questionAnswerPicker"

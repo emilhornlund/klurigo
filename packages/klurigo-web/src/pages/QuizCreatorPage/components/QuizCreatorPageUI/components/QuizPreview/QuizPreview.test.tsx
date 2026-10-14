@@ -30,21 +30,6 @@ vi.mock('../../../../../../states/common', () => ({
       {footer && <footer data-testid="game-page-footer">{footer}</footer>}
     </main>
   ),
-  PlayerGameFooter: ({
-    currentQuestion,
-    totalQuestions,
-    nickname,
-    totalScore,
-  }: {
-    currentQuestion: number
-    totalQuestions: number
-    nickname: string
-    totalScore?: number
-  }) => (
-    <div data-testid="player-game-footer">
-      {currentQuestion} / {totalQuestions} {nickname} {totalScore ?? ''}
-    </div>
-  ),
 }))
 
 vi.mock('../../../../../../states/PlayerQuestionState/components', () => ({
@@ -107,12 +92,6 @@ vi.mock('../../../../../../states/PlayerQuestionState/components', () => ({
       </div>
     )
   },
-}))
-
-vi.mock('../../../../../../context/user', () => ({
-  useUserContext: () => ({
-    currentUser: { defaultNickname: 'Previewer' },
-  }),
 }))
 
 vi.mock('../../../../../../components/ProgressBar/ProgressBar', () => ({
@@ -245,13 +224,8 @@ describe('QuizPreview', () => {
     expect(
       screen.getByRole('button', { name: 'Exit' }).querySelector('svg'),
     ).toHaveAttribute('data-icon', 'arrow-right-from-bracket')
-    expect(screen.getByTestId('game-page-footer')).toBeInTheDocument()
-    expect(screen.getByTestId('player-game-footer')).toHaveTextContent(
-      '1 / 2 Previewer',
-    )
-    expect(screen.getByTestId('player-game-footer')).not.toHaveTextContent(
-      /\d{4,}/,
-    )
+    expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('player-game-footer')).not.toBeInTheDocument()
     expect(screen.getByText('First unsaved question')).toBeInTheDocument()
     expect(screen.queryByText('Preview')).not.toBeInTheDocument()
     expect(screen.getByTestId('game-page-header')).not.toHaveTextContent(
@@ -280,6 +254,7 @@ describe('QuizPreview', () => {
       'data-duration-ms',
       String(getQuestionPreviewDurationMs('First unsaved question')),
     )
+    expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
   })
 
   it('shows the empty-question state when no complete questions are available', () => {
@@ -291,9 +266,7 @@ describe('QuizPreview', () => {
       screen.getByText('Add a complete question to preview this quiz.'),
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Exit' })).toBeInTheDocument()
-    expect(screen.getByTestId('player-game-footer')).toHaveTextContent(
-      '1 / 0 Previewer',
-    )
+    expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
   })
 
   it('automatically advances through questions and exits when the final countdown expires', () => {
@@ -310,6 +283,7 @@ describe('QuizPreview', () => {
       expect(
         screen.getByRole('button', { name: 'First answer' }),
       ).toBeInTheDocument()
+      expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
       expect(screen.getByTestId('progressbar')).toHaveAttribute(
         'data-disable-styling',
         'false',
@@ -342,7 +316,7 @@ describe('QuizPreview', () => {
     }
   })
 
-  it('advances to the next question after a local answer without exiting or adding score to the footer', () => {
+  it('advances to the next question after a local answer without exiting', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-10-09T12:00:00.000Z'))
     try {
@@ -357,12 +331,7 @@ describe('QuizPreview', () => {
       fireEvent.click(screen.getByRole('button', { name: 'First answer' }))
 
       expect(screen.getByText('Second question')).toBeInTheDocument()
-      expect(screen.getByTestId('player-game-footer')).toHaveTextContent(
-        '2 / 2 Previewer',
-      )
-      expect(screen.getByTestId('player-game-footer')).not.toHaveTextContent(
-        '1000',
-      )
+      expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
       expect(onExit).not.toHaveBeenCalled()
     } finally {
       vi.useRealTimers()
