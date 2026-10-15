@@ -1,7 +1,8 @@
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 import type { GameQuestionPlayerAnswerEvent } from '@klurigo/common'
+import { QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import type { SortableTableValue } from '../../../../../components'
 import { Button, SortableTable, Stack } from '../../../../../components'
@@ -30,6 +31,17 @@ const AnswerSort: FC<AnswerSortProps> = ({
         value,
       })),
   )
+
+  useEffect(() => {
+    if (submittedAnswer?.type === QuestionType.Puzzle) {
+      setInternalValues(
+        submittedAnswer.value.map((value, index) => ({
+          id: `${value.replace(' ', '-')}_${index}`,
+          value,
+        })),
+      )
+    }
+  }, [submittedAnswer])
 
   const disabled = useMemo(
     () => !interactive || loading || !!submittedAnswer,

@@ -62,7 +62,10 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
-    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeTruthy()
+    expect(container.querySelector('[class*="answerArea"]')).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: 'Vincent van Gogh' }),
+    ).toBeDisabled()
     expect(container).toMatchSnapshot()
   })
 
@@ -219,8 +222,7 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
-    expect(container.querySelector('[class*="answerRow"]')).toBeTruthy()
-    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeNull()
+    expect(container.querySelector('[class*="answerArea"]')).toBeTruthy()
     expect(container).toMatchSnapshot()
   })
 
@@ -310,7 +312,7 @@ describe('HostQuestionState', () => {
         />
       </MemoryRouter>,
     )
-    expect(container.querySelector('[class*="flexibleAnswerRow"]')).toBeTruthy()
+    expect(container.querySelector('[class*="pinQuestion"]')).toBeTruthy()
     expect(container).toMatchSnapshot()
   })
 

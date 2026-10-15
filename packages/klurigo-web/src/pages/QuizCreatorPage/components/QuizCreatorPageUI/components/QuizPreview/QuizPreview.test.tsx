@@ -30,10 +30,7 @@ vi.mock('../../../../../../states/common', () => ({
       {footer && <footer data-testid="game-page-footer">{footer}</footer>}
     </main>
   ),
-}))
-
-vi.mock('../../../../../../states/PlayerQuestionState/components', () => ({
-  PlayerQuestionView: ({
+  QuestionView: ({
     question,
     onChange,
   }: {
@@ -63,7 +60,7 @@ vi.mock('../../../../../../states/PlayerQuestionState/components', () => ({
     }
 
     return (
-      <div data-testid="player-question-view">
+      <div data-testid="question-view">
         {question.type === 'MULTI_CHOICE' ? (
           question.answers.map(({ value }, index) => (
             <button

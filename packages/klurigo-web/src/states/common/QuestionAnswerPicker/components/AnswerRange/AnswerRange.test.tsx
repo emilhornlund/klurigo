@@ -1,3 +1,4 @@
+import { QuestionType } from '@klurigo/common'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -122,6 +123,34 @@ describe('AnswerRange', () => {
     expect(slider).toHaveAttribute('min', '3')
     expect(slider).toHaveAttribute('max', '33')
     expect(slider).toHaveAttribute('step', '3')
+  })
+
+  it('shows the submitted number when the answer event arrives', () => {
+    const { rerender } = render(
+      <AnswerRange
+        min={0}
+        max={100}
+        step={5}
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    rerender(
+      <AnswerRange
+        min={0}
+        max={100}
+        step={5}
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+        submittedAnswer={{ type: QuestionType.Range, value: 25 }}
+      />,
+    )
+
+    expect(screen.getByRole('slider')).toHaveValue('25')
+    expect(screen.getByTestId('tf-input')).toHaveValue(25)
   })
 
   it('renders non-interactive mode with info message and no form', () => {

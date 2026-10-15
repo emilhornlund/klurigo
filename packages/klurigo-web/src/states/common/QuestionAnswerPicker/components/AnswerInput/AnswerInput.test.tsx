@@ -44,7 +44,7 @@ describe('AnswerInput', () => {
         type: QuestionType.TypeAnswer,
         value: 'Paris',
       }
-      const { container } = render(
+      render(
         <AnswerInput
           interactive
           loading={false}
@@ -52,7 +52,8 @@ describe('AnswerInput', () => {
           submittedAnswer={submittedAnswer}
         />,
       )
-      expect(container).toMatchSnapshot()
+      expect(screen.getByRole('textbox')).toHaveValue('Paris')
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
 
     it('renders non-interactive mode with submitted answer', () => {
@@ -60,7 +61,7 @@ describe('AnswerInput', () => {
         type: QuestionType.TypeAnswer,
         value: 'London',
       }
-      const { container } = render(
+      render(
         <AnswerInput
           interactive={false}
           loading={false}
@@ -68,7 +69,8 @@ describe('AnswerInput', () => {
           submittedAnswer={submittedAnswer}
         />,
       )
-      expect(container).toMatchSnapshot()
+      expect(screen.getByRole('textbox')).toHaveValue('London')
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
   })
 
@@ -165,6 +167,24 @@ describe('AnswerInput', () => {
       fireEvent.click(submit)
 
       expect(onSubmit).not.toHaveBeenCalled()
+    })
+
+    it('shows the submitted text when the answer event arrives', () => {
+      const { rerender } = render(
+        <AnswerInput interactive loading={false} onSubmit={onSubmit} />,
+      )
+
+      rerender(
+        <AnswerInput
+          interactive
+          loading={false}
+          onSubmit={onSubmit}
+          submittedAnswer={{ type: QuestionType.TypeAnswer, value: 'Paris' }}
+        />,
+      )
+
+      expect(screen.getByRole('textbox')).toHaveValue('Paris')
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
   })
 
@@ -491,28 +511,6 @@ describe('AnswerInput', () => {
 
       expect(input).toBeDisabled()
       expect(submitButton).toBeDisabled()
-    })
-
-    it('should handle multiple rapid submissions', async () => {
-      const user = userEvent.setup()
-
-      render(<AnswerInput interactive loading={false} onSubmit={onSubmit} />)
-
-      const input = screen.getByRole('textbox')
-      const submitButton = screen.getByRole('button', {
-        name: 'Submit My Answer',
-      })
-
-      await user.type(input, 'test')
-
-      // Rapid clicks - the component doesn't prevent multiple submissions
-      await user.click(submitButton)
-      await user.click(submitButton)
-      await user.click(submitButton)
-
-      // The component allows multiple submissions when rapidly clicked
-      expect(onSubmit).toHaveBeenCalledTimes(3)
-      expect(onSubmit).toHaveBeenCalledWith('test')
     })
   })
 })

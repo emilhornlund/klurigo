@@ -1,9 +1,8 @@
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { GameQuestionHostEvent, QuestionMediaEvent } from '@klurigo/common'
-import { MediaType, QuestionType } from '@klurigo/common'
+import type { GameQuestionHostEvent } from '@klurigo/common'
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import {
   ConfirmDialog,
@@ -12,14 +11,7 @@ import {
   Surface,
 } from '../../components'
 import { useGameContext } from '../../context/game'
-import { classNames } from '../../utils/helpers'
-import {
-  GamePage,
-  HostGameFooter,
-  QuestionAnswerPicker,
-  QuestionHeading,
-  QuestionMedia,
-} from '../common'
+import { GamePage, HostGameFooter, QuestionView } from '../common'
 
 import styles from './HostQuestionState.module.scss'
 
@@ -41,21 +33,6 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
   const [isSkippingQuestion, setIsSkippingQuestion] = useState<boolean>(false)
 
   const { completeTask } = useGameContext()
-
-  const media = useMemo<QuestionMediaEvent | undefined>(() => {
-    if (question.type !== QuestionType.Pin) {
-      return question.media
-    }
-    return { type: MediaType.Image, url: question.imageURL }
-  }, [question])
-  const hasQuestionMedia =
-    question.type !== QuestionType.Pin &&
-    'media' in question &&
-    Boolean(question.media?.url)
-  const isFlexibleAnswer =
-    hasQuestionMedia ||
-    question.type === QuestionType.Pin ||
-    question.type === QuestionType.Puzzle
 
   const handleConfirmSkipQuestion = () => {
     setShowConfirmSkipQuestionDialog(false)
@@ -88,45 +65,21 @@ const HostQuestionState: FC<HostQuestionStateProps> = ({
             totalQuestions={totalQuestions}
           />
         }>
-        <div className={classNames(styles.row, styles.questionRow)}>
-          <div className={styles.column}>
-            <QuestionHeading text={question.question} />
-          </div>
-        </div>
-
-        {!!totalSubmissions && (
-          <div className={classNames(styles.row, styles.flexibleHeight)}>
-            <div className={styles.column}>
-              <Surface className={classNames(styles.iconInfo)}>
+        <QuestionView
+          question={question}
+          countdown={countdown}
+          interactive={false}>
+          {!!totalSubmissions && (
+            <div className={styles.submissionCounter}>
+              <Surface className={styles.iconInfo}>
                 <FontAwesomeIcon icon={faUserGroup} />
                 <span>
                   {currentSubmission} / {totalSubmissions}
                 </span>
               </Surface>
             </div>
-          </div>
-        )}
-
-        <QuestionMedia
-          className={
-            hasQuestionMedia && question.type !== QuestionType.Puzzle
-              ? styles.mediaArea
-              : undefined
-          }
-          type={question.type}
-          media={media}
-          alt={question.question}
-          countdown={countdown}
-        />
-        <div
-          className={classNames(
-            styles.row,
-            styles.fullWidth,
-            styles.answerRow,
-            isFlexibleAnswer ? styles.flexibleAnswerRow : undefined,
-          )}>
-          <QuestionAnswerPicker question={question} interactive={false} />
-        </div>
+          )}
+        </QuestionView>
         <ProgressBar countdown={countdown} />
       </GamePage>
       <ConfirmDialog

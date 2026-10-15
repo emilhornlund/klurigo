@@ -5,35 +5,38 @@ import type {
   SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import { QuestionType } from '@klurigo/common'
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
-import { classNames } from '../../../../utils/helpers'
-import {
-  QuestionAnswerPicker,
-  QuestionHeading,
-  QuestionMedia,
-} from '../../../common'
+import { Stack } from '../../../components'
+import { classNames } from '../../../utils/helpers'
+import QuestionAnswerPicker from '../QuestionAnswerPicker'
+import QuestionHeading from '../QuestionHeading'
+import QuestionMedia from '../QuestionMedia'
 
-import styles from './PlayerQuestionView.module.scss'
+import styles from './QuestionView.module.scss'
 
-export interface PlayerQuestionViewProps {
+export interface QuestionViewProps {
   question: GameEventQuestion
+  countdown?: CountdownEvent
   submittedAnswer?: GameQuestionPlayerAnswerEvent
-  countdown: CountdownEvent
+  interactive?: boolean
   loading?: boolean
   onChange?: (request: SubmitQuestionAnswerRequestDto) => void
+  children?: ReactNode
 }
 
-const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
+const QuestionView: FC<QuestionViewProps> = ({
   question,
-  submittedAnswer,
   countdown,
+  submittedAnswer,
+  interactive = true,
   loading = false,
   onChange,
+  children,
 }) => (
-  <div
+  <Stack
     className={classNames(
-      styles.fullHeight,
+      styles.questionView,
       question.type === QuestionType.Pin ? styles.pinQuestion : undefined,
       question.type === QuestionType.Puzzle ? styles.puzzleQuestion : undefined,
       question.type !== QuestionType.Pin && question.media?.url
@@ -41,7 +44,7 @@ const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
         : undefined,
     )}>
     <QuestionHeading text={question.question} />
-
+    {children}
     <QuestionMedia
       className={styles.mediaArea}
       type={question.type}
@@ -49,15 +52,15 @@ const PlayerQuestionView: FC<PlayerQuestionViewProps> = ({
       alt={question.question}
       countdown={countdown}
     />
-
     <QuestionAnswerPicker
       className={styles.answerArea}
       question={question}
       submittedAnswer={submittedAnswer}
+      interactive={interactive}
       loading={loading}
       onChange={onChange}
     />
-  </div>
+  </Stack>
 )
 
-export default PlayerQuestionView
+export default QuestionView

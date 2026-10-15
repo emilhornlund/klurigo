@@ -36,7 +36,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight hasMedia"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -160,7 +160,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight hasMedia"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -302,7 +302,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight hasMedia"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -408,7 +408,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -529,7 +529,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"
@@ -613,7 +613,7 @@ exports[`PlayerQuestionState > should render PlayerQuestionState with question t
           class="contentInner"
         >
           <div
-            class="fullHeight"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
             <h1
               class="typography title alignCenter widthFull colorInverse questionHeading"

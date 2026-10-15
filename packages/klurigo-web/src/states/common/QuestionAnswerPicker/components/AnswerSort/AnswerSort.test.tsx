@@ -1,3 +1,4 @@
+import { QuestionType } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -129,6 +130,38 @@ describe('AnswerSort', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /submit my answer/i }))
     expect(onSubmit).toHaveBeenCalledWith(['Two', 'Three', 'One'])
+  })
+
+  it('restores the submitted order when the answer event arrives', () => {
+    const { rerender } = render(
+      <AnswerSort
+        values={['Alpha', 'Beta', 'Gamma']}
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    rerender(
+      <AnswerSort
+        values={['Alpha', 'Beta', 'Gamma']}
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+        submittedAnswer={{
+          type: QuestionType.Puzzle,
+          value: ['Gamma', 'Alpha', 'Beta'],
+        }}
+      />,
+    )
+
+    const values = within(screen.getByTestId('sortable'))
+      .getAllByRole('listitem')
+      .map((item) => item.getAttribute('data-value'))
+    expect(values).toEqual(['Gamma', 'Alpha', 'Beta'])
+    expect(
+      screen.getByRole('button', { name: /submit my answer/i }),
+    ).toBeDisabled()
   })
 
   it('disables interaction and hides submit button in non-interactive mode', () => {

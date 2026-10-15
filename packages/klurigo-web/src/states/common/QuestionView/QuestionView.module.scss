@@ -1,25 +1,11 @@
-@use '../../../../styles/helpers' as helpers;
-@use '../../../../styles/spacing.semantic' as spacing;
+@use '../../../styles/helpers' as helpers;
+@use '../../../styles/spacing.semantic' as spacing;
 
-.fullHeight {
-  display: flex;
-  flex-direction: column;
+.questionView {
   flex: 1 1 auto;
   width: 100%;
   min-height: 0;
   overflow: visible;
-
-  @include helpers.mobile {
-    gap: spacing.$space-stack-mobile;
-  }
-
-  @include helpers.tablet {
-    gap: spacing.$space-page-tablet;
-  }
-
-  @include helpers.desktop {
-    gap: spacing.$space-page-desktop;
-  }
 
   .mediaArea {
     flex: 4 1 0;

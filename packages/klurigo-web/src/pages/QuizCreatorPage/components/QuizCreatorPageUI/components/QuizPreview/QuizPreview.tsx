@@ -11,9 +11,8 @@ import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Button, ProgressBar, Typography } from '../../../../../../components'
-import { GamePage } from '../../../../../../states/common'
+import { GamePage, QuestionView } from '../../../../../../states/common'
 import { PlayerQuestionPreviewView } from '../../../../../../states/PlayerQuestionPreviewState/components'
-import { PlayerQuestionView } from '../../../../../../states/PlayerQuestionState/components'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
 
 import { toPlayerQuestions } from './quiz-preview-question'
@@ -186,7 +185,7 @@ const QuizPreview: FC<QuizPreviewProps> = ({ mode, questions, onExit }) => {
           }
         />
       ) : (
-        <PlayerQuestionView
+        <QuestionView
           question={question}
           submittedAnswer={submittedAnswer}
           countdown={countdown}
