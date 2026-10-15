@@ -1,8 +1,10 @@
+import * as Sentry from '@sentry/react'
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
+import { ApiError } from '../../api/api.utils'
 import config from '../../config'
 import {
   generateRandomString,
@@ -27,6 +29,13 @@ const AuthLoginPage: FC = () => {
     login({ email: values.email, password: values.password })
       .then(() => {
         navigate('/')
+      })
+      .catch((error: unknown) => {
+        if (error instanceof ApiError && error.status === 400) {
+          return
+        }
+
+        Sentry.captureException(error)
       })
       .finally(() => setIsLoading(false))
   }
