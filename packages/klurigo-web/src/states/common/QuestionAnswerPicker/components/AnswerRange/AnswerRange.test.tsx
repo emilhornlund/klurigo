@@ -4,12 +4,26 @@ import { describe, expect, it, vi } from 'vitest'
 
 import AnswerRange from './AnswerRange'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-vi.mock('../../../../../components', async (orig: any) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const actual: any = await orig()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const TextField = ({ id, value, onChange, onValid, min, max }: any) => (
+vi.mock('../../../../../components', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('../../../../../components')>()
+  const TextField = ({
+    id,
+    value,
+    onChange,
+    onValid,
+    min,
+    max,
+    disabled,
+  }: {
+    id: string
+    value: number | string
+    onChange?: (value: number) => void
+    onValid?: (valid: boolean) => void
+    min?: number
+    max?: number
+    disabled?: boolean
+  }) => (
     <div>
       <input
         data-testid="tf-input"
@@ -18,6 +32,7 @@ vi.mock('../../../../../components', async (orig: any) => {
         min={min}
         max={max}
         value={String(value ?? '')}
+        disabled={disabled}
         onChange={(e) =>
           onChange?.(Number((e.target as HTMLInputElement).value))
         }
@@ -73,6 +88,7 @@ describe('AnswerRange', () => {
 
     const slider = screen.getByRole('slider') as HTMLInputElement
     fireEvent.change(slider, { target: { value: '25' } })
+    expect(screen.getByTestId('tf-input')).toHaveValue(25)
 
     const submit = screen.getByRole('button', { name: /submit/i })
     expect(submit).toBeEnabled()
@@ -123,6 +139,67 @@ describe('AnswerRange', () => {
     expect(slider).toHaveAttribute('min', '3')
     expect(slider).toHaveAttribute('max', '33')
     expect(slider).toHaveAttribute('step', '3')
+  })
+
+  it.each([
+    { label: 'minimum', value: '0' },
+    { label: 'maximum', value: '100' },
+    { label: 'intermediate', value: '55' },
+  ])(
+    'synchronizes the $label slider value with the number input',
+    ({ value }) => {
+      render(
+        <AnswerRange
+          min={0}
+          max={100}
+          step={5}
+          interactive
+          loading={false}
+          onSubmit={vi.fn()}
+        />,
+      )
+
+      fireEvent.change(screen.getByRole('slider'), { target: { value } })
+
+      expect(screen.getByRole('slider')).toHaveValue(value)
+      expect(screen.getByTestId('tf-input')).toHaveValue(Number(value))
+    },
+  )
+
+  it('disables the slider, number input, and submit button while loading', () => {
+    render(
+      <AnswerRange
+        min={0}
+        max={100}
+        step={1}
+        interactive
+        loading
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByRole('slider')).toBeDisabled()
+    expect(screen.getByTestId('tf-input')).toBeDisabled()
+    expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
+  })
+
+  it('disables the slider and submit button after an answer is submitted', () => {
+    render(
+      <AnswerRange
+        min={0}
+        max={100}
+        step={1}
+        interactive
+        loading={false}
+        submittedAnswer={{ type: QuestionType.Range, value: 40 }}
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByRole('slider')).toBeDisabled()
+    expect(screen.getByTestId('tf-input')).toBeDisabled()
+    expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
+    expect(screen.getByRole('slider')).toHaveValue('40')
   })
 
   it('shows the submitted number when the answer event arrives', () => {

@@ -280,14 +280,18 @@ exports[`QuestionAnswerPicker > renders Range and forwards numeric value from sl
         class="interactive"
       >
         <form>
-          <input
-            id="slider-range"
-            max="100"
-            min="0"
-            step="5"
-            type="range"
-            value="25"
-          />
+          <div
+            class="sliderWrapper"
+          >
+            <input
+              id="slider-range"
+              max="100"
+              min="0"
+              step="5"
+              type="range"
+              value="25"
+            />
+          </div>
           <div
             class="inputContainer"
           >

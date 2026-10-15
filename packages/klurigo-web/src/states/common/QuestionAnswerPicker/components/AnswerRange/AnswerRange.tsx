@@ -78,16 +78,18 @@ const AnswerRange: FC<AnswerRangeProps> = ({
     <div className={styles.answerRange}>
       <div className={styles.interactive}>
         <form onSubmit={handleSubmit}>
-          <input
-            id="slider-range"
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            disabled={disabled}
-            onChange={handleSliderChange}
-          />
+          <div className={styles.sliderWrapper}>
+            <input
+              id="slider-range"
+              type="range"
+              min={min}
+              max={max}
+              step={step}
+              value={value}
+              disabled={disabled}
+              onChange={handleSliderChange}
+            />
+          </div>
           <TextField
             id="slider-input"
             type="number"

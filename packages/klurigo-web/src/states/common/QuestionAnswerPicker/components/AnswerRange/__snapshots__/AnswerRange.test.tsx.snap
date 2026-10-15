@@ -9,14 +9,18 @@ exports[`AnswerRange > renders interactive mode with initial midpoint and disabl
       class="interactive"
     >
       <form>
-        <input
-          id="slider-range"
-          max="100"
-          min="0"
-          step="5"
-          type="range"
-          value="50"
-        />
+        <div
+          class="sliderWrapper"
+        >
+          <input
+            id="slider-range"
+            max="100"
+            min="0"
+            step="5"
+            type="range"
+            value="50"
+          />
+        </div>
         <div>
           <input
             data-testid="tf-input"
