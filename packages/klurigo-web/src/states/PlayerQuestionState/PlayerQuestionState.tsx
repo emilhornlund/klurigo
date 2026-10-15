@@ -34,6 +34,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
     <GamePage layout="fill" align="space-between" scrollable={false}>
       <QuestionView
         question={question}
+        mediaPresentation="player"
         submittedAnswer={answer}
         countdown={countdown}
         loading={isSubmittingQuestionAnswer}

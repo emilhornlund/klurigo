@@ -67,6 +67,23 @@ function renderState(
 }
 
 describe('PlayerQuestionState', () => {
+  it('shows player media indicators instead of audio and video players', () => {
+    renderState({
+      question: {
+        type: QuestionType.TrueFalse,
+        question: 'Listen closely',
+        media: { type: MediaType.Audio, url: '/audio.mp3' },
+        duration: 30,
+      },
+    })
+
+    expect(
+      screen.getByRole('group', { name: 'Audio question' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Listen up!')).toBeInTheDocument()
+    expect(document.querySelector('audio, video')).not.toBeInTheDocument()
+  })
+
   it('should render PlayerQuestionState with question type multi-choice and two answers', () => {
     const { container } = renderState({
       question: {

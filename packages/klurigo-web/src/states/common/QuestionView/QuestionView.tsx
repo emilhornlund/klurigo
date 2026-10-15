@@ -17,6 +17,7 @@ import styles from './QuestionView.module.scss'
 
 export interface QuestionViewProps {
   question: GameEventQuestion
+  mediaPresentation?: 'default' | 'player'
   countdown?: CountdownEvent
   submittedAnswer?: GameQuestionPlayerAnswerEvent
   interactive?: boolean
@@ -27,6 +28,7 @@ export interface QuestionViewProps {
 
 const QuestionView: FC<QuestionViewProps> = ({
   question,
+  mediaPresentation = 'default',
   countdown,
   submittedAnswer,
   interactive = true,
@@ -51,6 +53,7 @@ const QuestionView: FC<QuestionViewProps> = ({
       media={question.type === QuestionType.Pin ? undefined : question.media}
       alt={question.question}
       countdown={countdown}
+      mediaPresentation={mediaPresentation}
     />
     <QuestionAnswerPicker
       className={styles.answerArea}

@@ -1,0 +1,103 @@
+@use '../../../styles/colors.semantic' as colors;
+@use '../../../styles/helpers' as helpers;
+@use '../../../styles/spacing.semantic' as spacing;
+@use '../../../styles/typography.tokens' as typography;
+
+.questionMediaIndicator {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-content-row-gap-mobile;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  padding: spacing.$space-content-padding-mobile;
+  color: colors.$color-text-inverse;
+  text-align: center;
+  overflow-wrap: anywhere;
+
+  @include helpers.tablet {
+    gap: spacing.$space-content-gap-tablet;
+    padding: spacing.$space-content-padding-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-content-gap-desktop;
+    padding: spacing.$space-content-padding-desktop;
+  }
+}
+
+.icon {
+  color: colors.$color-text-inverse;
+  font-size: clamp(2.5rem, 8vh, 5rem);
+  margin-bottom: spacing.$space-content-row-gap-mobile;
+}
+
+.iconAnimation .icon {
+  transform-origin: center;
+  animation: media-breathe 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.label,
+.instruction {
+  max-width: 100%;
+  margin: 0;
+}
+
+.label {
+  font-weight: 700;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(typography.$font-size-title5-mobile + 2px);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(typography.$font-size-title4-tablet + 2px);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(typography.$font-size-title4-desktop + 2px);
+  }
+}
+
+.instruction {
+  color: colors.$color-text-inverse-subtle;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(
+      typography.$font-size-control-normal-mobile + 2px
+    );
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(
+      typography.$font-size-control-normal-tablet + 2px
+    );
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(
+      typography.$font-size-control-normal-desktop + 2px
+    );
+  }
+}
+
+@keyframes media-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconAnimation .icon {
+    animation: none;
+  }
+}

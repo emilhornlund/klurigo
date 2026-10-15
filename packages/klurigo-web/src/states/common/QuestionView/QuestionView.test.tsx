@@ -139,6 +139,37 @@ describe('QuestionView', () => {
     },
   )
 
+  it('uses player media presentation when explicitly requested without changing answer behavior', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter>
+        <QuestionView
+          question={{
+            type: QuestionType.TrueFalse,
+            question: 'Listen closely',
+            media: { type: MediaType.Audio, url: '/audio.mp3' },
+            duration: 30,
+          }}
+          mediaPresentation="player"
+          onChange={onChange}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('group', { name: 'Audio question' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Listen up!')).toBeInTheDocument()
+    expect(screen.queryByText(/playerWrapper/)).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'True' }))
+    expect(onChange).toHaveBeenCalledWith({
+      type: QuestionType.TrueFalse,
+      value: true,
+    })
+  })
+
   it('passes interactive answer changes to the picker callback', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()

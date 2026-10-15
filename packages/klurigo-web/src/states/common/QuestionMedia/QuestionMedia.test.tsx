@@ -118,6 +118,98 @@ describe('QuestionMedia', () => {
     expect(container).toMatchSnapshot()
   })
 
+  it.each([
+    [
+      MediaType.Audio,
+      'Audio question',
+      'Listen up!',
+      'The sound is coming from the host!',
+    ],
+    [
+      MediaType.Video,
+      'Video question',
+      'Eyes on the big screen!',
+      'The host has the video!',
+    ],
+  ] as const)(
+    'renders an indicator instead of ResponsivePlayer for player %s media',
+    (mediaType, accessibleLabel, label, instruction) => {
+      render(
+        <QuestionMedia
+          type={QuestionType.MultiChoice}
+          media={{ type: mediaType, url: `https://cdn/${mediaType}` }}
+          mediaPresentation="player"
+        />,
+      )
+
+      expect(
+        screen.getByRole('group', { name: accessibleLabel }),
+      ).toBeInTheDocument()
+      expect(screen.getByText(label)).toBeInTheDocument()
+      expect(screen.getByText(instruction)).toBeInTheDocument()
+      expect(screen.queryByTestId('responsive-player')).not.toBeInTheDocument()
+      expect(document.querySelector('audio, video')).not.toBeInTheDocument()
+      expect(screen.getByTestId('question-media')).not.toHaveTextContent(
+        `https://cdn/${mediaType}`,
+      )
+    },
+  )
+
+  it('continues rendering ResponsiveImage in player presentation', () => {
+    render(
+      <QuestionMedia
+        type={QuestionType.MultiChoice}
+        media={{ type: MediaType.Image, url: 'https://img/a.jpg' }}
+        mediaPresentation="player"
+      />,
+    )
+
+    expect(screen.getByTestId('responsive-image')).toHaveAttribute(
+      'data-src',
+      'https://img/a.jpg',
+    )
+    expect(screen.queryByRole('group')).not.toBeInTheDocument()
+  })
+
+  it('updates player presentation when media changes between audio, video, and image', () => {
+    const { rerender } = render(
+      <QuestionMedia
+        type={QuestionType.MultiChoice}
+        media={{ type: MediaType.Audio, url: 'https://cdn/a.mp3' }}
+        mediaPresentation="player"
+      />,
+    )
+    expect(
+      screen.getByRole('group', { name: 'Audio question' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Listen up!')).toBeInTheDocument()
+
+    rerender(
+      <QuestionMedia
+        type={QuestionType.MultiChoice}
+        media={{ type: MediaType.Video, url: 'https://cdn/v.mp4' }}
+        mediaPresentation="player"
+      />,
+    )
+    expect(
+      screen.getByRole('group', { name: 'Video question' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('Eyes on the big screen!')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('group', { name: 'Audio question' }),
+    ).not.toBeInTheDocument()
+
+    rerender(
+      <QuestionMedia
+        type={QuestionType.MultiChoice}
+        media={{ type: MediaType.Image, url: 'https://img/a.jpg' }}
+        mediaPresentation="player"
+      />,
+    )
+    expect(screen.getByTestId('responsive-image')).toBeInTheDocument()
+    expect(screen.queryByRole('group')).not.toBeInTheDocument()
+  })
+
   it('updates correctly when media changes from image to video', () => {
     const { rerender } = render(
       <QuestionMedia
