@@ -2,12 +2,7 @@ import type { GameQuestionPreviewHostEvent } from '@klurigo/common'
 import type { FC } from 'react'
 
 import { ProgressBar } from '../../components'
-import {
-  GamePage,
-  HostGameFooter,
-  QuestionTextPreview,
-  QuestionTypePointsBar,
-} from '../common'
+import { GamePage, HostGameFooter, QuestionPreviewView } from '../common'
 
 export interface HostQuestionPreviewStateProps {
   event: GameQuestionPreviewHostEvent
@@ -36,13 +31,12 @@ const HostQuestionPreviewState: FC<HostQuestionPreviewStateProps> = ({
         totalQuestions={totalQuestions}
       />
     }>
-    <QuestionTypePointsBar
+    <QuestionPreviewView
       mode={mode}
       questionType={questionType}
+      question={questionValue}
       questionPoints={questionPoints}
     />
-
-    <QuestionTextPreview text={questionValue} />
 
     <ProgressBar countdown={countdown} disableStyling={true} />
   </GamePage>

@@ -1,7 +1,37 @@
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/spacing.semantic' as spacing;
 
+.preview {
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
+
+.questionText {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+.question {
+  overflow-wrap: anywhere;
+}
+
 .metadata {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -30,6 +60,7 @@
   min-height: helpers.pxToRem(34px);
   padding-inline: spacing.$space-content-inline-mobile;
   border-radius: helpers.pxToRem(24px);
+  backdrop-filter: blur(3px);
 
   @include helpers.tablet {
     min-height: helpers.pxToRem(41px);

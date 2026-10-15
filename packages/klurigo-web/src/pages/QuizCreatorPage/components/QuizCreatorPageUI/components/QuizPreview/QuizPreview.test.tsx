@@ -13,6 +13,9 @@ import { describe, expect, it, vi } from 'vitest'
 import type { QuizQuestionModel } from '../../../../utils/QuestionDataSource'
 
 vi.mock('../../../../../../states/common', () => ({
+  QuestionPreviewView: ({ question }: { question: string }) => (
+    <div data-testid="question-preview-view">{question}</div>
+  ),
   GamePage: ({
     layout,
     header,
@@ -224,6 +227,7 @@ describe('QuizPreview', () => {
     expect(screen.queryByTestId('game-page-footer')).not.toBeInTheDocument()
     expect(screen.queryByTestId('player-game-footer')).not.toBeInTheDocument()
     expect(screen.getByText('First unsaved question')).toBeInTheDocument()
+    expect(screen.getByTestId('question-preview-view')).toBeInTheDocument()
     expect(screen.queryByText('Preview')).not.toBeInTheDocument()
     expect(screen.getByTestId('game-page-header')).not.toHaveTextContent(
       /\b1\s*\/\s*2\b/,
