@@ -44,7 +44,7 @@ export const ZeroToOneHundred = {
   args: {
     event: {
       type: GameEventType.GameQuestionPreviewPlayer,
-      game: { mode: GameMode.Classic },
+      game: { mode: GameMode.ZeroToOneHundred },
       player: {
         nickname: 'FrostyBear',
         score: 10458,
