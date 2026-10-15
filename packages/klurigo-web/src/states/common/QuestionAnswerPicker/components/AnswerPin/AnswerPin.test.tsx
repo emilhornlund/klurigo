@@ -9,8 +9,8 @@ vi.mock('../../../../../components', async (orig: any) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actual: any = await orig()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const PinImage = ({ value, onChange, imageURL }: any) => (
-    <div>
+  const PinImage = ({ value, onChange, imageURL, fit }: any) => (
+    <div data-fit={fit}>
       <div data-testid="pin-value">{JSON.stringify(value)}</div>
       <button
         type="button"
@@ -37,6 +37,12 @@ describe('AnswerPin', () => {
     expect(screen.getByTestId('pin-value')).toHaveTextContent(
       JSON.stringify({ x: 0.5, y: 0.5 }),
     )
+    expect(screen.getByTestId('pin-image-area')).toContainElement(
+      screen.getByTestId('pin-value'),
+    )
+    expect(
+      screen.getByTestId('pin-image-area').firstElementChild,
+    ).toHaveAttribute('data-fit', 'contain')
     expect(screen.getByRole('button', { name: /submit my pin/i })).toBeVisible()
     expect(container).toMatchSnapshot()
   })
@@ -135,6 +141,7 @@ describe('AnswerPin', () => {
     expect(
       screen.queryByRole('button', { name: /submit my pin/i }),
     ).not.toBeInTheDocument()
+    expect(screen.getByTestId('pin-image-area')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
 })

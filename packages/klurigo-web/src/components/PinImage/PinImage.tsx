@@ -38,6 +38,7 @@ export type PinImageProps = {
   value?: PinImageValue
   values?: PinImageValue[]
   disabled?: boolean
+  fit?: ResponsiveImageProps['fit']
   onChange?: (position: PinImagePosition) => void
   onValid?: (valid: boolean) => void
   children?: ReactNode | ReactNode[]
@@ -47,6 +48,7 @@ const PinImage: FC<PinImageProps> = ({
   value,
   values,
   disabled = false,
+  fit,
   imageURL,
   alt,
   onChange,
@@ -259,7 +261,7 @@ const PinImage: FC<PinImageProps> = ({
     <ResponsiveImage
       imageURL={imageURL}
       alt={alt}
-      fit={deviceType === DeviceType.Mobile ? 'width' : 'contain'}>
+      fit={fit ?? (deviceType === DeviceType.Mobile ? 'width' : 'contain')}>
       <div
         ref={setOverlayNode}
         className={styles.overlay}

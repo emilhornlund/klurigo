@@ -336,8 +336,13 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
                 data-testid="pin-answer"
               >
                 <div
-                  class="container"
-                />
+                  class="imageArea"
+                  data-testid="pin-image-area"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>

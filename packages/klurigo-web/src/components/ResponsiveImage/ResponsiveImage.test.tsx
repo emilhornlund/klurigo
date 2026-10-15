@@ -85,6 +85,9 @@ describe('ResponsiveImage', () => {
       expect(container.querySelector('[class*="icon"]')).toBeTruthy()
     })
 
+    expect(container.querySelector('[class*="centerOverlay"]')).toHaveStyle({
+      aspectRatio: String(16 / 10),
+    })
     expect(container.querySelector('img')).toBeNull()
     expect(container).toMatchSnapshot()
   })

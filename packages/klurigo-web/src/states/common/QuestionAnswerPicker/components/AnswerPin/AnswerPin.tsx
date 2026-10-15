@@ -64,7 +64,9 @@ const AnswerPin: FC<AnswerPinProps> = ({
   if (!interactive && !submittedAnswer) {
     return (
       <div className={styles.answerPin} data-testid="pin-answer">
-        <ResponsiveImage imageURL={imageURL} />
+        <div className={styles.imageArea} data-testid="pin-image-area">
+          <ResponsiveImage imageURL={imageURL} />
+        </div>
       </div>
     )
   }
@@ -72,12 +74,15 @@ const AnswerPin: FC<AnswerPinProps> = ({
   return (
     <div className={styles.answerPin} data-testid="pin-answer">
       <Stack className={styles.interactive} spacing="compact" align="center">
-        <PinImage
-          value={position}
-          imageURL={imageURL}
-          disabled={disabled}
-          onChange={setPosition}
-        />
+        <div className={styles.imageArea} data-testid="pin-image-area">
+          <PinImage
+            value={position}
+            imageURL={imageURL}
+            fit="contain"
+            disabled={disabled}
+            onChange={setPosition}
+          />
+        </div>
         <div className={styles.buttonWrapper}>
           <Button
             id="submit-button"
