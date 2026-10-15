@@ -57,19 +57,24 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
         class="stack vertical spacing-compact align-center justify-start interactive"
       >
         <div
-          class="container fallbackAspectRatio"
+          class="imageArea"
+          data-testid="pin-image-area"
         >
           <div
-            class="centerOverlay box"
-            style="width: 100%; aspect-ratio: 1.6 / 1;"
+            class="container fallbackAspectRatio"
           >
             <div
-              class="loadingSpinnerContainer"
-              data-testid="loading-spinner"
+              class="centerOverlay box"
+              style="width: 100%; aspect-ratio: 1.6 / 1;"
             >
-              <div />
-              <div />
-              <div />
+              <div
+                class="loadingSpinnerContainer"
+                data-testid="loading-spinner"
+              >
+                <div />
+                <div />
+                <div />
+              </div>
             </div>
           </div>
         </div>

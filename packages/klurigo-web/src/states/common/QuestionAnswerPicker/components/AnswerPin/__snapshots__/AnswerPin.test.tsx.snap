@@ -9,22 +9,29 @@ exports[`AnswerPin > renders interactive mode 1`] = `
     <div
       class="stack vertical spacing-compact align-center justify-start interactive"
     >
-      <div>
+      <div
+        class="imageArea"
+        data-testid="pin-image-area"
+      >
         <div
-          data-testid="pin-value"
+          data-fit="contain"
         >
-          {"x":0.5,"y":0.5}
+          <div
+            data-testid="pin-value"
+          >
+            {"x":0.5,"y":0.5}
+          </div>
+          <button
+            data-testid="move-pin"
+            type="button"
+          >
+            Move Pin
+          </button>
+          <img
+            alt="pin-image"
+            src="/img.png"
+          />
         </div>
-        <button
-          data-testid="move-pin"
-          type="button"
-        >
-          Move Pin
-        </button>
-        <img
-          alt="pin-image"
-          src="/img.png"
-        />
       </div>
       <div
         class="buttonWrapper"
@@ -69,19 +76,24 @@ exports[`AnswerPin > renders non-interactive mode without submit button 1`] = `
     data-testid="pin-answer"
   >
     <div
-      class="container fallbackAspectRatio"
+      class="imageArea"
+      data-testid="pin-image-area"
     >
       <div
-        class="centerOverlay box"
-        style="width: 100%; aspect-ratio: 1.6 / 1;"
+        class="container fallbackAspectRatio"
       >
         <div
-          class="loadingSpinnerContainer"
-          data-testid="loading-spinner"
+          class="centerOverlay box"
+          style="width: 100%; aspect-ratio: 1.6 / 1;"
         >
-          <div />
-          <div />
-          <div />
+          <div
+            class="loadingSpinnerContainer"
+            data-testid="loading-spinner"
+          >
+            <div />
+            <div />
+            <div />
+          </div>
         </div>
       </div>
     </div>
