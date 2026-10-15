@@ -1,7 +1,10 @@
+import * as Sentry from '@sentry/react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { NavigateFunction } from 'react-router-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { ApiError } from '../../api/api.utils'
 
 const h = vi.hoisted(() => ({
   login: vi
@@ -21,6 +24,10 @@ const h = vi.hoisted(() => ({
 
 vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({ login: h.login }),
+}))
+
+vi.mock('@sentry/react', () => ({
+  captureException: vi.fn(),
 }))
 
 vi.mock('react-router-dom', async (orig) => {
@@ -53,6 +60,7 @@ describe('AuthLoginPage', () => {
   beforeEach(() => {
     h.login.mockClear()
     h.navigate.mockClear()
+    vi.mocked(Sentry.captureException).mockClear()
     h.generateRandomString.mockClear()
     h.sha256.mockClear()
     h.genIndex = 0
@@ -109,6 +117,64 @@ describe('AuthLoginPage', () => {
     })
 
     expect(submit).not.toBeDisabled()
+  })
+
+  it('treats HTTP 400 as an expected failure and allows a successful retry', async () => {
+    h.login
+      .mockRejectedValueOnce(new ApiError('An unexpected server message', 400))
+      .mockResolvedValueOnce(undefined)
+
+    const { container } = render(
+      <MemoryRouter>
+        <AuthLoginPage />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'PPss11!!' },
+    })
+
+    const submit = container.querySelector('#login') as HTMLButtonElement
+    fireEvent.click(submit)
+
+    await waitFor(() => expect(submit).not.toBeDisabled())
+    expect(h.navigate).not.toHaveBeenCalled()
+    expect(Sentry.captureException).not.toHaveBeenCalled()
+
+    fireEvent.click(submit)
+
+    await waitFor(() => expect(h.navigate).toHaveBeenCalledWith('/'))
+    expect(h.login).toHaveBeenCalledTimes(2)
+    expect(Sentry.captureException).not.toHaveBeenCalled()
+  })
+
+  it('reports unexpected login failures to Sentry', async () => {
+    const error = new ApiError('Invalid credentials', 500)
+    h.login.mockRejectedValueOnce(error)
+
+    const { container } = render(
+      <MemoryRouter>
+        <AuthLoginPage />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'PPss11!!' },
+    })
+
+    fireEvent.click(container.querySelector('#login') as HTMLButtonElement)
+
+    await waitFor(() =>
+      expect(Sentry.captureException).toHaveBeenCalledWith(error),
+    )
+    expect(container.querySelector('#login')).not.toBeDisabled()
+    expect(h.navigate).not.toHaveBeenCalled()
   })
 
   it('starts Google OAuth, stores state & verifier, and redirects with correct params', async () => {
