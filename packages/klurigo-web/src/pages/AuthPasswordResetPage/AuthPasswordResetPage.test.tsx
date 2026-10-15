@@ -11,7 +11,8 @@ const h = vi.hoisted(() => ({
   navigate: vi.fn<NavigateFunction>(),
 }))
 
-vi.mock('../../api/api.utils', () => ({
+vi.mock('../../api/api.utils', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../api/api.utils')>()),
   isTokenExpired: () => h.expired,
 }))
 

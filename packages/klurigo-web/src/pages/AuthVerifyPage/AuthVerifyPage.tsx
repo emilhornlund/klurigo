@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import { useAuthContext } from '../../context/auth'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import { AuthVerifyPageUI } from './components'
 
@@ -37,7 +38,10 @@ const AuthVerifyPage: FC = () => {
         .then(() => {
           setHasError(false)
         })
-        .catch(() => setHasError(true))
+        .catch((error) => {
+          reportUnexpectedAuthError(error)
+          setHasError(true)
+        })
         .finally(() => setLoading(false))
     }
   }, [searchParams, navigate, verifyEmail])

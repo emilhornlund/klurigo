@@ -13,6 +13,7 @@ import { useIsMounted, useLocalStorage } from 'usehooks-ts'
 import { useKlurigoServiceClient } from '../../api'
 import { ApiError } from '../../api/api.utils'
 import type { AuthState, ScopePayload } from '../../models'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { AuthContextType, RevokeGameOptions } from './auth-context'
 import { AuthContext } from './auth-context'
@@ -406,6 +407,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
             return
           }
 
+          reportUnexpectedAuthError(error)
           scheduleRetry(scope)
         })
         .finally(() => {

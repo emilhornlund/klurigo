@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import { isTokenExpired } from '../../api/api.utils'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { AuthPasswordResetFormFields } from './components'
 import { AuthPasswordResetPageUI } from './components'
@@ -36,7 +37,10 @@ const AuthPasswordResetPage: FC = () => {
           setHasError(false)
           navigate('/auth/login')
         })
-        .catch(() => setHasError(true))
+        .catch((error) => {
+          reportUnexpectedAuthError(error)
+          setHasError(true)
+        })
         .finally(() => setIsLoading(false))
     }
   }

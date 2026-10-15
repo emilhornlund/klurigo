@@ -3,11 +3,14 @@ import type { NavigateFunction } from 'react-router-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { ApiError } from '../../api/api.utils'
+
 const h = vi.hoisted(() => ({
   login: vi
     .fn<(payload: { email: string; password: string }) => Promise<void>>()
     .mockResolvedValue(undefined),
   navigate: vi.fn<NavigateFunction>(),
+  reportUnexpectedAuthError: vi.fn(),
 
   genSeq: ['STATE_X', 'PKCE_Y'],
   genIndex: 0,
@@ -21,6 +24,10 @@ const h = vi.hoisted(() => ({
 
 vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({ login: h.login }),
+}))
+
+vi.mock('../../utils/reportUnexpectedAuthError', () => ({
+  reportUnexpectedAuthError: h.reportUnexpectedAuthError,
 }))
 
 vi.mock('react-router-dom', async (orig) => {
@@ -53,6 +60,7 @@ describe('AuthLoginPage', () => {
   beforeEach(() => {
     h.login.mockClear()
     h.navigate.mockClear()
+    h.reportUnexpectedAuthError.mockClear()
     h.generateRandomString.mockClear()
     h.sha256.mockClear()
     h.genIndex = 0
@@ -111,6 +119,59 @@ describe('AuthLoginPage', () => {
     expect(submit).not.toBeDisabled()
   })
 
+  it('handles incorrect credentials, keeps the user on login, and allows retry', async () => {
+    h.login.mockRejectedValueOnce(new ApiError('Bad credentials', 401))
+
+    const { container } = render(
+      <MemoryRouter>
+        <AuthLoginPage />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'PPss11!!' },
+    })
+
+    const submit = container.querySelector('#login') as HTMLButtonElement
+    fireEvent.click(submit)
+
+    await waitFor(() => expect(submit).not.toBeDisabled())
+    expect(h.navigate).not.toHaveBeenCalled()
+    expect(h.login).toHaveBeenCalledTimes(1)
+    expect(h.reportUnexpectedAuthError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'Bad credentials', status: 401 }),
+    )
+
+    h.login.mockResolvedValueOnce(undefined)
+    fireEvent.click(submit)
+    await waitFor(() => expect(h.navigate).toHaveBeenCalledWith('/'))
+  })
+
+  it('reports unexpected login failures while handling the rejection', async () => {
+    const unexpectedError = new Error('Unexpected login failure')
+    h.login.mockRejectedValueOnce(unexpectedError)
+
+    const { container } = render(
+      <MemoryRouter>
+        <AuthLoginPage />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByPlaceholderText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'PPss11!!' },
+    })
+    fireEvent.click(container.querySelector('#login') as HTMLButtonElement)
+
+    await waitFor(() => expect(submitButton(container)).not.toBeDisabled())
+    expect(h.reportUnexpectedAuthError).toHaveBeenCalledWith(unexpectedError)
+  })
+
   it('starts Google OAuth, stores state & verifier, and redirects with correct params', async () => {
     const originalLocation = window.location
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -162,3 +223,6 @@ describe('AuthLoginPage', () => {
     }
   })
 })
+
+const submitButton = (container: HTMLElement) =>
+  container.querySelector('#login') as HTMLButtonElement

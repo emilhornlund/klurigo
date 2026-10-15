@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { CreateUserFormFields } from './components'
 import { AuthRegisterPageUI } from './components'
@@ -19,6 +20,7 @@ const AuthRegisterPage: FC = () => {
     register(values)
       .then(() => login({ email: values.email, password: values.password }))
       .then(() => navigate('/'))
+      .catch(reportUnexpectedAuthError)
       .finally(() => setIsLoading(false))
   }
 

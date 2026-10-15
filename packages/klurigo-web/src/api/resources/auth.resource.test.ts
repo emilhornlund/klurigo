@@ -104,7 +104,7 @@ describe('createAuthResource', () => {
     const { api } = makeApi()
     const { deps, notifyError, setTokenPair, fetchCurrentUser } = makeDeps()
 
-    const err = new Error('bad creds')
+    const err = new ApiError('Bad credentials', 401)
     api.apiPost = vi
       .fn()
       .mockRejectedValue(err) as unknown as ApiClientCore['apiPost']

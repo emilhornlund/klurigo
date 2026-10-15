@@ -11,6 +11,7 @@ import {
   GOOGLE_OAUTH_STORAGE_STATE_KEY,
   sha256,
 } from '../../utils/oauth'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { LoginFormFields } from './components'
 import { AuthLoginPageUI } from './components'
@@ -28,6 +29,7 @@ const AuthLoginPage: FC = () => {
       .then(() => {
         navigate('/')
       })
+      .catch(reportUnexpectedAuthError)
       .finally(() => setIsLoading(false))
   }
 

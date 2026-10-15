@@ -7,6 +7,7 @@ import { useKlurigoServiceClient } from '../../api'
 import { LoadingSpinner, Page } from '../../components'
 import { useUserContext } from '../../context/user'
 import { trimToUndefined } from '../../utils/helpers'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { UpdateUserDetailsFormFields } from './components'
 import { ProfileSettingsPageUI } from './components'
@@ -72,11 +73,13 @@ const ProfileSettingsPage: FC = () => {
     request: UpdateUserPasswordFormFields,
   ): void => {
     setIsSavingUserPassword(true)
-    updateUserPassword(request).finally(() => setIsSavingUserPassword(false))
+    updateUserPassword(request)
+      .catch(reportUnexpectedAuthError)
+      .finally(() => setIsSavingUserPassword(false))
   }
 
   const handleResendVerificationEmail = () => {
-    resendVerificationEmail().then(() => {})
+    resendVerificationEmail().catch(reportUnexpectedAuthError)
   }
 
   if (!data || isLoadingUserProfile || isError) {

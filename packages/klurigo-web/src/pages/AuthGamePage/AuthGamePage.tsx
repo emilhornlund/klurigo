@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import { LoadingSpinner, Page } from '../../components'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 const AuthGamePage: FC = () => {
   const navigate = useNavigate()
@@ -26,7 +27,8 @@ const AuthGamePage: FC = () => {
       .then(() => {
         navigate('/join')
       })
-      .catch(() => {
+      .catch((error) => {
+        reportUnexpectedAuthError(error)
         navigate('/')
       })
   }, [searchParams, authenticateGame, navigate])

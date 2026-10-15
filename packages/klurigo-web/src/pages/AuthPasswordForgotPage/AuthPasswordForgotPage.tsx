@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import type { AuthPasswordForgotFormFields } from './components'
 import { AuthPasswordForgotPageUI } from './components'
@@ -18,6 +19,7 @@ const AuthPasswordForgotPage: FC = () => {
     setIsLoading(true)
     sendPasswordResetEmail({ email: values.email })
       .then(() => navigate('/'))
+      .catch(reportUnexpectedAuthError)
       .finally(() => setIsLoading(false))
   }
 

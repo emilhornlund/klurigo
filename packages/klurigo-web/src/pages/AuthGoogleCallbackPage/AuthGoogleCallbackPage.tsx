@@ -9,6 +9,7 @@ import {
   GOOGLE_OAUTH_STORAGE_PKCE_VERIFIER_KEY,
   GOOGLE_OAUTH_STORAGE_STATE_KEY,
 } from '../../utils/oauth'
+import { reportUnexpectedAuthError } from '../../utils/reportUnexpectedAuthError'
 
 import { AuthGoogleCallbackPageUI } from './components'
 
@@ -46,7 +47,10 @@ const AuthGoogleCallbackPage: FC = () => {
 
     googleExchangeCode({ code, codeVerifier })
       .then(() => navigate('/'))
-      .catch(() => navigate('/auth/login'))
+      .catch((error) => {
+        reportUnexpectedAuthError(error)
+        navigate('/auth/login')
+      })
   }, [searchParams, navigate, googleExchangeCode])
 
   return <AuthGoogleCallbackPageUI />
