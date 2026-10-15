@@ -10,6 +10,7 @@ import { useMemo } from 'react'
 import ResponsiveImage from '../../../components/ResponsiveImage'
 import ResponsivePlayer from '../../../components/ResponsivePlayer'
 import { classNames } from '../../../utils/helpers'
+import QuestionMediaIndicator from '../QuestionMediaIndicator'
 
 import styles from './QuestionMedia.module.scss'
 
@@ -19,6 +20,7 @@ export type QuestionMediaProps = {
   alt?: string
   countdown?: CountdownEvent
   className?: string
+  mediaPresentation?: 'default' | 'player'
 }
 
 const QuestionMedia: FC<QuestionMediaProps> = ({
@@ -27,6 +29,7 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
   alt,
   countdown,
   className,
+  mediaPresentation = 'default',
 }) => {
   const imageURL = useMemo(() => {
     if (type !== QuestionType.Pin && media?.type === MediaType.Image) {
@@ -44,15 +47,17 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
     return undefined
   }, [type, media])
 
-  const audioOrVideoURL = useMemo(() => {
+  const audioOrVideoMedia = useMemo(() => {
     if (
       type !== QuestionType.Pin &&
       (media?.type === MediaType.Audio || media?.type === MediaType.Video)
     ) {
-      return media?.url
+      return media
     }
     return null
   }, [type, media])
+
+  const audioOrVideoURL = audioOrVideoMedia?.url ?? null
 
   if (!imageURL && !audioOrVideoURL) return null
 
@@ -70,7 +75,12 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
             : {})}
         />
       )}
-      {audioOrVideoURL && <ResponsivePlayer url={audioOrVideoURL} />}
+      {audioOrVideoMedia &&
+        (mediaPresentation === 'player' ? (
+          <QuestionMediaIndicator type={audioOrVideoMedia.type} />
+        ) : (
+          <ResponsivePlayer url={audioOrVideoMedia.url} />
+        ))}
     </div>
   )
 }
