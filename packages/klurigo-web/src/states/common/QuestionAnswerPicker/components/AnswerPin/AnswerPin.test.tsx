@@ -1,3 +1,4 @@
+import { QuestionType } from '@klurigo/common'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -76,6 +77,50 @@ describe('AnswerPin', () => {
     fireEvent.click(screen.getByRole('button', { name: /submit my pin/i }))
     expect(onSubmit).toHaveBeenCalledTimes(1)
     expect(onSubmit).toHaveBeenLastCalledWith({ x: 0.12, y: 0.34 })
+  })
+
+  it('restores the submitted pin location from the answer event', () => {
+    const { rerender } = render(
+      <AnswerPin
+        imageURL="/img.png"
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    rerender(
+      <AnswerPin
+        imageURL="/img.png"
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+        submittedAnswer={{ type: QuestionType.Pin, value: '0.12,0.34' }}
+      />,
+    )
+
+    expect(screen.getByTestId('pin-value')).toHaveTextContent(
+      JSON.stringify({ x: 0.12, y: 0.34 }),
+    )
+    expect(
+      screen.getByRole('button', { name: /submit my pin/i }),
+    ).toBeDisabled()
+  })
+
+  it('keeps the default map location for an invalid submitted coordinate', () => {
+    render(
+      <AnswerPin
+        imageURL="/img.png"
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+        submittedAnswer={{ type: QuestionType.Pin, value: 'invalid,3' }}
+      />,
+    )
+
+    expect(screen.getByTestId('pin-value')).toHaveTextContent(
+      JSON.stringify({ x: 0.5, y: 0.5 }),
+    )
   })
 
   it('renders non-interactive mode without submit button', () => {

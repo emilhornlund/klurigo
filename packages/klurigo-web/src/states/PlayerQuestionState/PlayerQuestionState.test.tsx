@@ -1,13 +1,18 @@
-import { GameEventType, MediaType, QuestionType } from '@klurigo/common'
-import { render, screen, waitFor } from '@testing-library/react'
+import {
+  GameEventType,
+  MediaType,
+  QuestionType,
+  type SubmitQuestionAnswerRequestDto,
+} from '@klurigo/common'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
 const h = vi.hoisted(() => ({
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  submitQuestionAnswer: vi.fn<[], Promise<void>>().mockResolvedValue(),
+  submitQuestionAnswer: vi
+    .fn<(request: SubmitQuestionAnswerRequestDto) => Promise<void>>()
+    .mockResolvedValue(),
 }))
 
 vi.mock('../../context/game', () => ({
@@ -183,6 +188,36 @@ describe('PlayerQuestionState', () => {
     await waitFor(() => {
       expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
     })
+  })
+
+  it('prevents a second answer submission while the first is pending', async () => {
+    const user = userEvent.setup()
+    let resolveSubmission!: () => void
+    h.submitQuestionAnswer.mockImplementation(
+      () => new Promise<void>((resolve) => (resolveSubmission = resolve)),
+    )
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick once',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    const answer = screen.getByRole('button', { name: 'A' })
+    await user.click(answer)
+    expect(answer).toBeDisabled()
+
+    await user.click(answer)
+    expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      resolveSubmission()
+      await Promise.resolve()
+    })
+    expect(answer).not.toBeDisabled()
   })
 
   it('does not throw when submitQuestionAnswer is undefined', async () => {

@@ -64,23 +64,15 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Skip me?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Skip me?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -105,12 +97,8 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -307,23 +295,15 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView pinQuestion"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Place the pin on the map
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Place the pin on the map
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -348,12 +328,8 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPin"
@@ -530,23 +506,15 @@ exports[`HostQuestionState > renders with audio media 1`] = `
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Audio clip question?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Audio clip question?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -571,27 +539,23 @@ exports[`HostQuestionState > renders with audio media 1`] = `
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="questionMedia mediaArea"
-            data-testid="question-media"
-          >
             <div
-              class="playerWrapper"
+              class="questionMedia mediaArea"
+              data-testid="question-media"
             >
-              <audio
-                controls=""
-                loop=""
-                src="https://cdn.test/audio.mp3"
-                style="display: block; width: 100%; height: 100%;"
-              />
+              <div
+                class="playerWrapper"
+              >
+                <audio
+                  controls=""
+                  loop=""
+                  src="https://cdn.test/audio.mp3"
+                  style="display: block; width: 100%; height: 100%;"
+                />
+              </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -788,23 +752,15 @@ exports[`HostQuestionState > renders with video media 1`] = `
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Video clip question?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Video clip question?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -829,27 +785,23 @@ exports[`HostQuestionState > renders with video media 1`] = `
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="questionMedia mediaArea"
-            data-testid="question-media"
-          >
             <div
-              class="playerWrapper"
+              class="questionMedia mediaArea"
+              data-testid="question-media"
             >
-              <video
-                controls=""
-                loop=""
-                src="https://cdn.test/video.mp4"
-                style="display: block; width: 100%; height: 100%;"
-              />
+              <div
+                class="playerWrapper"
+              >
+                <video
+                  controls=""
+                  loop=""
+                  src="https://cdn.test/video.mp4"
+                  style="display: block; width: 100%; height: 100%;"
+                />
+              </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -1046,23 +998,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Who painted The Starry Night?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Who painted The Starry Night?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -1087,34 +1031,30 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="questionMedia mediaArea"
-            data-testid="question-media"
-          >
             <div
-              class="container fallbackAspectRatio"
+              class="questionMedia mediaArea"
+              data-testid="question-media"
             >
               <div
-                class="centerOverlay box"
-                style="width: 100%; aspect-ratio: 1.6 / 1;"
+                class="container fallbackAspectRatio"
               >
                 <div
-                  class="loadingSpinnerContainer"
-                  data-testid="loading-spinner"
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
-                  <div />
-                  <div />
-                  <div />
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -1331,23 +1271,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Who painted The Starry Night?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Who painted The Starry Night?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -1372,34 +1304,30 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="questionMedia mediaArea"
-            data-testid="question-media"
-          >
             <div
-              class="container fallbackAspectRatio"
+              class="questionMedia mediaArea"
+              data-testid="question-media"
             >
               <div
-                class="centerOverlay box"
-                style="width: 100%; aspect-ratio: 1.6 / 1;"
+                class="container fallbackAspectRatio"
               >
                 <div
-                  class="loadingSpinnerContainer"
-                  data-testid="loading-spinner"
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
-                  <div />
-                  <div />
-                  <div />
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker compactManyAnswers"
@@ -1636,23 +1564,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView hasMedia"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Who painted The Starry Night?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Who painted The Starry Night?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -1677,34 +1597,30 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="questionMedia mediaArea"
-            data-testid="question-media"
-          >
             <div
-              class="container fallbackAspectRatio"
+              class="questionMedia mediaArea"
+              data-testid="question-media"
             >
               <div
-                class="centerOverlay box"
-                style="width: 100%; aspect-ratio: 1.6 / 1;"
+                class="container fallbackAspectRatio"
               >
                 <div
-                  class="loadingSpinnerContainer"
-                  data-testid="loading-spinner"
+                  class="centerOverlay box"
+                  style="width: 100%; aspect-ratio: 1.6 / 1;"
                 >
-                  <div />
-                  <div />
-                  <div />
+                  <div
+                    class="loadingSpinnerContainer"
+                    data-testid="loading-spinner"
+                  >
+                    <div />
+                    <div />
+                    <div />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow flexibleAnswerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -1901,23 +1817,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                What percentage of the earth's surface is covered by water?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              What percentage of the earth's surface is covered by water?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -1942,12 +1850,8 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerRange"
@@ -2145,23 +2049,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Rabbits can't vomit?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Rabbits can't vomit?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -2186,12 +2082,8 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerPicker"
@@ -2388,23 +2280,15 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           class="contentInner"
         >
           <div
-            class="row questionRow"
+            class="stack vertical spacing-stack align-stretch justify-start questionView"
           >
-            <div
-              class="column"
+            <h1
+              class="typography title alignCenter widthFull colorInverse questionHeading"
             >
-              <h1
-                class="typography title alignCenter widthFull colorInverse questionHeading"
-              >
-                Who painted the Mono Lisa?
-              </h1>
-            </div>
-          </div>
-          <div
-            class="row flexibleHeight"
-          >
+              Who painted the Mono Lisa?
+            </h1>
             <div
-              class="column"
+              class="submissionCounter"
             >
               <div
                 class="surface iconInfo"
@@ -2429,12 +2313,8 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
                 </span>
               </div>
             </div>
-          </div>
-          <div
-            class="row fullWidth answerRow"
-          >
             <div
-              class="questionAnswerPicker"
+              class="questionAnswerPicker answerArea"
             >
               <div
                 class="answerInput"

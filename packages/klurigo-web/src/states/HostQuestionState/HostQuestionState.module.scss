@@ -1,99 +1,45 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/spacing.semantic' as spacing;
 
-.row {
+.submissionCounter {
   display: flex;
-  flex-direction: row;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
+}
+
+.iconInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+
+  @mixin info-dimensions($size) {
+    column-gap: $size * 0.4;
+    height: $size;
+    padding: 0 $size * 0.5;
+    border-radius: radius.pill-radius($size);
+
+    svg {
+      @include helpers.fontSize($size * 0.5);
+    }
+
+    span {
+      margin-top: -($size * 0.075);
+      @include helpers.fontSize($size * 0.6);
+    }
+  }
 
   @include helpers.mobile {
-    gap: spacing.$space-page-mobile;
+    @include info-dimensions(26px);
   }
 
   @include helpers.tablet {
-    gap: spacing.$space-page-tablet;
+    @include info-dimensions(36px);
   }
 
   @include helpers.desktop {
-    gap: spacing.$space-page-desktop;
+    @include info-dimensions(46px);
   }
-
-  &.flexibleHeight {
-    flex: 0 0 auto;
-  }
-
-  &.questionRow {
-    flex: 0 1 auto;
-    min-height: 0;
-    align-items: stretch;
-  }
-
-  &.fullWidth {
-    width: 100%;
-  }
-
-  &.answerRow {
-    align-items: stretch;
-    flex: 0 1 auto;
-    min-height: min-content;
-    margin-top: auto;
-    overflow: visible;
-  }
-
-  &.flexibleAnswerRow {
-    flex: 1 1 0;
-    min-height: min-content;
-    margin-top: 0;
-  }
-
-  .column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex: 1 1 auto;
-    min-height: 0;
-
-    .iconInfo {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-
-      @mixin info-dimensions($size) {
-        column-gap: $size * 0.4;
-        height: $size;
-        padding: 0 $size * 0.5;
-        border-radius: radius.pill-radius($size);
-
-        svg {
-          @include helpers.fontSize($size * 0.5);
-        }
-
-        span {
-          margin-top: -($size * 0.075);
-          @include helpers.fontSize($size * 0.6);
-        }
-      }
-
-      @include helpers.mobile {
-        @include info-dimensions(26px);
-      }
-
-      @include helpers.tablet {
-        @include info-dimensions(36px);
-      }
-
-      @include helpers.desktop {
-        @include info-dimensions(46px);
-      }
-    }
-  }
-}
-
-.mediaArea {
-  flex: 4 1 0;
 }

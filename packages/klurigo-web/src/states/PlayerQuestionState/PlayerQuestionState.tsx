@@ -7,9 +7,7 @@ import { useState } from 'react'
 
 import { ProgressBar } from '../../components'
 import { useGameContext } from '../../context/game'
-import { GamePage } from '../common'
-
-import { PlayerQuestionView } from './components'
+import { GamePage, QuestionView } from '../common'
 
 export interface PlayerQuestionStateProps {
   event: GameQuestionPlayerEvent
@@ -34,7 +32,7 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
 
   return (
     <GamePage layout="fill" align="space-between" scrollable={false}>
-      <PlayerQuestionView
+      <QuestionView
         question={question}
         submittedAnswer={answer}
         countdown={countdown}

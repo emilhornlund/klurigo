@@ -1,7 +1,8 @@
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 import type { GameQuestionPlayerAnswerEvent } from '@klurigo/common'
+import { QuestionType } from '@klurigo/common'
 import type { ChangeEvent, FC, FormEvent } from 'react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Button, TextField } from '../../../../../components'
 import { isValidNumber } from '../../../../../utils/helpers'
@@ -30,6 +31,13 @@ const AnswerRange: FC<AnswerRangeProps> = ({
 }) => {
   const [value, setValue] = useState<number>(Math.floor(min + (max - min) / 2))
   const [valid, setValid] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (submittedAnswer?.type === QuestionType.Range) {
+      setValue(submittedAnswer.value)
+      setValid(true)
+    }
+  }, [submittedAnswer])
 
   const disabled = useMemo(
     () => !interactive || loading || !!submittedAnswer,

@@ -1,7 +1,8 @@
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 import type { GameQuestionPlayerAnswerEvent } from '@klurigo/common'
+import { QuestionType } from '@klurigo/common'
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
   Button,
@@ -31,6 +32,25 @@ const AnswerPin: FC<AnswerPinProps> = ({
     x: 0.5,
     y: 0.5,
   })
+
+  useEffect(() => {
+    if (submittedAnswer?.type !== QuestionType.Pin) return
+
+    const [xValue, yValue, ...extraValues] = submittedAnswer.value.split(',')
+    const x = Number(xValue)
+    const y = Number(yValue)
+    if (
+      extraValues.length === 0 &&
+      Number.isFinite(x) &&
+      Number.isFinite(y) &&
+      x >= 0 &&
+      x <= 1 &&
+      y >= 0 &&
+      y <= 1
+    ) {
+      setPosition({ x, y })
+    }
+  }, [submittedAnswer])
 
   const disabled = useMemo(
     () => !interactive || loading || !!submittedAnswer,

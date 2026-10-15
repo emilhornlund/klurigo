@@ -1,5 +1,6 @@
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 import type { GameQuestionPlayerAnswerEvent } from '@klurigo/common'
+import { QuestionType } from '@klurigo/common'
 import {
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MAX_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH,
@@ -55,6 +56,12 @@ const AnswerInput: FC<AnswerInputProps> = ({
     },
     [onSubmit, valid, value],
   )
+
+  useEffect(() => {
+    if (submittedAnswer?.type === QuestionType.TypeAnswer) {
+      setValue(submittedAnswer.value)
+    }
+  }, [submittedAnswer])
 
   useEffect(() => {
     const form = formRef.current
