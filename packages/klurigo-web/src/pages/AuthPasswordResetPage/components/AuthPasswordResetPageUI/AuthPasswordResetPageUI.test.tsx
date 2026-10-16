@@ -11,6 +11,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -24,6 +25,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={true}
           error={false}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -37,6 +39,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={true}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -50,6 +53,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -78,6 +82,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -102,6 +107,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={() => undefined}
         />
       </MemoryRouter>,
@@ -132,6 +138,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={onSubmit}
         />
       </MemoryRouter>,
@@ -160,6 +167,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={onSubmit}
         />
       </MemoryRouter>,
@@ -182,6 +190,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={true}
           error={false}
+          submissionError={false}
           onSubmit={onSubmit}
         />
       </MemoryRouter>,
@@ -193,6 +202,7 @@ describe('AuthPasswordResetPageUI', () => {
         <AuthPasswordResetPageUI
           loading={false}
           error={false}
+          submissionError={false}
           onSubmit={onSubmit}
         />
       </MemoryRouter>,

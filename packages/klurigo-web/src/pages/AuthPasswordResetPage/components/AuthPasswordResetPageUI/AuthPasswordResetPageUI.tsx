@@ -8,6 +8,7 @@ import {
 } from '@klurigo/common'
 import type { FC, FormEvent } from 'react'
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   Badge,
@@ -28,12 +29,14 @@ type AuthPasswordResetWithConfirmationFormFields =
 export interface AuthPasswordResetPageUIProps {
   loading: boolean
   error: boolean
+  submissionError: boolean
   onSubmit: (values: AuthPasswordResetFormFields) => void
 }
 
 const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
   loading,
   error,
+  submissionError,
   onSubmit,
 }) => {
   const [formFields, setFormFields] =
@@ -103,6 +106,9 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
           color="inverse">
           The supplied link is invalid or has expired.
         </Typography>
+        <Link to="/auth/password/forgot">
+          Request a new password reset link
+        </Link>
       </Page>
     )
   }
@@ -117,6 +123,15 @@ const AuthPasswordResetPageUI: FC<AuthPasswordResetPageUIProps> = ({
         sneaky hackers out!
       </Typography>
       <Stack as="form" width="content" onSubmit={handleSubmit}>
+        {submissionError && (
+          <Typography
+            role="alert"
+            variant="body"
+            align="center"
+            color="inverse">
+            We couldn’t submit your password reset. Please try again.
+          </Typography>
+        )}
         <TextField
           id="password"
           type="password"

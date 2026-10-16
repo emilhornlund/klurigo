@@ -760,6 +760,24 @@ describe('AuthController (e2e)', () => {
           .set({ 'User-Agent': MOCK_USER_AGENT })
           .send({ refreshToken })
           .expect(401)
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/login')
+          .set('User-Agent', MOCK_USER_AGENT)
+          .send({
+            email: MOCK_PRIMARY_USER_EMAIL,
+            password: MOCK_SECONDARY_PASSWORD,
+          })
+          .expect(200)
+
+        await supertest(app.getHttpServer())
+          .post('/api/auth/login')
+          .set('User-Agent', MOCK_USER_AGENT)
+          .send({
+            email: MOCK_PRIMARY_USER_EMAIL,
+            password: MOCK_PRIMARY_PASSWORD,
+          })
+          .expect(400)
       })
 
       it('should return 400 bad request when old password is incorrect', async () => {

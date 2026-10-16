@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
-import { isTokenExpired } from '../../api/api.utils'
+import { ApiError, isTokenExpired } from '../../api/api.utils'
 
 import type { AuthPasswordResetFormFields } from './components'
 import { AuthPasswordResetPageUI } from './components'
@@ -21,6 +21,7 @@ const AuthPasswordResetPage: FC = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState<boolean>(false)
+  const [submissionError, setSubmissionError] = useState(false)
   const hasResetPasswordRef = useRef(false)
 
   useEffect(() => {
@@ -34,9 +35,17 @@ const AuthPasswordResetPage: FC = () => {
       resetPassword(values, token)
         .then(() => {
           setHasError(false)
+          setSubmissionError(false)
           navigate('/auth/login')
         })
-        .catch(() => setHasError(true))
+        .catch((error: unknown) => {
+          hasResetPasswordRef.current = false
+          if (error instanceof ApiError && error.status === 401) {
+            setHasError(true)
+          } else {
+            setSubmissionError(true)
+          }
+        })
         .finally(() => setIsLoading(false))
     }
   }
@@ -45,6 +54,7 @@ const AuthPasswordResetPage: FC = () => {
     <AuthPasswordResetPageUI
       loading={isLoading}
       error={hasError}
+      submissionError={submissionError}
       onSubmit={handleSubmit}
     />
   )
