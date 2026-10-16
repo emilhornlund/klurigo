@@ -7,7 +7,7 @@ import { BaseRepository } from '../../../app/shared/repository'
 import { isGoogleUser } from '../../../app/shared/user'
 import { EmailNotUniqueException, UserNotFoundException } from '../exceptions'
 
-import type { UserModel } from './models'
+import type { LocalUserModel, UserModel } from './models'
 import { GoogleUser, LocalUser, User } from './models'
 
 /**
@@ -46,8 +46,32 @@ export class UserRepository extends BaseRepository<User> {
    */
   public constructor(
     @InjectModel(User.name) protected readonly userModel: UserModel,
+    @InjectModel(AuthProvider.Local)
+    private readonly localUserModel: LocalUserModel,
   ) {
     super(userModel, 'User')
+  }
+
+  /**
+   * Updates the password hash through the LocalUser discriminator schema.
+   * The base User schema does not declare `hashedPassword`, so generic updates
+   * through `userModel` can silently discard this discriminator-only field.
+   */
+  public async updateLocalUserPassword(
+    id: string,
+    hashedPassword: string,
+  ): Promise<void> {
+    const updatedUser = await this.localUserModel
+      .findByIdAndUpdate(
+        id,
+        { hashedPassword, updatedAt: new Date() },
+        { returnDocument: 'after', runValidators: true },
+      )
+      .exec()
+
+    if (!updatedUser) {
+      throw new UserNotFoundException(id)
+    }
   }
 
   /**

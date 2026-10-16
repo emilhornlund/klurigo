@@ -241,6 +241,28 @@ describe('UserAuthController (e2e)', () => {
         })
     })
 
+    it('returns the same response for a non-local account and an unknown email', async () => {
+      await userRepository.createGoogleUser({
+        email: MOCK_PRIMARY_USER_EMAIL,
+        googleUserId: 'google-account-1',
+        givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+        familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+        defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+      })
+
+      const nonLocalResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/password/forgot')
+        .send({ email: MOCK_PRIMARY_USER_EMAIL.toUpperCase() })
+        .expect(204)
+      const unknownResponse = await supertest(app.getHttpServer())
+        .post('/api/auth/password/forgot')
+        .send({ email: 'unknown@example.com' })
+        .expect(204)
+
+      expect(nonLocalResponse.body).toEqual(unknownResponse.body)
+      expect(nonLocalResponse.body).toEqual({})
+    })
+
     it('should return 400 bad request when email validation fails', async () => {
       return supertest(app.getHttpServer())
         .post('/api/auth/password/forgot')
@@ -300,11 +322,128 @@ describe('UserAuthController (e2e)', () => {
         .send({ refreshToken })
         .expect(401)
 
-      return supertest(app.getHttpServer())
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL.toUpperCase(),
+          password: MOCK_SECONDARY_PASSWORD,
+        })
+        .expect(200)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        })
+        .expect(400)
+
+      await supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
         .set(createBearerAuthHeader(accessToken))
         .send({ password: MOCK_SECONDARY_PASSWORD })
         .expect(401)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_SECONDARY_PASSWORD,
+        })
+        .expect(200)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        })
+        .expect(400)
+    })
+
+    it('restores the old password and leaves the reset token usable if token consumption fails', async () => {
+      const { _id: userId } = await userRepository.createLocalUser({
+        email: MOCK_PRIMARY_USER_EMAIL,
+        hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
+        givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+        familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+        defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+      })
+      const accessToken = await tokenService.signPasswordResetToken(userId)
+      const consumeSpy = jest
+        .spyOn(tokenService, 'consumePasswordResetToken')
+        .mockRejectedValueOnce(new Error('temporary token-store failure'))
+
+      await supertest(app.getHttpServer())
+        .patch('/api/auth/password/reset')
+        .set(createBearerAuthHeader(accessToken))
+        .send({ password: MOCK_SECONDARY_PASSWORD })
+        .expect(500)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        })
+        .expect(200)
+
+      await supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_SECONDARY_PASSWORD,
+        })
+        .expect(400)
+
+      consumeSpy.mockRestore()
+      await supertest(app.getHttpServer())
+        .patch('/api/auth/password/reset')
+        .set(createBearerAuthHeader(accessToken))
+        .send({ password: MOCK_SECONDARY_PASSWORD })
+        .expect(204)
+    })
+
+    it('does not consume the reset token when persisting the password fails', async () => {
+      const { _id: userId } = await userRepository.createLocalUser({
+        email: MOCK_PRIMARY_USER_EMAIL,
+        hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
+        givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+        familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+        defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+      })
+      const accessToken = await tokenService.signPasswordResetToken(userId)
+      const updateSpy = jest
+        .spyOn(userRepository, 'updateLocalUserPassword')
+        .mockRejectedValueOnce(new Error('temporary database failure'))
+
+      await supertest(app.getHttpServer())
+        .patch('/api/auth/password/reset')
+        .set(createBearerAuthHeader(accessToken))
+        .send({ password: MOCK_SECONDARY_PASSWORD })
+        .expect(500)
+
+      await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        '0.0.0.0',
+        'mock-user-agent',
+      )
+
+      updateSpy.mockRestore()
+      await supertest(app.getHttpServer())
+        .patch('/api/auth/password/reset')
+        .set(createBearerAuthHeader(accessToken))
+        .send({ password: MOCK_SECONDARY_PASSWORD })
+        .expect(204)
     })
 
     it('should return 401 when the authorization has expired', async () => {
@@ -328,7 +467,7 @@ describe('UserAuthController (e2e)', () => {
         },
       )
 
-      return supertest(app.getHttpServer())
+      await supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
         .set(createBearerAuthHeader(accessToken))
         .send({ password: MOCK_SECONDARY_PASSWORD })
@@ -340,10 +479,27 @@ describe('UserAuthController (e2e)', () => {
             timestamp: expect.anything(),
           })
         })
+
+      return supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        })
+        .expect(200)
     })
 
     it('should return 401 when malformed authorization', async () => {
-      return supertest(app.getHttpServer())
+      await userRepository.createLocalUser({
+        email: MOCK_PRIMARY_USER_EMAIL,
+        hashedPassword: MOCK_DEFAULT_HASHED_PASSWORD,
+        givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
+        familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
+        defaultNickname: MOCK_PRIMARY_USER_DEFAULT_NICKNAME,
+      })
+
+      await supertest(app.getHttpServer())
         .patch('/api/auth/password/reset')
         .set({ Authorization: 'Bearer garbage' })
         .send()
@@ -355,6 +511,15 @@ describe('UserAuthController (e2e)', () => {
             timestamp: expect.anything(),
           })
         })
+
+      return supertest(app.getHttpServer())
+        .post('/api/auth/login')
+        .set('User-Agent', 'mock-user-agent')
+        .send({
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        })
+        .expect(200)
     })
 
     it('should return 401 when missing authorization header', async () => {

@@ -17,6 +17,10 @@ type ModelDouble = {
   findByIdAndUpdate: jest.Mock
 }
 
+type LocalModelDouble = {
+  findByIdAndUpdate: jest.Mock
+}
+
 const makeUser = (overrides: Partial<User> = {}): User => ({
   _id: 'user-1',
   authProvider: AuthProvider.None,
@@ -44,6 +48,7 @@ const makeGoogleUser = (overrides: Partial<GoogleUser> = {}): GoogleUser =>
 describe(UserRepository.name, () => {
   let repository: UserRepository
   let model: ModelDouble
+  let localUserModel: LocalModelDouble
   let findByIdMock: jest.Mock
   let findOneMock: jest.Mock
   let createMock: jest.Mock
@@ -57,6 +62,7 @@ describe(UserRepository.name, () => {
       findOne: jest.fn(),
       findByIdAndUpdate: jest.fn(),
     }
+    localUserModel = { findByIdAndUpdate: jest.fn() }
     findByIdMock = jest.fn()
     findOneMock = jest.fn()
     createMock = jest.fn()
@@ -66,6 +72,7 @@ describe(UserRepository.name, () => {
     repository = Object.create(UserRepository.prototype) as UserRepository
     Object.assign(repository, {
       userModel: model,
+      localUserModel,
       findById: findByIdMock,
       findOne: findOneMock,
       create: createMock,
@@ -319,6 +326,35 @@ describe(UserRepository.name, () => {
         repository.findUserByIdAndUpdateOrThrow('user-1', {
           givenName: 'Updated',
         }),
+      ).rejects.toBeInstanceOf(UserNotFoundException)
+    })
+  })
+
+  describe('updateLocalUserPassword', () => {
+    it('updates the password through the LocalUser discriminator model', async () => {
+      const execMock = jest.fn().mockResolvedValue(makeLocalUser())
+      localUserModel.findByIdAndUpdate.mockReturnValue({ exec: execMock })
+
+      await expect(
+        repository.updateLocalUserPassword('local-1', 'new-hash'),
+      ).resolves.toBeUndefined()
+
+      expect(localUserModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        'local-1',
+        { hashedPassword: 'new-hash', updatedAt: expect.any(Date) },
+        { returnDocument: 'after', runValidators: true },
+      )
+      expect(execMock).toHaveBeenCalledTimes(1)
+      expect(model.findByIdAndUpdate).not.toHaveBeenCalled()
+    })
+
+    it('throws when the id is not a local user', async () => {
+      localUserModel.findByIdAndUpdate.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      })
+
+      await expect(
+        repository.updateLocalUserPassword('google-1', 'new-hash'),
       ).rejects.toBeInstanceOf(UserNotFoundException)
     })
   })

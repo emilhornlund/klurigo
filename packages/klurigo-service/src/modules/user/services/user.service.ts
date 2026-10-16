@@ -442,11 +442,20 @@ export class UserService {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(newPassword, salt)
 
-        await this.userRepository.findUserByIdAndUpdateOrThrow(userId, {
+        await this.userRepository.updateLocalUserPassword(
+          userId,
           hashedPassword,
-        } as LocalUser)
+        )
 
-        await this.tokenService.revokeUserAuthenticationTokens(userId)
+        try {
+          await this.tokenService.revokeUserAuthenticationTokens(userId)
+        } catch (error) {
+          await this.userRepository.updateLocalUserPassword(
+            userId,
+            user.hashedPassword,
+          )
+          throw error
+        }
 
         this.logger.log(`Updated password for user '${userId}'.`)
       } else {
@@ -482,14 +491,19 @@ export class UserService {
       const salt = await bcrypt.genSalt(10)
       const hashedPassword = await bcrypt.hash(password, salt)
 
-      await this.userRepository.findUserByIdAndUpdateOrThrow(userId, {
-        hashedPassword,
-      } as LocalUser)
+      await this.userRepository.updateLocalUserPassword(userId, hashedPassword)
 
-      await this.tokenService.revokeUserAuthenticationTokens(userId)
+      try {
+        await this.tokenService.revokeUserAuthenticationTokens(userId)
+        await this.tokenService.consumePasswordResetToken(jti)
+      } catch (error) {
+        await this.userRepository.updateLocalUserPassword(
+          userId,
+          user.hashedPassword,
+        )
+        throw error
+      }
       this.logger.log(`Updated password for user '${userId}'.`)
-
-      await this.tokenService.consumePasswordResetToken(jti)
     } else {
       this.logger.debug(`User '${userId}' is not a local account.`)
       throw new ForbiddenException('Incorrect user type')

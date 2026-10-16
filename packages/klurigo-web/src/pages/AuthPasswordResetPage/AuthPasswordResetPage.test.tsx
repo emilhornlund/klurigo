@@ -3,6 +3,8 @@ import { MemoryRouter } from 'react-router-dom'
 import type { NavigateFunction } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { ApiError } from '../../api/api.utils'
+
 const h = vi.hoisted(() => ({
   expired: false,
   resetPassword: vi
@@ -11,7 +13,8 @@ const h = vi.hoisted(() => ({
   navigate: vi.fn<NavigateFunction>(),
 }))
 
-vi.mock('../../api/api.utils', () => ({
+vi.mock('../../api/api.utils', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../api/api.utils')>()),
   isTokenExpired: () => h.expired,
 }))
 
@@ -43,6 +46,9 @@ describe('AuthPasswordResetPage', () => {
     )
     expect(screen.getByText('Oops! Something went wrong.')).toBeInTheDocument()
     expect(
+      screen.getByRole('link', { name: 'Request a new password reset link' }),
+    ).toHaveAttribute('href', '/auth/password/forgot')
+    expect(
       screen.getByText('The supplied link is invalid or has expired.'),
     ).toBeInTheDocument()
     expect(container).toMatchSnapshot()
@@ -56,6 +62,9 @@ describe('AuthPasswordResetPage', () => {
       </MemoryRouter>,
     )
     expect(screen.getByText('Oops! Something went wrong.')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Request a new password reset link' }),
+    ).toHaveAttribute('href', '/auth/password/forgot')
     expect(container).toMatchSnapshot()
   })
 
@@ -95,14 +104,10 @@ describe('AuthPasswordResetPage', () => {
     expect(submit).not.toBeDisabled()
   })
 
-  it('shows error view on failure and does not navigate', async () => {
-    let reject!: (e?: unknown) => void
-    h.resetPassword.mockImplementation(
-      () =>
-        new Promise<void>((_, r) => {
-          reject = r
-        }),
-    )
+  it('allows a failed submission to be corrected and retried in the same page', async () => {
+    h.resetPassword
+      .mockRejectedValueOnce(new Error('temporary failure'))
+      .mockResolvedValueOnce(undefined)
 
     const { container } = render(
       <MemoryRouter initialEntries={['/auth/password/reset?token=T1']}>
@@ -123,16 +128,46 @@ describe('AuthPasswordResetPage', () => {
     fireEvent.click(submit)
     expect(submit).toBeDisabled()
 
-    reject(new Error('nope'))
-
     await waitFor(() =>
-      expect(
-        screen.getByText('Oops! Something went wrong.'),
-      ).toBeInTheDocument(),
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'We couldn’t submit your password reset. Please try again.',
+      ),
     )
 
     expect(h.navigate).not.toHaveBeenCalled()
-    expect(document.querySelector('#reset-password-button')).toBeNull()
+    expect(document.querySelector('#reset-password-button')).not.toBeNull()
     expect(container).toMatchSnapshot()
+    fireEvent.change(screen.getByPlaceholderText('New Password'), {
+      target: { value: 'PPss22!!' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+      target: { value: 'PPss22!!' },
+    })
+    fireEvent.click(document.querySelector('#reset-password-button')!)
+    await waitFor(() => expect(h.navigate).toHaveBeenCalledWith('/auth/login'))
+    expect(h.resetPassword).toHaveBeenCalledTimes(2)
+    expect(container).not.toHaveTextContent('Please try again.')
+  })
+
+  it('offers a new reset link when the server rejects the token', async () => {
+    h.resetPassword.mockRejectedValueOnce(new ApiError('Invalid token', 401))
+    render(
+      <MemoryRouter initialEntries={['/auth/password/reset?token=T1']}>
+        <AuthPasswordResetPage />
+      </MemoryRouter>,
+    )
+    fireEvent.change(screen.getByPlaceholderText('New Password'), {
+      target: { value: 'PPss11!!' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Confirm Password'), {
+      target: { value: 'PPss11!!' },
+    })
+    fireEvent.click(document.querySelector('#reset-password-button')!)
+
+    expect(
+      await screen.findByRole('link', {
+        name: 'Request a new password reset link',
+      }),
+    ).toHaveAttribute('href', '/auth/password/forgot')
   })
 })

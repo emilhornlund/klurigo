@@ -29,6 +29,7 @@ describe('UserService', () => {
     findAndUpdateGoogleUserByGoogleId: jest.Mock
     findUserByIdOrThrow: jest.Mock
     findUserByIdAndUpdateOrThrow: jest.Mock
+    updateLocalUserPassword: jest.Mock
   }
   let tokenService: {
     signVerifyEmailToken: jest.Mock
@@ -54,6 +55,7 @@ describe('UserService', () => {
       findAndUpdateGoogleUserByGoogleId: jest.fn(),
       findUserByIdOrThrow: jest.fn(),
       findUserByIdAndUpdateOrThrow: jest.fn(),
+      updateLocalUserPassword: jest.fn(),
     }
 
     tokenService = {
@@ -852,11 +854,9 @@ describe('UserService', () => {
 
       await service.changePassword('user-123', oldPassword, newPassword)
 
-      expect(userRepository.findUserByIdAndUpdateOrThrow).toHaveBeenCalledWith(
+      expect(userRepository.updateLocalUserPassword).toHaveBeenCalledWith(
         'user-123',
-        expect.objectContaining({
-          hashedPassword: expect.any(String),
-        }),
+        expect.any(String),
       )
       expect(tokenService.revokeUserAuthenticationTokens).toHaveBeenCalledWith(
         'user-123',
@@ -922,16 +922,14 @@ describe('UserService', () => {
       }
 
       userRepository.findUserByIdOrThrow.mockResolvedValue(mockUser)
-      userRepository.findUserByIdAndUpdateOrThrow.mockResolvedValue(mockUser)
+      userRepository.updateLocalUserPassword.mockResolvedValue(undefined)
       tokenService.consumePasswordResetToken.mockResolvedValue(undefined)
 
       await service.setPassword('user-123', newPassword, 'test-jti')
 
-      expect(userRepository.findUserByIdAndUpdateOrThrow).toHaveBeenCalledWith(
+      expect(userRepository.updateLocalUserPassword).toHaveBeenCalledWith(
         'user-123',
-        expect.objectContaining({
-          hashedPassword: expect.any(String),
-        }),
+        expect.any(String),
       )
       expect(tokenService.revokeUserAuthenticationTokens).toHaveBeenCalledWith(
         'user-123',
@@ -942,6 +940,76 @@ describe('UserService', () => {
       expect(logger.log).toHaveBeenCalledWith(
         expect.stringContaining('Updated password'),
       )
+    })
+
+    it('restores the previous password if reset-token consumption fails', async () => {
+      const oldPassword = 'old-hash'
+      const mockUser: any = {
+        _id: 'user-123',
+        email: 'user@example.com',
+        authProvider: AuthProvider.Local,
+        hashedPassword: oldPassword,
+      }
+      userRepository.findUserByIdOrThrow.mockResolvedValue(mockUser)
+      userRepository.updateLocalUserPassword.mockResolvedValue(undefined)
+      tokenService.consumePasswordResetToken.mockRejectedValue(
+        new Error('token store unavailable'),
+      )
+
+      await expect(
+        service.setPassword('user-123', 'newPassword', 'test-jti'),
+      ).rejects.toThrow('token store unavailable')
+
+      expect(userRepository.updateLocalUserPassword).toHaveBeenCalledTimes(2)
+      expect(userRepository.updateLocalUserPassword.mock.calls[1]).toEqual([
+        'user-123',
+        oldPassword,
+      ])
+    })
+
+    it('restores the previous password when authentication-token revocation fails', async () => {
+      const mockUser: any = {
+        _id: 'user-123',
+        email: 'user@example.com',
+        authProvider: AuthProvider.Local,
+        hashedPassword: 'old-hash',
+      }
+      userRepository.findUserByIdOrThrow.mockResolvedValue(mockUser)
+      userRepository.updateLocalUserPassword.mockResolvedValue(undefined)
+      tokenService.revokeUserAuthenticationTokens.mockRejectedValue(
+        new Error('token store unavailable'),
+      )
+
+      await expect(
+        service.setPassword('user-123', 'newPassword', 'test-jti'),
+      ).rejects.toThrow('token store unavailable')
+
+      expect(userRepository.updateLocalUserPassword).toHaveBeenCalledTimes(2)
+      expect(userRepository.updateLocalUserPassword.mock.calls[1]).toEqual([
+        'user-123',
+        'old-hash',
+      ])
+      expect(tokenService.consumePasswordResetToken).not.toHaveBeenCalled()
+    })
+
+    it('does not consume a reset token when password persistence fails', async () => {
+      const mockUser: any = {
+        _id: 'user-123',
+        email: 'user@example.com',
+        authProvider: AuthProvider.Local,
+        hashedPassword: 'old-hash',
+      }
+      userRepository.findUserByIdOrThrow.mockResolvedValue(mockUser)
+      userRepository.updateLocalUserPassword.mockRejectedValue(
+        new Error('database unavailable'),
+      )
+
+      await expect(
+        service.setPassword('user-123', 'newPassword', 'test-jti'),
+      ).rejects.toThrow('database unavailable')
+
+      expect(tokenService.revokeUserAuthenticationTokens).not.toHaveBeenCalled()
+      expect(tokenService.consumePasswordResetToken).not.toHaveBeenCalled()
     })
 
     it('should throw ForbiddenException for non-local users', async () => {

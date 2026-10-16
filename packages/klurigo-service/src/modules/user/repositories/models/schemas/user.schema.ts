@@ -171,6 +171,8 @@ export class LocalUser implements SharedLocalUser {
   updatedAt: Date
 }
 
+export type LocalUserModel = Model<LocalUser>
+
 /**
  * Schema factory for the LocalUser class.
  */

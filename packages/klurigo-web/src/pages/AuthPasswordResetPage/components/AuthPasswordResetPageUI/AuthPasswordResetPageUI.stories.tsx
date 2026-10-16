@@ -19,6 +19,7 @@ export const Default = {
   args: {
     loading: false,
     error: false,
+    submissionError: false,
     onSubmit: () => undefined,
   },
 } satisfies Story
@@ -27,6 +28,7 @@ export const Loading = {
   args: {
     loading: true,
     error: false,
+    submissionError: false,
     onSubmit: () => undefined,
   },
 } satisfies Story
@@ -35,6 +37,7 @@ export const Error = {
   args: {
     loading: false,
     error: true,
+    submissionError: false,
     onSubmit: () => undefined,
   },
 } satisfies Story
