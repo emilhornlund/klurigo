@@ -116,6 +116,23 @@ describe('useEventSource', () => {
     })
   })
 
+  it('treats a missing participant response as terminal without retrying', () => {
+    const { result } = renderHook(() => useEventSource('g1', 't1'))
+
+    act(() => {
+      last().onerror?.(Object.assign(new Event('error'), { status: 409 }))
+    })
+
+    expect(result.current[1]).toBe(ConnectionStatus.RECONNECTING_FAILED)
+    expect(result.current[2]).toEqual({
+      reason: ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE,
+      status: 409,
+    })
+    expect(instances()).toHaveLength(1)
+    act(() => vi.advanceTimersByTime(30000))
+    expect(instances()).toHaveLength(1)
+  })
+
   it('falls back to getRandomValues when randomUUID is unavailable', () => {
     const randomUUIDDescriptor = Object.getOwnPropertyDescriptor(
       window.crypto,

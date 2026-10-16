@@ -16,6 +16,7 @@ import {
   ProfileGameController,
   QuizGameController,
 } from './controllers'
+import { GameEventStreamGuard } from './guards/game-event-stream.guard'
 import { GameListener } from './handlers'
 import { GameRatingService, GameService, GameSettingsService } from './services'
 
@@ -47,6 +48,7 @@ import { GameRatingService, GameService, GameSettingsService } from './services'
     GameService,
     GameSettingsService,
     GameListener,
+    GameEventStreamGuard,
   ],
   exports: [],
 })

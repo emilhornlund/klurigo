@@ -836,6 +836,20 @@ describe('GamePage', () => {
     expect(h.revokeGameMock).toHaveBeenCalledWith({ redirectTo: '/' })
   })
 
+  it('shows the missing-player-session recovery notice and returns home', async () => {
+    h.control.status = 'RECONNECTING_FAILED'
+    h.control.failure = {
+      reason: 'PLAYER_SESSION_UNAVAILABLE',
+      status: 409,
+    }
+    renderWithRouter()
+
+    expect(screen.getByText('Player session unavailable')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Return home' }))
+
+    expect(h.revokeGameMock).toHaveBeenCalledWith({ redirectTo: '/' })
+  })
+
   it('renders HostGameBeginState for GameBeginHost event', () => {
     h.control.event = {
       type: GameEventType.GameBeginHost,

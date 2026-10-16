@@ -105,4 +105,27 @@ describe('ConnectionNotice', () => {
     fireEvent.click(screen.getByTestId('test-leave-game-connection-button'))
     expect(onLeave).toHaveBeenCalledTimes(1)
   })
+
+  it('explains that the player session is unavailable and offers return home', () => {
+    render(
+      <ConnectionNotice
+        status={ConnectionStatus.RECONNECTING_FAILED}
+        failure={{
+          reason: ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE,
+          status: 409,
+        }}
+        onRetry={vi.fn()}
+        onLeave={onLeave}
+      />,
+    )
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Your player session is no longer in this game. Return home to join again.',
+    )
+    expect(
+      screen.queryByTestId('test-retry-game-connection-button'),
+    ).not.toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('test-leave-game-connection-button'))
+    expect(onLeave).toHaveBeenCalledOnce()
+  })
 })

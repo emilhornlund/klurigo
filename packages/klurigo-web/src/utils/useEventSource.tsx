@@ -53,6 +53,12 @@ const getConnectionFailure = (event: unknown): ConnectionFailure => {
   if (status === 410) {
     return { reason: ConnectionFailureReason.GAME_ENDED, status }
   }
+  if (status === 409) {
+    return {
+      reason: ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE,
+      status,
+    }
+  }
   if (status !== undefined && status >= 500) {
     return { reason: ConnectionFailureReason.SERVER_ERROR, status }
   }

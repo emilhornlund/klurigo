@@ -9,6 +9,60 @@ import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from '../support/e2e-runtime'
 import { test } from '../support/fixtures/game-session-fixtures'
 
 test.describe('Game session: player UI with simulated host', () => {
+  test('shows terminal recovery for a missing player session', async ({
+    page,
+    gameSessionFixture,
+    gameHost,
+  }) => {
+    const e2eHost = gameSessionFixture
+    const quiz = e2eHost.quizzes.classic
+    const createdGame = await createGameThroughPublicApi({
+      apiBaseUrl: E2E_API_BASE_URL,
+      email: e2eHost.email,
+      password: E2E_USER_PASSWORD,
+      quizId: quiz.id,
+    })
+    await gameHost.authenticate(
+      { email: e2eHost.email, password: E2E_USER_PASSWORD },
+      { gameId: createdGame.id },
+    )
+    await gameHost.connect()
+    const lobbyEvent = await gameHost.waitForEvent(GameEventType.GameLobbyHost)
+    const playerNickname = `RemovedPlayer${randomUUID().slice(0, 8)}`
+
+    await page.goto(`/auth/game?pin=${encodeURIComponent(lobbyEvent.game.pin)}`)
+    await expect(page).toHaveURL('/join')
+    await page.locator('#default-nickname-textfield').fill(playerNickname)
+    await page.locator('#join').click()
+    await expect(page).toHaveURL('/game')
+    await expect(page.getByText('You’re in the waiting room')).toBeVisible()
+
+    await page.route('**/games/*/events?*', async (route) => {
+      await route.fulfill({
+        status: 409,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          message: 'Player session is no longer available',
+          status: 409,
+          timestamp: new Date().toISOString(),
+        }),
+      })
+    })
+    await page.reload()
+
+    await expect(page.getByText('Player session unavailable')).toBeVisible()
+    await expect(page.getByText('Return home to join again.')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Try again' })).toHaveCount(0)
+    await expect(
+      page.getByRole('button', { name: 'Return home' }),
+    ).toBeVisible()
+    await expect(page.getByTestId('game-connection-notice')).not.toContainText(
+      playerNickname,
+    )
+    await page.getByRole('button', { name: 'Return home' }).click()
+    await expect(page).toHaveURL('/')
+  })
+
   test('completes a Classic game with one real player using a simulated host', async ({
     page,
     gameSessionFixture,
