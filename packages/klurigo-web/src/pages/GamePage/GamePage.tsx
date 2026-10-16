@@ -313,7 +313,9 @@ const GamePage: FC = () => {
     connectionStatus === ConnectionStatus.RECONNECTING_FAILED &&
     (connectionFailure?.reason === ConnectionFailureReason.GAME_NOT_FOUND ||
       connectionFailure?.reason === ConnectionFailureReason.GAME_ENDED ||
-      connectionFailure?.reason === ConnectionFailureReason.SESSION_EXPIRED)
+      connectionFailure?.reason === ConnectionFailureReason.SESSION_EXPIRED ||
+      connectionFailure?.reason ===
+        ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE)
   const showConnectionPage = showInitialLoading || isTerminalSessionFailure
   const isHostLobbyReady =
     connectionStatus === ConnectionStatus.CONNECTED &&

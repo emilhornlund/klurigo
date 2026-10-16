@@ -16,7 +16,10 @@ import {
   NotFoundException,
   Post,
   Query,
+  Req,
+  SetMetadata,
   Sse,
+  UseGuards,
 } from '@nestjs/common'
 import {
   ApiBearerAuth,
@@ -31,24 +34,27 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger'
 import { SkipThrottle } from '@nestjs/throttler'
-import { from, Observable } from 'rxjs'
-import { mergeMap } from 'rxjs/operators'
+import { Observable } from 'rxjs'
 
 import {
   ApiBadRequestErrorResponse as ApiBadRequestResponse,
+  ApiConflictErrorResponse as ApiConflictResponse,
   ApiForbiddenErrorResponse as ApiForbiddenResponse,
   ApiGoneErrorResponse as ApiGoneResponse,
   ApiNotFoundErrorResponse as ApiNotFoundResponse,
   ApiUnauthorizedErrorResponse as ApiUnauthorizedResponse,
   NoTimeout,
 } from '../../../app/decorators'
+import { GAME_PARTICIPANT_TYPE } from '../../../app/shared/auth'
 import {
   PrincipalId,
   RequiredAuthorities,
   RequiresScopes,
 } from '../../authentication/controllers/decorators'
 import { AuthorizedGame } from '../../game-core/decorators/auth'
+import { GameAuthGuard } from '../../game-core/guards/game-auth.guard'
 import { GameEventSubscriber } from '../../game-event/services'
+import { GameEventStreamGuard } from '../guards/game-event-stream.guard'
 import {
   ParseCorrectAnswerRequestPipe,
   ParseSubmitQuestionAnswerRequestPipe,
@@ -304,6 +310,9 @@ export class GameController {
   @ApiGoneResponse({
     description: 'The game has already ended.',
   })
+  @ApiConflictResponse({
+    description: 'The authenticated player session is no longer available.',
+  })
   @ApiBadRequestResponse({
     description: 'Invalid game ID format.',
   })
@@ -311,7 +320,8 @@ export class GameController {
   @ApiForbiddenResponse({
     description: 'The participant is not allowed to access this game.',
   })
-  @AuthorizedGame()
+  @SetMetadata(GAME_PARTICIPANT_TYPE, undefined)
+  @UseGuards(GameAuthGuard, GameEventStreamGuard)
   @ApiGameIdParam()
   @ApiQuery({
     name: 'connectionId',
@@ -321,13 +331,12 @@ export class GameController {
   })
   @SkipThrottle()
   public getEventStream(
-    @PrincipalId() participantId: string,
-    @RouteGameIdParam() gameId: string,
-    @Query('connectionId') connectionId?: string,
+    @Req()
+    request: {
+      gameEventStream?: Observable<MessageEvent>
+    },
   ): Observable<MessageEvent> {
-    return from(
-      this.gameEventSubscriber.subscribe(gameId, participantId, connectionId),
-    ).pipe(mergeMap((stream) => stream))
+    return request.gameEventStream!
   }
 
   @Post('/:gameID/events/interrupt')

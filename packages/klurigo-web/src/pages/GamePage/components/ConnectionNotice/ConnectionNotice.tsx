@@ -78,7 +78,8 @@ const ConnectionNotice: FC<ConnectionNoticeProps> = ({
   const isSessionUnavailable =
     reason === ConnectionFailureReason.GAME_NOT_FOUND ||
     reason === ConnectionFailureReason.GAME_ENDED ||
-    reason === ConnectionFailureReason.SESSION_EXPIRED
+    reason === ConnectionFailureReason.SESSION_EXPIRED ||
+    reason === ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE
 
   const copy = {
     [ConnectionFailureReason.GAME_NOT_FOUND]: {
@@ -92,6 +93,11 @@ const ConnectionNotice: FC<ConnectionNoticeProps> = ({
     [ConnectionFailureReason.SESSION_EXPIRED]: {
       title: 'Game session expired',
       message: 'Your game session expired. Return home to join again.',
+    },
+    [ConnectionFailureReason.PLAYER_SESSION_UNAVAILABLE]: {
+      title: 'Player session unavailable',
+      message:
+        'Your player session is no longer in this game. Return home to join again.',
     },
     [ConnectionFailureReason.SERVER_ERROR]: {
       title: 'Connection problem',

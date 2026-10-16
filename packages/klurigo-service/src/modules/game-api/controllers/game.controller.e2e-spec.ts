@@ -1071,6 +1071,49 @@ describe('GameController (e2e)', () => {
       })
     })
 
+    it('returns a sanitized terminal response when the authenticated player is missing', async () => {
+      const { id: quizId } = await quizService.createQuiz(
+        createMockClassicQuizRequestDto(),
+        hostUser,
+      )
+      const { id: gameId } = await gameService.createGame(quizId, hostUser)
+      await gameModel
+        .findByIdAndUpdate(gameId, {
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+        })
+        .exec()
+      const missingPlayerGame = await gameModel.findById(gameId)
+      expect(
+        missingPlayerGame?.participants.some(
+          (participant) => participant.participantId === playerUser._id,
+        ),
+      ).toBe(false)
+      const accessToken = await authenticateGame(
+        app,
+        gameId,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/games/${gameId}/events`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(409)
+
+      expect(response.headers['content-type']).not.toMatch(/text\/event-stream/)
+      expect(response.body).toEqual({
+        message: 'Player session is no longer available',
+        status: 409,
+        timestamp: expect.anything(),
+      })
+      expect(JSON.stringify(response.body)).not.toContain(gameId)
+      expect(JSON.stringify(response.body)).not.toContain(playerUser._id)
+    })
+
     it('should deny event subscription without an authorization token', async () => {
       const { id: quizId } = await quizService.createQuiz(
         createMockClassicQuizRequestDto(),
