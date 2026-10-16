@@ -92,6 +92,7 @@ const MediaQuestionField: FC<MediaQuestionFieldProps> = ({
                 value.type === MediaType.Audio) && (
                 <ResponsivePlayer
                   url={value.url}
+                  type={value.type}
                   grow={false}
                   playing={false}
                 />

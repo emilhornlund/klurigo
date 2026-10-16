@@ -79,7 +79,10 @@ const QuestionMedia: FC<QuestionMediaProps> = ({
         (mediaPresentation === 'player' ? (
           <QuestionMediaIndicator type={audioOrVideoMedia.type} />
         ) : (
-          <ResponsivePlayer url={audioOrVideoMedia.url} />
+          <ResponsivePlayer
+            url={audioOrVideoMedia.url}
+            type={audioOrVideoMedia.type}
+          />
         ))}
     </div>
   )

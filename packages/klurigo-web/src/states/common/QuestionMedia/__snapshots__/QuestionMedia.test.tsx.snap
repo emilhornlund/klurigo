@@ -25,6 +25,7 @@ exports[`QuestionMedia > renders ResponsivePlayer for audio media 1`] = `
   >
     <div
       data-testid="responsive-player"
+      data-type="AUDIO"
       data-url="https://cdn/a.mp3"
     />
   </div>
@@ -39,6 +40,7 @@ exports[`QuestionMedia > renders ResponsivePlayer for video media 1`] = `
   >
     <div
       data-testid="responsive-player"
+      data-type="VIDEO"
       data-url="https://cdn/v.mp4"
     />
   </div>

@@ -25,8 +25,8 @@ vi.mock('../../../components/ResponsiveImage', () => {
 })
 
 vi.mock('../../../components/ResponsivePlayer', () => {
-  const Mock: React.FC<{ url: string }> = ({ url }) => (
-    <div data-testid="responsive-player" data-url={url} />
+  const Mock: React.FC<{ url: string; type: MediaType }> = ({ url, type }) => (
+    <div data-testid="responsive-player" data-url={url} data-type={type} />
   )
   return { default: Mock }
 })
@@ -98,6 +98,7 @@ describe('QuestionMedia', () => {
     const player = screen.getByTestId('responsive-player')
     expect(player).toBeInTheDocument()
     expect(player).toHaveAttribute('data-url', 'https://cdn/a.mp3')
+    expect(player).toHaveAttribute('data-type', MediaType.Audio)
 
     expect(screen.queryByTestId('responsive-image')).toBeNull()
     expect(container).toMatchSnapshot()
@@ -113,6 +114,7 @@ describe('QuestionMedia', () => {
     const player = screen.getByTestId('responsive-player')
     expect(player).toBeInTheDocument()
     expect(player).toHaveAttribute('data-url', 'https://cdn/v.mp4')
+    expect(player).toHaveAttribute('data-type', MediaType.Video)
 
     expect(screen.queryByTestId('responsive-image')).toBeNull()
     expect(container).toMatchSnapshot()
