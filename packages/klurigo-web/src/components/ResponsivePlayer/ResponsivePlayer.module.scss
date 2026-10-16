@@ -27,3 +27,9 @@
     border-width: helpers.pxToRem(4px);
   }
 }
+
+.errorMessage {
+  padding: helpers.pxToRem(16px);
+  color: colors.$color-text-default;
+  text-align: center;
+}

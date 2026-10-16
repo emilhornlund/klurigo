@@ -131,7 +131,11 @@ const MediaModal: FC<MediaModalProps> = ({
               )}
               {(internalType === MediaType.Video ||
                 internalType === MediaType.Audio) && (
-                <ResponsivePlayer url={internalURL} playing={false} />
+                <ResponsivePlayer
+                  url={internalURL}
+                  type={internalType}
+                  playing={false}
+                />
               )}
             </div>
           )}
