@@ -79,6 +79,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         value="Settings"
         hideValue="mobile"
         icon={faGear}
+        aria-label="Open quiz settings"
         onClick={onOpenSettings}
       />
       <Button
@@ -90,6 +91,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         value={showAdvancedQuestionEditor ? 'Visual' : 'Code'}
         hideValue="mobile"
         icon={showAdvancedQuestionEditor ? faSliders : faCode}
+        aria-label={`Switch to ${showAdvancedQuestionEditor ? 'code' : 'visual'} editor`}
         onClick={onToggleAdvancedQuestionEditor}
       />
       <Button
@@ -103,6 +105,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         icon={faFloppyDisk}
         loading={!!isSavingQuiz}
         disabled={!canSaveQuiz}
+        aria-label="Save quiz"
         onClick={onSaveQuiz}
       />
       <Button
@@ -115,6 +118,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         hideValue="mobile"
         icon={faEye}
         disabled={!canPreview}
+        aria-label="Preview quiz"
         onClick={onPreview}
       />
       <Button
@@ -126,6 +130,7 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
         value="Exit"
         hideValue="mobile"
         icon={faArrowRightFromBracket}
+        aria-label="Exit editor"
         onClick={onExit}
       />
     </>

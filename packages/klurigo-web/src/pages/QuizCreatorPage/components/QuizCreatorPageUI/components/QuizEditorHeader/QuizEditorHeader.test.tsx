@@ -71,9 +71,9 @@ describe('QuizEditorHeader', () => {
     fireEvent.change(title, { target: { value: 'New title' } })
     expect(onQuizSettingsValueChange).toHaveBeenCalledWith('title', 'New title')
 
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Exit' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Open quiz settings' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Save quiz' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Exit editor' }))
     expect(onOpenSettings).toHaveBeenCalledOnce()
     expect(onSaveQuiz).toHaveBeenCalledOnce()
     expect(onExit).toHaveBeenCalledOnce()
@@ -98,7 +98,7 @@ describe('QuizEditorHeader', () => {
       />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Preview quiz' }))
     expect(onPreview).toHaveBeenCalledOnce()
     expect(
       screen.getByTestId('test-preview-button-button').querySelector('svg'),
@@ -120,7 +120,7 @@ describe('QuizEditorHeader', () => {
       />,
     )
 
-    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Preview quiz' })).toBeDisabled()
   })
 
   it('preserves validation on the title field', () => {
@@ -164,7 +164,7 @@ describe('QuizEditorHeader', () => {
       <QuizEditorHeader {...props} canSaveQuiz={false} />,
     )
 
-    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Save quiz' })).toBeDisabled()
 
     rerender(<QuizEditorHeader {...props} canSaveQuiz isSavingQuiz />)
     expect(screen.getByTestId('test-save-button-button')).toBeDisabled()
@@ -200,6 +200,21 @@ describe('QuizEditorHeader', () => {
       ).toBeInTheDocument()
       expect(container.querySelector('#save-button')).toBeInTheDocument()
       expect(container.querySelector('#exit-button')).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Open quiz settings' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Switch to visual editor' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Save quiz' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Preview quiz' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'Exit editor' }),
+      ).toBeInTheDocument()
     } finally {
       width.mockRestore()
     }
@@ -221,10 +236,14 @@ describe('QuizEditorHeader', () => {
       <QuizEditorHeader {...props} showAdvancedQuestionEditor={false} />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Code' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Switch to visual editor' }),
+    )
     expect(onToggleAdvancedQuestionEditor).toHaveBeenCalledOnce()
 
     rerender(<QuizEditorHeader {...props} showAdvancedQuestionEditor />)
-    expect(screen.getByRole('button', { name: 'Visual' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Switch to code editor' }),
+    ).toBeInTheDocument()
   })
 })

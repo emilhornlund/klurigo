@@ -223,7 +223,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-001 — Nickname shuffle control is named; implemented, verified, and committed.
 - [x] QA-002 — Search and filter actions are named; unit, browser, and discovery E2E verified; committed.
 - [x] QA-003 — Question media accepts local HTTP(S) upload URLs; DTO and isolated API E2E validations passed; committed.
-- [ ] QA-004 — Mobile quiz-editor toolbar actions are unnamed.
+- [x] QA-004 — Toolbar actions have non-visible names; mobile/desktop browser and unit verified; committed.
 - [ ] QA-005 — Host remove-player control is unnamed.
 - [ ] QA-006 — Zero-to-100 answers must be whole integers from 0 through 100.
 - [ ] QA-007 — OAuth callback error feedback disappears after redirect.
