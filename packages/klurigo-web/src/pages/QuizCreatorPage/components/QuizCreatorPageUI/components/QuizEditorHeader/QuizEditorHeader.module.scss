@@ -1,0 +1,16 @@
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.quizEditorHeaderActions {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: spacing.$space-compact-tablet;
+
+  @media (min-width: 768px) and (max-width: 900px) {
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: calc(100vw - 420px);
+  }
+}

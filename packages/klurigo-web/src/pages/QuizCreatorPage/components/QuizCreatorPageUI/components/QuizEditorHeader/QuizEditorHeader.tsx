@@ -17,6 +17,8 @@ import type {
   QuizSettingsValidationResult,
 } from '../../../../utils/QuizSettingsDataSource'
 
+import styles from './QuizEditorHeader.module.scss'
+
 export interface QuizEditorHeaderProps {
   quizSettings: QuizSettingsModel
   quizSettingsValidation: QuizSettingsValidationResult
@@ -70,69 +72,71 @@ const QuizEditorHeader: FC<QuizEditorHeaderProps> = ({
           forceValidate
         />
       )}
-      <Button
-        id="settings-button"
-        type="button"
-        size="small"
-        variant="primary"
-        surface="brand"
-        value="Settings"
-        hideValue="mobile"
-        icon={faGear}
-        aria-label="Open quiz settings"
-        onClick={onOpenSettings}
-      />
-      <Button
-        id="toggle-editor-button"
-        type="button"
-        size="small"
-        variant="primary"
-        surface="brand"
-        value={showAdvancedQuestionEditor ? 'Visual' : 'Code'}
-        hideValue="mobile"
-        icon={showAdvancedQuestionEditor ? faSliders : faCode}
-        aria-label={`Switch to ${showAdvancedQuestionEditor ? 'code' : 'visual'} editor`}
-        onClick={onToggleAdvancedQuestionEditor}
-      />
-      <Button
-        id="save-button"
-        type="button"
-        size="small"
-        variant="primary"
-        intent="accent"
-        value="Save"
-        hideValue="mobile"
-        icon={faFloppyDisk}
-        loading={!!isSavingQuiz}
-        disabled={!canSaveQuiz}
-        aria-label="Save quiz"
-        onClick={onSaveQuiz}
-      />
-      <Button
-        id="preview-button"
-        type="button"
-        size="small"
-        variant="primary"
-        surface="brand"
-        value="Preview"
-        hideValue="mobile"
-        icon={faEye}
-        disabled={!canPreview}
-        aria-label="Preview quiz"
-        onClick={onPreview}
-      />
-      <Button
-        id="exit-button"
-        type="button"
-        size="small"
-        variant="primary"
-        surface="brand"
-        value="Exit"
-        hideValue="mobile"
-        icon={faArrowRightFromBracket}
-        aria-label="Exit editor"
-        onClick={onExit}
-      />
+      <div className={styles.quizEditorHeaderActions}>
+        <Button
+          id="settings-button"
+          type="button"
+          size="small"
+          variant="primary"
+          surface="brand"
+          value="Settings"
+          hideValue="mobile"
+          icon={faGear}
+          aria-label="Open quiz settings"
+          onClick={onOpenSettings}
+        />
+        <Button
+          id="toggle-editor-button"
+          type="button"
+          size="small"
+          variant="primary"
+          surface="brand"
+          value={showAdvancedQuestionEditor ? 'Visual' : 'Code'}
+          hideValue="mobile"
+          icon={showAdvancedQuestionEditor ? faSliders : faCode}
+          aria-label={`Switch to ${showAdvancedQuestionEditor ? 'code' : 'visual'} editor`}
+          onClick={onToggleAdvancedQuestionEditor}
+        />
+        <Button
+          id="save-button"
+          type="button"
+          size="small"
+          variant="primary"
+          intent="accent"
+          value="Save"
+          hideValue="mobile"
+          icon={faFloppyDisk}
+          loading={!!isSavingQuiz}
+          disabled={!canSaveQuiz}
+          aria-label="Save quiz"
+          onClick={onSaveQuiz}
+        />
+        <Button
+          id="preview-button"
+          type="button"
+          size="small"
+          variant="primary"
+          surface="brand"
+          value="Preview"
+          hideValue="mobile"
+          icon={faEye}
+          disabled={!canPreview}
+          aria-label="Preview quiz"
+          onClick={onPreview}
+        />
+        <Button
+          id="exit-button"
+          type="button"
+          size="small"
+          variant="primary"
+          surface="brand"
+          value="Exit"
+          hideValue="mobile"
+          icon={faArrowRightFromBracket}
+          aria-label="Exit editor"
+          onClick={onExit}
+        />
+      </div>
     </>
   )
 }
