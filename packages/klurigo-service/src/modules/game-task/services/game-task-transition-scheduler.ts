@@ -105,6 +105,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
    */
   public async scheduleTaskTransition(
     gameDocument: GameDocument,
+    recoveringPersistedSchedule = false,
   ): Promise<void> {
     const { _id: gameID, currentTask } = gameDocument
     const { type, status } = currentTask
@@ -136,6 +137,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       gameDocument,
       callback,
       nextStatus,
+      recoveringPersistedSchedule,
     )
 
     if (transition) {
@@ -158,6 +160,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     gameDocument: GameDocument,
     callback: ((gameDocument: GameDocument) => Promise<void>) | undefined,
     nextStatus: 'active' | 'completed' | undefined,
+    recoveringPersistedSchedule: boolean,
   ): Promise<
     | {
         callback?: (gameDocument: GameDocument) => Promise<void>
@@ -195,6 +198,12 @@ export class GameTaskTransitionScheduler extends WorkerHost {
 
     if (existingTransitionJob) {
       if (status === 'active') {
+        if (recoveringPersistedSchedule) {
+          this.logger.debug(
+            `Keeping existing timeout for task type ${type} and status ${status} for Game ID: ${gameDocument._id} during schedule recovery`,
+          )
+          return
+        }
         this.logger.debug(
           `Deleting existing timeout for task type ${type} and status ${status} for Game ID: ${gameDocument._id}`,
         )
@@ -236,8 +245,17 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         return
       }
     } else {
-      const delay =
+      const configuredDelay =
         this.gameTaskTransitionService.getTaskTransitionDelay(gameDocument)
+      const hasPersistedDeadline =
+        currentTask.currentTransitionExpires instanceof Date
+      const delay =
+        recoveringPersistedSchedule && hasPersistedDeadline
+          ? Math.max(
+              0,
+              currentTask.currentTransitionExpires!.getTime() - Date.now(),
+            )
+          : configuredDelay
       const recoveryOperationId = GameTaskTransitionScheduler.getOperationId(
         gameDocument,
         'schedule',
@@ -258,7 +276,9 @@ export class GameTaskTransitionScheduler extends WorkerHost {
                 `Task ${expectedTask.id} is no longer current for game ${gameID}`,
               )
             }
-            this.setTransitionTiming(doc, delay)
+            if (!recoveringPersistedSchedule || !hasPersistedDeadline) {
+              this.setTransitionTiming(doc, configuredDelay)
+            }
             this.addPendingOperation(doc, {
               id: recoveryOperationId,
               operation: 'schedule',
@@ -637,6 +657,60 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         )
       }
     }
+
+    let overdueGames: GameDocument[]
+    try {
+      overdueGames =
+        await this.gameRepository.findGamesWithOverdueTaskTransitions()
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find overdue game transitions.', {
+          operation: 'recoverOverdueTaskTransitions',
+        }),
+        getErrorStack(error),
+      )
+      return
+    }
+
+    for (const game of overdueGames) {
+      try {
+        await this.recoverOverdueTaskTransition(game)
+      } catch (error) {
+        this.logger.error(
+          structuredLog('Failed to recover overdue game transition.', {
+            operation: 'recoverOverdueTaskTransition',
+            gameId: game._id,
+            taskId: game.currentTask._id,
+            gameState: game.status,
+          }),
+          getErrorStack(error),
+        )
+      }
+    }
+  }
+
+  private async recoverOverdueTaskTransition(
+    gameDocument: GameDocument,
+  ): Promise<void> {
+    const latestGameDocument =
+      await this.gameRepository.findGameByIDWithStatusesOrThrow(
+        gameDocument._id,
+        [GameStatus.Active],
+      )
+    const { currentTask } = latestGameDocument
+    if (
+      currentTask.currentTransitionExpires &&
+      currentTask.currentTransitionExpires.getTime() <= Date.now()
+    ) {
+      const nextStatus = GameTaskTransitionScheduler.getNextTaskStatus(
+        currentTask.status,
+      )
+      const callback =
+        this.gameTaskTransitionService.getTaskTransitionCallback(
+          latestGameDocument,
+        )
+      await this.performTransition(latestGameDocument, nextStatus, callback)
+    }
   }
 
   private async recoverPendingTransitionOperationsForGame(
@@ -655,7 +729,18 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       if (!pendingOperation) continue
 
       if (pendingOperation.operation === 'schedule') {
-        await this.scheduleTaskTransition(latestGameDocument)
+        if (
+          latestGameDocument.currentTask._id !== pendingOperation.taskId ||
+          latestGameDocument.currentTask.type !== pendingOperation.taskType ||
+          latestGameDocument.currentTask.status !== pendingOperation.taskStatus
+        ) {
+          await this.gameRepository.clearPendingTransitionOperation(
+            latestGameDocument._id,
+            pendingOperation.id,
+          )
+          continue
+        }
+        await this.scheduleTaskTransition(latestGameDocument, true)
       } else {
         if (
           pendingOperation.taskType === TaskType.Question &&
