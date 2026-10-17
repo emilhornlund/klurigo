@@ -221,7 +221,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 ## Finding checklist
 
 - [x] QA-001 — Nickname shuffle control is named; implemented, verified, and committed.
-- [ ] QA-002 — Discovery search and filter buttons are unnamed.
+- [x] QA-002 — Search and filter actions are named; unit, browser, and discovery E2E verified; committed.
 - [ ] QA-003 — Uploaded question media fails quiz-save URL validation.
 - [ ] QA-004 — Mobile quiz-editor toolbar actions are unnamed.
 - [ ] QA-005 — Host remove-player control is unnamed.

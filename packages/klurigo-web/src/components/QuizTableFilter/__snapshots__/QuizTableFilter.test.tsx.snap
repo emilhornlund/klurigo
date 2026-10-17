@@ -34,6 +34,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
           class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
         >
           <button
+            aria-label="Search quizzes"
             data-testid="test-search-button-button"
             id="search-button"
             name="search-button"
@@ -62,6 +63,7 @@ exports[`QuizTableFilter > should render QuizTableFilter 1`] = `
           class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
         >
           <button
+            aria-label="Open filters"
             data-testid="test-filter-button-button"
             id="filter-button"
             name="filter-button"
