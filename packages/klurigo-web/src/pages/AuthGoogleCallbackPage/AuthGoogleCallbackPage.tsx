@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
@@ -18,8 +18,10 @@ const AuthGoogleCallbackPage: FC = () => {
 
   const hasExchangedRef = useRef(false)
 
-  const navigateToLoginWithError = () =>
-    navigate('/auth/login', { state: { googleOAuthError: true } })
+  const navigateToLoginWithError = useCallback(
+    () => navigate('/auth/login', { state: { googleOAuthError: true } }),
+    [navigate],
+  )
 
   const [searchParams] = useSearchParams()
   useEffect(() => {
@@ -48,7 +50,7 @@ const AuthGoogleCallbackPage: FC = () => {
     googleExchangeCode({ code, codeVerifier })
       .then(() => navigate('/'))
       .catch(navigateToLoginWithError)
-  }, [searchParams, navigate, googleExchangeCode])
+  }, [searchParams, navigate, navigateToLoginWithError, googleExchangeCode])
 
   return <AuthGoogleCallbackPageUI />
 }
