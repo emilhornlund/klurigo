@@ -232,4 +232,4 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-010 — Shared Page content now has one main landmark; nested editor landmark corrected; Page/browser/Lighthouse verified; committed.
 - [x] QA-011 — Restored user scaling while retaining viewport-fit; web build/typecheck and mobile browser/Lighthouse verified; committed.
 - [x] QA-012 — Dirty editor registers beforeunload and clears listener after save/unmount; unit/browser reload checks passed; committed.
-- [ ] QA-013 — Duplicate nickname conflict is reported as invalid game code.
+- [x] QA-013 — Duplicate nickname 409 receives actionable feedback; unrelated failures retain code fallback; synthetic two-player retry and unit tests verified; committed.

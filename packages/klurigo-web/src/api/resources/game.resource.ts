@@ -13,6 +13,7 @@ import {
 } from '@klurigo/common'
 
 import type { ApiClientCore } from '../api-client-core'
+import { ApiError } from '../api.utils'
 import { parseQueryParams } from '../api.utils'
 
 /**
@@ -81,8 +82,16 @@ export const createGameResource = (
         { scope: TokenScope.Game },
       )
       .catch((error) => {
+        const isDuplicateNickname =
+          error instanceof ApiError &&
+          error.status === 409 &&
+          error.message.startsWith('Nickname "') &&
+          error.message.endsWith('" is already taken in this game')
+
         deps.notifyError(
-          'Couldn’t join the game. Check the code and try again.',
+          isDuplicateNickname
+            ? 'That nickname is already in use in this game. Choose another.'
+            : 'Couldn’t join the game. Check the code and try again.',
         )
         throw error
       })
