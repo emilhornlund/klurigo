@@ -11,6 +11,7 @@ import {
   createMockClassicQuizRequestDto,
   createMockQuestionMediaDto,
   createMockQuestionMultiChoiceDto,
+  createMockQuestionPinDto,
 } from '../../../../../test-utils/data'
 
 import {
@@ -19,6 +20,7 @@ import {
   QuestionVideoMedia,
 } from './question-media'
 import { QuestionMultiChoice } from './question-multi-choice'
+import { QuestionPin } from './question-pin'
 import { QuizClassicRequest } from './quiz-classic.request'
 
 describe('QuizRequest', () => {
@@ -191,5 +193,53 @@ describe('QuizRequest', () => {
     const question = response.questions[0] as QuestionMultiChoice
     expect(question.media).toBeDefined()
     expect(question.media).toBeInstanceOf(QuestionVideoMedia)
+  })
+
+  it.each([
+    ['local upload', 'http://localhost:8080/uploads/images/test.webp'],
+    ['remote URL', 'https://example.com/question-image.png'],
+  ])('should accept %s URLs for question media', async (_label, url) => {
+    const response = plainToInstance(QuestionImageMedia, {
+      type: MediaType.Image,
+      url,
+    })
+
+    expect(await validate(response)).toHaveLength(0)
+  })
+
+  it.each([
+    ['local upload', 'http://localhost:8080/uploads/images/test.webp'],
+    ['remote URL', 'https://example.com/question-image.png'],
+  ])('should accept %s URLs for Pin images', async (_label, imageURL) => {
+    const response = plainToInstance(QuestionPin, {
+      ...createMockQuestionPinDto(),
+      imageURL,
+    })
+
+    expect(await validate(response)).toHaveLength(0)
+  })
+
+  it.each([
+    ['malformed', 'not-a-valid-url'],
+    ['unsupported scheme', 'ftp://localhost/image.webp'],
+  ])('should reject %s URLs for question media', async (_label, url) => {
+    const response = plainToInstance(QuestionImageMedia, {
+      type: MediaType.Image,
+      url,
+    })
+
+    expect(await validate(response)).not.toHaveLength(0)
+  })
+
+  it.each([
+    ['malformed', 'not-a-valid-url'],
+    ['unsupported scheme', 'ftp://localhost/image.webp'],
+  ])('should reject %s URLs for Pin images', async (_label, imageURL) => {
+    const response = plainToInstance(QuestionPin, {
+      ...createMockQuestionPinDto(),
+      imageURL,
+    })
+
+    expect(await validate(response)).not.toHaveLength(0)
   })
 })

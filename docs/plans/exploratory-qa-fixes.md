@@ -222,7 +222,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 
 - [x] QA-001 — Nickname shuffle control is named; implemented, verified, and committed.
 - [x] QA-002 — Search and filter actions are named; unit, browser, and discovery E2E verified; committed.
-- [ ] QA-003 — Uploaded question media fails quiz-save URL validation.
+- [x] QA-003 — Question media accepts local HTTP(S) upload URLs; DTO and isolated API E2E validations passed; committed.
 - [ ] QA-004 — Mobile quiz-editor toolbar actions are unnamed.
 - [ ] QA-005 — Host remove-player control is unnamed.
 - [ ] QA-006 — Zero-to-100 answers must be whole integers from 0 through 100.

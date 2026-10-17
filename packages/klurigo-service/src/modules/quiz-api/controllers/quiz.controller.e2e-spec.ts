@@ -1,4 +1,9 @@
-import { GameMode, QuizResponseDto, QuizVisibility } from '@klurigo/common'
+import {
+  GameMode,
+  QuestionType,
+  QuizResponseDto,
+  QuizVisibility,
+} from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
@@ -549,7 +554,95 @@ describe('QuizController (e2e)', () => {
             created: now.toISOString(),
             updated: expect.any(String),
           })
-        })
+      })
+    })
+
+    it('should accept local upload URLs for ordinary question media', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(originalData, user)
+      const localUrl = 'http://localhost:8080/uploads/images/test.webp'
+      const payload = {
+        ...originalData,
+        questions: originalData.questions.map((question) =>
+          question.type === QuestionType.MultiChoice
+            ? { ...question, media: { ...question.media!, url: localUrl } }
+            : question,
+        ),
+      }
+
+      await supertest(app.getHttpServer())
+        .put(`/api/quizzes/${quiz.id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .send(payload)
+        .expect(200)
+
+      const saved = await quizModel.findById(quiz.id)
+      expect((saved!.questions[0] as { media: { url: string } }).media.url).toBe(
+        localUrl,
+      )
+    })
+
+    it('should accept local upload URLs for Pin question images', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(originalData, user)
+      const localUrl = 'http://localhost:8080/uploads/images/pin.webp'
+      const payload = {
+        ...originalData,
+        questions: originalData.questions.map((question) =>
+          question.type === QuestionType.Pin
+            ? { ...question, imageURL: localUrl }
+            : question,
+        ),
+      }
+
+      await supertest(app.getHttpServer())
+        .put(`/api/quizzes/${quiz.id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .send(payload)
+        .expect(200)
+
+      const saved = await quizModel.findById(quiz.id)
+      expect((saved!.questions[4] as { imageURL: string }).imageURL).toBe(
+        localUrl,
+      )
+    })
+
+    it.each([
+      ['ordinary media', QuestionType.MultiChoice],
+      ['Pin image', QuestionType.Pin],
+    ])('should reject malformed URL in %s without saving it', async (_label, questionType) => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(originalData, user)
+      const questionIndex = originalData.questions.findIndex(
+        (question) => question.type === questionType,
+      )
+      const payload = {
+        ...originalData,
+        questions: originalData.questions.map((question) => {
+          if (question.type !== questionType) return question
+          return question.type === QuestionType.Pin
+            ? { ...question, imageURL: 'ftp://bad' }
+            : { ...question, media: { ...question.media!, url: 'ftp://bad' } }
+        }),
+      }
+
+      await supertest(app.getHttpServer())
+        .put(`/api/quizzes/${quiz.id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .send(payload)
+        .expect(400)
+
+      const saved = await quizModel.findById(quiz.id)
+      const savedQuestion = saved!.questions[questionIndex] as unknown as {
+        imageURL?: string
+        media?: { url: string }
+      }
+      const originalQuestion = originalData.questions[questionIndex]
+      if (originalQuestion.type === QuestionType.Pin) {
+        expect(savedQuestion.imageURL).toBe(originalQuestion.imageURL)
+      } else {
+        expect(savedQuestion.media?.url).toBe(originalQuestion.media?.url)
+      }
     })
 
     it('should fail in updating a non existing quiz', async () => {
