@@ -33,7 +33,7 @@ exports[`AuthGoogleCallbackPageUI > should render AuthGoogleCallbackPageUI 1`] =
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -62,7 +62,7 @@ exports[`AuthGoogleCallbackPageUI > should render AuthGoogleCallbackPageUI 1`] =
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

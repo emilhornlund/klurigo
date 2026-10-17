@@ -54,7 +54,7 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -101,7 +101,7 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -160,7 +160,7 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -207,7 +207,7 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -266,7 +266,7 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -313,7 +313,7 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -374,7 +374,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -421,7 +421,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
   <div
     class="floatingOverlay"
@@ -586,7 +586,7 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -633,7 +633,7 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

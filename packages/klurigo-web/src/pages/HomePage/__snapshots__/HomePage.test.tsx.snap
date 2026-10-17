@@ -33,7 +33,7 @@ exports[`HomePage > renders the "Resume game" button if the backend confirms an 
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -185,7 +185,7 @@ exports[`HomePage > renders the "Resume game" button if the backend confirms an 
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -223,7 +223,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -335,7 +335,7 @@ exports[`HomePage > renders the base layout and the rotating message container 1
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

@@ -60,7 +60,7 @@ exports[`ErrorPage > should match snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -103,7 +103,7 @@ exports[`ErrorPage > should match snapshot 1`] = `
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

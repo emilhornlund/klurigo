@@ -33,7 +33,7 @@ exports[`AuthVerifyPageUI > renders error state 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -72,7 +72,7 @@ exports[`AuthVerifyPageUI > renders error state 1`] = `
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -110,7 +110,7 @@ exports[`AuthVerifyPageUI > renders verified state (logged in) with home link 1`
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -156,7 +156,7 @@ exports[`AuthVerifyPageUI > renders verified state (logged in) with home link 1`
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -194,7 +194,7 @@ exports[`AuthVerifyPageUI > renders verified state (not logged in) with login li
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -240,7 +240,7 @@ exports[`AuthVerifyPageUI > renders verified state (not logged in) with login li
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -278,7 +278,7 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -307,7 +307,7 @@ exports[`AuthVerifyPageUI > renders verifying state 1`] = `
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

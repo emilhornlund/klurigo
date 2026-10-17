@@ -33,7 +33,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -157,6 +157,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
                 class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
+                  aria-label="Generate nickname"
                   data-testid="test-shuffle-nickname-button-button"
                   id="shuffle-nickname-button"
                   name="shuffle-nickname-button"
@@ -216,7 +217,7 @@ exports[`AuthRegisterPageUI > renders default state 1`] = `
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -254,7 +255,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -383,6 +384,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
                 class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
               >
                 <button
+                  aria-label="Generate nickname"
                   data-testid="test-shuffle-nickname-button-button"
                   disabled=""
                   id="shuffle-nickname-button"
@@ -434,7 +436,7 @@ exports[`AuthRegisterPageUI > renders loading state 1`] = `
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

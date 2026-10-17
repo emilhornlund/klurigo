@@ -33,7 +33,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -111,6 +111,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                   class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
                 >
                   <button
+                    aria-label="Search quizzes"
                     data-testid="test-search-button-button"
                     id="search-button"
                     name="search-button"
@@ -139,6 +140,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
                   class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
                 >
                   <button
+                    aria-label="Open filters"
                     data-testid="test-filter-button-button"
                     id="filter-button"
                     name="filter-button"
@@ -604,7 +606,7 @@ exports[`ProfileQuizzesPageUI > should render ProfileQuizzesPageUI with card gri
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

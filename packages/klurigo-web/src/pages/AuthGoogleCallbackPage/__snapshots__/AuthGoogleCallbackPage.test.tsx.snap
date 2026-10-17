@@ -33,7 +33,7 @@ exports[`AuthGoogleCallbackPage > carries a generic error to login when required
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -62,7 +62,7 @@ exports[`AuthGoogleCallbackPage > carries a generic error to login when required
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -100,7 +100,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -129,7 +129,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

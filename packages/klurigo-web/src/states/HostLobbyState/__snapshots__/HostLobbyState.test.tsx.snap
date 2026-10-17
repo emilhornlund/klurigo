@@ -108,7 +108,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compactFill centerAlign"
     >
       <div
@@ -211,6 +211,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Alice
                 <button
+                  aria-label="Remove Alice"
                   class="deleteButton delete"
                 >
                   <svg
@@ -234,6 +235,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
               >
                 Bob
                 <button
+                  aria-label="Remove Bob"
                   class="deleteButton delete"
                 >
                   <svg
@@ -255,7 +257,7 @@ exports[`HostLobbyState > clicks Start when players exist and calls completeTask
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -370,7 +372,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compactFill centerAlign"
     >
       <div
@@ -471,7 +473,7 @@ exports[`HostLobbyState > opens confirm dialog when starting with no players, th
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
   <div
     class="floatingOverlay"
@@ -690,7 +692,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compactFill centerAlign"
     >
       <div
@@ -793,6 +795,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Alice
                 <button
+                  aria-label="Remove Alice"
                   class="deleteButton delete"
                 >
                   <svg
@@ -816,6 +819,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
               >
                 Bob
                 <button
+                  aria-label="Remove Bob"
                   class="deleteButton delete"
                 >
                   <svg
@@ -837,7 +841,7 @@ exports[`HostLobbyState > opens remove player dialog and confirms removal, calli
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -950,7 +954,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compactFill centerAlign"
     >
       <div
@@ -1053,6 +1057,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowCyborg
                 <button
+                  aria-label="Remove ShadowCyborg"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1076,6 +1081,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Radar
                 <button
+                  aria-label="Remove Radar"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1099,6 +1105,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ShadowWhirlwind
                 <button
+                  aria-label="Remove ShadowWhirlwind"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1122,6 +1129,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 WhiskerFox
                 <button
+                  aria-label="Remove WhiskerFox"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1145,6 +1153,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 JollyNimbus
                 <button
+                  aria-label="Remove JollyNimbus"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1168,6 +1177,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 PuddingPop
                 <button
+                  aria-label="Remove PuddingPop"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1191,6 +1201,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 MysticPine
                 <button
+                  aria-label="Remove MysticPine"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1214,6 +1225,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 FrostyBear
                 <button
+                  aria-label="Remove FrostyBear"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1237,6 +1249,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 Willo
                 <button
+                  aria-label="Remove Willo"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1260,6 +1273,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
               >
                 ScarletFlame
                 <button
+                  aria-label="Remove ScarletFlame"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1281,7 +1295,7 @@ exports[`HostLobbyState > should render HostLobbyState 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -1394,7 +1408,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compactFill centerAlign"
     >
       <div
@@ -1497,6 +1511,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Alice
                 <button
+                  aria-label="Remove Alice"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1520,6 +1535,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
               >
                 Bob
                 <button
+                  aria-label="Remove Bob"
                   class="deleteButton delete"
                 >
                   <svg
@@ -1541,7 +1557,7 @@ exports[`HostLobbyState > shows join URL and PIN 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

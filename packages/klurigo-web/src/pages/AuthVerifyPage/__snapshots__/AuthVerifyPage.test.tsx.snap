@@ -33,7 +33,7 @@ exports[`AuthVerifyPage > navigates home when token is missing 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -62,7 +62,7 @@ exports[`AuthVerifyPage > navigates home when token is missing 1`] = `
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -93,7 +93,7 @@ exports[`AuthVerifyPage > renders verified state (logged in) with home link 1`] 
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -139,7 +139,7 @@ exports[`AuthVerifyPage > renders verified state (logged in) with home link 1`] 
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -177,7 +177,7 @@ exports[`AuthVerifyPage > renders verified state (logged out) with login link 1`
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -223,7 +223,7 @@ exports[`AuthVerifyPage > renders verified state (logged out) with login link 1`
           </a>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -261,7 +261,7 @@ exports[`AuthVerifyPage > shows error state when verification fails 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -300,7 +300,7 @@ exports[`AuthVerifyPage > shows error state when verification fails 1`] = `
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -338,7 +338,7 @@ exports[`AuthVerifyPage > shows loading while verifying with token present 1`] =
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -367,7 +367,7 @@ exports[`AuthVerifyPage > shows loading while verifying with token present 1`] =
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
