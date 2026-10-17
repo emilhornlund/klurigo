@@ -27,9 +27,7 @@ function isSupportedQuestionMediaUrl(value: unknown): boolean {
 }
 
 @ValidatorConstraint({ name: 'supportedQuestionMediaUrl', async: false })
-export class SupportedQuestionMediaUrlConstraint
-  implements ValidatorConstraintInterface
-{
+export class SupportedQuestionMediaUrlConstraint implements ValidatorConstraintInterface {
   validate(value: unknown): boolean {
     return isSupportedQuestionMediaUrl(value)
   }

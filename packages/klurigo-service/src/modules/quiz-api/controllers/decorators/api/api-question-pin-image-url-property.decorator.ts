@@ -9,7 +9,7 @@ import { SupportedQuestionMediaUrlConstraint } from './is-supported-question-med
  *
  * Applies:
  * - `@ApiProperty` for Swagger documentation.
-     * - A validator for remote HTTP(S) URLs and local upload URLs.
+ * - A validator for remote HTTP(S) URLs and local upload URLs.
  */
 export function ApiQuestionPinImageUrlProperty(): PropertyDecorator {
   return applyDecorators(
