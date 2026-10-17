@@ -16,7 +16,7 @@ exports[`AnswerRange > renders interactive mode with initial midpoint and disabl
             id="slider-range"
             max="100"
             min="0"
-            step="5"
+            step="1"
             type="range"
             value="50"
           />

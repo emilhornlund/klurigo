@@ -13,6 +13,7 @@ import styles from './AnswerRange.module.scss'
 export interface AnswerRangeProps {
   min: number
   max: number
+  /** Retained question metadata; live responses allow each integer in range. */
   step: number
   submittedAnswer?: GameQuestionPlayerAnswerEvent
   interactive: boolean
@@ -23,7 +24,6 @@ export interface AnswerRangeProps {
 const AnswerRange: FC<AnswerRangeProps> = ({
   min,
   max,
-  step,
   submittedAnswer,
   interactive,
   loading,
@@ -84,7 +84,7 @@ const AnswerRange: FC<AnswerRangeProps> = ({
               type="range"
               min={min}
               max={max}
-              step={step}
+              step={1}
               value={value}
               disabled={disabled}
               onChange={handleSliderChange}

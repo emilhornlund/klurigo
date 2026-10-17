@@ -33,9 +33,15 @@ vi.mock('../../../../../components', async (importOriginal) => {
         max={max}
         value={String(value ?? '')}
         disabled={disabled}
-        onChange={(e) =>
-          onChange?.(Number((e.target as HTMLInputElement).value))
-        }
+        onChange={(e) => {
+          const newValue = Number((e.target as HTMLInputElement).value)
+          onChange?.(newValue)
+          onValid?.(
+            Number.isFinite(newValue) &&
+              (min === undefined || newValue >= min) &&
+              (max === undefined || newValue <= max),
+          )
+        }}
       />
       <button
         type="button"
@@ -124,7 +130,7 @@ describe('AnswerRange', () => {
     expect(onSubmit).toHaveBeenLastCalledWith(7)
   })
 
-  it('reflects slider attributes from props', () => {
+  it('keeps the response slider at integer precision independently from scoring step', () => {
     render(
       <AnswerRange
         min={3}
@@ -138,7 +144,60 @@ describe('AnswerRange', () => {
     const slider = screen.getByRole('slider') as HTMLInputElement
     expect(slider).toHaveAttribute('min', '3')
     expect(slider).toHaveAttribute('max', '33')
-    expect(slider).toHaveAttribute('step', '3')
+    expect(slider).toHaveAttribute('step', '1')
+  })
+
+  it('keeps an off-step number input value aligned with the slider and submitted answer', () => {
+    const onSubmit = vi.fn()
+    render(
+      <AnswerRange
+        min={10}
+        max={90}
+        step={2}
+        interactive
+        loading={false}
+        onSubmit={onSubmit}
+      />,
+    )
+
+    fireEvent.change(screen.getByTestId('tf-input'), {
+      target: { value: '67' },
+    })
+
+    const slider = screen.getByRole('slider') as HTMLInputElement
+    expect(slider).toHaveAttribute('step', '1')
+    expect(slider).toHaveValue('67')
+    expect(screen.getByTestId('tf-input')).toHaveValue(67)
+
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }))
+    expect(onSubmit).toHaveBeenCalledWith(67)
+  })
+
+  it.each([
+    { label: 'near the minimum', value: '11' },
+    { label: 'in the interior', value: '67' },
+    { label: 'near the maximum', value: '89' },
+  ])('synchronizes off-step values $label from both controls', ({ value }) => {
+    render(
+      <AnswerRange
+        min={10}
+        max={90}
+        step={2}
+        interactive
+        loading={false}
+        onSubmit={vi.fn()}
+      />,
+    )
+
+    fireEvent.change(screen.getByTestId('tf-input'), {
+      target: { value },
+    })
+    expect(screen.getByRole('slider')).toHaveValue(value)
+    expect(screen.getByTestId('tf-input')).toHaveValue(Number(value))
+
+    fireEvent.change(screen.getByRole('slider'), { target: { value: '67' } })
+    expect(screen.getByRole('slider')).toHaveValue('67')
+    expect(screen.getByTestId('tf-input')).toHaveValue(67)
   })
 
   it.each([
