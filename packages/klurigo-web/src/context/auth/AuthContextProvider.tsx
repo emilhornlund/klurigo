@@ -6,7 +6,7 @@ import {
 } from '@klurigo/common'
 import { jwtDecode } from 'jwt-decode'
 import type { FC, ReactNode } from 'react'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useIsMounted, useLocalStorage } from 'usehooks-ts'
 
@@ -113,6 +113,20 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
     USER: undefined,
     GAME: undefined,
   })
+
+  // Initialize synchronously so protected routes do not redirect before the
+  // mount effect gets a chance to refresh a persisted User session.
+  const [isUserRecoveryPending, setIsUserRecoveryPending] = useState(
+    () =>
+      !isValidToken(
+        authState.USER?.ACCESS?.token,
+        authState.USER?.ACCESS?.exp,
+      ) &&
+      isValidToken(
+        authState.USER?.REFRESH?.token,
+        authState.USER?.REFRESH?.exp,
+      ),
+  )
 
   /**
    * `true` if there is a valid access token in the User scope.
@@ -248,6 +262,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
    */
   const clearAuthState = useCallback(
     (scope: TokenScope) => {
+      if (scope === TokenScope.User) setIsUserRecoveryPending(false)
       const guard = refreshGuardsRef.current[scope]
       if (guard.retryTimeoutId) {
         clearTimeout(guard.retryTimeoutId)
@@ -364,6 +379,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
       const scopeState = getScopeState(scope)
       if (!scopeState) {
         cancelRetry(scope)
+        if (scope === TokenScope.User) setIsUserRecoveryPending(false)
         return
       }
 
@@ -373,12 +389,14 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
       const accessValid = isValidToken(accessToken, scopeState.ACCESS?.exp)
       if (accessValid) {
         cancelRetry(scope)
+        if (scope === TokenScope.User) setIsUserRecoveryPending(false)
         return
       }
 
       const refreshValid = isValidToken(refreshToken, scopeState.REFRESH?.exp)
       if (!refreshValid) {
         cancelRetry(scope)
+        if (scope === TokenScope.User) setIsUserRecoveryPending(false)
         clearAuthState(scope)
         return
       }
@@ -392,6 +410,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
 
       guard.isRefreshing = true
       guard.lastAttemptAtMs = nowMs
+      if (scope === TokenScope.User) setIsUserRecoveryPending(true)
 
       refresh(scope, { refreshToken })
         .then((response) => {
@@ -407,6 +426,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
           }
 
           scheduleRetry(scope)
+          if (scope === TokenScope.User) setIsUserRecoveryPending(false)
         })
         .finally(() => {
           guard.isRefreshing = false
@@ -460,6 +480,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
       user: authState.USER,
       game: authState.GAME,
       isUserAuthenticated,
+      isUserRecoveryPending,
       isGameAuthenticated,
       setTokenPair: handleSetTokenPair,
       revokeUser: () => revokeAuthToken(TokenScope.User, '/'),
@@ -469,6 +490,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
       authState.USER,
       authState.GAME,
       isUserAuthenticated,
+      isUserRecoveryPending,
       isGameAuthenticated,
       handleSetTokenPair,
       revokeAuthToken,

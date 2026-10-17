@@ -44,6 +44,7 @@ export type AuthContextType = {
   user?: AuthState[TokenScope.User]
   game?: AuthState[TokenScope.Game]
   isUserAuthenticated: boolean
+  isUserRecoveryPending?: boolean
   isGameAuthenticated: boolean
   setTokenPair: (
     scope: TokenScope,
@@ -62,6 +63,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: undefined,
   game: undefined,
   isUserAuthenticated: false,
+  isUserRecoveryPending: false,
   isGameAuthenticated: false,
   setTokenPair: () => undefined,
   revokeUser: () => Promise.reject(),

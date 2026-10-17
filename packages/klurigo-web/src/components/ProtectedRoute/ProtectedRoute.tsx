@@ -38,7 +38,8 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
    * Retrieve the current authentication flags for User and Game scopes
    * from our AuthContext.
    */
-  const { isUserAuthenticated, isGameAuthenticated } = useAuthContext()
+  const { isUserAuthenticated, isUserRecoveryPending, isGameAuthenticated } =
+    useAuthContext()
 
   /**
    * Determine whether we should redirect away from this route.
@@ -53,7 +54,10 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({
     return authenticated ? !isAllowed : isAllowed
   }, [scope, authenticated, isUserAuthenticated, isGameAuthenticated])
 
-  if (shouldRedirect) {
+  if (
+    shouldRedirect &&
+    !(scope === TokenScope.User && authenticated && isUserRecoveryPending)
+  ) {
     return <Navigate to="/" replace />
   }
 

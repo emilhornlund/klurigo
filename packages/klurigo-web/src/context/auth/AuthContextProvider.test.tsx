@@ -154,6 +154,7 @@ describe('AuthContextProvider', () => {
 
     await waitFor(() => {
       expect(ctx.isUserAuthenticated).toBe(false)
+      expect(ctx.isUserRecoveryPending).toBe(false)
       expect(ctx.isGameAuthenticated).toBe(false)
       expect(ctx.user).toBeUndefined()
       expect(ctx.game).toBeUndefined()
@@ -318,6 +319,8 @@ describe('AuthContextProvider', () => {
     let ctx: any
     renderWithProvider((c) => (ctx = c))
 
+    expect(ctx.isUserRecoveryPending).toBe(true)
+
     await waitFor(() => {
       expect(mockRefresh).toHaveBeenCalledWith('USER', {
         refreshToken: 'u.ref',
@@ -328,6 +331,7 @@ describe('AuthContextProvider', () => {
       expect(ctx.user?.ACCESS.token).toBe('refreshed.access')
       expect(ctx.user?.REFRESH.token).toBe('refreshed.refresh')
       expect(ctx.isUserAuthenticated).toBe(true)
+      expect(ctx.isUserRecoveryPending).toBe(false)
     })
   })
 
@@ -355,6 +359,7 @@ describe('AuthContextProvider', () => {
     await waitFor(() => {
       expect(ctx.user).toBeUndefined()
       expect(ctx.isUserAuthenticated).toBe(false)
+      expect(ctx.isUserRecoveryPending).toBe(false)
     })
   })
 
@@ -466,6 +471,7 @@ describe('AuthContextProvider', () => {
 
     expect(mockRefresh).toHaveBeenCalledTimes(1)
     expect(mockRefresh).toHaveBeenCalledWith('USER', { refreshToken: 'u.ref' })
+    expect(ctx.isUserRecoveryPending).toBe(false)
 
     await advance(9_999)
     expect(mockRefresh).toHaveBeenCalledTimes(1)
@@ -661,6 +667,7 @@ describe('AuthContextProvider', () => {
     await advance(100)
 
     expect(ctx.isUserAuthenticated).toBe(true)
+    expect(ctx.isUserRecoveryPending).toBe(false)
     expect(ctx.user?.ACCESS.token).toBe('refreshed.access.delayed')
   })
 
