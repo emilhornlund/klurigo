@@ -1,5 +1,5 @@
 import { TokenScope, TokenType } from '@klurigo/common'
-import { renderHook } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useKlurigoServiceClient } from '.'
@@ -46,6 +46,8 @@ type AuthState = Partial<Record<TokenType, TokenShape>>
 
 describe('useKlurigoServiceClient', () => {
   const setTokenPair = vi.fn()
+  const revokeUser = vi.fn().mockResolvedValue(undefined)
+  const revokeGame = vi.fn().mockResolvedValue(undefined)
   const fetchCurrentUser = vi.fn()
   const clearCurrentUser = vi.fn()
 
@@ -70,6 +72,8 @@ describe('useKlurigoServiceClient', () => {
         [TokenType.Refresh]: { token: 'game.refresh' },
       } satisfies AuthState,
       setTokenPair,
+      revokeUser,
+      revokeGame,
     })
     ;(useUserContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       fetchCurrentUser,
@@ -156,7 +160,7 @@ describe('useKlurigoServiceClient', () => {
       fetchCurrentUser,
       clearCurrentUser,
       notifySuccess,
-      notifyError,
+      notifyError: expect.any(Function),
     })
   })
 
@@ -165,17 +169,17 @@ describe('useKlurigoServiceClient', () => {
 
     expect(createQuizResource).toHaveBeenCalledWith(apiCore, {
       notifySuccess,
-      notifyError,
+      notifyError: expect.any(Function),
     })
 
     expect(createGameResource).toHaveBeenCalledWith(apiCore, {
       notifySuccess,
-      notifyError,
+      notifyError: expect.any(Function),
     })
 
     expect(createUserResource).toHaveBeenCalledWith(apiCore, {
       notifySuccess,
-      notifyError,
+      notifyError: expect.any(Function),
     })
   })
 
@@ -191,7 +195,7 @@ describe('useKlurigoServiceClient', () => {
     ]
 
     expect(deps.notifySuccess).toBe(notifySuccess)
-    expect(deps.notifyError).toBe(notifyError)
+    expect(deps.notifyError).toEqual(expect.any(Function))
 
     expect(deps.getToken(TokenScope.User, TokenType.Access)).toBe('user.access')
     expect(deps.getToken(TokenScope.Game, TokenType.Access)).toBe('game.access')
@@ -445,14 +449,14 @@ describe('useKlurigoServiceClient', () => {
     )
   })
 
-  it('passes notification callbacks by reference to all resources (no re-creation)', () => {
+  it('passes resource error notification wrappers to all resource factories', () => {
     renderHook(() => useKlurigoServiceClient())
 
     expect(createAuthResource).toHaveBeenCalledWith(
       apiCore,
       expect.objectContaining({
         notifySuccess,
-        notifyError,
+        notifyError: expect.any(Function),
       }),
     )
 
@@ -460,7 +464,7 @@ describe('useKlurigoServiceClient', () => {
       apiCore,
       expect.objectContaining({
         notifySuccess,
-        notifyError,
+        notifyError: expect.any(Function),
       }),
     )
 
@@ -468,7 +472,7 @@ describe('useKlurigoServiceClient', () => {
       apiCore,
       expect.objectContaining({
         notifySuccess,
-        notifyError,
+        notifyError: expect.any(Function),
       }),
     )
 
@@ -480,15 +484,98 @@ describe('useKlurigoServiceClient', () => {
     ]
 
     expect(mediaDeps.notifySuccess).toBe(notifySuccess)
-    expect(mediaDeps.notifyError).toBe(notifyError)
+    expect(mediaDeps.notifyError).toEqual(expect.any(Function))
 
     expect(createUserResource).toHaveBeenCalledWith(
       apiCore,
       expect.objectContaining({
         notifySuccess,
-        notifyError,
+        notifyError: expect.any(Function),
       }),
     )
+  })
+
+  it('shows automatic refresh failure once, suppresses its request error, and resumes notifications after new tokens', async () => {
+    const { rerender } = renderHook(() => useKlurigoServiceClient())
+    const coreDeps = (
+      createApiClientCore as unknown as ReturnType<typeof vi.fn>
+    ).mock.calls[0]?.[0] as {
+      notifyRefreshFailure: (scope: TokenScope) => void
+    }
+
+    coreDeps.notifyRefreshFailure(TokenScope.User)
+    expect(revokeUser).toHaveBeenCalledOnce()
+    await waitFor(() => {
+      expect(notifyError).toHaveBeenCalledExactlyOnceWith(
+        'Your session needed a refresh… and it didn’t go as planned. Please try again.',
+      )
+    })
+
+    const [, quizDeps] = (
+      createQuizResource as unknown as ReturnType<typeof vi.fn>
+    ).mock.calls[0] as [unknown, { notifyError: (message: string) => void }]
+    quizDeps.notifyError(
+      'We couldn’t load your game history. Please try again.',
+    )
+    expect(notifyError).toHaveBeenCalledTimes(1)
+
+    ;(useAuthContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: {
+        [TokenType.Access]: { token: 'user.access.v2' },
+        [TokenType.Refresh]: { token: 'user.refresh.v2' },
+      } satisfies AuthState,
+      game: {
+        [TokenType.Access]: { token: 'game.access' },
+        [TokenType.Refresh]: { token: 'game.refresh' },
+      } satisfies AuthState,
+      setTokenPair,
+      revokeUser,
+      revokeGame,
+    })
+    rerender()
+
+    const [, updatedQuizDeps] = (
+      createQuizResource as unknown as ReturnType<typeof vi.fn>
+    ).mock.calls.at(-1) as [unknown, { notifyError: (message: string) => void }]
+    updatedQuizDeps.notifyError('Fresh session request error')
+    expect(notifyError).toHaveBeenLastCalledWith('Fresh session request error')
+  })
+
+  it('does not display an old refresh failure after a new session is established', async () => {
+    let finishRecovery!: () => void
+    revokeUser.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishRecovery = resolve)),
+    )
+
+    const { rerender } = renderHook(() => useKlurigoServiceClient())
+    const coreDeps = (
+      createApiClientCore as unknown as ReturnType<typeof vi.fn>
+    ).mock.calls[0]?.[0] as {
+      notifyRefreshFailure: (scope: TokenScope) => void
+    }
+    coreDeps.notifyRefreshFailure(TokenScope.User)
+
+    ;(useAuthContext as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: {
+        [TokenType.Access]: { token: 'user.access.new-session' },
+        [TokenType.Refresh]: { token: 'user.refresh.new-session' },
+      } satisfies AuthState,
+      game: {
+        [TokenType.Access]: { token: 'game.access' },
+        [TokenType.Refresh]: { token: 'game.refresh' },
+      } satisfies AuthState,
+      setTokenPair,
+      revokeUser,
+      revokeGame,
+    })
+    rerender()
+
+    finishRecovery()
+    await Promise.resolve()
+    await Promise.resolve()
+
+    expect(notifyError).not.toHaveBeenCalled()
+    revokeUser.mockResolvedValue(undefined)
   })
 
   it('getToken function identity is stable across rerenders when auth context object references are stable', () => {

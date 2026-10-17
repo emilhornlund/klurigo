@@ -228,7 +228,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-006 — Whole-number range enforced in frontend/backend; unit, API E2E, and synthetic editor browser checks passed; committed.
 - [x] QA-007 — OAuth errors display once on Login via one-time navigation state; success and normal login unaffected; unit/browser verified; committed.
 - [x] QA-008 — Editor action group wraps at tablet widths; all controls fit at 768/769/800/900px, mobile/desktop retained; committed.
-- [ ] QA-009 — Automatic refresh failure feedback is delayed.
+- [x] QA-009 — Automatic refresh is coalesced; failure notifies once, clears the invalid session, and suppresses duplicate/stale errors; unit/browser verified; committed.
 - [ ] QA-010 — Application pages lack a main landmark.
 - [ ] QA-011 — Mobile viewport disables user zoom.
 - [ ] QA-012 — Editor reload discards unsaved changes without warning.

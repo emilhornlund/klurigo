@@ -1,5 +1,5 @@
 import { TokenScope, TokenType } from '@klurigo/common'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 import { useAuthContext } from '../context/auth'
 import { useUserContext } from '../context/user'
@@ -28,7 +28,13 @@ import {
  * @returns An object containing the composed API functions.
  */
 export const useKlurigoServiceClient = () => {
-  const { user: userAuth, game: gameAuth, setTokenPair } = useAuthContext()
+  const {
+    user: userAuth,
+    game: gameAuth,
+    setTokenPair,
+    revokeUser,
+    revokeGame,
+  } = useAuthContext()
 
   const { fetchCurrentUser, clearCurrentUser } = useUserContext()
 
@@ -54,10 +60,53 @@ export const useKlurigoServiceClient = () => {
     [userAuth, gameAuth],
   )
 
+  const getTokenRef = useRef(getToken)
+  getTokenRef.current = getToken
+
+  const automaticRefreshFailureRef = useRef<
+    | {
+        scope: TokenScope
+        refreshToken: string
+      }
+    | undefined
+  >(undefined)
+
+  const notifyResourceError = useCallback((message: string) => {
+    const failure = automaticRefreshFailureRef.current
+    if (
+      failure &&
+      getTokenRef.current(failure.scope, TokenType.Refresh) ===
+        failure.refreshToken
+    ) {
+      return
+    }
+
+    automaticRefreshFailureRef.current = undefined
+    notifyError(message)
+  }, [])
+
   const api = createApiClientCore({
     getToken,
     setTokenPair,
     fetchCurrentUser,
+    notifyRefreshFailure: (scope) => {
+      const refreshToken = getTokenRef.current(scope, TokenType.Refresh)
+      if (refreshToken) {
+        automaticRefreshFailureRef.current = { scope, refreshToken }
+      }
+
+      const message =
+        'Your session needed a refresh… and it didn’t go as planned. Please try again.'
+      const recover = scope === TokenScope.User ? revokeUser() : revokeGame()
+      void recover.finally(() => {
+        const currentRefreshToken = getTokenRef.current(
+          scope,
+          TokenType.Refresh,
+        )
+        if (currentRefreshToken && currentRefreshToken !== refreshToken) return
+        notifyError(message)
+      })
+    },
   })
 
   const auth = createAuthResource(api, {
@@ -66,28 +115,28 @@ export const useKlurigoServiceClient = () => {
     fetchCurrentUser,
     clearCurrentUser,
     notifySuccess,
-    notifyError,
+    notifyError: notifyResourceError,
   })
 
   const quiz = createQuizResource(api, {
     notifySuccess,
-    notifyError,
+    notifyError: notifyResourceError,
   })
 
   const game = createGameResource(api, {
     notifySuccess,
-    notifyError,
+    notifyError: notifyResourceError,
   })
 
   const media = createMediaResource(api, {
     getToken,
     notifySuccess,
-    notifyError,
+    notifyError: notifyResourceError,
   })
 
   const user = createUserResource(api, {
     notifySuccess,
-    notifyError,
+    notifyError: notifyResourceError,
   })
 
   return {
