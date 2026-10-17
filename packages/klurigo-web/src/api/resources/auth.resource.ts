@@ -17,7 +17,7 @@ import type {
 import { TokenScope, TokenType } from '@klurigo/common'
 
 import type { ApiClientCore } from '../api-client-core'
-import { ApiError } from '../api.utils'
+import { ApiError, ApiRefreshError } from '../api.utils'
 
 /**
  * Side-effect hooks used by `createAuthResource`.
@@ -143,26 +143,31 @@ export const createAuthResource = (
    */
   const authenticateGame = (
     request: AuthGameRequestDto,
-  ): Promise<AuthResponseDto> =>
-    api
-      .apiPost<AuthResponseDto>(
-        `/auth/game`,
-        request,
-        deps.getToken?.(TokenScope.Game, TokenType.Access) &&
-          !deps.getToken?.(TokenScope.User, TokenType.Access)
-          ? { scope: TokenScope.Game }
-          : { refresh: false },
-      )
+  ): Promise<AuthResponseDto> => {
+    const userAccessToken = deps.getToken?.(TokenScope.User, TokenType.Access)
+    const gameAccessToken = deps.getToken?.(TokenScope.Game, TokenType.Access)
+
+    const options = userAccessToken
+      ? { scope: TokenScope.User }
+      : gameAccessToken
+        ? { scope: TokenScope.Game }
+        : { refresh: false }
+
+    return api
+      .apiPost<AuthResponseDto>('/auth/game', request, options)
       .then((res) => {
         deps.setTokenPair(TokenScope.Game, res.accessToken, res.refreshToken)
         return res
       })
       .catch((error) => {
         deps.notifyError(
-          'That game code didn’t match anything. Double-check it and try again.',
+          error instanceof ApiRefreshError
+            ? 'Your session expired and could not be refreshed. Please try again.'
+            : 'That game code didn’t match anything. Double-check it and try again.',
         )
         throw error
       })
+  }
 
   /**
    * Sends a refresh request to the API and stores the returned authentication tokens.

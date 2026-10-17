@@ -28,6 +28,14 @@ export class ApiError extends Error {
   }
 }
 
+/** Identifies a request failure caused by its automatic access-token refresh. */
+export class ApiRefreshError extends Error {
+  constructor(cause: unknown) {
+    super('The access token could not be refreshed', { cause })
+    this.name = 'ApiRefreshError'
+  }
+}
+
 /**
  * Resolves a relative API path to an absolute URL based on the base service URL.
  *

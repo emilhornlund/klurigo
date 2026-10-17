@@ -1,6 +1,6 @@
 import { TokenScope, TokenType } from '@klurigo/common'
 
-import { ApiError, type ApiPostBody } from './api.utils'
+import { ApiError, type ApiPostBody, ApiRefreshError } from './api.utils'
 import {
   isTokenExpired,
   parseResponseAndHandleError,
@@ -199,7 +199,13 @@ export const createApiClientCore = (deps: ApiClientCoreDeps) => {
       path !== '/auth/refresh' &&
       shouldRefresh
     ) {
-      const refreshed = await refreshViaFetch(scope, refreshToken)
+      let refreshed: TokenPair
+      try {
+        refreshed = await refreshViaFetch(scope, refreshToken)
+      } catch (error) {
+        if (path === '/auth/game') throw new ApiRefreshError(error)
+        throw error
+      }
       accessToken = refreshed.accessToken
       refreshToken = refreshed.refreshToken
     }
@@ -226,7 +232,13 @@ export const createApiClientCore = (deps: ApiClientCoreDeps) => {
       path !== '/auth/refresh' &&
       shouldRefresh
     ) {
-      const refreshed = await refreshViaFetch(scope, refreshToken)
+      let refreshed: TokenPair
+      try {
+        refreshed = await refreshViaFetch(scope, refreshToken)
+      } catch (error) {
+        if (path === '/auth/game') throw new ApiRefreshError(error)
+        throw error
+      }
       return apiFetch<T>(method, path, body, {
         scope,
         token: refreshed.accessToken,
