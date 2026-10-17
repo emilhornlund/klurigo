@@ -18,7 +18,9 @@ describe('QuizTableFilter', () => {
 
   it('names the search and filter actions and preserves their behavior', () => {
     const onChange = vi.fn()
-    render(<QuizTableFilter filter={{ search: 'science' }} onChange={onChange} />)
+    render(
+      <QuizTableFilter filter={{ search: 'science' }} onChange={onChange} />,
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Search quizzes' }))
     expect(onChange).toHaveBeenCalledWith({ search: 'science' })
