@@ -692,6 +692,25 @@ export class GameTaskTransitionScheduler extends WorkerHost {
   private async recoverOverdueTaskTransition(
     gameDocument: GameDocument,
   ): Promise<void> {
+    const transitionJobId =
+      GameTaskTransitionScheduler.getTransitionJobId(gameDocument)
+    const transitionJob = await this.taskQueue.getJob(transitionJobId)
+    if (transitionJob) {
+      const transitionJobState = await transitionJob.getState()
+      if (
+        [
+          'active',
+          'delayed',
+          'paused',
+          'prioritized',
+          'waiting',
+          'waiting-children',
+        ].includes(transitionJobState)
+      ) {
+        return
+      }
+    }
+
     const latestGameDocument =
       await this.gameRepository.findGameByIDWithStatusesOrThrow(
         gameDocument._id,

@@ -708,6 +708,75 @@ describe('GameTaskTransitionScheduler', () => {
       )
     })
 
+    it('does not bypass a scheduled BullMQ job for an overdue task', async () => {
+      const game = buildGameDocument(
+        { status: GameStatus.Active },
+        {
+          type: TaskType.Lobby,
+          status: 'pending',
+          currentTransitionExpires: new Date('2020-01-01T00:00:00.000Z'),
+        },
+      )
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      taskQueue.getJob.mockResolvedValue({
+        getState: jest.fn().mockResolvedValue('delayed'),
+      } as unknown as Job<GameDocument, void, string>)
+      const performTransitionSpy = jest.spyOn(
+        scheduler as any,
+        'performTransition',
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.getJob).toHaveBeenCalledWith(
+        'transition-task-1_LOBBY_pending',
+      )
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
+      expect(performTransitionSpy).not.toHaveBeenCalled()
+    })
+
+    it('recovers an overdue task when its BullMQ job has failed', async () => {
+      const game = buildGameDocument(
+        { status: GameStatus.Active },
+        {
+          type: TaskType.Lobby,
+          status: 'pending',
+          currentTransitionExpires: new Date('2020-01-01T00:00:00.000Z'),
+        },
+      )
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      taskQueue.getJob.mockResolvedValue({
+        getState: jest.fn().mockResolvedValue('failed'),
+      } as unknown as Job<GameDocument, void, string>)
+      const performTransitionSpy = jest
+        .spyOn(scheduler as any, 'performTransition')
+        .mockResolvedValue(undefined)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(performTransitionSpy).toHaveBeenCalledWith(
+        game,
+        'active',
+        expect.any(Function),
+      )
+    })
+
     it('leaves a persisted transition pending when answer cleanup fails during recovery', async () => {
       const game = buildGameDocument(undefined, {
         type: TaskType.QuestionResult,
