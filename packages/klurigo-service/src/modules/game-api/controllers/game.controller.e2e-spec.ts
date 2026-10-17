@@ -1658,7 +1658,10 @@ describe('GameController (e2e)', () => {
     })
 
     it('should reject a retry and concurrent duplicate without storing another answer', async () => {
-      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const task = createMockQuestionTaskDocument({
+        status: 'active',
+        currentTransitionExpires: new Date(Date.now() + 60_000),
+      })
       const game = await gameModel.create(
         createMockGameDocument({
           questions: [createMockMultiChoiceQuestionDocument()],
@@ -1713,6 +1716,7 @@ describe('GameController (e2e)', () => {
       const task = createMockQuestionTaskDocument({
         status: 'active',
         presented: new Date(),
+        currentTransitionExpires: new Date(Date.now() + 60_000),
       })
       const game = await gameModel.create(
         createMockGameDocument({
