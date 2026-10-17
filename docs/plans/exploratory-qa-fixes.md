@@ -220,7 +220,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 
 ## Finding checklist
 
-- [ ] QA-001 — Nickname shuffle control is unnamed.
+- [x] QA-001 — Nickname shuffle control is named; implemented, verified, and committed.
 - [ ] QA-002 — Discovery search and filter buttons are unnamed.
 - [ ] QA-003 — Uploaded question media fails quiz-save URL validation.
 - [ ] QA-004 — Mobile quiz-editor toolbar actions are unnamed.
