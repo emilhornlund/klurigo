@@ -14,3 +14,10 @@ export const Default = {
     value: 'FrostyBear',
   },
 } satisfies Story
+
+export const Deletable = {
+  args: {
+    value: 'Alice',
+    onDelete: () => undefined,
+  },
+} satisfies Story

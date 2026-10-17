@@ -110,6 +110,7 @@ describe('NicknameChip', () => {
     const button = container.querySelector('button')
     expect(button).toBeTruthy()
     expect(button).toHaveClass(styles.deleteButton)
+    expect(button).toHaveAttribute('aria-label', 'Remove Deletable')
 
     expect(screen.getByTestId('fa-icon')).toBeInTheDocument()
   })

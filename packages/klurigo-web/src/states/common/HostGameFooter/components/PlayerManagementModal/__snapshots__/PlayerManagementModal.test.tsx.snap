@@ -33,6 +33,7 @@ exports[`PlayerManagementModal > matches snapshot (after players load) 1`] = `
           Alice
         </span>
         <button
+          aria-label="Remove Alice"
           data-testid="chip-delete-Alice"
         >
           delete
@@ -48,6 +49,7 @@ exports[`PlayerManagementModal > matches snapshot (after players load) 1`] = `
           Bob
         </span>
         <button
+          aria-label="Remove Bob"
           data-testid="chip-delete-Bob"
         >
           delete
@@ -91,6 +93,7 @@ exports[`PlayerManagementModal > matches snapshot (confirm dialog open for selec
           Alice
         </span>
         <button
+          aria-label="Remove Alice"
           data-testid="chip-delete-Alice"
         >
           delete
