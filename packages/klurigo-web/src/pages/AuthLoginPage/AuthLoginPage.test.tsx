@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { StrictMode } from 'react'
 import type { NavigateFunction } from 'react-router-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -20,6 +21,7 @@ const h = vi.hoisted(() => ({
     return v
   }),
   sha256: vi.fn(async () => 'CODE_CHALLENGE_HASH'),
+  notifyError: vi.fn(),
 }))
 
 vi.mock('../../api', () => ({
@@ -43,6 +45,9 @@ vi.mock('../../config', () => ({
     googleRedirectUri: 'https://app.example.com/auth/google/callback',
   },
 }))
+vi.mock('../../utils/notification', () => ({
+  notifyError: h.notifyError,
+}))
 
 vi.mock('../../utils/oauth', () => ({
   generateRandomString: (len: number) => h.generateRandomString(len),
@@ -63,6 +68,7 @@ describe('AuthLoginPage', () => {
     vi.mocked(Sentry.captureException).mockClear()
     h.generateRandomString.mockClear()
     h.sha256.mockClear()
+    h.notifyError.mockClear()
     h.genIndex = 0
     sessionStorage.clear()
   })
@@ -76,6 +82,42 @@ describe('AuthLoginPage', () => {
 
     const submit = container.querySelector('#login') as HTMLButtonElement
     expect(submit).toBeDisabled()
+  })
+
+  it('shows the callback error on login and clears its one-time navigation state', async () => {
+    render(
+      <StrictMode>
+        <MemoryRouter
+          initialEntries={[
+            {
+              pathname: '/auth/login',
+              state: { googleOAuthError: true },
+            },
+          ]}>
+          <AuthLoginPage />
+        </MemoryRouter>
+      </StrictMode>,
+    )
+
+    await waitFor(() => {
+      expect(h.notifyError).toHaveBeenCalledExactlyOnceWith(
+        'Google OAuth error. Please try again.',
+      )
+      expect(h.navigate).toHaveBeenCalledWith('/auth/login', {
+        replace: true,
+        state: null,
+      })
+    })
+  })
+
+  it('does not show a stale callback error on a normal login visit', () => {
+    render(
+      <MemoryRouter initialEntries={['/auth/login']}>
+        <AuthLoginPage />
+      </MemoryRouter>,
+    )
+
+    expect(h.notifyError).not.toHaveBeenCalled()
   })
 
   it('submits with valid credentials, toggles loading, and navigates home', async () => {

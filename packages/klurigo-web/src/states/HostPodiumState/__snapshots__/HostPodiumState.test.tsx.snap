@@ -54,7 +54,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -551,7 +551,7 @@ exports[`HostPodiumState > clicks Back to Home and calls revokeGame with home re
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -610,7 +610,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -1107,7 +1107,7 @@ exports[`HostPodiumState > clicks View Full Results and calls revokeGame with re
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -1166,7 +1166,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -1663,7 +1663,7 @@ exports[`HostPodiumState > renders title and leaderboard entries 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -1722,7 +1722,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -2274,7 +2274,7 @@ exports[`HostPodiumState > should render HostPodiumState 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -2333,7 +2333,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -2806,7 +2806,7 @@ exports[`HostPodiumState > should render HostPodiumState with only one player 1`
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -2865,7 +2865,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
         </div>
       </div>
     </div>
-    <div
+    <main
       class="content compact centerAlign"
     >
       <div
@@ -3362,7 +3362,7 @@ exports[`HostPodiumState > should render HostPodiumState without a full leaderbo
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

@@ -183,6 +183,18 @@ describe('TextField', () => {
       expect(onChange).toHaveBeenCalledWith(42)
     })
 
+    it('preserves decimal values for number inputs', () => {
+      const onChange = vi.fn()
+
+      render(<TextField id="my-text-field" type="number" onChange={onChange} />)
+
+      fireEvent.change(screen.getByTestId('test-my-text-field-textfield'), {
+        target: { value: '25.5' },
+      })
+
+      expect(onChange).toHaveBeenCalledWith(25.5)
+    })
+
     it('should call onChange with undefined for an empty number input', () => {
       const onChange = vi.fn()
 

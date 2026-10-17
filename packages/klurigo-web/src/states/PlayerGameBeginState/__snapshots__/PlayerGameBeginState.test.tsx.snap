@@ -26,7 +26,7 @@ exports[`PlayerGameBeginState > should render PlayerGameBeginState 1`] = `
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -73,7 +73,7 @@ exports[`PlayerGameBeginState > should render PlayerGameBeginState 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

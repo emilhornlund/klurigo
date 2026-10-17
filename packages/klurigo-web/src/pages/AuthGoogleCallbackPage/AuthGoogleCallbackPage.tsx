@@ -1,9 +1,8 @@
 import type { FC } from 'react'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
-import { notifyError } from '../../utils/notification'
 import {
   GOOGLE_OAUTH_STORAGE_KEY,
   GOOGLE_OAUTH_STORAGE_PKCE_VERIFIER_KEY,
@@ -18,6 +17,11 @@ const AuthGoogleCallbackPage: FC = () => {
   const { googleExchangeCode } = useKlurigoServiceClient()
 
   const hasExchangedRef = useRef(false)
+
+  const navigateToLoginWithError = useCallback(
+    () => navigate('/auth/login', { state: { googleOAuthError: true } }),
+    [navigate],
+  )
 
   const [searchParams] = useSearchParams()
   useEffect(() => {
@@ -39,15 +43,14 @@ const AuthGoogleCallbackPage: FC = () => {
       googleOAuthStorage?.[GOOGLE_OAUTH_STORAGE_PKCE_VERIFIER_KEY] || undefined
 
     if (!code || state !== storedState || !codeVerifier) {
-      notifyError('Google OAuth error. Please try again.')
-      navigate('/auth/login')
+      navigateToLoginWithError()
       return
     }
 
     googleExchangeCode({ code, codeVerifier })
       .then(() => navigate('/'))
-      .catch(() => navigate('/auth/login'))
-  }, [searchParams, navigate, googleExchangeCode])
+      .catch(navigateToLoginWithError)
+  }, [searchParams, navigate, navigateToLoginWithError, googleExchangeCode])
 
   return <AuthGoogleCallbackPageUI />
 }

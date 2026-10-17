@@ -1,5 +1,72 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`AuthGoogleCallbackPage > carries a generic error to login when required params are missing 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="header"
+    >
+      <button
+        class="logo"
+      >
+        <img
+          alt="Klurigo"
+          class="icon"
+          src="/src/assets/images/klurigo-icon.svg"
+        />
+        <span
+          class="text"
+        >
+          Klurigo
+        </span>
+      </button>
+      <div
+        class="side"
+      >
+        <a
+          data-discover="true"
+          href="/auth/login"
+        >
+          Login
+        </a>
+      </div>
+    </div>
+    <main
+      class="content contained centerAlign"
+    >
+      <div
+        class="contentWrapper"
+      >
+        <div
+          class="contentInner"
+        >
+          <h1
+            class="typography title alignCenter widthSmall colorInverse"
+          >
+            Hold tight—calling in the Google cavalry!
+          </h1>
+          <p
+            class="typography body alignCenter widthSmall colorInverse"
+          >
+            We’re doing the secret handshake with Google. Almost there…
+          </p>
+          <div
+            class="loadingSpinnerContainer"
+            data-testid="loading-spinner"
+          >
+            <div />
+            <div />
+            <div />
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+`;
+
 exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1`] = `
 <div>
   <div
@@ -33,7 +100,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -62,74 +129,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`AuthGoogleCallbackPage > shows error and redirects to /auth/login when required params are missing 1`] = `
-<div>
-  <div
-    class="main"
-  >
-    <div
-      class="header"
-    >
-      <button
-        class="logo"
-      >
-        <img
-          alt="Klurigo"
-          class="icon"
-          src="/src/assets/images/klurigo-icon.svg"
-        />
-        <span
-          class="text"
-        >
-          Klurigo
-        </span>
-      </button>
-      <div
-        class="side"
-      >
-        <a
-          data-discover="true"
-          href="/auth/login"
-        >
-          Login
-        </a>
-      </div>
-    </div>
-    <div
-      class="content contained centerAlign"
-    >
-      <div
-        class="contentWrapper"
-      >
-        <div
-          class="contentInner"
-        >
-          <h1
-            class="typography title alignCenter widthSmall colorInverse"
-          >
-            Hold tight—calling in the Google cavalry!
-          </h1>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            We’re doing the secret handshake with Google. Almost there…
-          </p>
-          <div
-            class="loadingSpinnerContainer"
-            data-testid="loading-spinner"
-          >
-            <div />
-            <div />
-            <div />
-          </div>
-        </div>
-      </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

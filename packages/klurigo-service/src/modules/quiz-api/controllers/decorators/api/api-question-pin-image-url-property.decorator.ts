@@ -1,13 +1,15 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsUrl } from 'class-validator'
+import { Validate } from 'class-validator'
+
+import { SupportedQuestionMediaUrlConstraint } from './is-supported-question-media-url'
 
 /**
  * Decorator for documenting and validating the `imageURL` property in Pin questions.
  *
  * Applies:
  * - `@ApiProperty` for Swagger documentation.
- * - `@IsUrl` to enforce a valid HTTP(S) URL format.
+ * - A validator for remote HTTP(S) URLs and local upload URLs.
  */
 export function ApiQuestionPinImageUrlProperty(): PropertyDecorator {
   return applyDecorators(
@@ -19,6 +21,8 @@ export function ApiQuestionPinImageUrlProperty(): PropertyDecorator {
       format: 'url',
       type: String,
     }),
-    IsUrl({}, { message: 'The image URL must be a valid URL.' }),
+    Validate(SupportedQuestionMediaUrlConstraint, {
+      message: 'The image URL must be a valid HTTP(S) URL.',
+    }),
   )
 }

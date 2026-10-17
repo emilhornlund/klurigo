@@ -33,7 +33,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -171,7 +171,7 @@ exports[`AuthLoginPageUI > enables submit when email and password are valid, the
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -209,7 +209,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -348,7 +348,7 @@ exports[`AuthLoginPageUI > fires Google button handler 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -386,7 +386,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -525,7 +525,7 @@ exports[`AuthLoginPageUI > keeps submit disabled when fields are invalid 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -563,7 +563,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -702,7 +702,7 @@ exports[`AuthLoginPageUI > renders base UI with title, message and links 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -740,7 +740,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -872,7 +872,7 @@ exports[`AuthLoginPageUI > respects loading state: disables inputs and button, s
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

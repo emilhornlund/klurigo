@@ -113,6 +113,7 @@ const NicknameChip: FC<NicknameChipProps> = ({
       {onDelete && (
         <button
           className={classNames(styles.deleteButton, styles.delete)}
+          aria-label={`Remove ${value}`}
           onClick={onDelete}>
           <FontAwesomeIcon icon={faXmark} />
         </button>

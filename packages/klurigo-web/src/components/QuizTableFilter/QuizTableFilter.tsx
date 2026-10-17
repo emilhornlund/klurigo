@@ -85,6 +85,7 @@ const QuizTableFilter: FC<QuizTableFilterProps> = ({
               variant="primary"
               surface="brand"
               icon={faMagnifyingGlass}
+              aria-label="Search quizzes"
               onClick={handleSearch}
             />
           </div>
@@ -95,6 +96,7 @@ const QuizTableFilter: FC<QuizTableFilterProps> = ({
               variant="primary"
               surface="brand"
               icon={faFilter}
+              aria-label="Open filters"
               onClick={() => setShowFilterModal(true)}
             />
           </div>

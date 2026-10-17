@@ -33,7 +33,7 @@ exports[`QuizDetailsPageUI > renders loading state if the quiz is missing or loa
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content fill startAlign"
     >
       <div
@@ -52,7 +52,7 @@ exports[`QuizDetailsPageUI > renders loading state if the quiz is missing or loa
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -90,7 +90,7 @@ exports[`QuizDetailsPageUI > renders title, optional description and image 1`] =
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -448,7 +448,7 @@ exports[`QuizDetailsPageUI > renders title, optional description and image 1`] =
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

@@ -33,7 +33,7 @@ exports[`GameResultsPage > does not query when gameID is missing 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -52,7 +52,7 @@ exports[`GameResultsPage > does not query when gameID is missing 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -90,7 +90,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -1092,7 +1092,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -1130,7 +1130,7 @@ exports[`GameResultsPage > navigates back on query error and keeps spinner 1`] =
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -1149,7 +1149,7 @@ exports[`GameResultsPage > navigates back on query error and keeps spinner 1`] =
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
@@ -1187,7 +1187,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
         </a>
       </div>
     </div>
-    <div
+    <main
       class="content contained startAlign"
     >
       <div
@@ -2150,7 +2150,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

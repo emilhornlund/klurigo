@@ -122,7 +122,10 @@ vi.mock('../../../../../components', () => ({
       data-delay={String(staggerDelay ?? 0)}>
       <span>{value}</span>
       {onDelete && (
-        <button data-testid={`chip-delete-${value}`} onClick={onDelete}>
+        <button
+          aria-label={`Remove ${value}`}
+          data-testid={`chip-delete-${value}`}
+          onClick={onDelete}>
           delete
         </button>
       )}
@@ -200,6 +203,12 @@ describe('PlayerManagementModal', () => {
 
     expect(screen.getByTestId('chip-Alice')).toBeInTheDocument()
     expect(screen.getByTestId('chip-Bob')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Remove Alice' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Remove Bob' }),
+    ).toBeInTheDocument()
 
     expect(screen.getByTestId('chip-Alice')).toHaveAttribute(
       'data-variant',

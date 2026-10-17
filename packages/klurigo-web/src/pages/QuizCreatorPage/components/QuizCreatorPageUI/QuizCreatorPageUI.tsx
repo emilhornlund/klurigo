@@ -261,7 +261,10 @@ const QuizCreatorPageUI: FC<QuizCreatorPageUIProps> = ({
                 onDeleteQuestion={handleDeleteQuestionIndex}
               />
             </EditorPanel>
-            <EditorPanel as="main" className={styles.questionEditor}>
+            <EditorPanel
+              as="section"
+              aria-label="Question editor"
+              className={styles.questionEditor}>
               <QuestionEditor
                 key={selectedQuestionId}
                 mode={gameMode}

@@ -63,6 +63,7 @@ export type UploadOptions = FetchOptions & {
  * The API core is designed to be independent of React hooks and UI concerns:
  * - token storage is provided via `getToken` and `setTokenPair`
  * - user hydration is provided via `fetchCurrentUser`
+ * - automatic refresh failures can be reported through an optional composition-root callback
  * - request execution can be overridden via `fetchImpl` for tests
  */
 export type ApiClientCoreDeps = {
@@ -100,11 +101,19 @@ export type ApiClientCoreDeps = {
    */
   fetchCurrentUser: (accessToken: string) => Promise<void>
 
+  /** Notifies the composition root when an automatic refresh attempt fails. */
+  notifyRefreshFailure?: (scope: TokenScope) => void
+
   /**
    * Optional `fetch` implementation override, primarily intended for tests.
    */
   fetchImpl?: typeof fetch
 }
+
+type TokenPair = { accessToken: string; refreshToken: string }
+
+const refreshFlights = new Map<string, Promise<TokenPair>>()
+const notifiedRefreshFailures = new Set<string>()
 
 /**
  * Creates a request executor that centralizes auth token usage and retry behavior.
@@ -115,7 +124,7 @@ export type ApiClientCoreDeps = {
  * - Replays a failed request once after an HTTP 401 by refreshing and retrying with the new access token.
  *
  * Non-responsibilities:
- * - No UI side effects (notifications, navigation).
+ * - No hard-coded UI or navigation behavior.
  * - No React hook usage.
  * - No dependency on resource modules (avoids circular imports).
  *
@@ -128,28 +137,45 @@ export const createApiClientCore = (deps: ApiClientCoreDeps) => {
   const refreshViaFetch = async (
     scope: TokenScope,
     refreshToken: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> => {
-    // Important: do NOT call apiPost here, to avoid circular dependencies.
-    const response = await fetchImpl(resolveUrl('/auth/refresh'), {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refreshToken }),
-    })
+  ): Promise<TokenPair> => {
+    const key = `${scope}:${refreshToken}`
+    const existingFlight = refreshFlights.get(key)
+    if (existingFlight) return existingFlight
 
-    const res = await parseResponseAndHandleError<{
-      accessToken: string
-      refreshToken: string
-    }>(response)
+    const flight = (async (): Promise<TokenPair> => {
+      try {
+        // Important: do NOT call apiPost here, to avoid circular dependencies.
+        const response = await fetchImpl(resolveUrl('/auth/refresh'), {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ refreshToken }),
+        })
 
-    deps.setTokenPair(scope, res.accessToken, res.refreshToken)
-    if (scope === TokenScope.User) {
-      await deps.fetchCurrentUser(res.accessToken)
-    }
+        const res = await parseResponseAndHandleError<TokenPair>(response)
 
-    return res
+        deps.setTokenPair(scope, res.accessToken, res.refreshToken)
+        if (scope === TokenScope.User) {
+          await deps.fetchCurrentUser(res.accessToken)
+        }
+
+        notifiedRefreshFailures.delete(key)
+        return res
+      } catch (error) {
+        if (!notifiedRefreshFailures.has(key)) {
+          notifiedRefreshFailures.add(key)
+          deps.notifyRefreshFailure?.(scope)
+        }
+        throw error
+      } finally {
+        refreshFlights.delete(key)
+      }
+    })()
+
+    refreshFlights.set(key, flight)
+    return flight
   }
 
   const apiFetch = async <T extends object | void>(

@@ -2,11 +2,20 @@ import { GameStatus, TokenScope } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
+import { ApiError } from '../api.utils'
 
 import { createGameResource } from './game.resource'
 import type { GameResourceDeps } from './game.resource'
 
 vi.mock('../api.utils', () => ({
+  ApiError: class extends Error {
+    status: number
+
+    constructor(message: string, status: number) {
+      super(message)
+      this.status = status
+    }
+  },
   parseQueryParams: vi.fn(() => '?limit=10&offset=20'),
 }))
 
@@ -94,6 +103,33 @@ describe('createGameResource', () => {
 
     await expect(game.joinGame('g1', 'Emil')).rejects.toBe(err)
     expect(notifyError).toHaveBeenCalledWith(
+      'Couldn’t join the game. Check the code and try again.',
+    )
+  })
+
+  it('maps only the duplicate-nickname 409 to actionable feedback', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps, notifyError } = makeDeps()
+    const game = createGameResource(api, deps)
+    const conflict = new ApiError(
+      'Nickname "Emil" is already taken in this game',
+      409,
+    )
+
+    apiPost.mockRejectedValueOnce(conflict)
+
+    await expect(game.joinGame('game-1', 'Emil')).rejects.toBe(conflict)
+    expect(notifyError).toHaveBeenCalledExactlyOnceWith(
+      'That nickname is already in use in this game. Choose another.',
+    )
+
+    const unrelatedConflict = new ApiError('Game has already started', 409)
+    apiPost.mockRejectedValueOnce(unrelatedConflict)
+
+    await expect(game.joinGame('game-1', 'Emil')).rejects.toBe(
+      unrelatedConflict,
+    )
+    expect(notifyError).toHaveBeenLastCalledWith(
       'Couldn’t join the game. Check the code and try again.',
     )
   })

@@ -26,7 +26,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
         class="side"
       />
     </div>
-    <div
+    <main
       class="content fill noScroll spaceBetweenAlign"
     >
       <div
@@ -118,7 +118,7 @@ exports[`PlayerQuestionPreviewState > should render PlayerQuestionPreviewState 1
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;

@@ -363,7 +363,9 @@ describe('QuizCreatorPageUI', () => {
 
     const workspace = screen.getByTestId('editor-workspace')
     const navigator = within(workspace).getByRole('navigation')
-    const editor = within(workspace).getByRole('main')
+    const editor = within(workspace).getByRole('region', {
+      name: 'Question editor',
+    })
     const settings = within(workspace).getByRole('complementary', {
       name: 'Question settings',
     })
@@ -406,7 +408,9 @@ describe('QuizCreatorPageUI', () => {
 
       const workspace = screen.getByTestId('editor-workspace')
       expect(within(workspace).getByRole('navigation')).toBeInTheDocument()
-      expect(within(workspace).getByRole('main')).toBeInTheDocument()
+      expect(
+        within(workspace).getByRole('region', { name: 'Question editor' }),
+      ).toBeInTheDocument()
       expect(
         screen.getByRole('complementary', { name: 'Question settings' }),
       ).toBeInTheDocument()
@@ -535,7 +539,7 @@ describe('QuizCreatorPageUI', () => {
     const settings = screen.getByRole('complementary', {
       name: 'Question settings',
     })
-    const editor = screen.getByRole('main')
+    const editor = screen.getByRole('region', { name: 'Question editor' })
     const select = within(settings).getByTestId(
       'test-question-type-select-select',
     )
@@ -587,7 +591,7 @@ describe('QuizCreatorPageUI', () => {
     const settings = screen.getByRole('complementary', {
       name: 'Question settings',
     })
-    const editor = screen.getByRole('main')
+    const editor = screen.getByRole('region', { name: 'Question editor' })
     const duration = within(settings).getByTestId('test-duration-select-select')
     expect(duration).toHaveValue('45')
     expect(
@@ -619,7 +623,7 @@ describe('QuizCreatorPageUI', () => {
     const settings = screen.getByRole('complementary', {
       name: 'Question settings',
     })
-    const editor = screen.getByRole('main')
+    const editor = screen.getByRole('region', { name: 'Question editor' })
     const points = within(settings).getByTestId('test-points-select-select')
     expect(points).toHaveValue('2000')
     expect(
@@ -648,7 +652,7 @@ describe('QuizCreatorPageUI', () => {
     const settings = screen.getByRole('complementary', {
       name: 'Question settings',
     })
-    const editor = screen.getByRole('main')
+    const editor = screen.getByRole('region', { name: 'Question editor' })
     expect(
       within(settings).getByRole('heading', { name: 'Answer explanation' }),
     ).toBeInTheDocument()
@@ -972,7 +976,9 @@ describe('QuizCreatorPageUI', () => {
     expect(
       screen.getByRole('complementary', { name: 'Question settings' }),
     ).toHaveTextContent('Question settings')
-    fireEvent.click(screen.getByRole('button', { name: 'Code' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Switch to visual editor' }),
+    )
     expect(quizCreatorPage).toHaveClass('advancedMode')
     expect(screen.queryByTestId('editor-workspace')).not.toBeInTheDocument()
     expect(
@@ -996,7 +1002,9 @@ describe('QuizCreatorPageUI', () => {
       { ...question, question: 'Updated in JSON' },
     ])
 
-    fireEvent.click(screen.getByRole('button', { name: 'Visual' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Switch to code editor' }),
+    )
     expect(quizCreatorPage).not.toHaveClass('advancedMode')
     expect(document.getElementById('json-textarea')).not.toBeInTheDocument()
     expect(screen.getByTestId('editor-workspace')).toBeInTheDocument()
@@ -1062,7 +1070,7 @@ describe('QuizCreatorPageUI', () => {
         />
       </MemoryRouter>,
     )
-    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Preview quiz' })).toBeDisabled()
 
     rerender(
       <MemoryRouter>
@@ -1092,7 +1100,7 @@ describe('QuizCreatorPageUI', () => {
         />
       </MemoryRouter>,
     )
-    expect(screen.getByRole('button', { name: 'Preview' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Preview quiz' })).toBeDisabled()
 
     rerender(
       <MemoryRouter>
@@ -1122,7 +1130,7 @@ describe('QuizCreatorPageUI', () => {
         />
       </MemoryRouter>,
     )
-    expect(screen.getByRole('button', { name: 'Preview' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Preview quiz' })).toBeEnabled()
   })
 
   it('opens a local preview from question one and restores the editor state', () => {
@@ -1161,7 +1169,7 @@ describe('QuizCreatorPageUI', () => {
       onExit,
     })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Preview' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Preview quiz' }))
 
     expect(screen.queryByTestId('editor-workspace')).not.toBeInTheDocument()
     expect(screen.queryByText('Preview')).not.toBeInTheDocument()
@@ -1212,7 +1220,7 @@ describe('QuizCreatorPageUI', () => {
       onSaveQuiz,
     })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Save quiz' }))
 
     expect(onSelectedQuestionIndex).toHaveBeenCalledExactlyOnceWith(0)
     expect(onSaveQuiz).toHaveBeenCalledOnce()
@@ -1258,7 +1266,7 @@ describe('QuizCreatorPageUI', () => {
   it('opens and closes quiz-level settings from the header', () => {
     renderQuizCreatorPageUI({ gameMode: GameMode.Classic })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Settings' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Open quiz settings' }))
     const settings = screen.getByRole('dialog', { name: 'Settings' })
     expect(settings).toBeInTheDocument()
 

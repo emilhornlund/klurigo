@@ -1,13 +1,15 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsUrl } from 'class-validator'
+import { Validate } from 'class-validator'
+
+import { SupportedQuestionMediaUrlConstraint } from './is-supported-question-media-url'
 
 /**
  * Decorator for documenting and validating the `url` property of a question's media.
  *
  * Applies:
  * - `@ApiProperty` for Swagger documentation.
- * - `@IsUrl` to validate the value as a valid URL.
+ * - A validator for remote HTTP(S) URLs and local upload URLs.
  */
 export function ApiQuestionMediaUrlProperty(): PropertyDecorator {
   return applyDecorators(
@@ -19,6 +21,8 @@ export function ApiQuestionMediaUrlProperty(): PropertyDecorator {
       format: 'url',
       type: String,
     }),
-    IsUrl({}, { message: 'The media URL must be a valid URL.' }),
+    Validate(SupportedQuestionMediaUrlConstraint, {
+      message: 'The media URL must be a valid HTTP(S) URL.',
+    }),
   )
 }

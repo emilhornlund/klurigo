@@ -26,7 +26,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -391,7 +391,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -474,7 +474,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -728,7 +728,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -811,7 +811,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -1176,7 +1176,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -1259,7 +1259,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -1624,7 +1624,7 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -1707,7 +1707,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -1961,7 +1961,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -2044,7 +2044,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -2309,7 +2309,7 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -2392,7 +2392,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -2459,7 +2459,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
           </p>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -2542,7 +2542,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -2609,7 +2609,7 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
           </p>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -2692,7 +2692,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -2866,7 +2866,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -2949,7 +2949,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -3134,7 +3134,7 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -3217,7 +3217,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -3593,7 +3593,7 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >
@@ -3676,7 +3676,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
         class="side"
       />
     </div>
-    <div
+    <main
       class="content contained centerAlign"
     >
       <div
@@ -3743,7 +3743,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
           </p>
         </div>
       </div>
-    </div>
+    </main>
     <div
       class="footer"
     >

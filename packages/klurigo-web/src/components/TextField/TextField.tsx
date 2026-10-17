@@ -157,8 +157,11 @@ const TextField: FC<TextFieldProps> = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     let newValue: string | number | undefined = event.target.value
     if (type === 'number') {
-      const parsedValue = parseInt(newValue, 10)
-      newValue = isNaN(parsedValue) ? undefined : parsedValue
+      const parsedValue = newValue === '' ? undefined : Number(newValue)
+      newValue =
+        parsedValue === undefined || Number.isNaN(parsedValue)
+          ? undefined
+          : parsedValue
     }
     setInternalValue(newValue)
     onChange?.(newValue)

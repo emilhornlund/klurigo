@@ -73,4 +73,26 @@ describe('ZeroToOneHundredRangeAnswerEditor', () => {
     )
     expect(screen.getByText('Must be between 0 and 100.')).toBeInTheDocument()
   })
+
+  it('preserves fractional input and exposes its validation feedback', () => {
+    const onChange = vi.fn()
+    render(
+      <ZeroToOneHundredRangeAnswerEditor
+        value={25}
+        min={0}
+        max={100}
+        validation={makeValidation([
+          { path: 'correct', message: 'Must be an integer.' },
+        ])}
+        validationRevealed
+        onChange={onChange}
+      />,
+    )
+
+    const input = screen.getByTestId('test-range-correct-textfield-textfield')
+    fireEvent.change(input, { target: { value: '25.5' } })
+
+    expect(onChange).toHaveBeenCalledExactlyOnceWith(25.5)
+    expect(screen.getByText('Must be an integer.')).toBeInTheDocument()
+  })
 })

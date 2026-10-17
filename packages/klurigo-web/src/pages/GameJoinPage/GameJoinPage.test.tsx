@@ -215,7 +215,15 @@ describe('GameJoinPage', () => {
     await waitFor(() => expect(input.disabled).toBe(false))
 
     expect(mockNavigate).not.toHaveBeenCalledWith('/game')
+    expect(input).toHaveValue('Runner')
     expect(screen.getByRole('button', { name: /ok, go!/i })).not.toBeDisabled()
+
+    mockJoinGame.mockResolvedValueOnce(undefined)
+    fireEvent.change(input, { target: { value: 'RetryNick' } })
+    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
+
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
+    expect(mockJoinGame).toHaveBeenLastCalledWith('GAME123', 'RetryNick')
   })
 
   it('submits when the form is submitted (Enter key equivalent)', async () => {

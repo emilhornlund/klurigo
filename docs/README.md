@@ -38,6 +38,8 @@ contributor or application documentation.
   progression, guarded commands, and client-visible conflict behavior.
 - [End-to-end testing](./development/end-to-end-testing.md) - Playwright
   setup, seeded fixtures, browser projects, GameSession execution, and CI.
+- [Exploratory QA](./qa/exploratory-testing.md) - ongoing browser-based
+  exploratory coverage, confirmed defects, and remaining investigation areas.
 
 ## Operations
 

@@ -38,6 +38,7 @@ const makeDeps = (overrides?: {
   tokens?: TokenStore
   fetchImpl?: typeof fetch
   fetchCurrentUser?: (accessToken: string) => Promise<void>
+  notifyRefreshFailure?: (scope: TokenScope) => void
 }) => {
   const tokens: TokenStore = overrides?.tokens ?? {}
 
@@ -55,15 +56,23 @@ const makeDeps = (overrides?: {
 
   const fetchCurrentUser =
     overrides?.fetchCurrentUser ?? vi.fn().mockResolvedValue(undefined)
+  const notifyRefreshFailure = overrides?.notifyRefreshFailure ?? vi.fn()
 
   const fetchImpl = overrides?.fetchImpl ?? (vi.fn() as unknown as typeof fetch)
 
   return {
-    deps: { getToken, setTokenPair, fetchCurrentUser, fetchImpl },
+    deps: {
+      getToken,
+      setTokenPair,
+      fetchCurrentUser,
+      fetchImpl,
+      notifyRefreshFailure,
+    },
     tokens,
     getToken,
     setTokenPair,
     fetchCurrentUser,
+    notifyRefreshFailure,
     fetchImpl,
   }
 }
@@ -155,7 +164,13 @@ describe('createApiClientCore', () => {
   })
 
   it('preemptively refreshes when access token is expired and refresh is enabled; updates token pair and hydrates user for TokenScope.User', async () => {
-    const { deps, fetchImpl, setTokenPair, fetchCurrentUser } = makeDeps({
+    const {
+      deps,
+      fetchImpl,
+      setTokenPair,
+      fetchCurrentUser,
+      notifyRefreshFailure,
+    } = makeDeps({
       tokens: {
         [TokenScope.User]: {
           [TokenType.Access]: 'expired.access',
@@ -217,6 +232,7 @@ describe('createApiClientCore', () => {
     expect(dataHeaders.Authorization).toBe('Bearer new.access')
 
     expect(res).toEqual({ ok: true })
+    expect(notifyRefreshFailure).not.toHaveBeenCalled()
   })
 
   it('does not preemptively refresh when an override token is provided', async () => {
@@ -692,6 +708,49 @@ describe('createApiClientCore', () => {
     expect(fetchCurrentUser).not.toHaveBeenCalled()
   })
 
+  it('notifies once immediately when automatic refresh fails, including concurrent requests', async () => {
+    const refreshToken = 'qa009-failed-refresh-token'
+    const notifyRefreshFailure = vi.fn()
+    const { deps, fetchImpl, setTokenPair } = makeDeps({
+      tokens: {
+        [TokenScope.User]: {
+          [TokenType.Access]: 'qa009-expired-access-token',
+          [TokenType.Refresh]: refreshToken,
+        },
+      },
+      notifyRefreshFailure,
+    })
+
+    ;(isTokenExpired as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      true,
+    )
+    ;(fetchImpl as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
+      makeResponse(400),
+    )
+    const refreshError = new Error('refresh rejected')
+    ;(
+      parseResponseAndHandleError as unknown as ReturnType<typeof vi.fn>
+    ).mockRejectedValue(refreshError)
+
+    const api = createApiClientCore(deps)
+    const results = await Promise.allSettled([
+      api.apiGet('/profile/user'),
+      api.apiGet('/profile/games'),
+    ])
+
+    expect(results.every(({ status }) => status === 'rejected')).toBe(true)
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
+    expect(notifyRefreshFailure).toHaveBeenCalledExactlyOnceWith(
+      TokenScope.User,
+    )
+    expect(setTokenPair).not.toHaveBeenCalled()
+
+    await expect(api.apiGet('/profile/user')).rejects.toBe(refreshError)
+    expect(notifyRefreshFailure).toHaveBeenCalledExactlyOnceWith(
+      TokenScope.User,
+    )
+  })
+
   type FakeProgressEvent = {
     lengthComputable: boolean
     loaded: number
@@ -787,6 +846,15 @@ describe('createApiClientCore', () => {
       )
     }
 
+    const waitForXhrCount = async (count: number) => {
+      for (let i = 0; i < 10; i++) {
+        const instance = FakeXMLHttpRequest.instances[count - 1]
+        if (instance) return instance
+        await Promise.resolve()
+      }
+      throw new Error(`Expected ${count} XMLHttpRequest instances`)
+    }
+
     it('apiUpload opens POST to resolved URL, sets responseType to json, and resolves with xhr.response', async () => {
       const { deps } = makeDeps({
         tokens: {
@@ -846,7 +914,7 @@ describe('createApiClientCore', () => {
         () => new FormData(),
       )
 
-      const xhr = FakeXMLHttpRequest.lastInstance!
+      const xhr = await waitForXhrInstance()
       expect(xhr.setRequestHeader).toHaveBeenCalledWith(
         'Authorization',
         'Bearer access.token',
@@ -1060,10 +1128,10 @@ describe('createApiClientCore', () => {
         'new.refresh',
       )
 
+      const xhr2 = await waitForXhrCount(2)
       expect(FakeXMLHttpRequest.instances).toHaveLength(2)
       expect(createFormData).toHaveBeenCalledTimes(2)
 
-      const xhr2 = FakeXMLHttpRequest.instances[1]!
       xhr2.triggerLoad(201, { id: 'p2' })
 
       await expect(promise).resolves.toEqual({ id: 'p2' })
@@ -1091,7 +1159,7 @@ describe('createApiClientCore', () => {
         { refresh: false },
       )
 
-      const xhr = FakeXMLHttpRequest.lastInstance!
+      const xhr = await waitForXhrInstance()
       xhr.triggerLoad(401, { message: 'unauthorized' })
 
       await expect(promise).rejects.toMatchObject({ status: 401 })
@@ -1177,7 +1245,7 @@ describe('createApiClientCore', () => {
       )
       expect(fetchCurrentUser).not.toHaveBeenCalled()
 
-      const xhr = FakeXMLHttpRequest.lastInstance!
+      const xhr = await waitForXhrInstance()
       expect(xhr.setRequestHeader).toHaveBeenCalledWith(
         'Authorization',
         'Bearer new.game.access',

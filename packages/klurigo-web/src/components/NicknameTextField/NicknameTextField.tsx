@@ -53,6 +53,7 @@ const NicknameTextField: FC<NicknameTextFieldProps> = ({
         surface="brand"
         disabled={disabled}
         icon={faRefresh}
+        aria-label="Generate nickname"
         onClick={handleRefreshNicknameClick}
       />
     </div>
