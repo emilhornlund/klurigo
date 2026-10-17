@@ -6,9 +6,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import ProtectedRoute from './ProtectedRoute'
 
 // --- Mock AuthContext hook with mutable state ---
-type MockAuth = { isUserAuthenticated: boolean; isGameAuthenticated: boolean }
+type MockAuth = {
+  isUserAuthenticated: boolean
+  isUserRecoveryPending: boolean
+  isGameAuthenticated: boolean
+}
 let mockAuth: MockAuth = {
   isUserAuthenticated: false,
+  isUserRecoveryPending: false,
   isGameAuthenticated: false,
 }
 
@@ -29,7 +34,11 @@ function renderAt(path: string, ui: React.ReactNode) {
 
 describe('ProtectedRoute', () => {
   beforeEach(() => {
-    mockAuth = { isUserAuthenticated: false, isGameAuthenticated: false }
+    mockAuth = {
+      isUserAuthenticated: false,
+      isUserRecoveryPending: false,
+      isGameAuthenticated: false,
+    }
   })
 
   it('renders children when User scope is authenticated (default props)', () => {
@@ -60,6 +69,33 @@ describe('ProtectedRoute', () => {
     expect(screen.getByText('Home')).toBeInTheDocument()
 
     expect(container).toMatchSnapshot()
+  })
+
+  it('keeps the protected child while User session recovery is pending', () => {
+    mockAuth.isUserRecoveryPending = true
+
+    renderAt(
+      '/protected',
+      <ProtectedRoute>
+        <div>Recovering protected route</div>
+      </ProtectedRoute>,
+    )
+
+    expect(screen.getByText('Recovering protected route')).toBeInTheDocument()
+    expect(screen.queryByText('Home')).not.toBeInTheDocument()
+  })
+
+  it('redirects after User recovery fails', () => {
+    mockAuth.isUserRecoveryPending = false
+
+    renderAt(
+      '/protected',
+      <ProtectedRoute>
+        <div>Protected User</div>
+      </ProtectedRoute>,
+    )
+
+    expect(screen.getByText('Home')).toBeInTheDocument()
   })
 
   it('renders children for guest-only route when User is NOT authenticated (authenticated=false)', () => {

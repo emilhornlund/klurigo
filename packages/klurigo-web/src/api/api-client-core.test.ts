@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createApiClientCore } from './api-client-core'
 // eslint-disable-next-line import/order
-import type { ApiPostBody } from './api.utils'
+import { type ApiPostBody, ApiRefreshError } from './api.utils'
 
 vi.mock('./api.utils', () => {
   class ApiError extends Error {
@@ -16,8 +16,16 @@ vi.mock('./api.utils', () => {
     }
   }
 
+  class ApiRefreshError extends Error {
+    constructor(cause: unknown) {
+      super('The access token could not be refreshed', { cause })
+      this.name = 'ApiRefreshError'
+    }
+  }
+
   return {
     ApiError,
+    ApiRefreshError,
     isTokenExpired: vi.fn(),
     parseResponseAndHandleError: vi.fn(),
     resolveUrl: vi.fn((path: string) => `https://example.test${path}`),
@@ -366,6 +374,89 @@ describe('createApiClientCore', () => {
     )
 
     expect(res).toEqual({ ok: true })
+  })
+
+  it('refreshes and retries the same authenticated /auth/game request once', async () => {
+    const { deps, fetchImpl, setTokenPair } = makeDeps({
+      tokens: {
+        [TokenScope.User]: {
+          [TokenType.Access]: 'expired.user.access',
+          [TokenType.Refresh]: 'user.refresh',
+        },
+      },
+    })
+
+    ;(isTokenExpired as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+      (token: unknown) => token === 'expired.user.access',
+    )
+
+    ;(fetchImpl as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      makeResponse(200),
+    )
+    ;(fetchImpl as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      makeResponse(200),
+    )
+    ;(
+      parseResponseAndHandleError as unknown as ReturnType<typeof vi.fn>
+    ).mockResolvedValueOnce({
+      accessToken: 'refreshed.user.access',
+      refreshToken: 'refreshed.user.refresh',
+    })
+    ;(
+      parseResponseAndHandleError as unknown as ReturnType<typeof vi.fn>
+    ).mockResolvedValueOnce({
+      accessToken: 'game.access',
+      refreshToken: 'game.refresh',
+    })
+
+    const api = createApiClientCore(deps)
+    await api.apiPost('/auth/game', { gameId: 'created-game' } as ApiPostBody, {
+      scope: TokenScope.User,
+    })
+
+    expect(fetchImpl).toHaveBeenCalledTimes(2)
+    expect(resolveUrl).toHaveBeenNthCalledWith(1, '/auth/refresh')
+    expect(resolveUrl).toHaveBeenNthCalledWith(2, '/auth/game')
+    expect(setTokenPair).toHaveBeenCalledWith(
+      TokenScope.User,
+      'refreshed.user.access',
+      'refreshed.user.refresh',
+    )
+    const [, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock
+      .calls[1] as [string, RequestInit]
+    expect(init.body).toBe(JSON.stringify({ gameId: 'created-game' }))
+    expect((init.headers as Record<string, string>).Authorization).toBe(
+      'Bearer refreshed.user.access',
+    )
+  })
+
+  it('marks failed /auth/game token refresh separately from invalid game credentials', async () => {
+    const { deps, fetchImpl } = makeDeps({
+      tokens: {
+        [TokenScope.User]: {
+          [TokenType.Access]: 'expired.user.access',
+          [TokenType.Refresh]: 'user.refresh',
+        },
+      },
+    })
+    ;(isTokenExpired as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
+      true,
+    )
+    ;(fetchImpl as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      makeResponse(401),
+    )
+    ;(
+      parseResponseAndHandleError as unknown as ReturnType<typeof vi.fn>
+    ).mockRejectedValueOnce(new Error('refresh rejected'))
+
+    const api = createApiClientCore(deps)
+
+    await expect(
+      api.apiPost('/auth/game', { gameId: 'created-game' } as ApiPostBody, {
+        scope: TokenScope.User,
+      }),
+    ).rejects.toBeInstanceOf(ApiRefreshError)
+    expect(fetchImpl).toHaveBeenCalledTimes(1)
   })
 
   it('does not retry on 401 when refresh token is missing', async () => {

@@ -3,7 +3,7 @@ import {
   QuestionPinTolerance,
 } from '@klurigo/common'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
-import type { ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
 import type { Mock } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -160,6 +160,76 @@ describe('PinImage', () => {
 
     const overlay = getOverlay(container)
     expect(overlay.style.cursor).toBe('default')
+  })
+
+  it('exposes a named focusable coordinate control when enabled', () => {
+    const { getByRole } = render(
+      <PinImage
+        value={{ x: 0.5, y: 0.5 }}
+        accessibleLabel="Choose pin location with arrow keys"
+      />,
+    )
+
+    const control = getByRole('group', {
+      name: 'Choose pin location with arrow keys',
+    })
+    expect(control).toHaveAttribute('tabindex', '0')
+    control.focus()
+    expect(control).toHaveFocus()
+    expect(control).toHaveAttribute('aria-disabled', 'false')
+  })
+
+  it('moves by normalized coordinates with arrow keys and clamps to image edges', async () => {
+    const onChange = vi.fn()
+    const onValid = vi.fn()
+    const ControlledPin = () => {
+      const [position, setPosition] = useState({ x: 0.5, y: 0.5 })
+      return (
+        <PinImage
+          value={position}
+          accessibleLabel="Choose pin location"
+          onChange={(nextPosition) => {
+            onChange(nextPosition)
+            setPosition(nextPosition)
+          }}
+          onValid={onValid}
+        />
+      )
+    }
+    const { getByRole } = render(<ControlledPin />)
+    const control = getByRole('group', { name: 'Choose pin location' })
+
+    fireEvent.keyDown(control, { key: 'ArrowRight' })
+    expect(onChange).toHaveBeenLastCalledWith({ x: 0.51, y: 0.5 })
+    expect(onValid).toHaveBeenLastCalledWith(true)
+    expect(pinCalls.at(-1)?.x).toBeCloseTo(0.51)
+
+    fireEvent.keyDown(control, { key: 'ArrowDown', shiftKey: true })
+    expect(onChange).toHaveBeenLastCalledWith({ x: 0.51, y: 0.6 })
+
+    for (let index = 0; index < 6; index += 1) {
+      fireEvent.keyDown(control, { key: 'ArrowLeft', shiftKey: true })
+      fireEvent.keyDown(control, { key: 'ArrowUp', shiftKey: true })
+    }
+    expect(onChange).toHaveBeenLastCalledWith({ x: 0, y: 0 })
+  })
+
+  it('removes disabled coordinate controls from keyboard navigation', () => {
+    const onChange = vi.fn()
+    const { getByRole } = render(
+      <PinImage
+        disabled
+        value={{ x: 0.5, y: 0.5 }}
+        accessibleLabel="Choose pin location"
+        onChange={onChange}
+      />,
+    )
+    const control = getByRole('group', { name: 'Choose pin location' })
+
+    expect(control).toHaveAttribute('tabindex', '-1')
+    expect(control).toHaveAttribute('aria-disabled', 'true')
+    fireEvent.keyDown(control, { key: 'ArrowRight' })
+    expect(onChange).not.toHaveBeenCalled()
   })
 
   it('clamps interactive value into [0..1] and syncs when value prop changes', async () => {

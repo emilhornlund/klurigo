@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
+import { ApiRefreshError } from '../../api/api.utils'
 import { useAuthContext } from '../../context/auth'
 
 import { QuizDetailsPageUI } from './components'
@@ -65,10 +66,27 @@ const QuizDetailsPage: FC = () => {
   const handleCreateGame = (): void => {
     if (quizId) {
       setIsHostGameLoading(true)
-      createGame(quizId)
-        .then(({ id: gameId }) =>
-          authenticateGame({ gameId }).then(() => navigate('/game')),
+      const pendingGameKey = `klurigo.pending-host-game.${quizId}`
+      const pendingHostGameId = sessionStorage.getItem(pendingGameKey)
+      const gameIdPromise = pendingHostGameId
+        ? Promise.resolve(pendingHostGameId)
+        : createGame(quizId).then(({ id: gameId }) => {
+            sessionStorage.setItem(pendingGameKey, gameId)
+            return gameId
+          })
+
+      gameIdPromise
+        .then((gameId) =>
+          authenticateGame({ gameId }).then(() => {
+            sessionStorage.removeItem(pendingGameKey)
+            navigate('/game')
+          }),
         )
+        .catch((error: unknown) => {
+          if (!(error instanceof ApiRefreshError)) {
+            sessionStorage.removeItem(pendingGameKey)
+          }
+        })
         .finally(() => setIsHostGameLoading(false))
     }
   }

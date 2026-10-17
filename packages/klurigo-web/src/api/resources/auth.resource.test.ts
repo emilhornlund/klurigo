@@ -2,7 +2,7 @@ import { TokenScope, TokenType } from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
-import { ApiError } from '../api.utils'
+import { ApiError, ApiRefreshError } from '../api.utils'
 
 import { createAuthResource } from './auth.resource'
 import type { AuthResourceDeps } from './auth.resource'
@@ -227,6 +227,48 @@ describe('createAuthResource', () => {
       {
         scope: TokenScope.Game,
       },
+    )
+  })
+
+  it('uses User-scope refresh for authenticated game authentication', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps } = makeDeps()
+    deps.getToken = (scope, type) =>
+      scope === TokenScope.User && type === TokenType.Access
+        ? 'expired.user.access'
+        : undefined
+    apiPost.mockResolvedValue({
+      accessToken: 'game.access',
+      refreshToken: 'game.refresh',
+    })
+
+    const auth = createAuthResource(api, deps)
+    const request = { gameId: 'game-123' }
+
+    await auth.authenticateGame(request)
+
+    expect(apiPost).toHaveBeenCalledWith('/auth/game', request, {
+      scope: TokenScope.User,
+    })
+  })
+
+  it('does not report a User token refresh failure as an invalid game code', async () => {
+    const { api, apiPost } = makeApi()
+    const { deps, notifyError } = makeDeps()
+    deps.getToken = (scope, type) =>
+      scope === TokenScope.User && type === TokenType.Access
+        ? 'user.access'
+        : undefined
+    const refreshError = new ApiRefreshError(new ApiError('Unauthorized', 401))
+    apiPost.mockRejectedValue(refreshError)
+
+    const auth = createAuthResource(api, deps)
+
+    await expect(auth.authenticateGame({ gameId: 'game-123' })).rejects.toBe(
+      refreshError,
+    )
+    expect(notifyError).toHaveBeenCalledWith(
+      'Your session expired and could not be refreshed. Please try again.',
     )
   })
 

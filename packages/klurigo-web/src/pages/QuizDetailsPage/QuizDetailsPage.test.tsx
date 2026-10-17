@@ -1,6 +1,8 @@
 import { act, render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { ApiRefreshError } from '../../api/api.utils'
+
 import QuizDetailsPage from './QuizDetailsPage'
 
 type QuizResponse = {
@@ -101,6 +103,7 @@ const flushPromises = async (): Promise<void> => {
 describe('QuizDetailsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sessionStorage.clear()
     latestUIProps = undefined
     mockQuizId = 'quiz-123'
     mockQuizQueryState = {
@@ -159,5 +162,46 @@ describe('QuizDetailsPage', () => {
     expect(createGameMock).toHaveBeenCalledWith('quiz-123')
     expect(authenticateGameMock).toHaveBeenCalledWith({ gameId: 'game-123' })
     expect(navigateMock).toHaveBeenCalledWith('/game')
+  })
+
+  it('retries authentication for the same created game without creating another', async () => {
+    authenticateGameMock
+      .mockRejectedValueOnce(new ApiRefreshError(new Error('refresh failed')))
+      .mockResolvedValueOnce()
+
+    const { unmount } = render(<QuizDetailsPage />)
+
+    act(() => {
+      latestUIProps?.onHostGame()
+    })
+    await flushPromises()
+
+    expect(createGameMock).toHaveBeenCalledTimes(1)
+    expect(authenticateGameMock).toHaveBeenCalledTimes(1)
+    expect(authenticateGameMock).toHaveBeenNthCalledWith(1, {
+      gameId: 'game-123',
+    })
+    expect(navigateMock).not.toHaveBeenCalled()
+    expect(sessionStorage.getItem('klurigo.pending-host-game.quiz-123')).toBe(
+      'game-123',
+    )
+
+    unmount()
+    render(<QuizDetailsPage />)
+
+    act(() => {
+      latestUIProps?.onHostGame()
+    })
+    await flushPromises()
+
+    expect(createGameMock).toHaveBeenCalledTimes(1)
+    expect(authenticateGameMock).toHaveBeenCalledTimes(2)
+    expect(authenticateGameMock).toHaveBeenNthCalledWith(2, {
+      gameId: 'game-123',
+    })
+    expect(navigateMock).toHaveBeenCalledWith('/game')
+    expect(
+      sessionStorage.getItem('klurigo.pending-host-game.quiz-123'),
+    ).toBeNull()
   })
 })
