@@ -229,7 +229,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-007 — OAuth errors display once on Login via one-time navigation state; success and normal login unaffected; unit/browser verified; committed.
 - [x] QA-008 — Editor action group wraps at tablet widths; all controls fit at 768/769/800/900px, mobile/desktop retained; committed.
 - [x] QA-009 — Automatic refresh is coalesced; failure notifies once, clears the invalid session, and suppresses duplicate/stale errors; unit/browser verified; committed.
-- [ ] QA-010 — Application pages lack a main landmark.
+- [x] QA-010 — Shared Page content now has one main landmark; nested editor landmark corrected; Page/browser/Lighthouse verified; committed.
 - [ ] QA-011 — Mobile viewport disables user zoom.
 - [ ] QA-012 — Editor reload discards unsaved changes without warning.
 - [ ] QA-013 — Duplicate nickname conflict is reported as invalid game code.

@@ -249,7 +249,7 @@ const Page: FC<PageProps> = ({
           )}
         </div>
       </div>
-      <div
+      <main
         className={classNames(
           styles.content,
           styles[layout],
@@ -268,7 +268,7 @@ const Page: FC<PageProps> = ({
             {children}
           </div>
         </div>
-      </div>
+      </main>
       {footer && (
         <div
           className={classNames(

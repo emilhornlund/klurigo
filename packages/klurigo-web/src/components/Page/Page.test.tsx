@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { compile } from 'sass'
 import { describe, expect, test } from 'vitest'
@@ -35,6 +35,25 @@ describe('Page', () => {
     )
 
     expect(container).toMatchSnapshot()
+  })
+
+  test('exposes one main landmark around content and keeps header and footer outside it', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <Page
+          layout="contained"
+          header={<span>Page actions</span>}
+          footer={<span>Page footer</span>}>
+          <span>Primary content</span>
+        </Page>
+      </MemoryRouter>,
+    )
+
+    const main = screen.getByRole('main')
+    expect(main).toContainElement(screen.getByText('Primary content'))
+    expect(container.querySelectorAll('main')).toHaveLength(1)
+    expect(main).not.toContainElement(screen.getByText('Page actions'))
+    expect(main).not.toContainElement(screen.getByText('Page footer'))
   })
 
   test('should render Page with profile', () => {
