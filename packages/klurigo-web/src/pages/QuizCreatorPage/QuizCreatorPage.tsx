@@ -296,6 +296,18 @@ const QuizCreatorPage: FC = () => {
     savedQuizSnapshot,
   ])
 
+  useEffect(() => {
+    if (!hasUnsavedChanges) return
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasUnsavedChanges])
+
   const shouldBlock = useCallback<BlockerFunction>(() => {
     return hasUnsavedChanges && !isSavingQuiz
   }, [hasUnsavedChanges, isSavingQuiz])

@@ -419,6 +419,28 @@ describe('QuizCreatorPage', () => {
     expect(latestShouldBlock?.({} as never)).toBe(true)
   })
 
+  it('registers beforeunload only while the editor is dirty and removes it on unmount', async () => {
+    const { unmount } = render(<QuizCreatorPage />)
+    const cleanEvent = new Event('beforeunload', { cancelable: true })
+
+    window.dispatchEvent(cleanEvent)
+    expect(cleanEvent.defaultPrevented).toBe(false)
+
+    act(() => {
+      latestUIProps?.onSelectGameMode(GameMode.Classic)
+    })
+    await flushPromises()
+
+    const dirtyEvent = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(dirtyEvent)
+    expect(dirtyEvent.defaultPrevented).toBe(true)
+
+    unmount()
+    const afterUnmountEvent = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(afterUnmountEvent)
+    expect(afterUnmountEvent.defaultPrevented).toBe(false)
+  })
+
   it('tracks unsaved changes for an existing quiz only after editing away from the saved snapshot', async () => {
     const question = makeQuizQuestion('q-1')
 
@@ -785,6 +807,10 @@ describe('QuizCreatorPage', () => {
 
     expect(latestUIProps?.canSaveQuiz).toBe(true)
 
+    const dirtyEvent = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(dirtyEvent)
+    expect(dirtyEvent.defaultPrevented).toBe(true)
+
     act(() => {
       latestUIProps?.onSaveQuiz()
     })
@@ -800,6 +826,10 @@ describe('QuizCreatorPage', () => {
     )
     expect(latestUIProps?.canSaveQuiz).toBe(false)
     expect(latestShouldBlock?.({} as never)).toBe(false)
+
+    const savedEvent = new Event('beforeunload', { cancelable: true })
+    window.dispatchEvent(savedEvent)
+    expect(savedEvent.defaultPrevented).toBe(false)
   })
 
   it('navigates to the edit route after creating a new quiz', async () => {
