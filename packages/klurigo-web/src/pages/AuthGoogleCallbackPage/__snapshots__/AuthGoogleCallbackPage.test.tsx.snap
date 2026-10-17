@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1`] = `
+exports[`AuthGoogleCallbackPage > carries a generic error to login when required params are missing 1`] = `
 <div>
   <div
     class="main"
@@ -67,7 +67,7 @@ exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1
 </div>
 `;
 
-exports[`AuthGoogleCallbackPage > shows error and redirects to /auth/login when required params are missing 1`] = `
+exports[`AuthGoogleCallbackPage > exchanges code and navigates to / on success 1`] = `
 <div>
   <div
     class="main"

@@ -38,7 +38,7 @@ describe('AuthGoogleCallbackPage', () => {
     sessionStorage.clear()
   })
 
-  it('shows error and redirects to /auth/login when required params are missing', async () => {
+  it('carries a generic error to login when required params are missing', async () => {
     const { container } = render(
       <MemoryRouter initialEntries={['/auth/google/callback']}>
         <Routes>
@@ -51,16 +51,16 @@ describe('AuthGoogleCallbackPage', () => {
     )
 
     await waitFor(() => {
-      expect(h.notifyError).toHaveBeenCalledWith(
-        'Google OAuth error. Please try again.',
-      )
-      expect(h.navigate).toHaveBeenCalledWith('/auth/login')
+      expect(h.navigate).toHaveBeenCalledWith('/auth/login', {
+        state: { googleOAuthError: true },
+      })
     })
+    expect(h.notifyError).not.toHaveBeenCalled()
     expect(h.googleExchangeCode).not.toHaveBeenCalled()
     expect(container).toMatchSnapshot()
   })
 
-  it('shows error and redirects when state does not match storage', async () => {
+  it('carries a generic error to login when state does not match storage', async () => {
     sessionStorage.setItem(
       GOOGLE_OAUTH_STORAGE_KEY,
       JSON.stringify({
@@ -82,15 +82,15 @@ describe('AuthGoogleCallbackPage', () => {
     )
 
     await waitFor(() => {
-      expect(h.notifyError).toHaveBeenCalledWith(
-        'Google OAuth error. Please try again.',
-      )
-      expect(h.navigate).toHaveBeenCalledWith('/auth/login')
+      expect(h.navigate).toHaveBeenCalledWith('/auth/login', {
+        state: { googleOAuthError: true },
+      })
     })
+    expect(h.notifyError).not.toHaveBeenCalled()
     expect(h.googleExchangeCode).not.toHaveBeenCalled()
   })
 
-  it('shows error and redirects when codeVerifier is missing', async () => {
+  it('carries a generic error to login when codeVerifier is missing', async () => {
     sessionStorage.setItem(
       GOOGLE_OAUTH_STORAGE_KEY,
       JSON.stringify({
@@ -112,11 +112,11 @@ describe('AuthGoogleCallbackPage', () => {
     )
 
     await waitFor(() => {
-      expect(h.notifyError).toHaveBeenCalledWith(
-        'Google OAuth error. Please try again.',
-      )
-      expect(h.navigate).toHaveBeenCalledWith('/auth/login')
+      expect(h.navigate).toHaveBeenCalledWith('/auth/login', {
+        state: { googleOAuthError: true },
+      })
     })
+    expect(h.notifyError).not.toHaveBeenCalled()
     expect(h.googleExchangeCode).not.toHaveBeenCalled()
   })
 
@@ -181,7 +181,9 @@ describe('AuthGoogleCallbackPage', () => {
 
     await waitFor(() => {
       expect(h.googleExchangeCode).toHaveBeenCalledTimes(1)
-      expect(h.navigate).toHaveBeenCalledWith('/auth/login')
+      expect(h.navigate).toHaveBeenCalledWith('/auth/login', {
+        state: { googleOAuthError: true },
+      })
     })
     expect(h.notifyError).not.toHaveBeenCalled()
   })

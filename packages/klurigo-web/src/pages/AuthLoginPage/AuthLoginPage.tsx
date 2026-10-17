@@ -1,11 +1,12 @@
 import * as Sentry from '@sentry/react'
 import type { FC } from 'react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import { ApiError } from '../../api/api.utils'
 import config from '../../config'
+import { notifyError } from '../../utils/notification'
 import {
   generateRandomString,
   GOOGLE_OAUTH_STORAGE_KEY,
@@ -21,6 +22,25 @@ const AuthLoginPage: FC = () => {
   const { login } = useKlurigoServiceClient()
 
   const navigate = useNavigate()
+  const location = useLocation()
+  const hasShownGoogleOAuthErrorRef = useRef(false)
+
+  useEffect(() => {
+    const navigationState = location.state as {
+      googleOAuthError?: unknown
+    } | null
+
+    if (
+      navigationState?.googleOAuthError !== true ||
+      hasShownGoogleOAuthErrorRef.current
+    ) {
+      return
+    }
+
+    hasShownGoogleOAuthErrorRef.current = true
+    notifyError('Google OAuth error. Please try again.')
+    navigate(location.pathname, { replace: true, state: null })
+  }, [location.pathname, location.state, navigate])
 
   const [isLoading, setIsLoading] = useState(false)
 

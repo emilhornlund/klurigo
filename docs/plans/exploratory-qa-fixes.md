@@ -226,7 +226,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-004 — Toolbar actions have non-visible names; mobile/desktop browser and unit verified; committed.
 - [x] QA-005 — Removable nickname chips expose contextual names; unit/modal behavior and browser story verified; committed.
 - [x] QA-006 — Whole-number range enforced in frontend/backend; unit, API E2E, and synthetic editor browser checks passed; committed.
-- [ ] QA-007 — OAuth callback error feedback disappears after redirect.
+- [x] QA-007 — OAuth errors display once on Login via one-time navigation state; success and normal login unaffected; unit/browser verified; committed.
 - [ ] QA-008 — Quiz-editor toolbar clips at tablet widths.
 - [ ] QA-009 — Automatic refresh failure feedback is delayed.
 - [ ] QA-010 — Application pages lack a main landmark.
