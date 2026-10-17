@@ -81,6 +81,6 @@ The **Finding checklist** below is the only completion-status record. An uncheck
 ## Finding checklist
 
 - [x] QA-014
-- [ ] QA-015
+- [x] QA-015
 - [x] QA-016
 - [ ] QA-017

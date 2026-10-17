@@ -78,6 +78,13 @@ exports[`QuestionAnswerPicker > renders Pin and maps coordinates on submit 1`] =
             </div>
           </div>
         </div>
+        <span
+          aria-live="polite"
+          class="visuallyHidden"
+          role="status"
+        >
+          Pin position: 50% from left, 50% from top.
+        </span>
         <div
           class="buttonWrapper"
         >

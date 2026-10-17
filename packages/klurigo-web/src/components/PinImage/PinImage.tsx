@@ -4,6 +4,7 @@ import {
 } from '@klurigo/common'
 import {
   type FC,
+  type KeyboardEvent,
   type PointerEvent,
   type ReactNode,
   useCallback,
@@ -41,6 +42,7 @@ export type PinImageProps = {
   fit?: ResponsiveImageProps['fit']
   onChange?: (position: PinImagePosition) => void
   onValid?: (valid: boolean) => void
+  accessibleLabel?: string
   children?: ReactNode | ReactNode[]
 } & Pick<ResponsiveImageProps, 'imageURL' | 'alt'>
 
@@ -53,6 +55,7 @@ const PinImage: FC<PinImageProps> = ({
   alt,
   onChange,
   onValid,
+  accessibleLabel,
   children,
 }) => {
   const deviceType = useDeviceSizeType()
@@ -245,6 +248,43 @@ const PinImage: FC<PinImageProps> = ({
     }
   }
 
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (
+      disabled ||
+      !accessibleLabel ||
+      !interactivePinPosition ||
+      e.target !== e.currentTarget
+    ) {
+      return
+    }
+
+    const step = e.shiftKey ? 0.1 : 0.01
+    let deltaX = 0
+    let deltaY = 0
+    if (e.key === 'ArrowLeft') deltaX = -step
+    if (e.key === 'ArrowRight') deltaX = step
+    if (e.key === 'ArrowUp') deltaY = -step
+    if (e.key === 'ArrowDown') deltaY = step
+    if (!deltaX && !deltaY) return
+
+    const nextPosition = {
+      x: clamp01(interactivePinPosition.x + deltaX),
+      y: clamp01(interactivePinPosition.y + deltaY),
+    }
+
+    e.preventDefault()
+    if (
+      nextPosition.x === interactivePinPosition.x &&
+      nextPosition.y === interactivePinPosition.y
+    ) {
+      return
+    }
+
+    setInteractivePinPosition(nextPosition)
+    onChange?.(nextPosition)
+    onValid?.(true)
+  }
+
   const getToleranceSizePx = useCallback(
     (tolerance?: QuestionPinTolerance) => {
       if (!overlaySize.w || !overlaySize.h || !tolerance) return undefined
@@ -266,6 +306,15 @@ const PinImage: FC<PinImageProps> = ({
         ref={setOverlayNode}
         className={styles.overlay}
         data-testid="pin-overlay"
+        {...(accessibleLabel
+          ? {
+              role: 'group',
+              'aria-label': accessibleLabel,
+              'aria-disabled': disabled,
+              tabIndex: disabled ? -1 : 0,
+              onKeyDown,
+            }
+          : {})}
         style={{
           cursor:
             disabled || !interactivePinPosition

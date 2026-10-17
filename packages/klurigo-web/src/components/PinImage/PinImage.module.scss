@@ -20,6 +20,11 @@
   touch-action: none;
   z-index: layers.$z-index-pin-image;
 
+  &:focus-visible {
+    outline: 3px solid colors.$color-focus-success;
+    outline-offset: -3px;
+  }
+
   /* The pin is centered via transform so size changes don't affect math */
   .pin {
     position: absolute;

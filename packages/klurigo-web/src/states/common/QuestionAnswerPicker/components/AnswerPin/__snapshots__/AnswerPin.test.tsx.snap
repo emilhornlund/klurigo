@@ -14,7 +14,11 @@ exports[`AnswerPin > renders interactive mode 1`] = `
         data-testid="pin-image-area"
       >
         <div
+          aria-disabled="false"
+          aria-label="Choose a pin location. Use arrow keys to move; hold Shift for larger steps."
           data-fit="contain"
+          role="group"
+          tabindex="0"
         >
           <div
             data-testid="pin-value"
@@ -33,6 +37,13 @@ exports[`AnswerPin > renders interactive mode 1`] = `
           />
         </div>
       </div>
+      <span
+        aria-live="polite"
+        class="visuallyHidden"
+        role="status"
+      >
+        Pin position: 50% from left, 50% from top.
+      </span>
       <div
         class="buttonWrapper"
       >

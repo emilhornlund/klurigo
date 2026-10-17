@@ -80,9 +80,16 @@ const AnswerPin: FC<AnswerPinProps> = ({
             imageURL={imageURL}
             fit="contain"
             disabled={disabled}
+            accessibleLabel="Choose a pin location. Use arrow keys to move; hold Shift for larger steps."
             onChange={setPosition}
           />
         </div>
+        <span
+          className={styles.visuallyHidden}
+          role="status"
+          aria-live="polite">
+          {`Pin position: ${Math.round(position.x * 100)}% from left, ${Math.round(position.y * 100)}% from top.`}
+        </span>
         <div className={styles.buttonWrapper}>
           <Button
             id="submit-button"
