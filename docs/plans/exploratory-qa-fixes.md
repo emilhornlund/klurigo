@@ -230,6 +230,6 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-008 — Editor action group wraps at tablet widths; all controls fit at 768/769/800/900px, mobile/desktop retained; committed.
 - [x] QA-009 — Automatic refresh is coalesced; failure notifies once, clears the invalid session, and suppresses duplicate/stale errors; unit/browser verified; committed.
 - [x] QA-010 — Shared Page content now has one main landmark; nested editor landmark corrected; Page/browser/Lighthouse verified; committed.
-- [ ] QA-011 — Mobile viewport disables user zoom.
+- [x] QA-011 — Restored user scaling while retaining viewport-fit; web build/typecheck and mobile browser/Lighthouse verified; committed.
 - [ ] QA-012 — Editor reload discards unsaved changes without warning.
 - [ ] QA-013 — Duplicate nickname conflict is reported as invalid game code.
