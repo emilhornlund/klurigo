@@ -554,7 +554,7 @@ describe('QuizController (e2e)', () => {
             created: now.toISOString(),
             updated: expect.any(String),
           })
-      })
+        })
     })
 
     it('should accept local upload URLs for ordinary question media', async () => {
@@ -577,9 +577,9 @@ describe('QuizController (e2e)', () => {
         .expect(200)
 
       const saved = await quizModel.findById(quiz.id)
-      expect((saved!.questions[0] as { media: { url: string } }).media.url).toBe(
-        localUrl,
-      )
+      expect(
+        (saved!.questions[0] as { media: { url: string } }).media.url,
+      ).toBe(localUrl)
     })
 
     it('should accept local upload URLs for Pin question images', async () => {
@@ -607,43 +607,101 @@ describe('QuizController (e2e)', () => {
       )
     })
 
+    it.each([0, 25, 100])(
+      'should persist Zero-to-100 correct answer %s',
+      async (correct) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const quiz = await quizService.createQuiz(updatedData, user)
+        const payload = {
+          ...updatedData,
+          questions: updatedData.questions.map((question) => ({
+            ...question,
+            correct,
+          })),
+        }
+
+        await supertest(app.getHttpServer())
+          .put(`/api/quizzes/${quiz.id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .send(payload)
+          .expect(200)
+
+        const saved = await quizModel.findById(quiz.id)
+        expect((saved!.questions[0] as { correct: number }).correct).toBe(
+          correct,
+        )
+      },
+    )
+
+    it.each([25.5, -1, 101])(
+      'should reject and not persist invalid Zero-to-100 answer %s',
+      async (correct) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const quiz = await quizService.createQuiz(updatedData, user)
+        const payload = {
+          ...updatedData,
+          questions: updatedData.questions.map((question) => ({
+            ...question,
+            correct,
+          })),
+        }
+
+        await supertest(app.getHttpServer())
+          .put(`/api/quizzes/${quiz.id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .send(payload)
+          .expect(400)
+
+        const saved = await quizModel.findById(quiz.id)
+        expect((saved!.questions[0] as { correct: number }).correct).toBe(
+          updatedData.questions[0]!.correct,
+        )
+      },
+    )
+
     it.each([
       ['ordinary media', QuestionType.MultiChoice],
       ['Pin image', QuestionType.Pin],
-    ])('should reject malformed URL in %s without saving it', async (_label, questionType) => {
-      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
-      const quiz = await quizService.createQuiz(originalData, user)
-      const questionIndex = originalData.questions.findIndex(
-        (question) => question.type === questionType,
-      )
-      const payload = {
-        ...originalData,
-        questions: originalData.questions.map((question) => {
-          if (question.type !== questionType) return question
-          return question.type === QuestionType.Pin
-            ? { ...question, imageURL: 'ftp://bad' }
-            : { ...question, media: { ...question.media!, url: 'ftp://bad' } }
-        }),
-      }
+    ])(
+      'should reject malformed URL in %s without saving it',
+      async (_label, questionType) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const quiz = await quizService.createQuiz(originalData, user)
+        const questionIndex = originalData.questions.findIndex(
+          (question) => question.type === questionType,
+        )
+        const payload = {
+          ...originalData,
+          questions: originalData.questions.map((question) => {
+            if (question.type !== questionType) return question
+            return question.type === QuestionType.Pin
+              ? { ...question, imageURL: 'ftp://bad' }
+              : { ...question, media: { ...question.media!, url: 'ftp://bad' } }
+          }),
+        }
 
-      await supertest(app.getHttpServer())
-        .put(`/api/quizzes/${quiz.id}`)
-        .set(createBearerAuthHeader(accessToken))
-        .send(payload)
-        .expect(400)
+        await supertest(app.getHttpServer())
+          .put(`/api/quizzes/${quiz.id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .send(payload)
+          .expect(400)
 
-      const saved = await quizModel.findById(quiz.id)
-      const savedQuestion = saved!.questions[questionIndex] as unknown as {
-        imageURL?: string
-        media?: { url: string }
-      }
-      const originalQuestion = originalData.questions[questionIndex]
-      if (originalQuestion.type === QuestionType.Pin) {
-        expect(savedQuestion.imageURL).toBe(originalQuestion.imageURL)
-      } else {
-        expect(savedQuestion.media?.url).toBe(originalQuestion.media?.url)
-      }
-    })
+        const saved = await quizModel.findById(quiz.id)
+        const savedQuestion = saved!.questions[questionIndex] as unknown as {
+          imageURL?: string
+          media?: { url: string }
+        }
+        const originalQuestion = originalData.questions[questionIndex]
+        if (originalQuestion.type === QuestionType.Pin) {
+          expect(savedQuestion.imageURL).toBe(originalQuestion.imageURL)
+        } else {
+          expect(savedQuestion.media?.url).toBe(originalQuestion.media?.url)
+        }
+      },
+    )
 
     it('should fail in updating a non existing quiz', async () => {
       const quizId = uuidv4()

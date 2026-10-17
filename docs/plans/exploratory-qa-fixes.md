@@ -225,7 +225,7 @@ yarn workspace @klurigo/klurigo-service test:e2e
 - [x] QA-003 — Question media accepts local HTTP(S) upload URLs; DTO and isolated API E2E validations passed; committed.
 - [x] QA-004 — Toolbar actions have non-visible names; mobile/desktop browser and unit verified; committed.
 - [x] QA-005 — Removable nickname chips expose contextual names; unit/modal behavior and browser story verified; committed.
-- [ ] QA-006 — Zero-to-100 answers must be whole integers from 0 through 100.
+- [x] QA-006 — Whole-number range enforced in frontend/backend; unit, API E2E, and synthetic editor browser checks passed; committed.
 - [ ] QA-007 — OAuth callback error feedback disappears after redirect.
 - [ ] QA-008 — Quiz-editor toolbar clips at tablet widths.
 - [ ] QA-009 — Automatic refresh failure feedback is delayed.

@@ -1,6 +1,6 @@
 import { QuestionType, QuestionZeroToOneHundredRangeDto } from '@klurigo/common'
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger'
-import { IsNumber, Max, Min } from 'class-validator'
+import { IsInt, IsNumber, Max, Min } from 'class-validator'
 
 import {
   ApiQuestionDurationProperty,
@@ -59,6 +59,7 @@ export class QuestionZeroToOneHundredRange implements QuestionZeroToOneHundredRa
     type: Number,
   })
   @IsNumber()
+  @IsInt({ message: 'The correct answer must be a whole number.' })
   @Min(0)
   @Max(100)
   correct: number
