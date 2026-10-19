@@ -5,8 +5,10 @@ import {
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
+import { getQueueToken } from '@nestjs/bullmq'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
+import { Queue } from 'bullmq'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -58,6 +60,10 @@ import {
   QuestionTaskWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import {
+  GameTaskTransitionScheduler,
+  TASK_QUEUE_NAME,
+} from '../../game-task/services'
 import { QuizService } from '../../quiz-api/services'
 import { User, UserModel } from '../../user/repositories'
 import { GameService } from '../services'
@@ -71,6 +77,15 @@ describe('GameController (e2e)', () => {
 
   let hostUser: User
   let playerUser: User
+
+  const createActiveQuestionTask = () => {
+    const now = new Date()
+    return createMockQuestionTaskDocument({
+      status: 'active',
+      currentTransitionInitiated: now,
+      currentTransitionExpires: new Date(now.getTime() + 30_000),
+    })
+  }
 
   beforeAll(async () => {
     app = await createTestApp()
@@ -1457,6 +1472,54 @@ describe('GameController (e2e)', () => {
     })
   })
 
+  describe('overdue task transition recovery', () => {
+    it('recovers a persisted overdue task after its BullMQ job is missing', async () => {
+      const { id: quizId } = await quizService.createQuiz(
+        createMockClassicQuizRequestDto(),
+        hostUser,
+      )
+      const { id: gameId } = await gameService.createGame(quizId, hostUser)
+      const game = await gameModel.findById(gameId).exec()
+      if (!game) throw new Error(`Expected created game ${gameId}`)
+
+      const jobId = `transition-${game.currentTask._id}_${game.currentTask.type}_${game.currentTask.status}`
+      const queue = app.get<Queue>(getQueueToken(TASK_QUEUE_NAME))
+      await queue.remove(jobId)
+      const overdueAt = new Date(Date.now() - 1_000)
+      await gameModel
+        .updateOne(
+          { _id: gameId },
+          {
+            'currentTask.currentTransitionInitiated': new Date(
+              overdueAt.getTime() - 3_000,
+            ),
+            'currentTask.currentTransitionExpires': overdueAt,
+          },
+        )
+        .exec()
+
+      await expect(queue.getJob(jobId)).resolves.toBeUndefined()
+
+      const scheduler = app.get(GameTaskTransitionScheduler)
+      await scheduler.recoverPendingTransitionOperations()
+
+      const recovered = await gameModel.findById(gameId).exec()
+      expect(recovered?.currentTask._id).toBe(game.currentTask._id)
+      expect(recovered?.currentTask.type).toBe(TaskType.Lobby)
+      expect(recovered?.currentTask.status).toBe('active')
+      expect(recovered?.pendingTransitionOperations ?? []).toEqual([])
+      await expect(queue.getJob(jobId)).resolves.toBeUndefined()
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      const recoveredAgain = await gameModel.findById(gameId).exec()
+      expect(recoveredAgain?.currentTask._id).toBe(game.currentTask._id)
+      expect(recoveredAgain?.currentTask.type).toBe(TaskType.Lobby)
+      expect(recoveredAgain?.currentTask.status).toBe('active')
+      expect(recoveredAgain?.pendingTransitionOperations ?? []).toEqual([])
+    })
+  })
+
   describe('/api/games/:gameID/answers (POST)', () => {
     const submitAnswer = (
       accessToken: string,
@@ -1480,7 +1543,7 @@ describe('GameController (e2e)', () => {
               participantId: playerUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1515,7 +1578,7 @@ describe('GameController (e2e)', () => {
               participantId: playerUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1547,7 +1610,7 @@ describe('GameController (e2e)', () => {
               participantId: hostUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1658,7 +1721,7 @@ describe('GameController (e2e)', () => {
     })
 
     it('should reject a retry and concurrent duplicate without storing another answer', async () => {
-      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const task = createActiveQuestionTask()
       const game = await gameModel.create(
         createMockGameDocument({
           questions: [createMockMultiChoiceQuestionDocument()],
@@ -1713,6 +1776,8 @@ describe('GameController (e2e)', () => {
       const task = createMockQuestionTaskDocument({
         status: 'active',
         presented: new Date(),
+        currentTransitionInitiated: new Date(),
+        currentTransitionExpires: new Date(Date.now() + 30_000),
       })
       const game = await gameModel.create(
         createMockGameDocument({
@@ -1839,7 +1904,7 @@ describe('GameController (e2e)', () => {
     })
 
     it('should resolve a submission racing with closure to either the closed question or a late rejection', async () => {
-      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const task = createActiveQuestionTask()
       const game = await gameModel.create(
         createMockGameDocument({
           questions: [createMockMultiChoiceQuestionDocument({ duration: 0 })],

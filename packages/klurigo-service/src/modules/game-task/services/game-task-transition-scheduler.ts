@@ -637,6 +637,61 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         )
       }
     }
+
+    let overdueGames: GameDocument[]
+    try {
+      overdueGames =
+        await this.gameRepository.findGamesWithOverdueTaskTransitions()
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find overdue game task transitions.', {
+          operation: 'recoverOverdueTaskTransitions',
+        }),
+        getErrorStack(error),
+      )
+      return
+    }
+
+    for (const game of overdueGames) {
+      const jobId = GameTaskTransitionScheduler.getTransitionJobId(game)
+      try {
+        const delay =
+          this.gameTaskTransitionService.getTaskTransitionDelay(game)
+        if (
+          !GameTaskTransitionScheduler.shouldSchedulePostTaskTransition(
+            game.currentTask.type,
+            game.currentTask.status,
+            delay,
+            game.settings,
+          )
+        ) {
+          continue
+        }
+
+        const existingJob = await this.taskQueue.getJob(jobId)
+        if (existingJob && (await existingJob.getState()) !== 'failed') {
+          continue
+        }
+
+        await this.process({
+          id: jobId,
+          name: TASK_TRANSITION_JOB_NAME,
+          data: game,
+        } as Job<GameDocument, void, string>)
+      } catch (error) {
+        this.logger.error(
+          structuredLog('Failed to recover overdue game task transition.', {
+            operation: 'recoverOverdueTaskTransition',
+            gameId: game._id,
+            taskId: game.currentTask._id,
+            taskType: game.currentTask.type,
+            taskStatus: game.currentTask.status,
+            jobId,
+          }),
+          getErrorStack(error),
+        )
+      }
+    }
   }
 
   private async recoverPendingTransitionOperationsForGame(

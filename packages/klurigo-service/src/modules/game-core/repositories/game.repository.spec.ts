@@ -466,6 +466,48 @@ describe('GameRepository pending transition operations', () => {
   })
 })
 
+describe('GameRepository.findGamesWithOverdueTaskTransitions', () => {
+  it('finds only active games past their deadline without pending side effects', async () => {
+    const repository = Object.create(GameRepository.prototype) as GameRepository
+    const now = new Date('2026-10-19T12:00:00.000Z')
+    const games = [{ _id: 'game-1' }] as unknown as GameDocument[]
+    const populate = jest.fn().mockResolvedValue(games)
+    const find = jest.fn().mockReturnValue({ populate })
+    const logger = { error: jest.fn() }
+    Object.assign(repository, { gameModel: { find }, logger })
+
+    await expect(
+      repository.findGamesWithOverdueTaskTransitions(now),
+    ).resolves.toBe(games)
+
+    expect(find).toHaveBeenCalledWith({
+      status: GameStatus.Active,
+      'currentTask.currentTransitionExpires': { $lte: now },
+      'pendingTransitionOperations.0': { $exists: false },
+    })
+    expect(populate).toHaveBeenCalledWith('quiz')
+  })
+
+  it('logs and propagates query failures', async () => {
+    const repository = Object.create(GameRepository.prototype) as GameRepository
+    const error = new Error('database unavailable')
+    const logger = { error: jest.fn() }
+    Object.assign(repository, {
+      gameModel: {
+        find: jest.fn().mockImplementation(() => {
+          throw error
+        }),
+      },
+      logger,
+    })
+
+    await expect(repository.findGamesWithOverdueTaskTransitions()).rejects.toBe(
+      error,
+    )
+    expect(logger.error).toHaveBeenCalled()
+  })
+})
+
 describe('GameRepository.findGameByPIN', () => {
   it('uses the active status filter by default and supports all statuses', async () => {
     const repository = Object.create(GameRepository.prototype) as GameRepository

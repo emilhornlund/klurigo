@@ -66,6 +66,7 @@ describe('GameTaskTransitionScheduler', () => {
       | 'findAndSaveWithLock'
       | 'findGameByIDWithStatusesOrThrow'
       | 'findGamesWithPendingTransitionOperations'
+      | 'findGamesWithOverdueTaskTransitions'
       | 'clearPendingTransitionOperation'
     >
   >
@@ -95,6 +96,8 @@ describe('GameTaskTransitionScheduler', () => {
         shouldAutoCompleteQuestionResultTask: false,
         shouldAutoCompleteLeaderboardTask: false,
         shouldAutoCompletePodiumTask: false,
+        randomizeQuestionOrder: false,
+        randomizeAnswerOrder: false,
       },
       currentTask: {
         _id: 'task-1',
@@ -126,6 +129,7 @@ describe('GameTaskTransitionScheduler', () => {
       findAndSaveWithLock: jest.fn(),
       findGameByIDWithStatusesOrThrow: jest.fn(),
       findGamesWithPendingTransitionOperations: jest.fn(),
+      findGamesWithOverdueTaskTransitions: jest.fn().mockResolvedValue([]),
       clearPendingTransitionOperation: jest.fn().mockResolvedValue(undefined),
     }
 
@@ -693,6 +697,116 @@ describe('GameTaskTransitionScheduler', () => {
       expect(
         gameRepository.clearPendingTransitionOperation,
       ).toHaveBeenCalledWith(game._id, pendingOperation.id)
+    })
+
+    it('processes an overdue persisted task when its queue job is missing', async () => {
+      const game = buildGameDocument(undefined, {
+        status: 'pending',
+        currentTransitionExpires: new Date('2026-10-19T11:59:00.000Z'),
+      })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutate) => (await mutate(game)) as GameDocument,
+      )
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        undefined,
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
+      expect(game.currentTask.status).toBe('active')
+      expect(gameEventPublisher.publish).toHaveBeenCalledWith(game)
+      expect(
+        gameRepository.findGamesWithOverdueTaskTransitions,
+      ).toHaveBeenCalledTimes(1)
+    })
+
+    it('leaves a failed overdue recovery eligible for the next recovery cycle', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameRepository.findGameByIDWithStatusesOrThrow.mockRejectedValue(
+        new Error('database unavailable'),
+      )
+
+      await expect(
+        scheduler.recoverPendingTransitionOperations(),
+      ).resolves.toBeUndefined()
+
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to recover overdue game task transition.',
+          operation: 'recoverOverdueTaskTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+        }),
+        expect.any(String),
+      )
+      expect(
+        gameRepository.findGamesWithOverdueTaskTransitions,
+      ).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not race an overdue task whose queue job is still active', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      taskQueue.getJob.mockResolvedValue({
+        getState: jest.fn().mockResolvedValue('active'),
+      } as any)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.getJob).toHaveBeenCalledTimes(1)
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
+      expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
+    })
+
+    it('does not recover an active task that intentionally has no transition job', async () => {
+      const game = buildGameDocument(
+        {
+          settings: {
+            shouldAutoCompleteQuestionResultTask: false,
+            shouldAutoCompleteLeaderboardTask: false,
+            shouldAutoCompletePodiumTask: false,
+            randomizeQuestionOrder: false,
+            randomizeAnswerOrder: false,
+          },
+        },
+        { type: TaskType.QuestionResult, status: 'active' },
+      )
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(0)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.getJob).not.toHaveBeenCalled()
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
+      expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
     })
   })
 

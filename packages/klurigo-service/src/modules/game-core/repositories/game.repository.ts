@@ -184,6 +184,32 @@ export class GameRepository extends BaseRepository<Game> {
   }
 
   /**
+   * Finds active games whose persisted transition deadline has elapsed and
+   * which have no pending side effects that must be recovered first.
+   */
+  public async findGamesWithOverdueTaskTransitions(
+    now: Date = new Date(),
+  ): Promise<GameDocument[]> {
+    try {
+      return (await this.gameModel
+        .find({
+          status: GameStatus.Active,
+          'currentTask.currentTransitionExpires': { $lte: now },
+          'pendingTransitionOperations.0': { $exists: false },
+        })
+        .populate('quiz')) as GameDocument[]
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find overdue game task transitions.', {
+          operation: 'findGamesWithOverdueTaskTransitions',
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
+  }
+
+  /**
    * Removes one outbox entry without touching a newer operation for the same
    * game.
    */
