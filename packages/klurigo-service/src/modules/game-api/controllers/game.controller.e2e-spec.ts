@@ -8,7 +8,9 @@ import {
 import { getQueueToken } from '@nestjs/bullmq'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import { Queue } from 'bullmq'
+import type { Redis } from 'ioredis'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -1531,6 +1533,32 @@ describe('GameController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .send({ type: QuestionType.MultiChoice, optionIndex })
 
+    const createActiveAnswerGame = async (additionalPlayers: User[] = []) => {
+      const task = createActiveQuestionTask()
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument({ duration: 30 })],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+            ...additionalPlayers.map((user) =>
+              createMockGamePlayerParticipantDocument({
+                participantId: user._id,
+                nickname: user.defaultNickname,
+              }),
+            ),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      return { game, task }
+    }
+
     it('should return 400 when a required answer field is missing', async () => {
       const game = await gameModel.create(
         createMockGameDocument({
@@ -1861,6 +1889,183 @@ describe('GameController (e2e)', () => {
           .filter((result) => result.correct)
           .forEach((result) => expect(result.totalScore).toBeGreaterThan(0))
       }
+    })
+
+    it('leaves no answer marker after Redis fails before the claim and accepts a retry', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const redis = app.get<Redis>(getRedisConnectionToken())
+      const claim = jest
+        .spyOn(redis, 'hsetnx')
+        .mockRejectedValueOnce(new Error('simulated claim failure'))
+
+      try {
+        await submitAnswer(accessToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body).toMatchObject({
+              status: 503,
+              message: `Redis unavailable while persisting a question answer for game ${game._id} task ${task._id}`,
+            })
+          })
+      } finally {
+        claim.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([])
+
+      await submitAnswer(accessToken, game._id).expect(204)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([
+        expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+      ])
+    })
+
+    it('keeps a committed Redis claim as the duplicate source after a later command fails', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const redis = app.get<Redis>(getRedisConnectionToken())
+      const answerCount = jest
+        .spyOn(redis, 'hlen')
+        .mockRejectedValueOnce(new Error('simulated answer-count failure'))
+
+      try {
+        await submitAnswer(accessToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body).toMatchObject({
+              status: 503,
+              message: `Redis unavailable while persisting a question answer for game ${game._id} task ${task._id}`,
+            })
+          })
+      } finally {
+        answerCount.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([
+        expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+      ])
+
+      await submitAnswer(accessToken, game._id)
+        .expect(400)
+        .expect((response) => {
+          expect(response.body).toHaveProperty(
+            'message',
+            'Answer already provided',
+          )
+        })
+
+      const persistedGame = await gameModel.findById(game._id).exec()
+      expect(persistedGame?.currentTask).toMatchObject({
+        _id: task._id,
+        type: TaskType.Question,
+        status: 'active',
+      })
+      expect(persistedGame?.previousTasks).toEqual([])
+      expect(persistedGame?.participants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            participantId: playerUser._id,
+            totalScore: 0,
+          }),
+        ]),
+      )
+    })
+
+    it('keeps accepted answers persisted when queue inspection fails after the final claim', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const firstToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const secondToken = await authenticateGame(
+        app,
+        game._id,
+        secondPlayerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const queue = app.get<Queue>(getQueueToken(TASK_QUEUE_NAME))
+
+      await submitAnswer(firstToken, game._id).expect(204)
+      const queueInspection = jest
+        .spyOn(queue, 'getJob')
+        .mockRejectedValueOnce(new Error('simulated queue inspection failure'))
+      try {
+        await submitAnswer(secondToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body.message).toBe(
+              `Redis unavailable while inspecting the task transition queue for game ${game._id}`,
+            )
+          })
+      } finally {
+        queueInspection.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      const acceptedAnswers = await answerRepository.findAllAnswersByGameId(
+        game._id,
+        task._id,
+      )
+      expect(acceptedAnswers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+          expect.objectContaining({
+            playerId: secondPlayerUser._id,
+            answer: 0,
+          }),
+        ]),
+      )
+      expect(acceptedAnswers).toHaveLength(2)
+
+      const persistedGame = await gameModel.findById(game._id).exec()
+      expect(persistedGame?.currentTask).toMatchObject({
+        _id: task._id,
+        type: TaskType.Question,
+        status: 'active',
+      })
+      expect(persistedGame?.pendingTransitionOperations ?? []).toEqual([])
+      expect(persistedGame?.previousTasks).toEqual([])
+      expect(persistedGame?.participants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            participantId: playerUser._id,
+            totalScore: 0,
+          }),
+          expect.objectContaining({
+            participantId: secondPlayerUser._id,
+            totalScore: 0,
+          }),
+        ]),
+      )
+
+      await submitAnswer(firstToken, game._id).expect(400)
+      await submitAnswer(secondToken, game._id).expect(400)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toHaveLength(2)
     })
 
     it('should reject a submission after question closure without persisting it', async () => {
