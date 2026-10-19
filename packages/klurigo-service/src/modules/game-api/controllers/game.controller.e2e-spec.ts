@@ -1902,7 +1902,7 @@ describe('GameController (e2e)', () => {
       )
       const redis = app.get<Redis>(getRedisConnectionToken())
       const claim = jest
-        .spyOn(redis, 'hsetnx')
+        .spyOn(redis, 'eval')
         .mockRejectedValueOnce(new Error('simulated claim failure'))
 
       try {
@@ -1931,7 +1931,7 @@ describe('GameController (e2e)', () => {
       ])
     })
 
-    it('keeps a committed Redis claim as the duplicate source after a later command fails', async () => {
+    it('keeps a committed Redis claim as the duplicate source when the EVAL reply is lost', async () => {
       const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
       const { game, task } = await createActiveAnswerGame([secondPlayerUser])
       const accessToken = await authenticateGame(
@@ -1941,9 +1941,29 @@ describe('GameController (e2e)', () => {
         GameParticipantType.PLAYER,
       )
       const redis = app.get<Redis>(getRedisConnectionToken())
+      const originalEval = redis.eval.bind(redis)
       const answerCount = jest
-        .spyOn(redis, 'hlen')
-        .mockRejectedValueOnce(new Error('simulated answer-count failure'))
+        .spyOn(redis, 'eval')
+        .mockImplementationOnce(
+          async (
+            script: string,
+            numberOfKeys: number,
+            key: string,
+            field: string,
+            serialized: string,
+            ttl: number,
+          ) => {
+            await originalEval(
+              script,
+              numberOfKeys,
+              key,
+              field,
+              serialized,
+              ttl,
+            )
+            throw new Error('simulated lost EVAL response')
+          },
+        )
 
       try {
         await submitAnswer(accessToken, game._id)

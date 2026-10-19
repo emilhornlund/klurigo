@@ -15,10 +15,8 @@ describe('GameAnswerRepository', () => {
     logger = { error: jest.fn() }
 
     redis = {
-      hsetnx: jest.fn(),
-      hlen: jest.fn(),
+      eval: jest.fn(),
       hvals: jest.fn(),
-      expire: jest.fn(),
       multi: jest.fn(),
       del: jest.fn(),
     } as any
@@ -40,9 +38,7 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockResolvedValue(1)
-      redis.hlen.mockResolvedValue(1)
-      redis.expire.mockResolvedValue(1)
+      redis.eval.mockResolvedValue([1, 1])
 
       const result = await repository.submitOnce(
         'game-123',
@@ -52,18 +48,18 @@ describe('GameAnswerRepository', () => {
       )
 
       expect(result).toEqual({ accepted: true, answerCount: 1 })
-      expect(redis.hsetnx).toHaveBeenCalledWith(
+      expect(redis.eval).toHaveBeenCalledWith(
+        expect.any(String),
+        1,
         'game-123-task-1-player-participant-answers-v2',
-        'player1',
+        answer.playerId,
         JSON.stringify(answer),
-      )
-      expect(redis.hlen).toHaveBeenCalledWith(
-        'game-123-task-1-player-participant-answers-v2',
-      )
-      expect(redis.expire).toHaveBeenCalledWith(
-        'game-123-task-1-player-participant-answers-v2',
         3600,
       )
+      const [script] = redis.eval.mock.calls[0]
+      expect(script).toContain("redis.call('HSETNX'")
+      expect(script).toContain("redis.call('HLEN'")
+      expect(script).toContain("redis.call('EXPIRE'")
     })
 
     it('rejects duplicate submission from same player', async () => {
@@ -74,7 +70,7 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockResolvedValue(0) // Player already has a hash field
+      redis.eval.mockResolvedValue([0])
 
       const result = await repository.submitOnce(
         'game-123',
@@ -84,13 +80,14 @@ describe('GameAnswerRepository', () => {
       )
 
       expect(result).toEqual({ accepted: false })
-      expect(redis.hsetnx).toHaveBeenCalledWith(
+      expect(redis.eval).toHaveBeenCalledWith(
+        expect.stringContaining('if accepted == 0'),
+        1,
         'game-123-task-1-player-participant-answers-v2',
-        'player1',
+        answer.playerId,
         JSON.stringify(answer),
+        3600,
       )
-      expect(redis.hlen).not.toHaveBeenCalled()
-      expect(redis.expire).not.toHaveBeenCalled()
     })
 
     it('allows concurrent submissions by different players and counts each field', async () => {
@@ -101,9 +98,7 @@ describe('GameAnswerRepository', () => {
         created: new Date('2026-02-07T10:00:00Z'),
       }
 
-      redis.hsetnx.mockResolvedValue(1)
-      redis.hlen.mockResolvedValue(2)
-      redis.expire.mockResolvedValue(1)
+      redis.eval.mockResolvedValue([1, 2])
 
       const result = await repository.submitOnce(
         'game-456',
@@ -113,10 +108,13 @@ describe('GameAnswerRepository', () => {
       )
 
       expect(result).toEqual({ accepted: true, answerCount: 2 })
-      expect(redis.hsetnx).toHaveBeenCalledWith(
+      expect(redis.eval).toHaveBeenCalledWith(
+        expect.any(String),
+        1,
         'game-456-task-2-player-participant-answers-v2',
         'player2',
         expect.stringContaining('"answer":0'),
+        3600,
       )
     })
 
@@ -128,9 +126,7 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockResolvedValueOnce(1).mockResolvedValueOnce(0)
-      redis.hlen.mockResolvedValue(1)
-      redis.expire.mockResolvedValue(1)
+      redis.eval.mockResolvedValueOnce([1, 1]).mockResolvedValueOnce([0])
 
       const results = await Promise.all([
         repository.submitOnce('game-789', answer, 2, 'task-3'),
@@ -146,8 +142,7 @@ describe('GameAnswerRepository', () => {
         { accepted: true, answerCount: 1 },
         { accepted: false },
       ])
-      expect(redis.hsetnx).toHaveBeenCalledTimes(2)
-      expect(redis.hlen).toHaveBeenCalledTimes(1)
+      expect(redis.eval).toHaveBeenCalledTimes(2)
     })
 
     it('keeps answer state isolated by question task', async () => {
@@ -158,28 +153,32 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockResolvedValue(1)
-      redis.hlen.mockResolvedValue(1)
-      redis.expire.mockResolvedValue(1)
+      redis.eval.mockResolvedValue([1, 1])
 
       await repository.submitOnce('game-abc', answer, 5, 'question-a')
       await repository.submitOnce('game-abc', answer, 5, 'question-b')
 
-      expect(redis.hsetnx).toHaveBeenNthCalledWith(
+      expect(redis.eval).toHaveBeenNthCalledWith(
+        1,
+        expect.any(String),
         1,
         'game-abc-question-a-player-participant-answers-v2',
         'player4',
         JSON.stringify(answer),
+        3600,
       )
-      expect(redis.hsetnx).toHaveBeenNthCalledWith(
+      expect(redis.eval).toHaveBeenNthCalledWith(
         2,
+        expect.any(String),
+        1,
         'game-abc-question-b-player-participant-answers-v2',
         'player4',
         JSON.stringify(answer),
+        3600,
       )
     })
 
-    it('does not leave a duplicate marker when the atomic claim fails', async () => {
+    it('wraps an atomic EVAL failure with actionable context', async () => {
       const answer: QuestionTaskAnswer = {
         playerId: 'player6',
         type: QuestionType.Pin,
@@ -187,13 +186,13 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockRejectedValue(new Error('Redis unavailable'))
+      redis.eval.mockRejectedValue(new Error('Redis unavailable'))
 
       await expect(
         repository.submitOnce('game-fail', answer, 3, 'task-fail'),
       ).rejects.toBeInstanceOf(RedisUnavailableException)
 
-      expect(redis.hlen).not.toHaveBeenCalled()
+      expect(redis.eval).toHaveBeenCalledTimes(1)
       expect(logger.error).toHaveBeenCalledWith(
         expect.objectContaining({
           message: 'Failed to persist question answer.',
@@ -214,11 +213,9 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx
+      redis.eval
         .mockRejectedValueOnce(new Error('Redis unavailable'))
-        .mockResolvedValueOnce(1)
-      redis.hlen.mockResolvedValue(1)
-      redis.expire.mockResolvedValue(1)
+        .mockResolvedValueOnce([1, 1])
 
       await expect(
         repository.submitOnce('game-retry', answer, 3, 'task-retry'),
@@ -231,7 +228,7 @@ describe('GameAnswerRepository', () => {
       ).resolves.toEqual({ accepted: true, answerCount: 1 })
     })
 
-    it('reports a committed answer as a duplicate when a later persistence step fails', async () => {
+    it('returns duplicate when a retry follows a lost EVAL response', async () => {
       const answer: QuestionTaskAnswer = {
         playerId: 'player11',
         type: QuestionType.MultiChoice,
@@ -239,8 +236,9 @@ describe('GameAnswerRepository', () => {
         created: new Date(),
       }
 
-      redis.hsetnx.mockResolvedValueOnce(1).mockResolvedValueOnce(0)
-      redis.hlen.mockRejectedValueOnce(new Error('Redis unavailable'))
+      redis.eval
+        .mockRejectedValueOnce(new Error('Redis unavailable'))
+        .mockResolvedValueOnce([0])
 
       await expect(
         repository.submitOnce('game-committed', answer, 3, 'task-committed'),
