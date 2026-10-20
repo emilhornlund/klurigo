@@ -566,6 +566,18 @@ export class GameRepository extends BaseRepository<Game> {
     const gamePIN = await this.generateUniqueGamePIN()
 
     const game = buildGameModel(quiz, gamePIN, user, buildLobbyTask())
+    const { currentTask } = game
+    game.pendingTransitionOperations = [
+      {
+        id: `schedule-${game._id}-${currentTask._id}-${currentTask.type}-${currentTask.status}`,
+        operation: 'schedule',
+        taskId: currentTask._id,
+        taskType: currentTask.type,
+        taskStatus: currentTask.status,
+        createdAt: game.created,
+        attempts: 0,
+      },
+    ]
 
     return (await this.create(game)) as GameDocument
   }

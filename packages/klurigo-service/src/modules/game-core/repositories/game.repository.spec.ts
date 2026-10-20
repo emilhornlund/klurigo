@@ -582,6 +582,18 @@ describe('GameRepository.createGame', () => {
         participants: [expect.objectContaining({ participantId: 'user-1' })],
       }),
     )
+    const [createdGame] = createMock.mock.calls[0] as [Game]
+    expect(createdGame.pendingTransitionOperations).toEqual([
+      expect.objectContaining({
+        id: `schedule-${createdGame._id}-${createdGame.currentTask._id}-${createdGame.currentTask.type}-${createdGame.currentTask.status}`,
+        operation: 'schedule',
+        taskId: createdGame.currentTask._id,
+        taskType: createdGame.currentTask.type,
+        taskStatus: createdGame.currentTask.status,
+        createdAt: createdGame.created,
+        attempts: 0,
+      }),
+    ])
     randomMock.mockRestore()
   })
 })

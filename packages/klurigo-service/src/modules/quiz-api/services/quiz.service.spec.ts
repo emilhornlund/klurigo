@@ -51,7 +51,7 @@ describe(QuizService.name, () => {
     deleteQuiz: jest.Mock
   }
   let eventEmitter: { emit: jest.Mock }
-  let logger: { log: jest.Mock }
+  let logger: { log: jest.Mock; error: jest.Mock }
 
   beforeEach(() => {
     jest.useFakeTimers()
@@ -66,7 +66,7 @@ describe(QuizService.name, () => {
       deleteQuiz: jest.fn(),
     }
     eventEmitter = { emit: jest.fn() }
-    logger = { log: jest.fn() }
+    logger = { log: jest.fn(), error: jest.fn() }
 
     service = new QuizService(
       quizRepository as unknown as QuizRepository,
@@ -132,6 +132,14 @@ describe(QuizService.name, () => {
       const result = await service.createQuiz(request, user)
 
       const [document] = quizRepository.createQuiz.mock.calls[0] as [Quiz]
+      expect(logger.log).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Quiz persisted before response generation.',
+          operation: 'createQuiz',
+          quizId: createdQuiz._id,
+          persistenceSucceeded: true,
+        }),
+      )
       expect(document).toMatchObject({
         _id: expect.any(String),
         title: request.title,
@@ -226,6 +234,26 @@ describe(QuizService.name, () => {
         },
       ])
       expect(result).toEqual(toQuizResponse(createdQuiz))
+    })
+
+    it('logs when quiz persistence fails before a response is generated', async () => {
+      const request = createMockClassicQuizRequestDto()
+      const user = buildMockPrimaryUser({ _id: 'creator-1' })
+      const persistenceError = new Error('database unavailable')
+      quizRepository.createQuiz.mockRejectedValueOnce(persistenceError)
+
+      await expect(service.createQuiz(request, user)).rejects.toBe(
+        persistenceError,
+      )
+
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to persist quiz during creation.',
+          operation: 'createQuiz',
+          persistenceSucceeded: false,
+          errorCategory: 'unexpected',
+        }),
+      )
     })
 
     it('maps zero-to-one-hundred questions to fixed range documents', async () => {

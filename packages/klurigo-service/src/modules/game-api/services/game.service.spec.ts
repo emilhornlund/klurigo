@@ -31,6 +31,7 @@ import type {
 import { GameEventPublisher } from '../../game-event/services'
 import { GameTaskTransitionScheduler } from '../../game-task/services'
 import { QuizRepository } from '../../quiz-core/repositories'
+import { User } from '../../user/repositories'
 
 import { GameService } from './game.service'
 
@@ -38,6 +39,7 @@ describe(GameService.name, () => {
   let service: GameService
 
   let gameRepository: {
+    createGame: jest.Mock
     find: jest.Mock
     delete: jest.Mock
     findGamesByParticipantId: jest.Mock
@@ -55,12 +57,16 @@ describe(GameService.name, () => {
   let eventEmitter: {
     emit: jest.Mock
   }
+  let quizRepository: { findQuizByIdOrThrow: jest.Mock }
+  let gameTaskTransitionScheduler: { scheduleTaskTransition: jest.Mock }
 
   let debugSpy: jest.SpyInstance
   let errorSpy: jest.SpyInstance
+  let logSpy: jest.SpyInstance
 
   beforeEach(async () => {
     gameRepository = {
+      createGame: jest.fn(),
       find: jest.fn(),
       delete: jest.fn(),
       findGamesByParticipantId: jest.fn(),
@@ -78,14 +84,21 @@ describe(GameService.name, () => {
     eventEmitter = {
       emit: jest.fn(),
     }
+    quizRepository = { findQuizByIdOrThrow: jest.fn() }
+    gameTaskTransitionScheduler = {
+      scheduleTaskTransition: jest.fn().mockResolvedValue(undefined),
+    }
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         GameService,
         { provide: GameRepository, useValue: gameRepository },
         { provide: GameAnswerRepository, useValue: gameAnswerRepository },
-        { provide: QuizRepository, useValue: {} },
-        { provide: GameTaskTransitionScheduler, useValue: {} },
+        { provide: QuizRepository, useValue: quizRepository },
+        {
+          provide: GameTaskTransitionScheduler,
+          useValue: gameTaskTransitionScheduler,
+        },
         { provide: GameEventPublisher, useValue: {} },
         { provide: EventEmitter2, useValue: eventEmitter },
         { provide: getRedisConnectionToken(), useValue: {} },
@@ -97,6 +110,7 @@ describe(GameService.name, () => {
     const logger = (service as unknown as { logger: Logger }).logger
     debugSpy = jest.spyOn(logger, 'debug').mockImplementation(() => undefined)
     errorSpy = jest.spyOn(logger, 'error').mockImplementation(() => undefined)
+    logSpy = jest.spyOn(logger, 'log').mockImplementation(() => undefined)
 
     jest.clearAllMocks()
   })
@@ -104,6 +118,104 @@ describe(GameService.name, () => {
   afterEach(() => {
     debugSpy.mockRestore()
     errorSpy.mockRestore()
+    logSpy.mockRestore()
+  })
+
+  describe('createGame', () => {
+    it('logs a confirmed game write before scheduling its first transition', async () => {
+      const quiz = createMockClassicQuiz({ _id: 'quiz-1' })
+      const game = createMockGameDocument({ _id: 'game-1' })
+      game.pendingTransitionOperations = [
+        {
+          id: 'schedule-game-1-task-1-LOBBY-pending',
+          operation: 'schedule',
+          taskId: 'task-1',
+          taskType: TaskType.Lobby,
+          taskStatus: 'pending',
+          createdAt: new Date('2026-01-01T00:00:00.000Z'),
+          attempts: 0,
+        },
+      ]
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(quiz)
+      gameRepository.createGame.mockResolvedValue(game)
+
+      await expect(
+        service.createGame(quiz._id, quiz.owner as User),
+      ).resolves.toEqual({ id: game._id })
+
+      expect(gameRepository.createGame).toHaveBeenCalledWith(quiz, quiz.owner)
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Game persisted during creation.',
+          operation: 'createGame',
+          quizId: quiz._id,
+          gameId: game._id,
+          persistenceSucceeded: true,
+          pendingTransitionOperationIds: [
+            'schedule-game-1-task-1-LOBBY-pending',
+          ],
+        }),
+      )
+      expect(
+        gameTaskTransitionScheduler.scheduleTaskTransition,
+      ).toHaveBeenCalledWith(game)
+    })
+
+    it('distinguishes failed game persistence from a persisted game whose scheduling failed', async () => {
+      const quiz = createMockClassicQuiz({ _id: 'quiz-1' })
+      const user = quiz.owner as User
+      const persistenceError = new Error('database unavailable')
+      quizRepository.findQuizByIdOrThrow.mockResolvedValue(quiz)
+      gameRepository.createGame.mockRejectedValueOnce(persistenceError)
+
+      await expect(service.createGame(quiz._id, user)).rejects.toBe(
+        persistenceError,
+      )
+
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to persist game during creation.',
+          quizId: quiz._id,
+          persistenceSucceeded: false,
+          errorCategory: 'unexpected',
+        }),
+      )
+      expect(
+        gameTaskTransitionScheduler.scheduleTaskTransition,
+      ).not.toHaveBeenCalled()
+
+      const game = createMockGameDocument({ _id: 'game-2' })
+      game.pendingTransitionOperations = [
+        {
+          id: 'schedule-game-2-task-1-LOBBY-pending',
+          operation: 'schedule',
+          taskId: 'task-1',
+          taskType: TaskType.Lobby,
+          taskStatus: 'pending',
+        },
+      ]
+      gameRepository.createGame.mockResolvedValueOnce(game)
+      const schedulingError = new Error('queue unavailable')
+      gameTaskTransitionScheduler.scheduleTaskTransition.mockRejectedValueOnce(
+        schedulingError,
+      )
+
+      await expect(service.createGame(quiz._id, user)).rejects.toBe(
+        schedulingError,
+      )
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Game persisted but initial task scheduling failed.',
+          quizId: quiz._id,
+          gameId: game._id,
+          persistenceSucceeded: true,
+          pendingTransitionOperationIds: [
+            'schedule-game-2-task-1-LOBBY-pending',
+          ],
+          errorCategory: 'unexpected',
+        }),
+      )
+    })
   })
 
   describe('findGamesByParticipantId', () => {

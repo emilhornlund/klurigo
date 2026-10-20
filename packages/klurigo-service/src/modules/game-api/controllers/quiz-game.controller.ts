@@ -56,7 +56,8 @@ export class QuizGameController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Create a new game',
-    description: 'Allows users to create a new game from an existing quiz.',
+    description:
+      'Creates a new game from an existing quiz. If the response times out after the game is persisted, request processing continues; retrying can create a separate game because this endpoint does not provide idempotent retries.',
   })
   @ApiQuizIdParam()
   @ApiCreatedResponse({
