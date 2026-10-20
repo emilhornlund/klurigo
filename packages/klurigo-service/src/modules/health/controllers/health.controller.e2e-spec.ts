@@ -128,4 +128,41 @@ describe('HealthController (e2e)', () => {
       pingCheck.mockRestore()
     }
   })
+
+  it('GET /health and /health/ready report dependency failure and recover when dependencies return', async () => {
+    const { mongoose, redis } = app.get(HealthController) as unknown as {
+      mongoose: MongooseHealthIndicator
+      redis: RedisHealthIndicator
+    }
+    const mongoosePingCheck = jest
+      .spyOn(mongoose, 'pingCheck')
+      .mockResolvedValueOnce({ mongodb: { status: 'down' } })
+      .mockResolvedValueOnce({ mongodb: { status: 'up' } })
+    const redisPingCheck = jest
+      .spyOn(redis, 'pingCheck')
+      .mockResolvedValueOnce({ redis: { status: 'down' } })
+      .mockResolvedValueOnce({ redis: { status: 'up' } })
+
+    try {
+      await request(app.getHttpServer()).get('/health').expect(503)
+      await request(app.getHttpServer())
+        .get('/health/ready')
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            status: 'ok',
+            details: {
+              mongodb: { status: 'up' },
+              redis: { status: 'up' },
+            },
+          })
+        })
+
+      expect(mongoosePingCheck).toHaveBeenCalledTimes(2)
+      expect(redisPingCheck).toHaveBeenCalledTimes(2)
+    } finally {
+      mongoosePingCheck.mockRestore()
+      redisPingCheck.mockRestore()
+    }
+  })
 })
