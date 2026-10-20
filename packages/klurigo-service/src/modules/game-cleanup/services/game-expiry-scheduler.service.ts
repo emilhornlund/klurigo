@@ -20,6 +20,8 @@ import {
  */
 @Injectable()
 export class GameExpirySchedulerService {
+  private static readonly ANSWER_CLEANUP_BATCH_SIZE = 100
+
   private readonly logger = new Logger(GameExpirySchedulerService.name)
   private readonly terminalStatuses = [
     GameStatus.Completed,
@@ -92,41 +94,91 @@ export class GameExpirySchedulerService {
    * A failed item is logged and left eligible for the next scheduled run.
    */
   private async clearTerminalAnswerState(): Promise<void> {
-    let games
-    try {
-      games = await this.gameRepository.find({
-        status: { $in: this.terminalStatuses },
-      })
-    } catch (error) {
-      this.logger.error(
-        structuredLog(
-          'Failed to find terminal games during scheduled cleanup.',
-          {
-            operation: 'findTerminalGames',
-          },
-        ),
-        getErrorStack(error),
-      )
-      return
-    }
+    let afterGameId: string | undefined
 
-    for (const game of games) {
-      // Keep the state check in addition to the query filter so an unexpected
-      // stale result cannot clear data belonging to an active game.
-      if (!this.terminalStatuses.includes(game.status)) continue
-
+    while (true) {
+      let games: Awaited<
+        ReturnType<GameRepository['findTerminalGamesPendingAnswerCleanup']>
+      >
       try {
-        await this.gameAnswerRepository.clear(game._id, game.currentTask._id)
+        games = await this.gameRepository.findTerminalGamesPendingAnswerCleanup(
+          afterGameId,
+          GameExpirySchedulerService.ANSWER_CLEANUP_BATCH_SIZE,
+        )
       } catch (error) {
         this.logger.error(
-          structuredLog('Failed to clear transient answer state.', {
-            operation: 'clearTerminalAnswerState',
-            gameId: game._id,
-            gameState: game.status,
-            taskId: game.currentTask._id,
-          }),
+          structuredLog(
+            'Failed to find terminal games during scheduled cleanup.',
+            {
+              operation: 'findTerminalGamesPendingAnswerCleanup',
+              afterGameId,
+            },
+          ),
           getErrorStack(error),
         )
+        return
+      }
+
+      if (games.length === 0) return
+
+      for (const game of games) {
+        afterGameId = game._id
+
+        // Keep the state check in addition to the query filter so an unexpected
+        // stale result cannot clear data belonging to an active game.
+        if (!this.terminalStatuses.includes(game.status)) continue
+
+        try {
+          await this.gameAnswerRepository.clear(game._id, game.currentTask._id)
+        } catch (error) {
+          this.logger.error(
+            structuredLog('Failed to clear transient answer state.', {
+              operation: 'clearTerminalAnswerState',
+              gameId: game._id,
+              gameState: game.status,
+              taskId: game.currentTask._id,
+            }),
+            getErrorStack(error),
+          )
+          continue
+        }
+
+        try {
+          const marked =
+            await this.gameRepository.markTerminalGameAnswerStateCleared(
+              game._id,
+            )
+
+          if (!marked) {
+            this.logger.debug(
+              structuredLog(
+                'Terminal game answer cleanup marker was not updated.',
+                {
+                  operation: 'markTerminalGameAnswerStateCleared',
+                  gameId: game._id,
+                  gameState: game.status,
+                },
+              ),
+            )
+          }
+        } catch (error) {
+          this.logger.error(
+            structuredLog(
+              'Failed to persist transient answer cleanup marker.',
+              {
+                operation: 'markTerminalGameAnswerStateCleared',
+                gameId: game._id,
+                gameState: game.status,
+                taskId: game.currentTask._id,
+              },
+            ),
+            getErrorStack(error),
+          )
+        }
+      }
+
+      if (games.length < GameExpirySchedulerService.ANSWER_CLEANUP_BATCH_SIZE) {
+        return
       }
     }
   }

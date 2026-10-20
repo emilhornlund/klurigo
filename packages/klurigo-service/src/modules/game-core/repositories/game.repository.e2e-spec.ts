@@ -157,6 +157,67 @@ describe('GameRepository (e2e)', () => {
       expect(expected!.status).toEqual(GameStatus.Active)
     })
   })
+
+  describe('terminal answer cleanup', () => {
+    it('selects legacy and incomplete terminal games in stable bounded pages', async () => {
+      const date = new Date()
+      await gameModel.create([
+        {
+          ...buildMockGame('cleanup-1', buildMockPodiumTask(), date),
+          status: GameStatus.Expired,
+        },
+        {
+          ...buildMockGame('cleanup-2', buildMockPodiumTask(), date),
+          status: GameStatus.Terminated,
+          transientAnswerStateCleared: false,
+        },
+        {
+          ...buildMockGame('cleanup-3', buildMockPodiumTask(), date),
+          status: GameStatus.Completed,
+          transientAnswerStateCleared: true,
+        },
+        buildMockGame('cleanup-active', buildMockPodiumTask(), date),
+      ])
+
+      const firstPage =
+        await gameRepository.findTerminalGamesPendingAnswerCleanup(undefined, 1)
+      const nextPage =
+        await gameRepository.findTerminalGamesPendingAnswerCleanup(
+          firstPage[0]._id,
+          2,
+        )
+
+      expect(firstPage.map(({ _id }) => _id)).toEqual(['cleanup-1'])
+      expect(nextPage.map(({ _id }) => _id)).toEqual(['cleanup-2'])
+      expect(firstPage[0].currentTask._id).toBeDefined()
+    })
+
+    it('marks only still-terminal games after cleanup and preserves their gameplay state', async () => {
+      const date = new Date()
+      await gameModel.create([
+        {
+          ...buildMockGame('cleanup-terminal', buildMockPodiumTask(), date),
+          status: GameStatus.Expired,
+        },
+        buildMockGame('cleanup-active', buildMockPodiumTask(), date),
+      ])
+
+      await expect(
+        gameRepository.markTerminalGameAnswerStateCleared('cleanup-terminal'),
+      ).resolves.toBe(true)
+      await expect(
+        gameRepository.markTerminalGameAnswerStateCleared('cleanup-active'),
+      ).resolves.toBe(false)
+
+      const terminal = await gameModel.findById('cleanup-terminal').exec()
+      const active = await gameModel.findById('cleanup-active').exec()
+      expect(terminal?.transientAnswerStateCleared).toBe(true)
+      expect(terminal?.status).toBe(GameStatus.Expired)
+      expect(terminal?.currentTask.type).toBe(TaskType.Podium)
+      expect(active?.transientAnswerStateCleared).toBeUndefined()
+      expect(active?.status).toBe(GameStatus.Active)
+    })
+  })
 })
 
 const buildMockLeaderboardTask = (): BaseTask & LeaderboardTask => ({

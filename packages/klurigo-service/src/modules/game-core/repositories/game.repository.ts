@@ -23,6 +23,10 @@ import type {
   PendingGameTransitionOperation,
 } from './models/schemas'
 
+type TerminalGameAnswerCleanupCandidate = Pick<Game, '_id' | 'status'> & {
+  currentTask: { _id: string }
+}
+
 export type PendingTransitionOperationFailure = {
   attempts: number
   createdAt: Date
@@ -629,6 +633,58 @@ export class GameRepository extends BaseRepository<Game> {
       gameDocument.status = GameStatus.Expired
       return true
     })
+  }
+
+  /**
+   * Finds a bounded page of terminal games whose transient answer state has not
+   * been cleared. Missing markers remain eligible so historical terminal games
+   * are cleaned up after this feature is deployed.
+   */
+  public async findTerminalGamesPendingAnswerCleanup(
+    afterGameId: string | undefined,
+    limit: number,
+  ): Promise<TerminalGameAnswerCleanupCandidate[]> {
+    const filter: QueryFilter<Game> = {
+      status: {
+        $in: [GameStatus.Completed, GameStatus.Expired, GameStatus.Terminated],
+      },
+      transientAnswerStateCleared: { $ne: true },
+      ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
+    }
+
+    return (await this.gameModel
+      .find(filter)
+      .select({ _id: 1, status: 1, 'currentTask._id': 1 })
+      .sort({ _id: 1 })
+      .limit(limit)
+      .exec()) as TerminalGameAnswerCleanupCandidate[]
+  }
+
+  /**
+   * Marks transient answer cleanup complete only while the game remains
+   * terminal and still eligible for cleanup.
+   */
+  public async markTerminalGameAnswerStateCleared(
+    gameId: string,
+  ): Promise<boolean> {
+    const result = await this.gameModel
+      .updateOne(
+        {
+          _id: gameId,
+          status: {
+            $in: [
+              GameStatus.Completed,
+              GameStatus.Expired,
+              GameStatus.Terminated,
+            ],
+          },
+          transientAnswerStateCleared: { $ne: true },
+        },
+        { $set: { transientAnswerStateCleared: true } },
+      )
+      .exec()
+
+    return result.modifiedCount === 1
   }
 
   /**

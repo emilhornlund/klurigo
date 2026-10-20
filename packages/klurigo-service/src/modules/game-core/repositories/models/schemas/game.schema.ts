@@ -144,6 +144,9 @@ export class Game {
 
   @Prop({ type: Date, required: false })
   completedAt?: Date
+
+  @Prop({ type: Boolean, required: false })
+  transientAnswerStateCleared?: boolean
 }
 
 /**
@@ -158,6 +161,10 @@ export const GameSchema = SchemaFactory.createForClass(Game)
 // Leading equality on `status` lets MongoDB narrow the scan, followed by
 // a range seek on `completedAt`.
 GameSchema.index({ status: 1, completedAt: 1 })
+
+// Supports bounded terminal answer cleanup scans by status, completion marker,
+// and the stable `_id` cursor used to paginate each run.
+GameSchema.index({ status: 1, transientAnswerStateCleared: 1, _id: 1 })
 
 const participantsSchema =
   GameSchema.path<MongooseSchema.Types.Array>('participants')

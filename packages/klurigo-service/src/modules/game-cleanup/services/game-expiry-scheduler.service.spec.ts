@@ -32,7 +32,8 @@ describe(GameExpirySchedulerService.name, () => {
           useValue: {
             updateCompletedGames: jest.fn(),
             updateExpiredGames: jest.fn(),
-            find: jest.fn(),
+            findTerminalGamesPendingAnswerCleanup: jest.fn(),
+            markTerminalGameAnswerStateCleared: jest.fn(),
           },
         },
         {
@@ -45,7 +46,8 @@ describe(GameExpirySchedulerService.name, () => {
     service = moduleRef.get(GameExpirySchedulerService)
     gameRepository = moduleRef.get(GameRepository)
     gameAnswerRepository = moduleRef.get(GameAnswerRepository)
-    gameRepository.find.mockResolvedValue([])
+    gameRepository.findTerminalGamesPendingAnswerCleanup.mockResolvedValue([])
+    gameRepository.markTerminalGameAnswerStateCleared.mockResolvedValue(true)
     errorSpy = jest
       .spyOn(Logger.prototype, 'error')
       .mockImplementation(() => undefined)
@@ -158,65 +160,84 @@ describe(GameExpirySchedulerService.name, () => {
     expect(logSpy).toHaveBeenCalledWith('Updated 2 completed games.')
   })
 
-  it('clears transient state only for terminal games', async () => {
+  it('clears pending terminal game answers in bounded pages and skips them on later runs', async () => {
     gameRepository.updateCompletedGames.mockResolvedValueOnce(0 as never)
     gameRepository.updateExpiredGames.mockResolvedValueOnce(0 as never)
-    gameRepository.find.mockResolvedValueOnce([
+    const firstPage = Array.from({ length: 100 }, (_, index) => ({
+      _id: `game-${String(index).padStart(3, '0')}`,
+      status: 'EXPIRED',
+      currentTask: { _id: `task-${index}` },
+    }))
+    const finalPage = [
       {
-        _id: 'expired-1',
-        status: 'EXPIRED',
-        currentTask: { _id: 'task-1' },
+        _id: 'game-100',
+        status: 'COMPLETED',
+        currentTask: { _id: 'task-100' },
       },
-      {
-        _id: 'expired-2',
-        status: 'EXPIRED',
-        currentTask: { _id: 'task-2' },
-      },
-      { _id: 'active', status: 'ACTIVE', currentTask: { _id: 'task-3' } },
-    ] as never)
+    ]
+    gameRepository.findTerminalGamesPendingAnswerCleanup
+      .mockResolvedValueOnce(firstPage as never)
+      .mockResolvedValueOnce(finalPage as never)
 
     await service.clean()
 
-    expect(gameRepository.find).toHaveBeenCalledWith({
-      status: {
-        $in: ['COMPLETED', 'EXPIRED', 'TERMINATED'],
-      },
-    })
-    expect(gameAnswerRepository.clear).toHaveBeenNthCalledWith(
-      1,
-      'expired-1',
-      'task-1',
+    expect(
+      gameRepository.findTerminalGamesPendingAnswerCleanup,
+    ).toHaveBeenNthCalledWith(1, undefined, 100)
+    expect(
+      gameRepository.findTerminalGamesPendingAnswerCleanup,
+    ).toHaveBeenNthCalledWith(2, 'game-099', 100)
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(101)
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).toHaveBeenCalledTimes(101)
+    expect(gameAnswerRepository.clear).toHaveBeenLastCalledWith(
+      'game-100',
+      'task-100',
     )
-    expect(gameAnswerRepository.clear).toHaveBeenNthCalledWith(
-      2,
-      'expired-2',
-      'task-2',
-    )
-    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(2)
+
+    await service.clean()
+    expect(
+      gameRepository.findTerminalGamesPendingAnswerCleanup,
+    ).toHaveBeenCalledTimes(3)
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(101)
   })
 
-  it('continues clearing remaining terminal games after one cleanup failure', async () => {
+  it('keeps Redis cleanup failures eligible for the next run and continues the current page', async () => {
     gameRepository.updateCompletedGames.mockResolvedValueOnce(0 as never)
     gameRepository.updateExpiredGames.mockResolvedValueOnce(0 as never)
-    gameRepository.find.mockResolvedValueOnce([
-      { _id: 'failed', status: 'EXPIRED', currentTask: { _id: 'task-1' } },
-      {
-        _id: 'remaining',
-        status: 'EXPIRED',
-        currentTask: { _id: 'task-2' },
-      },
-    ] as never)
+    const failedGame = {
+      _id: 'failed',
+      status: 'EXPIRED',
+      currentTask: { _id: 'task-1' },
+    }
+    const remainingGame = {
+      _id: 'remaining',
+      status: 'EXPIRED',
+      currentTask: { _id: 'task-2' },
+    }
+    gameRepository.findTerminalGamesPendingAnswerCleanup
+      .mockResolvedValueOnce([failedGame, remainingGame] as never)
+      .mockResolvedValueOnce([failedGame] as never)
     gameAnswerRepository.clear
       .mockRejectedValueOnce(new Error('redis failed'))
       .mockResolvedValueOnce(undefined)
 
     await expect(service.clean()).resolves.toBeUndefined()
 
-    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(2)
-    expect(gameAnswerRepository.clear).toHaveBeenLastCalledWith(
+    expect(gameAnswerRepository.clear).toHaveBeenNthCalledWith(
+      1,
+      'failed',
+      'task-1',
+    )
+    expect(gameAnswerRepository.clear).toHaveBeenNthCalledWith(
+      2,
       'remaining',
       'task-2',
     )
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).toHaveBeenCalledTimes(1)
     expect(errorSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Failed to clear transient answer state.',
@@ -227,17 +248,76 @@ describe(GameExpirySchedulerService.name, () => {
       }),
       expect.any(String),
     )
+
+    await expect(service.clean()).resolves.toBeUndefined()
+    expect(gameAnswerRepository.clear).toHaveBeenLastCalledWith(
+      'failed',
+      'task-1',
+    )
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).toHaveBeenCalledTimes(2)
+  })
+
+  it('retries idempotent Redis deletion when persisting the cleanup marker fails', async () => {
+    const candidate = {
+      _id: 'game-1',
+      status: 'TERMINATED',
+      currentTask: { _id: 'task-1' },
+    }
+    gameRepository.findTerminalGamesPendingAnswerCleanup
+      .mockResolvedValueOnce([candidate] as never)
+      .mockResolvedValueOnce([candidate] as never)
+    gameRepository.markTerminalGameAnswerStateCleared
+      .mockRejectedValueOnce(new Error('Mongo unavailable'))
+      .mockResolvedValueOnce(true)
+
+    await expect(service.clean()).resolves.toBeUndefined()
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(1)
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to persist transient answer cleanup marker.',
+        operation: 'markTerminalGameAnswerStateCleared',
+        gameId: 'game-1',
+      }),
+      expect.any(String),
+    )
+
+    await expect(service.clean()).resolves.toBeUndefined()
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(2)
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).toHaveBeenCalledTimes(2)
+  })
+
+  it('does not clear answers if a stale cleanup candidate is now active', async () => {
+    gameRepository.findTerminalGamesPendingAnswerCleanup.mockResolvedValueOnce([
+      {
+        _id: 'active',
+        status: 'ACTIVE',
+        currentTask: { _id: 'task-1' },
+      },
+    ] as never)
+
+    await expect(service.clean()).resolves.toBeUndefined()
+
+    expect(gameAnswerRepository.clear).not.toHaveBeenCalled()
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).not.toHaveBeenCalled()
   })
 
   it('handles no terminal games and repeated cleanup safely', async () => {
     gameRepository.updateCompletedGames.mockResolvedValue(0 as never)
     gameRepository.updateExpiredGames.mockResolvedValue(0 as never)
-    gameRepository.find.mockResolvedValue([])
+    gameRepository.findTerminalGamesPendingAnswerCleanup.mockResolvedValue([])
 
     await expect(service.clean()).resolves.toBeUndefined()
     await expect(service.clean()).resolves.toBeUndefined()
 
     expect(gameAnswerRepository.clear).not.toHaveBeenCalled()
-    expect(gameRepository.find).toHaveBeenCalledTimes(2)
+    expect(
+      gameRepository.findTerminalGamesPendingAnswerCleanup,
+    ).toHaveBeenCalledTimes(2)
   })
 })
