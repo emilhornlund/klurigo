@@ -44,12 +44,20 @@ import {
 
 export type GameDocument = HydratedDocument<Game>
 
+export type PendingGameTransitionErrorCategory =
+  'redis' | 'mongodb' | 'stale_transition' | 'unexpected'
+
 export type PendingGameTransitionOperation = {
   id: string
   operation: 'schedule' | 'transition'
   taskId: string
   taskType: TaskType
   taskStatus: 'pending' | 'active' | 'completed'
+  createdAt?: Date
+  attempts?: number
+  lastAttemptAt?: Date
+  lastErrorCategory?: PendingGameTransitionErrorCategory
+  alertedAt?: Date
 }
 
 @Schema({ _id: true, collection: 'games' })

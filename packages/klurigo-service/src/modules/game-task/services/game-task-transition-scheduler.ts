@@ -1,12 +1,18 @@
 import { GameStatus, isDefined } from '@klurigo/common'
-import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq'
+import {
+  InjectQueue,
+  OnWorkerEvent,
+  Processor,
+  WorkerHost,
+} from '@nestjs/bullmq'
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
+import * as Sentry from '@sentry/nestjs'
 import { Job, Queue } from 'bullmq'
 import { MurLock } from 'murlock'
 
 import { RedisUnavailableException } from '../../../app/exceptions'
-import { getErrorStack, structuredLog } from '../../../app/utils'
+import { structuredLog } from '../../../app/utils'
 import {
   GameAnswerRepository,
   GameRepository,
@@ -16,6 +22,7 @@ import {
   PendingGameTransitionOperation,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import type { PendingGameTransitionErrorCategory } from '../../game-core/repositories/models/schemas'
 import type { GameDocument } from '../../game-core/repositories/models/schemas'
 import {
   getTaskIdentity,
@@ -29,8 +36,35 @@ import { GameTaskTransitionService } from './game-task-transition.service'
 
 export const TASK_QUEUE_NAME = 'task'
 const TASK_TRANSITION_JOB_NAME = TASK_QUEUE_NAME + 'transition'
+const PENDING_OPERATION_ALERT_AGE_MS = 5 * 60 * 1000
 
 class StaleGameTaskTransitionError extends Error {}
+
+const getBackgroundErrorCategory = (
+  error: unknown,
+): PendingGameTransitionErrorCategory => {
+  if (error instanceof RedisUnavailableException) return 'redis'
+  if (error instanceof StaleGameTaskTransitionError) return 'stale_transition'
+
+  if (
+    error instanceof Error &&
+    [
+      'MongoError',
+      'MongoServerError',
+      'MongoNetworkError',
+      'MongooseError',
+    ].includes(error.name)
+  ) {
+    return 'mongodb'
+  }
+
+  return 'unexpected'
+}
+
+const getPendingOperationJobId = (
+  operation: PendingGameTransitionOperation,
+): string =>
+  `transition-${operation.taskId}_${operation.taskType}_${operation.taskStatus}`
 
 /**
  * Service responsible for managing task transitions within a game.
@@ -61,6 +95,69 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     super()
   }
 
+  @OnWorkerEvent('failed')
+  public onTaskTransitionJobFailed(
+    job: Job<GameDocument, void, string> | undefined,
+    error: Error,
+  ): void {
+    const errorCategory = getBackgroundErrorCategory(error)
+    if (!job) {
+      const context = {
+        operation: 'taskTransitionJobFailed',
+        queue: TASK_QUEUE_NAME,
+        errorCategory,
+      }
+      this.logger.log(
+        structuredLog(
+          'A failed task transition job had no available metadata.',
+          context,
+        ),
+      )
+      Sentry.captureMessage(
+        'A failed task transition job had no available metadata.',
+        {
+          level: 'error',
+          tags: { queue: TASK_QUEUE_NAME, errorCategory },
+        },
+      )
+      return
+    }
+
+    const maxAttempts = Math.max(1, job.opts?.attempts ?? 1)
+    const context = {
+      operation: 'taskTransitionJobFailed',
+      queue: TASK_QUEUE_NAME,
+      gameId: job.data?._id,
+      taskId: job.data?.currentTask?._id,
+      taskType: job.data?.currentTask?.type,
+      taskStatus: job.data?.currentTask?.status,
+      jobId: job.id,
+      attempts: job.attemptsMade ?? 0,
+      maxAttempts,
+      errorCategory,
+    }
+
+    if ((job.attemptsMade ?? 0) < maxAttempts) {
+      this.logger.debug(
+        structuredLog('Task transition failed and will be retried.', context),
+      )
+      return
+    }
+
+    const message = 'Game task transition job exhausted its retries.'
+    this.logger.log(structuredLog(message, context))
+    Sentry.captureMessage(message, {
+      level: 'error',
+      tags: {
+        queue: TASK_QUEUE_NAME,
+        errorCategory,
+        operation: 'taskTransitionJobFailed',
+      },
+      extra: context,
+      fingerprint: ['task-transition-job', String(job.id ?? 'unknown')],
+    })
+  }
+
   /**
    * Sets the transition timing fields for the current task based on the provided delay.
    *
@@ -83,7 +180,11 @@ export class GameTaskTransitionScheduler extends WorkerHost {
   ): void {
     const pendingOperations = gameDocument.pendingTransitionOperations ?? []
     if (!pendingOperations.some(({ id }) => id === operation.id)) {
-      pendingOperations.push(operation)
+      pendingOperations.push({
+        ...operation,
+        createdAt: new Date(),
+        attempts: 0,
+      })
     }
     gameDocument.pendingTransitionOperations = pendingOperations
   }
@@ -175,7 +276,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
     try {
       existingTransitionJob = await this.taskQueue.getJob(jobId)
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to inspect task transition queue.', {
           operation: 'inspectTransitionQueue',
           gameId: gameID,
@@ -183,8 +284,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           taskType: type,
           taskStatus: status,
           gameState: gameDocument.status,
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'inspecting the task transition queue',
@@ -201,7 +302,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         try {
           await this.taskQueue.remove(jobId)
         } catch (error) {
-          this.logger.error(
+          this.logger.debug(
             structuredLog('Failed to remove existing task transition.', {
               operation: 'removeTransitionQueueJob',
               gameId: gameID,
@@ -210,8 +311,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
               taskStatus: status,
               gameState: gameDocument.status,
               jobId,
+              errorCategory: getBackgroundErrorCategory(error),
             }),
-            getErrorStack(error),
           )
           throw new RedisUnavailableException(
             'removing the task transition queue job',
@@ -331,7 +432,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         priority: delay ? 1 : 2,
       })
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to schedule deferred task transition.', {
           operation: 'scheduleDeferredTransition',
           gameId: _id,
@@ -341,8 +442,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           nextStatus,
           delay,
           gameState: gameDocument.status,
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'scheduling a deferred task transition',
@@ -472,7 +573,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         )
         return
       }
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to perform game task transition.', {
           operation: 'performTransition',
           gameId: _id,
@@ -481,8 +582,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           taskStatus: status,
           nextStatus,
           gameState: gameDocument.status,
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       throw error
     }
@@ -584,7 +685,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
         await this.scheduleTaskTransition(gameDocument)
       }
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to perform post-transition actions.', {
           operation: 'performPostTransition',
           gameId: _id,
@@ -592,8 +693,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           taskType: type,
           taskStatus: status,
           gameState: gameDocument.status,
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       throw error
     }
@@ -611,11 +712,11 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       games =
         await this.gameRepository.findGamesWithPendingTransitionOperations()
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to find pending game transitions.', {
           operation: 'recoverPendingTransitionOperations',
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       return
     }
@@ -624,16 +725,13 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       try {
         await this.recoverPendingTransitionOperationsForGame(game)
       } catch (error) {
-        this.logger.error(
-          structuredLog(
-            'Failed to recover pending game transitions for game.',
-            {
-              operation: 'recoverPendingTransitionOperationsForGame',
-              gameId: game._id,
-              gameState: game.status,
-            },
-          ),
-          getErrorStack(error),
+        this.logger.debug(
+          structuredLog('Pending game transition recovery will retry.', {
+            operation: 'recoverPendingTransitionOperationsForGame',
+            gameId: game._id,
+            gameState: game.status,
+            errorCategory: getBackgroundErrorCategory(error),
+          }),
         )
       }
     }
@@ -643,11 +741,11 @@ export class GameTaskTransitionScheduler extends WorkerHost {
       overdueGames =
         await this.gameRepository.findGamesWithOverdueTaskTransitions()
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to find overdue game task transitions.', {
           operation: 'recoverOverdueTaskTransitions',
+          errorCategory: getBackgroundErrorCategory(error),
         }),
-        getErrorStack(error),
       )
       return
     }
@@ -679,16 +777,16 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           data: game,
         } as Job<GameDocument, void, string>)
       } catch (error) {
-        this.logger.error(
-          structuredLog('Failed to recover overdue game task transition.', {
+        this.logger.debug(
+          structuredLog('Overdue game task recovery will retry.', {
             operation: 'recoverOverdueTaskTransition',
             gameId: game._id,
             taskId: game.currentTask._id,
             taskType: game.currentTask.type,
             taskStatus: game.currentTask.status,
             jobId,
+            errorCategory: getBackgroundErrorCategory(error),
           }),
-          getErrorStack(error),
         )
       }
     }
@@ -709,27 +807,116 @@ export class GameTaskTransitionScheduler extends WorkerHost {
 
       if (!pendingOperation) continue
 
-      if (pendingOperation.operation === 'schedule') {
-        await this.scheduleTaskTransition(latestGameDocument)
-      } else {
-        if (
-          pendingOperation.taskType === TaskType.Question &&
-          pendingOperation.taskStatus === 'active'
-        ) {
-          await this.gameAnswerRepository.clear(
-            latestGameDocument._id,
-            pendingOperation.taskId,
-          )
+      try {
+        if (pendingOperation.operation === 'schedule') {
+          await this.scheduleTaskTransition(latestGameDocument)
+        } else {
+          if (
+            pendingOperation.taskType === TaskType.Question &&
+            pendingOperation.taskStatus === 'active'
+          ) {
+            await this.gameAnswerRepository.clear(
+              latestGameDocument._id,
+              pendingOperation.taskId,
+            )
+          }
+
+          await this.gameEventPublisher.publish(latestGameDocument)
+          await this.performPostTransition(latestGameDocument)
         }
 
-        await this.gameEventPublisher.publish(latestGameDocument)
-        await this.performPostTransition(latestGameDocument)
-      }
+        await this.gameRepository.clearPendingTransitionOperation(
+          latestGameDocument._id,
+          pendingOperation.id,
+        )
 
-      await this.gameRepository.clearPendingTransitionOperation(
-        latestGameDocument._id,
-        pendingOperation.id,
-      )
+        if ((pendingOperation.attempts ?? 0) > 0) {
+          this.logger.log(
+            structuredLog('Recovered pending game transition operation.', {
+              operation: 'recoverPendingTransitionOperation',
+              gameId: latestGameDocument._id,
+              operationId: pendingOperation.id,
+              operationType: pendingOperation.operation,
+              taskId: pendingOperation.taskId,
+              taskType: pendingOperation.taskType,
+              taskStatus: pendingOperation.taskStatus,
+              jobId: getPendingOperationJobId(pendingOperation),
+              attempts: pendingOperation.attempts,
+            }),
+          )
+        }
+      } catch (error) {
+        const errorCategory = getBackgroundErrorCategory(error)
+        const jobId = getPendingOperationJobId(pendingOperation)
+        let failure: Awaited<
+          ReturnType<GameRepository['recordPendingTransitionOperationFailure']>
+        >
+        try {
+          failure =
+            await this.gameRepository.recordPendingTransitionOperationFailure(
+              latestGameDocument._id,
+              pendingOperation.id,
+              errorCategory,
+              PENDING_OPERATION_ALERT_AGE_MS,
+            )
+        } catch (diagnosticError) {
+          this.logger.debug(
+            structuredLog('Failed to persist pending transition diagnostics.', {
+              operation: 'recordPendingTransitionOperationFailure',
+              gameId: latestGameDocument._id,
+              operationId: pendingOperation.id,
+              taskId: pendingOperation.taskId,
+              jobId,
+              errorCategory: getBackgroundErrorCategory(diagnosticError),
+            }),
+          )
+          throw error
+        }
+
+        if (failure?.shouldReport) {
+          const message =
+            'Pending game transition operation remains unresolved.'
+          const context = {
+            operation: 'recoverPendingTransitionOperation',
+            operationId: pendingOperation.id,
+            operationType: pendingOperation.operation,
+            gameId: latestGameDocument._id,
+            taskId: pendingOperation.taskId,
+            taskType: pendingOperation.taskType,
+            taskStatus: pendingOperation.taskStatus,
+            jobId,
+            attempts: failure.attempts,
+            unresolvedForMs: failure.unresolvedForMs,
+            errorCategory: failure.lastErrorCategory,
+          }
+          this.logger.log(structuredLog(message, context))
+          Sentry.captureMessage(message, {
+            level: 'error',
+            tags: {
+              operation: 'recoverPendingTransitionOperation',
+              errorCategory: failure.lastErrorCategory,
+            },
+            extra: context,
+            fingerprint: ['pending-game-transition', pendingOperation.id],
+          })
+        } else {
+          this.logger.debug(
+            structuredLog(
+              'Pending game transition operation recovery failed; retrying.',
+              {
+                operation: 'recoverPendingTransitionOperation',
+                operationId: pendingOperation.id,
+                gameId: latestGameDocument._id,
+                taskId: pendingOperation.taskId,
+                jobId,
+                attempts: failure?.attempts,
+                errorCategory,
+              },
+            ),
+          )
+        }
+        throw error
+      }
     }
   }
 
@@ -813,8 +1000,8 @@ export class GameTaskTransitionScheduler extends WorkerHost {
           }
         }
       } catch (error) {
-        this.logger.error(
-          structuredLog('Failed during scheduled deferred transition.', {
+        this.logger.debug(
+          structuredLog('Scheduled task transition attempt failed.', {
             operation: 'processTransitionJob',
             gameId: gameDocument._id,
             taskId: currentTask._id,
@@ -823,13 +1010,15 @@ export class GameTaskTransitionScheduler extends WorkerHost {
             nextStatus,
             gameState: gameDocument.status,
             jobId: job.id,
+            attempt: (job.attemptsMade ?? 0) + 1,
+            maxAttempts: Math.max(1, job.opts?.attempts ?? 1),
+            errorCategory: getBackgroundErrorCategory(error),
           }),
-          getErrorStack(error),
         )
         throw error
       }
     } else {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Received unsupported task queue job.', {
           operation: 'process',
           jobId: job.id,

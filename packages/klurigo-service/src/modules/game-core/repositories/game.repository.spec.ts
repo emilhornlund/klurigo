@@ -387,7 +387,7 @@ describe('GameRepository pending transition operations', () => {
     ])
   })
 
-  it('executes findAndSaveWithLock through the per-game MurLock key', async () => {
+  it('keeps diagnostic saves on the per-game MurLock key without bumping gameplay version', async () => {
     const repositoryWithLock = Object.create(
       GameRepository.prototype,
     ) as GameRepository
@@ -417,9 +417,12 @@ describe('GameRepository pending transition operations', () => {
       repositoryWithLock.findAndSaveWithLock(
         'game-1',
         async (document) => document,
+        false,
       ),
     ).resolves.toBe('saved-game')
 
+    expect(game.version).toBe(1)
+    expect(game.updated).toEqual(new Date('2026-01-01T00:00:00.000Z'))
     expect(runWithLockMock).toHaveBeenCalledWith(
       'GameRepository:findAndSaveWithLock:game-1',
       5000,
@@ -787,5 +790,94 @@ describe('GameRepository stale cleanup', () => {
     )
 
     await expect(repository.updateExpiredGames()).resolves.toBe(0)
+  })
+})
+
+describe('GameRepository.recordPendingTransitionOperationFailure', () => {
+  it('persists safe retry metadata, reports an aged operation once, and preserves gameplay versioning', async () => {
+    const createdAt = new Date('2026-01-01T00:00:00.000Z')
+    const firstAttemptAt = new Date('2026-01-01T00:06:00.000Z')
+    const game = {
+      _id: 'game-1',
+      version: 8,
+      updated: createdAt,
+      pendingTransitionOperations: [
+        {
+          id: 'schedule-game-1-task-1-LOBBY-pending',
+          operation: 'schedule',
+          taskId: 'task-1',
+          taskType: TaskType.Lobby,
+          taskStatus: 'pending',
+          createdAt,
+        },
+      ],
+    } as unknown as GameDocument
+    const repository = Object.create(GameRepository.prototype) as GameRepository
+    const updateGameplayVersions: boolean[] = []
+    const findAndSaveWithLock = jest.fn(
+      async (
+        _gameId: string,
+        callback: (document: GameDocument) => Promise<GameDocument>,
+        updateGameplayVersion: boolean,
+      ) => {
+        updateGameplayVersions.push(updateGameplayVersion)
+        return callback(game)
+      },
+    )
+    Object.assign(repository, {
+      findAndSaveWithLock,
+    })
+
+    const firstAttempt =
+      await repository.recordPendingTransitionOperationFailure(
+        'game-1',
+        'schedule-game-1-task-1-LOBBY-pending',
+        'mongodb',
+        300_000,
+        firstAttemptAt,
+      )
+    const secondAttempt =
+      await repository.recordPendingTransitionOperationFailure(
+        'game-1',
+        'schedule-game-1-task-1-LOBBY-pending',
+        'mongodb',
+        300_000,
+        new Date('2026-01-01T00:06:05.000Z'),
+      )
+
+    expect(firstAttempt).toEqual({
+      attempts: 1,
+      createdAt,
+      lastAttemptAt: firstAttemptAt,
+      lastErrorCategory: 'mongodb',
+      unresolvedForMs: 360_000,
+      shouldReport: true,
+    })
+    expect(secondAttempt).toEqual({
+      attempts: 2,
+      createdAt,
+      lastAttemptAt: new Date('2026-01-01T00:06:05.000Z'),
+      lastErrorCategory: 'mongodb',
+      unresolvedForMs: 365_000,
+      shouldReport: false,
+    })
+    expect(game.pendingTransitionOperations).toEqual([
+      expect.objectContaining({
+        id: 'schedule-game-1-task-1-LOBBY-pending',
+        createdAt,
+        attempts: 2,
+        lastErrorCategory: 'mongodb',
+        alertedAt: firstAttemptAt,
+      }),
+    ])
+    expect(game.version).toBe(8)
+    expect(game.updated).toEqual(createdAt)
+    expect(findAndSaveWithLock).toHaveBeenCalledTimes(2)
+    expect(updateGameplayVersions).toEqual([false, false])
+    expect(findAndSaveWithLock).toHaveBeenCalledWith(
+      'game-1',
+      expect.any(Function),
+      false,
+    )
   })
 })

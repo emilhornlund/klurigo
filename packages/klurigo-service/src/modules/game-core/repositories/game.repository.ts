@@ -16,12 +16,23 @@ import {
 } from '../exceptions'
 import { buildGameModel } from '../utils'
 
-import {
-  Game,
+import { Game, TaskType } from './models/schemas'
+import type {
   GameDocument,
+  PendingGameTransitionErrorCategory,
   PendingGameTransitionOperation,
-  TaskType,
 } from './models/schemas'
+
+export type PendingTransitionOperationFailure = {
+  attempts: number
+  createdAt: Date
+  lastAttemptAt: Date
+  lastErrorCategory: PendingGameTransitionErrorCategory
+  unresolvedForMs: number
+  shouldReport: boolean
+}
+
+class PendingTransitionOperationNotFoundError extends Error {}
 
 /**
  * Repository for interacting with the Game collection in the database.
@@ -231,6 +242,77 @@ export class GameRepository extends BaseRepository<Game> {
   }
 
   /**
+   * Persists a failed recovery attempt without changing the game's gameplay
+   * version or update timestamp. A single persisted alert marker prevents the
+   * five-second recovery loop from repeatedly reporting the same old failure.
+   */
+  public async recordPendingTransitionOperationFailure(
+    gameID: string,
+    operationId: PendingGameTransitionOperation['id'],
+    errorCategory: PendingGameTransitionErrorCategory,
+    reportAfterMs: number,
+    now: Date = new Date(),
+  ): Promise<PendingTransitionOperationFailure | undefined> {
+    let failure: PendingTransitionOperationFailure | undefined
+    try {
+      await this.findAndSaveWithLock(
+        gameID,
+        async (gameDocument) => {
+          const pendingOperations =
+            gameDocument.pendingTransitionOperations ?? []
+          const existingOperation = pendingOperations.find(
+            ({ id }) => id === operationId,
+          )
+          if (!existingOperation) {
+            throw new PendingTransitionOperationNotFoundError()
+          }
+
+          const createdAt =
+            existingOperation.createdAt ?? gameDocument.updated ?? now
+          const attempts = (existingOperation.attempts ?? 0) + 1
+          const unresolvedForMs = Math.max(
+            0,
+            now.getTime() - createdAt.getTime(),
+          )
+          const shouldReport =
+            existingOperation.alertedAt === undefined &&
+            unresolvedForMs >= reportAfterMs
+          const updatedOperation: PendingGameTransitionOperation = {
+            ...existingOperation,
+            createdAt,
+            attempts,
+            lastAttemptAt: now,
+            lastErrorCategory: errorCategory,
+            ...(shouldReport ? { alertedAt: now } : {}),
+          }
+
+          gameDocument.pendingTransitionOperations = pendingOperations.map(
+            (operation) =>
+              operation.id === operationId ? updatedOperation : operation,
+          )
+          failure = {
+            attempts,
+            createdAt,
+            lastAttemptAt: now,
+            lastErrorCategory: errorCategory,
+            unresolvedForMs,
+            shouldReport,
+          }
+          return gameDocument
+        },
+        false,
+      )
+    } catch (error) {
+      if (error instanceof PendingTransitionOperationNotFoundError) {
+        return undefined
+      }
+      throw error
+    }
+
+    return failure
+  }
+
+  /**
    * Finds a game by its PIN.
    *
    * @param {string} gamePIN - The unique 6-digit game PIN of the game to find.
@@ -291,6 +373,7 @@ export class GameRepository extends BaseRepository<Game> {
    *
    * @param {string} gameID - The ID of the game to find and update.
    * @param {Function} callback - A callback function to modify the game document.
+   * @param updateGameplayVersion - Whether to update gameplay version and timestamps.
    *
    * @returns {Promise<GameDocument>} A promise that resolves to the updated `GameDocument`.
    *
@@ -300,8 +383,9 @@ export class GameRepository extends BaseRepository<Game> {
   public async findAndSaveWithLock(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
-    return this.findAndSaveLocked(gameID, callback)
+    return this.findAndSaveLocked(gameID, callback, updateGameplayVersion)
   }
 
   /**
@@ -320,6 +404,7 @@ export class GameRepository extends BaseRepository<Game> {
   private async findAndSaveLocked(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
     const gameDocument = await this.findGameByIDWithStatusesOrThrow(gameID, [
       GameStatus.Active,
@@ -331,8 +416,10 @@ export class GameRepository extends BaseRepository<Game> {
       return gameDocument
     }
 
-    updatedGameDocument.updated = new Date()
-    updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
+    if (updateGameplayVersion) {
+      updatedGameDocument.updated = new Date()
+      updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
+    }
     return await updatedGameDocument.save()
   }
 

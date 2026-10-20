@@ -275,8 +275,15 @@ describe('GameEventPublisher', () => {
       'boom host',
     )
 
-    // One warn logged for the host failure
-    expect(logger.warn).toHaveBeenCalled()
+    expect(logger.debug).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to build participant game event.',
+        operation: 'buildParticipantEvent',
+        gameId: 'game-1',
+        playerId: 'host',
+        errorCategory: 'event_builder',
+      }),
+    )
     // Player still published
     expect(redis.publish).toHaveBeenCalledTimes(1)
     const msg = JSON.parse(redis.publish.mock.calls[0][1] as string)
@@ -312,14 +319,14 @@ describe('GameEventPublisher', () => {
       playerId: 'host',
       event: { host: true },
     })
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(logger.debug).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Failed to publish distributed game event.',
         operation: 'publishDistributedEvent',
         gameId: 'game-1',
         playerId: 'p1',
+        errorCategory: 'redis',
       }),
-      redisError.stack,
     )
   })
 
@@ -383,14 +390,14 @@ describe('GameEventPublisher', () => {
         'Redis unavailable while publishing a game event for game game-1 participant p1',
     })
 
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(logger.debug).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Failed to publish distributed game event.',
         operation: 'publishDistributedEvent',
         gameId: 'game-1',
         playerId: 'p1',
+        errorCategory: 'redis',
       }),
-      redisError.stack,
     )
   })
 
