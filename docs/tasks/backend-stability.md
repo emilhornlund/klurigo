@@ -53,7 +53,7 @@ yarn workspace @klurigo/klurigo-service check-circular-deps
 - [x] **BST-07 — Handle HTTP creation timeouts and partial failures** — P1
 - [x] **BST-08 — Validate health/readiness under dependency failure** — P2
 - [x] **BST-09 — Scale terminal-game cleanup without repeated work** — P2
-- [ ] **BST-10 — Strengthen authentication and token lifecycle coverage** — P2
+- [x] **BST-10 — Strengthen authentication and token lifecycle coverage** — P2
 
 ---
 
