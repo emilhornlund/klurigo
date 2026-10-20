@@ -543,6 +543,43 @@ describe('GameTaskTransitionScheduler', () => {
       expect(performTransitionSpy).not.toHaveBeenCalled()
     })
 
+    it('retains the persisted recovery operation when event publication fails', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+
+      let savedDocument: GameDocument | undefined
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          savedDocument = (await mutator(doc as any)) as GameDocument
+          return savedDocument
+        },
+      )
+      const publicationError = new Error('Redis unavailable')
+      gameEventPublisher.publish.mockRejectedValueOnce(publicationError)
+
+      await expect(scheduler.scheduleTaskTransition(game)).rejects.toBe(
+        publicationError,
+      )
+
+      expect(savedDocument?.pendingTransitionOperations).toEqual([
+        expect.objectContaining({
+          operation: 'schedule',
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
+      ])
+      expect(taskQueue.add).not.toHaveBeenCalled()
+    })
+
     it('persists transition timestamps, publishes, and performs immediate transition when delay <= 0 and no existing job', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
       const callback = jest.fn().mockResolvedValue(undefined)

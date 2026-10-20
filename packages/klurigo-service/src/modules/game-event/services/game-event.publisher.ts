@@ -66,7 +66,7 @@ export class GameEventPublisher {
       throw error
     }
 
-    await Promise.all(
+    const publicationResults = await Promise.allSettled(
       document.participants.map(async (participant) => {
         let event: GameEvent | undefined
         try {
@@ -87,7 +87,7 @@ export class GameEventPublisher {
             }),
             getErrorStack(error),
           )
-          return
+          throw error
         }
 
         await this.publishParticipantEvent(
@@ -98,6 +98,11 @@ export class GameEventPublisher {
         )
       }),
     )
+
+    const failedPublication = publicationResults.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    )
+    if (failedPublication) throw failedPublication.reason
   }
 
   /**

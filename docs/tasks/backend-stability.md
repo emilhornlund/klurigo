@@ -47,7 +47,7 @@ yarn workspace @klurigo/klurigo-service check-circular-deps
 - [x] **BST-01 — Harden game-transition recovery and prevent stuck games** — P0
 - [x] **BST-02 — Expand resilience and concurrency integration testing** — P0
 - [x] **BST-03 — Make Redis answer persistence and TTL atomic** — P1
-- [ ] **BST-04 — Strengthen game-event publication and SSE recovery** — P1
+- [x] **BST-04 — Strengthen game-event publication and SSE recovery** — P1
 - [ ] **BST-05 — Add actionable background-operation diagnostics** — P1
 - [ ] **BST-06 — Harden distributed scheduled-job execution** — P1
 - [ ] **BST-07 — Handle HTTP creation timeouts and partial failures** — P1
