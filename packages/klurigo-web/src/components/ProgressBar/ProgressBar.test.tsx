@@ -304,4 +304,117 @@ describe('ProgressBar', () => {
     const afterPct = Number(progressBar.style.width.replace('%', ''))
     expect(afterPct).toBeLessThan(startPct)
   })
+
+  it('keeps progressing when an event is replayed with identical timestamps', async () => {
+    const countdown: CountdownEvent = {
+      initiatedTime: '2023-01-01T00:00:00.000Z',
+      expiryTime: '2023-01-01T00:01:00.000Z',
+      serverTime: '2023-01-01T00:00:00.000Z',
+    }
+
+    const { container, rerender } = render(
+      <ProgressBar countdown={countdown} />,
+    )
+    await flushEffects()
+
+    act(() => {
+      vi.advanceTimersByTime(5000)
+    })
+
+    const track = container.querySelector('.track') as HTMLElement
+    const beforeReplay = Number(track.style.width.replace('%', ''))
+
+    rerender(<ProgressBar countdown={{ ...countdown }} />)
+    await flushEffects()
+
+    const afterReplay = Number(track.style.width.replace('%', ''))
+    expect(afterReplay).toBeCloseTo(beforeReplay, 2)
+
+    act(() => {
+      vi.advanceTimersByTime(5000)
+    })
+
+    expect(Number(track.style.width.replace('%', ''))).toBeLessThan(afterReplay)
+  })
+
+  it('catches up from a refreshed server timestamp without moving backwards', async () => {
+    const countdown: CountdownEvent = {
+      initiatedTime: '2023-01-01T00:00:00.000Z',
+      expiryTime: '2023-01-01T00:01:00.000Z',
+      serverTime: '2023-01-01T00:00:00.000Z',
+    }
+
+    const setIntervalSpy = vi.spyOn(globalThis, 'setInterval')
+    const { container, rerender } = render(
+      <ProgressBar countdown={countdown} />,
+    )
+    await flushEffects()
+
+    act(() => {
+      vi.setSystemTime(new Date('2023-01-01T00:00:10.000Z'))
+    })
+    rerender(
+      <ProgressBar
+        countdown={{ ...countdown, serverTime: '2023-01-01T00:00:10.000Z' }}
+      />,
+    )
+    await flushEffects()
+
+    const track = container.querySelector('.track') as HTMLElement
+    const caughtUpPct = Number(track.style.width.replace('%', ''))
+    expect(caughtUpPct).toBeCloseTo((50 / 60) * 100, 2)
+    expect(setIntervalSpy).toHaveBeenCalledTimes(1)
+
+    act(() => {
+      vi.advanceTimersByTime(5000)
+    })
+
+    expect(Number(track.style.width.replace('%', ''))).toBeLessThan(caughtUpPct)
+  })
+
+  it('resets progress and replaces the interval for a new question', async () => {
+    const firstCountdown: CountdownEvent = {
+      initiatedTime: '2023-01-01T00:00:00.000Z',
+      expiryTime: '2023-01-01T00:01:00.000Z',
+      serverTime: '2023-01-01T00:00:30.000Z',
+    }
+    const { container, rerender } = render(
+      <ProgressBar countdown={firstCountdown} />,
+    )
+    await flushEffects()
+
+    const nextCountdown: CountdownEvent = {
+      initiatedTime: '2023-01-01T00:00:30.000Z',
+      expiryTime: '2023-01-01T00:01:30.000Z',
+      serverTime: '2023-01-01T00:00:30.000Z',
+    }
+    rerender(<ProgressBar countdown={nextCountdown} />)
+    await flushEffects()
+
+    const track = container.querySelector('.track') as HTMLElement
+    expect(Number(track.style.width.replace('%', ''))).toBeCloseTo(100, 2)
+
+    act(() => {
+      vi.advanceTimersByTime(1000)
+    })
+    expect(Number(track.style.width.replace('%', ''))).toBeLessThan(100)
+  })
+
+  it('expires the countdown and clears its interval', async () => {
+    const countdown: CountdownEvent = {
+      initiatedTime: '2023-01-01T00:00:00.000Z',
+      expiryTime: '2023-01-01T00:00:01.000Z',
+      serverTime: '2023-01-01T00:00:00.000Z',
+    }
+    const clearIntervalSpy = vi.spyOn(globalThis, 'clearInterval')
+    const { container } = render(<ProgressBar countdown={countdown} />)
+    await flushEffects()
+
+    act(() => {
+      vi.advanceTimersByTime(1000)
+    })
+
+    expect(container.querySelector('.track')).toHaveStyle({ width: '0.00%' })
+    expect(clearIntervalSpy).toHaveBeenCalled()
+  })
 })
