@@ -3,8 +3,8 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
-import { MurLock } from 'murlock'
 
+import { MurLockWithAutoExtend } from '../../../app/decorators/mur-lock-with-auto-extend.decorator'
 import { getErrorStack, structuredLog } from '../../../app/utils'
 import {
   GameAnswerRepository,
@@ -58,7 +58,10 @@ export class GameExpirySchedulerService {
    * Uses a MurLock to guarantee single-instance execution across a distributed environment.
    */
   @Cron('0 */5 * * * *')
-  @MurLock(GAME_EXPIRY_CLEANUP_LOCK_LEASE_MS, 'scheduled_game_expiry_lock')
+  @MurLockWithAutoExtend(
+    GAME_EXPIRY_CLEANUP_LOCK_LEASE_MS,
+    'scheduled_game_expiry_lock',
+  )
   public async clean(): Promise<void> {
     await this.runUpdate('completed', () =>
       this.gameRepository.updateCompletedGames(),

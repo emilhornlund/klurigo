@@ -2,6 +2,7 @@ import { GameStatus } from '@klurigo/common'
 import * as Sentry from '@sentry/nestjs'
 import { Job, Queue } from 'bullmq'
 import type Redis from 'ioredis'
+import { MurLockService } from 'murlock'
 
 import {
   GameAnswerRepository,
@@ -20,8 +21,39 @@ jest.mock('@sentry/nestjs', () => ({ captureMessage: jest.fn() }))
 // Keep the decorator's serialization behavior for concurrency tests.
 jest.mock('murlock', () => {
   const locks = new Map<string, Promise<void>>()
+  const runWithLock = async <T>(
+    lockKey: string,
+    operation: () => Promise<T>,
+  ): Promise<T> => {
+    const previous = locks.get(lockKey) ?? Promise.resolve()
+    let release: () => void = () => undefined
+    const current = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    locks.set(lockKey, current)
+    await previous
+    try {
+      return await operation()
+    } finally {
+      release()
+      if (locks.get(lockKey) === current) locks.delete(lockKey)
+    }
+  }
+  class MurLockService {
+    options = { autoExtend: false }
+
+    async runWithLock<T>(
+      lockKey: string,
+      _releaseTime = 0,
+      operation: () => Promise<T> = async () => undefined as T,
+    ): Promise<T> {
+      void _releaseTime
+      return runWithLock(lockKey, operation)
+    }
+  }
 
   return {
+    MurLockService,
     MurLock:
       (...lockArgs: unknown[]) =>
       (
@@ -32,19 +64,7 @@ jest.mock('murlock', () => {
         const originalMethod = descriptor.value
         descriptor.value = async function (...args: unknown[]) {
           const lockKey = String(lockArgs[1] ?? 'default')
-          const previous = locks.get(lockKey) ?? Promise.resolve()
-          let release: () => void = () => undefined
-          const current = new Promise<void>((resolve) => {
-            release = resolve
-          })
-          locks.set(lockKey, current)
-          await previous
-          try {
-            return await originalMethod.apply(this, args)
-          } finally {
-            release()
-            if (locks.get(lockKey) === current) locks.delete(lockKey)
-          }
+          return runWithLock(lockKey, () => originalMethod.apply(this, args))
         }
         return descriptor
       },
@@ -59,6 +79,14 @@ import {
   TRANSITION_RECOVERY_BATCH_SIZE,
 } from './game-task-transition-scheduler'
 import { GameTaskTransitionService } from './game-task-transition.service'
+
+const createMockMurLockService = (): MurLockService => {
+  const service = Object.create(MurLockService.prototype) as MurLockService
+  Object.defineProperty(service, 'options', {
+    value: { autoExtend: false },
+  })
+  return service
+}
 
 describe('GameTaskTransitionScheduler', () => {
   const TASK_TRANSITION_JOB_NAME = TASK_QUEUE_NAME + 'transition'
@@ -181,6 +209,7 @@ describe('GameTaskTransitionScheduler', () => {
       gameTaskTransitionService as unknown as GameTaskTransitionService,
       gameEventPublisher as unknown as GameEventPublisher,
     )
+    ;(scheduler as any).murlockServiceDecorator = createMockMurLockService()
     ;(scheduler as any).logger = logger
 
     jest.clearAllMocks()
@@ -872,6 +901,8 @@ describe('GameTaskTransitionScheduler', () => {
         gameEventPublisher as unknown as GameEventPublisher,
       )
       ;(secondScheduler as any).logger = logger
+      ;(secondScheduler as any).murlockServiceDecorator =
+        createMockMurLockService()
 
       const firstRun = scheduler.recoverPendingTransitionOperations()
       try {

@@ -13,6 +13,7 @@ import { Job, Queue } from 'bullmq'
 import Redis from 'ioredis'
 import { MurLock } from 'murlock'
 
+import { MurLockWithAutoExtend } from '../../../app/decorators/mur-lock-with-auto-extend.decorator'
 import { RedisUnavailableException } from '../../../app/exceptions'
 import { structuredLog } from '../../../app/utils'
 import {
@@ -835,7 +836,7 @@ export class GameTaskTransitionScheduler extends WorkerHost {
    * also covers immediate transitions, which do not have a BullMQ job to retry.
    */
   @Cron('*/5 * * * * *')
-  @MurLock(
+  @MurLockWithAutoExtend(
     TRANSITION_RECOVERY_LOCK_LEASE_MS,
     'pending_game_transition_recovery',
   )

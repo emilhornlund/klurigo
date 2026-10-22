@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import type Redis from 'ioredis'
+import { MurLockService } from 'murlock'
 
 import {
   GameAnswerRepository,
@@ -12,45 +13,66 @@ import { GameExpirySchedulerService } from './game-expiry-scheduler.service'
 
 // Avoid depending on MurLock implementation details in a unit test.
 // We only want to test the business logic inside `clean()`.
-jest.mock('murlock', () => ({
-  MurLock: (...lockArgs: unknown[]) => {
-    const locks = new Map<string, Promise<void>>()
-
-    return (
-      _target: unknown,
-      _propertyKey: string,
-      descriptor: PropertyDescriptor,
-    ) => {
-      const originalMethod = descriptor.value
-      descriptor.value = async function (...args: unknown[]) {
-        const lockKey = String(
-          lockArgs.find((argument) => typeof argument === 'string') ??
-            'default',
-        )
-        const previous = locks.get(lockKey) ?? Promise.resolve()
-        let release: () => void = () => undefined
-        const current = new Promise<void>((resolve) => {
-          release = resolve
-        })
-        locks.set(lockKey, current)
-        await previous
-        try {
-          return await originalMethod.apply(this, args)
-        } finally {
-          release()
-          if (locks.get(lockKey) === current) locks.delete(lockKey)
-        }
-      }
-      return descriptor
+jest.mock('murlock', () => {
+  const locks = new Map<string, Promise<void>>()
+  const runWithLock = async <T>(
+    lockKey: string,
+    operation: () => Promise<T>,
+  ): Promise<T> => {
+    const previous = locks.get(lockKey) ?? Promise.resolve()
+    let release: () => void = () => undefined
+    const current = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    locks.set(lockKey, current)
+    await previous
+    try {
+      return await operation()
+    } finally {
+      release()
+      if (locks.get(lockKey) === current) locks.delete(lockKey)
     }
-  },
-}))
+  }
+
+  return {
+    MurLockService: class {
+      options = { autoExtend: false }
+
+      runWithLock<T>(
+        lockKey: string,
+        _releaseTime: number,
+        operation: () => Promise<T>,
+      ): Promise<T> {
+        void _releaseTime
+        return runWithLock(lockKey, operation)
+      }
+    },
+    MurLock:
+      (...lockArgs: unknown[]) =>
+      (
+        _target: unknown,
+        _propertyKey: string,
+        descriptor: PropertyDescriptor,
+      ) => {
+        const originalMethod = descriptor.value
+        descriptor.value = function (...args: unknown[]) {
+          const lockKey = String(
+            lockArgs.find((argument) => typeof argument === 'string') ??
+              'default',
+          )
+          return runWithLock(lockKey, () => originalMethod.apply(this, args))
+        }
+        return descriptor
+      },
+  }
+})
 
 describe(GameExpirySchedulerService.name, () => {
   let service: GameExpirySchedulerService
   let gameRepository: jest.Mocked<GameRepository>
   let gameAnswerRepository: jest.Mocked<GameAnswerRepository>
   let redis: jest.Mocked<Pick<Redis, 'get' | 'set' | 'del'>>
+  let murlock: MurLockService
   let cursorStore: Map<string, string>
   let errorSpy: jest.SpyInstance
 
@@ -81,10 +103,12 @@ describe(GameExpirySchedulerService.name, () => {
           useValue: { clear: jest.fn() },
         },
         { provide: getRedisConnectionToken(), useValue: redis },
+        { provide: MurLockService, useClass: MurLockService },
       ],
     }).compile()
 
     service = moduleRef.get(GameExpirySchedulerService)
+    murlock = moduleRef.get(MurLockService)
     gameRepository = moduleRef.get(GameRepository)
     gameAnswerRepository = moduleRef.get(GameAnswerRepository)
     gameRepository.findTerminalGamesPendingAnswerCleanup.mockResolvedValue([])
@@ -180,6 +204,7 @@ describe(GameExpirySchedulerService.name, () => {
       gameAnswerRepository,
       redis as unknown as Redis,
     )
+    ;(otherInstance as any).murlockServiceDecorator = murlock
     const firstRun = service.clean()
     try {
       await entered

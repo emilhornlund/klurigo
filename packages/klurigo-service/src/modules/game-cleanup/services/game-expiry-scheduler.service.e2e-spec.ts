@@ -79,6 +79,12 @@ describe('GameExpirySchedulerService (e2e)', () => {
         return 0
       })
     const runWithLock = jest.spyOn(murlock, 'runWithLock')
+    const startWatchdog = jest.spyOn(
+      murlock as unknown as {
+        startWatchdog: (...args: unknown[]) => () => void
+      },
+      'startWatchdog',
+    )
     const firstRun = service.clean()
     let secondRun: Promise<void> | undefined
 
@@ -98,6 +104,14 @@ describe('GameExpirySchedulerService (e2e)', () => {
           ([, lease]) => lease === GAME_EXPIRY_CLEANUP_LOCK_LEASE_MS,
         ),
       ).toBe(true)
+      expect(
+        (
+          startWatchdog.mock.contexts as unknown as Array<{
+            options: { autoExtend?: boolean }
+          }>
+        ).some((context) => context.options.autoExtend),
+      ).toBe(true)
+      expect(murlock.options.autoExtend).not.toBe(true)
 
       releaseFirstUpdate()
       await firstRun
@@ -107,11 +121,12 @@ describe('GameExpirySchedulerService (e2e)', () => {
       releaseFirstUpdate()
       update.mockRestore()
       runWithLock.mockRestore()
+      startWatchdog.mockRestore()
       await Promise.allSettled([firstRun, ...(secondRun ? [secondRun] : [])])
     }
   }, 15_000)
 
-  it('keeps recovery batches serialized across instances for longer than the old lease', async () => {
+  it('renews recovery leases and keeps batches serialized across instances', async () => {
     const queue = app.get<Queue>(getQueueToken(TASK_QUEUE_NAME))
     const transitionService = app.get(GameTaskTransitionService)
     const eventPublisher = app.get(GameEventPublisher)
@@ -150,6 +165,12 @@ describe('GameExpirySchedulerService (e2e)', () => {
         return []
       })
     const runWithLock = jest.spyOn(murlock, 'runWithLock')
+    const startWatchdog = jest.spyOn(
+      murlock as unknown as {
+        startWatchdog: (...args: unknown[]) => () => void
+      },
+      'startWatchdog',
+    )
     const firstRun = firstScheduler.recoverPendingTransitionOperations()
     let secondRun: Promise<void> | undefined
 
@@ -170,6 +191,14 @@ describe('GameExpirySchedulerService (e2e)', () => {
           ([, lease]) => lease === TRANSITION_RECOVERY_LOCK_LEASE_MS,
         ),
       ).toBe(true)
+      expect(
+        (
+          startWatchdog.mock.contexts as unknown as Array<{
+            options: { autoExtend?: boolean }
+          }>
+        ).some((context) => context.options.autoExtend),
+      ).toBe(true)
+      expect(murlock.options.autoExtend).not.toBe(true)
 
       releaseFirstQuery()
       await firstRun
@@ -179,6 +208,7 @@ describe('GameExpirySchedulerService (e2e)', () => {
       releaseFirstQuery()
       query.mockRestore()
       runWithLock.mockRestore()
+      startWatchdog.mockRestore()
       await Promise.allSettled([firstRun, ...(secondRun ? [secondRun] : [])])
     }
   }, 15_000)
