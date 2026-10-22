@@ -43,12 +43,12 @@ export function transformGameResultsDocument(
           {},
           'averageResponseTime',
         ),
-        longestCorrectStreak: extractValueOrThrow<number>(
+        longestCorrectStreak: extractValue<number>(
           player,
           {},
           'longestCorrectStreak',
         ),
-        score: Math.round(extractValueOrThrow<number>(player, {}, 'score')),
+        score: extractValueOrThrow<number>(player, {}, 'score'),
       }),
     ),
     questions: extractValueOrThrow<BSONDocument[]>(

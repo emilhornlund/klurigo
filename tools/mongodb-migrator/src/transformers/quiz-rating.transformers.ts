@@ -22,7 +22,7 @@ export function transformQuizRatingDocument(
     quizId: extractValueOrThrow<string>(document, {}, 'quizId'),
     author: extractAuthorOrThrow(document),
     stars: extractValueOrThrow<number>(document, {}, 'stars'),
-    comment: extractValue<number>(document, {}, 'comment'),
+    comment: extractValue<string>(document, {}, 'comment'),
     updated: toDateOrThrow(
       extractValueOrThrow<string>(document, {}, 'updated'),
     ),
@@ -33,16 +33,29 @@ export function transformQuizRatingDocument(
 }
 
 function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
-  const type = extractValueOrThrow<string>(document, {}, 'author.type')
+  const rawAuthor = extractValue<BSONDocument | string>(document, {}, 'author')
+  const type =
+    rawAuthor && typeof rawAuthor === 'object'
+      ? extractValue<string>(rawAuthor, {}, 'type')
+      : null
 
-  if (type === QuizRatingAuthorType.User) {
+  // Legacy ratings stored the user id directly in `author`; current ratings
+  // store a discriminated author subdocument.
+  if (!type && typeof rawAuthor === 'string') {
+    return { type: QuizRatingAuthorType.User, user: rawAuthor }
+  }
+
+  const resolvedType =
+    type ?? extractValueOrThrow<string>(document, {}, 'author.type')
+
+  if (resolvedType === QuizRatingAuthorType.User) {
     return {
-      type,
+      type: resolvedType,
       user: extractValueOrThrow<string>(document, {}, 'author.user'),
     }
-  } else if (type === QuizRatingAuthorType.Anonymous) {
+  } else if (resolvedType === QuizRatingAuthorType.Anonymous) {
     return {
-      type,
+      type: resolvedType,
       participantId: extractValueOrThrow<string>(
         document,
         {},

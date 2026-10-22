@@ -1,4 +1,9 @@
-import { BSONDocument, extractValueOrThrow, toDate } from '../utils'
+import {
+  BSONDocument,
+  extractValue,
+  extractValueOrThrow,
+  toDate,
+} from '../utils'
 
 /**
  * Transforms a document from the `tokens` collection into a `tokens` document format.
@@ -14,8 +19,8 @@ export function transformTokenDocument(document: BSONDocument): BSONDocument {
     type: extractValueOrThrow<string>(document, {}, 'type'),
     scope: extractValueOrThrow<string>(document, {}, 'scope'),
     principalId: extractValueOrThrow<string>(document, {}, 'principalId'),
-    ipAddress: extractValueOrThrow<string>(document, {}, 'ipAddress'),
-    userAgent: extractValueOrThrow<string>(document, {}, 'userAgent'),
+    ipAddress: extractValue<string>(document, {}, 'ipAddress'),
+    userAgent: extractValue<string>(document, {}, 'userAgent'),
     createdAt: toDate(extractValueOrThrow<string>(document, {}, 'createdAt')),
     expiresAt: toDate(extractValueOrThrow<string>(document, {}, 'expiresAt')),
   }

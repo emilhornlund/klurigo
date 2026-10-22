@@ -19,12 +19,13 @@ export function transformGameDocument(document: BSONDocument): BSONDocument {
 
   const currentTask = buildGameTask(
     extractValueOrThrow<BSONDocument>(document, {}, 'currentTask'),
+    questions,
   )
   const previousTasks = extractValueOrThrow<BSONDocument[]>(
     document,
     {},
     'previousTasks',
-  ).map((task) => buildGameTask(task))
+  ).map((task) => buildGameTask(task, questions))
 
   return {
     _id: extractValueOrThrow<string>(document, {}, '_id'),
@@ -34,31 +35,33 @@ export function transformGameDocument(document: BSONDocument): BSONDocument {
     status: extractValueOrThrow<string>(document, {}, 'status'),
     pin: extractValueOrThrow<string>(document, {}, 'pin'),
     settings: {
-      shouldAutoCompleteQuestionResultTask: extractValueOrThrow<boolean>(
-        document,
-        {},
-        'settings.shouldAutoCompleteQuestionResultTask',
-      ),
-      shouldAutoCompleteLeaderboardTask: extractValueOrThrow<boolean>(
-        document,
-        {},
-        'settings.shouldAutoCompleteLeaderboardTask',
-      ),
-      shouldAutoCompletePodiumTask: extractValueOrThrow<boolean>(
-        document,
-        {},
-        'settings.shouldAutoCompletePodiumTask',
-      ),
-      randomizeQuestionOrder: extractValueOrThrow<boolean>(
-        document,
-        {},
-        'settings.randomizeQuestionOrder',
-      ),
-      randomizeAnswerOrder: extractValueOrThrow<boolean>(
-        document,
-        {},
-        'settings.randomizeAnswerOrder',
-      ),
+      shouldAutoCompleteQuestionResultTask:
+        extractValue<boolean>(
+          document,
+          {},
+          'settings.shouldAutoCompleteQuestionResultTask',
+        ) ?? false,
+      shouldAutoCompleteLeaderboardTask:
+        extractValue<boolean>(
+          document,
+          {},
+          'settings.shouldAutoCompleteLeaderboardTask',
+        ) ?? false,
+      shouldAutoCompletePodiumTask:
+        extractValue<boolean>(
+          document,
+          {},
+          'settings.shouldAutoCompletePodiumTask',
+        ) ?? false,
+      randomizeQuestionOrder:
+        extractValue<boolean>(
+          document,
+          {},
+          'settings.randomizeQuestionOrder',
+        ) ?? false,
+      randomizeAnswerOrder:
+        extractValue<boolean>(document, {}, 'settings.randomizeAnswerOrder') ??
+        false,
     },
     quiz: extractValueOrThrow<string>(document, {}, 'quiz'),
     questions,
@@ -66,15 +69,25 @@ export function transformGameDocument(document: BSONDocument): BSONDocument {
     participants: buildGameParticipants(document),
     currentTask,
     previousTasks,
+    pendingTransitionOperations:
+      extractValue<BSONDocument[]>(
+        document,
+        {},
+        'pendingTransitionOperations',
+      ) ?? [],
+    version: extractValue<number>(document, {}, 'version') ?? 0,
+    transientAnswerStateCleared: extractValue<boolean>(
+      document,
+      {},
+      'transientAnswerStateCleared',
+    ),
     updated: toDateOrThrow(
       extractValueOrThrow<string>(document, {}, 'updated'),
     ),
     created: toDateOrThrow(
       extractValueOrThrow<string>(document, {}, 'created'),
     ),
-    completedAt: toDateOrThrow(
-      extractValueOrThrow<string>(document, {}, 'completedAt'),
-    ),
+    completedAt: toDate(extractValue<string>(document, {}, 'completedAt')),
   }
 }
 
@@ -109,25 +122,16 @@ function buildGameParticipants(document: BSONDocument): Array<BSONDocument> {
     if (type === 'PLAYER') {
       additional = {
         participantId,
-        nickname: extractValueOrThrow<string>(participant, {}, 'nickname'),
+        nickname: extractValue<string>(participant, {}, 'nickname'),
         rank: extractValueOrThrow<number>(participant, {}, 'rank'),
         worstRank: extractValueOrThrow<number>(participant, {}, 'worstRank'),
         totalScore: extractValueOrThrow<number>(participant, {}, 'totalScore'),
-        currentStreak: extractValueOrThrow<number>(
-          participant,
-          {},
-          'currentStreak',
-        ),
-        totalResponseTime: extractValueOrThrow<number>(
-          participant,
-          {},
-          'totalResponseTime',
-        ),
-        responseCount: extractValueOrThrow<number>(
-          participant,
-          {},
-          'responseCount',
-        ),
+        currentStreak:
+          extractValue<number>(participant, {}, 'currentStreak') ?? 0,
+        totalResponseTime:
+          extractValue<number>(participant, {}, 'totalResponseTime') ?? 0,
+        responseCount:
+          extractValue<number>(participant, {}, 'responseCount') ?? 0,
       }
     }
     return {
@@ -152,9 +156,13 @@ function buildGameParticipants(document: BSONDocument): Array<BSONDocument> {
  * this function.
  *
  * @param task - Original task sub-document.
+ * @param questions - Original question sub-documents.
  * @returns A fully-typed task object for the output schema.
  */
-function buildGameTask(task: BSONDocument): BSONDocument {
+function buildGameTask(
+  task: BSONDocument,
+  questions: BSONDocument[],
+): BSONDocument {
   const type = extractValueOrThrow<string>(task, {}, 'type')
   let additional: BSONDocument = {}
   if (type === 'LOBBY') {
@@ -164,7 +172,18 @@ function buildGameTask(task: BSONDocument): BSONDocument {
       questionIndex: extractValueOrThrow<number>(task, {}, 'questionIndex'),
       metadata: ((metadata) => {
         if (metadata === null) {
-          return null
+          const questionIndex = extractValueOrThrow<number>(
+            task,
+            {},
+            'questionIndex',
+          )
+          const question = questions[questionIndex]
+          if (!question) {
+            throw new Error(
+              `Question not found for question task index ${questionIndex}`,
+            )
+          }
+          return buildQuestionTaskMetadata(question)
         }
 
         const metadataType = extractValueOrThrow<string>(metadata, {}, 'type')
@@ -214,9 +233,7 @@ function buildGameTask(task: BSONDocument): BSONDocument {
           return null
         })(extractValueOrThrow<string>(answer, {}, 'type')),
       })),
-      presented: toDateOrThrow(
-        extractValueOrThrow<string>(task, {}, 'presented'),
-      ),
+      presented: toDate(extractValue<string>(task, {}, 'presented')),
     }
   } else if (type === 'QUESTION_RESULT') {
     additional = {
@@ -231,15 +248,15 @@ function buildGameTask(task: BSONDocument): BSONDocument {
     }
   } else if (type === 'PODIUM') {
     additional = {
-      leaderboard: buildGameLeaderboard(task),
+      leaderboard: buildGameLeaderboard(task, true),
     }
   }
   return {
     _id: extractValueOrThrow<string>(task, {}, '_id'),
     type,
-    status: extractValueOrThrow<string>(task, {}, 'status'),
-    currentTransitionInitiated: toDateOrThrow(
-      extractValueOrThrow<string>(task, {}, 'currentTransitionInitiated'),
+    status: extractValue<string>(task, {}, 'status') ?? 'pending',
+    currentTransitionInitiated: toDate(
+      extractValue<string>(task, {}, 'currentTransitionInitiated'),
     ),
     currentTransitionExpires: toDate(
       extractValue<string>(task, {}, 'currentTransitionExpires'),
@@ -298,6 +315,17 @@ function buildGameCorrectAnswers(task: BSONDocument): Array<BSONDocument> {
       ...additional,
     }
   })
+}
+
+function buildQuestionTaskMetadata(question: BSONDocument): BSONDocument {
+  const type = extractValueOrThrow<string>(question, {}, 'type')
+  if (type === 'PUZZLE') {
+    return {
+      type,
+      randomizedValues: extractValueOrThrow<string[]>(question, {}, 'values'),
+    }
+  }
+  return { type }
 }
 
 /**
@@ -366,17 +394,11 @@ function buildGameQuestionResults(task: BSONDocument): Array<BSONDocument> {
         totalScore: extractValueOrThrow<number>(item, {}, 'totalScore'),
         position: extractValueOrThrow<number>(item, {}, 'position'),
         streak: extractValueOrThrow<number>(item, {}, 'streak'),
-        lastResponseTime: extractValueOrThrow<number>(
-          item,
-          {},
-          'lastResponseTime',
-        ),
-        totalResponseTime: extractValueOrThrow<number>(
-          item,
-          {},
-          'totalResponseTime',
-        ),
-        responseCount: extractValueOrThrow<number>(item, {}, 'responseCount'),
+        lastResponseTime:
+          extractValue<number>(item, {}, 'lastResponseTime') ?? 0,
+        totalResponseTime:
+          extractValue<number>(item, {}, 'totalResponseTime') ?? 0,
+        responseCount: extractValue<number>(item, {}, 'responseCount') ?? 0,
       }
     },
   )
@@ -422,9 +444,7 @@ function buildGameLeaderboardTaskItem(
         }
       : {}),
     nickname: extractValueOrThrow<string>(leaderboardTaskItem, {}, 'nickname'),
-    score: Math.round(
-      extractValueOrThrow<number>(leaderboardTaskItem, {}, 'score'),
-    ),
+    score: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'score'),
     streaks: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'streaks'),
   }
 }
