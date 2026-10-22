@@ -177,15 +177,19 @@ export class GameRepository extends BaseRepository<Game> {
    * Finds live games with Redis work that was recorded alongside a persisted
    * transition but has not completed yet.
    */
-  public async findGamesWithPendingTransitionOperations(): Promise<
-    GameDocument[]
-  > {
+  public async findGamesWithPendingTransitionOperations(
+    afterGameId?: string,
+    limit = 100,
+  ): Promise<GameDocument[]> {
     try {
       return (await this.gameModel
         .find({
           status: { $in: [GameStatus.Active, GameStatus.Completed] },
           'pendingTransitionOperations.0': { $exists: true },
+          ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
         })
+        .sort({ _id: 1 })
+        .limit(limit)
         .populate('quiz')) as GameDocument[]
     } catch (error) {
       this.logger.error(
@@ -204,6 +208,8 @@ export class GameRepository extends BaseRepository<Game> {
    */
   public async findGamesWithOverdueTaskTransitions(
     now: Date = new Date(),
+    afterGameId?: string,
+    limit = 100,
   ): Promise<GameDocument[]> {
     try {
       return (await this.gameModel
@@ -211,7 +217,10 @@ export class GameRepository extends BaseRepository<Game> {
           status: GameStatus.Active,
           'currentTask.currentTransitionExpires': { $lte: now },
           'pendingTransitionOperations.0': { $exists: false },
+          ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
         })
+        .sort({ _id: 1 })
+        .limit(limit)
         .populate('quiz')) as GameDocument[]
     } catch (error) {
       this.logger.error(
@@ -232,17 +241,21 @@ export class GameRepository extends BaseRepository<Game> {
     gameID: string,
     operationId: PendingGameTransitionOperation['id'],
   ): Promise<void> {
-    await this.findAndSaveWithLockIfChanged(gameID, async (gameDocument) => {
-      const pendingOperations = gameDocument.pendingTransitionOperations ?? []
-      if (!pendingOperations.some(({ id }) => id === operationId)) {
-        return undefined
-      }
+    await this.findAndSaveWithLockIfChanged(
+      gameID,
+      async (gameDocument) => {
+        const pendingOperations = gameDocument.pendingTransitionOperations ?? []
+        if (!pendingOperations.some(({ id }) => id === operationId)) {
+          return undefined
+        }
 
-      gameDocument.pendingTransitionOperations = pendingOperations.filter(
-        ({ id }) => id !== operationId,
-      )
-      return gameDocument
-    })
+        gameDocument.pendingTransitionOperations = pendingOperations.filter(
+          ({ id }) => id !== operationId,
+        )
+        return gameDocument
+      },
+      false,
+    )
   }
 
   /**
@@ -401,8 +414,9 @@ export class GameRepository extends BaseRepository<Game> {
   public async findAndSaveWithLockIfChanged(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
-    return this.findAndSaveLocked(gameID, callback)
+    return this.findAndSaveLocked(gameID, callback, updateGameplayVersion)
   }
 
   private async findAndSaveLocked(

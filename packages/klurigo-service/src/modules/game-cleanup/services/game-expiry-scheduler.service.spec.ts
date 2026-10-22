@@ -1,5 +1,7 @@
 import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
+import type Redis from 'ioredis'
 
 import {
   GameAnswerRepository,
@@ -11,19 +13,57 @@ import { GameExpirySchedulerService } from './game-expiry-scheduler.service'
 // Avoid depending on MurLock implementation details in a unit test.
 // We only want to test the business logic inside `clean()`.
 jest.mock('murlock', () => ({
-  MurLock:
-    () =>
-    (_target: unknown, _propertyKey: string, descriptor: PropertyDescriptor) =>
-      descriptor,
+  MurLock: (...lockArgs: unknown[]) => {
+    const locks = new Map<string, Promise<void>>()
+
+    return (
+      _target: unknown,
+      _propertyKey: string,
+      descriptor: PropertyDescriptor,
+    ) => {
+      const originalMethod = descriptor.value
+      descriptor.value = async function (...args: unknown[]) {
+        const lockKey = String(
+          lockArgs.find((argument) => typeof argument === 'string') ??
+            'default',
+        )
+        const previous = locks.get(lockKey) ?? Promise.resolve()
+        let release: () => void = () => undefined
+        const current = new Promise<void>((resolve) => {
+          release = resolve
+        })
+        locks.set(lockKey, current)
+        await previous
+        try {
+          return await originalMethod.apply(this, args)
+        } finally {
+          release()
+          if (locks.get(lockKey) === current) locks.delete(lockKey)
+        }
+      }
+      return descriptor
+    }
+  },
 }))
 
 describe(GameExpirySchedulerService.name, () => {
   let service: GameExpirySchedulerService
   let gameRepository: jest.Mocked<GameRepository>
   let gameAnswerRepository: jest.Mocked<GameAnswerRepository>
+  let redis: jest.Mocked<Pick<Redis, 'get' | 'set' | 'del'>>
+  let cursorStore: Map<string, string>
   let errorSpy: jest.SpyInstance
 
   beforeEach(async () => {
+    cursorStore = new Map()
+    redis = {
+      get: jest.fn(async (key: string) => cursorStore.get(key) ?? null),
+      set: jest.fn(async (key: string, value: string) => {
+        cursorStore.set(key, value)
+        return 'OK'
+      }),
+      del: jest.fn(async (key: string) => Number(cursorStore.delete(key))),
+    } as unknown as jest.Mocked<Pick<Redis, 'get' | 'set' | 'del'>>
     const moduleRef = await Test.createTestingModule({
       providers: [
         GameExpirySchedulerService,
@@ -40,6 +80,7 @@ describe(GameExpirySchedulerService.name, () => {
           provide: GameAnswerRepository,
           useValue: { clear: jest.fn() },
         },
+        { provide: getRedisConnectionToken(), useValue: redis },
       ],
     }).compile()
 
@@ -117,6 +158,44 @@ describe(GameExpirySchedulerService.name, () => {
     expect(debugSpy).toHaveBeenCalledWith('Updated 0 expired games.')
   })
 
+  it('serializes cleanup from separate scheduler instances', async () => {
+    let signalEntered!: () => void
+    const entered = new Promise<void>((resolve) => {
+      signalEntered = resolve
+    })
+    let releaseFirstRun!: () => void
+    const firstRunGate = new Promise<void>((resolve) => {
+      releaseFirstRun = resolve
+    })
+    gameRepository.updateCompletedGames
+      .mockImplementationOnce(async () => {
+        signalEntered()
+        await firstRunGate
+        return 0
+      })
+      .mockResolvedValueOnce(0 as never)
+
+    const otherInstance = new GameExpirySchedulerService(
+      gameRepository,
+      gameAnswerRepository,
+      redis as unknown as Redis,
+    )
+    const firstRun = service.clean()
+    try {
+      await entered
+      const secondRun = otherInstance.clean()
+      await Promise.resolve()
+      expect(gameRepository.updateCompletedGames).toHaveBeenCalledTimes(1)
+
+      releaseFirstRun()
+      await Promise.all([firstRun, secondRun])
+      expect(gameRepository.updateCompletedGames).toHaveBeenCalledTimes(2)
+    } finally {
+      releaseFirstRun()
+      await firstRun
+    }
+  })
+
   it('continues with expired updates when completed updates fail', async () => {
     const err = new Error('repo failed (completed)')
     gameRepository.updateCompletedGames.mockRejectedValueOnce(err)
@@ -160,7 +239,7 @@ describe(GameExpirySchedulerService.name, () => {
     expect(logSpy).toHaveBeenCalledWith('Updated 2 completed games.')
   })
 
-  it('clears pending terminal game answers in bounded pages and skips them on later runs', async () => {
+  it('clears at most one bounded page per run and resumes with the next cursor', async () => {
     gameRepository.updateCompletedGames.mockResolvedValueOnce(0 as never)
     gameRepository.updateExpiredGames.mockResolvedValueOnce(0 as never)
     const firstPage = Array.from({ length: 100 }, (_, index) => ({
@@ -184,16 +263,26 @@ describe(GameExpirySchedulerService.name, () => {
     expect(
       gameRepository.findTerminalGamesPendingAnswerCleanup,
     ).toHaveBeenNthCalledWith(1, undefined, 100)
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(100)
+    expect(
+      gameRepository.markTerminalGameAnswerStateCleared,
+    ).toHaveBeenCalledTimes(100)
+    expect(redis.set).toHaveBeenCalledWith(
+      'game-cleanup:terminal-answer-state:cursor',
+      'game-099',
+    )
+
+    await service.clean()
     expect(
       gameRepository.findTerminalGamesPendingAnswerCleanup,
     ).toHaveBeenNthCalledWith(2, 'game-099', 100)
-    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(101)
-    expect(
-      gameRepository.markTerminalGameAnswerStateCleared,
-    ).toHaveBeenCalledTimes(101)
     expect(gameAnswerRepository.clear).toHaveBeenLastCalledWith(
       'game-100',
       'task-100',
+    )
+    expect(gameAnswerRepository.clear).toHaveBeenCalledTimes(101)
+    expect(redis.del).toHaveBeenCalledWith(
+      'game-cleanup:terminal-answer-state:cursor',
     )
 
     await service.clean()

@@ -243,12 +243,16 @@ describe('GameRepository.hasRateableGamesByQuizIdAndParticipantId', () => {
 describe('GameRepository pending transition operations', () => {
   let repository: GameRepository
   let findMock: jest.Mock
+  let sortMock: jest.Mock
+  let limitMock: jest.Mock
   let populateMock: jest.Mock
   let findAndSaveWithLockIfChangedMock: jest.Mock
 
   beforeEach(() => {
     repository = Object.create(GameRepository.prototype) as GameRepository
     findMock = jest.fn()
+    sortMock = jest.fn()
+    limitMock = jest.fn()
     populateMock = jest.fn()
     findAndSaveWithLockIfChangedMock = jest.fn()
     ;(
@@ -266,18 +270,23 @@ describe('GameRepository pending transition operations', () => {
     }
   })
 
-  it('finds active and completed games with pending work and populates quizzes', async () => {
+  it('finds a bounded cursor page of games with pending work and populates quizzes', async () => {
     const games = [{ _id: 'game-1' }] as unknown as GameDocument[]
     populateMock.mockResolvedValueOnce(games)
-    findMock.mockReturnValueOnce({ populate: populateMock })
+    limitMock.mockReturnValueOnce({ populate: populateMock })
+    sortMock.mockReturnValueOnce({ limit: limitMock })
+    findMock.mockReturnValueOnce({ sort: sortMock })
 
     await expect(
-      repository.findGamesWithPendingTransitionOperations(),
+      repository.findGamesWithPendingTransitionOperations('game-0', 25),
     ).resolves.toBe(games)
     expect(findMock).toHaveBeenCalledWith({
       status: { $in: [GameStatus.Active, GameStatus.Completed] },
       'pendingTransitionOperations.0': { $exists: true },
+      _id: { $gt: 'game-0' },
     })
+    expect(sortMock).toHaveBeenCalledWith({ _id: 1 })
+    expect(limitMock).toHaveBeenCalledWith(25)
     expect(populateMock).toHaveBeenCalledWith('quiz')
   })
 
@@ -326,6 +335,7 @@ describe('GameRepository pending transition operations', () => {
     expect(findAndSaveWithLockIfChangedMock).toHaveBeenCalledWith(
       'game-1',
       expect.any(Function),
+      false,
     )
     expect(game.pendingTransitionOperations).toEqual([
       expect.objectContaining({ id: 'operation-2' }),
@@ -350,6 +360,52 @@ describe('GameRepository pending transition operations', () => {
 
     expect(game.pendingTransitionOperations).toEqual([])
     expect(findAndSaveWithLockIfChangedMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('clears recovery bookkeeping without changing gameplay version or activity time', async () => {
+    const repositoryWithLock = Object.create(
+      GameRepository.prototype,
+    ) as GameRepository
+    const updatedAt = new Date('2026-01-01T00:00:00.000Z')
+    const game = {
+      version: 9,
+      updated: updatedAt,
+      pendingTransitionOperations: [
+        {
+          id: 'schedule-game-1-task-1-LOBBY-pending',
+          operation: 'schedule',
+          taskId: 'task-1',
+          taskType: TaskType.Lobby,
+          taskStatus: 'pending',
+        },
+      ],
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as GameDocument
+    const runWithLock = jest.fn(
+      (
+        _key: string,
+        _releaseTime: number,
+        _wait: undefined,
+        callback: () => Promise<unknown>,
+      ) => callback(),
+    )
+    Object.assign(repositoryWithLock, {
+      findGameByIDWithStatusesOrThrow: jest.fn().mockResolvedValue(game),
+      murlockServiceDecorator: {
+        options: { lockKeyPrefix: 'default', encodeKeyParts: false },
+        runWithLock,
+      },
+    })
+
+    await repositoryWithLock.clearPendingTransitionOperation(
+      'game-1',
+      'schedule-game-1-task-1-LOBBY-pending',
+    )
+
+    expect(game.pendingTransitionOperations).toEqual([])
+    expect(game.version).toBe(9)
+    expect(game.updated).toBe(updatedAt)
+    expect(game.save).toHaveBeenCalledTimes(1)
   })
 
   it('returns the original document without saving when a locked callback is unchanged', async () => {
@@ -470,24 +526,29 @@ describe('GameRepository pending transition operations', () => {
 })
 
 describe('GameRepository.findGamesWithOverdueTaskTransitions', () => {
-  it('finds only active games past their deadline without pending side effects', async () => {
+  it('finds a bounded cursor page of active games past deadline without pending side effects', async () => {
     const repository = Object.create(GameRepository.prototype) as GameRepository
     const now = new Date('2026-10-19T12:00:00.000Z')
     const games = [{ _id: 'game-1' }] as unknown as GameDocument[]
     const populate = jest.fn().mockResolvedValue(games)
-    const find = jest.fn().mockReturnValue({ populate })
+    const limit = jest.fn().mockReturnValue({ populate })
+    const sort = jest.fn().mockReturnValue({ limit })
+    const find = jest.fn().mockReturnValue({ sort })
     const logger = { error: jest.fn() }
     Object.assign(repository, { gameModel: { find }, logger })
 
     await expect(
-      repository.findGamesWithOverdueTaskTransitions(now),
+      repository.findGamesWithOverdueTaskTransitions(now, 'game-0', 25),
     ).resolves.toBe(games)
 
     expect(find).toHaveBeenCalledWith({
       status: GameStatus.Active,
       'currentTask.currentTransitionExpires': { $lte: now },
       'pendingTransitionOperations.0': { $exists: false },
+      _id: { $gt: 'game-0' },
     })
+    expect(sort).toHaveBeenCalledWith({ _id: 1 })
+    expect(limit).toHaveBeenCalledWith(25)
     expect(populate).toHaveBeenCalledWith('quiz')
   })
 
@@ -696,6 +757,26 @@ describe('GameSchema compound index', () => {
         fields.completedAt === 1,
     )
     expect(match).toBeDefined()
+  })
+
+  it('defines indexes for bounded pending and overdue transition recovery', () => {
+    const indexes = GameSchema.indexes()
+    expect(
+      indexes.some(
+        ([fields]) =>
+          fields.status === 1 &&
+          fields['pendingTransitionOperations.0'] === 1 &&
+          fields._id === 1,
+      ),
+    ).toBe(true)
+    expect(
+      indexes.some(
+        ([fields]) =>
+          fields.status === 1 &&
+          fields['currentTask.currentTransitionExpires'] === 1 &&
+          fields._id === 1,
+      ),
+    ).toBe(true)
   })
 })
 

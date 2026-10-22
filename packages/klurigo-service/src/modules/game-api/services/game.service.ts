@@ -515,7 +515,12 @@ export class GameService {
       throw new BadRequestException('Current task not in active status')
     }
 
-    await this.gameTaskTransitionScheduler.scheduleTaskTransition(gameDocument)
+    await this.gameTaskTransitionScheduler.scheduleTaskTransition(
+      gameDocument,
+      {
+        forceActiveCompletion: true,
+      },
+    )
   }
 
   /**
@@ -594,6 +599,7 @@ export class GameService {
     if (result.answerCount === playerCount) {
       await this.gameTaskTransitionScheduler.scheduleTaskTransition(
         savedGameDocument,
+        { completeActiveTaskWhenJobExists: true },
       )
     } else {
       await this.gameEventPublisher.publish(savedGameDocument)

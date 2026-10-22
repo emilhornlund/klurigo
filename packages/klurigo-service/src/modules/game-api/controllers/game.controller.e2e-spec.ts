@@ -2158,34 +2158,65 @@ describe('GameController (e2e)', () => {
         GameParticipantType.HOST,
       )
 
-      const [answerResponse, closeResponse] = await Promise.all([
-        submitAnswer(playerToken, game._id),
-        supertest(app.getHttpServer())
-          .post(`/api/games/${game._id}/tasks/current/complete`)
-          .set(createBearerAuthHeader(hostToken)),
-      ])
-
-      expect(closeResponse.status).toBe(204)
-      expect([204, 400]).toContain(answerResponse.status)
-
-      const updated = await gameModel.findById(game._id).exec()
-      expect(updated).toBeDefined()
-      const previousQuestion = updated?.previousTasks.find(
-        (previousTask) => previousTask._id === task._id,
-      ) as QuestionTaskWithBase
-      expect(previousQuestion).toEqual(
-        expect.objectContaining({
-          _id: task._id,
-          type: TaskType.Question,
-          status: 'completed',
-        }),
+      const answerRepository = app.get(GameAnswerRepository)
+      const submitOnce = answerRepository.submitOnce.bind(answerRepository)
+      let signalAnswerPersisted!: () => void
+      const answerPersisted = new Promise<void>((resolve) => {
+        signalAnswerPersisted = resolve
+      })
+      let releaseAnswer!: () => void
+      const answerGate = new Promise<void>((resolve) => {
+        releaseAnswer = resolve
+      })
+      const delayedAnswer = jest
+        .spyOn(answerRepository, 'submitOnce')
+        .mockImplementation(async (...args) => {
+          const result = await submitOnce(...args)
+          signalAnswerPersisted()
+          await answerGate
+          return result
+        })
+      const answerResponse = submitAnswer(playerToken, game._id).then(
+        (response) => response,
       )
 
-      if (answerResponse.status === 204) {
-        expect(previousQuestion.answers).toHaveLength(1)
-        expect(previousQuestion.answers[0].playerId).toBe(playerUser._id)
-      } else {
-        expect(previousQuestion.answers).toHaveLength(0)
+      try {
+        await answerPersisted
+        const closeResponse = supertest(app.getHttpServer())
+          .post(`/api/games/${game._id}/tasks/current/complete`)
+          .set(createBearerAuthHeader(hostToken))
+          .then((response) => response)
+        releaseAnswer()
+        const [submitted, closed] = await Promise.all([
+          answerResponse,
+          closeResponse,
+        ])
+
+        expect(submitted.status).toBe(204)
+        expect(closed.status).toBe(204)
+
+        const updated = await gameModel.findById(game._id).exec()
+        expect(updated).toBeDefined()
+        const previousQuestion = updated?.previousTasks.find(
+          (previousTask) => previousTask._id === task._id,
+        ) as QuestionTaskWithBase
+        expect(previousQuestion).toEqual(
+          expect.objectContaining({
+            _id: task._id,
+            type: TaskType.Question,
+            status: 'completed',
+            answers: [
+              expect.objectContaining({
+                playerId: playerUser._id,
+                answer: 0,
+              }),
+            ],
+          }),
+        )
+      } finally {
+        releaseAnswer()
+        delayedAnswer.mockRestore()
+        await Promise.allSettled([answerResponse])
       }
     })
 

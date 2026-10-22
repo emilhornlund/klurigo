@@ -218,6 +218,37 @@ describe(GameService.name, () => {
     })
   })
 
+  describe('completeCurrentTask', () => {
+    it('forces immediate completion through the transition scheduler for an active task', async () => {
+      const game = createMockGameDocument({
+        currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+      })
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(
+        service.completeCurrentTask(game._id),
+      ).resolves.toBeUndefined()
+
+      expect(
+        gameTaskTransitionScheduler.scheduleTaskTransition,
+      ).toHaveBeenCalledWith(game, { forceActiveCompletion: true })
+    })
+
+    it('rejects a non-active task without asking the scheduler to complete it', async () => {
+      const game = createMockGameDocument({
+        currentTask: createMockQuestionTaskDocument({ status: 'pending' }),
+      })
+      gameRepository.findGameByIDOrThrow.mockResolvedValue(game)
+
+      await expect(service.completeCurrentTask(game._id)).rejects.toThrow(
+        'Current task not in active status',
+      )
+      expect(
+        gameTaskTransitionScheduler.scheduleTaskTransition,
+      ).not.toHaveBeenCalled()
+    })
+  })
+
   describe('findGamesByParticipantId', () => {
     it('calls repository with participantId, offset, and limit (explicit values)', async () => {
       gameRepository.findGamesByParticipantId = jest
@@ -803,7 +834,9 @@ describe(GameService.name, () => {
       )
       expect(
         gameTaskTransitionScheduler.scheduleTaskTransition,
-      ).toHaveBeenCalledWith(gameDoc)
+      ).toHaveBeenCalledWith(gameDoc, {
+        completeActiveTaskWhenJobExists: true,
+      })
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
     })
 

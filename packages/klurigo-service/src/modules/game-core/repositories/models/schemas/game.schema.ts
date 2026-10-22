@@ -166,6 +166,14 @@ GameSchema.index({ status: 1, completedAt: 1 })
 // and the stable `_id` cursor used to paginate each run.
 GameSchema.index({ status: 1, transientAnswerStateCleared: 1, _id: 1 })
 
+// Supports bounded transition-recovery scans in stable `_id` order.
+GameSchema.index({ status: 1, 'pendingTransitionOperations.0': 1, _id: 1 })
+GameSchema.index({
+  status: 1,
+  'currentTask.currentTransitionExpires': 1,
+  _id: 1,
+})
+
 const participantsSchema =
   GameSchema.path<MongooseSchema.Types.Array>('participants')
 participantsSchema.discriminator(

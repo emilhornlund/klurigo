@@ -158,6 +158,86 @@ describe('GameRepository (e2e)', () => {
     })
   })
 
+  describe('transition recovery pagination', () => {
+    it('pages pending-operation games in stable order', async () => {
+      const date = new Date()
+      const operation = {
+        id: 'schedule-task-LOBBY-pending',
+        operation: 'schedule' as const,
+        taskId: 'task-1',
+        taskType: TaskType.Lobby,
+        taskStatus: 'pending' as const,
+      }
+      await gameModel.create([
+        {
+          ...buildMockGame('pending-a', buildMockLobbyTask(), date),
+          pendingTransitionOperations: [operation],
+        },
+        {
+          ...buildMockGame('pending-b', buildMockLobbyTask(), date),
+          pendingTransitionOperations: [{ ...operation, id: 'operation-b' }],
+        },
+        buildMockGame('pending-inactive', buildMockLobbyTask(), date),
+      ])
+
+      const firstPage =
+        await gameRepository.findGamesWithPendingTransitionOperations(
+          undefined,
+          1,
+        )
+      const secondPage =
+        await gameRepository.findGamesWithPendingTransitionOperations(
+          firstPage[0]._id,
+          1,
+        )
+
+      expect(firstPage.map(({ _id }) => _id)).toEqual(['pending-a'])
+      expect(secondPage.map(({ _id }) => _id)).toEqual(['pending-b'])
+    })
+
+    it('pages only overdue active games without pending recovery operations', async () => {
+      const date = new Date()
+      const expiredAt = new Date(Date.now() - ONE_SECOND)
+      const game = (gameId: string, pending = false) => {
+        const document = buildMockGame(gameId, buildMockLobbyTask(), date)
+        document.currentTask.currentTransitionExpires = expiredAt
+        if (pending) {
+          document.pendingTransitionOperations = [
+            {
+              id: `schedule-${gameId}`,
+              operation: 'schedule',
+              taskId: document.currentTask._id,
+              taskType: document.currentTask.type,
+              taskStatus: document.currentTask.status,
+            },
+          ]
+        }
+        return document
+      }
+      await gameModel.create([
+        game('overdue-a'),
+        game('overdue-b'),
+        game('overdue-pending', true),
+      ])
+
+      const firstPage =
+        await gameRepository.findGamesWithOverdueTaskTransitions(
+          new Date(),
+          undefined,
+          1,
+        )
+      const secondPage =
+        await gameRepository.findGamesWithOverdueTaskTransitions(
+          new Date(),
+          firstPage[0]._id,
+          1,
+        )
+
+      expect(firstPage.map(({ _id }) => _id)).toEqual(['overdue-a'])
+      expect(secondPage.map(({ _id }) => _id)).toEqual(['overdue-b'])
+    })
+  })
+
   describe('terminal answer cleanup', () => {
     it('selects legacy and incomplete terminal games in stable bounded pages', async () => {
       const date = new Date()
@@ -226,6 +306,13 @@ const buildMockLeaderboardTask = (): BaseTask & LeaderboardTask => ({
   status: 'active',
   questionIndex: 0,
   leaderboard: [],
+  created: new Date(),
+})
+
+const buildMockLobbyTask = (): BaseTask & LobbyTask => ({
+  _id: uuidv4(),
+  type: TaskType.Lobby,
+  status: 'pending',
   created: new Date(),
 })
 
