@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 
 import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
-import { expect } from '@playwright/test'
+import { expect, type Route } from '@playwright/test'
 
 import { createGameThroughPublicApi } from '../support/api/create-game-through-public-api'
 import { interruptActiveGameEventStream } from '../support/browser/interrupt-active-game-event-stream'
@@ -61,6 +61,90 @@ test.describe('Game session: player UI with simulated host', () => {
     )
     await page.getByRole('button', { name: 'Return home' }).click()
     await expect(page).toHaveURL('/')
+  })
+
+  test('recovers a missed game transition from the authoritative participant snapshot', async ({
+    page,
+    gameSessionFixture,
+    gameHost,
+  }) => {
+    const e2eHost = gameSessionFixture
+    const quiz = e2eHost.quizzes.classic
+    const question = quiz.questions[0]
+    if (question?.type !== QuestionType.MultiChoice) {
+      throw new Error('Expected the seeded question to be multi-choice')
+    }
+
+    const createdGame = await createGameThroughPublicApi({
+      apiBaseUrl: E2E_API_BASE_URL,
+      email: e2eHost.email,
+      password: E2E_USER_PASSWORD,
+      quizId: quiz.id,
+    })
+    await gameHost.authenticate(
+      { email: e2eHost.email, password: E2E_USER_PASSWORD },
+      { gameId: createdGame.id },
+    )
+    await gameHost.connect()
+    const lobbyEvent = await gameHost.waitForEvent(
+      GameEventType.GameLobbyHost,
+      (event) => event.game.id === createdGame.id,
+    )
+    const playerNickname = `ApiReconnect${randomUUID().slice(0, 8)}`
+
+    await page.goto(`/auth/game?pin=${encodeURIComponent(lobbyEvent.game.pin)}`)
+    await expect(page).toHaveURL('/join')
+    await page.locator('#default-nickname-textfield').fill(playerNickname)
+    await page.locator('#join').click()
+    await expect(
+      page.getByText('You’re in the waiting room', { exact: true }),
+    ).toBeVisible()
+
+    const hostQuestionPromise = gameHost.waitForEvent(
+      GameEventType.GameQuestionHost,
+      (event) => event.pagination.current === 1,
+    )
+    await gameHost.completeCurrentTask()
+    await hostQuestionPromise
+    await expect(page.getByText(question.text, { exact: true })).toBeVisible()
+
+    const eventStreamPattern = '**/games/*/events?*'
+    let reconnectAttemptStarted!: () => void
+    const reconnectAttempt = new Promise<void>((resolve) => {
+      reconnectAttemptStarted = resolve
+    })
+    const rejectFirstReconnect = async (route: Route) => {
+      reconnectAttemptStarted()
+      await route.fulfill({
+        status: 503,
+        contentType: 'application/json',
+        body: JSON.stringify({ message: 'Temporary test interruption' }),
+      })
+    }
+    await page.route(eventStreamPattern, rejectFirstReconnect)
+
+    try {
+      await interruptActiveGameEventStream(page)
+      await expect(
+        page.getByText('Reconnecting', { exact: true }),
+      ).toBeVisible()
+      await reconnectAttempt
+      await page.unroute(eventStreamPattern, rejectFirstReconnect)
+
+      const hostResultPromise = gameHost.waitForEvent(
+        GameEventType.GameResultHost,
+        (event) => event.pagination.current === 1,
+      )
+      await gameHost.completeCurrentTask()
+      const hostResult = await hostResultPromise
+      expect(hostResult.pagination).toEqual({ current: 1, total: 1 })
+
+      await expect(page.getByText('Connected', { exact: true })).toBeVisible()
+      await expect(page.getByText('Incorrect', { exact: true })).toBeVisible()
+      await expect(page.getByTestId('score-chip')).toBeVisible()
+    } finally {
+      await page.unroute(eventStreamPattern, rejectFirstReconnect)
+    }
   })
 
   test('completes a Classic game with one real player using a simulated host', async ({

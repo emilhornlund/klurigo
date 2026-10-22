@@ -16,12 +16,27 @@ import {
 } from '../exceptions'
 import { buildGameModel } from '../utils'
 
-import {
-  Game,
+import { Game, TaskType } from './models/schemas'
+import type {
   GameDocument,
+  PendingGameTransitionErrorCategory,
   PendingGameTransitionOperation,
-  TaskType,
 } from './models/schemas'
+
+type TerminalGameAnswerCleanupCandidate = Pick<Game, '_id' | 'status'> & {
+  currentTask: { _id: string }
+}
+
+export type PendingTransitionOperationFailure = {
+  attempts: number
+  createdAt: Date
+  lastAttemptAt: Date
+  lastErrorCategory: PendingGameTransitionErrorCategory
+  unresolvedForMs: number
+  shouldReport: boolean
+}
+
+class PendingTransitionOperationNotFoundError extends Error {}
 
 /**
  * Repository for interacting with the Game collection in the database.
@@ -162,20 +177,55 @@ export class GameRepository extends BaseRepository<Game> {
    * Finds live games with Redis work that was recorded alongside a persisted
    * transition but has not completed yet.
    */
-  public async findGamesWithPendingTransitionOperations(): Promise<
-    GameDocument[]
-  > {
+  public async findGamesWithPendingTransitionOperations(
+    afterGameId?: string,
+    limit = 100,
+  ): Promise<GameDocument[]> {
     try {
       return (await this.gameModel
         .find({
           status: { $in: [GameStatus.Active, GameStatus.Completed] },
           'pendingTransitionOperations.0': { $exists: true },
+          ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
         })
+        .sort({ _id: 1 })
+        .limit(limit)
         .populate('quiz')) as GameDocument[]
     } catch (error) {
       this.logger.error(
         structuredLog('Failed to find games with pending transitions.', {
           operation: 'findGamesWithPendingTransitionOperations',
+        }),
+        getErrorStack(error),
+      )
+      throw error
+    }
+  }
+
+  /**
+   * Finds active games whose persisted transition deadline has elapsed and
+   * which have no pending side effects that must be recovered first.
+   */
+  public async findGamesWithOverdueTaskTransitions(
+    now: Date = new Date(),
+    afterGameId?: string,
+    limit = 100,
+  ): Promise<GameDocument[]> {
+    try {
+      return (await this.gameModel
+        .find({
+          status: GameStatus.Active,
+          'currentTask.currentTransitionExpires': { $lte: now },
+          'pendingTransitionOperations.0': { $exists: false },
+          ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
+        })
+        .sort({ _id: 1 })
+        .limit(limit)
+        .populate('quiz')) as GameDocument[]
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to find overdue game task transitions.', {
+          operation: 'findGamesWithOverdueTaskTransitions',
         }),
         getErrorStack(error),
       )
@@ -191,17 +241,92 @@ export class GameRepository extends BaseRepository<Game> {
     gameID: string,
     operationId: PendingGameTransitionOperation['id'],
   ): Promise<void> {
-    await this.findAndSaveWithLockIfChanged(gameID, async (gameDocument) => {
-      const pendingOperations = gameDocument.pendingTransitionOperations ?? []
-      if (!pendingOperations.some(({ id }) => id === operationId)) {
+    await this.findAndSaveWithLockIfChanged(
+      gameID,
+      async (gameDocument) => {
+        const pendingOperations = gameDocument.pendingTransitionOperations ?? []
+        if (!pendingOperations.some(({ id }) => id === operationId)) {
+          return undefined
+        }
+
+        gameDocument.pendingTransitionOperations = pendingOperations.filter(
+          ({ id }) => id !== operationId,
+        )
+        return gameDocument
+      },
+      false,
+    )
+  }
+
+  /**
+   * Persists a failed recovery attempt without changing the game's gameplay
+   * version or update timestamp. A single persisted alert marker prevents the
+   * five-second recovery loop from repeatedly reporting the same old failure.
+   */
+  public async recordPendingTransitionOperationFailure(
+    gameID: string,
+    operationId: PendingGameTransitionOperation['id'],
+    errorCategory: PendingGameTransitionErrorCategory,
+    reportAfterMs: number,
+    now: Date = new Date(),
+  ): Promise<PendingTransitionOperationFailure | undefined> {
+    let failure: PendingTransitionOperationFailure | undefined
+    try {
+      await this.findAndSaveWithLock(
+        gameID,
+        async (gameDocument) => {
+          const pendingOperations =
+            gameDocument.pendingTransitionOperations ?? []
+          const existingOperation = pendingOperations.find(
+            ({ id }) => id === operationId,
+          )
+          if (!existingOperation) {
+            throw new PendingTransitionOperationNotFoundError()
+          }
+
+          const createdAt =
+            existingOperation.createdAt ?? gameDocument.updated ?? now
+          const attempts = (existingOperation.attempts ?? 0) + 1
+          const unresolvedForMs = Math.max(
+            0,
+            now.getTime() - createdAt.getTime(),
+          )
+          const shouldReport =
+            existingOperation.alertedAt === undefined &&
+            unresolvedForMs >= reportAfterMs
+          const updatedOperation: PendingGameTransitionOperation = {
+            ...existingOperation,
+            createdAt,
+            attempts,
+            lastAttemptAt: now,
+            lastErrorCategory: errorCategory,
+            ...(shouldReport ? { alertedAt: now } : {}),
+          }
+
+          gameDocument.pendingTransitionOperations = pendingOperations.map(
+            (operation) =>
+              operation.id === operationId ? updatedOperation : operation,
+          )
+          failure = {
+            attempts,
+            createdAt,
+            lastAttemptAt: now,
+            lastErrorCategory: errorCategory,
+            unresolvedForMs,
+            shouldReport,
+          }
+          return gameDocument
+        },
+        false,
+      )
+    } catch (error) {
+      if (error instanceof PendingTransitionOperationNotFoundError) {
         return undefined
       }
+      throw error
+    }
 
-      gameDocument.pendingTransitionOperations = pendingOperations.filter(
-        ({ id }) => id !== operationId,
-      )
-      return gameDocument
-    })
+    return failure
   }
 
   /**
@@ -265,6 +390,7 @@ export class GameRepository extends BaseRepository<Game> {
    *
    * @param {string} gameID - The ID of the game to find and update.
    * @param {Function} callback - A callback function to modify the game document.
+   * @param updateGameplayVersion - Whether to update gameplay version and timestamps.
    *
    * @returns {Promise<GameDocument>} A promise that resolves to the updated `GameDocument`.
    *
@@ -274,8 +400,9 @@ export class GameRepository extends BaseRepository<Game> {
   public async findAndSaveWithLock(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
-    return this.findAndSaveLocked(gameID, callback)
+    return this.findAndSaveLocked(gameID, callback, updateGameplayVersion)
   }
 
   /**
@@ -287,13 +414,15 @@ export class GameRepository extends BaseRepository<Game> {
   public async findAndSaveWithLockIfChanged(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
-    return this.findAndSaveLocked(gameID, callback)
+    return this.findAndSaveLocked(gameID, callback, updateGameplayVersion)
   }
 
   private async findAndSaveLocked(
     gameID: string,
     callback: (gameDocument: GameDocument) => Promise<GameDocument | undefined>,
+    updateGameplayVersion = true,
   ): Promise<GameDocument> {
     const gameDocument = await this.findGameByIDWithStatusesOrThrow(gameID, [
       GameStatus.Active,
@@ -305,8 +434,10 @@ export class GameRepository extends BaseRepository<Game> {
       return gameDocument
     }
 
-    updatedGameDocument.updated = new Date()
-    updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
+    if (updateGameplayVersion) {
+      updatedGameDocument.updated = new Date()
+      updatedGameDocument.version = (updatedGameDocument.version ?? 0) + 1
+    }
     return await updatedGameDocument.save()
   }
 
@@ -453,6 +584,18 @@ export class GameRepository extends BaseRepository<Game> {
     const gamePIN = await this.generateUniqueGamePIN()
 
     const game = buildGameModel(quiz, gamePIN, user, buildLobbyTask())
+    const { currentTask } = game
+    game.pendingTransitionOperations = [
+      {
+        id: `schedule-${game._id}-${currentTask._id}-${currentTask.type}-${currentTask.status}`,
+        operation: 'schedule',
+        taskId: currentTask._id,
+        taskType: currentTask.type,
+        taskStatus: currentTask.status,
+        createdAt: game.created,
+        attempts: 0,
+      },
+    ]
 
     return (await this.create(game)) as GameDocument
   }
@@ -504,6 +647,58 @@ export class GameRepository extends BaseRepository<Game> {
       gameDocument.status = GameStatus.Expired
       return true
     })
+  }
+
+  /**
+   * Finds a bounded page of terminal games whose transient answer state has not
+   * been cleared. Missing markers remain eligible so historical terminal games
+   * are cleaned up after this feature is deployed.
+   */
+  public async findTerminalGamesPendingAnswerCleanup(
+    afterGameId: string | undefined,
+    limit: number,
+  ): Promise<TerminalGameAnswerCleanupCandidate[]> {
+    const filter: QueryFilter<Game> = {
+      status: {
+        $in: [GameStatus.Completed, GameStatus.Expired, GameStatus.Terminated],
+      },
+      transientAnswerStateCleared: { $ne: true },
+      ...(afterGameId ? { _id: { $gt: afterGameId } } : {}),
+    }
+
+    return (await this.gameModel
+      .find(filter)
+      .select({ _id: 1, status: 1, 'currentTask._id': 1 })
+      .sort({ _id: 1 })
+      .limit(limit)
+      .exec()) as TerminalGameAnswerCleanupCandidate[]
+  }
+
+  /**
+   * Marks transient answer cleanup complete only while the game remains
+   * terminal and still eligible for cleanup.
+   */
+  public async markTerminalGameAnswerStateCleared(
+    gameId: string,
+  ): Promise<boolean> {
+    const result = await this.gameModel
+      .updateOne(
+        {
+          _id: gameId,
+          status: {
+            $in: [
+              GameStatus.Completed,
+              GameStatus.Expired,
+              GameStatus.Terminated,
+            ],
+          },
+          transientAnswerStateCleared: { $ne: true },
+        },
+        { $set: { transientAnswerStateCleared: true } },
+      )
+      .exec()
+
+    return result.modifiedCount === 1
   }
 
   /**

@@ -8,6 +8,17 @@ import { getErrorStack, structuredLog } from '../../../app/utils'
 
 import { QuestionTaskAnswer } from './models/schemas'
 
+const SUBMIT_ANSWER_LUA = `
+local accepted = redis.call('HSETNX', KEYS[1], ARGV[1], ARGV[2])
+if accepted == 0 then
+  return {0}
+end
+
+local answerCount = redis.call('HLEN', KEYS[1])
+redis.call('EXPIRE', KEYS[1], ARGV[3])
+return {1, answerCount}
+`
+
 /**
  * Repository for storing and retrieving current-question answers for a game in Redis.
  *
@@ -45,13 +56,9 @@ export class GameAnswerRepository {
    * Submits an answer if the player has not already answered for the current question.
    *
    * Uses a Redis Hash to enforce one answer per player:
-   * - `HSETNX` returns `1` only for the first submission by the given `playerId`.
-   * - The claim and answer value are one Redis operation, so a failed retry cannot
-   *   leave a submission marker without its answer (or append a second answer).
-   *
-   * On acceptance, the answer count is the hash field count and the answer key's
-   * TTL is refreshed. A committed answer remains the source of truth if a later
-   * Redis operation or the HTTP response fails, so retries are safely rejected.
+   * A Lua script atomically claims the player field, calculates the accepted
+   * answer count, and refreshes the answer key's TTL. A committed answer remains
+   * the source of truth if the response is lost, so retries are safely rejected.
    *
    * @param gameId - Game identifier used to resolve Redis keys.
    * @param answer - Answer payload to persist.
@@ -71,22 +78,28 @@ export class GameAnswerRepository {
 
     try {
       const serialized = this.serialize(answer)
-      const added = await this.redis.hsetnx(
+      const result = (await this.redis.eval(
+        SUBMIT_ANSWER_LUA,
+        1,
         answersKey,
         answer.playerId,
         serialized,
-      )
-      if (added === 0) {
+        GameAnswerRepository.ANSWER_TTL_SECONDS,
+      )) as number[]
+
+      if (result.length === 1 && result[0] === 0) {
         return { accepted: false }
       }
 
-      const answerCount = await this.redis.hlen(answersKey)
-      await this.redis.expire(
-        answersKey,
-        GameAnswerRepository.ANSWER_TTL_SECONDS,
-      )
+      if (
+        result.length !== 2 ||
+        result[0] !== 1 ||
+        typeof result[1] !== 'number'
+      ) {
+        throw new Error('Unexpected result from atomic question answer claim')
+      }
 
-      return { accepted: true, answerCount }
+      return { accepted: true, answerCount: result[1] }
     } catch (error) {
       this.logger.error(
         structuredLog('Failed to persist question answer.', {

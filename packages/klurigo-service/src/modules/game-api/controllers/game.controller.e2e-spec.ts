@@ -5,8 +5,12 @@ import {
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
+import { getQueueToken } from '@nestjs/bullmq'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
+import { Queue } from 'bullmq'
+import type { Redis } from 'ioredis'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -58,6 +62,10 @@ import {
   QuestionTaskWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
+import {
+  GameTaskTransitionScheduler,
+  TASK_QUEUE_NAME,
+} from '../../game-task/services'
 import { QuizService } from '../../quiz-api/services'
 import { User, UserModel } from '../../user/repositories'
 import { GameService } from '../services'
@@ -71,6 +79,15 @@ describe('GameController (e2e)', () => {
 
   let hostUser: User
   let playerUser: User
+
+  const createActiveQuestionTask = () => {
+    const now = new Date()
+    return createMockQuestionTaskDocument({
+      status: 'active',
+      currentTransitionInitiated: now,
+      currentTransitionExpires: new Date(now.getTime() + 30_000),
+    })
+  }
 
   beforeAll(async () => {
     app = await createTestApp()
@@ -1457,6 +1474,54 @@ describe('GameController (e2e)', () => {
     })
   })
 
+  describe('overdue task transition recovery', () => {
+    it('recovers a persisted overdue task after its BullMQ job is missing', async () => {
+      const { id: quizId } = await quizService.createQuiz(
+        createMockClassicQuizRequestDto(),
+        hostUser,
+      )
+      const { id: gameId } = await gameService.createGame(quizId, hostUser)
+      const game = await gameModel.findById(gameId).exec()
+      if (!game) throw new Error(`Expected created game ${gameId}`)
+
+      const jobId = `transition-${game.currentTask._id}_${game.currentTask.type}_${game.currentTask.status}`
+      const queue = app.get<Queue>(getQueueToken(TASK_QUEUE_NAME))
+      await queue.remove(jobId)
+      const overdueAt = new Date(Date.now() - 1_000)
+      await gameModel
+        .updateOne(
+          { _id: gameId },
+          {
+            'currentTask.currentTransitionInitiated': new Date(
+              overdueAt.getTime() - 3_000,
+            ),
+            'currentTask.currentTransitionExpires': overdueAt,
+          },
+        )
+        .exec()
+
+      await expect(queue.getJob(jobId)).resolves.toBeUndefined()
+
+      const scheduler = app.get(GameTaskTransitionScheduler)
+      await scheduler.recoverPendingTransitionOperations()
+
+      const recovered = await gameModel.findById(gameId).exec()
+      expect(recovered?.currentTask._id).toBe(game.currentTask._id)
+      expect(recovered?.currentTask.type).toBe(TaskType.Lobby)
+      expect(recovered?.currentTask.status).toBe('active')
+      expect(recovered?.pendingTransitionOperations ?? []).toEqual([])
+      await expect(queue.getJob(jobId)).resolves.toBeUndefined()
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      const recoveredAgain = await gameModel.findById(gameId).exec()
+      expect(recoveredAgain?.currentTask._id).toBe(game.currentTask._id)
+      expect(recoveredAgain?.currentTask.type).toBe(TaskType.Lobby)
+      expect(recoveredAgain?.currentTask.status).toBe('active')
+      expect(recoveredAgain?.pendingTransitionOperations ?? []).toEqual([])
+    })
+  })
+
   describe('/api/games/:gameID/answers (POST)', () => {
     const submitAnswer = (
       accessToken: string,
@@ -1467,6 +1532,32 @@ describe('GameController (e2e)', () => {
         .post(`/api/games/${gameId}/answers`)
         .set(createBearerAuthHeader(accessToken))
         .send({ type: QuestionType.MultiChoice, optionIndex })
+
+    const createActiveAnswerGame = async (additionalPlayers: User[] = []) => {
+      const task = createActiveQuestionTask()
+      const game = await gameModel.create(
+        createMockGameDocument({
+          questions: [createMockMultiChoiceQuestionDocument({ duration: 30 })],
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+            }),
+            ...additionalPlayers.map((user) =>
+              createMockGamePlayerParticipantDocument({
+                participantId: user._id,
+                nickname: user.defaultNickname,
+              }),
+            ),
+          ],
+          currentTask: task,
+        }),
+      )
+
+      return { game, task }
+    }
 
     it('should return 400 when a required answer field is missing', async () => {
       const game = await gameModel.create(
@@ -1480,7 +1571,7 @@ describe('GameController (e2e)', () => {
               participantId: playerUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1515,7 +1606,7 @@ describe('GameController (e2e)', () => {
               participantId: playerUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1547,7 +1638,7 @@ describe('GameController (e2e)', () => {
               participantId: hostUser._id,
             }),
           ],
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createActiveQuestionTask(),
         }),
       )
 
@@ -1658,7 +1749,7 @@ describe('GameController (e2e)', () => {
     })
 
     it('should reject a retry and concurrent duplicate without storing another answer', async () => {
-      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const task = createActiveQuestionTask()
       const game = await gameModel.create(
         createMockGameDocument({
           questions: [createMockMultiChoiceQuestionDocument()],
@@ -1713,6 +1804,8 @@ describe('GameController (e2e)', () => {
       const task = createMockQuestionTaskDocument({
         status: 'active',
         presented: new Date(),
+        currentTransitionInitiated: new Date(),
+        currentTransitionExpires: new Date(Date.now() + 30_000),
       })
       const game = await gameModel.create(
         createMockGameDocument({
@@ -1798,6 +1891,203 @@ describe('GameController (e2e)', () => {
       }
     })
 
+    it('leaves no answer marker after Redis fails before the claim and accepts a retry', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const redis = app.get<Redis>(getRedisConnectionToken())
+      const claim = jest
+        .spyOn(redis, 'eval')
+        .mockRejectedValueOnce(new Error('simulated claim failure'))
+
+      try {
+        await submitAnswer(accessToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body).toMatchObject({
+              status: 503,
+              message: `Redis unavailable while persisting a question answer for game ${game._id} task ${task._id}`,
+            })
+          })
+      } finally {
+        claim.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([])
+
+      await submitAnswer(accessToken, game._id).expect(204)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([
+        expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+      ])
+    })
+
+    it('keeps a committed Redis claim as the duplicate source when the EVAL reply is lost', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const accessToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const redis = app.get<Redis>(getRedisConnectionToken())
+      const originalEval = redis.eval.bind(redis)
+      const answerCount = jest
+        .spyOn(redis, 'eval')
+        .mockImplementationOnce(
+          async (
+            script: string,
+            numberOfKeys: number,
+            key: string,
+            field: string,
+            serialized: string,
+            ttl: number,
+          ) => {
+            await originalEval(
+              script,
+              numberOfKeys,
+              key,
+              field,
+              serialized,
+              ttl,
+            )
+            throw new Error('simulated lost EVAL response')
+          },
+        )
+
+      try {
+        await submitAnswer(accessToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body).toMatchObject({
+              status: 503,
+              message: `Redis unavailable while persisting a question answer for game ${game._id} task ${task._id}`,
+            })
+          })
+      } finally {
+        answerCount.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toEqual([
+        expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+      ])
+
+      await submitAnswer(accessToken, game._id)
+        .expect(400)
+        .expect((response) => {
+          expect(response.body).toHaveProperty(
+            'message',
+            'Answer already provided',
+          )
+        })
+
+      const persistedGame = await gameModel.findById(game._id).exec()
+      expect(persistedGame?.currentTask).toMatchObject({
+        _id: task._id,
+        type: TaskType.Question,
+        status: 'active',
+      })
+      expect(persistedGame?.previousTasks).toEqual([])
+      expect(persistedGame?.participants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            participantId: playerUser._id,
+            totalScore: 0,
+          }),
+        ]),
+      )
+    })
+
+    it('keeps accepted answers persisted when queue inspection fails after the final claim', async () => {
+      const secondPlayerUser = await userModel.create(buildMockTertiaryUser())
+      const { game, task } = await createActiveAnswerGame([secondPlayerUser])
+      const firstToken = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const secondToken = await authenticateGame(
+        app,
+        game._id,
+        secondPlayerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      const queue = app.get<Queue>(getQueueToken(TASK_QUEUE_NAME))
+
+      await submitAnswer(firstToken, game._id).expect(204)
+      const queueInspection = jest
+        .spyOn(queue, 'getJob')
+        .mockRejectedValueOnce(new Error('simulated queue inspection failure'))
+      try {
+        await submitAnswer(secondToken, game._id)
+          .expect(503)
+          .expect((response) => {
+            expect(response.body.message).toBe(
+              `Redis unavailable while inspecting the task transition queue for game ${game._id}`,
+            )
+          })
+      } finally {
+        queueInspection.mockRestore()
+      }
+
+      const answerRepository = app.get(GameAnswerRepository)
+      const acceptedAnswers = await answerRepository.findAllAnswersByGameId(
+        game._id,
+        task._id,
+      )
+      expect(acceptedAnswers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ playerId: playerUser._id, answer: 0 }),
+          expect.objectContaining({
+            playerId: secondPlayerUser._id,
+            answer: 0,
+          }),
+        ]),
+      )
+      expect(acceptedAnswers).toHaveLength(2)
+
+      const persistedGame = await gameModel.findById(game._id).exec()
+      expect(persistedGame?.currentTask).toMatchObject({
+        _id: task._id,
+        type: TaskType.Question,
+        status: 'active',
+      })
+      expect(persistedGame?.pendingTransitionOperations ?? []).toEqual([])
+      expect(persistedGame?.previousTasks).toEqual([])
+      expect(persistedGame?.participants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            participantId: playerUser._id,
+            totalScore: 0,
+          }),
+          expect.objectContaining({
+            participantId: secondPlayerUser._id,
+            totalScore: 0,
+          }),
+        ]),
+      )
+
+      await submitAnswer(firstToken, game._id).expect(400)
+      await submitAnswer(secondToken, game._id).expect(400)
+      await expect(
+        answerRepository.findAllAnswersByGameId(game._id, task._id),
+      ).resolves.toHaveLength(2)
+    })
+
     it('should reject a submission after question closure without persisting it', async () => {
       const task = createMockQuestionTaskDocument({ status: 'completed' })
       const game = await gameModel.create(
@@ -1839,7 +2129,7 @@ describe('GameController (e2e)', () => {
     })
 
     it('should resolve a submission racing with closure to either the closed question or a late rejection', async () => {
-      const task = createMockQuestionTaskDocument({ status: 'active' })
+      const task = createActiveQuestionTask()
       const game = await gameModel.create(
         createMockGameDocument({
           questions: [createMockMultiChoiceQuestionDocument({ duration: 0 })],
@@ -1868,34 +2158,65 @@ describe('GameController (e2e)', () => {
         GameParticipantType.HOST,
       )
 
-      const [answerResponse, closeResponse] = await Promise.all([
-        submitAnswer(playerToken, game._id),
-        supertest(app.getHttpServer())
-          .post(`/api/games/${game._id}/tasks/current/complete`)
-          .set(createBearerAuthHeader(hostToken)),
-      ])
-
-      expect(closeResponse.status).toBe(204)
-      expect([204, 400]).toContain(answerResponse.status)
-
-      const updated = await gameModel.findById(game._id).exec()
-      expect(updated).toBeDefined()
-      const previousQuestion = updated?.previousTasks.find(
-        (previousTask) => previousTask._id === task._id,
-      ) as QuestionTaskWithBase
-      expect(previousQuestion).toEqual(
-        expect.objectContaining({
-          _id: task._id,
-          type: TaskType.Question,
-          status: 'completed',
-        }),
+      const answerRepository = app.get(GameAnswerRepository)
+      const submitOnce = answerRepository.submitOnce.bind(answerRepository)
+      let signalAnswerPersisted!: () => void
+      const answerPersisted = new Promise<void>((resolve) => {
+        signalAnswerPersisted = resolve
+      })
+      let releaseAnswer!: () => void
+      const answerGate = new Promise<void>((resolve) => {
+        releaseAnswer = resolve
+      })
+      const delayedAnswer = jest
+        .spyOn(answerRepository, 'submitOnce')
+        .mockImplementation(async (...args) => {
+          const result = await submitOnce(...args)
+          signalAnswerPersisted()
+          await answerGate
+          return result
+        })
+      const answerResponse = submitAnswer(playerToken, game._id).then(
+        (response) => response,
       )
 
-      if (answerResponse.status === 204) {
-        expect(previousQuestion.answers).toHaveLength(1)
-        expect(previousQuestion.answers[0].playerId).toBe(playerUser._id)
-      } else {
-        expect(previousQuestion.answers).toHaveLength(0)
+      try {
+        await answerPersisted
+        const closeResponse = supertest(app.getHttpServer())
+          .post(`/api/games/${game._id}/tasks/current/complete`)
+          .set(createBearerAuthHeader(hostToken))
+          .then((response) => response)
+        releaseAnswer()
+        const [submitted, closed] = await Promise.all([
+          answerResponse,
+          closeResponse,
+        ])
+
+        expect(submitted.status).toBe(204)
+        expect(closed.status).toBe(204)
+
+        const updated = await gameModel.findById(game._id).exec()
+        expect(updated).toBeDefined()
+        const previousQuestion = updated?.previousTasks.find(
+          (previousTask) => previousTask._id === task._id,
+        ) as QuestionTaskWithBase
+        expect(previousQuestion).toEqual(
+          expect.objectContaining({
+            _id: task._id,
+            type: TaskType.Question,
+            status: 'completed',
+            answers: [
+              expect.objectContaining({
+                playerId: playerUser._id,
+                answer: 0,
+              }),
+            ],
+          }),
+        )
+      } finally {
+        releaseAnswer()
+        delayedAnswer.mockRestore()
+        await Promise.allSettled([answerResponse])
       }
     })
 

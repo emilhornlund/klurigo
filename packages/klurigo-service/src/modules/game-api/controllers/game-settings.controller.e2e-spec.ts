@@ -147,7 +147,11 @@ describe('GameSettingsController (e2e)', () => {
     it('should return 400 when game is not in lobby task', async () => {
       const game = await gameModel.create(
         createMockGameDocument({
-          currentTask: createMockQuestionTaskDocument({ status: 'active' }),
+          currentTask: createMockQuestionTaskDocument({
+            status: 'active',
+            currentTransitionInitiated: new Date(),
+            currentTransitionExpires: new Date(Date.now() + 30_000),
+          }),
           participants: [
             {
               participantId: hostUser._id,

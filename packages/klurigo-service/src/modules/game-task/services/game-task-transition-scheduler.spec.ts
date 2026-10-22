@@ -1,5 +1,8 @@
 import { GameStatus } from '@klurigo/common'
+import * as Sentry from '@sentry/nestjs'
 import { Job, Queue } from 'bullmq'
+import type Redis from 'ioredis'
+import { MurLockService } from 'murlock'
 
 import {
   GameAnswerRepository,
@@ -7,16 +10,50 @@ import {
 } from '../../game-core/repositories'
 import {
   GameDocument,
+  PendingGameTransitionOperation,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
 import { GameEventPublisher } from '../../game-event/services'
+
+jest.mock('@sentry/nestjs', () => ({ captureMessage: jest.fn() }))
 
 // The scheduler tests exercise business logic directly and do not need Redis.
 // Keep the decorator's serialization behavior for concurrency tests.
 jest.mock('murlock', () => {
   const locks = new Map<string, Promise<void>>()
+  const runWithLock = async <T>(
+    lockKey: string,
+    operation: () => Promise<T>,
+  ): Promise<T> => {
+    const previous = locks.get(lockKey) ?? Promise.resolve()
+    let release: () => void = () => undefined
+    const current = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    locks.set(lockKey, current)
+    await previous
+    try {
+      return await operation()
+    } finally {
+      release()
+      if (locks.get(lockKey) === current) locks.delete(lockKey)
+    }
+  }
+  class MurLockService {
+    options = { autoExtend: false }
+
+    async runWithLock<T>(
+      lockKey: string,
+      _releaseTime = 0,
+      operation: () => Promise<T> = async () => undefined as T,
+    ): Promise<T> {
+      void _releaseTime
+      return runWithLock(lockKey, operation)
+    }
+  }
 
   return {
+    MurLockService,
     MurLock:
       (...lockArgs: unknown[]) =>
       (
@@ -27,19 +64,7 @@ jest.mock('murlock', () => {
         const originalMethod = descriptor.value
         descriptor.value = async function (...args: unknown[]) {
           const lockKey = String(lockArgs[1] ?? 'default')
-          const previous = locks.get(lockKey) ?? Promise.resolve()
-          let release: () => void = () => undefined
-          const current = new Promise<void>((resolve) => {
-            release = resolve
-          })
-          locks.set(lockKey, current)
-          await previous
-          try {
-            return await originalMethod.apply(this, args)
-          } finally {
-            release()
-            if (locks.get(lockKey) === current) locks.delete(lockKey)
-          }
+          return runWithLock(lockKey, () => originalMethod.apply(this, args))
         }
         return descriptor
       },
@@ -48,9 +73,20 @@ jest.mock('murlock', () => {
 
 import {
   GameTaskTransitionScheduler,
+  OVERDUE_RECOVERY_CURSOR_KEY,
+  PENDING_RECOVERY_CURSOR_KEY,
   TASK_QUEUE_NAME,
+  TRANSITION_RECOVERY_BATCH_SIZE,
 } from './game-task-transition-scheduler'
 import { GameTaskTransitionService } from './game-task-transition.service'
+
+const createMockMurLockService = (): MurLockService => {
+  const service = Object.create(MurLockService.prototype) as MurLockService
+  Object.defineProperty(service, 'options', {
+    value: { autoExtend: false },
+  })
+  return service
+}
 
 describe('GameTaskTransitionScheduler', () => {
   const TASK_TRANSITION_JOB_NAME = TASK_QUEUE_NAME + 'transition'
@@ -60,13 +96,18 @@ describe('GameTaskTransitionScheduler', () => {
   let taskQueue: jest.Mocked<
     Pick<Queue<GameDocument, void, string>, 'getJob' | 'remove' | 'add'>
   >
+  let redis: jest.Mocked<Pick<Redis, 'get' | 'set' | 'del'>>
+  let recoveryCursors: Map<string, string>
   let gameRepository: jest.Mocked<
     Pick<
       GameRepository,
       | 'findAndSaveWithLock'
+      | 'findAndSaveWithLockIfChanged'
       | 'findGameByIDWithStatusesOrThrow'
       | 'findGamesWithPendingTransitionOperations'
+      | 'findGamesWithOverdueTaskTransitions'
       | 'clearPendingTransitionOperation'
+      | 'recordPendingTransitionOperationFailure'
     >
   >
   let gameAnswerRepository: jest.Mocked<Pick<GameAnswerRepository, 'clear'>>
@@ -77,6 +118,7 @@ describe('GameTaskTransitionScheduler', () => {
     >
   >
   let gameEventPublisher: jest.Mocked<Pick<GameEventPublisher, 'publish'>>
+  let saveGameWithLock: jest.Mock
 
   const logger = {
     log: jest.fn(),
@@ -95,6 +137,8 @@ describe('GameTaskTransitionScheduler', () => {
         shouldAutoCompleteQuestionResultTask: false,
         shouldAutoCompleteLeaderboardTask: false,
         shouldAutoCompletePodiumTask: false,
+        randomizeQuestionOrder: false,
+        randomizeAnswerOrder: false,
       },
       currentTask: {
         _id: 'task-1',
@@ -121,12 +165,27 @@ describe('GameTaskTransitionScheduler', () => {
       remove: jest.fn(),
       add: jest.fn(),
     }
+    saveGameWithLock = jest.fn()
+    recoveryCursors = new Map()
+    redis = {
+      get: jest.fn(async (key: string) => recoveryCursors.get(key) ?? null),
+      set: jest.fn(async (key: string, value: string) => {
+        recoveryCursors.set(key, value)
+        return 'OK'
+      }),
+      del: jest.fn(async (key: string) => Number(recoveryCursors.delete(key))),
+    } as unknown as jest.Mocked<Pick<Redis, 'get' | 'set' | 'del'>>
 
     gameRepository = {
-      findAndSaveWithLock: jest.fn(),
+      findAndSaveWithLock: saveGameWithLock,
+      findAndSaveWithLockIfChanged: saveGameWithLock,
       findGameByIDWithStatusesOrThrow: jest.fn(),
       findGamesWithPendingTransitionOperations: jest.fn(),
+      findGamesWithOverdueTaskTransitions: jest.fn().mockResolvedValue([]),
       clearPendingTransitionOperation: jest.fn().mockResolvedValue(undefined),
+      recordPendingTransitionOperationFailure: jest
+        .fn()
+        .mockResolvedValue(undefined),
     }
 
     gameAnswerRepository = {
@@ -144,14 +203,88 @@ describe('GameTaskTransitionScheduler', () => {
 
     scheduler = new GameTaskTransitionScheduler(
       taskQueue as unknown as Queue<GameDocument, void, string>,
+      redis as unknown as Redis,
       gameRepository as unknown as GameRepository,
       gameAnswerRepository as unknown as GameAnswerRepository,
       gameTaskTransitionService as unknown as GameTaskTransitionService,
       gameEventPublisher as unknown as GameEventPublisher,
     )
+    ;(scheduler as any).murlockServiceDecorator = createMockMurLockService()
     ;(scheduler as any).logger = logger
 
     jest.clearAllMocks()
+  })
+
+  describe('onTaskTransitionJobFailed', () => {
+    const makeJob = (attemptsMade: number) =>
+      ({
+        id: 'transition-job-1',
+        name: TASK_TRANSITION_JOB_NAME,
+        attemptsMade,
+        opts: { attempts: 5 },
+        data: buildGameDocument(undefined, {
+          type: TaskType.Question,
+          status: 'active',
+        }),
+      }) as Job<GameDocument, void, string>
+
+    it('keeps retryable failures out of error reporting and Sentry', () => {
+      const captureMessage = Sentry.captureMessage as jest.Mock
+
+      scheduler.onTaskTransitionJobFailed(
+        makeJob(2),
+        new Error('sensitive payload must not be logged'),
+      )
+
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Task transition failed and will be retried.',
+          attempts: 2,
+          maxAttempts: 5,
+          errorCategory: 'unexpected',
+        }),
+      )
+      expect(logger.log).not.toHaveBeenCalled()
+      expect(logger.error).not.toHaveBeenCalled()
+      expect(captureMessage).not.toHaveBeenCalled()
+    })
+
+    it('reports an exhausted job with safe IDs, attempts, and bounded error category', () => {
+      const captureMessage = Sentry.captureMessage as jest.Mock
+
+      scheduler.onTaskTransitionJobFailed(
+        makeJob(5),
+        new Error('sensitive payload must not be logged'),
+      )
+
+      expect(logger.log).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Game task transition job exhausted its retries.',
+          gameId: 'game-1',
+          taskId: 'task-1',
+          jobId: 'transition-job-1',
+          attempts: 5,
+          maxAttempts: 5,
+          errorCategory: 'unexpected',
+        }),
+      )
+      expect(JSON.stringify(logger.log.mock.calls[0]?.[0])).not.toContain(
+        'sensitive payload must not be logged',
+      )
+      expect(captureMessage).toHaveBeenCalledWith(
+        'Game task transition job exhausted its retries.',
+        expect.objectContaining({
+          level: 'error',
+          fingerprint: ['task-transition-job', 'transition-job-1'],
+          extra: expect.objectContaining({
+            gameId: 'game-1',
+            taskId: 'task-1',
+            attempts: 5,
+            maxAttempts: 5,
+          }),
+        }),
+      )
+    })
   })
 
   describe('setTransitionTiming', () => {
@@ -256,13 +389,18 @@ describe('GameTaskTransitionScheduler', () => {
         callback,
       )
 
-      taskQueue.getJob.mockResolvedValue({ id: 'job-1' } as any)
+      taskQueue.getJob.mockResolvedValue({
+        id: 'job-1',
+        getState: jest.fn().mockResolvedValue('delayed'),
+      } as any)
 
       const performTransitionSpy = jest
         .spyOn(scheduler as any, 'performTransition')
         .mockResolvedValue(undefined)
 
-      await scheduler.scheduleTaskTransition(game)
+      await scheduler.scheduleTaskTransition(game, {
+        forceActiveCompletion: true,
+      })
 
       expect(taskQueue.getJob).toHaveBeenCalledTimes(1)
       expect(taskQueue.remove).toHaveBeenCalledTimes(1)
@@ -276,6 +414,51 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
     })
 
+    it('performs explicit host completion immediately when no queue job exists', async () => {
+      const game = buildGameDocument(undefined, { status: 'active' })
+      const callback = jest.fn().mockResolvedValue(undefined)
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        callback,
+      )
+      taskQueue.getJob.mockResolvedValue(undefined)
+      const performTransitionSpy = jest
+        .spyOn(scheduler as any, 'performTransition')
+        .mockResolvedValue(undefined)
+
+      await scheduler.scheduleTaskTransition(game, {
+        forceActiveCompletion: true,
+      })
+
+      expect(performTransitionSpy).toHaveBeenCalledWith(
+        game,
+        'completed',
+        callback,
+      )
+      expect(taskQueue.add).not.toHaveBeenCalled()
+    })
+
+    it('keeps answer-driven completion deferred when the active task has no queue job', async () => {
+      const game = buildGameDocument(undefined, { status: 'active' })
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      saveGameWithLock.mockImplementationOnce(
+        async (_id, mutate) => (await mutate(game)) as GameDocument,
+      )
+      const performTransitionSpy = jest
+        .spyOn(scheduler as any, 'performTransition')
+        .mockResolvedValue(undefined)
+
+      await scheduler.scheduleTaskTransition(game, {
+        completeActiveTaskWhenJobExists: true,
+      })
+
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(performTransitionSpy).not.toHaveBeenCalled()
+    })
+
     it('skips scheduling when an existing transition job exists and status is not active', async () => {
       const game = buildGameDocument(undefined, {
         status: 'pending',
@@ -287,7 +470,10 @@ describe('GameTaskTransitionScheduler', () => {
         jest.fn().mockResolvedValue(undefined),
       )
 
-      taskQueue.getJob.mockResolvedValue({ id: 'job-1' } as any)
+      taskQueue.getJob.mockResolvedValue({
+        id: 'job-1',
+        getState: jest.fn().mockResolvedValue('delayed'),
+      } as any)
 
       const performTransitionSpy = jest
         .spyOn(scheduler as any, 'performTransition')
@@ -303,14 +489,19 @@ describe('GameTaskTransitionScheduler', () => {
       expect(scheduleDeferredSpy).not.toHaveBeenCalled()
       expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
-      expect(logger.warn).toHaveBeenCalledTimes(1)
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Existing task transition job satisfies scheduling.',
+          jobState: 'delayed',
+        }),
+      )
     })
 
     it('schedules a pending task when timing exists but its transition job is missing', async () => {
       const game = buildGameDocument(undefined, {
         status: 'pending',
-        currentTransitionInitiated: new Date('2026-09-11T12:00:00Z'),
-        currentTransitionExpires: new Date('2026-09-11T12:00:05Z'),
+        currentTransitionInitiated: new Date(),
+        currentTransitionExpires: new Date(Date.now() + 5_000),
       })
 
       gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
@@ -333,7 +524,10 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
       expect(taskQueue.add).toHaveBeenCalledTimes(1)
-      expect(taskQueue.add.mock.calls[0][2]).toMatchObject({ delay: 5_000 })
+      const scheduledOptions = taskQueue.add.mock.calls[0][2]
+      expect(scheduledOptions).toMatchObject({ delay: expect.any(Number) })
+      expect(scheduledOptions?.delay).toBeGreaterThan(0)
+      expect(scheduledOptions?.delay).toBeLessThanOrEqual(5_000)
     })
 
     it('serializes concurrent recovery scheduling for the same pending task', async () => {
@@ -345,7 +539,12 @@ describe('GameTaskTransitionScheduler', () => {
       )
       gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
       taskQueue.getJob.mockImplementation(async () =>
-        hasJob ? ({ id: 'job-1' } as any) : undefined,
+        hasJob
+          ? ({
+              id: 'job-1',
+              getState: jest.fn().mockResolvedValue('delayed'),
+            } as any)
+          : undefined,
       )
       taskQueue.add.mockImplementation(async () => {
         hasJob = true
@@ -534,9 +733,50 @@ describe('GameTaskTransitionScheduler', () => {
       )
 
       expect(scheduleDeferredSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleDeferredSpy).toHaveBeenCalledWith(game, 5_000, 'active')
+      expect(scheduleDeferredSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ _id: game._id }),
+        5_000,
+        'active',
+      )
 
       expect(performTransitionSpy).not.toHaveBeenCalled()
+    })
+
+    it('retains the persisted recovery operation when event publication fails', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        jest.fn().mockResolvedValue(undefined),
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValue(undefined)
+
+      let savedDocument: GameDocument | undefined
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const doc = buildGameDocument(
+            { _id: game._id },
+            { ...game.currentTask },
+          )
+          savedDocument = (await mutator(doc as any)) as GameDocument
+          return savedDocument
+        },
+      )
+      const publicationError = new Error('Redis unavailable')
+      gameEventPublisher.publish.mockRejectedValueOnce(publicationError)
+
+      await expect(scheduler.scheduleTaskTransition(game)).rejects.toBe(
+        publicationError,
+      )
+
+      expect(savedDocument?.pendingTransitionOperations).toEqual([
+        expect.objectContaining({
+          operation: 'schedule',
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        }),
+      ])
+      expect(taskQueue.add).not.toHaveBeenCalled()
     })
 
     it('persists transition timestamps, publishes, and performs immediate transition when delay <= 0 and no existing job', async () => {
@@ -625,11 +865,152 @@ describe('GameTaskTransitionScheduler', () => {
           'Redis unavailable while scheduling a deferred task transition for game game-1',
       })
 
-      expect(logger.error).toHaveBeenCalledTimes(1)
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to schedule deferred task transition.',
+          errorCategory: 'unexpected',
+        }),
+      )
     })
   })
 
   describe('recoverPendingTransitionOperations', () => {
+    it('serializes recovery calls made by separate scheduler instances', async () => {
+      let signalFirstQuery!: () => void
+      const firstQueryStarted = new Promise<void>((resolve) => {
+        signalFirstQuery = resolve
+      })
+      let releaseFirstQuery!: () => void
+      const firstQueryGate = new Promise<void>((resolve) => {
+        releaseFirstQuery = resolve
+      })
+      gameRepository.findGamesWithPendingTransitionOperations
+        .mockImplementationOnce(async () => {
+          signalFirstQuery()
+          await firstQueryGate
+          return []
+        })
+        .mockResolvedValueOnce([])
+
+      const secondScheduler = new GameTaskTransitionScheduler(
+        taskQueue as unknown as Queue<GameDocument, void, string>,
+        redis as unknown as Redis,
+        gameRepository as unknown as GameRepository,
+        gameAnswerRepository as unknown as GameAnswerRepository,
+        gameTaskTransitionService as unknown as GameTaskTransitionService,
+        gameEventPublisher as unknown as GameEventPublisher,
+      )
+      ;(secondScheduler as any).logger = logger
+      ;(secondScheduler as any).murlockServiceDecorator =
+        createMockMurLockService()
+
+      const firstRun = scheduler.recoverPendingTransitionOperations()
+      try {
+        await firstQueryStarted
+        const secondRun = secondScheduler.recoverPendingTransitionOperations()
+        await Promise.resolve()
+        expect(
+          gameRepository.findGamesWithPendingTransitionOperations,
+        ).toHaveBeenCalledTimes(1)
+
+        releaseFirstQuery()
+        await Promise.all([firstRun, secondRun])
+        expect(
+          gameRepository.findGamesWithPendingTransitionOperations,
+        ).toHaveBeenCalledTimes(2)
+      } finally {
+        releaseFirstQuery()
+        await Promise.allSettled([firstRun])
+      }
+    })
+
+    it('processes recovery pages with a shared cursor and advances past failed games', async () => {
+      const firstPage = Array.from(
+        { length: TRANSITION_RECOVERY_BATCH_SIZE },
+        (_, index) =>
+          buildGameDocument({ _id: `game-${String(index).padStart(3, '0')}` }),
+      )
+      const secondPage = [buildGameDocument({ _id: 'game-100' })]
+      gameRepository.findGamesWithPendingTransitionOperations
+        .mockResolvedValueOnce(firstPage)
+        .mockResolvedValueOnce(secondPage)
+      const recoverGame = jest
+        .spyOn(scheduler as any, 'recoverPendingTransitionOperationsForGame')
+        .mockRejectedValueOnce(new Error('temporary Redis failure'))
+        .mockResolvedValue(undefined)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(
+        gameRepository.findGamesWithPendingTransitionOperations,
+      ).toHaveBeenNthCalledWith(1, undefined, TRANSITION_RECOVERY_BATCH_SIZE)
+      expect(recoverGame).toHaveBeenCalledTimes(TRANSITION_RECOVERY_BATCH_SIZE)
+      expect(redis.set).toHaveBeenCalledWith(
+        PENDING_RECOVERY_CURSOR_KEY,
+        'game-099',
+      )
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Pending game transition recovery will retry.',
+          gameId: 'game-000',
+        }),
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(
+        gameRepository.findGamesWithPendingTransitionOperations,
+      ).toHaveBeenNthCalledWith(2, 'game-099', TRANSITION_RECOVERY_BATCH_SIZE)
+      expect(recoverGame).toHaveBeenCalledTimes(
+        TRANSITION_RECOVERY_BATCH_SIZE + 1,
+      )
+      expect(redis.del).toHaveBeenCalledWith(PENDING_RECOVERY_CURSOR_KEY)
+    })
+
+    it('processes overdue recovery in bounded cursor pages', async () => {
+      const firstPage = Array.from(
+        { length: TRANSITION_RECOVERY_BATCH_SIZE },
+        (_, index) =>
+          buildGameDocument({
+            _id: `overdue-${String(index).padStart(3, '0')}`,
+          }),
+      )
+      const secondPage = [buildGameDocument({ _id: 'overdue-100' })]
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions
+        .mockResolvedValueOnce(firstPage)
+        .mockResolvedValueOnce(secondPage)
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      const processSpy = jest
+        .spyOn(scheduler, 'process')
+        .mockResolvedValue(undefined)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(processSpy).toHaveBeenCalledTimes(TRANSITION_RECOVERY_BATCH_SIZE)
+      expect(redis.set).toHaveBeenCalledWith(
+        OVERDUE_RECOVERY_CURSOR_KEY,
+        'overdue-099',
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(
+        gameRepository.findGamesWithOverdueTaskTransitions,
+      ).toHaveBeenNthCalledWith(
+        2,
+        expect.any(Date),
+        'overdue-099',
+        TRANSITION_RECOVERY_BATCH_SIZE,
+      )
+      expect(processSpy).toHaveBeenCalledTimes(
+        TRANSITION_RECOVERY_BATCH_SIZE + 1,
+      )
+      expect(redis.del).toHaveBeenCalledWith(OVERDUE_RECOVERY_CURSOR_KEY)
+    })
+
     it('recovers a schedule after Mongo persistence succeeded but queue insertion failed', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
       const pendingOperation = {
@@ -650,7 +1031,7 @@ describe('GameTaskTransitionScheduler', () => {
       gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
       taskQueue.getJob.mockResolvedValue(undefined)
       gameRepository.findAndSaveWithLock.mockImplementation(
-        async (_id, mutator) => (await mutator(game)) as GameDocument,
+        async (_id, mutator) => ((await mutator(game)) ?? game) as GameDocument,
       )
 
       await scheduler.recoverPendingTransitionOperations()
@@ -659,6 +1040,97 @@ describe('GameTaskTransitionScheduler', () => {
       expect(
         gameRepository.clearPendingTransitionOperation,
       ).toHaveBeenCalledWith(game._id, pendingOperation.id)
+    })
+
+    it('replaces a failed delayed job while preserving the persisted task deadline', async () => {
+      const deadline = new Date(Date.now() + 4_000)
+      const game = buildGameDocument(undefined, {
+        status: 'pending',
+        currentTransitionExpires: deadline,
+      })
+      game.pendingTransitionOperations = [
+        {
+          id: 'schedule-game-1-task-1-LOBBY-pending',
+          operation: 'schedule',
+          taskId: game.currentTask._id,
+          taskType: game.currentTask.type,
+          taskStatus: game.currentTask.status,
+        },
+      ]
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValueOnce(
+        [game],
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      taskQueue.getJob.mockResolvedValue({
+        id: 'transition-task-1_LOBBY_pending',
+        getState: jest.fn().mockResolvedValue('failed'),
+      } as any)
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(30_000)
+      saveGameWithLock.mockImplementationOnce(async (_id, mutate) => {
+        return ((await mutate(game)) ?? game) as GameDocument
+      })
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.remove).toHaveBeenCalledWith(
+        'transition-task-1_LOBBY_pending',
+      )
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(taskQueue.add.mock.calls[0][2]?.delay).toBeGreaterThan(0)
+      expect(taskQueue.add.mock.calls[0][2]?.delay).toBeLessThanOrEqual(4_000)
+      expect(game.currentTask.currentTransitionExpires).toBe(deadline)
+    })
+
+    it('keeps an active task scheduled when queue insertion succeeded but clearing its marker failed', async () => {
+      const game = buildGameDocument(undefined, {
+        status: 'active',
+        currentTransitionExpires: new Date(Date.now() + 5_000),
+      })
+      const callback = jest.fn().mockResolvedValue(undefined)
+      let savedDocument: GameDocument | undefined
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        callback,
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(5_000)
+      taskQueue.getJob.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
+        id: 'transition-task-1_LOBBY_active',
+        getState: jest.fn().mockResolvedValue('delayed'),
+      } as any)
+      saveGameWithLock.mockImplementationOnce(async (_id, mutate) => {
+        savedDocument = (await mutate(game)) as GameDocument
+        return savedDocument
+      })
+      gameRepository.clearPendingTransitionOperation.mockRejectedValueOnce(
+        new Error('marker cleanup failed'),
+      )
+
+      await expect(scheduler.scheduleTaskTransition(game)).rejects.toThrow(
+        'marker cleanup failed',
+      )
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(savedDocument?.pendingTransitionOperations).toEqual([
+        expect.objectContaining({ operation: 'schedule' }),
+      ])
+
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValueOnce(
+        [savedDocument as GameDocument],
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(
+        savedDocument as GameDocument,
+      )
+      const performTransitionSpy = jest.spyOn(
+        scheduler as any,
+        'performTransition',
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.remove).not.toHaveBeenCalled()
+      expect(taskQueue.add).toHaveBeenCalledTimes(1)
+      expect(performTransitionSpy).not.toHaveBeenCalled()
+      expect(
+        gameRepository.clearPendingTransitionOperation,
+      ).toHaveBeenCalledTimes(2)
     })
 
     it('retries answer cleanup and post-transition work for a committed transition', async () => {
@@ -672,6 +1144,7 @@ describe('GameTaskTransitionScheduler', () => {
         taskId: 'task-1',
         taskType: TaskType.Question,
         taskStatus: 'active' as const,
+        attempts: 2,
       }
       game.pendingTransitionOperations = [pendingOperation]
       gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
@@ -693,6 +1166,229 @@ describe('GameTaskTransitionScheduler', () => {
       expect(
         gameRepository.clearPendingTransitionOperation,
       ).toHaveBeenCalledWith(game._id, pendingOperation.id)
+      expect(logger.log).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Recovered pending game transition operation.',
+          operationId: pendingOperation.id,
+          gameId: game._id,
+          attempts: 2,
+        }),
+      )
+    })
+
+    it('reports an aged pending operation once while preserving its retry eligibility', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      const pendingOperation: PendingGameTransitionOperation = {
+        id: 'schedule-game-1-task-1-LOBBY-pending',
+        operation: 'schedule',
+        taskId: game.currentTask._id,
+        taskType: game.currentTask.type,
+        taskStatus: game.currentTask.status,
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
+        attempts: 3,
+      }
+      game.pendingTransitionOperations = [pendingOperation]
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [game],
+      )
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      taskQueue.getJob.mockResolvedValue(undefined)
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        undefined,
+      )
+      gameTaskTransitionService.getTaskTransitionDelay.mockImplementation(
+        () => {
+          throw new Error('database unavailable')
+        },
+      )
+      gameRepository.recordPendingTransitionOperationFailure
+        .mockResolvedValueOnce({
+          attempts: 4,
+          createdAt: pendingOperation.createdAt!,
+          lastAttemptAt: new Date('2026-01-01T00:10:00.000Z'),
+          lastErrorCategory: 'mongodb',
+          unresolvedForMs: 600_000,
+          shouldReport: true,
+        })
+        .mockResolvedValueOnce({
+          attempts: 5,
+          createdAt: pendingOperation.createdAt!,
+          lastAttemptAt: new Date('2026-01-01T00:10:05.000Z'),
+          lastErrorCategory: 'mongodb',
+          unresolvedForMs: 605_000,
+          shouldReport: false,
+        })
+      const captureMessage = Sentry.captureMessage as jest.Mock
+
+      await scheduler.recoverPendingTransitionOperations()
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(
+        gameRepository.recordPendingTransitionOperationFailure,
+      ).toHaveBeenCalledTimes(2)
+      expect(
+        gameRepository.clearPendingTransitionOperation,
+      ).not.toHaveBeenCalled()
+      expect(captureMessage).toHaveBeenCalledTimes(1)
+      expect(captureMessage).toHaveBeenCalledWith(
+        'Pending game transition operation remains unresolved.',
+        expect.objectContaining({
+          level: 'error',
+          fingerprint: ['pending-game-transition', pendingOperation.id],
+          extra: expect.objectContaining({
+            operationId: pendingOperation.id,
+            taskId: pendingOperation.taskId,
+            jobId: 'transition-task-1_LOBBY_pending',
+            attempts: 4,
+            errorCategory: 'mongodb',
+          }),
+        }),
+      )
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message:
+            'Pending game transition operation recovery failed; retrying.',
+          attempts: 5,
+        }),
+      )
+    })
+
+    it('processes an overdue persisted task when its queue job is missing', async () => {
+      const game = buildGameDocument(undefined, {
+        status: 'pending',
+        currentTransitionExpires: new Date('2026-10-19T11:59:00.000Z'),
+      })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameRepository.findGameByIDWithStatusesOrThrow.mockResolvedValue(game)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutate) => (await mutate(game)) as GameDocument,
+      )
+      gameTaskTransitionService.getTaskTransitionCallback.mockReturnValue(
+        undefined,
+      )
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
+      expect(game.currentTask.status).toBe('active')
+      expect(gameEventPublisher.publish).toHaveBeenCalledWith(game)
+      expect(
+        gameRepository.findGamesWithOverdueTaskTransitions,
+      ).toHaveBeenCalledTimes(1)
+    })
+
+    it('leaves a failed overdue recovery eligible for the next recovery cycle', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameRepository.findGameByIDWithStatusesOrThrow.mockRejectedValue(
+        new Error('database unavailable'),
+      )
+
+      await expect(
+        scheduler.recoverPendingTransitionOperations(),
+      ).resolves.toBeUndefined()
+
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Overdue game task recovery will retry.',
+          operation: 'recoverOverdueTaskTransition',
+          gameId: game._id,
+          taskId: game.currentTask._id,
+          errorCategory: 'unexpected',
+        }),
+      )
+      expect(
+        gameRepository.findGamesWithOverdueTaskTransitions,
+      ).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not race an overdue task whose queue job is still active', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      taskQueue.getJob.mockResolvedValue({
+        getState: jest.fn().mockResolvedValue('active'),
+      } as any)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.getJob).toHaveBeenCalledTimes(1)
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
+      expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
+    })
+
+    it('removes a failed overdue job before safely processing its still-current task', async () => {
+      const game = buildGameDocument(undefined, { status: 'pending' })
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValueOnce([
+        game,
+      ])
+      taskQueue.getJob.mockResolvedValue({
+        getState: jest.fn().mockResolvedValue('failed'),
+      } as any)
+      const processSpy = jest
+        .spyOn(scheduler, 'process')
+        .mockResolvedValue(undefined)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.remove).toHaveBeenCalledWith(
+        'transition-task-1_LOBBY_pending',
+      )
+      expect(processSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'transition-task-1_LOBBY_pending',
+          data: game,
+        }),
+      )
+    })
+
+    it('does not recover an active task that intentionally has no transition job', async () => {
+      const game = buildGameDocument(
+        {
+          settings: {
+            shouldAutoCompleteQuestionResultTask: false,
+            shouldAutoCompleteLeaderboardTask: false,
+            shouldAutoCompletePodiumTask: false,
+            randomizeQuestionOrder: false,
+            randomizeAnswerOrder: false,
+          },
+        },
+        { type: TaskType.QuestionResult, status: 'active' },
+      )
+      gameRepository.findGamesWithPendingTransitionOperations.mockResolvedValue(
+        [],
+      )
+      gameRepository.findGamesWithOverdueTaskTransitions.mockResolvedValue([
+        game,
+      ])
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(0)
+
+      await scheduler.recoverPendingTransitionOperations()
+
+      expect(taskQueue.getJob).not.toHaveBeenCalled()
+      expect(
+        gameRepository.findGameByIDWithStatusesOrThrow,
+      ).not.toHaveBeenCalled()
+      expect(gameRepository.findAndSaveWithLock).not.toHaveBeenCalled()
     })
   })
 
@@ -775,7 +1471,7 @@ describe('GameTaskTransitionScheduler', () => {
       ).rejects.toThrow('redis unavailable')
 
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
-      expect(logger.error).toHaveBeenCalledWith(
+      expect(logger.debug).toHaveBeenCalledWith(
         expect.objectContaining({
           message: 'Failed to perform game task transition.',
           operation: 'performTransition',
@@ -784,8 +1480,8 @@ describe('GameTaskTransitionScheduler', () => {
           taskType: TaskType.Question,
           taskStatus: 'active',
           nextStatus: 'completed',
+          errorCategory: 'unexpected',
         }),
-        cleanupError.stack,
       )
     })
 
@@ -816,6 +1512,13 @@ describe('GameTaskTransitionScheduler', () => {
       expect(gameRepository.findAndSaveWithLock).toHaveBeenCalledTimes(1)
       expect(callback).toHaveBeenCalledTimes(1)
       expect(gameEventPublisher.publish).toHaveBeenCalledTimes(1)
+      const publishedGame = gameEventPublisher.publish.mock.calls[0][0]
+      expect(
+        publishedGame.currentTask.currentTransitionInitiated,
+      ).toBeInstanceOf(Date)
+      expect(publishedGame.currentTask.currentTransitionExpires).toBeInstanceOf(
+        Date,
+      )
 
       expect(postSpy).toHaveBeenCalledTimes(1)
       expect(postSpy).toHaveBeenCalledWith(
@@ -885,7 +1588,12 @@ describe('GameTaskTransitionScheduler', () => {
         (scheduler as any).performTransition(game, 'active'),
       ).rejects.toThrow('db-fail')
 
-      expect(logger.error).toHaveBeenCalledTimes(1)
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to perform game task transition.',
+          errorCategory: 'unexpected',
+        }),
+      )
       expect(gameEventPublisher.publish).not.toHaveBeenCalled()
     })
 
@@ -1063,11 +1771,11 @@ describe('GameTaskTransitionScheduler', () => {
       expect(taskQueue.add).toHaveBeenCalledTimes(1)
     })
 
-    it('preserves transition timing fields during status transition for event publishing', async () => {
+    it('sets timing for the new task status before event publishing', async () => {
       const game = buildGameDocument(undefined, { status: 'pending' })
 
-      const initiatedTime = new Date()
-      const expiresTime = new Date(initiatedTime.getTime() + 5000)
+      const delay = 5_000
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(delay)
 
       gameRepository.findAndSaveWithLock.mockImplementation(
         async (_id, mutator) => {
@@ -1075,16 +1783,19 @@ describe('GameTaskTransitionScheduler', () => {
             { _id: game._id },
             { ...game.currentTask },
           )
-          // Set transition fields to simulate they were set during scheduling
-          doc.currentTask.currentTransitionInitiated = initiatedTime
-          doc.currentTask.currentTransitionExpires = expiresTime
           const mutated = await mutator(doc as any)
-          // Verify the mutator does NOT clear the fields (they're needed for event publishing)
-          expect(mutated.currentTask.currentTransitionInitiated).toBe(
-            initiatedTime,
+          expect(mutated.currentTask.currentTransitionInitiated).toBeInstanceOf(
+            Date,
           )
-          expect(mutated.currentTask.currentTransitionExpires).toBe(expiresTime)
-          mutated.currentTask.status = 'active'
+          expect(mutated.currentTask.currentTransitionExpires).toBeInstanceOf(
+            Date,
+          )
+          expect(
+            (mutated.currentTask.currentTransitionExpires as Date).getTime() -
+              (
+                mutated.currentTask.currentTransitionInitiated as Date
+              ).getTime(),
+          ).toBe(delay)
           return mutated as any
         },
       )
@@ -1103,7 +1814,11 @@ describe('GameTaskTransitionScheduler', () => {
     })
 
     it('calls setTransitionTiming when callback changes task type', async () => {
-      const game = buildGameDocument(undefined, { status: 'completed' })
+      const game = buildGameDocument(undefined, {
+        status: 'completed',
+        currentTransitionInitiated: new Date(),
+        currentTransitionExpires: new Date(),
+      })
       const delay = 5000
       const callback = jest.fn(async (doc: any) => {
         // Simulate callback changing task type (e.g., Lobby -> Question)
@@ -1157,11 +1872,39 @@ describe('GameTaskTransitionScheduler', () => {
       expect(postSpy).toHaveBeenCalledTimes(1)
     })
 
+    it('fills missing transition timing before publishing an explicit active-task completion', async () => {
+      const game = buildGameDocument(undefined, { status: 'active' })
+      gameTaskTransitionService.getTaskTransitionDelay.mockReturnValue(0)
+      gameRepository.findAndSaveWithLock.mockImplementation(
+        async (_id, mutator) => {
+          const document = buildGameDocument(undefined, { status: 'active' })
+          return (await mutator(document)) as GameDocument
+        },
+      )
+      jest
+        .spyOn(scheduler as any, 'performPostTransition')
+        .mockResolvedValue(undefined)
+
+      await (scheduler as any).performTransition(game, 'completed')
+
+      const published = gameEventPublisher.publish.mock.calls[0][0]
+      expect(published.currentTask.currentTransitionInitiated).toBeInstanceOf(
+        Date,
+      )
+      expect(published.currentTask.currentTransitionExpires).toEqual(
+        published.currentTask.currentTransitionInitiated,
+      )
+    })
+
     it('does not call setTransitionTiming when task type remains unchanged', async () => {
-      const game = buildGameDocument(undefined, { status: 'pending' })
+      const game = buildGameDocument(undefined, {
+        status: 'completed',
+        currentTransitionInitiated: new Date(),
+        currentTransitionExpires: new Date(),
+      })
       const callback = jest.fn(async (doc: any) => {
-        // Just update status, not type
-        doc.currentTask.status = 'active'
+        // Change unrelated state without changing task identity or status.
+        doc.transitionObserved = true
       })
 
       gameRepository.findAndSaveWithLock.mockImplementation(
@@ -1182,7 +1925,7 @@ describe('GameTaskTransitionScheduler', () => {
         .spyOn(scheduler as any, 'performPostTransition')
         .mockResolvedValue(undefined)
 
-      await (scheduler as any).performTransition(game, 'active', callback)
+      await (scheduler as any).performTransition(game, undefined, callback)
 
       expect(callback).toHaveBeenCalledTimes(1)
       expect(setTimingSpy).not.toHaveBeenCalled()
@@ -1261,7 +2004,9 @@ describe('GameTaskTransitionScheduler', () => {
       await (scheduler as any).performPostTransition(game)
 
       expect(scheduleSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleSpy).toHaveBeenCalledWith(game)
+      expect(scheduleSpy).toHaveBeenCalledWith(game, {
+        forceActiveCompletion: false,
+      })
     })
 
     it('schedules next transition when status is active and delay > 0', async () => {
@@ -1326,7 +2071,9 @@ describe('GameTaskTransitionScheduler', () => {
       await (scheduler as any).performPostTransition(game)
 
       expect(scheduleSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleSpy).toHaveBeenCalledWith(game)
+      expect(scheduleSpy).toHaveBeenCalledWith(game, {
+        forceActiveCompletion: true,
+      })
     })
 
     it('schedules next transition when status is active, delay is 0, and shouldAutoCompleteLeaderboardTask is enabled for Leaderboard task', async () => {
@@ -1352,7 +2099,9 @@ describe('GameTaskTransitionScheduler', () => {
       await (scheduler as any).performPostTransition(game)
 
       expect(scheduleSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleSpy).toHaveBeenCalledWith(game)
+      expect(scheduleSpy).toHaveBeenCalledWith(game, {
+        forceActiveCompletion: true,
+      })
     })
 
     it('schedules next transition when status is active, delay is 0, and shouldAutoCompletePodiumTask is enabled for Podium task', async () => {
@@ -1378,7 +2127,9 @@ describe('GameTaskTransitionScheduler', () => {
       await (scheduler as any).performPostTransition(game)
 
       expect(scheduleSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleSpy).toHaveBeenCalledWith(game)
+      expect(scheduleSpy).toHaveBeenCalledWith(game, {
+        forceActiveCompletion: true,
+      })
     })
 
     it('does not schedule when status is active, delay is 0, task is QuestionResult but flag is disabled', async () => {
@@ -1429,7 +2180,9 @@ describe('GameTaskTransitionScheduler', () => {
       await (scheduler as any).performPostTransition(game)
 
       expect(scheduleSpy).toHaveBeenCalledTimes(1)
-      expect(scheduleSpy).toHaveBeenCalledWith(game)
+      expect(scheduleSpy).toHaveBeenCalledWith(game, {
+        forceActiveCompletion: false,
+      })
     })
 
     it('rethrows after logging when scheduling next transition fails', async () => {
@@ -1444,7 +2197,12 @@ describe('GameTaskTransitionScheduler', () => {
       await expect(
         (scheduler as any).performPostTransition(game),
       ).rejects.toThrow('schedule-fail')
-      expect(logger.error).toHaveBeenCalledTimes(1)
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Failed to perform post-transition actions.',
+          errorCategory: 'unexpected',
+        }),
+      )
     })
 
     it('does not schedule next transition when game status is Completed', async () => {
@@ -1800,7 +2558,15 @@ describe('GameTaskTransitionScheduler', () => {
       await expect(scheduler.process(job)).rejects.toThrow('callback-fail')
 
       expect(taskQueue.remove).not.toHaveBeenCalled()
-      expect(logger.error).toHaveBeenCalledTimes(1)
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Scheduled task transition attempt failed.',
+          jobId: job.id,
+          attempt: 1,
+          maxAttempts: 1,
+          errorCategory: 'unexpected',
+        }),
+      )
     })
 
     it('propagates persistence failures without removing the job', async () => {
@@ -1820,7 +2586,13 @@ describe('GameTaskTransitionScheduler', () => {
       await expect(scheduler.process(job)).rejects.toThrow('db-fail')
 
       expect(taskQueue.remove).not.toHaveBeenCalled()
-      expect(logger.error).toHaveBeenCalled()
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Scheduled task transition attempt failed.',
+          jobId: job.id,
+          errorCategory: 'unexpected',
+        }),
+      )
     })
 
     it('throws "Method not implemented." even for unrelated job names', async () => {

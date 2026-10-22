@@ -1,10 +1,11 @@
 import {
   GameMode,
   QuestionType,
+  QuizRequestDto,
   QuizResponseDto,
   QuizVisibility,
 } from '@klurigo/common'
-import { INestApplication } from '@nestjs/common'
+import { INestApplication, Logger } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
@@ -78,6 +79,78 @@ describe('QuizController (e2e)', () => {
           expect(res.body).toHaveProperty('updated')
         })
     })
+
+    it('keeps a timed-out quiz write and documents that retry creates a separate quiz', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const createQuiz = quizService.createQuiz.bind(quizService)
+      const quizLogger = (quizService as unknown as { logger: Logger }).logger
+      const log = jest.spyOn(quizLogger, 'log')
+      let signalPersisted!: (quizId: string) => void
+      const persisted = new Promise<string>((resolve) => {
+        signalPersisted = resolve
+      })
+      let releaseResponse!: () => void
+      const responseGate = new Promise<void>((resolve) => {
+        releaseResponse = resolve
+      })
+      let signalServiceCompleted!: () => void
+      const serviceCompleted = new Promise<void>((resolve) => {
+        signalServiceCompleted = resolve
+      })
+      const delayedCreate = jest
+        .spyOn(quizService, 'createQuiz')
+        .mockImplementationOnce(
+          async (request: QuizRequestDto, owner: User) => {
+            const response = await createQuiz(request, owner)
+            signalPersisted(response.id)
+            await responseGate
+            signalServiceCompleted()
+            return response
+          },
+        )
+      const responsePromise = (async () =>
+        await supertest(app.getHttpServer())
+          .post('/api/quizzes')
+          .set(createBearerAuthHeader(accessToken))
+          .send(originalData)
+          .expect(408))()
+
+      try {
+        const firstQuizId = await persisted
+        await expect(
+          quizModel.findById(firstQuizId).exec(),
+        ).resolves.toBeDefined()
+        expect(log).toHaveBeenCalledWith(
+          expect.objectContaining({
+            message: 'Quiz persisted before response generation.',
+            operation: 'createQuiz',
+            quizId: firstQuizId,
+            persistenceSucceeded: true,
+          }),
+        )
+
+        await responsePromise
+        releaseResponse()
+        await serviceCompleted
+        delayedCreate.mockRestore()
+
+        const retryResponse = await supertest(app.getHttpServer())
+          .post('/api/quizzes')
+          .set(createBearerAuthHeader(accessToken))
+          .send(originalData)
+          .expect(201)
+
+        expect(retryResponse.body.id).not.toBe(firstQuizId)
+        await expect(
+          quizModel.findById(retryResponse.body.id).exec(),
+        ).resolves.toBeDefined()
+      } finally {
+        releaseResponse()
+        delayedCreate.mockRestore()
+        log.mockRestore()
+        await Promise.allSettled([responsePromise, serviceCompleted])
+      }
+    }, 15_000)
   })
 
   describe('/api/quizzes (GET)', () => {

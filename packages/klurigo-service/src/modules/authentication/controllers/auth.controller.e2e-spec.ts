@@ -38,6 +38,7 @@ import {
 } from '../../../app/shared/token'
 import { GameAuthenticationService } from '../../game-authentication/services'
 import { Game, GameModel } from '../../game-core/repositories/models/schemas'
+import { TokenRepository } from '../../token/repositories'
 import { TokenService } from '../../token/services'
 import { User, UserModel } from '../../user/repositories'
 import { AuthService } from '../services'
@@ -51,6 +52,7 @@ describe('AuthController (e2e)', () => {
   let authService: AuthService
   let gameAuthenticationService: GameAuthenticationService
   let tokenService: TokenService
+  let tokenRepository: TokenRepository
   let userModel: UserModel
   let gameModel: GameModel
 
@@ -62,6 +64,7 @@ describe('AuthController (e2e)', () => {
       GameAuthenticationService,
     )
     tokenService = app.get<TokenService>(TokenService)
+    tokenRepository = app.get<TokenRepository>(TokenRepository)
     userModel = app.get<UserModel>(getModelToken(User.name))
     gameModel = app.get<GameModel>(getModelToken(Game.name))
   })
@@ -347,6 +350,35 @@ describe('AuthController (e2e)', () => {
       expectUserTokenPair(user._id, nextRefreshResponse)
     })
 
+    it('allows only one of two concurrent requests to consume the same refresh token', async () => {
+      await userModel.create(buildMockPrimaryUser())
+      const { refreshToken } = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+      )
+
+      const responses = await Promise.all([
+        supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken }),
+        supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken }),
+      ])
+
+      expect(responses.map(({ status }) => status).sort()).toEqual([200, 401])
+      expect(responses.filter(({ status }) => status === 200)).toHaveLength(1)
+      expect(
+        JSON.stringify(responses.map(({ body }) => body)).toLowerCase(),
+      ).not.toContain('secret')
+    })
+
     it('should succeed in refresh an existing authentication for a game', async () => {
       const game = await gameModel.create(createMockGameDocument())
 
@@ -467,6 +499,33 @@ describe('AuthController (e2e)', () => {
         })
     })
 
+    it('should not authorize an expired access token', async () => {
+      const accessToken = await jwtService.signAsync(
+        {
+          scope: TokenScope.User,
+          authorities: DEFAULT_USER_AUTHORITIES,
+        },
+        { subject: uuidv4(), expiresIn: '-1d' },
+      )
+
+      await supertest(app.getHttpServer())
+        .patch('/api/auth/password')
+        .set(createBearerAuthHeader(accessToken))
+        .send({
+          oldPassword: MOCK_PRIMARY_PASSWORD,
+          newPassword: MOCK_SECONDARY_PASSWORD,
+        })
+        .expect(401)
+        .expect((res) => {
+          expect(res.body).toEqual({
+            message: 'Invalid or expired token',
+            status: 401,
+            timestamp: expect.any(String),
+          })
+          expect(JSON.stringify(res.body)).not.toContain('secret')
+        })
+    })
+
     it('should return 401 unauthorized when token already revoked', async () => {
       const game = await gameModel.create(createMockGameDocument())
 
@@ -532,6 +591,82 @@ describe('AuthController (e2e)', () => {
         .expect(200)
 
       expectUserTokenPair(null, response)
+    })
+
+    it('keeps a valid refresh token retryable after a token-store lookup error', async () => {
+      await userModel.create(buildMockPrimaryUser())
+      const { refreshToken } = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+      )
+      const lookup = jest
+        .spyOn(tokenRepository, 'findTokenByIdOrThrow')
+        .mockRejectedValueOnce(
+          new Error('mongodb://:secret-password@host/token-store unavailable'),
+        )
+
+      try {
+        const failed = await supertest(app.getHttpServer())
+          .post('/api/auth/refresh')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ refreshToken })
+          .expect(401)
+        expect(JSON.stringify(failed.body)).not.toContain('secret-password')
+      } finally {
+        lookup.mockRestore()
+      }
+
+      const retry = await supertest(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ refreshToken })
+        .expect(200)
+      expect(retry.body.refreshToken).not.toBe(refreshToken)
+    })
+
+    it('preserves the session when revocation storage fails and can revoke it after recovery', async () => {
+      await userModel.create(buildMockPrimaryUser())
+      const { accessToken } = await authService.login(
+        {
+          email: MOCK_PRIMARY_USER_EMAIL,
+          password: MOCK_PRIMARY_PASSWORD,
+        },
+        MOCK_IP_ADDRESS,
+        MOCK_USER_AGENT,
+      )
+      const payload = jwtService.verify<TokenDto>(accessToken)
+      const deletion = jest
+        .spyOn(tokenRepository, 'deleteTokensByPairId')
+        .mockRejectedValueOnce(
+          new Error('mongodb://:secret-password@host/token-store unavailable'),
+        )
+
+      try {
+        const failed = await supertest(app.getHttpServer())
+          .post('/api/auth/revoke')
+          .set({ 'User-Agent': MOCK_USER_AGENT })
+          .send({ token: accessToken })
+          .expect(500)
+        expect(JSON.stringify(failed.body)).not.toContain('secret-password')
+      } finally {
+        deletion.mockRestore()
+      }
+
+      await expect(
+        tokenRepository.findTokenById(payload.jti),
+      ).resolves.toBeDefined()
+      await supertest(app.getHttpServer())
+        .post('/api/auth/revoke')
+        .set({ 'User-Agent': MOCK_USER_AGENT })
+        .send({ token: accessToken })
+        .expect(204)
+      await expect(
+        tokenRepository.findTokenById(payload.jti),
+      ).resolves.toBeNull()
     })
 
     it('should return 400 bad request when token is missing REFRESH_AUTH authority.', async () => {

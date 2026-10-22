@@ -99,7 +99,7 @@ export class QuizController {
   @ApiOperation({
     summary: 'Create a new quiz',
     description:
-      'Creates a new quiz and associates it with the authenticated user.',
+      'Creates a new quiz and associates it with the authenticated user. If the response times out after the quiz is persisted, request processing continues; retrying can create a separate quiz because this endpoint does not provide idempotent retries.',
   })
   @ApiBody({
     description: 'Request body for creating a new quiz.',

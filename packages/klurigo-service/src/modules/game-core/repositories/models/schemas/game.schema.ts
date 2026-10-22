@@ -44,12 +44,20 @@ import {
 
 export type GameDocument = HydratedDocument<Game>
 
+export type PendingGameTransitionErrorCategory =
+  'redis' | 'mongodb' | 'stale_transition' | 'unexpected'
+
 export type PendingGameTransitionOperation = {
   id: string
   operation: 'schedule' | 'transition'
   taskId: string
   taskType: TaskType
   taskStatus: 'pending' | 'active' | 'completed'
+  createdAt?: Date
+  attempts?: number
+  lastAttemptAt?: Date
+  lastErrorCategory?: PendingGameTransitionErrorCategory
+  alertedAt?: Date
 }
 
 @Schema({ _id: true, collection: 'games' })
@@ -136,6 +144,9 @@ export class Game {
 
   @Prop({ type: Date, required: false })
   completedAt?: Date
+
+  @Prop({ type: Boolean, required: false })
+  transientAnswerStateCleared?: boolean
 }
 
 /**
@@ -150,6 +161,18 @@ export const GameSchema = SchemaFactory.createForClass(Game)
 // Leading equality on `status` lets MongoDB narrow the scan, followed by
 // a range seek on `completedAt`.
 GameSchema.index({ status: 1, completedAt: 1 })
+
+// Supports bounded terminal answer cleanup scans by status, completion marker,
+// and the stable `_id` cursor used to paginate each run.
+GameSchema.index({ status: 1, transientAnswerStateCleared: 1, _id: 1 })
+
+// Supports bounded transition-recovery scans in stable `_id` order.
+GameSchema.index({ status: 1, 'pendingTransitionOperations.0': 1, _id: 1 })
+GameSchema.index({
+  status: 1,
+  'currentTask.currentTransitionExpires': 1,
+  _id: 1,
+})
 
 const participantsSchema =
   GameSchema.path<MongooseSchema.Types.Array>('participants')

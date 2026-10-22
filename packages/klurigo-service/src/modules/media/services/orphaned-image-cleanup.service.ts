@@ -13,6 +13,7 @@ const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const MANAGED_UPLOAD_PATH =
   /^\/uploads\/images\/([0-9a-f-]+)\/([0-9a-f-]+\.webp)$/i
+export const ORPHANED_IMAGE_CLEANUP_LOCK_LEASE_MS = 23 * 60 * 60 * 1000
 
 type ImageFile = {
   path: string
@@ -31,9 +32,15 @@ export class OrphanedImageCleanupService {
     private readonly quizRepository: QuizRepository,
   ) {}
 
-  /** Runs daily at 03:30 UTC, coordinated across instances through Redis. */
+  /**
+   * Runs daily at 03:30 UTC. The 23-hour lease expires before the next daily
+   * run if the process exits without reaching MurLock's unlock `finally`.
+   */
   @Cron('0 30 3 * * *', { timeZone: 'UTC' })
-  @MurLock(48 * 60 * 60 * 1000, 'scheduled_orphaned_image_cleanup_lock')
+  @MurLock(
+    ORPHANED_IMAGE_CLEANUP_LOCK_LEASE_MS,
+    'scheduled_orphaned_image_cleanup_lock',
+  )
   public async clean(): Promise<void> {
     const startedAt = Date.now()
     const uploadDirectory = this.configService.get<string>('UPLOAD_DIRECTORY')

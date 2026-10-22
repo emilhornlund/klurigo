@@ -23,6 +23,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { QueryFilter } from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 
+import { structuredLog } from '../../../app/utils'
 import { QuizRepository } from '../../quiz-core/repositories'
 import {
   BaseQuestionDao,
@@ -38,6 +39,24 @@ import {
 import { User } from '../../user/repositories'
 
 import { toQuizResponseDto } from './utils'
+
+const getQuizCreationErrorCategory = (
+  error: unknown,
+): 'mongodb' | 'unexpected' => {
+  if (
+    error instanceof Error &&
+    [
+      'MongoError',
+      'MongoServerError',
+      'MongoNetworkError',
+      'MongooseError',
+    ].includes(error.name)
+  ) {
+    return 'mongodb'
+  }
+
+  return 'unexpected'
+}
 
 /**
  * Service for managing quiz-related operations.
@@ -69,11 +88,29 @@ export class QuizService {
     quizRequest: QuizRequestDto,
     user: User,
   ): Promise<QuizResponseDto> {
-    const document = await this.quizRepository.createQuiz(
-      QuizService.buildNewQuiz(quizRequest, user),
-    )
+    let document: Quiz
+    try {
+      document = await this.quizRepository.createQuiz(
+        QuizService.buildNewQuiz(quizRequest, user),
+      )
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to persist quiz during creation.', {
+          operation: 'createQuiz',
+          persistenceSucceeded: false,
+          errorCategory: getQuizCreationErrorCategory(error),
+        }),
+      )
+      throw error
+    }
 
-    this.logger.log(`Created quiz with id '${document._id}.'`)
+    this.logger.log(
+      structuredLog('Quiz persisted before response generation.', {
+        operation: 'createQuiz',
+        quizId: document._id,
+        persistenceSucceeded: true,
+      }),
+    )
 
     return toQuizResponseDto(document)
   }

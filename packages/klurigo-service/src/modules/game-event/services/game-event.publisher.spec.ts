@@ -261,7 +261,7 @@ describe('GameEventPublisher', () => {
     )
   })
 
-  it('publish continues when a builder throws, logging warn', async () => {
+  it('surfaces a participant builder failure after publishing unaffected participants', async () => {
     const doc = buildGameDoc()
     // Fail for host, succeed for player
     ;(buildHostGameEvent as jest.Mock).mockImplementation(() => {
@@ -271,10 +271,19 @@ describe('GameEventPublisher', () => {
       ok: true,
     })
 
-    await service.publish(doc as GameDocument)
+    await expect(service.publish(doc as GameDocument)).rejects.toThrow(
+      'boom host',
+    )
 
-    // One warn logged for the host failure
-    expect(logger.warn).toHaveBeenCalled()
+    expect(logger.debug).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to build participant game event.',
+        operation: 'buildParticipantEvent',
+        gameId: 'game-1',
+        playerId: 'host',
+        errorCategory: 'event_builder',
+      }),
+    )
     // Player still published
     expect(redis.publish).toHaveBeenCalledTimes(1)
     const msg = JSON.parse(redis.publish.mock.calls[0][1] as string)
@@ -283,6 +292,42 @@ describe('GameEventPublisher', () => {
       playerId: 'p1',
       event: { ok: true },
     })
+  })
+
+  it('waits for independent participant publications before propagating a Redis failure', async () => {
+    const doc = buildGameDoc()
+    ;(buildHostGameEvent as jest.Mock).mockReturnValue({ host: true })
+    ;(buildPlayerGameEvent as jest.Mock).mockReturnValue({ player: true })
+    const redisError = new Error('redis down')
+    redis.publish.mockImplementation(async (_channel, message) => {
+      const publication = JSON.parse(String(message))
+      if (publication.playerId === 'p1') throw redisError
+      return 1
+    })
+
+    await expect(service.publish(doc as GameDocument)).rejects.toMatchObject({
+      message:
+        'Redis unavailable while publishing a game event for game game-1 participant p1',
+    })
+
+    expect(redis.publish).toHaveBeenCalledTimes(2)
+    const successfulPublication = redis.publish.mock.calls
+      .map((call) => JSON.parse(call[1] as string))
+      .find((publication) => publication.playerId === 'host')
+    expect(successfulPublication).toEqual({
+      gameId: 'game-1',
+      playerId: 'host',
+      event: { host: true },
+    })
+    expect(logger.debug).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Failed to publish distributed game event.',
+        operation: 'publishDistributedEvent',
+        gameId: 'game-1',
+        playerId: 'p1',
+        errorCategory: 'redis',
+      }),
+    )
   })
 
   it('publishParticipantEvent is a no-op when event is undefined', async () => {
@@ -345,14 +390,14 @@ describe('GameEventPublisher', () => {
         'Redis unavailable while publishing a game event for game game-1 participant p1',
     })
 
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(logger.debug).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Failed to publish distributed game event.',
         operation: 'publishDistributedEvent',
         gameId: 'game-1',
         playerId: 'p1',
+        errorCategory: 'redis',
       }),
-      redisError.stack,
     )
   })
 

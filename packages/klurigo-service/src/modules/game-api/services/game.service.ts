@@ -28,6 +28,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import { Redis } from 'ioredis'
 
+import { RedisUnavailableException } from '../../../app/exceptions'
 import {
   GamePlayerJoinEvent,
   GamePlayerJoinEventKey,
@@ -83,6 +84,25 @@ import {
   isPlayerUnique,
 } from './utils'
 
+const getCreationErrorCategory = (
+  error: unknown,
+): 'redis' | 'mongodb' | 'unexpected' => {
+  if (error instanceof RedisUnavailableException) return 'redis'
+  if (
+    error instanceof Error &&
+    [
+      'MongoError',
+      'MongoServerError',
+      'MongoNetworkError',
+      'MongooseError',
+    ].includes(error.name)
+  ) {
+    return 'mongodb'
+  }
+
+  return 'unexpected'
+}
+
 /**
  * Service for managing game operations such as creating games, handling tasks, and game lifecycles.
  *
@@ -129,9 +149,50 @@ export class GameService {
   ): Promise<CreateGameResponseDto> {
     const quiz = await this.quizRepository.findQuizByIdOrThrow(quizId)
 
-    const gameDocument = await this.gameRepository.createGame(quiz, user)
+    let gameDocument: GameDocument
+    try {
+      gameDocument = await this.gameRepository.createGame(quiz, user)
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to persist game during creation.', {
+          operation: 'createGame',
+          quizId,
+          persistenceSucceeded: false,
+          errorCategory: getCreationErrorCategory(error),
+        }),
+      )
+      throw error
+    }
 
-    await this.gameTaskTransitionScheduler.scheduleTaskTransition(gameDocument)
+    this.logger.log(
+      structuredLog('Game persisted during creation.', {
+        operation: 'createGame',
+        quizId,
+        gameId: gameDocument._id,
+        persistenceSucceeded: true,
+        pendingTransitionOperationIds:
+          gameDocument.pendingTransitionOperations?.map(({ id }) => id) ?? [],
+      }),
+    )
+
+    try {
+      await this.gameTaskTransitionScheduler.scheduleTaskTransition(
+        gameDocument,
+      )
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Game persisted but initial task scheduling failed.', {
+          operation: 'createGame',
+          quizId,
+          gameId: gameDocument._id,
+          persistenceSucceeded: true,
+          pendingTransitionOperationIds:
+            gameDocument.pendingTransitionOperations?.map(({ id }) => id) ?? [],
+          errorCategory: getCreationErrorCategory(error),
+        }),
+      )
+      throw error
+    }
 
     return { id: gameDocument._id }
   }
@@ -454,7 +515,12 @@ export class GameService {
       throw new BadRequestException('Current task not in active status')
     }
 
-    await this.gameTaskTransitionScheduler.scheduleTaskTransition(gameDocument)
+    await this.gameTaskTransitionScheduler.scheduleTaskTransition(
+      gameDocument,
+      {
+        forceActiveCompletion: true,
+      },
+    )
   }
 
   /**
@@ -533,6 +599,7 @@ export class GameService {
     if (result.answerCount === playerCount) {
       await this.gameTaskTransitionScheduler.scheduleTaskTransition(
         savedGameDocument,
+        { completeActiveTaskWhenJobExists: true },
       )
     } else {
       await this.gameEventPublisher.publish(savedGameDocument)

@@ -1,13 +1,17 @@
 import { GameStatus } from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
-import { MurLock } from 'murlock'
+import { InjectRedis } from '@nestjs-modules/ioredis'
+import Redis from 'ioredis'
 
+import { MurLockWithAutoExtend } from '../../../app/decorators/mur-lock-with-auto-extend.decorator'
 import { getErrorStack, structuredLog } from '../../../app/utils'
 import {
   GameAnswerRepository,
   GameRepository,
 } from '../../game-core/repositories'
+
+export const GAME_EXPIRY_CLEANUP_LOCK_LEASE_MS = 60_000
 
 /**
  * Periodically checks for completed or expired games and updates their lifecycle state accordingly.
@@ -20,6 +24,10 @@ import {
  */
 @Injectable()
 export class GameExpirySchedulerService {
+  private static readonly ANSWER_CLEANUP_BATCH_SIZE = 100
+  private static readonly ANSWER_CLEANUP_CURSOR_KEY =
+    'game-cleanup:terminal-answer-state:cursor'
+
   private readonly logger = new Logger(GameExpirySchedulerService.name)
   private readonly terminalStatuses = [
     GameStatus.Completed,
@@ -37,6 +45,7 @@ export class GameExpirySchedulerService {
   constructor(
     private readonly gameRepository: GameRepository,
     private readonly gameAnswerRepository: GameAnswerRepository,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   /**
@@ -49,7 +58,10 @@ export class GameExpirySchedulerService {
    * Uses a MurLock to guarantee single-instance execution across a distributed environment.
    */
   @Cron('0 */5 * * * *')
-  @MurLock(5000, 'scheduled_game_expiry_lock')
+  @MurLockWithAutoExtend(
+    GAME_EXPIRY_CLEANUP_LOCK_LEASE_MS,
+    'scheduled_game_expiry_lock',
+  )
   public async clean(): Promise<void> {
     await this.runUpdate('completed', () =>
       this.gameRepository.updateCompletedGames(),
@@ -92,17 +104,26 @@ export class GameExpirySchedulerService {
    * A failed item is logged and left eligible for the next scheduled run.
    */
   private async clearTerminalAnswerState(): Promise<void> {
-    let games
+    let afterGameId: string | undefined
+    let games: Awaited<
+      ReturnType<GameRepository['findTerminalGamesPendingAnswerCleanup']>
+    >
     try {
-      games = await this.gameRepository.find({
-        status: { $in: this.terminalStatuses },
-      })
+      afterGameId =
+        (await this.redis.get(
+          GameExpirySchedulerService.ANSWER_CLEANUP_CURSOR_KEY,
+        )) || undefined
+      games = await this.gameRepository.findTerminalGamesPendingAnswerCleanup(
+        afterGameId,
+        GameExpirySchedulerService.ANSWER_CLEANUP_BATCH_SIZE,
+      )
     } catch (error) {
       this.logger.error(
         structuredLog(
           'Failed to find terminal games during scheduled cleanup.',
           {
-            operation: 'findTerminalGames',
+            operation: 'findTerminalGamesPendingAnswerCleanup',
+            afterGameId,
           },
         ),
         getErrorStack(error),
@@ -127,7 +148,57 @@ export class GameExpirySchedulerService {
           }),
           getErrorStack(error),
         )
+        continue
       }
+
+      try {
+        const marked =
+          await this.gameRepository.markTerminalGameAnswerStateCleared(game._id)
+
+        if (!marked) {
+          this.logger.debug(
+            structuredLog(
+              'Terminal game answer cleanup marker was not updated.',
+              {
+                operation: 'markTerminalGameAnswerStateCleared',
+                gameId: game._id,
+                gameState: game.status,
+              },
+            ),
+          )
+        }
+      } catch (error) {
+        this.logger.error(
+          structuredLog('Failed to persist transient answer cleanup marker.', {
+            operation: 'markTerminalGameAnswerStateCleared',
+            gameId: game._id,
+            gameState: game.status,
+            taskId: game.currentTask._id,
+          }),
+          getErrorStack(error),
+        )
+      }
+    }
+
+    try {
+      if (games.length < GameExpirySchedulerService.ANSWER_CLEANUP_BATCH_SIZE) {
+        await this.redis.del(
+          GameExpirySchedulerService.ANSWER_CLEANUP_CURSOR_KEY,
+        )
+      } else {
+        await this.redis.set(
+          GameExpirySchedulerService.ANSWER_CLEANUP_CURSOR_KEY,
+          games[games.length - 1]._id,
+        )
+      }
+    } catch (error) {
+      this.logger.error(
+        structuredLog('Failed to persist terminal game cleanup cursor.', {
+          operation: 'persistTerminalGameCleanupCursor',
+          afterGameId,
+        }),
+        getErrorStack(error),
+      )
     }
   }
 }

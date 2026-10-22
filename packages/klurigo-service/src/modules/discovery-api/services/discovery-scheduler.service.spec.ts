@@ -106,13 +106,26 @@ describe(DiscoverySchedulerService.name, () => {
       const err = new Error('compute failed')
       computeService.compute.mockRejectedValueOnce(err)
 
-      jest
+      const logSpy = jest
         .spyOn((service as any).logger as Logger, 'log')
+        .mockImplementation(() => undefined)
+      const errorSpy = jest
+        .spyOn((service as any).logger as Logger, 'error')
         .mockImplementation(() => undefined)
 
       await expect(service.refreshSnapshot()).rejects.toThrow('compute failed')
 
       expect(computeService.compute).toHaveBeenCalledTimes(1)
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Discovery snapshot computation failed.',
+          operation: 'refreshSnapshot',
+          errorCategory: 'unexpected',
+        }),
+      )
+      expect(logSpy).toHaveBeenCalledWith(
+        'Starting discovery snapshot computation.',
+      )
     })
   })
 })

@@ -42,4 +42,21 @@ describe('RedisHealthIndicator', () => {
 
     expect(redis.ping).toHaveBeenCalledTimes(1)
   })
+
+  it('returns status down when redis.ping does not settle within the health-check budget', async () => {
+    jest.useFakeTimers()
+    ;(redis.ping as jest.Mock).mockReturnValue(new Promise(() => {}))
+
+    try {
+      const result = indicator.pingCheck('redis')
+      await jest.advanceTimersByTimeAsync(1_000)
+
+      await expect(result).resolves.toEqual({
+        redis: { status: 'down' },
+      })
+      expect(redis.ping).toHaveBeenCalledTimes(1)
+    } finally {
+      jest.useRealTimers()
+    }
+  })
 })

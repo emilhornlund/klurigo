@@ -4,7 +4,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis'
 import Redis from 'ioredis'
 
 import { RedisUnavailableException } from '../../../app/exceptions'
-import { getErrorStack, structuredLog } from '../../../app/utils'
+import { structuredLog } from '../../../app/utils'
 import {
   GameDocument,
   Participant,
@@ -53,20 +53,20 @@ export class GameEventPublisher {
     try {
       context = await this.gameParticipantEventBuilder.createContext(document)
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to build game event context.', {
           operation: 'createContext',
           gameId: document._id,
           gameState: document.status,
           taskType: document.currentTask.type,
           taskStatus: document.currentTask.status,
+          errorCategory: 'event_context',
         }),
-        getErrorStack(error),
       )
       throw error
     }
 
-    await Promise.all(
+    const publicationResults = await Promise.allSettled(
       document.participants.map(async (participant) => {
         let event: GameEvent | undefined
         try {
@@ -76,7 +76,7 @@ export class GameEventPublisher {
             context,
           )
         } catch (error) {
-          this.logger.warn(
+          this.logger.debug(
             structuredLog('Failed to build participant game event.', {
               operation: 'buildParticipantEvent',
               gameId: document._id,
@@ -84,10 +84,10 @@ export class GameEventPublisher {
               gameState: document.status,
               taskType: document.currentTask.type,
               taskStatus: document.currentTask.status,
+              errorCategory: 'event_builder',
             }),
-            getErrorStack(error),
           )
-          return
+          throw error
         }
 
         await this.publishParticipantEvent(
@@ -98,6 +98,11 @@ export class GameEventPublisher {
         )
       }),
     )
+
+    const failedPublication = publicationResults.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    )
+    if (failedPublication) throw failedPublication.reason
   }
 
   /**
@@ -146,14 +151,14 @@ export class GameEventPublisher {
         this.logger.debug('Published event for all players')
       }
     } catch (error) {
-      this.logger.error(
+      this.logger.debug(
         structuredLog('Failed to publish distributed game event.', {
           operation: 'publishDistributedEvent',
           gameId: event.gameId,
           playerId: event.playerId,
           eventType: event.event.type,
+          errorCategory: 'redis',
         }),
-        getErrorStack(error),
       )
       throw new RedisUnavailableException(
         'publishing a game event',
