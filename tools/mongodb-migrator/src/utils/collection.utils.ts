@@ -231,7 +231,7 @@ function transformDocument(
  * @param collectionName - The name of the target collection.
  * @returns A metadata object if found, otherwise `null`.
  */
-function getCollectionMetadataObject(
+export function getCollectionMetadataObject(
   collectionName: string,
 ): JSONObject | null {
   switch (collectionName) {
@@ -242,6 +242,11 @@ function getCollectionMetadataObject(
             v: { $numberInt: '2' },
             key: { _id: { $numberInt: '1' } },
             name: '_id_',
+          },
+          {
+            v: { $numberInt: '2' },
+            key: { 'sections.entries.quizId': { $numberInt: '1' } },
+            name: 'sections.entries.quizId_1',
           },
         ],
         uuid: '66fdfc377a474767a6e73ec0b87ab04b',
@@ -278,6 +283,33 @@ function getCollectionMetadataObject(
               completedAt: { $numberInt: '1' },
             },
             name: 'status_1_completedAt_1',
+          },
+          {
+            v: { $numberInt: '2' },
+            key: {
+              status: { $numberInt: '1' },
+              transientAnswerStateCleared: { $numberInt: '1' },
+              _id: { $numberInt: '1' },
+            },
+            name: 'status_1_transientAnswerStateCleared_1__id_1',
+          },
+          {
+            v: { $numberInt: '2' },
+            key: {
+              status: { $numberInt: '1' },
+              'pendingTransitionOperations.0': { $numberInt: '1' },
+              _id: { $numberInt: '1' },
+            },
+            name: 'status_1_pendingTransitionOperations.0_1__id_1',
+          },
+          {
+            v: { $numberInt: '2' },
+            key: {
+              status: { $numberInt: '1' },
+              'currentTask.currentTransitionExpires': { $numberInt: '1' },
+              _id: { $numberInt: '1' },
+            },
+            name: 'status_1_currentTask.currentTransitionExpires_1__id_1',
           },
         ],
         uuid: '4231303ad7b24b42aeb2815f5317eb45',

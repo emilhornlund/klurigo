@@ -12,6 +12,8 @@ import {
  * @returns The transformed `quiz`-format document.
  */
 export function transformQuizDocument(document: BSONDocument): BSONDocument {
+  const category = extractValue<string>(document, {}, 'category')
+
   return {
     _id: extractValueOrThrow<string>(document, {}, '_id'),
     __v: 0,
@@ -19,48 +21,66 @@ export function transformQuizDocument(document: BSONDocument): BSONDocument {
     description: extractValue<string>(document, {}, 'description'),
     mode: extractValueOrThrow<string>(document, {}, 'mode'),
     visibility: extractValueOrThrow<string>(document, {}, 'visibility'),
-    category: extractValueOrThrow<string>(document, {}, 'category'),
+    category: category ?? 'OTHER',
     imageCoverURL: extractValue<string>(document, {}, 'imageCoverURL'),
     languageCode: extractValueOrThrow<string>(document, {}, 'languageCode'),
     questions: buildQuizQuestions(document),
     owner: extractValueOrThrow<string>(document, {}, 'owner'),
+    ...(extractValue<BSONDocument>(document, {}, 'discovery')
+      ? {
+          discovery: {
+            featuredRank: extractValue<number>(
+              extractValueOrThrow<BSONDocument>(document, {}, 'discovery'),
+              {},
+              'featuredRank',
+            ),
+          },
+        }
+      : {}),
     gameplaySummary: {
-      count: extractValueOrThrow<number>(document, {}, 'gameplaySummary.count'),
-      totalPlayerCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalPlayerCount',
-      ),
-      totalClassicCorrectCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalClassicCorrectCount',
-      ),
-      totalClassicIncorrectCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalClassicIncorrectCount',
-      ),
-      totalClassicUnansweredCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalClassicUnansweredCount',
-      ),
-      totalZeroToOneHundredPrecisionSum: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalZeroToOneHundredPrecisionSum',
-      ),
-      totalZeroToOneHundredAnsweredCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalZeroToOneHundredAnsweredCount',
-      ),
-      totalZeroToOneHundredUnansweredCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'gameplaySummary.totalZeroToOneHundredUnansweredCount',
-      ),
+      count: extractValue<number>(document, {}, 'gameplaySummary.count') ?? 0,
+      totalPlayerCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalPlayerCount',
+        ) ?? 0,
+      totalClassicCorrectCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalClassicCorrectCount',
+        ) ?? 0,
+      totalClassicIncorrectCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalClassicIncorrectCount',
+        ) ?? 0,
+      totalClassicUnansweredCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalClassicUnansweredCount',
+        ) ?? 0,
+      totalZeroToOneHundredPrecisionSum:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalZeroToOneHundredPrecisionSum',
+        ) ?? 0,
+      totalZeroToOneHundredAnsweredCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalZeroToOneHundredAnsweredCount',
+        ) ?? 0,
+      totalZeroToOneHundredUnansweredCount:
+        extractValue<number>(
+          document,
+          {},
+          'gameplaySummary.totalZeroToOneHundredUnansweredCount',
+        ) ?? 0,
       lastPlayedAt: toDate(
         extractValue<string>(document, {}, 'gameplaySummary.lastPlayedAt'),
       ),
@@ -69,20 +89,17 @@ export function transformQuizDocument(document: BSONDocument): BSONDocument {
       ),
     },
     ratingSummary: {
-      count: extractValueOrThrow<number>(document, {}, 'ratingSummary.count'),
-      avg: extractValueOrThrow<number>(document, {}, 'ratingSummary.avg'),
+      count: extractValue<number>(document, {}, 'ratingSummary.count') ?? 0,
+      avg: extractValue<number>(document, {}, 'ratingSummary.avg') ?? 0,
       stars: {
-        '1': extractValueOrThrow<number>(document, {}, 'ratingSummary.stars.1'),
-        '2': extractValueOrThrow<number>(document, {}, 'ratingSummary.stars.2'),
-        '3': extractValueOrThrow<number>(document, {}, 'ratingSummary.stars.3'),
-        '4': extractValueOrThrow<number>(document, {}, 'ratingSummary.stars.4'),
-        '5': extractValueOrThrow<number>(document, {}, 'ratingSummary.stars.5'),
+        '1': extractValue<number>(document, {}, 'ratingSummary.stars.1') ?? 0,
+        '2': extractValue<number>(document, {}, 'ratingSummary.stars.2') ?? 0,
+        '3': extractValue<number>(document, {}, 'ratingSummary.stars.3') ?? 0,
+        '4': extractValue<number>(document, {}, 'ratingSummary.stars.4') ?? 0,
+        '5': extractValue<number>(document, {}, 'ratingSummary.stars.5') ?? 0,
       },
-      commentCount: extractValueOrThrow<number>(
-        document,
-        {},
-        'ratingSummary.commentCount',
-      ),
+      commentCount:
+        extractValue<number>(document, {}, 'ratingSummary.commentCount') ?? 0,
       updated: toDate(
         extractValue<string>(document, {}, 'ratingSummary.updated'),
       ),
@@ -139,8 +156,8 @@ export function buildQuizQuestions(
       if (type === 'PIN') {
         additional = {
           imageURL: extractValueOrThrow<string>(question, {}, 'imageURL'),
-          positionX: extractValueOrThrow<string>(question, {}, 'positionX'),
-          positionY: extractValueOrThrow<string>(question, {}, 'positionY'),
+          positionX: extractValueOrThrow<number>(question, {}, 'positionX'),
+          positionY: extractValueOrThrow<number>(question, {}, 'positionY'),
           tolerance: extractValueOrThrow<string>(question, {}, 'tolerance'),
         }
       }
@@ -167,7 +184,7 @@ export function buildQuizQuestions(
         })(extractValue<BSONDocument>(question, {}, 'media')),
         points: extractValueOrThrow<number>(question, {}, 'points'),
         duration: extractValueOrThrow<number>(question, {}, 'duration'),
-        info: extractValue<number>(question, {}, 'info'),
+        info: extractValue<string>(question, {}, 'info'),
         ...additional,
       }
     },
