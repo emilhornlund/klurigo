@@ -29,16 +29,18 @@
     color: $color;
   }
 
-  &:has(> button:hover:not(:disabled)) {
-    background-color: $hover-background;
-    border-color: transparent;
-    border-top-color: colors.$color-shadow-hover;
-    border-bottom-color: colors.$color-inset-hover;
-    box-shadow: shadows.$shadow-control-hover;
-    transform: translateY(-1px);
+  @media (hover: hover) and (pointer: fine) {
+    &:has(> button:hover:not(:disabled)) {
+      background-color: $hover-background;
+      border-color: transparent;
+      border-top-color: colors.$color-shadow-hover;
+      border-bottom-color: colors.$color-inset-hover;
+      box-shadow: shadows.$shadow-control-hover;
+      transform: translateY(-1px);
 
-    button {
-      color: $hover-color;
+      button {
+        color: $hover-color;
+      }
     }
   }
 
@@ -82,14 +84,16 @@
     color: $color;
   }
 
-  &:has(> button:hover:not(:disabled)) {
-    background-color: $hover-background;
-    border-color: $hover-border;
-    box-shadow: none;
-    transform: translateY(-1px);
+  @media (hover: hover) and (pointer: fine) {
+    &:has(> button:hover:not(:disabled)) {
+      background-color: $hover-background;
+      border-color: $hover-border;
+      box-shadow: none;
+      transform: translateY(-1px);
 
-    button {
-      color: $hover-color;
+      button {
+        color: $hover-color;
+      }
     }
   }
 
@@ -118,14 +122,16 @@
     color: $color;
   }
 
-  &:has(> button:hover:not(:disabled)) {
-    background-color: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    transform: translateY(-1px);
+  @media (hover: hover) and (pointer: fine) {
+    &:has(> button:hover:not(:disabled)) {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      transform: translateY(-1px);
 
-    button {
-      color: $hover-color;
+      button {
+        color: $hover-color;
+      }
     }
   }
 
