@@ -238,6 +238,8 @@ describe('PlayerQuestionState', () => {
     const answer = screen.getByRole('button', { name: 'A' })
     await user.click(answer)
     expect(answer).toBeDisabled()
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
 
     await user.click(answer)
     expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
@@ -247,6 +249,64 @@ describe('PlayerQuestionState', () => {
       await Promise.resolve()
     })
     expect(answer).not.toBeDisabled()
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+  })
+
+  it('removes pending feedback when submission resolves', async () => {
+    const user = userEvent.setup()
+    let resolveSubmission!: () => void
+    h.submitQuestionAnswer.mockImplementation(
+      () => new Promise<void>((resolve) => (resolveSubmission = resolve)),
+    )
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick one',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+
+    await act(async () => {
+      resolveSubmission()
+      await Promise.resolve()
+    })
+
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
+  })
+
+  it('removes pending feedback when submission rejects', async () => {
+    const user = userEvent.setup()
+    let rejectSubmission!: (error: Error) => void
+    h.submitQuestionAnswer.mockImplementation(
+      () =>
+        new Promise<void>((_resolve, reject) => (rejectSubmission = reject)),
+    )
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick one',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+
+    await act(async () => {
+      rejectSubmission(new Error('Submission failed'))
+      await Promise.resolve()
+    })
+
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
   })
 
   it('does not throw when submitQuestionAnswer is undefined', async () => {
