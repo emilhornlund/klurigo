@@ -1,12 +1,69 @@
-import { GameEventType, MediaType, QuestionType } from '@klurigo/common'
+import {
+  GameEventType,
+  type GameQuestionPlayerAnswerEvent,
+  MediaType,
+  QuestionType,
+  type SubmitQuestionAnswerRequestDto,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
+import type { GameContextType } from '../../context/game'
+import { GameContext } from '../../context/game'
+
+import type { PlayerQuestionStateProps } from './PlayerQuestionState'
 import PlayerQuestionState from './PlayerQuestionState'
+
+const getSubmittedAnswer = (
+  request: SubmitQuestionAnswerRequestDto,
+): GameQuestionPlayerAnswerEvent => {
+  switch (request.type) {
+    case QuestionType.MultiChoice:
+      return { type: request.type, value: request.optionIndex }
+    case QuestionType.Range:
+      return { type: request.type, value: request.value }
+    case QuestionType.TrueFalse:
+      return { type: request.type, value: request.value }
+    case QuestionType.TypeAnswer:
+      return { type: request.type, value: request.value }
+    case QuestionType.Pin:
+      return {
+        type: request.type,
+        value: `${request.positionX},${request.positionY}`,
+      }
+    case QuestionType.Puzzle:
+      return { type: request.type, value: request.values }
+  }
+}
+
+const InteractiveAnswerStory: FC<PlayerQuestionStateProps> = ({ event }) => {
+  const [answer, setAnswer] = useState(event.answer)
+
+  useEffect(() => {
+    setAnswer(event.answer)
+  }, [event.answer])
+
+  const gameContext = {
+    submitQuestionAnswer: async (
+      request: SubmitQuestionAnswerRequestDto,
+    ): Promise<void> => {
+      setAnswer(getSubmittedAnswer(request))
+    },
+  } as unknown as GameContextType
+
+  return (
+    <GameContext.Provider value={gameContext}>
+      <PlayerQuestionState event={{ ...event, answer }} />
+    </GameContext.Provider>
+  )
+}
 
 const meta = {
   component: PlayerQuestionState,
   decorators: [withRouter],
+  render: (args) => <InteractiveAnswerStory {...args} />,
   parameters: {
     layout: 'fullscreen',
   },
@@ -37,9 +94,9 @@ const layoutStory = (
         duration: 30,
       },
       countdown: {
-        initiatedTime: '2026-01-01T00:00:00.000Z',
-        expiryTime: '2026-01-01T00:00:30.000Z',
-        serverTime: '2026-01-01T00:00:00.000Z',
+        initiatedTime: new Date().toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
     },
@@ -69,7 +126,7 @@ export const QuestionMultiChoiceTwoAnswers = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -102,7 +159,7 @@ export const QuestionMultiChoiceFourAnswers = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -137,7 +194,7 @@ export const QuestionMultiChoiceSixAnswers = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -167,7 +224,7 @@ export const QuestionSlider = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -194,7 +251,7 @@ export const QuestionTrueFalse = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -217,7 +274,7 @@ export const QuestionTypeAnswer = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -243,7 +300,7 @@ export const QuestionPin = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },
@@ -271,7 +328,7 @@ export const QuestionPuzzle = {
       },
       countdown: {
         initiatedTime: new Date().toISOString(),
-        expiryTime: new Date(Date.now() + 60 * 1000).toISOString(),
+        expiryTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
         serverTime: new Date().toISOString(),
       },
       pagination: { current: 1, total: 20 },

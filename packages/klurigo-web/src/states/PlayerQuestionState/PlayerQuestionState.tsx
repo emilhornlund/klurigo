@@ -1,3 +1,5 @@
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type {
   GameQuestionPlayerEvent,
   SubmitQuestionAnswerRequestDto,
@@ -5,9 +7,11 @@ import type {
 import type { FC } from 'react'
 import { useState } from 'react'
 
-import { ProgressBar } from '../../components'
+import { ProgressBar, Typography } from '../../components'
 import { useGameContext } from '../../context/game'
 import { GamePage, QuestionView } from '../common'
+
+import styles from './PlayerQuestionState.module.scss'
 
 export interface PlayerQuestionStateProps {
   event: GameQuestionPlayerEvent
@@ -40,6 +44,18 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
         loading={isSubmittingQuestionAnswer}
         onChange={handleSubmitQuestionAnswer}
       />
+
+      {answer && (
+        <div
+          className={styles.answerConfirmation}
+          role="status"
+          aria-live="polite">
+          <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
+          <Typography variant="title2" color="inverse" bold>
+            Answer locked in!
+          </Typography>
+        </div>
+      )}
 
       <ProgressBar countdown={countdown} />
     </GamePage>
