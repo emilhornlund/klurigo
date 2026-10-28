@@ -5,7 +5,7 @@ import type {
   SubmitQuestionAnswerRequestDto,
 } from '@klurigo/common'
 import type { FC } from 'react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { ProgressBar, Typography } from '../../components'
 import { useGameContext } from '../../context/game'
@@ -18,27 +18,68 @@ export interface PlayerQuestionStateProps {
 }
 
 const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
-  event: { question, answer, countdown },
+  event: { question, answer, countdown, pagination },
 }) => {
-  const [isSubmittingQuestionAnswer, setIsSubmittingQuestionAnswer] =
-    useState<boolean>(false)
+  const questionNumber = pagination.current
+  const [submission, setSubmission] = useState<{
+    questionNumber: number
+    status: 'submitting' | 'submitted'
+  }>()
+  const submissionRef = useRef(submission)
+  const currentQuestionNumberRef = useRef(questionNumber)
+  currentQuestionNumberRef.current = questionNumber
+  const currentSubmission =
+    submission?.questionNumber === questionNumber
+      ? submission.status
+      : undefined
+  const isAnswerLocked = Boolean(answer) || currentSubmission === 'submitted'
+  const isSubmittingQuestionAnswer = currentSubmission === 'submitting'
 
   const { submitQuestionAnswer } = useGameContext()
+
+  const updateSubmission = (nextSubmission: typeof submission) => {
+    submissionRef.current = nextSubmission
+    setSubmission(nextSubmission)
+  }
 
   const handleSubmitQuestionAnswer = (
     request: SubmitQuestionAnswerRequestDto,
   ) => {
-    setIsSubmittingQuestionAnswer(true)
+    const activeSubmission = submissionRef.current
+    if (
+      answer ||
+      (activeSubmission?.questionNumber === questionNumber &&
+        (activeSubmission.status === 'submitting' ||
+          activeSubmission.status === 'submitted'))
+    ) {
+      return
+    }
+
+    updateSubmission({ questionNumber, status: 'submitting' })
     const submission = submitQuestionAnswer?.(request)
 
     if (!submission) {
-      setIsSubmittingQuestionAnswer(false)
+      updateSubmission(undefined)
       return
     }
 
     void submission.then(
-      () => setIsSubmittingQuestionAnswer(false),
-      () => setIsSubmittingQuestionAnswer(false),
+      () => {
+        if (
+          currentQuestionNumberRef.current === questionNumber &&
+          submissionRef.current?.questionNumber === questionNumber
+        ) {
+          updateSubmission({ questionNumber, status: 'submitted' })
+        }
+      },
+      () => {
+        if (
+          currentQuestionNumberRef.current === questionNumber &&
+          submissionRef.current?.questionNumber === questionNumber
+        ) {
+          updateSubmission(undefined)
+        }
+      },
     )
   }
 
@@ -49,11 +90,11 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
         mediaPresentation="player"
         submittedAnswer={answer}
         countdown={countdown}
-        loading={isSubmittingQuestionAnswer}
+        loading={isAnswerLocked || isSubmittingQuestionAnswer}
         onChange={handleSubmitQuestionAnswer}
       />
 
-      {isSubmittingQuestionAnswer && !answer && (
+      {isSubmittingQuestionAnswer && !answer && !isAnswerLocked && (
         <div
           className={styles.submittingAnswer}
           role="status"
