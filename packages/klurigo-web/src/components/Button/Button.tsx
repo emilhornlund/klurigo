@@ -25,8 +25,10 @@ export interface ButtonProps {
   iconPosition?: 'leading' | 'trailing'
   iconColor?: string
   onClick?: () => void
+  className?: string
   children?: ReactNode
   'aria-label'?: string
+  'aria-hidden'?: boolean
 }
 
 const Button: FC<ButtonProps> = ({
@@ -46,8 +48,10 @@ const Button: FC<ButtonProps> = ({
   iconPosition = 'leading',
   iconColor,
   onClick,
+  className,
   children,
   'aria-label': ariaLabel,
+  'aria-hidden': ariaHidden,
 }) => {
   const deviceType = useDeviceSizeType()
 
@@ -75,7 +79,9 @@ const Button: FC<ButtonProps> = ({
         size === 'small' ? styles.sizeSmall : undefined,
         icon && !showValue ? styles.iconOnly : undefined,
         grow ? styles.grow : undefined,
-      )}>
+        className,
+      )}
+      aria-hidden={ariaHidden}>
       <button
         id={id}
         name={name ?? id}

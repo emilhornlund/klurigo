@@ -16,6 +16,11 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      transition: gap 300ms ease-out;
+
+      &.submitted {
+        gap: 0;
+      }
 
       @include helpers.mobile {
         gap: spacing.$space-compact-mobile;

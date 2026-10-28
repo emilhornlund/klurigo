@@ -159,8 +159,8 @@ describe('AnswerPin', () => {
       JSON.stringify({ x: 0.12, y: 0.34 }),
     )
     expect(
-      screen.getByRole('button', { name: /submit my pin/i }),
-    ).toBeDisabled()
+      screen.queryByRole('button', { name: /submit my pin/i }),
+    ).not.toBeInTheDocument()
     expect(
       screen.getByRole('group', { name: /choose a pin location/i }),
     ).toHaveAttribute('tabindex', '-1')
