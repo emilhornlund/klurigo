@@ -3733,7 +3733,7 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             <h2
               class="typography title2 alignCenter widthFull colorInverse"
             >
-              50
+              0
             </h2>
           </div>
           <p

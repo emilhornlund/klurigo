@@ -28,6 +28,8 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => {
   const { mode } = event.game
   const { nickname, score, behind } = event.player
   const { correct, last: lastScore, total: totalScore, position } = score
+  const partiallyCorrect =
+    mode === GameMode.Classic && !correct && lastScore > 0
   const streak =
     mode === GameMode.Classic && 'streak' in score ? score.streak : undefined
   const { current: currentQuestion, total: totalQuestions } = event.pagination
@@ -45,8 +47,16 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => {
   }, [mode])
 
   const message = useMemo(
-    () => getPositionMessage(position, correct),
-    [position, correct],
+    () =>
+      getPositionMessage(
+        position,
+        correct
+          ? 'correct'
+          : partiallyCorrect
+            ? 'partially-correct'
+            : 'incorrect',
+      ),
+    [position, correct, partiallyCorrect],
   )
 
   const celebrationLevel = useMemo(
@@ -77,14 +87,22 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => {
               showPosition ? styles.slideOutLeft : undefined,
             )}>
             <Typography variant="title" align="center" color="inverse">
-              {correct ? 'Correct' : 'Incorrect'}
+              {correct
+                ? 'Correct'
+                : partiallyCorrect
+                  ? 'Partially correct'
+                  : 'Incorrect'}
             </Typography>
 
             <Badge
               size="large"
-              backgroundColor={correct ? 'green' : 'red'}
+              backgroundColor={
+                correct ? 'green' : partiallyCorrect ? 'orange' : 'red'
+              }
               celebration={correct ? celebrationLevel : 'none'}>
-              <FontAwesomeIcon icon={correct ? faCheck : faXmark} />
+              <FontAwesomeIcon
+                icon={correct || partiallyCorrect ? faCheck : faXmark}
+              />
             </Badge>
           </div>
         )}
