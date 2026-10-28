@@ -29,8 +29,16 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
     request: SubmitQuestionAnswerRequestDto,
   ) => {
     setIsSubmittingQuestionAnswer(true)
-    submitQuestionAnswer?.(request).finally(() =>
-      setIsSubmittingQuestionAnswer(false),
+    const submission = submitQuestionAnswer?.(request)
+
+    if (!submission) {
+      setIsSubmittingQuestionAnswer(false)
+      return
+    }
+
+    void submission.then(
+      () => setIsSubmittingQuestionAnswer(false),
+      () => setIsSubmittingQuestionAnswer(false),
     )
   }
 
@@ -44,6 +52,19 @@ const PlayerQuestionState: FC<PlayerQuestionStateProps> = ({
         loading={isSubmittingQuestionAnswer}
         onChange={handleSubmitQuestionAnswer}
       />
+
+      {isSubmittingQuestionAnswer && !answer && (
+        <div
+          className={styles.submittingAnswer}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true">
+          <span className={styles.loadingIndicator} aria-hidden="true" />
+          <Typography variant="title2" color="inverse" bold>
+            Submitting answer...
+          </Typography>
+        </div>
+      )}
 
       {answer && (
         <div

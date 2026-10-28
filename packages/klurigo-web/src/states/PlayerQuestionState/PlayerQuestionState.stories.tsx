@@ -46,9 +46,8 @@ const InteractiveAnswerStory: FC<PlayerQuestionStateProps> = ({ event }) => {
   }, [event.answer])
 
   const gameContext = {
-    submitQuestionAnswer: async (
-      request: SubmitQuestionAnswerRequestDto,
-    ): Promise<void> => {
+    submitQuestionAnswer: async (request: SubmitQuestionAnswerRequestDto) => {
+      await new Promise((resolve) => setTimeout(resolve, 3000))
       setAnswer(getSubmittedAnswer(request))
     },
   } as unknown as GameContextType

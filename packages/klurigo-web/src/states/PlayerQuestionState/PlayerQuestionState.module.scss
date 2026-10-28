@@ -1,31 +1,53 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
+@use '../../styles/layers.tokens' as layers;
 @use '../../styles/mixins/_surface' as surface;
 @use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
-.answerConfirmation {
+.answerConfirmation,
+.submittingAnswer {
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
-  z-index: 10;
+  z-index: layers.$z-index-submitting-answer;
   top: 50%;
   left: 50%;
   right: auto;
   max-width: calc(100vw - 2 * #{spacing.$space-page-mobile});
   border-radius: radius.$radius-round;
-  box-shadow:
-    shadows.$shadow-surface-rest,
-    shadows.$shadow-status-success-strong;
+  box-shadow: shadows.$shadow-surface-rest;
   backdrop-filter: blur(12px);
   white-space: nowrap;
   transform: translate(-50%, -50%);
-  animation: answer-confirmation 2800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @include helpers.mobile {
+    gap: spacing.$space-stack-mobile;
+    padding: spacing.$space-page-mobile spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-stack-tablet;
+    padding: spacing.$space-page-tablet spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-stack-desktop;
+    padding: spacing.$space-page-desktop spacing.$space-stack-desktop;
+  }
 
   @include surface.surface-base;
+}
+
+.answerConfirmation {
+  z-index: layers.$z-index-answer-confirmation;
+  box-shadow:
+    shadows.$shadow-surface-rest, shadows.$shadow-status-success-strong;
+  animation: answer-confirmation 2800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
   svg {
     flex: 0 0 auto;
@@ -35,30 +57,49 @@
   }
 
   @include helpers.mobile {
-    gap: spacing.$space-stack-mobile;
-    padding: spacing.$space-page-mobile spacing.$space-stack-mobile;
-
     svg {
       font-size: typography.$font-size-title-mobile;
     }
   }
 
   @include helpers.tablet {
-    gap: spacing.$space-stack-tablet;
-    padding: spacing.$space-page-tablet spacing.$space-stack-tablet;
-
     svg {
       font-size: typography.$font-size-title-tablet;
     }
   }
 
   @include helpers.desktop {
-    gap: spacing.$space-stack-desktop;
-    padding: spacing.$space-page-desktop spacing.$space-stack-desktop;
-
     svg {
       font-size: typography.$font-size-title-desktop;
     }
+  }
+}
+
+.submittingAnswer {
+  z-index: layers.$z-index-submitting-answer;
+  animation: answer-submitting 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.loadingIndicator {
+  flex: 0 0 auto;
+  border: controls.$control-border-width-outside solid colors.$color-text-inverse-subtle;
+  border-top-color: colors.$color-text-inverse;
+  border-radius: 50%;
+  animation: submitting-answer-spin 800ms linear infinite;
+
+  @include helpers.mobile {
+    width: typography.$font-size-title-mobile;
+    height: typography.$font-size-title-mobile;
+  }
+
+  @include helpers.tablet {
+    width: typography.$font-size-title-tablet;
+    height: typography.$font-size-title-tablet;
+  }
+
+  @include helpers.desktop {
+    width: typography.$font-size-title-desktop;
+    height: typography.$font-size-title-desktop;
   }
 }
 
@@ -85,8 +126,36 @@
   }
 }
 
+@keyframes submitting-answer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes answer-submitting {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 65vh)) scale(0.65);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .answerConfirmation {
+    animation: none;
+  }
+
+  .loadingIndicator,
+  .submittingAnswer {
     animation: none;
   }
 }
