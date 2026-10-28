@@ -386,6 +386,13 @@ describe('PlayerQuestionState', () => {
 
     expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
     expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
+
+    h.submitQuestionAnswer.mockResolvedValue()
+    await user.click(screen.getByRole('button', { name: 'A' }))
+
+    await waitFor(() => {
+      expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(2)
+    })
   })
 
   it('does not throw when submitQuestionAnswer is undefined', async () => {
