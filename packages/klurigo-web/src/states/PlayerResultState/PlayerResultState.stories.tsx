@@ -42,6 +42,29 @@ export const Correct = {
   },
 } satisfies Story
 
+export const PartiallyCorrect = {
+  args: {
+    event: {
+      type: GameEventType.GameResultPlayer,
+      game: { mode: GameMode.Classic },
+      player: {
+        nickname: 'FrostyBear',
+        score: {
+          correct: false,
+          last: 250,
+          total: 10458,
+          position: 2,
+          streak: 0,
+        },
+      },
+      pagination: {
+        current: 1,
+        total: 20,
+      },
+    },
+  },
+} satisfies Story
+
 export const Incorrect = {
   args: {
     event: {

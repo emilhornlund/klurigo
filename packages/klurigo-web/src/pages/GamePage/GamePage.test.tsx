@@ -773,6 +773,31 @@ describe('GamePage', () => {
     expect(screen.queryByText('Correct')).not.toBeInTheDocument()
   })
 
+  it('shows partial correctness and awarded points from a player result event', () => {
+    h.control.event = {
+      type: GameEventType.GameResultPlayer,
+      game: { mode: GameMode.Classic },
+      player: {
+        nickname: 'PuzzlePlayer',
+        score: {
+          correct: false,
+          last: 250,
+          total: 1250,
+          position: 1,
+          streak: 0,
+        },
+      },
+      pagination: { current: 1, total: 1 },
+    }
+
+    renderWithRouter()
+
+    expect(screen.getByText('Partially correct')).toBeInTheDocument()
+    expect(screen.getByText('250')).toBeInTheDocument()
+    expect(screen.queryByText('Correct')).not.toBeInTheDocument()
+    expect(screen.queryByText('Incorrect')).not.toBeInTheDocument()
+  })
+
   it('keeps the active game state when recovery fails', async () => {
     h.control.status = 'CONNECTED'
     h.control.event = {

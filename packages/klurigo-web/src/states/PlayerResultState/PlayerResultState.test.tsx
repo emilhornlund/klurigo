@@ -12,8 +12,7 @@ import PlayerResultState from './PlayerResultState'
 
 const h = vi.hoisted(() => ({
   getPositionMessage: vi.fn(
-    (pos: number, correct: boolean) =>
-      `Message for ${pos} - ${correct ? 'correct' : 'incorrect'}`,
+    (pos: number, correctness: string) => `Message for ${pos} - ${correctness}`,
   ),
 }))
 
@@ -59,7 +58,7 @@ describe('PlayerResultState', () => {
     expect(screen.getByText('634')).toBeInTheDocument()
     expect(screen.getByText('Message for 1 - correct')).toBeInTheDocument()
     expect(screen.getByText(/points behind/i)).toBeInTheDocument()
-    expect(h.getPositionMessage).toHaveBeenCalledWith(1, true)
+    expect(h.getPositionMessage).toHaveBeenCalledWith(1, 'correct')
     expect(container).toMatchSnapshot()
   })
 
@@ -74,7 +73,7 @@ describe('PlayerResultState', () => {
               nickname: 'Radar',
               score: {
                 correct: false,
-                last: 50,
+                last: 0,
                 total: 9000,
                 position: 7,
                 streak: 0,
@@ -86,11 +85,41 @@ describe('PlayerResultState', () => {
       </MemoryRouter>,
     )
     expect(screen.getByText('Incorrect')).toBeInTheDocument()
-    expect(screen.getByText('50')).toBeInTheDocument()
+    expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.getByText('Message for 7 - incorrect')).toBeInTheDocument()
     expect(screen.queryByText(/points behind/i)).toBeNull()
-    expect(h.getPositionMessage).toHaveBeenCalledWith(7, false)
+    expect(h.getPositionMessage).toHaveBeenCalledWith(7, 'incorrect')
     expect(container).toMatchSnapshot()
+  })
+
+  it('renders partially correct result and awarded points', () => {
+    render(
+      <MemoryRouter>
+        <PlayerResultState
+          event={{
+            type: GameEventType.GameResultPlayer,
+            game: { mode: GameMode.Classic },
+            player: {
+              nickname: 'AlmostThere',
+              score: {
+                correct: false,
+                last: 250,
+                total: 1250,
+                position: 2,
+                streak: 0,
+              },
+            },
+            pagination: { current: 1, total: 20 },
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Partially correct')).toBeInTheDocument()
+    expect(screen.getByText('250')).toBeInTheDocument()
+    expect(screen.queryByText('Correct')).not.toBeInTheDocument()
+    expect(screen.queryByText('Incorrect')).not.toBeInTheDocument()
+    expect(h.getPositionMessage).toHaveBeenCalledWith(2, 'partially-correct')
   })
 
   describe('Celebration Logic', () => {
@@ -532,7 +561,7 @@ describe('PlayerResultState', () => {
       expect(positionBatch).toHaveClass('slideInRight')
       expect(positionBatch).not.toHaveClass('hidden')
 
-      expect(h.getPositionMessage).toHaveBeenCalledWith(1, true)
+      expect(h.getPositionMessage).toHaveBeenCalledWith(1, 'correct')
       expect(screen.queryByText('Streak')).toBeNull()
     })
 
