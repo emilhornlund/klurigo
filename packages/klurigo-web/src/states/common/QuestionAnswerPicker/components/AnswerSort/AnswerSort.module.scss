@@ -4,6 +4,11 @@
 
 .answerSort {
   flex: 1;
+  transition: gap 300ms ease-out;
+
+  &.submitted {
+    gap: 0;
+  }
 
   .table {
     display: flex;

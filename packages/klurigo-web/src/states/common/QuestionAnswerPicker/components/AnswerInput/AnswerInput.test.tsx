@@ -54,6 +54,9 @@ describe('AnswerInput', () => {
       )
       expect(screen.getByRole('textbox')).toHaveValue('Paris')
       expect(screen.getByRole('textbox')).toBeDisabled()
+      expect(
+        screen.queryByRole('button', { name: /submit/i }),
+      ).not.toBeInTheDocument()
     })
 
     it('renders non-interactive mode with submitted answer', () => {
@@ -71,6 +74,9 @@ describe('AnswerInput', () => {
       )
       expect(screen.getByRole('textbox')).toHaveValue('London')
       expect(screen.getByRole('textbox')).toBeDisabled()
+      expect(
+        screen.queryByRole('button', { name: /submit/i }),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -170,7 +176,7 @@ describe('AnswerInput', () => {
     })
 
     it('shows the submitted text when the answer event arrives', () => {
-      const { rerender } = render(
+      const { container, rerender } = render(
         <AnswerInput interactive loading={false} onSubmit={onSubmit} />,
       )
 
@@ -185,6 +191,13 @@ describe('AnswerInput', () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('Paris')
       expect(screen.getByRole('textbox')).toBeDisabled()
+      const exitingButton =
+        container.querySelector('#submit-button')?.parentElement
+      expect(exitingButton).toHaveAttribute('aria-hidden', 'true')
+      expect(exitingButton).toHaveClass('exiting')
+      expect(
+        screen.queryByRole('button', { name: /submit/i }),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -302,7 +315,7 @@ describe('AnswerInput', () => {
       expect(submitButton).not.toBeInTheDocument()
     })
 
-    it('should disable submit button when answer is submitted', () => {
+    it('should hide submit button when answer is submitted', () => {
       const submittedAnswer: GameQuestionPlayerAnswerEvent = {
         type: QuestionType.TypeAnswer,
         value: 'Paris',
@@ -317,10 +330,9 @@ describe('AnswerInput', () => {
         />,
       )
 
-      const submitButton = screen.getByRole('button', {
-        name: 'Submit My Answer',
-      })
-      expect(submitButton).toBeDisabled()
+      expect(
+        screen.queryByRole('button', { name: 'Submit My Answer' }),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -505,12 +517,10 @@ describe('AnswerInput', () => {
       )
 
       const input = screen.getByRole('textbox')
-      const submitButton = screen.getByRole('button', {
-        name: 'Submit My Answer',
-      })
-
       expect(input).toBeDisabled()
-      expect(submitButton).toBeDisabled()
+      expect(
+        screen.queryByRole('button', { name: 'Submit My Answer' }),
+      ).not.toBeInTheDocument()
     })
   })
 })

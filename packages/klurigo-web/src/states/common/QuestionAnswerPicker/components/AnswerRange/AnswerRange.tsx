@@ -7,6 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Button, TextField } from '../../../../../components'
 import { isValidNumber } from '../../../../../utils/helpers'
 import NonInteractiveInfoBox from '../../../NonInteractiveInfoBox'
+import useSubmitButtonExit from '../../hooks/useSubmitButtonExit'
+import submitButtonStyles from '../AnswerSubmitButton.module.scss'
 
 import styles from './AnswerRange.module.scss'
 
@@ -43,6 +45,8 @@ const AnswerRange: FC<AnswerRangeProps> = ({
     () => !interactive || loading || !!submittedAnswer,
     [interactive, loading, submittedAnswer],
   )
+  const { shouldRender: shouldRenderSubmitButton, isExiting } =
+    useSubmitButtonExit(!!submittedAnswer)
 
   const handleSliderChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,16 +105,22 @@ const AnswerRange: FC<AnswerRangeProps> = ({
             disabled={disabled}
             required
           />
-          <Button
-            id="submit-button"
-            type="submit"
-            variant="primary"
-            surface="brand"
-            intent="accent"
-            icon={faRocket}
-            disabled={disabled || !valid}>
-            Submit My Answer
-          </Button>
+          {shouldRenderSubmitButton && (
+            <Button
+              id="submit-button"
+              type="submit"
+              variant="primary"
+              surface="brand"
+              intent="accent"
+              icon={faRocket}
+              disabled={disabled || !valid}
+              className={`${submitButtonStyles.transition} ${
+                isExiting ? submitButtonStyles.exiting : ''
+              }`}
+              aria-hidden={submittedAnswer ? true : undefined}>
+              Submit My Answer
+            </Button>
+          )}
         </form>
       </div>
     </div>

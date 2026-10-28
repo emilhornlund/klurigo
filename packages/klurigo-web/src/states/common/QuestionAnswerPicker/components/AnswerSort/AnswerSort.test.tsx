@@ -145,7 +145,7 @@ describe('AnswerSort', () => {
     rerender(
       <AnswerSort
         values={['Alpha', 'Beta', 'Gamma']}
-        interactive
+        interactive={false}
         loading={false}
         onSubmit={vi.fn()}
         submittedAnswer={{
@@ -159,9 +159,16 @@ describe('AnswerSort', () => {
       .getAllByRole('listitem')
       .map((item) => item.getAttribute('data-value'))
     expect(values).toEqual(['Gamma', 'Alpha', 'Beta'])
+    expect(screen.getByTestId('sortable')).toHaveAttribute(
+      'data-disabled',
+      'true',
+    )
+    const exitingButton =
+      document.querySelector('#submit-button')?.parentElement
+    expect(exitingButton).toHaveClass('transition', 'exiting')
     expect(
-      screen.getByRole('button', { name: /submit my answer/i }),
-    ).toBeDisabled()
+      screen.queryByRole('button', { name: /submit my answer/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('disables interaction and hides submit button in non-interactive mode', () => {

@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import type { SortableTableValue } from '../../../../../components'
 import { Button, SortableTable, Stack } from '../../../../../components'
+import useSubmitButtonExit from '../../hooks/useSubmitButtonExit'
+import submitButtonStyles from '../AnswerSubmitButton.module.scss'
 
 import styles from './AnswerSort.module.scss'
 
@@ -47,13 +49,17 @@ const AnswerSort: FC<AnswerSortProps> = ({
     () => !interactive || loading || !!submittedAnswer,
     [interactive, loading, submittedAnswer],
   )
+  const { shouldRender: shouldRenderSubmitButton, isExiting } =
+    useSubmitButtonExit(!!submittedAnswer)
 
   const handleSubmit = () =>
     onSubmit(internalValues.map((value) => value.value))
 
   return (
     <Stack
-      className={styles.answerSort}
+      className={`${styles.answerSort} ${
+        submittedAnswer ? styles.submitted : ''
+      }`}
       spacing="compact"
       align="center"
       justify="center">
@@ -65,7 +71,7 @@ const AnswerSort: FC<AnswerSortProps> = ({
         />
       </div>
 
-      {(interactive || !!submittedAnswer) && (
+      {(interactive || !!submittedAnswer) && shouldRenderSubmitButton && (
         <div className={styles.buttonWrapper}>
           <Button
             id="submit-button"
@@ -75,7 +81,11 @@ const AnswerSort: FC<AnswerSortProps> = ({
             intent="accent"
             icon={faRocket}
             disabled={disabled}
-            onClick={handleSubmit}>
+            onClick={handleSubmit}
+            className={`${submitButtonStyles.transition} ${
+              isExiting ? submitButtonStyles.exiting : ''
+            }`}
+            aria-hidden={submittedAnswer ? true : undefined}>
             Submit My Answer
           </Button>
         </div>

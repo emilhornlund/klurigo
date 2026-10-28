@@ -11,6 +11,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button, TextField } from '../../../../../components'
 import NonInteractiveInfoBox from '../../../NonInteractiveInfoBox'
+import useSubmitButtonExit from '../../hooks/useSubmitButtonExit'
+import submitButtonStyles from '../AnswerSubmitButton.module.scss'
 
 import styles from './AnswerInput.module.scss'
 
@@ -35,6 +37,8 @@ const AnswerInput: FC<AnswerInputProps> = ({
     () => !interactive || loading || !!submittedAnswer,
     [interactive, loading, submittedAnswer],
   )
+  const { shouldRender: shouldRenderSubmitButton, isExiting } =
+    useSubmitButtonExit(!!submittedAnswer)
 
   const handleSubmit = useCallback(
     (event: FormEvent) => {
@@ -85,7 +89,10 @@ const AnswerInput: FC<AnswerInputProps> = ({
   return (
     <div className={styles.answerInput}>
       <div className={styles.interactive}>
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form
+          ref={formRef}
+          className={submittedAnswer ? styles.submitted : undefined}
+          onSubmit={handleSubmit}>
           <TextField
             id="answer-input"
             type="text"
@@ -100,16 +107,22 @@ const AnswerInput: FC<AnswerInputProps> = ({
             required
             autoFocus
           />
-          <Button
-            id="submit-button"
-            type="submit"
-            variant="primary"
-            surface="brand"
-            intent="accent"
-            icon={faRocket}
-            disabled={disabled || !valid}>
-            Submit My Answer
-          </Button>
+          {shouldRenderSubmitButton && (
+            <Button
+              id="submit-button"
+              type="submit"
+              variant="primary"
+              surface="brand"
+              intent="accent"
+              icon={faRocket}
+              disabled={disabled || !valid}
+              className={`${submitButtonStyles.transition} ${
+                isExiting ? submitButtonStyles.exiting : ''
+              }`}
+              aria-hidden={submittedAnswer ? true : undefined}>
+              Submit My Answer
+            </Button>
+          )}
         </form>
       </div>
     </div>

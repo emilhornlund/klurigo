@@ -242,7 +242,7 @@ describe('AnswerRange', () => {
     expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
   })
 
-  it('disables the slider and submit button after an answer is submitted', () => {
+  it('preserves and disables the submitted answer without a submit button', () => {
     render(
       <AnswerRange
         min={0}
@@ -257,7 +257,9 @@ describe('AnswerRange', () => {
 
     expect(screen.getByRole('slider')).toBeDisabled()
     expect(screen.getByTestId('tf-input')).toBeDisabled()
-    expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
+    expect(
+      screen.queryByRole('button', { name: /submit/i }),
+    ).not.toBeInTheDocument()
     expect(screen.getByRole('slider')).toHaveValue('40')
   })
 

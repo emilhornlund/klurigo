@@ -10,6 +10,8 @@ import {
   ResponsiveImage,
   Stack,
 } from '../../../../../components'
+import useSubmitButtonExit from '../../hooks/useSubmitButtonExit'
+import submitButtonStyles from '../AnswerSubmitButton.module.scss'
 
 import styles from './AnswerPin.module.scss'
 
@@ -56,6 +58,8 @@ const AnswerPin: FC<AnswerPinProps> = ({
     () => !interactive || loading || !!submittedAnswer,
     [interactive, loading, submittedAnswer],
   )
+  const { shouldRender: shouldRenderSubmitButton, isExiting } =
+    useSubmitButtonExit(!!submittedAnswer)
 
   const handleSubmit = () => {
     onSubmit(position)
@@ -73,7 +77,12 @@ const AnswerPin: FC<AnswerPinProps> = ({
 
   return (
     <div className={styles.answerPin} data-testid="pin-answer">
-      <Stack className={styles.interactive} spacing="compact" align="center">
+      <Stack
+        className={`${styles.interactive} ${
+          submittedAnswer ? styles.submitted : ''
+        }`}
+        spacing="compact"
+        align="center">
         <div className={styles.imageArea} data-testid="pin-image-area">
           <PinImage
             value={position}
@@ -90,19 +99,25 @@ const AnswerPin: FC<AnswerPinProps> = ({
           aria-live="polite">
           {`Pin position: ${Math.round(position.x * 100)}% from left, ${Math.round(position.y * 100)}% from top.`}
         </span>
-        <div className={styles.buttonWrapper}>
-          <Button
-            id="submit-button"
-            type="button"
-            variant="primary"
-            surface="brand"
-            intent="accent"
-            icon={faRocket}
-            disabled={disabled}
-            onClick={handleSubmit}>
-            Submit My Pin
-          </Button>
-        </div>
+        {shouldRenderSubmitButton && (
+          <div className={styles.buttonWrapper}>
+            <Button
+              id="submit-button"
+              type="button"
+              variant="primary"
+              surface="brand"
+              intent="accent"
+              icon={faRocket}
+              disabled={disabled}
+              onClick={handleSubmit}
+              className={`${submitButtonStyles.transition} ${
+                isExiting ? submitButtonStyles.exiting : ''
+              }`}
+              aria-hidden={submittedAnswer ? true : undefined}>
+              Submit My Pin
+            </Button>
+          </div>
+        )}
       </Stack>
     </div>
   )
