@@ -67,6 +67,18 @@ function renderState(
 }
 
 describe('PlayerQuestionState', () => {
+  it('shows confirmation when the event contains a submitted answer', () => {
+    renderState({ answer: { type: QuestionType.MultiChoice, value: 0 } })
+
+    expect(screen.getByRole('status')).toHaveTextContent('Answer locked in!')
+  })
+
+  it('does not show confirmation when the event has no submitted answer', () => {
+    renderState()
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
   it('shows player media indicators instead of audio and video players', () => {
     renderState({
       question: {

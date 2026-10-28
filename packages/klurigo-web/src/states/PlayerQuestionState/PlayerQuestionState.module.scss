@@ -1,0 +1,92 @@
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/helpers' as helpers;
+@use '../../styles/mixins/_surface' as surface;
+@use '../../styles/shadows.tokens' as shadows;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
+
+.answerConfirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  max-width: calc(100vw - 2 * #{spacing.$space-page-mobile});
+  border-radius: radius.$radius-round;
+  box-shadow:
+    shadows.$shadow-surface-rest,
+    shadows.$shadow-status-success-strong;
+  backdrop-filter: blur(12px);
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  animation: answer-confirmation 2800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @include surface.surface-base;
+
+  svg {
+    flex: 0 0 auto;
+    color: colors.$color-text-success;
+    font-size: typography.$font-size-title-mobile;
+    filter: drop-shadow(0 0 8px colors.$color-shadow-glow-success-strong);
+  }
+
+  @include helpers.mobile {
+    gap: spacing.$space-stack-mobile;
+    padding: spacing.$space-page-mobile spacing.$space-stack-mobile;
+
+    svg {
+      font-size: typography.$font-size-title-mobile;
+    }
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-stack-tablet;
+    padding: spacing.$space-page-tablet spacing.$space-stack-tablet;
+
+    svg {
+      font-size: typography.$font-size-title-tablet;
+    }
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-stack-desktop;
+    padding: spacing.$space-page-desktop spacing.$space-stack-desktop;
+
+    svg {
+      font-size: typography.$font-size-title-desktop;
+    }
+  }
+}
+
+@keyframes answer-confirmation {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 65vh)) scale(0.65);
+  }
+
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  28%,
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% - 70vh)) scale(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answerConfirmation {
+    animation: none;
+  }
+}
