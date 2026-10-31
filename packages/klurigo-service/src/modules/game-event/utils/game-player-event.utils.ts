@@ -54,7 +54,7 @@ export function buildPlayerGameEvent(
       case 'pending':
         return buildGameLoadingEvent()
       case 'active':
-        return buildGameLobbyPlayerEvent(player)
+        return buildGameLobbyPlayerEvent(game, player)
       case 'completed':
         return buildGameBeginPlayerEvent(player)
     }

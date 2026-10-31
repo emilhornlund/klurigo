@@ -63,42 +63,108 @@ exports[`PlayerLobbyState > confirms leave, calls leaveGame with participant id 
         <div
           class="contentInner"
         >
-          <div
-            class="main"
+          <section
+            aria-label="Player waiting room"
+            class="stack vertical spacing-page align-center justify-start width-full lobby"
           >
             <div
-              class="float"
+              class="stack vertical spacing-stack align-center justify-start"
             >
-              <img
-                alt="Hourglass"
-                class="image"
-                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
-              />
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-circle-check successIcon"
+                data-icon="circle-check"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1
+                class="typography title alignCenter widthMedium colorInverse"
+              >
+                You’re in!
+              </h1>
             </div>
-          </div>
-          <div
-            class="surface interactive main subtle"
-          >
-            FrostyBear
-          </div>
-          <h1
-            class="typography title alignCenter widthMedium colorInverse"
-          >
-            You’re in the waiting room
-          </h1>
-          <div
-            class="messageContainer"
-          >
             <div
-              class="message visible"
+              class="stack vertical spacing-stack align-center justify-start"
             >
               <p
-                class="typography body alignCenter widthSmall colorInverse"
+                class="typography body alignCenter widthFull colorInverse"
               >
-                Be nice and wait
+                Welcome,
+              </p>
+              <div
+                class="surface interactive main subtle"
+              >
+                FrostyBear
+              </div>
+            </div>
+            <div
+              class="surface quizCard"
+            >
+              <div
+                class="stack vertical spacing-compact align-center justify-start"
+              >
+                <p
+                  class="typography body2 alignCenter widthFull colorInverseSubtle"
+                >
+                  YOU’RE PLAYING
+                </p>
+                <h2
+                  class="typography title2 alignCenter widthMedium colorInverse"
+                >
+                  The Big Brain Quiz
+                </h2>
+              </div>
+            </div>
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              class="stack horizontal spacing-compact align-center justify-center width-full playerCount"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse count"
+              >
+                3
+              </h3>
+              <p
+                class="typography body alignCenter widthFull colorInverse playerLabel"
+              >
+                players are in the game
               </p>
             </div>
-          </div>
+            <div
+              class="stack vertical spacing-stack align-center justify-start"
+            >
+              <img
+                alt=""
+                class="hourglass"
+                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
+              />
+              <h3
+                class="typography title3 alignCenter widthMedium colorInverse"
+              >
+                Waiting for the host to start…
+              </h3>
+              <div
+                class="messageContainer"
+              >
+                <div
+                  class="message visible"
+                >
+                  <p
+                    class="typography body alignCenter widthSmall colorInverse"
+                  >
+                    Be nice and wait
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>
@@ -169,42 +235,108 @@ exports[`PlayerLobbyState > does nothing when gameID is undefined 1`] = `
         <div
           class="contentInner"
         >
-          <div
-            class="main"
+          <section
+            aria-label="Player waiting room"
+            class="stack vertical spacing-page align-center justify-start width-full lobby"
           >
             <div
-              class="float"
+              class="stack vertical spacing-stack align-center justify-start"
             >
-              <img
-                alt="Hourglass"
-                class="image"
-                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
-              />
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-circle-check successIcon"
+                data-icon="circle-check"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1
+                class="typography title alignCenter widthMedium colorInverse"
+              >
+                You’re in!
+              </h1>
             </div>
-          </div>
-          <div
-            class="surface interactive main subtle"
-          >
-            FrostyBear
-          </div>
-          <h1
-            class="typography title alignCenter widthMedium colorInverse"
-          >
-            You’re in the waiting room
-          </h1>
-          <div
-            class="messageContainer"
-          >
             <div
-              class="message visible"
+              class="stack vertical spacing-stack align-center justify-start"
             >
               <p
-                class="typography body alignCenter widthSmall colorInverse"
+                class="typography body alignCenter widthFull colorInverse"
               >
-                Be nice and wait
+                Welcome,
+              </p>
+              <div
+                class="surface interactive main subtle"
+              >
+                FrostyBear
+              </div>
+            </div>
+            <div
+              class="surface quizCard"
+            >
+              <div
+                class="stack vertical spacing-compact align-center justify-start"
+              >
+                <p
+                  class="typography body2 alignCenter widthFull colorInverseSubtle"
+                >
+                  YOU’RE PLAYING
+                </p>
+                <h2
+                  class="typography title2 alignCenter widthMedium colorInverse"
+                >
+                  The Big Brain Quiz
+                </h2>
+              </div>
+            </div>
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              class="stack horizontal spacing-compact align-center justify-center width-full playerCount"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse count"
+              >
+                3
+              </h3>
+              <p
+                class="typography body alignCenter widthFull colorInverse playerLabel"
+              >
+                players are in the game
               </p>
             </div>
-          </div>
+            <div
+              class="stack vertical spacing-stack align-center justify-start"
+            >
+              <img
+                alt=""
+                class="hourglass"
+                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
+              />
+              <h3
+                class="typography title3 alignCenter widthMedium colorInverse"
+              >
+                Waiting for the host to start…
+              </h3>
+              <div
+                class="messageContainer"
+              >
+                <div
+                  class="message visible"
+                >
+                  <p
+                    class="typography body alignCenter widthSmall colorInverse"
+                  >
+                    Be nice and wait
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>
@@ -275,42 +407,108 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
         <div
           class="contentInner"
         >
-          <div
-            class="main"
+          <section
+            aria-label="Player waiting room"
+            class="stack vertical spacing-page align-center justify-start width-full lobby"
           >
             <div
-              class="float"
+              class="stack vertical spacing-stack align-center justify-start"
             >
-              <img
-                alt="Hourglass"
-                class="image"
-                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
-              />
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-circle-check successIcon"
+                data-icon="circle-check"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1
+                class="typography title alignCenter widthMedium colorInverse"
+              >
+                You’re in!
+              </h1>
             </div>
-          </div>
-          <div
-            class="surface interactive main subtle"
-          >
-            FrostyBear
-          </div>
-          <h1
-            class="typography title alignCenter widthMedium colorInverse"
-          >
-            You’re in the waiting room
-          </h1>
-          <div
-            class="messageContainer"
-          >
             <div
-              class="message visible"
+              class="stack vertical spacing-stack align-center justify-start"
             >
               <p
-                class="typography body alignCenter widthSmall colorInverse"
+                class="typography body alignCenter widthFull colorInverse"
               >
-                Be nice and wait
+                Welcome,
+              </p>
+              <div
+                class="surface interactive main subtle"
+              >
+                FrostyBear
+              </div>
+            </div>
+            <div
+              class="surface quizCard"
+            >
+              <div
+                class="stack vertical spacing-compact align-center justify-start"
+              >
+                <p
+                  class="typography body2 alignCenter widthFull colorInverseSubtle"
+                >
+                  YOU’RE PLAYING
+                </p>
+                <h2
+                  class="typography title2 alignCenter widthMedium colorInverse"
+                >
+                  The Big Brain Quiz
+                </h2>
+              </div>
+            </div>
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              class="stack horizontal spacing-compact align-center justify-center width-full playerCount"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse count"
+              >
+                3
+              </h3>
+              <p
+                class="typography body alignCenter widthFull colorInverse playerLabel"
+              >
+                players are in the game
               </p>
             </div>
-          </div>
+            <div
+              class="stack vertical spacing-stack align-center justify-start"
+            >
+              <img
+                alt=""
+                class="hourglass"
+                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
+              />
+              <h3
+                class="typography title3 alignCenter widthMedium colorInverse"
+              >
+                Waiting for the host to start…
+              </h3>
+              <div
+                class="messageContainer"
+              >
+                <div
+                  class="message visible"
+                >
+                  <p
+                    class="typography body alignCenter widthSmall colorInverse"
+                  >
+                    Be nice and wait
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>
@@ -321,12 +519,12 @@ exports[`PlayerLobbyState > does nothing when participant id is missing 1`] = `
 exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
 <div>
   <div
-    aria-hidden="true"
     class="main"
-    data-floating-ui-inert=""
   >
     <div
+      aria-hidden="true"
       class="header"
+      data-floating-ui-inert=""
     >
       <button
         class="logo"
@@ -383,42 +581,116 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
         <div
           class="contentInner"
         >
-          <div
-            class="main"
+          <section
+            aria-label="Player waiting room"
+            class="stack vertical spacing-page align-center justify-start width-full lobby"
           >
             <div
-              class="float"
+              aria-hidden="true"
+              class="stack vertical spacing-stack align-center justify-start"
+              data-floating-ui-inert=""
             >
-              <img
-                alt="Hourglass"
-                class="image"
-                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
-              />
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-circle-check successIcon"
+                data-icon="circle-check"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1
+                class="typography title alignCenter widthMedium colorInverse"
+              >
+                You’re in!
+              </h1>
             </div>
-          </div>
-          <div
-            class="surface interactive main subtle"
-          >
-            FrostyBear
-          </div>
-          <h1
-            class="typography title alignCenter widthMedium colorInverse"
-          >
-            You’re in the waiting room
-          </h1>
-          <div
-            class="messageContainer"
-          >
             <div
-              class="message visible"
+              aria-hidden="true"
+              class="stack vertical spacing-stack align-center justify-start"
+              data-floating-ui-inert=""
             >
               <p
-                class="typography body alignCenter widthSmall colorInverse"
+                class="typography body alignCenter widthFull colorInverse"
               >
-                Be nice and wait
+                Welcome,
+              </p>
+              <div
+                class="surface interactive main subtle"
+              >
+                FrostyBear
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="surface quizCard"
+              data-floating-ui-inert=""
+            >
+              <div
+                class="stack vertical spacing-compact align-center justify-start"
+              >
+                <p
+                  class="typography body2 alignCenter widthFull colorInverseSubtle"
+                >
+                  YOU’RE PLAYING
+                </p>
+                <h2
+                  class="typography title2 alignCenter widthMedium colorInverse"
+                >
+                  The Big Brain Quiz
+                </h2>
+              </div>
+            </div>
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              class="stack horizontal spacing-compact align-center justify-center width-full playerCount"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse count"
+              >
+                3
+              </h3>
+              <p
+                class="typography body alignCenter widthFull colorInverse playerLabel"
+              >
+                players are in the game
               </p>
             </div>
-          </div>
+            <div
+              aria-hidden="true"
+              class="stack vertical spacing-stack align-center justify-start"
+              data-floating-ui-inert=""
+            >
+              <img
+                alt=""
+                class="hourglass"
+                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
+              />
+              <h3
+                class="typography title3 alignCenter widthMedium colorInverse"
+              >
+                Waiting for the host to start…
+              </h3>
+              <div
+                class="messageContainer"
+              >
+                <div
+                  class="message visible"
+                >
+                  <p
+                    class="typography body alignCenter widthSmall colorInverse"
+                  >
+                    Be nice and wait
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>
@@ -435,10 +707,10 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
       tabindex="0"
     />
     <div
-      aria-labelledby="_r_9_"
+      aria-labelledby="_r_k_"
       class="modalContainer sizeNormal"
       data-floating-ui-focusable=""
-      id="_r_7_"
+      id="_r_i_"
       role="dialog"
       tabindex="-1"
     >
@@ -447,7 +719,7 @@ exports[`PlayerLobbyState > opens confirm dialog when clicking Leave 1`] = `
       >
         <h4
           class="typography title4 alignLeft widthFull colorDefault noOpacity"
-          id="_r_9_"
+          id="_r_k_"
         >
           Confirm Leave Game
         </h4>
@@ -595,42 +867,108 @@ exports[`PlayerLobbyState > renders lobby with nickname, title and message 1`] =
         <div
           class="contentInner"
         >
-          <div
-            class="main"
+          <section
+            aria-label="Player waiting room"
+            class="stack vertical spacing-page align-center justify-start width-full lobby"
           >
             <div
-              class="float"
+              class="stack vertical spacing-stack align-center justify-start"
             >
-              <img
-                alt="Hourglass"
-                class="image"
-                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
-              />
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-circle-check successIcon"
+                data-icon="circle-check"
+                data-prefix="fas"
+                role="img"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <h1
+                class="typography title alignCenter widthMedium colorInverse"
+              >
+                You’re in!
+              </h1>
             </div>
-          </div>
-          <div
-            class="surface interactive main subtle"
-          >
-            FrostyBear
-          </div>
-          <h1
-            class="typography title alignCenter widthMedium colorInverse"
-          >
-            You’re in the waiting room
-          </h1>
-          <div
-            class="messageContainer"
-          >
             <div
-              class="message visible"
+              class="stack vertical spacing-stack align-center justify-start"
             >
               <p
-                class="typography body alignCenter widthSmall colorInverse"
+                class="typography body alignCenter widthFull colorInverse"
               >
-                Be nice and wait
+                Welcome,
+              </p>
+              <div
+                class="surface interactive main subtle"
+              >
+                FrostyBear
+              </div>
+            </div>
+            <div
+              class="surface quizCard"
+            >
+              <div
+                class="stack vertical spacing-compact align-center justify-start"
+              >
+                <p
+                  class="typography body2 alignCenter widthFull colorInverseSubtle"
+                >
+                  YOU’RE PLAYING
+                </p>
+                <h2
+                  class="typography title2 alignCenter widthMedium colorInverse"
+                >
+                  The Big Brain Quiz
+                </h2>
+              </div>
+            </div>
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              class="stack horizontal spacing-compact align-center justify-center width-full playerCount"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse count"
+              >
+                3
+              </h3>
+              <p
+                class="typography body alignCenter widthFull colorInverse playerLabel"
+              >
+                players are in the game
               </p>
             </div>
-          </div>
+            <div
+              class="stack vertical spacing-stack align-center justify-start"
+            >
+              <img
+                alt=""
+                class="hourglass"
+                src="data:image/svg+xml,%3csvg%20width='170'%20height='224'%20viewBox='0%200%20170%20224'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M150%200C161.046%200%20170%208.95431%20170%2020C170%2027.8081%20165.525%2034.5695%20159%2037.8633V51C159%2076.3133%20146.29%2098.6573%20126.903%20112C146.29%20125.343%20159%20147.687%20159%20173V186.136C165.525%20189.429%20170%20196.192%20170%20204C170%20215.046%20161.046%20224%20150%20224H20C8.95431%20224%200%20215.046%200%20204C0%20196.192%204.4751%20189.429%2011%20186.136V173C11%20147.687%2023.7098%20125.343%2043.0957%20112C23.7098%2098.6573%2011%2076.313%2011%2051V37.8633C4.47531%2034.5695%200%2027.8081%200%2020C0%208.95431%208.95431%204.02661e-08%2020%200H150ZM20%208C13.3726%208%208%2013.3726%208%2020C8%2026.6274%2013.3726%2032%2020%2032H19V51C19%2078.51%2035.8314%20102.088%2059.7578%20112C35.8314%20121.912%2019%20145.49%2019%20173V192H20C13.3726%20192%208%20197.373%208%20204C8%20210.627%2013.3726%20216%2020%20216H150C156.627%20216%20162%20210.627%20162%20204C162%20197.709%20157.16%20192.549%20151%20192.041V173C151%20145.49%20134.168%20121.912%20110.241%20112C134.168%20102.088%20151%2078.5103%20151%2051V32H150C156.627%2032%20162%2026.6274%20162%2020C162%2013.3726%20156.627%208%20150%208H20Z'%20fill='white'/%3e%3cpath%20d='M151%2032V51C151%2078.5103%20134.168%20102.088%20110.241%20112C134.168%20121.912%20151%20145.49%20151%20173V192H19V173C19%20145.49%2035.8314%20121.912%2059.7578%20112C35.8314%20102.088%2019%2078.51%2019%2051V32H151Z'%20fill='%23FFD32A'/%3e%3cpath%20d='M150%20192C156.627%20192%20162%20197.373%20162%20204C162%20210.627%20156.627%20216%20150%20216H20C13.3726%20216%208%20210.627%208%20204C8%20197.373%2013.3726%20192%2020%20192H150ZM150%208C156.627%208%20162%2013.3726%20162%2020C162%2026.6274%20156.627%2032%20150%2032H20C13.3726%2032%208%2026.6274%208%2020C8%2013.3726%2013.3726%208%2020%208H150Z'%20fill='%233C40C6'/%3e%3cpath%20d='M120.732%2060C126.5%2060.0002%20133.5%2064.0002%20125.5%2072C117.5%2080%2089.5%2089%2089%20105.5C88.9642%20106.681%2088.9333%20107.624%2088.9072%20108.368C88.956%20109.495%2089%20113.118%2089%20122C89%20152%20136.5%20142.5%20136.5%20192H33.5C33.5%20142.5%2081%20152%2081%20122C81%20113.118%2081.044%20109.495%2081.0928%20108.368C81.0667%20107.624%2081.0358%20106.681%2081%20105.5C80.5%2089%2052.5%2080%2044.5%2072C36.5002%2064.0002%2043.4997%2060.0002%2049.2676%2060H120.732Z'%20fill='%23F53B57'/%3e%3c/svg%3e"
+              />
+              <h3
+                class="typography title3 alignCenter widthMedium colorInverse"
+              >
+                Waiting for the host to start…
+              </h3>
+              <div
+                class="messageContainer"
+              >
+                <div
+                  class="message visible"
+                >
+                  <p
+                    class="typography body alignCenter widthSmall colorInverse"
+                  >
+                    Be nice and wait
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>

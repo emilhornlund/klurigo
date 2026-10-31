@@ -1,0 +1,100 @@
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/breakpoints.tokens' as breakpoints;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/helpers' as helpers;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
+
+.lobby {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: breakpoints.$breakpoint-mobile;
+
+  @include helpers.desktop {
+    max-width: breakpoints.$breakpoint-tablet;
+  }
+}
+
+.successIcon {
+  color: colors.$color-text-inverse;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(typography.$font-size-title2-mobile);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(typography.$font-size-title2-tablet);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(typography.$font-size-title2-desktop);
+  }
+}
+
+.quizCard {
+  box-sizing: border-box;
+  width: 100%;
+  padding: spacing.$space-stack-mobile;
+  border-radius: radius.$radius-surface-md;
+
+  @include helpers.tablet {
+    padding: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    padding: spacing.$space-stack-desktop;
+    border-radius: radius.$radius-surface-lg;
+  }
+}
+
+.count {
+  width: auto;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: countUpdate 300ms ease-out;
+  }
+}
+
+.playerCount > h3.count,
+.playerCount > p.playerLabel {
+  width: auto;
+}
+
+.hourglass {
+  @include helpers.mobile {
+    width: spacing.$space-section-lg-mobile * 2;
+  }
+
+  @include helpers.tablet {
+    width: spacing.$space-section-lg-tablet * 2;
+  }
+
+  @include helpers.desktop {
+    width: spacing.$space-section-lg-desktop * 2;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: hourglassTurn 7s ease-in-out infinite;
+  }
+}
+
+@keyframes countUpdate {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hourglassTurn {
+  0%,
+  78%,
+  100% {
+    transform: rotate(0);
+  }
+  86%,
+  94% {
+    transform: rotate(180deg);
+  }
+}

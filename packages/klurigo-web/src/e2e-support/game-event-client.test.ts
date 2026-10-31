@@ -296,7 +296,12 @@ function event(type: GameEventType): object {
 }
 
 function lobbyPlayerEvent(nickname: string): object {
-  return { type: GameEventType.GameLobbyPlayer, player: { nickname } }
+  return {
+    type: GameEventType.GameLobbyPlayer,
+    game: { name: 'Test quiz' },
+    player: { nickname },
+    players: [{ nickname }],
+  }
 }
 
 function frame(payload: object): string {
