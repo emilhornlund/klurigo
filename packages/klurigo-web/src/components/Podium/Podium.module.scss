@@ -3,7 +3,6 @@
 @use '../../styles/colors.celebration' as celebration;
 @use '../../styles/colors.semantic' as colors;
 @use '../../styles/helpers' as helpers;
-@use '../../styles/shadows.tokens' as shadows;
 @use '../../styles/spacing.semantic' as spacing;
 @use '../../styles/typography.tokens' as typography;
 
@@ -137,6 +136,7 @@
         flex: 1;
         position: relative;
         overflow: hidden;
+        border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
 
         @include helpers.mobile {
           padding: spacing.$space-page-mobile 0
@@ -290,20 +290,27 @@
 
     &:nth-child(1) {
       .stack {
-        border-radius: helpers.pxToRem(12px) 0 0 0;
         background: linear-gradient(
           135deg,
           celebration.$color-celebration-medal-silver 0%,
           celebration.$color-celebration-medal-silver-highlight 100%
         );
-
-        box-shadow: shadows.$shadow-inset-side-left;
       }
     }
 
     &:nth-child(2) {
+      position: relative;
+      z-index: 1;
+
+      .stackContainer {
+        // Let the winner cast its own shadow while clipping the rise at the base.
+        width: calc(100% + #{helpers.pxToRem(48px)});
+        padding-inline: helpers.pxToRem(24px);
+      }
+
       .stack {
-        border-radius: helpers.pxToRem(12px) helpers.pxToRem(12px) 0 0;
+        box-shadow: 0 0 helpers.pxToRem(12px) helpers.pxToRem(4px)
+          colors.$color-shadow-hover;
         background: linear-gradient(
           135deg,
           celebration.$color-celebration-medal-gold 0%,
@@ -314,14 +321,11 @@
 
     &:nth-child(3) {
       .stack {
-        border-radius: 0 helpers.pxToRem(12px) 0 0;
         background: linear-gradient(
           135deg,
           celebration.$color-celebration-medal-bronze 0%,
           celebration.$color-celebration-medal-bronze-highlight 100%
         );
-
-        box-shadow: shadows.$shadow-inset-side-right;
       }
     }
 
