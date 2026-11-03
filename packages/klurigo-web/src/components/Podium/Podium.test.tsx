@@ -1,7 +1,12 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Podium from './Podium'
+import styles from './Podium.module.scss'
+
+// JSDOM has no AnimationEvent constructor, so React registers the WebKit event.
+const finishAnimation = (element: Element) =>
+  fireEvent(element, new Event('webkitAnimationEnd', { bubbles: true }))
 
 describe('Podium', () => {
   beforeEach(() => {
@@ -99,12 +104,66 @@ describe('Podium', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('should render confetti as epic celebration', () => {
+  it('should celebrate only when the winner nickname has finished revealing', () => {
+    vi.useFakeTimers()
     render(<Podium values={[{ position: 1, nickname: 'A', score: 1 }]} />)
+
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    // Child animations must not trigger the celebration early.
+    finishAnimation(screen.getByText('👑'))
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    finishAnimation(screen.getByText('A').closest(`.${styles.nickname}`)!)
 
     const confetti = screen.getByTestId('confetti')
     expect(confetti).toHaveAttribute('data-trigger', 'true')
     expect(confetti).toHaveAttribute('data-intensity', 'epic')
+    act(() => vi.advanceTimersByTime(2800))
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    finishAnimation(screen.getByText('A').closest(`.${styles.nickname}`)!)
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    vi.useRealTimers()
+  })
+
+  it.each([1, 2, 3])(
+    'assigns consecutive reveal beats for %i players',
+    (count) => {
+      const values = [
+        { position: 1, nickname: 'First', score: 100 },
+        { position: 2, nickname: 'Second', score: 90 },
+        { position: 3, nickname: 'Third', score: 80 },
+      ].slice(0, count)
+      render(<Podium values={values} />)
+
+      values
+        .slice()
+        .reverse()
+        .forEach(({ nickname }, index) => {
+          const column = screen
+            .getByText(nickname)
+            .closest('[data-testid="podium-column"]')!
+          expect(column).toHaveStyle({ '--position-index': String(index) })
+          expect(column).toHaveAttribute('data-occupied', 'true')
+          if (nickname !== 'First') {
+            finishAnimation(
+              screen.getByText(nickname).closest(`.${styles.nickname}`)!,
+            )
+            expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+          }
+        })
+      expect(
+        screen
+          .getAllByTestId('podium-column')
+          .filter((column) => column.dataset.occupied === 'false'),
+      ).toHaveLength(3 - count)
+    },
+  )
+
+  it('does not celebrate an empty podium', () => {
+    const { container } = render(<Podium values={[]} />)
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    expect(
+      container.querySelector(`.${styles.sparkleContainer}`),
+    ).not.toBeInTheDocument()
   })
 
   it('should show crown only for first place', () => {

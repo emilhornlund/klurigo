@@ -107,6 +107,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 1;"
                     >
@@ -148,6 +149,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 2;"
                     >
@@ -160,6 +162,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                           ShadowCyborg
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -187,6 +190,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -195,27 +199,27 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -223,6 +227,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -266,292 +271,9 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
@@ -1154,6 +876,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 1;"
                     >
@@ -1195,6 +918,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 2;"
                     >
@@ -1207,6 +931,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                           ShadowCyborg
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -1234,6 +959,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -1242,27 +968,27 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -1270,6 +996,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -1313,292 +1040,9 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
@@ -2162,8 +1606,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 1;"
+                      style="--position-index: 0;"
                     >
                       <div
                         class="spacer"
@@ -2203,8 +1648,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 2;"
+                      style="--position-index: 1;"
                     >
                       <div
                         class="nickname"
@@ -2215,6 +1661,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           Alice
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -2242,6 +1689,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -2250,27 +1698,27 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -2278,6 +1726,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-occupied="false"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -2309,292 +1758,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
@@ -4315,8 +3481,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 1;"
+                      style="--position-index: 0;"
                     >
                       <div
                         class="spacer"
@@ -4356,8 +3523,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 2;"
+                      style="--position-index: 1;"
                     >
                       <div
                         class="nickname"
@@ -4368,6 +3536,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           Alice
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -4395,6 +3564,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -4403,27 +3573,27 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -4431,6 +3601,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     </div>
                     <div
                       class="column"
+                      data-occupied="false"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -4462,292 +3633,9 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
@@ -5350,8 +4238,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 1;"
+                      style="--position-index: 0;"
                     >
                       <div
                         class="spacer"
@@ -5391,8 +4280,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 2;"
+                      style="--position-index: 1;"
                     >
                       <div
                         class="nickname"
@@ -5403,6 +4293,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           Carol
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -5430,6 +4321,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -5438,27 +4330,27 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -5466,6 +4358,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-occupied="false"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -5497,292 +4390,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
@@ -7164,8 +5774,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                   >
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 1;"
+                      style="--position-index: 0;"
                     >
                       <div
                         class="spacer"
@@ -7205,8 +5816,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-occupied="true"
                       data-testid="podium-column"
-                      style="--position-index: 2;"
+                      style="--position-index: 1;"
                     >
                       <div
                         class="nickname"
@@ -7217,6 +5829,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           Carol
                         </div>
                         <div
+                          aria-hidden="true"
                           class="crown"
                         >
                           👑
@@ -7244,6 +5857,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             </h3>
                           </div>
                           <div
+                            aria-hidden="true"
                             class="sparkleContainer"
                           >
                             <div
@@ -7252,27 +5866,27 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0s; --sparkle-x: 15%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.2s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.2s; --sparkle-x: 29%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.4s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.4s; --sparkle-x: 43%; --sparkle-y: 35%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.6000000000000001s; --sparkle-x: 57%; --sparkle-y: 15%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 0.8s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 0.8s; --sparkle-x: 71%; --sparkle-y: 25%;"
                             />
                             <div
                               class="sparkle"
-                              style="--sparkle-delay: 1s; --sparkle-x: 50%; --sparkle-y: 25%;"
+                              style="--sparkle-delay: 1s; --sparkle-x: 85%; --sparkle-y: 35%;"
                             />
                           </div>
                         </div>
@@ -7280,6 +5894,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                     </div>
                     <div
                       class="column"
+                      data-occupied="false"
                       data-testid="podium-column"
                       style="--position-index: 0;"
                     >
@@ -7311,292 +5926,9 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       </div>
                     </div>
                     <div
-                      class="confettiContainer"
-                      data-intensity="epic"
-                      data-testid="confetti"
-                      data-trigger="true"
-                    >
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiSuccess; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAccent; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiRankGold; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiAlt; --particle-size: 8px;"
-                      />
-                      <div
-                        class="confettiParticle"
-                        style="--random-x: 0.5; --random-delay: 0.5; --random-duration: 0.5; --particle-color: colorCelebrationConfettiInfo; --particle-size: 8px;"
-                      />
-                    </div>
+                      aria-hidden="true"
+                      class="celebration"
+                    />
                   </div>
                   <div
                     class="stack vertical spacing-stack align-stretch justify-start width-full"
