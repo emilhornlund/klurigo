@@ -33,12 +33,13 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -66,7 +67,10 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 1"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-1 border"
@@ -77,31 +81,41 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small number-2 border"
-              style="color: white;"
+              class="streakBadge"
             >
-              2
+              Streak
+              <div
+                class="badge small number-2 border"
+                style="color: white;"
+              >
+                2
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                1000
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              1000
-            </h2>
+              Message for 1 - correct
+            </p>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 1 - correct
-          </p>
           <div
             class="confettiContainer"
             data-intensity="epic"
@@ -481,12 +495,13 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -514,7 +529,10 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 2"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-2 border"
@@ -525,20 +543,30 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for po
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              900
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                900
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 2 - correct
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 2 - correct
+            </p>
+          </div>
           <div
             class="confettiContainer"
             data-intensity="major"
@@ -818,12 +846,13 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -851,7 +880,10 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 8"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-8 border"
@@ -862,31 +894,41 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small number-7 border"
-              style="color: white;"
+              class="streakBadge"
             >
-              7
+              Streak
+              <div
+                class="badge small number-7 border"
+                style="color: white;"
+              >
+                7
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                600
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              600
-            </h2>
+              Message for 8 - correct
+            </p>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 8 - correct
-          </p>
           <div
             class="confettiContainer"
             data-intensity="epic"
@@ -1266,12 +1308,13 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -1299,7 +1342,10 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 15"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large multiDigit border"
@@ -1310,31 +1356,41 @@ exports[`PlayerResultState > Celebration Logic > renders epic celebration for st
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small multiDigit border"
-              style="color: white;"
+              class="streakBadge"
             >
-              10
+              Streak
+              <div
+                class="badge small multiDigit border"
+                style="color: white;"
+              >
+                10
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                500
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              500
-            </h2>
+              Message for 15 - correct
+            </p>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 15 - correct
-          </p>
           <div
             class="confettiContainer"
             data-intensity="epic"
@@ -1714,12 +1770,13 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -1747,7 +1804,10 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 3"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-3 border"
@@ -1758,20 +1818,30 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for p
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              800
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                800
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 3 - correct
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 3 - correct
+            </p>
+          </div>
           <div
             class="confettiContainer"
             data-intensity="major"
@@ -2051,12 +2121,13 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -2084,7 +2155,10 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 12"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large multiDigit border"
@@ -2095,31 +2169,41 @@ exports[`PlayerResultState > Celebration Logic > renders major celebration for s
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small number-5 border"
-              style="color: white;"
+              class="streakBadge"
             >
-              5
+              Streak
+              <div
+                class="badge small number-5 border"
+                style="color: white;"
+              >
+                5
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                400
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              400
-            </h2>
+              Message for 12 - correct
+            </p>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 12 - correct
-          </p>
           <div
             class="confettiContainer"
             data-intensity="major"
@@ -2399,12 +2483,13 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -2432,7 +2517,10 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 20"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large multiDigit border"
@@ -2443,20 +2531,30 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for inco
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              0
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                0
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 20 - incorrect
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 20 - incorrect
+            </p>
+          </div>
         </div>
       </div>
     </main>
@@ -2549,12 +2647,13 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -2582,7 +2681,10 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 15"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large multiDigit border"
@@ -2593,20 +2695,30 @@ exports[`PlayerResultState > Celebration Logic > renders no celebration for simp
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              100
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                100
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 15 - correct
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 15 - correct
+            </p>
+          </div>
         </div>
       </div>
     </main>
@@ -2699,12 +2811,13 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -2732,7 +2845,10 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 10"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large multiDigit border"
@@ -2743,20 +2859,30 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              200
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                200
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 10 - correct
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 10 - correct
+            </p>
+          </div>
           <div
             class="confettiContainer"
             data-intensity="normal"
@@ -2956,12 +3082,13 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -2989,7 +3116,10 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 8"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-8 border"
@@ -3000,31 +3130,41 @@ exports[`PlayerResultState > Celebration Logic > renders normal celebration for 
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small number-3 border"
-              style="color: white;"
+              class="streakBadge"
             >
-              3
+              Streak
+              <div
+                class="badge small number-3 border"
+                style="color: white;"
+              >
+                3
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                300
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              300
-            </h2>
+              Message for 8 - correct
+            </p>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 8 - correct
-          </p>
           <div
             class="confettiContainer"
             data-intensity="normal"
@@ -3224,12 +3364,13 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -3257,7 +3398,10 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 1"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-1 border"
@@ -3268,41 +3412,51 @@ exports[`PlayerResultState > renders correct result with behind indicator 1`] = 
             </div>
           </div>
           <div
-            class="streakBadge"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            Streak
             <div
-              class="badge small number-3 border"
-              style="color: white;"
+              class="streakBadge"
             >
-              3
+              Streak
+              <div
+                class="badge small number-3 border"
+                style="color: white;"
+              >
+                3
+              </div>
+            </div>
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
+            >
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                634
+              </h2>
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
             >
-              634
-            </h2>
-          </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
-          >
-            Message for 1 - correct
-          </p>
-          <div
-            class="pointsBehindIndicator"
-          >
-            <strong>
-              123
-            </strong>
-             points behind 
-            <strong>
-              WhiskerFox
-            </strong>
+              Message for 1 - correct
+            </p>
+            <div
+              class="pointsBehindIndicator"
+            >
+              <strong>
+                123
+              </strong>
+               points behind 
+              <strong>
+                WhiskerFox
+              </strong>
+            </div>
           </div>
           <div
             class="confettiContainer"
@@ -3683,12 +3837,13 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
         class="contentWrapper"
       >
         <div
-          class="contentInner"
+          class="contentInner disableAnimation"
         >
           <div
             class="contentContainer"
           >
             <div
+              aria-hidden="false"
               class="correctnessBatch"
             >
               <h1
@@ -3716,7 +3871,10 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
               </div>
             </div>
             <div
+              aria-hidden="true"
+              aria-label="Current ranking: 7"
               class="positionBatch hidden"
+              role="img"
             >
               <div
                 class="badge large number-7 border"
@@ -3727,20 +3885,30 @@ exports[`PlayerResultState > renders incorrect result without behind indicator 1
             </div>
           </div>
           <div
-            class="surface score sizeNormal"
-            data-testid="score-chip"
+            aria-hidden="true"
+            class="pointsReveal"
           >
-            <h2
-              class="typography title2 alignCenter widthFull colorInverse"
+            <div
+              class="surface score sizeNormal"
+              data-testid="score-chip"
             >
-              0
-            </h2>
+              <h2
+                class="typography title2 alignCenter widthFull colorInverse"
+              >
+                0
+              </h2>
+            </div>
           </div>
-          <p
-            class="typography body alignCenter widthSmall colorInverse"
+          <div
+            aria-hidden="true"
+            class="rankingDetails"
           >
-            Message for 7 - incorrect
-          </p>
+            <p
+              class="typography body alignCenter widthSmall colorInverse"
+            >
+              Message for 7 - incorrect
+            </p>
+          </div>
         </div>
       </div>
     </main>

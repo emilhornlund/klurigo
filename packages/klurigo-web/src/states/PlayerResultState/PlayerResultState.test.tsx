@@ -28,6 +28,7 @@ describe('PlayerResultState', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 
   it('renders correct result with behind indicator', () => {
@@ -476,7 +477,7 @@ describe('PlayerResultState', () => {
       vi.useRealTimers()
     })
 
-    it('shows correctness badge initially and position badge after 8 seconds', () => {
+    it('reveals correctness, then points, then ranking details', () => {
       const { container } = render(
         <MemoryRouter>
           <PlayerResultState
@@ -510,9 +511,28 @@ describe('PlayerResultState', () => {
         'slideOutLeft',
       )
 
-      // Fast-forward 8 seconds
+      expect(container.querySelector('.pointsReveal')).toHaveAttribute(
+        'aria-hidden',
+        'true',
+      )
+      expect(container.querySelector('.rankingDetails')).toHaveAttribute(
+        'aria-hidden',
+        'true',
+      )
       act(() => {
-        vi.advanceTimersByTime(8000)
+        vi.advanceTimersByTime(600)
+      })
+      expect(container.querySelector('.pointsReveal')).toHaveClass('revealed')
+      expect(container.querySelector('.pointsReveal')).toHaveClass(
+        'pointsReward',
+      )
+      expect(container.querySelector('.positionBatch')).toHaveClass('hidden')
+      act(() => {
+        vi.advanceTimersByTime(1199)
+      })
+      expect(container.querySelector('.positionBatch')).toHaveClass('hidden')
+      act(() => {
+        vi.advanceTimersByTime(1)
       })
 
       // Now should show position badge and hide correctness badge
@@ -524,6 +544,141 @@ describe('PlayerResultState', () => {
       )
       expect(container.querySelector('.correctnessBatch')).toHaveClass(
         'slideOutLeft',
+      )
+      expect(container.querySelector('.rankingDetails')).toHaveAttribute(
+        'aria-hidden',
+        'false',
+      )
+    })
+
+    const resultEvent: GameResultPlayerEvent = {
+      type: GameEventType.GameResultPlayer,
+      game: { mode: GameMode.Classic },
+      player: {
+        nickname: 'TestPlayer',
+        score: {
+          correct: true,
+          last: 500,
+          total: 1000,
+          position: 1,
+          streak: 3,
+        },
+      },
+      pagination: { current: 1, total: 20 },
+    }
+
+    const result = (event = resultEvent) => (
+      <MemoryRouter>
+        <PlayerResultState event={event} />
+      </MemoryRouter>
+    )
+
+    it('resets the reveal and celebrations between questions and clears pending timers', () => {
+      const { container, rerender, unmount } = render(result())
+      act(() => vi.advanceTimersByTime(600))
+      act(() => vi.advanceTimersByTime(1200))
+      expect(container.querySelector('.positionBatch')).toHaveClass(
+        'slideInRight',
+      )
+
+      rerender(
+        result({ ...resultEvent, pagination: { current: 2, total: 20 } }),
+      )
+      expect(container.querySelector('.positionBatch')).toHaveClass('hidden')
+      expect(container.querySelector('.pointsReveal')).not.toHaveClass(
+        'revealed',
+      )
+      expect(screen.getAllByTestId('confetti')).toHaveLength(1)
+      act(() => vi.advanceTimersByTime(300))
+      rerender(
+        result({ ...resultEvent, pagination: { current: 3, total: 20 } }),
+      )
+      act(() => vi.advanceTimersByTime(300))
+      expect(container.querySelector('.pointsReveal')).not.toHaveClass(
+        'revealed',
+      )
+      unmount()
+      expect(vi.getTimerCount()).toBe(0)
+    })
+
+    it('does not restart the sequence for an equivalent event update', () => {
+      const { container, rerender } = render(result())
+      act(() => vi.advanceTimersByTime(600))
+      rerender(result({ ...resultEvent }))
+      act(() => vi.advanceTimersByTime(1200))
+      expect(container.querySelector('.positionBatch')).toHaveClass(
+        'slideInRight',
+      )
+    })
+
+    it.each([
+      { correct: false, last: 0, reward: false },
+      { correct: false, last: 250, reward: true },
+      { correct: true, last: 0, reward: false },
+    ])(
+      'handles correct=$correct with $last points proportionally',
+      ({ correct, last, reward }) => {
+        const { container } = render(
+          result({
+            ...resultEvent,
+            player: {
+              ...resultEvent.player,
+              score: { correct, last, total: 1000, position: 1, streak: 0 },
+            },
+          }),
+        )
+        act(() => vi.advanceTimersByTime(600))
+        expect(
+          container
+            .querySelector('.pointsReveal')
+            ?.classList.contains('pointsReward'),
+        ).toBe(reward)
+        if (!correct)
+          expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+      },
+    )
+
+    it('reveals all information immediately for reduced motion and responds to preference changes', () => {
+      let reduced = true
+      const motionQuery = Object.assign(new EventTarget(), {
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+      })
+      const removeListener = vi.spyOn(motionQuery, 'removeEventListener')
+      vi.stubGlobal(
+        'matchMedia',
+        vi.fn((query: string) =>
+          Object.assign(motionQuery, {
+            matches: query === '(prefers-reduced-motion: reduce)' && reduced,
+            media: query,
+          }),
+        ),
+      )
+      const { container, unmount } = render(result())
+      expect(container.querySelector('.pointsReveal')).toHaveClass('revealed')
+      expect(container.querySelector('.rankingDetails')).toHaveClass('revealed')
+      expect(
+        screen.getByText('Correct').closest('[aria-hidden]'),
+      ).toHaveAttribute('aria-hidden', 'false')
+      expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+      expect(vi.getTimerCount()).toBe(0)
+
+      act(() => {
+        reduced = false
+        motionQuery.dispatchEvent(new Event('change'))
+      })
+      act(() => vi.advanceTimersByTime(600))
+      act(() => {
+        reduced = true
+        motionQuery.dispatchEvent(new Event('change'))
+      })
+      expect(container.querySelector('.rankingDetails')).toHaveClass('revealed')
+      expect(vi.getTimerCount()).toBe(0)
+      unmount()
+      expect(removeListener).toHaveBeenCalledWith(
+        'change',
+        expect.any(Function),
       )
     })
 
@@ -565,7 +720,7 @@ describe('PlayerResultState', () => {
       expect(screen.queryByText('Streak')).toBeNull()
     })
 
-    it('ZeroToOneHundred does not rely on the 8s timer to reveal position', () => {
+    it('ZeroToOneHundred shows negative points without a reward animation or celebration', () => {
       const { container } = render(
         <MemoryRouter>
           <PlayerResultState
@@ -592,6 +747,11 @@ describe('PlayerResultState', () => {
       expect(positionBatch).toBeInTheDocument()
       expect(positionBatch).toHaveClass('slideInRight')
       expect(positionBatch).not.toHaveClass('hidden')
+      expect(container.querySelector('.pointsReveal')).toHaveClass('revealed')
+      expect(container.querySelector('.pointsReveal')).not.toHaveClass(
+        'pointsReward',
+      )
+      expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
 
       act(() => {
         vi.advanceTimersByTime(8000)

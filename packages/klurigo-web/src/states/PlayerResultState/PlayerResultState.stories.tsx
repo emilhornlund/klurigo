@@ -118,3 +118,64 @@ export const ZeroToOneHundred = {
     },
   },
 } satisfies Story
+
+export const OrdinaryCorrect = {
+  args: {
+    event: {
+      ...Correct.args.event,
+      player: {
+        nickname: 'SteadyPlayer',
+        score: {
+          correct: true,
+          last: 420,
+          total: 1420,
+          position: 15,
+          streak: 1,
+        },
+        behind: { points: 80, nickname: 'NextPlayer' },
+      },
+    },
+  },
+} satisfies Story
+
+export const HighStreak = {
+  args: {
+    event: {
+      ...Correct.args.event,
+      player: {
+        nickname: 'StreakMaster',
+        score: {
+          correct: true,
+          last: 950,
+          total: 8950,
+          position: 8,
+          streak: 7,
+        },
+      },
+    },
+  },
+} satisfies Story
+
+export const ZeroPoints = {
+  args: {
+    event: {
+      ...OrdinaryCorrect.args.event,
+      player: {
+        ...OrdinaryCorrect.args.event.player,
+        score: { ...OrdinaryCorrect.args.event.player.score, last: 0 },
+      },
+    },
+  },
+} satisfies Story
+
+export const ZeroToOneHundredIncorrect = {
+  args: {
+    event: {
+      ...ZeroToOneHundred.args.event,
+      player: {
+        nickname: 'FrostyBear',
+        score: { correct: false, last: 20, total: 44, position: 7 },
+      },
+    },
+  },
+} satisfies Story
