@@ -1,4 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
+import { expect, within } from 'storybook/test'
+
+import Button from '../Button'
+import Stack from '../Stack'
 
 import Leaderboard from './Leaderboard'
 
@@ -83,6 +88,48 @@ export const WithoutPodium = {
 } satisfies Story
 
 export const WithRankChanges = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const rows = canvas.getAllByTestId('leaderboard-row')
+    const unchanged = canvas.getByRole('img', { name: 'Rank unchanged' })
+
+    await expect(unchanged.getAnimations()).toHaveLength(0)
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Includes row, rank, medal, and score animations.
+      await expect(canvasElement.getAnimations({ subtree: true })).toHaveLength(
+        0,
+      )
+      for (const row of rows) {
+        await expect(getComputedStyle(row).opacity).toBe('1')
+        await expect(getComputedStyle(row).transform).toBe('none')
+      }
+      return
+    }
+
+    for (const [index, row] of rows.entries()) {
+      const animation = row.getAnimations()[0]
+      const effect = animation.effect as KeyframeEffect
+      const frames = effect.getKeyframes()
+      // Delayed rows stay readable and the entire reveal takes under a second.
+      await expect(Number(frames[0].opacity)).toBeGreaterThanOrEqual(0.65)
+      await expect(effect.getTiming().delay).toBe(index * 120)
+      await expect(Number(effect.getComputedTiming().endTime)).toBeLessThan(
+        1000,
+      )
+    }
+
+    for (const [name, direction] of [
+      ['Up 4 places, from rank 5', 1],
+      ['Down 2 places, from rank 1', -1],
+    ] as const) {
+      const indicator = canvas.getByRole('img', { name })
+      const effect = indicator.getAnimations()[0].effect as KeyframeEffect
+      const firstFrame = effect.getKeyframes()[0]
+      const offset = new DOMMatrix(String(firstFrame.transform)).m42
+      await expect(offset * direction).toBeGreaterThan(0)
+    }
+  },
   args: {
     values: [
       {
@@ -151,5 +198,67 @@ export const MixedRankChanges = {
         previousPosition: 7,
       }, // Rank up
     ],
+  },
+} satisfies Story
+
+export const UnchangedRanks = {
+  args: {
+    values: WithRankChanges.args.values.map((value) => ({
+      ...value,
+      previousPosition: value.position,
+    })),
+  },
+} satisfies Story
+
+export const FirstRound = {
+  args: {
+    values: WithRankChanges.args.values.map((value) => ({
+      ...value,
+      previousPosition: undefined,
+    })),
+  },
+} satisfies Story
+
+export const ConstrainedLayout = {
+  args: {
+    values: WithRankChanges.args.values.map((value) => ({
+      ...value,
+      nickname: `${value.nickname}WithAVeryLongNickname`,
+      score: value.score * 100,
+    })),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 390, margin: 'auto' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Story
+
+export const RoundUpdates = {
+  args: WithRankChanges.args,
+  render: function RoundUpdates(args) {
+    const [nextRound, setNextRound] = useState(false)
+    const values = nextRound
+      ? [...args.values].reverse().map((value, index) => ({
+          ...value,
+          position: index + 1,
+          previousPosition: value.position,
+          score: 20000 - index * 1000,
+        }))
+      : args.values
+
+    return (
+      <Stack width="full">
+        <Button
+          id="update-round"
+          type="button"
+          onClick={() => setNextRound((previous) => !previous)}>
+          Toggle round results
+        </Button>
+        <Leaderboard {...args} values={values} />
+      </Stack>
+    )
   },
 } satisfies Story
