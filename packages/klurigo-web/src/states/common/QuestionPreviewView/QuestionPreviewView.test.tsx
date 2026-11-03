@@ -24,6 +24,26 @@ class ResizeObserverMock {
 }
 
 describe('QuestionPreviewView', () => {
+  it('shows the question immediately and can leave before the entrance finishes', () => {
+    const { unmount } = render(
+      <QuestionPreviewView
+        mode={GameMode.Classic}
+        questionType={QuestionType.MultiChoice}
+        question="A short preview"
+        questionPoints={1000}
+      />,
+    )
+
+    expect(screen.getByText('A short preview')).toBeVisible()
+    expect(screen.getByText('Standard Points')).toBeVisible()
+
+    unmount()
+
+    expect(
+      screen.queryByTestId('question-preview-view'),
+    ).not.toBeInTheDocument()
+  })
+
   it.each([
     [QuestionType.MultiChoice, 'Multiple choice'],
     [QuestionType.Range, 'Range'],
@@ -155,12 +175,20 @@ describe('QuestionPreviewView', () => {
       Object.defineProperty(firstBlock, 'offsetHeight', { value: 400 })
 
       await act(async () => resizeObservers.forEach(({ trigger }) => trigger()))
+      expect(viewport.firstElementChild).toBe(track)
+      expect(track.children).toHaveLength(3)
       await act(async () => {
         rafCallback?.(0)
+        rafCallback?.(225)
+      })
+
+      expect(track.style.transform).toBe('translateY(-0px)')
+
+      await act(async () => {
         rafCallback?.(1000)
       })
 
-      expect(track.style.transform).toBe(`translateY(-${speed}px)`)
+      expect(track.style.transform).toBe(`translateY(-${speed * 0.775}px)`)
       expect((track.children[1] as HTMLElement).style.height).toBe(`${gap}px`)
 
       vi.unstubAllGlobals()
