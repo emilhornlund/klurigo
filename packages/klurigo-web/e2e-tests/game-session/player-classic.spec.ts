@@ -35,7 +35,9 @@ test.describe('Game session: player UI with simulated host', () => {
     await page.locator('#default-nickname-textfield').fill(playerNickname)
     await page.locator('#join').click()
     await expect(page).toHaveURL('/game')
-    await expect(page.getByText('You’re in the waiting room')).toBeVisible()
+    await expect(
+      page.getByRole('region', { name: 'Player waiting room' }),
+    ).toBeVisible()
 
     await page.route('**/games/*/events?*', async (route) => {
       await route.fulfill({
@@ -97,7 +99,7 @@ test.describe('Game session: player UI with simulated host', () => {
     await page.locator('#default-nickname-textfield').fill(playerNickname)
     await page.locator('#join').click()
     await expect(
-      page.getByText('You’re in the waiting room', { exact: true }),
+      page.getByRole('region', { name: 'Player waiting room' }),
     ).toBeVisible()
 
     const hostQuestionPromise = gameHost.waitForEvent(
@@ -208,7 +210,7 @@ test.describe('Game session: player UI with simulated host', () => {
 
       await expect(page).toHaveURL('/game')
       await expect(
-        page.getByText('You’re in the waiting room', { exact: true }),
+        page.getByRole('region', { name: 'Player waiting room' }),
       ).toBeVisible()
       await joinedPlayerPromise
     })

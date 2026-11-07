@@ -82,7 +82,8 @@
 
 .loadingIndicator {
   flex: 0 0 auto;
-  border: controls.$control-border-width-outside solid colors.$color-text-inverse-subtle;
+  border: controls.$control-border-width-outside solid
+    colors.$color-text-inverse-subtle;
   border-top-color: colors.$color-text-inverse;
   border-radius: 50%;
   animation: submitting-answer-spin 800ms linear infinite;
