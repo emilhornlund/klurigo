@@ -53,10 +53,19 @@ const Leaderboard: FC<LeaderboardProps> = ({
           const isTopPosition = includePodium && position <= 3
           const isRankImprovement =
             !!previousPosition && previousPosition > position
+          const hasPreviousPosition =
+            previousPosition !== undefined && previousPosition > 0
+          const rankChange = hasPreviousPosition
+            ? Math.abs(previousPosition - position)
+            : 0
+          const rankChangeLabel = rankChange
+            ? `${isRankImprovement ? 'Up' : 'Down'} ${rankChange} ${rankChange === 1 ? 'place' : 'places'}, from rank ${previousPosition}`
+            : 'Rank unchanged'
 
           return (
             <Surface
-              key={`${position}_${nickname}_${score}`}
+              // Nicknames are unique within a game; scores and ranks can change.
+              key={nickname}
               className={classNames(
                 styles.row,
                 includePodium ? getPodiumClassName(position) : undefined,
@@ -72,19 +81,29 @@ const Leaderboard: FC<LeaderboardProps> = ({
                 <span>{nickname}</span>
               </div>
 
-              {previousPosition && previousPosition !== position && (
+              {hasPreviousPosition && (
                 <div
+                  role="img"
+                  aria-label={rankChangeLabel}
                   className={classNames(
                     styles.column,
                     styles.rankChange,
-                    isRankImprovement ? styles.rankUp : styles.rankDown,
+                    rankChange === 0
+                      ? styles.rankUnchanged
+                      : isRankImprovement
+                        ? styles.rankUp
+                        : styles.rankDown,
                   )}>
-                  <span className={styles.rankChangeArrow}>
-                    {isRankImprovement ? '↑' : '↓'}
+                  <span className={styles.rankChangeArrow} aria-hidden="true">
+                    {rankChange === 0 ? '–' : isRankImprovement ? '↑' : '↓'}
                   </span>
-                  <span className={styles.rankChangeAmount}>
-                    {Math.abs(previousPosition - position)}
-                  </span>
+                  {rankChange > 0 && (
+                    <span
+                      className={styles.rankChangeAmount}
+                      aria-hidden="true">
+                      {rankChange}
+                    </span>
+                  )}
                 </div>
               )}
 

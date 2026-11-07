@@ -290,7 +290,7 @@ test.describe('Game session: Classic Pin', () => {
       await page.locator('#join').click()
       await expect(page).toHaveURL('/game')
       await expect(
-        page.getByText('You’re in the waiting room', { exact: true }),
+        page.getByRole('region', { name: 'Player waiting room' }),
       ).toBeVisible()
       await joinedPlayerPromise
     })

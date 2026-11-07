@@ -169,6 +169,10 @@ describe('HostPodiumState', () => {
       '#game-results-button',
     ) as HTMLButtonElement
 
+    // Results remain available before any podium reveal has completed.
+    expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
+    expect(gameResultsBtn).toBeEnabled()
+
     await act(async () => {
       fireEvent.click(gameResultsBtn)
     })

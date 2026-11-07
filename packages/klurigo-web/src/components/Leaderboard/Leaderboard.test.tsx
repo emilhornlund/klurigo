@@ -108,7 +108,7 @@ describe('Leaderboard Component', () => {
       expect(rankChangeAmounts.length).toBeGreaterThan(0)
     })
 
-    it('does not display rank change indicator when previousPosition equals current', () => {
+    it('displays a neutral marker when the rank is unchanged', () => {
       const valuesWithNoChange = [
         {
           position: 2,
@@ -123,6 +123,9 @@ describe('Leaderboard Component', () => {
 
       expect(screen.queryByText('↑')).not.toBeInTheDocument()
       expect(screen.queryByText('↓')).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: 'Rank unchanged' }),
+      ).toHaveTextContent('–')
     })
 
     it('does not display rank change indicator when previousPosition is undefined', () => {
@@ -140,6 +143,7 @@ describe('Leaderboard Component', () => {
 
       expect(screen.queryByText('↑')).not.toBeInTheDocument()
       expect(screen.queryByText('↓')).not.toBeInTheDocument()
+      expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
 
     it('handles mixed rank change scenarios', () => {
@@ -200,6 +204,32 @@ describe('Leaderboard Component', () => {
   })
 
   describe('Animation Classes', () => {
+    it('preserves player row identity when ranks, scores, and ordering change', () => {
+      const { rerender } = render(<Leaderboard values={mockValues} />)
+      const originalRows = screen.getAllByTestId('leaderboard-row')
+
+      rerender(
+        <Leaderboard
+          values={[
+            { ...mockValues[1], position: 1, score: 200, previousPosition: 2 },
+            { ...mockValues[0], position: 2, score: 150, previousPosition: 1 },
+          ]}
+        />,
+      )
+
+      const updatedRows = screen.getAllByTestId('leaderboard-row')
+      expect(updatedRows[0]).toBe(originalRows[1])
+      expect(updatedRows[1]).toBe(originalRows[0])
+      expect(updatedRows[0]).toHaveTextContent('200')
+      expect(updatedRows[0].style.getPropertyValue('--row-index')).toBe('0')
+      expect(
+        screen.getByRole('img', { name: 'Up 1 place, from rank 2' }),
+      ).toHaveClass('rankUp')
+      expect(
+        screen.getByRole('img', { name: 'Down 1 place, from rank 1' }),
+      ).toHaveClass('rankDown')
+    })
+
     it('applies correct CSS custom properties for animation delays', () => {
       render(<Leaderboard values={mockValues} />)
 
@@ -215,8 +245,9 @@ describe('Leaderboard Component', () => {
       render(<Leaderboard values={mockValues} />)
 
       // Check that top positions get special styling
-      const positionElements = document.querySelectorAll('.position')
-      expect(positionElements.length).toBeGreaterThan(0)
+      const rows = screen.getAllByTestId('leaderboard-row')
+      rows.slice(0, 3).forEach((row) => expect(row).toHaveClass('topPosition'))
+      rows.slice(3).forEach((row) => expect(row).not.toHaveClass('topPosition'))
     })
 
     it('applies gold class when includePodium is true', () => {

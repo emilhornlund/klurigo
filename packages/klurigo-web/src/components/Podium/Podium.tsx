@@ -1,5 +1,5 @@
 import type { CSSProperties, FC } from 'react'
-import { useMemo } from 'react'
+import { useState } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import Confetti, { getCelebrationLevel } from '../Confetti'
@@ -20,6 +20,7 @@ export interface PodiumProps {
 
 interface StackProps extends PodiumValue {
   animationIndex: number
+  onReveal?: () => void
 }
 
 const getPositionClassNames = (position: number): string | undefined => {
@@ -35,17 +36,28 @@ const Stack: FC<StackProps> = ({
   nickname,
   score,
   animationIndex,
+  onReveal,
 }) => (
   <div
     className={styles.column}
     data-testid="podium-column"
+    data-occupied={!!nickname}
     style={{ '--position-index': animationIndex } as CSSProperties}>
     {[...Array(position - 1).keys()].map((key) => (
       <div key={key} className={styles.spacer} />
     ))}
-    <div className={styles.nickname}>
+    <div
+      className={styles.nickname}
+      onAnimationEnd={(event) => {
+        // Ignore animation events bubbling from the crown or chip.
+        if (event.target === event.currentTarget) onReveal?.()
+      }}>
       {nickname && <NicknameChip value={nickname} />}
-      {position === 1 && nickname && <div className={styles.crown}>👑</div>}
+      {position === 1 && nickname && (
+        <div className={styles.crown} aria-hidden="true">
+          👑
+        </div>
+      )}
     </div>
     <div className={styles.stackContainer}>
       <div className={classNames(styles.stack)}>
@@ -61,8 +73,8 @@ const Stack: FC<StackProps> = ({
           <ScoreChip value={score} color="default" size="small" transparent />
         )}
 
-        {position === 1 && (
-          <div className={styles.sparkleContainer}>
+        {position === 1 && nickname && (
+          <div className={styles.sparkleContainer} aria-hidden="true">
             <div
               className={styles.sparkle}
               style={
@@ -75,10 +87,8 @@ const Stack: FC<StackProps> = ({
             />
 
             {[...Array(6)].map((_, i) => {
-              // eslint-disable-next-line react-hooks/purity
-              const x = 10 + Math.random() * 80
-              // eslint-disable-next-line react-hooks/purity
-              const y = 10 + Math.random() * 30
+              const x = 15 + i * 14
+              const y = 15 + (i % 3) * 10
 
               return (
                 <div
@@ -102,13 +112,10 @@ const Stack: FC<StackProps> = ({
 )
 
 const Podium: FC<PodiumProps> = ({ values }) => {
-  const celebrationLevel = useMemo(() => {
-    const level = getCelebrationLevel(1)
-    if (level !== 'none') {
-      return level
-    }
-    return undefined
-  }, [])
+  const [winnerRevealed, setWinnerRevealed] = useState(false)
+  const celebrationLevel = getCelebrationLevel(1)
+  // Preserve the visual 2–1–3 layout, but skip unoccupied reveal beats.
+  const revealOrder = [2, 1, 0].filter((index) => values[index]?.nickname)
 
   return (
     <div className={styles.main}>
@@ -116,22 +123,25 @@ const Podium: FC<PodiumProps> = ({ values }) => {
         position={2}
         nickname={values?.[1]?.nickname}
         score={values?.[1]?.score}
-        animationIndex={1}
+        animationIndex={Math.max(0, revealOrder.indexOf(1))}
       />
       <Stack
         position={1}
         nickname={values?.[0]?.nickname}
         score={values?.[0]?.score}
-        animationIndex={2}
+        animationIndex={Math.max(0, revealOrder.indexOf(0))}
+        onReveal={() => setWinnerRevealed(true)}
       />
       <Stack
         position={3}
         nickname={values?.[2]?.nickname}
         score={values?.[2]?.score}
-        animationIndex={0}
+        animationIndex={Math.max(0, revealOrder.indexOf(2))}
       />
-      {celebrationLevel && (
-        <Confetti trigger={true} intensity={celebrationLevel} />
+      {values[0]?.nickname && celebrationLevel !== 'none' && (
+        <div className={styles.celebration} aria-hidden="true">
+          <Confetti trigger={winnerRevealed} intensity={celebrationLevel} />
+        </div>
       )}
     </div>
   )

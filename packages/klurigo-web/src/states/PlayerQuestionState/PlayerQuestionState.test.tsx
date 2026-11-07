@@ -38,7 +38,15 @@ function renderState(
     Parameters<typeof PlayerQuestionState>[0]['event']
   > = {},
 ) {
-  return render(
+  return render(renderEvent(eventOverrides))
+}
+
+function renderEvent(
+  eventOverrides: Partial<
+    Parameters<typeof PlayerQuestionState>[0]['event']
+  > = {},
+) {
+  return (
     <MemoryRouter>
       <PlayerQuestionState
         event={{
@@ -62,11 +70,23 @@ function renderState(
           ...eventOverrides,
         }}
       />
-    </MemoryRouter>,
+    </MemoryRouter>
   )
 }
 
 describe('PlayerQuestionState', () => {
+  it('shows confirmation when the event contains a submitted answer', () => {
+    renderState({ answer: { type: QuestionType.MultiChoice, value: 0 } })
+
+    expect(screen.getByRole('status')).toHaveTextContent('Answer locked in!')
+  })
+
+  it('does not show confirmation when the event has no submitted answer', () => {
+    renderState()
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
   it('shows player media indicators instead of audio and video players', () => {
     renderState({
       question: {
@@ -226,6 +246,8 @@ describe('PlayerQuestionState', () => {
     const answer = screen.getByRole('button', { name: 'A' })
     await user.click(answer)
     expect(answer).toBeDisabled()
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
 
     await user.click(answer)
     expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
@@ -234,7 +256,143 @@ describe('PlayerQuestionState', () => {
       resolveSubmission()
       await Promise.resolve()
     })
-    expect(answer).not.toBeDisabled()
+    expect(answer).toBeDisabled()
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+  })
+
+  it('keeps a successfully submitted answer locked until the answer event arrives', async () => {
+    const user = userEvent.setup()
+    h.submitQuestionAnswer.mockResolvedValue()
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick once',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    const answer = screen.getByRole('button', { name: 'A' })
+    await user.click(answer)
+    await waitFor(() => expect(answer).toBeDisabled())
+    expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
+
+    await user.click(answer)
+    expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(1)
+
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
+  })
+
+  it('keeps the answer locked when its event arrives and resets for the next question', async () => {
+    const user = userEvent.setup()
+    h.submitQuestionAnswer.mockResolvedValue()
+
+    const { rerender } = renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'First question',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'A' })).toBeDisabled(),
+    )
+
+    rerender(
+      renderEvent({
+        answer: { type: QuestionType.MultiChoice, value: 0 },
+        question: {
+          type: QuestionType.MultiChoice,
+          question: 'First question',
+          answers: [{ value: 'A' }, { value: 'B' }],
+          duration: 30,
+        },
+      }),
+    )
+    expect(screen.getByRole('button', { name: 'A' })).toBeDisabled()
+    expect(screen.getByText('Answer locked in!')).toBeInTheDocument()
+
+    rerender(
+      renderEvent({
+        pagination: { current: 2, total: 20 },
+        question: {
+          type: QuestionType.MultiChoice,
+          question: 'Second question',
+          answers: [{ value: 'C' }, { value: 'D' }],
+          duration: 30,
+        },
+      }),
+    )
+    expect(screen.getByRole('button', { name: 'C' })).toBeEnabled()
+  })
+
+  it('removes pending feedback when submission resolves', async () => {
+    const user = userEvent.setup()
+    let resolveSubmission!: () => void
+    h.submitQuestionAnswer.mockImplementation(
+      () => new Promise<void>((resolve) => (resolveSubmission = resolve)),
+    )
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick one',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+
+    await act(async () => {
+      resolveSubmission()
+      await Promise.resolve()
+    })
+
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
+  })
+
+  it('removes pending feedback when submission rejects', async () => {
+    const user = userEvent.setup()
+    let rejectSubmission!: (error: Error) => void
+    h.submitQuestionAnswer.mockImplementation(
+      () =>
+        new Promise<void>((_resolve, reject) => (rejectSubmission = reject)),
+    )
+
+    renderState({
+      question: {
+        type: QuestionType.MultiChoice,
+        question: 'Pick one',
+        answers: [{ value: 'A' }, { value: 'B' }],
+        duration: 30,
+      },
+    })
+
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Submitting answer...')
+
+    await act(async () => {
+      rejectSubmission(new Error('Submission failed'))
+      await Promise.resolve()
+    })
+
+    expect(screen.queryByText('Submitting answer...')).not.toBeInTheDocument()
+    expect(screen.queryByText('Answer locked in!')).not.toBeInTheDocument()
+
+    h.submitQuestionAnswer.mockResolvedValue()
+    await user.click(screen.getByRole('button', { name: 'A' }))
+
+    await waitFor(() => {
+      expect(h.submitQuestionAnswer).toHaveBeenCalledTimes(2)
+    })
   })
 
   it('does not throw when submitQuestionAnswer is undefined', async () => {

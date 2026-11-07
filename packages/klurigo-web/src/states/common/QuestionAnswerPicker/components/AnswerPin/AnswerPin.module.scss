@@ -34,6 +34,11 @@
   .interactive {
     flex: 1 1 0;
     min-height: 0;
+    transition: gap 300ms ease-out;
+
+    &.submitted {
+      gap: 0;
+    }
 
     .imageArea {
       width: 100%;

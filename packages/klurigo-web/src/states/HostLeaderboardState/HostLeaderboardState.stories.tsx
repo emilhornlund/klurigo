@@ -1,14 +1,24 @@
 import { GameEventType, GameMode } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
+import { expect, fn, userEvent, within } from 'storybook/test'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
 import { withMockGameHost } from '../../../.storybook/mockGameContext'
+import { GameContext, useGameContext } from '../../context/game'
 
 import HostLeaderboardState from './HostLeaderboardState'
 
 const meta = {
   component: HostLeaderboardState,
-  decorators: [withRouter, withMockGameHost],
+  decorators: [
+    withRouter,
+    withMockGameHost,
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -17,7 +27,26 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const completeTask = fn(() => Promise.resolve())
+
 export const Default = {
+  render: function HostLeaderboardStory(args) {
+    const gameContext = useGameContext()
+
+    return (
+      <GameContext.Provider value={{ ...gameContext, completeTask }}>
+        <HostLeaderboardState {...args} />
+      </GameContext.Provider>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    completeTask.mockClear()
+    const next = within(canvasElement).getByRole('button', { name: 'Next' })
+    // Progression is available immediately, without waiting for animationend.
+    await expect(next).toBeEnabled()
+    await userEvent.click(next)
+    await expect(completeTask).toHaveBeenCalledTimes(1)
+  },
   args: {
     event: {
       type: GameEventType.GameLeaderboardHost,

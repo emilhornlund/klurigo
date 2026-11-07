@@ -8,7 +8,15 @@ import HostPodiumState from './HostPodiumState'
 
 const meta = {
   component: HostPodiumState,
-  decorators: [withRouter, withMockGameHost],
+  decorators: [
+    withRouter,
+    withMockGameHost,
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },

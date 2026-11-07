@@ -46,17 +46,23 @@ export function buildGameLobbyHostEvent(
 /**
  * Builds a lobby event for a player.
  *
+ * @param game - The game document containing the quiz name and participants.
  * @param player - The player participant object for whom the event is being built.
  *
- * @returns A lobby event containing the player's nickname.
+ * @returns A lobby event containing the quiz name, player's nickname, and current player nicknames.
  */
 export function buildGameLobbyPlayerEvent(
+  game: Game,
   player: ParticipantPlayerWithBase,
 ): GameLobbyPlayerEvent {
   const { nickname } = player
   return {
     type: GameEventType.GameLobbyPlayer,
+    game: { name: game.name },
     player: { nickname },
+    players: game.participants
+      .filter(isParticipantPlayer)
+      .map(({ nickname }) => ({ nickname })),
   }
 }
 

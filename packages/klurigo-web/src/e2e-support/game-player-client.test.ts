@@ -89,22 +89,30 @@ describe('GamePlayerClient', () => {
     )
     emit({
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'Other player' },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
     })
     emit({
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'Ada' },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
     })
 
     await expect(matchingEvent).resolves.toEqual({
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'Ada' },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
     })
     await expect(
       client.waitForEvent(GameEventType.GameLobbyPlayer),
     ).resolves.toEqual({
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'Other player' },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
     })
 
     client.close()
@@ -142,7 +150,9 @@ describe('GamePlayerClient', () => {
 
     emit({
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'Ada' },
+      players: [{ nickname: 'Ada' }],
     })
     const timeoutAssertion = expect(pendingEvent).rejects.toThrow(
       'Timed out after 25ms waiting for game event type "GAME_BEGIN_PLAYER". ' +

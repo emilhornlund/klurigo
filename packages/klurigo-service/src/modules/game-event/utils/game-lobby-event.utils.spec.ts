@@ -251,15 +251,30 @@ describe('Game Lobby Event Utils', () => {
 
   describe('buildGameLobbyPlayerEvent', () => {
     it('should return lobby player event with player nickname', () => {
+      const game = createMockGameDocument({
+        name: 'A Great Quiz',
+        participants: [
+          createMockGamePlayerParticipantDocument({ nickname: 'TestPlayer' }),
+          createMockGamePlayerParticipantDocument({
+            nickname: 'AnotherPlayer',
+          }),
+          createMockGameHostParticipantDocument(),
+        ],
+      })
       const player = createMockGamePlayerParticipantDocument({
         participantId: 'player-123',
         nickname: 'TestPlayer',
       })
 
-      const result = buildGameLobbyPlayerEvent(player)
+      const result = buildGameLobbyPlayerEvent(game, player)
 
       expect(result.type).toBe(GameEventType.GameLobbyPlayer)
       expect(result.player.nickname).toBe('TestPlayer')
+      expect(result.game.name).toBe('A Great Quiz')
+      expect(result.players).toEqual([
+        { nickname: 'TestPlayer' },
+        { nickname: 'AnotherPlayer' },
+      ])
     })
 
     it('should handle different player nicknames', () => {
@@ -276,7 +291,10 @@ describe('Game Lobby Event Utils', () => {
 
       testCases.forEach(({ nickname, expected }) => {
         const player = createMockGamePlayerParticipantDocument({ nickname })
-        const result = buildGameLobbyPlayerEvent(player)
+        const result = buildGameLobbyPlayerEvent(
+          createMockGameDocument(),
+          player,
+        )
 
         expect(result.type).toBe(GameEventType.GameLobbyPlayer)
         expect(result.player.nickname).toBe(expected)

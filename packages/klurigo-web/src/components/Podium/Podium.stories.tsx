@@ -1,10 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
+
+import Button from '../Button'
 
 import Podium from './Podium'
 
 const meta = {
   title: 'Gameplay Components/Podium',
   component: Podium,
+  decorators: [
+    (Story) => (
+      <div style={{ width: '100vw', maxWidth: 600, padding: '4rem 1rem 1rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -37,6 +47,32 @@ export const ThreePlayers = {
       { position: 2, nickname: 'Radar', score: 18398 },
       { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
     ],
+  },
+} satisfies Story
+
+export const FinalReveal = {
+  args: ThreePlayers.args,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Bronze, silver, then gold: the winner’s nickname reveal cues the crown, a finite sparkle/glow flourish, and epic confetti. Replay to watch again. With prefers-reduced-motion enabled, the complete podium appears immediately without celebration motion.',
+      },
+    },
+  },
+  render: function ReplayablePodium(args) {
+    const [replay, setReplay] = useState(0)
+    return (
+      <>
+        <Podium key={replay} {...args} />
+        <Button
+          id="replay-podium"
+          type="button"
+          onClick={() => setReplay((value) => value + 1)}>
+          Replay podium reveal
+        </Button>
+      </>
+    )
   },
 } satisfies Story
 

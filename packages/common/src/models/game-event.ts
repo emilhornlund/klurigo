@@ -58,9 +58,15 @@ export type GameLobbyHostEvent = {
 
 export type GameLobbyPlayerEvent = {
   type: GameEventType.GameLobbyPlayer
+  game: {
+    name: string
+  }
   player: {
     nickname: string
   }
+  players: {
+    nickname: string
+  }[]
 }
 
 export type GameBeginHostEvent = {

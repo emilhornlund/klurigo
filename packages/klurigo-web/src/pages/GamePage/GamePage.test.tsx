@@ -490,8 +490,9 @@ describe('GamePage', () => {
 
     h.control.event = {
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'TestPlayer' },
-      players: [],
+      players: [{ nickname: 'TestPlayer' }],
     }
 
     renderWithRouter()
@@ -588,8 +589,9 @@ describe('GamePage', () => {
     h.context.participantId = 'p-1'
     h.control.event = {
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'TestPlayer' },
-      players: [],
+      players: [{ nickname: 'TestPlayer' }],
     }
 
     renderWithRouter()
@@ -832,8 +834,9 @@ describe('GamePage', () => {
   it('does not render stale game state for an unavailable game', async () => {
     h.control.event = {
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'Test quiz' },
       player: { nickname: 'TestPlayer' },
-      players: [],
+      players: [{ nickname: 'TestPlayer' }],
     }
     const { router } = renderWithRouter()
 

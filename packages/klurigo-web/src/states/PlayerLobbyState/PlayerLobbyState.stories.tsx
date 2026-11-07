@@ -19,6 +19,21 @@ export const Default = {
   args: {
     event: {
       type: GameEventType.GameLobbyPlayer,
+      game: { name: 'The Big Brain Quiz' },
+      players: [{ nickname: 'FrostyBear' }],
+      player: { nickname: 'FrostyBear' },
+    },
+  },
+} satisfies Story
+
+export const Multiplayer = {
+  args: {
+    event: {
+      type: GameEventType.GameLobbyPlayer,
+      game: { name: 'The Big Brain Quiz' },
+      players: Array.from({ length: 8 }, (_, index) => ({
+        nickname: `Player${index + 1}`,
+      })),
       player: { nickname: 'FrostyBear' },
     },
   },

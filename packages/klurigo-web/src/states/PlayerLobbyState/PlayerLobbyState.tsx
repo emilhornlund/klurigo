@@ -1,3 +1,5 @@
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { GameLobbyPlayerEvent } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
@@ -8,8 +10,9 @@ import {
   ConfirmDialog,
   IconButtonArrowLeft,
   NicknameChip,
-  PageProminentIcon,
   RotatingMessage,
+  Stack,
+  Surface,
   Typography,
 } from '../../components'
 import { useAuthContext } from '../../context/auth'
@@ -17,6 +20,7 @@ import { useGameContext } from '../../context/game'
 import { GamePage } from '../common'
 
 import { MESSAGES } from './message.utils'
+import styles from './PlayerLobbyState.module.scss'
 
 /**
  * Props for the `PlayerLobbyState` component.
@@ -43,8 +47,11 @@ export interface PlayerLobbyStateProps {
 const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
   event: {
     player: { nickname },
+    game: { name: quizTitle },
+    players,
   },
 }) => {
+  const playerCount = players.length
   const navigate = useNavigate()
 
   const [showConfirmLeaveGameDialog, setShowConfirmLeaveGameDialog] =
@@ -82,30 +89,97 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
             onClick={() => setShowConfirmLeaveGameDialog(true)}
           />
         }>
-        <PageProminentIcon src={HourglassIcon} alt="Hourglass" />
-
-        <NicknameChip value={nickname} />
-
-        <Typography
-          variant="title"
-          width="medium"
+        <Stack
+          as="section"
+          width="full"
           align="center"
-          color="inverse">
-          You’re in the waiting room
-        </Typography>
-
-        <RotatingMessage
-          messages={MESSAGES}
-          renderMessage={(message) => (
+          spacing="page"
+          className={styles.lobby}
+          aria-label="Player waiting room">
+          <Stack align="center" spacing="stack">
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              className={styles.successIcon}
+              aria-hidden="true"
+            />
             <Typography
-              variant="body"
-              width="small"
+              variant="title"
+              width="medium"
               align="center"
               color="inverse">
-              {message}
+              You’re in!
             </Typography>
-          )}
-        />
+          </Stack>
+          <Stack align="center" spacing="stack">
+            <Typography variant="body" align="center" color="inverse">
+              Welcome,
+            </Typography>
+            <NicknameChip value={nickname} />
+          </Stack>
+          <Surface className={styles.quizCard}>
+            <Stack align="center" spacing="compact">
+              <Typography variant="body2" align="center" color="inverseSubtle">
+                YOU’RE PLAYING
+              </Typography>
+              <Typography
+                variant="title2"
+                width="medium"
+                align="center"
+                color="inverse">
+                {quizTitle}
+              </Typography>
+            </Stack>
+          </Surface>
+          <Stack
+            direction="horizontal"
+            align="center"
+            justify="center"
+            width="full"
+            spacing="compact"
+            className={styles.playerCount}
+            aria-live="polite"
+            aria-atomic="true">
+            <Typography
+              variant="title3"
+              align="center"
+              color="inverse"
+              className={styles.count}
+              key={playerCount}>
+              {playerCount}
+            </Typography>
+            <Typography
+              variant="body"
+              align="center"
+              color="inverse"
+              className={styles.playerLabel}>
+              {playerCount === 1
+                ? 'player is in the game'
+                : 'players are in the game'}
+            </Typography>
+          </Stack>
+          <Stack align="center" spacing="stack">
+            <img className={styles.hourglass} src={HourglassIcon} alt="" />
+            <Typography
+              variant="title3"
+              width="medium"
+              align="center"
+              color="inverse">
+              Waiting for the host to start…
+            </Typography>
+            <RotatingMessage
+              messages={MESSAGES}
+              renderMessage={(message) => (
+                <Typography
+                  variant="body"
+                  width="small"
+                  align="center"
+                  color="inverse">
+                  {message}
+                </Typography>
+              )}
+            />
+          </Stack>
+        </Stack>
       </GamePage>
       <ConfirmDialog
         title="Confirm Leave Game"

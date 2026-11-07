@@ -46,6 +46,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -53,9 +57,49 @@ describe('PlayerLobbyState', () => {
     )
 
     expect(screen.getByText('FrostyBear')).toBeInTheDocument()
-    expect(screen.getByText('You’re in the waiting room')).toBeInTheDocument()
+    expect(screen.getByText('You’re in!')).toBeInTheDocument()
+    expect(screen.getByText('The Big Brain Quiz')).toBeInTheDocument()
+    expect(screen.getByText('3')).toBeInTheDocument()
+    expect(screen.getByText('Welcome,')).toBeInTheDocument()
+    expect(
+      screen.getByText('Waiting for the host to start…'),
+    ).toBeInTheDocument()
     expect(screen.getByText('Be nice and wait')).toBeInTheDocument()
     expect(container).toMatchSnapshot()
+  })
+
+  it('updates the displayed player count from the latest lobby event', () => {
+    const { rerender } = render(
+      <MemoryRouter>
+        <PlayerLobbyState
+          event={{
+            type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: [{ nickname: 'FrostyBear' }],
+            player: { nickname: 'FrostyBear' },
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getByText('player is in the game')).toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <PlayerLobbyState
+          event={{
+            type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: [{ nickname: 'FrostyBear' }, { nickname: 'Player2' }],
+            player: { nickname: 'FrostyBear' },
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByText('players are in the game')).toBeInTheDocument()
   })
 
   it('opens confirm dialog when clicking Leave', () => {
@@ -64,6 +108,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -89,6 +137,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -113,6 +165,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -138,6 +194,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -160,6 +220,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -177,6 +241,10 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
             player: { nickname: 'FrostyBear' },
           }}
         />
@@ -210,7 +278,11 @@ describe('PlayerLobbyState', () => {
         <PlayerLobbyState
           event={{
             type: GameEventType.GameLobbyPlayer,
+            game: { name: 'The Big Brain Quiz' },
             player: { nickname: 'FrostyBear' },
+            players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
+              nickname,
+            })),
           }}
         />
       </MemoryRouter>,
