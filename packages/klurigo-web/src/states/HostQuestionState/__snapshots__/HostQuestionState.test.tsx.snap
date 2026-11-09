@@ -135,7 +135,7 @@ exports[`HostQuestionState > clicks Skip and calls completeTask 1`] = `
           >
             <div
               class="track safe"
-              style="width: 99.67%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 99.67%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -351,7 +351,7 @@ exports[`HostQuestionState > does not render media when question type is Pin (ev
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -597,7 +597,7 @@ exports[`HostQuestionState > renders with audio media 1`] = `
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -843,7 +843,7 @@ exports[`HostQuestionState > renders with video media 1`] = `
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -1116,7 +1116,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -1409,7 +1409,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -1662,7 +1662,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -1894,7 +1894,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -2125,7 +2125,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>
@@ -2357,7 +2357,7 @@ exports[`HostQuestionState > should render HostQuestionState with question type 
           >
             <div
               class="track safe"
-              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+              style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
             />
           </div>
         </div>

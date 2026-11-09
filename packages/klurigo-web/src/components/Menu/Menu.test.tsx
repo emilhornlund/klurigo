@@ -220,7 +220,7 @@ describe('Menu', () => {
     expect(menu.style.position).toBe('fixed')
     expect(menu.style.top).toBe('38px') // bottom 30 + gap 8
     expect(menu.style.left).toBe('20px') // left
-    expect(menu.style.transform).toBe('translate(0, 0)')
+    expect(menu.style.transform).toBe('translate(0px)')
     expect(menu.style.visibility).toBe('visible')
   })
 
@@ -244,7 +244,7 @@ describe('Menu', () => {
 
     expect(menu.style.top).toBe('112px') // bottom 100 + gap 12
     expect(menu.style.left).toBe('260px') // right
-    expect(menu.style.transform).toBe('translate(-100%, 0)')
+    expect(menu.style.transform).toBe('translate(-100%)')
   })
 
   it('positions above + align=start with correct top/left/transform', async () => {
@@ -273,7 +273,7 @@ describe('Menu', () => {
 
     expect(menu.style.top).toBe('42px') // top 50 - gap 8
     expect(menu.style.left).toBe('10px') // left
-    expect(menu.style.transform).toBe('translate(0, -100%)')
+    expect(menu.style.transform).toBe('translate(0px, -100%)')
   })
 
   it('positions above + align=end with correct top/left/transform', async () => {

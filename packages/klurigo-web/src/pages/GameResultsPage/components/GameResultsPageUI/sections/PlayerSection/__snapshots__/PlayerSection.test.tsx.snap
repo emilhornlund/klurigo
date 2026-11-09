@@ -45,7 +45,7 @@ exports[`PlayerSection > renders rows for ZeroToOneHundred mode and uses getAver
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 98.39468191043233;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 98.3947;"
               />
               <text
                 class="progressText white"
@@ -152,7 +152,7 @@ exports[`PlayerSection > renders rows for ZeroToOneHundred mode and uses getAver
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 98.39468191043233;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 98.3947;"
               />
               <text
                 class="progressText white"
@@ -259,7 +259,7 @@ exports[`PlayerSection > renders rows for ZeroToOneHundred mode and uses getAver
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 98.39468191043233;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 98.3947;"
               />
               <text
                 class="progressText white"
@@ -377,7 +377,7 @@ exports[`PlayerSection > renders rows with badges and nicknames for Classic mode
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 42.411500823462205;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 42.4115;"
               />
               <text
                 class="progressText white"
@@ -484,7 +484,7 @@ exports[`PlayerSection > renders rows with badges and nicknames for Classic mode
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 42.411500823462205;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 42.4115;"
               />
               <text
                 class="progressText white"
@@ -602,7 +602,7 @@ exports[`PlayerSection > toggles details for a row and shows detail items for Cl
                 r="27"
                 stroke-linecap="round"
                 stroke-width="6"
-                style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 42.411500823462205;"
+                style="stroke-dasharray: 169.646; stroke-dashoffset: 42.4115;"
               />
               <text
                 class="progressText white"

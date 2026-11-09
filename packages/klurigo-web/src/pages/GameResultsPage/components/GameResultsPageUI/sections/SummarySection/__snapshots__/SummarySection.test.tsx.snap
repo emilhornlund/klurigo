@@ -134,7 +134,7 @@ exports[`SummarySection > omits metric cards when playerMetrics has no data 1`] 
             r="45"
             stroke-linecap="round"
             stroke-width="10"
-            style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 0;"
+            style="stroke-dasharray: 282.743; stroke-dashoffset: 0;"
           />
           <text
             class="progressText white"
@@ -685,7 +685,7 @@ exports[`SummarySection > renders Classic summary, uses getCorrectPercentage, sh
             r="45"
             stroke-linecap="round"
             stroke-width="10"
-            style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 84.82300164692444;"
+            style="stroke-dasharray: 282.743; stroke-dashoffset: 84.823;"
           />
           <text
             class="progressText white"
@@ -1332,7 +1332,7 @@ exports[`SummarySection > renders ZeroToOneHundred summary and uses getAveragePr
             r="45"
             stroke-linecap="round"
             stroke-width="10"
-            style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 141.3716694115407;"
+            style="stroke-dasharray: 282.743; stroke-dashoffset: 141.372;"
           />
           <text
             class="progressText white"

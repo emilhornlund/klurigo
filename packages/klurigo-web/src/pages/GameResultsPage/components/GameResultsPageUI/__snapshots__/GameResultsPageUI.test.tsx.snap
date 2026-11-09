@@ -306,7 +306,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 93.30530181161686;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 93.3053;"
                     />
                     <text
                       class="progressText white"
@@ -1075,7 +1075,7 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for zero to one hun
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 31.101767270538943;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 31.1018;"
                     />
                     <text
                       class="progressText white"
@@ -1793,7 +1793,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 70.68583470577033;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 70.6858;"
                     />
                     <text
                       class="progressText white"
@@ -2394,7 +2394,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 55.983181086970106;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 55.9832;"
                         />
                         <text
                           class="progressText white"
@@ -2649,7 +2649,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 111.96636217394021;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 111.966;"
                         />
                         <text
                           class="progressText white"
@@ -3013,7 +3013,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 0;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 0;"
                         />
                         <text
                           class="progressText white"
@@ -3208,7 +3208,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 84.82300164692441;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 84.823;"
                         />
                         <text
                           class="progressText white"
@@ -3668,7 +3668,7 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 70.68583470577033;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 70.6858;"
                     />
                     <text
                       class="progressText white"
@@ -4425,7 +4425,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 113.09733552923257;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 113.097;"
                     />
                     <text
                       class="progressText white"
@@ -4987,7 +4987,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 33.92920065876976;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 33.9292;"
                         />
                         <text
                           class="progressText white"
@@ -5152,7 +5152,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 67.85840131753953;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 67.8584;"
                         />
                         <text
                           class="progressText white"
@@ -5426,7 +5426,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 50.89380098815465;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 50.8938;"
                         />
                         <text
                           class="progressText white"
@@ -5561,7 +5561,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                           r="27"
                           stroke-linecap="round"
                           stroke-width="6"
-                          style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 84.82300164692441;"
+                          style="stroke-dasharray: 169.646; stroke-dashoffset: 84.823;"
                         />
                         <text
                           class="progressText white"
@@ -5961,7 +5961,7 @@ exports[`GameResultsPageUI > switches sections and shows 0 to 100 label in Summa
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 113.09733552923257;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 113.097;"
                     />
                     <text
                       class="progressText white"

@@ -39,9 +39,13 @@ describe('TooltipTrigger', () => {
     expect(button).toHaveAttribute('type', 'button')
     expect(button).toHaveAttribute('data-state', 'closed')
 
-    const styleAttr = button.getAttribute('style') ?? ''
-    expect(styleAttr).toContain('cursor: pointer')
-    expect(styleAttr).toContain('all: unset')
+    // Check reset properties because CSS serialization can expand `all: unset`.
+    expect(button.style).toMatchObject({
+      appearance: 'unset',
+      background: 'unset',
+      border: 'unset',
+      padding: 'unset',
+    })
 
     expect(button).toHaveStyle({ cursor: 'pointer' })
 

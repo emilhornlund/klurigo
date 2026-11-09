@@ -420,13 +420,13 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
   </div>
   <div
     class="floatingOverlay"
-    style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    style="position: fixed; overflow: auto; inset: 0px;"
   >
     <span
       data-floating-ui-focus-guard=""
       data-type="inside"
       role="button"
-      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      style="border: 0px; clip: rect(0px 0px 0px 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
       tabindex="0"
     />
     <div
@@ -494,7 +494,7 @@ exports[`HostGameFooter > matches snapshot (player management modal open) 1`] = 
       data-floating-ui-focus-guard=""
       data-type="inside"
       role="button"
-      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      style="border: 0px; clip: rect(0px 0px 0px 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
       tabindex="0"
     />
   </div>
@@ -671,13 +671,13 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
   </div>
   <div
     class="floatingOverlay"
-    style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    style="position: fixed; overflow: auto; inset: 0px;"
   >
     <span
       data-floating-ui-focus-guard=""
       data-type="inside"
       role="button"
-      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      style="border: 0px; clip: rect(0px 0px 0px 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
       tabindex="0"
     />
     <div
@@ -771,7 +771,7 @@ exports[`HostGameFooter > matches snapshot (quit confirm dialog open) 1`] = `
       data-floating-ui-focus-guard=""
       data-type="inside"
       role="button"
-      style="border: 0px; clip: rect(0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
+      style="border: 0px; clip: rect(0px 0px 0px 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; white-space: nowrap; width: 1px; top: 0px; left: 0px;"
       tabindex="0"
     />
   </div>

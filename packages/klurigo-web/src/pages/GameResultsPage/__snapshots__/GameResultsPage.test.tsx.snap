@@ -351,7 +351,7 @@ exports[`GameResultsPage > loads and renders results when query succeeds 1`] = `
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 70.68583470577033;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 70.6858;"
                     />
                     <text
                       class="progressText white"
@@ -1170,7 +1170,7 @@ exports[`GameResultsPage > shows loading before data resolves then renders UI 1`
                       r="45"
                       stroke-linecap="round"
                       stroke-width="10"
-                      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 113.09733552923257;"
+                      style="stroke-dasharray: 282.743; stroke-dashoffset: 113.097;"
                     />
                     <text
                       class="progressText white"

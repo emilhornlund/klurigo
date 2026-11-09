@@ -23,7 +23,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with default 
       r="45"
       stroke-linecap="round"
       stroke-width="10"
-      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 98.96016858807849;"
+      style="stroke-dasharray: 282.743; stroke-dashoffset: 98.9602;"
     />
     <text
       class="progressText black"
@@ -62,7 +62,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with kind cor
       r="45"
       stroke-linecap="round"
       stroke-width="10"
-      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 98.96016858807849;"
+      style="stroke-dasharray: 282.743; stroke-dashoffset: 98.9602;"
     />
     <text
       class="progressText black"
@@ -101,7 +101,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with kind def
       r="45"
       stroke-linecap="round"
       stroke-width="10"
-      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 98.96016858807849;"
+      style="stroke-dasharray: 282.743; stroke-dashoffset: 98.9602;"
     />
     <text
       class="progressText black"
@@ -140,7 +140,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with size lar
       r="53"
       stroke-linecap="round"
       stroke-width="14"
-      style="stroke-dasharray: 333.0088212805181; stroke-dashoffset: 116.55308744818132;"
+      style="stroke-dasharray: 333.009; stroke-dashoffset: 116.553;"
     />
     <text
       class="progressText black"
@@ -179,7 +179,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with size med
       r="45"
       stroke-linecap="round"
       stroke-width="10"
-      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 98.96016858807849;"
+      style="stroke-dasharray: 282.743; stroke-dashoffset: 98.9602;"
     />
     <text
       class="progressText black"
@@ -218,7 +218,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar with size sma
       r="27"
       stroke-linecap="round"
       stroke-width="6"
-      style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 59.376101152847085;"
+      style="stroke-dasharray: 169.646; stroke-dashoffset: 59.3761;"
     />
     <text
       class="progressText black"
@@ -257,7 +257,7 @@ exports[`CircularProgressBar > should render a CircularProgressBar without progr
       r="45"
       stroke-linecap="round"
       stroke-width="10"
-      style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 98.96016858807849;"
+      style="stroke-dasharray: 282.743; stroke-dashoffset: 98.9602;"
     />
   </svg>
 </div>
