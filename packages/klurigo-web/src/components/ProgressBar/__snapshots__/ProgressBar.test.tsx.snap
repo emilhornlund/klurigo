@@ -7,7 +7,7 @@ exports[`ProgressBar > should not render with pulse class when progress is great
   >
     <div
       class="track safe"
-      style="width: 66.67%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+      style="width: 66.67%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
     />
   </div>
 </div>
@@ -20,7 +20,7 @@ exports[`ProgressBar > should render a ProgressBar with initial progress 1`] = `
   >
     <div
       class="track caution"
-      style="width: 48.33%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+      style="width: 48.33%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
     />
   </div>
 </div>
@@ -33,7 +33,7 @@ exports[`ProgressBar > should render with 0 progress when countdown has expired 
   >
     <div
       class="track critical pulse"
-      style="width: 0%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+      style="width: 0%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
     />
   </div>
 </div>
@@ -46,7 +46,7 @@ exports[`ProgressBar > should render with 0 progress when dates are invalid 1`] 
   >
     <div
       class="track critical pulse"
-      style="width: 0%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+      style="width: 0%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
     />
   </div>
 </div>
@@ -59,7 +59,7 @@ exports[`ProgressBar > should render with full progress when countdown just star
   >
     <div
       class="track safe"
-      style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;"
+      style="width: 100%; transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;"
     />
   </div>
 </div>

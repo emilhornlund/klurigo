@@ -185,7 +185,7 @@ describe('InfiniteScrollContainer', () => {
     expect(gap.style.height).toBe('10px')
 
     // Looping => transform is set (offset starts at 0)
-    expect(track.style.transform).toBe('translateY(-0px)')
+    expect(track.style.transform).toBe('translateY(0px)')
   })
 
   it('updates transform over time when enabled and looping', async () => {
@@ -232,12 +232,12 @@ describe('InfiniteScrollContainer', () => {
     })
 
     // shouldLoop=true applies transform, but offset must remain 0 when disabled
-    expect(track.style.transform).toBe('translateY(-0px)')
+    expect(track.style.transform).toBe('translateY(0px)')
 
     // The animation effect must not register RAF when disabled
     expect(rafCb).toBe(null)
 
     // No RAF => no change
-    expect(track.style.transform).toBe('translateY(-0px)')
+    expect(track.style.transform).toBe('translateY(0px)')
   })
 })

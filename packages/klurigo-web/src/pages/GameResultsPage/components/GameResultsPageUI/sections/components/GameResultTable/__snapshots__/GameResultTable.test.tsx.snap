@@ -44,7 +44,7 @@ exports[`GameResultTable > does not crash when details are missing 1`] = `
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 152.68140296446393;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 152.681;"
             />
             <text
               class="progressText white"
@@ -127,7 +127,7 @@ exports[`GameResultTable > hides details by default and toggles them on row clic
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 30.53628059289281;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 30.5363;"
             />
             <text
               class="progressText white"
@@ -248,7 +248,7 @@ exports[`GameResultTable > hides details by default and toggles them on row clic
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 84.82300164692441;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 84.823;"
             />
             <text
               class="progressText white"
@@ -331,7 +331,7 @@ exports[`GameResultTable > renders badge and value, and sets title attribute on 
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 30.53628059289281;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 30.5363;"
             />
             <text
               class="progressText white"
@@ -452,7 +452,7 @@ exports[`GameResultTable > renders badge and value, and sets title attribute on 
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 84.82300164692441;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 84.823;"
             />
             <text
               class="progressText white"
@@ -535,7 +535,7 @@ exports[`GameResultTable > renders one row per item 1`] = `
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 30.53628059289281;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 30.5363;"
             />
             <text
               class="progressText white"
@@ -656,7 +656,7 @@ exports[`GameResultTable > renders one row per item 1`] = `
               r="27"
               stroke-linecap="round"
               stroke-width="6"
-              style="stroke-dasharray: 169.64600329384882; stroke-dashoffset: 84.82300164692441;"
+              style="stroke-dasharray: 169.646; stroke-dashoffset: 84.823;"
             />
             <text
               class="progressText white"

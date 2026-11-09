@@ -80,7 +80,7 @@ exports[`Dropzone > should render a Dropzone with progress bar 1`] = `
           r="45"
           stroke-linecap="round"
           stroke-width="10"
-          style="stroke-dasharray: 282.7433388230814; stroke-dashoffset: 141.3716694115407;"
+          style="stroke-dasharray: 282.743; stroke-dashoffset: 141.372;"
         />
         <text
           class="progressText black"

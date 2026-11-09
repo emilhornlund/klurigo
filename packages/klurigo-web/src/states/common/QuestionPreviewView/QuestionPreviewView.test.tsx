@@ -182,7 +182,7 @@ describe('QuestionPreviewView', () => {
         rafCallback?.(225)
       })
 
-      expect(track.style.transform).toBe('translateY(-0px)')
+      expect(track.style.transform).toBe('translateY(0px)')
 
       await act(async () => {
         rafCallback?.(1000)
