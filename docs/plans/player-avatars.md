@@ -1,7 +1,8 @@
 # Player Avatars: Design And Roadmap
 
-> **Status:** proposed; initial investigation and pre-implementation audit
-> recorded, implementation not started.
+> **Status:** Phase 0 completed; account editing/persistence and subsequent phases
+> remain planned. See [current rendering documentation](../features/player-avatar-rendering.md)
+> for the delivered foundation and verification results.
 >
 > **Plan boundary:** This document records the agreed direction, investigation
 > findings, proposed implementation, and future milestones. It does not describe
@@ -34,17 +35,17 @@ not commitments to implement every extension.
 ## Readiness And Implementation Gates
 
 The pre-implementation audit confirmed that the local-rendering approach is
-feasible. No architectural blocker was found. The remaining proof should be the
-first implementation step, before persisting production avatar configurations:
+feasible. Phase 0 subsequently completed the local integration proof. These gates
+track the boundary before persisting production avatar configurations:
 
-1. **Frontend integration:** prove the local JSON import, strict TypeScript
-   compilation, Vite production bundle, and actual `<img>` rendering in the
-   application/Storybook. The current web TypeScript configuration does not
-   explicitly enable `resolveJsonModule`; choose and verify a typed import path.
-   Check deployed image restrictions as well as the development environment.
-2. **Versioned recipe:** commit the exact artwork, catalog, pinned renderer,
-   fixed options/seed, and regression fixtures together. Prove that editor
-   preview and saved-avatar display use the same adapter.
+1. **Frontend integration — verified in Phase 0:** local JSON imports with
+   `resolveJsonModule`, strict TypeScript compilation, application and Storybook
+   production builds, and actual `<img>` rendering passed. Check deployed image
+   restrictions when integrating into a deployment.
+2. **Versioned recipe — delivered in Phase 0:** the exact artwork, shared catalog,
+   pinned renderer, fixed options/seed, and regression fixtures now live together
+   in the repository. Phase 1 must reuse this adapter for both editor preview and
+   saved-avatar display.
 3. **Complete validated persistence:** settle required-nullable field semantics
    and the concrete request class before exposing the save endpoint. Save the
    editor's complete configuration, never the renderer's resolved output.
@@ -95,8 +96,8 @@ Relevant source references:
 ### Critters Capabilities
 
 The investigation inspected the Critters definition published with DiceBear
-styles `10.6.0`. This is a research baseline, not an installed dependency or
-vendored asset. Confirm the selected source when importing the artwork.
+styles `10.6.0`. Phase 0 vendors that definition unchanged and pins the core
+renderer to `10.6.0`; the styles package is not a runtime dependency.
 
 | Feature                 | Choices in the inspected definition                             |
 | ----------------------- | --------------------------------------------------------------- |
@@ -344,10 +345,7 @@ available to both local and Google accounts.
 
 ### Phase 0 — Local Rendering And Compatibility Proof
 
-**Status:** not started. This is preparation for the first delivery milestone.
-
-The temporary Node.js audit above de-risks this phase; application integration,
-committed fixtures, and browser verification remain outstanding.
+**Status:** completed on 2026-11-14. This prepares the first user-facing milestone.
 
 - Import the versioned artwork with local license and provenance records.
 - Verify the pinned core renderer with the repository's Vite/TypeScript setup.
@@ -359,6 +357,23 @@ committed fixtures, and browser verification remain outstanding.
 
 **Exit:** the same complete configuration renders predictably from repository
 assets, including when external avatar domains are blocked.
+
+Delivered artifacts:
+
+- Local immutable Critters v1 definition, licenses, provenance, and checksum.
+- Shared `CrittersAvatarConfigurationV1` and component/palette catalogs, without
+  adding avatar fields to user-profile contracts.
+- A fixed local renderer and image-URI adapter, plus four SVG golden fixtures.
+- Ten focused regression tests covering catalogs, round-trips, every variant,
+  optional components, palettes, and local deterministic rendering.
+- A production-built Storybook proof inspected at desktop and mobile sizes,
+  including 320px constrained layouts and offline rendering interactions.
+- A reproducible standalone bundle measurement command; measured about 34 KB
+  gzipped and about 0.16 ms per generated image URI in desktop Chromium.
+
+See [player avatar rendering](../features/player-avatar-rendering.md) for exact
+source paths, commands, measurement conditions, browser results, and remaining
+deployment considerations. Phase 1 has not started.
 
 ### Phase 1 — Account Editor And Persistence
 
@@ -453,8 +468,8 @@ roadmap rather than treating unfinished proposals as current behavior.
 
 ## Decisions Still Needed
 
-- Final DTO names, asset layout, renderer version, and configuration recipe after
-  the Phase 0 proof.
+- Phase 1 request/response DTO names and endpoint details. Phase 0 established
+  the v1 configuration, local asset layout, renderer version, and recipe.
 - Initial palette and starting presets; whether to expose all inspected variants.
 - Whether saved-avatar removal belongs in the first milestone or a later phase.
 - Exact profile/navigation and game display surfaces.

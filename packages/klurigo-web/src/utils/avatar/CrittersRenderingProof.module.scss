@@ -1,0 +1,90 @@
+.viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+.proof {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(16px, 4vw, 32px);
+  color: #fff;
+
+  h1 {
+    font-size: clamp(24px, 5vw, 36px);
+    line-height: 1.2;
+  }
+
+  h2 {
+    margin-top: 32px;
+    text-transform: capitalize;
+  }
+
+  figure {
+    margin: 0;
+    text-align: center;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 8px;
+  }
+
+  figcaption {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+}
+
+.preview,
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+}
+
+.preview {
+  justify-content: center;
+  padding: 24px 0;
+
+  > img {
+    margin: 0;
+  }
+}
+
+.controls {
+  display: grid;
+  gap: 12px;
+  max-width: 100%;
+
+  select,
+  button {
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    font: inherit;
+    color: #1e293b;
+    background: #fff;
+  }
+
+  :focus-visible {
+    outline: 3px solid #fcd34d;
+    outline-offset: 3px;
+  }
+}
+
+.sizes {
+  align-items: end;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 20px 16px;
+}

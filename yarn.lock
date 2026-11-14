@@ -455,6 +455,11 @@
     gonzales-pe "^4.3.0"
     node-source-walk "^7.0.1"
 
+"@dicebear/core@10.6.0":
+  version "10.6.0"
+  resolved "https://registry.yarnpkg.com/@dicebear/core/-/core-10.6.0.tgz#c8738a59a639c31b0e62bd8372815f05b463021e"
+  integrity sha512-XZtNSGq3LZCWPa9wx+HZOWQsKnixFkxBTKjjd+fDXcQ3mRWsjZDjoGcOA2rTRpX0TXM/+8CJOsBgGOytGBBXZg==
+
 "@discoveryjs/json-ext@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-1.1.0.tgz#44b5ce3485e95235aca06e628eeaaa3c816bc4cc"

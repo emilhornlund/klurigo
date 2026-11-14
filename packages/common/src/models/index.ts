@@ -1,4 +1,5 @@
 export * from './auth'
+export * from './avatar'
 export * from './discovery.dto'
 export * from './authority.enum'
 export * from './game.dto'

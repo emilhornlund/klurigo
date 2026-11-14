@@ -53,3 +53,6 @@ packages/klurigo-web/playwright-report/
 packages/klurigo-web/blob-report/
 packages/klurigo-web/playwright/.cache/
 packages/klurigo-web/playwright/.auth/
+
+# Preserve the byte-exact, checksum-verified third-party artwork.
+packages/klurigo-web/src/assets/avatars/critters/v1/definition.json
