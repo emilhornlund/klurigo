@@ -78,6 +78,8 @@ historical plan notes:
 - [Anonymous Player Rating](./plans/anonymous-player-rating.md)
 - [Discovery Rails](./plans/discovery-rails.md)
 - [User Profile](./plans/user-profile.md)
+- [Player Avatars](./plans/player-avatars.md) - proposed locally rendered Critters,
+  exact-design persistence, editor, and phased integration roadmap.
 
 New documentation filenames should use lowercase kebab-case, such as
 `feature-overview.md`.
