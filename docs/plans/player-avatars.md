@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–3 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–4 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -105,10 +105,14 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 4 — Player Join Snapshots
 
-**Status:** Planned · **Depends on:** 3
+**Status:** Complete · **Depends on:** 3
 
 - **Work:** Persist the exact chosen avatar on first accepted player join. Resolve account defaults from trusted identity and assign missing guest avatars once.
 - **Done when:** Account/guest joins, concurrent retries, and late joins preserve one snapshot; duplicate joins never replace it or regenerate randomness.
+- **Verified:** 60 focused service/helper unit tests and 20 real HTTP join tests pass,
+  including concurrent account/default/guest/chosen/late joins, rejected metadata,
+  persistence, and profile-edit/retry stability. Common/service/web types and lint,
+  common/service builds, and shared/editor randomization tests pass.
 
 ### Phase 5 — Host Snapshots
 

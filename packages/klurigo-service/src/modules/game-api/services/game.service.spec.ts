@@ -1,4 +1,10 @@
-import { GameParticipantType, GameStatus, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+  GameStatus,
+  isCrittersAvatarConfigurationV1,
+  QuestionType,
+} from '@klurigo/common'
 import { Logger } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Test } from '@nestjs/testing'
@@ -31,7 +37,7 @@ import type {
 import { GameEventPublisher } from '../../game-event/services'
 import { GameTaskTransitionScheduler } from '../../game-task/services'
 import { QuizRepository } from '../../quiz-core/repositories'
-import { User } from '../../user/repositories'
+import { User, UserRepository } from '../../user/repositories'
 
 import { GameService } from './game.service'
 
@@ -58,6 +64,7 @@ describe(GameService.name, () => {
     emit: jest.Mock
   }
   let quizRepository: { findQuizByIdOrThrow: jest.Mock }
+  let userRepository: { findUserById: jest.Mock }
   let gameTaskTransitionScheduler: { scheduleTaskTransition: jest.Mock }
 
   let debugSpy: jest.SpyInstance
@@ -85,6 +92,7 @@ describe(GameService.name, () => {
       emit: jest.fn(),
     }
     quizRepository = { findQuizByIdOrThrow: jest.fn() }
+    userRepository = { findUserById: jest.fn().mockResolvedValue(null) }
     gameTaskTransitionScheduler = {
       scheduleTaskTransition: jest.fn().mockResolvedValue(undefined),
     }
@@ -95,6 +103,7 @@ describe(GameService.name, () => {
         { provide: GameRepository, useValue: gameRepository },
         { provide: GameAnswerRepository, useValue: gameAnswerRepository },
         { provide: QuizRepository, useValue: quizRepository },
+        { provide: UserRepository, useValue: userRepository },
         {
           provide: GameTaskTransitionScheduler,
           useValue: gameTaskTransitionScheduler,
@@ -673,6 +682,7 @@ describe(GameService.name, () => {
       gameRepository.findGameByIDOrThrow = jest
         .fn()
         .mockResolvedValue(gameDocument)
+      let pending = Promise.resolve()
       gameRepository.findAndSaveWithLockIfChanged = jest
         .fn()
         .mockImplementation(
@@ -681,7 +691,16 @@ describe(GameService.name, () => {
             callback: (
               game: typeof gameDocument,
             ) => Promise<typeof gameDocument | undefined>,
-          ) => (await callback(gameDocument)) ?? gameDocument,
+          ) => {
+            const result = pending.then(
+              async () => (await callback(gameDocument)) ?? gameDocument,
+            )
+            pending = result.then(
+              () => undefined,
+              () => undefined,
+            )
+            return result
+          },
         )
       ;(
         service as unknown as { gameEventPublisher: { publish: jest.Mock } }
@@ -699,6 +718,56 @@ describe(GameService.name, () => {
         participantId: 'participant-456',
         nickname: 'TestNickname',
       })
+    })
+
+    it('copies the exact supplied design and ignores changed designs on retry', async () => {
+      const design = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        design,
+      )
+      design.body = 'block'
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        design,
+      )
+      const game =
+        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
+      expect(game.participants[0].avatar).toEqual({
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        top: null,
+      })
+      expect(userRepository.findUserById).not.toHaveBeenCalled()
+    })
+
+    it('uses the signed account identity and preserves its first snapshot after profile edits', async () => {
+      const user = { avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' } }
+      userRepository.findUserById.mockResolvedValue(user)
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      user.avatar.body = 'round'
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      const game =
+        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
+      expect(game.participants[0].avatar).toEqual({
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        body: 'block',
+      })
+      expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
+      expect(userRepository.findUserById).toHaveBeenCalledWith(
+        'participant-456',
+      )
+    })
+
+    it('uses the default for accounts without a saved design', async () => {
+      userRepository.findUserById.mockResolvedValue({})
+      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      const game =
+        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
+      expect(game.participants[0].avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
     })
 
     it('completes successfully when event emission throws', async () => {
@@ -750,6 +819,10 @@ describe(GameService.name, () => {
       const game =
         await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
       expect(game.participants).toHaveLength(1)
+      expect(isCrittersAvatarConfigurationV1(game.participants[0].avatar)).toBe(
+        true,
+      )
+      expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
     })
 

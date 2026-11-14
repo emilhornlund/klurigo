@@ -1,7 +1,9 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GAME_MAX_PLAYERS,
   GameParticipantType,
   GameStatus,
+  isCrittersAvatarConfigurationV1,
   QuestionRangeAnswerMargin,
   QuestionType,
 } from '@klurigo/common'
@@ -260,6 +262,106 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/players (POST)', () => {
+    it.each(['account', 'default', 'guest', 'chosen', 'late'] as const)(
+      'persists one immutable avatar for %s joins and concurrent retries',
+      async (scenario) => {
+        const saved = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'block' as const,
+          top: null,
+        }
+        const chosen = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'dome' as const,
+          cheeks: null,
+        }
+        const participantId = scenario === 'guest' ? uuidv4() : playerUser._id
+        if (scenario === 'account') {
+          await userModel.findByIdAndUpdate(participantId, { avatar: saved })
+        }
+        const game = await gameModel.create(
+          createMockGameDocument({
+            questions: [createMockMultiChoiceQuestionDocument()],
+            participants: [
+              createMockGameHostParticipantDocument({
+                participantId: hostUser._id,
+              }),
+            ],
+            currentTask:
+              scenario === 'late'
+                ? createMockQuestionTaskDocument()
+                : createMockLobbyTaskDocument(),
+          }),
+        )
+        const token = await authenticateGame(
+          app,
+          game._id,
+          participantId,
+          GameParticipantType.PLAYER,
+        )
+        const submit = (avatar?: unknown) =>
+          supertest(app.getHttpServer())
+            .post(`/api/games/${game._id}/players`)
+            .set(createBearerAuthHeader(token))
+            .send({
+              nickname: 'SnapshotPlayer',
+              ...(avatar === undefined ? {} : { avatar }),
+            })
+        const responses = await Promise.all([
+          submit(scenario === 'chosen' ? chosen : undefined),
+          submit(scenario === 'chosen' ? chosen : undefined),
+        ])
+        expect(responses.map(({ status }) => status)).toEqual([204, 204])
+        const readPlayer = async () => {
+          const stored = await gameModel.findById(game._id).lean()
+          const players = stored!.participants.filter(
+            ({ participantId: id }) => id === participantId,
+          )
+          expect(players).toHaveLength(1)
+          return players[0]
+        }
+        const first = (await readPlayer()).avatar
+        expect(isCrittersAvatarConfigurationV1(first)).toBe(true)
+        if (scenario !== 'guest') {
+          expect(first).toEqual(
+            scenario === 'account'
+              ? saved
+              : scenario === 'chosen'
+                ? chosen
+                : DEFAULT_CRITTERS_AVATAR_V1,
+          )
+        }
+        await userModel.findByIdAndUpdate(playerUser._id, { avatar: chosen })
+        await submit(saved).expect(204)
+        expect((await readPlayer()).avatar).toEqual(first)
+        // Joining never writes an account avatar, even when metadata was supplied.
+        expect(
+          (await userModel.findById(playerUser._id).lean())?.avatar,
+        ).toEqual(chosen)
+      },
+    )
+
+    it.each([
+      null,
+      {},
+      { ...DEFAULT_CRITTERS_AVATAR_V1, userId: 'other' },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'unknown' },
+    ])('rejects invalid avatar metadata before joining: %j', async (avatar) => {
+      const game = await gameModel.create(createMockGameDocument())
+      const token = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/players`)
+        .set(createBearerAuthHeader(token))
+        .send({ nickname: 'SnapshotPlayer', avatar })
+        .expect(400)
+      expect((await gameModel.findById(game._id))!.participants).toHaveLength(0)
+    })
+
     it('should succeed in joining an existing active classic mode game', async () => {
       const { id: quizId } = await quizService.createQuiz(
         createMockClassicQuizRequestDto(),

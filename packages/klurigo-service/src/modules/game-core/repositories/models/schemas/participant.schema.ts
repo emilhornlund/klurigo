@@ -1,5 +1,7 @@
-import { GameParticipantType } from '@klurigo/common'
+import { type GameAvatarSnapshot, GameParticipantType } from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+
+import { UserAvatarSchema } from '../../../../user/repositories/models/schemas/user-avatar.schema'
 
 /**
  * Represents a participant in a game, including host and player details.
@@ -11,6 +13,10 @@ export class ParticipantBase {
    */
   @Prop({ type: String, required: true })
   participantId: string
+
+  /** Immutable game-time design; absent only on pre-avatar records. */
+  @Prop({ type: UserAvatarSchema, required: false })
+  avatar?: GameAvatarSnapshot
 
   /**
    * The type of participant, either host or player.

@@ -1,4 +1,9 @@
-import { GameMode, GameParticipantType } from '@klurigo/common'
+import {
+  GameAvatarSnapshot,
+  GameMode,
+  GameParticipantType,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 
 import {
   Game,
@@ -42,6 +47,7 @@ export function addPlayerParticipantToGame<T extends Game>(
   game: T,
   participantId: string,
   nickname: string,
+  avatar?: GameAvatarSnapshot,
 ): T {
   const now = new Date()
 
@@ -53,6 +59,7 @@ export function addPlayerParticipantToGame<T extends Game>(
     participantId,
     type: GameParticipantType.PLAYER,
     nickname,
+    avatar: resolveGameAvatarSnapshot(avatar),
     rank,
     worstRank: rank,
     totalScore,

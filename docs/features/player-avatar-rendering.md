@@ -11,7 +11,12 @@ Nickname-only clients remain compatible. Supplied designs require complete valid
 metadata; null, invalid choices, unsupported versions, and extra nested fields are
 rejected. `resolveGameAvatarSnapshot` copies supported metadata or the stable default,
 excluding persistence internals without modifying the source record. Participant
-snapshot persistence and join consumption are delivered in subsequent phases.
+snapshots are persisted by Phase 4 on the first accepted player join under the
+existing game lock. Supplied designs are copied exactly; older account callers
+load their signed principal's saved/default design, and older guest callers get
+one resolved random design. Retries preserve the original snapshot and do not
+look up profiles or randomize again. Joining never writes a user profile. Legacy
+participants remain untouched. Display/event integration follows in later phases.
 
 ## Source And Ownership
 

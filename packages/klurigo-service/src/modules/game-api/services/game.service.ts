@@ -1,5 +1,6 @@
 import {
   CreateGameResponseDto,
+  GameAvatarSnapshot,
   GameDetailsDto,
   GameHistoryBaseDto,
   GameParticipantPlayerDto,
@@ -13,7 +14,9 @@ import {
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MAX_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_REGEX,
+  randomizeCrittersAvatar,
   RangeQuestionCorrectAnswerDto,
+  resolveGameAvatarSnapshot,
   SubmitQuestionAnswerRequestDto,
   TrueFalseQuestionCorrectAnswerDto,
   TypeAnswerQuestionCorrectAnswerDto,
@@ -70,7 +73,7 @@ import {
   isTrueFalseQuestion,
   isTypeAnswerQuestion,
 } from '../../quiz-core/utils'
-import { User } from '../../user/repositories'
+import { User, UserRepository } from '../../user/repositories'
 import {
   GameFullException,
   NicknameNotUniqueException,
@@ -132,6 +135,7 @@ export class GameService {
     private readonly gameEventPublisher: GameEventPublisher,
     private readonly quizRepository: QuizRepository,
     private readonly eventEmitter: EventEmitter2,
+    private readonly userRepository: UserRepository,
   ) {}
 
   /**
@@ -309,6 +313,7 @@ export class GameService {
     gameId: string,
     participantId: string,
     nickname: string,
+    avatar?: GameAvatarSnapshot,
   ): Promise<void> {
     await this.gameRepository.findGameByIDOrThrow(gameId)
 
@@ -361,11 +366,25 @@ export class GameService {
             throw new NicknameNotUniqueException(nickname)
           }
 
+          // Resolve only after acceptance checks, under the same participant lock.
+          // The signed principal determines account ownership; the body never does.
+          const user =
+            avatar === undefined
+              ? await this.userRepository.findUserById(participantId)
+              : null
+          const snapshot =
+            avatar !== undefined
+              ? resolveGameAvatarSnapshot(avatar)
+              : user
+                ? resolveGameAvatarSnapshot(user.avatar)
+                : randomizeCrittersAvatar()
+
           joined = true
           return addPlayerParticipantToGame(
             currentDocument,
             participantId,
             nickname,
+            snapshot,
           )
         },
       )

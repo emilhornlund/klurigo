@@ -1,32 +1,6 @@
-import {
-  CRITTERS_V1_COLORS,
-  CRITTERS_V1_PARTS,
-  type CrittersAvatarConfigurationV1,
-} from '@klurigo/common'
+import { CRITTERS_V1_COLORS } from '@klurigo/common'
 
-const pick = <T>(values: readonly T[]): T =>
-  values[Math.floor(Math.random() * values.length)]
-
-/** Resolve every choice now; rendering and persistence never perform random selection. */
-export function randomizeCrittersAvatar(): CrittersAvatarConfigurationV1 {
-  const bodyColor = pick(CRITTERS_V1_COLORS.body)
-  return {
-    version: 1,
-    style: 'critters',
-    artworkVersion: 'v1',
-    body: pick(CRITTERS_V1_PARTS.body),
-    top: pick([...CRITTERS_V1_PARTS.top, null]),
-    eyes: pick(CRITTERS_V1_PARTS.eyes),
-    mouth: pick(CRITTERS_V1_PARTS.mouth),
-    pattern: pick([...CRITTERS_V1_PARTS.pattern, null]),
-    cheeks: pick([...CRITTERS_V1_PARTS.cheeks, null]),
-    bodyColor,
-    accentColor: pick(
-      CRITTERS_V1_COLORS.accent.filter((color) => color !== bodyColor),
-    ),
-    backgroundColor: pick(CRITTERS_V1_COLORS.background),
-  }
-}
+export { randomizeCrittersAvatar } from '@klurigo/common'
 
 /** UI labels never change persisted component identifiers. */
 export const avatarChoiceLabel = (value: string): string =>

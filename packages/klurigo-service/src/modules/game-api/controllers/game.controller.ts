@@ -189,7 +189,12 @@ export class GameController {
     @RouteGameIdParam() gameId: string,
     @Body() request: JoinGameRequest,
   ): Promise<void> {
-    return this.gameService.joinGame(gameId, participantId, request.nickname)
+    return this.gameService.joinGame(
+      gameId,
+      participantId,
+      request.nickname,
+      request.avatar,
+    )
   }
 
   /**
