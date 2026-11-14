@@ -1,4 +1,7 @@
-import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  isCrittersAvatarConfigurationV1,
+} from '@klurigo/common'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactElement } from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -12,9 +15,11 @@ vi.mock('react-router-dom', async () => {
 })
 
 const mockJoinGame = vi.fn()
+const mockSetAvatar = vi.fn()
 vi.mock('./use-game-join-avatar', () => ({
   useGameJoinAvatar: () => ({
     avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    setAvatar: mockSetAvatar,
     isLoading: false,
   }),
 }))
@@ -67,6 +72,37 @@ beforeEach(() => {
 })
 
 describe('GameJoinPage', () => {
+  it('lets guests edit and discard without joining or changing their nickname', () => {
+    providedIsUserAuthenticated = false
+    renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'GuestDraft' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+    expect(mockSetAvatar).toHaveBeenCalledWith({
+      ...DEFAULT_CRITTERS_AVATAR_V1,
+      body: 'block',
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Discard changes' }))
+    expect(mockSetAvatar).toHaveBeenLastCalledWith(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(screen.getByPlaceholderText('Nickname')).toHaveValue('GuestDraft')
+    expect(mockJoinGame).not.toHaveBeenCalled()
+  })
+
+  it('lets guests explicitly randomize a complete valid design and return to joining', () => {
+    providedIsUserAuthenticated = false
+    renderWithRouter(<GameJoinPage />)
+    fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Randomize' }))
+    expect(
+      isCrittersAvatarConfigurationV1(mockSetAvatar.mock.lastCall?.[0]),
+    ).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Use design' }))
+    expect(screen.getByRole('form', { name: 'Join game' })).toBeVisible()
+    expect(mockJoinGame).not.toHaveBeenCalled()
+  })
+
   it('renders title and message (via RotatingMessage)', () => {
     const { container } = renderWithRouter(<GameJoinPage />)
 

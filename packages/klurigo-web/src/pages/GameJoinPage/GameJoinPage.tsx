@@ -1,9 +1,14 @@
+import {
+  type GameAvatarSnapshot,
+  randomizeCrittersAvatar,
+} from '@klurigo/common'
 import type { FC, FormEvent } from 'react'
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import {
+  AvatarEditor,
   Button,
   CallToActionCard,
   IconButtonArrowLeft,
@@ -32,7 +37,15 @@ const GameJoinSession: FC = () => {
   const { gameID } = useGameContext()
 
   const { joinGame } = useKlurigoServiceClient()
-  const { avatar, isLoading, error, retry } = useGameJoinAvatar()
+  const { avatar, setAvatar, isLoading, error, retry } = useGameJoinAvatar()
+  const [editBaseline, setEditBaseline] = useState<GameAvatarSnapshot>()
+
+  const closeEditor = () => {
+    setEditBaseline(undefined)
+    requestAnimationFrame(() =>
+      document.getElementById('customize-avatar')?.focus(),
+    )
+  }
 
   const [nickname, setNickname] = useState<string>(
     currentUser?.id === user?.ACCESS.sub
@@ -109,56 +122,101 @@ const GameJoinSession: FC = () => {
         )}
       />
 
-      <Stack
-        as="form"
-        width="content"
-        data-testid="join-form"
-        aria-label="Join game"
-        name="join-game-form"
-        onSubmit={handleSubmit}>
-        <Stack align="center" spacing="compact">
-          <Typography variant="title3" color="inverse" align="center">
-            Your game avatar
+      {editBaseline && avatar ? (
+        <Stack width="full" align="center">
+          <AvatarEditor value={avatar} onChange={setAvatar} />
+          <Typography variant="body2" color="inverse" align="center">
+            This design is for this game. No account is needed.
           </Typography>
-          {avatar && (
-            <PlayerAvatar avatar={avatar} alt="Your game avatar preview" />
-          )}
-          {isLoading && (
-            <Typography variant="body" color="inverse">
-              Preparing your avatar…
-            </Typography>
-          )}
-          {error && (
-            <Typography variant="body" color="inverse" role="alert">
-              {error}
-            </Typography>
-          )}
-          {error && (
+          <Stack width="content" spacing="compact">
             <Button
-              id="retry-avatar"
+              id="use-join-avatar"
               type="button"
-              value="Retry"
-              onClick={retry}
-            />
-          )}
+              intent="accent"
+              onClick={closeEditor}>
+              Use design
+            </Button>
+            <Button
+              id="randomize-join-avatar"
+              type="button"
+              variant="outline"
+              onClick={() => setAvatar(randomizeCrittersAvatar())}>
+              Randomize
+            </Button>
+            <Button
+              id="discard-join-avatar"
+              type="button"
+              variant="plain"
+              onClick={() => {
+                setAvatar(editBaseline)
+                closeEditor()
+              }}>
+              Discard changes
+            </Button>
+          </Stack>
         </Stack>
-        <NicknameTextField
-          value={nickname}
-          placeholder="Nickname"
-          disabled={isJoiningGame}
-          onChange={setNickname}
-          onValid={setNicknameValid}
-        />
-        <IconButtonArrowRight
-          id="join"
-          type="submit"
-          variant="primary"
-          intent="accent"
-          value="OK, Go!"
-          loading={isJoiningGame}
-          disabled={!nicknameValid || isLoading || !!error || !avatar}
-        />
-      </Stack>
+      ) : (
+        <Stack
+          as="form"
+          width="content"
+          data-testid="join-form"
+          aria-label="Join game"
+          name="join-game-form"
+          onSubmit={handleSubmit}>
+          <Stack align="center" spacing="compact">
+            <Typography variant="title3" color="inverse" align="center">
+              Your game avatar
+            </Typography>
+            {avatar && (
+              <PlayerAvatar avatar={avatar} alt="Your game avatar preview" />
+            )}
+            {!isUserAuthenticated && avatar && !isLoading && !error && (
+              <Button
+                id="customize-avatar"
+                type="button"
+                variant="outline"
+                disabled={isJoiningGame}
+                onClick={() => setEditBaseline(avatar)}>
+                Customize avatar
+              </Button>
+            )}
+            {isLoading && (
+              <Typography variant="body" color="inverse">
+                Preparing your avatar…
+              </Typography>
+            )}
+            {error && (
+              <Typography variant="body" color="inverse" role="alert">
+                {error}
+              </Typography>
+            )}
+            {error && (
+              <Button
+                id="retry-avatar"
+                type="button"
+                value="Retry"
+                onClick={retry}
+              />
+            )}
+          </Stack>
+          <NicknameTextField
+            value={nickname}
+            placeholder="Nickname"
+            disabled={isJoiningGame}
+            onChange={setNickname}
+            onValid={setNicknameValid}
+          />
+          <IconButtonArrowRight
+            id="join"
+            type="submit"
+            variant="primary"
+            intent="accent"
+            value="OK, Go!"
+            loading={isJoiningGame}
+            disabled={!nicknameValid || isLoading || !!error || !avatar}
+          />
+        </Stack>
+      )}
       {!isUserAuthenticated && (
         <CallToActionCard
           title="Make every game count"

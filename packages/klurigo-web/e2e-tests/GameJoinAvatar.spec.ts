@@ -59,6 +59,27 @@ for (const account of [false, true]) {
       await expect(page).toHaveURL('/join')
       const preview = page.getByAltText('Your game avatar preview')
       await expect(preview).toBeVisible()
+      if (!account) {
+        const profileWrites: string[] = []
+        page.on('request', (req) => {
+          if (
+            req.method() === 'PUT' &&
+            req.url().endsWith('/profile/user/avatar')
+          )
+            profileWrites.push(req.url())
+        })
+        await page.getByRole('button', { name: 'Customize avatar' }).click()
+        await page.getByText('Block', { exact: true }).click()
+        await page.getByLabel('Customize', { exact: true }).selectOption('Head')
+        await page.getByText('None', { exact: true }).click()
+        await page.getByRole('button', { name: 'Use design' }).click()
+        const chosen = await preview.getAttribute('src')
+        await page.getByRole('button', { name: 'Customize avatar' }).click()
+        await page.getByRole('button', { name: 'Randomize' }).click()
+        await page.getByRole('button', { name: 'Discard changes' }).click()
+        await expect(preview).toHaveAttribute('src', chosen!)
+        expect(profileWrites).toEqual([])
+      }
       const source = await preview.getAttribute('src')
       const draft = await page.evaluate(() =>
         JSON.parse(
@@ -71,6 +92,7 @@ for (const account of [false, true]) {
       )
       expect(isCrittersAvatarConfigurationV1(draft)).toBe(true)
       if (account) expect(draft).toEqual(saved)
+      else expect(draft).toMatchObject({ body: 'block', top: null })
       await page.reload()
       await expect(preview).toHaveAttribute('src', source!)
       await page.getByPlaceholder('Nickname').fill('JoinPreview')

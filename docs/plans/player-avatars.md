@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–9 and the default-Critter fix are complete. Remaining game integration,
+> **Status:** Phases 0–10 and the default-Critter fix are complete. Remaining game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -175,10 +175,15 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 10 — Guest Join Editor
 
-**Status:** Planned · **Depends on:** 9
+**Status:** Complete · **Depends on:** 9
 
 - **Work:** Reuse the avatar editor for guest/anonymous join drafts, including explicit Randomize and discard behavior.
 - **Done when:** Guests can edit before joining without an account, profile writes, or draft leakage between games/participants.
+- **Verified:** 28 focused join tests and two Playwright flows pass, including guest
+  part edits, explicit None, Randomize/Discard, persisted reloads, failed joins,
+  and absence of profile writes. Chrome verified the reused editor, labels, controls,
+  focus restoration, and no overflow at 1440px, 768px, 390px, and 320px with reduced
+  motion. Types, lint, and production build pass; verification servers were stopped.
 
 ### Phase 11 — Account Join Editor And Save
 

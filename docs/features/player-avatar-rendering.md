@@ -50,6 +50,12 @@ before generating or loading a fresh design. New account joins require matching
 account/game authentication and load the authenticated profile. Preparation failures
 offer retry, and joining does not save an unchanged account default.
 
+Phase 10 lets guests open the shared editor before joining. Part/color edits and
+explicit Randomize update only the scoped local draft. Use design returns to the
+join form, while Discard restores the design present when the editor was opened.
+Both return keyboard focus to Customize avatar. Nickname state is retained, and
+neither editing nor randomizing writes an account profile or joins the game.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports
