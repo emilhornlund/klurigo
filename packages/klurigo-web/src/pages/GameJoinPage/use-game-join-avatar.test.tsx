@@ -5,16 +5,38 @@ import {
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { getGame, getUserProfile, navigate } = vi.hoisted(() => ({
+const {
+  getGame,
+  getUserProfile,
+  updateUserAvatar,
+  setCurrentUser,
+  cache,
+  navigate,
+} = vi.hoisted(() => ({
   getGame: vi.fn(),
   getUserProfile: vi.fn(),
+  updateUserAvatar: vi.fn(),
+  setCurrentUser: vi.fn(),
+  cache: {
+    cancelQueries: vi.fn(),
+    setQueryData: vi.fn(),
+    invalidateQueries: vi.fn(),
+  },
   navigate: vi.fn(),
 }))
 let gameID = 'game-1'
 let participantId = 'guest-1'
 let accountId: string | undefined
 vi.mock('../../api', () => ({
-  useKlurigoServiceClient: () => ({ getGame, getUserProfile }),
+  useKlurigoServiceClient: () => ({
+    getGame,
+    getUserProfile,
+    updateUserAvatar,
+  }),
+}))
+vi.mock('@tanstack/react-query', () => ({ useQueryClient: () => cache }))
+vi.mock('../../context/user', () => ({
+  useUserContext: () => ({ setCurrentUser }),
 }))
 vi.mock('../../context/game', () => ({
   useGameContext: () => ({ gameID, participantId }),
@@ -38,6 +60,9 @@ describe('useGameJoinAvatar', () => {
     accountId = undefined
     getGame.mockResolvedValue({ id: gameID })
     getUserProfile.mockResolvedValue({ id: 'account-1', avatar: null })
+    updateUserAvatar.mockImplementation(async (avatar) => avatar)
+    cache.cancelQueries.mockResolvedValue(undefined)
+    cache.invalidateQueries.mockResolvedValue(undefined)
   })
 
   it('generates one valid guest draft and keeps it across renders and reloads', async () => {
@@ -52,6 +77,111 @@ describe('useGameJoinAvatar', () => {
     await waitFor(() => expect(second.result.current.isLoading).toBe(false))
     expect(second.result.current.avatar).toEqual(avatar)
     expect(getUserProfile).not.toHaveBeenCalled()
+  })
+
+  it('saves an edited account design once and retains the acknowledgement across reloads', async () => {
+    accountId = participantId = 'account-1'
+    const hook = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(hook.result.current.isLoading).toBe(false))
+    expect(hook.result.current.needsSave).toBe(false)
+    const design = {
+      ...DEFAULT_CRITTERS_AVATAR_V1,
+      body: 'block' as const,
+      top: null,
+    }
+    act(() => hook.result.current.setAvatar(design))
+    expect(hook.result.current.needsSave).toBe(true)
+    await act(async () =>
+      expect(await hook.result.current.commitAvatar()).toEqual(design),
+    )
+    expect(updateUserAvatar).toHaveBeenCalledExactlyOnceWith(design)
+    expect(hook.result.current.hasSavedAccountDesign).toBe(true)
+    expect(hook.result.current.needsSave).toBe(false)
+    expect(setCurrentUser.mock.lastCall?.[0](undefined)).toMatchObject({
+      id: accountId,
+      avatar: design,
+    })
+    expect(cache.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ['user-profile', accountId],
+    })
+    hook.unmount()
+    const restored = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(restored.result.current.isLoading).toBe(false))
+    expect(restored.result.current.avatar).toEqual(design)
+    expect(restored.result.current.needsSave).toBe(false)
+    await act(async () =>
+      expect(await restored.result.current.commitAvatar()).toEqual(design),
+    )
+    expect(updateUserAvatar).toHaveBeenCalledTimes(1)
+  })
+
+  it('retains a failed account save draft for retry without updating account state', async () => {
+    accountId = participantId = 'account-1'
+    const hook = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(hook.result.current.isLoading).toBe(false))
+    const design = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    act(() => hook.result.current.setAvatar(design))
+    updateUserAvatar.mockRejectedValueOnce(new Error('offline'))
+    await act(async () => {
+      await expect(hook.result.current.commitAvatar()).rejects.toThrow(
+        'offline',
+      )
+    })
+    expect(setCurrentUser).not.toHaveBeenCalled()
+    expect(hook.result.current.avatar).toEqual(design)
+    expect(hook.result.current.needsSave).toBe(true)
+    hook.unmount()
+    const restored = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(restored.result.current.isLoading).toBe(false))
+    expect(restored.result.current.avatar).toEqual(design)
+    await act(async () => {
+      await restored.result.current.commitAvatar()
+    })
+    expect(updateUserAvatar).toHaveBeenCalledTimes(2)
+  })
+
+  it('ignores a late save acknowledgement after switching accounts', async () => {
+    accountId = participantId = 'account-1'
+    const hook = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(hook.result.current.isLoading).toBe(false))
+    const design = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    act(() => hook.result.current.setAvatar(design))
+    let acknowledge!: (avatar: typeof design) => void
+    updateUserAvatar.mockReturnValueOnce(
+      new Promise((resolve) => {
+        acknowledge = resolve
+      }),
+    )
+    const pending = hook.result.current.commitAvatar()
+    accountId = participantId = 'account-2'
+    getUserProfile.mockResolvedValue({ id: accountId, avatar: null })
+    hook.rerender()
+    await act(async () => {
+      acknowledge(design)
+      await expect(pending).rejects.toThrow('identity changed')
+    })
+    expect(setCurrentUser).not.toHaveBeenCalled()
+    expect(cache.setQueryData).not.toHaveBeenCalled()
+    await waitFor(() =>
+      expect(hook.result.current.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1),
+    )
+  })
+
+  it('does not save an unchanged default or a discarded account edit', async () => {
+    accountId = participantId = 'account-1'
+    const hook = renderHook(useGameJoinAvatar)
+    await waitFor(() => expect(hook.result.current.isLoading).toBe(false))
+    act(() =>
+      hook.result.current.setAvatar({
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        top: null,
+      }),
+    )
+    act(() => hook.result.current.setAvatar(DEFAULT_CRITTERS_AVATAR_V1))
+    await act(async () => {
+      await hook.result.current.commitAvatar()
+    })
+    expect(updateUserAvatar).not.toHaveBeenCalled()
   })
 
   it('scopes edited drafts to game and participant and recovers the original scope', async () => {

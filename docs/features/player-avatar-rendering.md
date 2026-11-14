@@ -56,6 +56,14 @@ join form, while Discard restores the design present when the editor was opened.
 Both return keyboard focus to Customize avatar. Nickname state is retained, and
 neither editing nor randomizing writes an account profile or joins the game.
 
+Phase 11 adds account join drafts. Edited designs are saved through the user-scoped
+avatar API before the game join; unchanged defaults require no profile write.
+Acknowledged saves survive failed joins and reloads without repeating the save.
+Failures retain the draft and distinguish profile-save failure from saved-design/
+failed-join state. Account switches invalidate pending work, and successful saves
+refresh account context and profile caches. This implementation is paused for user
+review; final rendered verification of the updated Storybook fixtures is outstanding.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports

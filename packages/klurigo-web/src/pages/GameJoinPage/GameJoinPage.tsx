@@ -3,7 +3,7 @@ import {
   randomizeCrittersAvatar,
 } from '@klurigo/common'
 import type { FC, FormEvent } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
@@ -37,14 +37,37 @@ const GameJoinSession: FC = () => {
   const { gameID } = useGameContext()
 
   const { joinGame } = useKlurigoServiceClient()
-  const { avatar, setAvatar, isLoading, error, retry } = useGameJoinAvatar()
+  const {
+    avatar,
+    setAvatar,
+    canEdit,
+    needsSave,
+    hasSavedAccountDesign,
+    commitAvatar,
+    isLoading,
+    error,
+    retry,
+  } = useGameJoinAvatar()
   const [editBaseline, setEditBaseline] = useState<GameAvatarSnapshot>()
+  const [joinMessage, setJoinMessage] = useState<string>()
+  const active = useRef(true)
+  useEffect(() => {
+    active.current = true
+    return () => {
+      active.current = false
+    }
+  }, [])
 
   const closeEditor = () => {
     setEditBaseline(undefined)
     requestAnimationFrame(() =>
       document.getElementById('customize-avatar')?.focus(),
     )
+  }
+
+  const handleAvatarChange = (next: GameAvatarSnapshot) => {
+    setJoinMessage(undefined)
+    setAvatar(next)
   }
 
   const [nickname, setNickname] = useState<string>(
@@ -73,10 +96,31 @@ const GameJoinSession: FC = () => {
       !isJoiningGame
     ) {
       setIsJoiningGame(true)
-      joinGame(gameID, nickname, avatar)
-        .then(() => navigate(`/game`))
-        .catch(() => undefined)
-        .finally(() => setIsJoiningGame(false))
+      setJoinMessage(undefined)
+      const submit = async () => {
+        let savedAccountDesign = hasSavedAccountDesign
+        let joining = false
+        try {
+          const chosen = needsSave ? await commitAvatar() : avatar
+          if (!active.current) return
+          savedAccountDesign ||= needsSave
+          joining = true
+          await joinGame(gameID, nickname, chosen)
+          if (active.current) navigate('/game')
+        } catch {
+          if (active.current)
+            setJoinMessage(
+              !joining
+                ? 'We couldn’t save your account avatar. Your design is still here. Retry joining to save it first.'
+                : savedAccountDesign
+                  ? 'Your account avatar was saved, but joining failed. Your design is ready to retry; it won’t be saved again.'
+                  : 'Joining failed. Your design is still here. Please retry.',
+            )
+        } finally {
+          if (active.current) setIsJoiningGame(false)
+        }
+      }
+      void submit()
     }
   }
 
@@ -124,9 +168,11 @@ const GameJoinSession: FC = () => {
 
       {editBaseline && avatar ? (
         <Stack width="full" align="center">
-          <AvatarEditor value={avatar} onChange={setAvatar} />
+          <AvatarEditor value={avatar} onChange={handleAvatarChange} />
           <Typography variant="body2" color="inverse" align="center">
-            This design is for this game. No account is needed.
+            {isUserAuthenticated
+              ? 'Your changes are saved to your account when you join.'
+              : 'This design is for this game. No account is needed.'}
           </Typography>
           <Stack width="content" spacing="compact">
             <Button
@@ -140,7 +186,7 @@ const GameJoinSession: FC = () => {
               id="randomize-join-avatar"
               type="button"
               variant="outline"
-              onClick={() => setAvatar(randomizeCrittersAvatar())}>
+              onClick={() => handleAvatarChange(randomizeCrittersAvatar())}>
               Randomize
             </Button>
             <Button
@@ -148,7 +194,7 @@ const GameJoinSession: FC = () => {
               type="button"
               variant="plain"
               onClick={() => {
-                setAvatar(editBaseline)
+                handleAvatarChange(editBaseline)
                 closeEditor()
               }}>
               Discard changes
@@ -170,7 +216,7 @@ const GameJoinSession: FC = () => {
             {avatar && (
               <PlayerAvatar avatar={avatar} alt="Your game avatar preview" />
             )}
-            {!isUserAuthenticated && avatar && !isLoading && !error && (
+            {canEdit !== false && avatar && !isLoading && !error && (
               <Button
                 id="customize-avatar"
                 type="button"
@@ -183,6 +229,16 @@ const GameJoinSession: FC = () => {
             {isLoading && (
               <Typography variant="body" color="inverse">
                 Preparing your avatar…
+              </Typography>
+            )}
+            {needsSave && (
+              <Typography variant="body2" color="inverse" align="center">
+                Your updated design will be saved to your account when you join.
+              </Typography>
+            )}
+            {joinMessage && (
+              <Typography variant="body2" color="inverse" role="alert">
+                {joinMessage}
               </Typography>
             )}
             {error && (

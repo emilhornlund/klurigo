@@ -16,10 +16,16 @@ vi.mock('react-router-dom', async () => {
 
 const mockJoinGame = vi.fn()
 const mockSetAvatar = vi.fn()
+const mockCommitAvatar = vi.fn()
+let providedNeedsSave = false
+let providedHasSavedAccountDesign = false
 vi.mock('./use-game-join-avatar', () => ({
   useGameJoinAvatar: () => ({
     avatar: DEFAULT_CRITTERS_AVATAR_V1,
     setAvatar: mockSetAvatar,
+    needsSave: providedNeedsSave,
+    hasSavedAccountDesign: providedHasSavedAccountDesign,
+    commitAvatar: mockCommitAvatar,
     isLoading: false,
   }),
 }))
@@ -67,11 +73,63 @@ beforeEach(() => {
   providedGameID = 'GAME123'
   providedDefaultNickname = undefined
   providedIsUserAuthenticated = true
+  providedNeedsSave = false
+  providedHasSavedAccountDesign = false
+  mockCommitAvatar.mockResolvedValue(DEFAULT_CRITTERS_AVATAR_V1)
   mockJoinGame.mockResolvedValue(undefined)
   mockRevokeGame.mockResolvedValue(undefined)
 })
 
 describe('GameJoinPage', () => {
+  it('blocks joining until the account save is acknowledged and retries a failed join without saving again', async () => {
+    providedNeedsSave = true
+    let acknowledge!: () => void
+    mockCommitAvatar.mockReturnValueOnce(
+      new Promise((resolve) => {
+        acknowledge = () => resolve(DEFAULT_CRITTERS_AVATAR_V1)
+      }),
+    )
+    mockJoinGame.mockRejectedValueOnce(new Error('join failed'))
+    renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'AccountDraft' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
+    expect(mockJoinGame).not.toHaveBeenCalled()
+    await act(async () => {
+      providedNeedsSave = false
+      providedHasSavedAccountDesign = true
+      acknowledge()
+    })
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Your account avatar was saved, but joining failed',
+      ),
+    )
+    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
+    expect(mockCommitAvatar).toHaveBeenCalledTimes(1)
+    expect(mockJoinGame).toHaveBeenCalledTimes(2)
+  })
+
+  it('retains the design and blocks the game join after a failed profile save', async () => {
+    providedNeedsSave = true
+    mockCommitAvatar.mockRejectedValueOnce(new Error('save failed'))
+    renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'AccountDraft' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'We couldn’t save your account avatar',
+      ),
+    )
+    expect(mockJoinGame).not.toHaveBeenCalled()
+    expect(screen.getByAltText('Your game avatar preview')).toBeVisible()
+    expect(screen.getByRole('button', { name: /ok, go!/i })).not.toBeDisabled()
+  })
+
   it('lets guests edit and discard without joining or changing their nickname', () => {
     providedIsUserAuthenticated = false
     renderWithRouter(<GameJoinPage />)

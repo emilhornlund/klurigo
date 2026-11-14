@@ -187,10 +187,17 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 11 — Account Join Editor And Save
 
-**Status:** Planned · **Depends on:** 9
+**Status:** Implemented; review checkpoint · **Depends on:** 9
 
 - **Work:** Reuse the editor for account join drafts; save edited metadata through user scope before submitting the game join, then refresh account state.
 - **Done when:** The join snapshot and acknowledged account design match; the next join starts with that design. Cancel, save/join failures, retries, and account switches follow the product rules.
+- **Checkpoint:** Account editing, save-before-join, acknowledged retry persistence,
+  cache/context refresh, and account-switch guards are implemented. All 2,298 web
+  tests and two real Playwright join flows passed; 34 focused join tests passed.
+  Root build and all workspace type checks passed. Storybook builds successfully;
+  join-story fixture initialization was corrected after a browser failure, but its
+  final rendered verification remains outstanding. Work stopped at the user's
+  explicit request for immediate code review; phases 12–23 remain planned.
 
 ### Phase 12 — Durable Result Snapshots
 
