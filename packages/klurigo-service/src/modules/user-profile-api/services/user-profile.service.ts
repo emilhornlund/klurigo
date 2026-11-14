@@ -50,6 +50,7 @@ export class UserProfileService {
       ])
 
     return {
+      ...(user.avatar ? { avatar: user.avatar } : {}),
       id: user.id,
       nickname: user.defaultNickname,
       quizzesCount,

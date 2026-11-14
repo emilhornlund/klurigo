@@ -1,5 +1,6 @@
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/layers.tokens' as layers;
 @use '../../styles/mixins/_button' as button;
@@ -55,7 +56,7 @@
       @include helpers.fontSize(22px);
 
       .icon {
-        width: helpers.pxToRem(22px);
+        width: controls.$control-menu-icon-size;
       }
     }
 
@@ -75,6 +76,16 @@
 
     &:disabled {
       color: colors.$color-text-disabled;
+    }
+
+    &:focus-visible:not(:disabled) {
+      outline: controls.$control-border-width-outside solid
+        colors.$color-focus-ring;
+      outline-offset: controls.$control-border-width-outside * -1;
+
+      .content {
+        background-color: colors.$color-action-subtle;
+      }
     }
   }
 

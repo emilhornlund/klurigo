@@ -17,6 +17,7 @@ type Profile = {
   familyName?: string
   defaultNickname: string
   authProvider: AuthProvider
+  avatar?: CrittersAvatarConfigurationV1
 }
 
 type ProfileSettingsPageUIProps = {
@@ -47,6 +48,7 @@ const h = vi.hoisted(() => ({
   updateUserAvatar: vi.fn(),
   cancelQueries: vi.fn().mockResolvedValue(undefined),
   setQueryData: vi.fn(),
+  invalidateQueries: vi.fn().mockResolvedValue(undefined),
   auth: { user: { ACCESS: { sub: 'user-1' } }, isUserAuthenticated: true },
   updateUserProfile: vi.fn(),
   updateUserPassword: vi.fn(),
@@ -82,6 +84,7 @@ vi.mock('@tanstack/react-query', () => ({
   useQueryClient: () => ({
     cancelQueries: h.cancelQueries,
     setQueryData: h.setQueryData,
+    invalidateQueries: h.invalidateQueries,
   }),
   useQuery: (options: { queryFn: () => Promise<Profile> }) => {
     h.queryOptions = options
@@ -169,7 +172,9 @@ describe('ProfileSettingsPage', () => {
       familyName: undefined,
       defaultNickname: 'NewFox',
     })
-    expect(h.setCurrentUser).toHaveBeenCalledWith({
+    const updateSnapshot = h.setCurrentUser.mock.calls[0][0]
+    expect(updateSnapshot(undefined)).toEqual({
+      avatar: null,
       id: localProfile.id,
       email: localProfile.email,
       unverifiedEmail: localProfile.unverifiedEmail,
@@ -223,6 +228,22 @@ describe('ProfileSettingsPage', () => {
       await h.uiProps?.onChangeAvatar(DEFAULT_CRITTERS_AVATAR_V1)
     })
     expect(h.updateUserAvatar).toHaveBeenCalledWith(DEFAULT_CRITTERS_AVATAR_V1)
+    const updateSnapshot = h.setCurrentUser.mock.calls[0][0]
+    expect(updateSnapshot(localProfile)).toEqual({
+      ...localProfile,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    expect(updateSnapshot(undefined)).toEqual({
+      id: localProfile.id,
+      email: localProfile.email,
+      unverifiedEmail: localProfile.unverifiedEmail,
+      defaultNickname: localProfile.defaultNickname,
+      authProvider: localProfile.authProvider,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    expect(h.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ['user-profile', 'user-1'],
+    })
     const merge = h.setQueryData.mock.calls[0][1]
     expect(merge(localProfile)).toEqual({
       ...localProfile,
@@ -256,6 +277,22 @@ describe('ProfileSettingsPage', () => {
     })
     expect(h.setQueryData).not.toHaveBeenCalled()
     expect(h.setCurrentUser).not.toHaveBeenCalled()
+  })
+
+  it('preserves a newer navigation avatar when a details response contains older metadata', async () => {
+    const latest = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    h.updateUserProfile.mockResolvedValue({
+      ...localProfile,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    render(<ProfileSettingsPage />)
+    await act(async () => {
+      h.uiProps!.onChange({ ...localProfile, defaultNickname: 'Changed' })
+    })
+    const updateSnapshot = h.setCurrentUser.mock.calls[0][0]
+    expect(updateSnapshot({ ...localProfile, avatar: latest }).avatar).toEqual(
+      latest,
+    )
   })
 
   it('does not restore user state when a details save completes after leaving settings', async () => {

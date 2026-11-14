@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { act, render, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -62,6 +63,93 @@ const PROFILE_B = {
 // --- Tests -------------------------------------------------------------------
 
 describe('UserContextProvider', () => {
+  it('hydrates and persists avatar metadata alongside the minimal user snapshot', async () => {
+    const getCtx = renderWithCapture()
+    getUserProfileMock.mockResolvedValueOnce({
+      ...PROFILE_A,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      givenName: 'Private',
+    })
+    await act(async () => {
+      await getCtx().fetchCurrentUser('avatar-token')
+    })
+    expect(getCtx().currentUser?.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(JSON.parse(localStorage.getItem('currentUser')!).avatar).toEqual(
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
+    expect(getCtx().currentUser).not.toHaveProperty('givenName')
+  })
+
+  it('does not roll back a saved avatar when older hydration completes', async () => {
+    const getCtx = renderWithCapture()
+    const old = { ...PROFILE_A, avatar: DEFAULT_CRITTERS_AVATAR_V1 }
+    getUserProfileMock.mockResolvedValueOnce(old)
+    await act(async () => {
+      await getCtx().fetchCurrentUser('initial')
+    })
+    let finish!: (profile: typeof old) => void
+    getUserProfileMock.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+    )
+    const pending = getCtx().fetchCurrentUser('slow')
+    const saved = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    act(() => {
+      getCtx().setCurrentUser((previous) =>
+        previous ? { ...previous, avatar: saved } : previous,
+      )
+    })
+    await act(async () => {
+      finish(old)
+      await pending
+    })
+    expect(getCtx().currentUser?.avatar).toEqual(saved)
+  })
+
+  it('does not restore an account or avatar after logout during hydration', async () => {
+    const getCtx = renderWithCapture()
+    let finish!: (profile: typeof PROFILE_A) => void
+    getUserProfileMock.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+    )
+    const pending = getCtx().fetchCurrentUser('pending')
+    act(() => {
+      getCtx().clearCurrentUser()
+    })
+    await act(async () => {
+      finish(PROFILE_A)
+      await pending
+    })
+    expect(getCtx().currentUser).toBeUndefined()
+  })
+
+  it('keeps the latest account when an earlier hydration fails late', async () => {
+    const getCtx = renderWithCapture()
+    let fail!: (error: Error) => void
+    getUserProfileMock.mockReturnValueOnce(
+      new Promise((_resolve, reject) => {
+        fail = reject
+      }),
+    )
+    const oldRequest = getCtx().fetchCurrentUser('old-account')
+    getUserProfileMock.mockResolvedValueOnce({
+      ...PROFILE_B,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    await act(async () => {
+      await getCtx().fetchCurrentUser('new-account')
+    })
+    await act(async () => {
+      fail(new Error('Expired old token'))
+      await oldRequest
+    })
+    expect(getCtx().currentUser?.id).toBe(PROFILE_B.id)
+    expect(getCtx().currentUser?.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+  })
+
   it('fetches and stores user profile', async () => {
     const getCtx = renderWithCapture()
     getUserProfileMock.mockResolvedValueOnce(PROFILE_A)
@@ -71,7 +159,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual(PROFILE_A)
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
     expect(getUserProfileMock).toHaveBeenCalledWith('token-1')
@@ -91,7 +179,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual(PROFILE_A)
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
   })
@@ -105,7 +193,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual(PROFILE_A)
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
 
@@ -117,7 +205,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual(PROFILE_A)
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
     })
 
     expect(getUserProfileMock).toHaveBeenCalledTimes(2)
@@ -137,8 +225,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      // Last write wins (depends on resolution order) — assert at least that one completed.
-      expect([PROFILE_A, PROFILE_B]).toContainEqual(getCtx().currentUser!)
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_B, avatar: null })
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(2)
     expect(getUserProfileMock).toHaveBeenCalledWith('tA')
@@ -153,7 +240,9 @@ describe('UserContextProvider', () => {
     await act(async () => {
       await getCtx().fetchCurrentUser('ok')
     })
-    await waitFor(() => expect(getCtx().currentUser).toEqual(PROFILE_A))
+    await waitFor(() =>
+      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null }),
+    )
 
     // Now fail a fetch and ensure it clears.
     getUserProfileMock.mockRejectedValueOnce(new Error('boom'))
@@ -185,6 +274,6 @@ describe('UserContextProvider', () => {
       await Promise.all([p1, p2])
     })
 
-    expect(getCtx().currentUser).toEqual(PROFILE_A)
+    expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
   })
 })

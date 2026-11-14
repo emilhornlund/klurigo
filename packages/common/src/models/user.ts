@@ -132,6 +132,9 @@ export interface UserProfileResponseDto {
  * DTO for retrieving a user's public profile summary.
  */
 export interface PublicUserProfileResponseDto {
+  /** Saved public avatar metadata; absent for accounts without a saved design. */
+  readonly avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The user's unique identifier (UUID).
    */

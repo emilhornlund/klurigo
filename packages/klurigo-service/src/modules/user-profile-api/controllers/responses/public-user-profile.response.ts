@@ -1,16 +1,24 @@
 import { PublicUserProfileResponseDto } from '@klurigo/common'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import {
   ApiDateTimeProperty,
   ApiNicknameProperty,
   ApiUuidProperty,
 } from '../../../../app/swagger'
+import { UserAvatarResponse } from '../../../user/controllers/models'
 
 /**
  * Response returned when fetching a user's public profile.
  */
 export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
+  /** Saved avatar metadata only; no private account details are exposed. */
+  @ApiPropertyOptional({
+    description: 'Saved avatar configuration.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar?: UserAvatarResponse
+
   /**
    * The user's unique identifier.
    */

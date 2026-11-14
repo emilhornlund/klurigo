@@ -4,6 +4,7 @@ import type {
   QuizResponseDto,
 } from '@klurigo/common'
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -14,6 +15,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import placeholder from '../../assets/images/avatar.svg'
 import { formatTimeAgo } from '../../utils/date.utils'
 import * as quizUtils from '../../utils/quiz.utils'
 
@@ -175,6 +177,31 @@ describe('UserProfilePage', () => {
     ).not.toBeInTheDocument()
     expect(screen.queryByTestId('horizontal-rail')).not.toBeInTheDocument()
   })
+
+  it.each([
+    ['saved', DEFAULT_CRITTERS_AVATAR_V1],
+    ['missing', undefined],
+    ['unsupported', { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 }],
+  ] as const)(
+    'renders the %s profile avatar without losing the profile summary',
+    async (_name, avatar) => {
+      h.getUserPublicProfileMock.mockResolvedValue({ ...profile, avatar })
+      h.getUserPublicQuizzesMock.mockResolvedValue({
+        results: [],
+        total: 0,
+        limit: 10,
+        offset: 0,
+      })
+      renderUserProfilePage()
+      const image = await screen.findByRole('img', {
+        name: "QuizMasterJane's avatar",
+      })
+      if (avatar?.version === 1)
+        expect(image.getAttribute('src')).toMatch(/^data:image\/svg\+xml/)
+      else expect(image.getAttribute('src')).toBe(placeholder)
+      expect(screen.getByTestId('user-profile-stats')).toBeInTheDocument()
+    },
+  )
 
   it('renders the shared not-found or error state when profile loading fails', async () => {
     h.getUserPublicProfileMock.mockRejectedValue(new Error('Not found'))

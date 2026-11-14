@@ -2,7 +2,8 @@
 
 Phase 0 supplies a local, deterministic Critters renderer, a shared component
 catalog/configuration, and an isolated Storybook proof. Phase 1 adds the account
-editor and persistence. Profile/game placement remains a later milestone in the
+editor and persistence. Phase 2 adds authenticated profile and navigation display.
+Game placement remains a later milestone in the
 [avatar roadmap](../plans/player-avatars.md).
 
 ## Source And Ownership
@@ -65,6 +66,37 @@ The editor preserves drafts after failed saves and background refetches, protect
 unsupported saved data, and scopes query state to the authenticated account.
 Local/Google API integration and a real browser save/reload/fresh-session flow
 cover persistence; desktop and 320px/390px mobile inspection covers the UI.
+
+## Profile And Navigation Display
+
+`GET /api/users/:userId/profile` includes optional avatar metadata alongside the
+existing public nickname and statistics. It still requires user scope and
+`Authority.User`; email, names, authentication-provider details, and other private
+account fields are not exposed.
+
+The profile summary uses `PlayerAvatar` at responsive sizes of 96px/112px/128px.
+Desktop/tablet navigation shows the current account's avatar in the profile
+button. The Profile menu entry shows a 32px avatar on all devices, while mobile
+keeps the existing hamburger trigger. Avatars retain their colors instead of
+receiving the navigation glyph's white filter.
+
+The current-user snapshot carries avatar metadata. Internally, a null avatar
+records confirmed absence; older snapshots without the field are hydrated once
+for the current token. Navigation checks the snapshot's account ID before using
+it, and missing/unsupported metadata uses the existing local placeholder.
+
+A successful avatar save updates that snapshot immediately and invalidates the
+owner's profile query, retaining the cached quiz data. Details saves preserve a
+newer avatar. Older hydration responses cannot overwrite a save, restore a
+cleared account, or clear a newer account's snapshot.
+
+Phase 2 verification includes authenticated HTTP tests for exact metadata and
+access/privacy boundaries, plus desktop/mobile browser flows through save,
+cached-profile navigation, and fresh login. Chrome DevTools inspection covered
+the running application at 1440px, 768px, and 390px, and isolated missing,
+unsupported, long-nickname, and multiple-avatar cases at 320px. SVGs remain local
+image documents, with no external avatar requests. Temporary test services used
+isolated ports and test databases and were stopped after verification.
 
 ## Inspect And Verify
 

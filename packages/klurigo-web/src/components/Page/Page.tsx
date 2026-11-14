@@ -2,7 +2,6 @@ import {
   faBinoculars,
   faGamepad,
   faGear,
-  faIdCard,
   faLightbulb,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons'
@@ -10,22 +9,27 @@ import {
   type FC,
   type ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import Avatar from '../../assets/images/avatar.svg'
 import Bars from '../../assets/images/bars.svg'
 import KlurigoIcon from '../../assets/images/klurigo-icon.svg'
 import { useAuthContext } from '../../context/auth'
+import { useUserContext } from '../../context/user'
 import { DeviceType } from '../../utils/device-size.types'
 import { classNames } from '../../utils/helpers'
 import { useDeviceSizeType } from '../../utils/useDeviceSizeType'
 import { Menu, MenuItem, MenuSeparator } from '../Menu'
+import PlayerAvatar from '../PlayerAvatar'
 
 import styles from './Page.module.scss'
+
+const PROFILE_AVATAR_SIZE = 44
+const MENU_AVATAR_SIZE = 32
 
 /**
  * Defines the page-level geometry used by {@link Page}.
@@ -139,6 +143,38 @@ const Page: FC<PageProps> = ({
   children,
 }) => {
   const { user, isUserAuthenticated, revokeUser } = useAuthContext()
+  const { currentUser, fetchCurrentUser } = useUserContext()
+  const userId = user?.ACCESS?.sub
+  const accessToken = user?.ACCESS?.token
+  const avatar =
+    userId && currentUser?.id === userId
+      ? (currentUser?.avatar ?? undefined)
+      : undefined
+  const hydratedToken = useRef<string | undefined>(undefined)
+
+  // Older persisted snapshots predate avatar support. Hydrate once without
+  // issuing a request on every page change or looping after a load failure.
+  useEffect(() => {
+    const needsAvatar =
+      currentUser?.id !== userId || !Object.hasOwn(currentUser ?? {}, 'avatar')
+    if (
+      !profile ||
+      !isUserAuthenticated ||
+      !accessToken ||
+      !needsAvatar ||
+      hydratedToken.current === accessToken
+    )
+      return
+    hydratedToken.current = accessToken
+    void fetchCurrentUser(accessToken).catch(() => undefined)
+  }, [
+    profile,
+    isUserAuthenticated,
+    accessToken,
+    userId,
+    currentUser,
+    fetchCurrentUser,
+  ])
 
   const navigate = useNavigate()
 
@@ -165,8 +201,18 @@ const Page: FC<PageProps> = ({
     }
     return (
       <>
-        <MenuItem icon={faIdCard} link={`/users/${user?.ACCESS.sub}/profile`}>
-          Profile
+        <MenuItem link={`/users/${userId}/profile`}>
+          <span className={styles.profileMenuIdentity}>
+            <span className={styles.profileMenuAvatarSlot}>
+              <PlayerAvatar
+                avatar={avatar}
+                size={MENU_AVATAR_SIZE}
+                alt=""
+                className={styles.menuAvatar}
+              />
+            </span>
+            <span>Profile</span>
+          </span>
         </MenuItem>
         <MenuItem icon={faLightbulb} link="/profile/quizzes">
           Quizzes
@@ -183,7 +229,7 @@ const Page: FC<PageProps> = ({
         </MenuItem>
       </>
     )
-  }, [profile, isUserAuthenticated, user, handleRevokeUser])
+  }, [profile, isUserAuthenticated, userId, handleRevokeUser, avatar])
 
   return (
     <div className={styles.main}>
@@ -214,8 +260,15 @@ const Page: FC<PageProps> = ({
               <button
                 onClick={toggleProfileMenu}
                 type="button"
+                aria-label="Profile"
+                aria-expanded={profileMenuOpen}
                 className={styles.menuButton}>
-                <img src={Avatar} alt="Profile" />
+                <PlayerAvatar
+                  avatar={avatar}
+                  size={PROFILE_AVATAR_SIZE}
+                  alt=""
+                  className={styles.profileAvatar}
+                />
               </button>
               <Menu
                 anchorRef={profileMenuButtonRef}
@@ -231,7 +284,7 @@ const Page: FC<PageProps> = ({
                 onClick={toggleMobileMenu}
                 type="button"
                 className={styles.menuButton}>
-                <img src={Bars} alt="Menu" />
+                <img src={Bars} alt="Menu" className={styles.navigationIcon} />
               </button>
               <Menu
                 anchorRef={mobileMenuButtonRef}

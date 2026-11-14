@@ -26,3 +26,12 @@ $avatar-selection-size-desktop: helpers.pxToRem(22px);
 
 /* Reserve two caption lines so wrapping never shifts an avatar within its row. */
 $avatar-option-label-lines: 2;
+
+/* Profile identity and account navigation. */
+$avatar-profile-size-mobile: helpers.pxToRem(96px);
+$avatar-profile-size-tablet: helpers.pxToRem(112px);
+$avatar-profile-size-desktop: helpers.pxToRem(128px);
+
+$avatar-navigation-menu-size-mobile: helpers.pxToRem(32px);
+$avatar-navigation-menu-size-tablet: helpers.pxToRem(32px);
+$avatar-navigation-menu-size-desktop: helpers.pxToRem(32px);

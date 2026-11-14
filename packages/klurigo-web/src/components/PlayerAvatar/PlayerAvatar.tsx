@@ -26,20 +26,24 @@ const PlayerAvatar: FC<PlayerAvatarProps> = ({
   alt,
   className,
 }) => {
-  const source = useMemo(
+  const image = useMemo(
     () =>
       isCrittersAvatarConfigurationV1(avatar)
-        ? getCrittersAvatarV1DataUri(avatar)
-        : placeholder,
+        ? { source: getCrittersAvatarV1DataUri(avatar), fallback: false }
+        : { source: placeholder, fallback: true },
     [avatar],
   )
   return (
     <img
-      src={source}
+      src={image.source}
       width={size}
       height={size}
       alt={alt}
-      className={classNames(styles.avatar, className)}
+      className={classNames(
+        styles.avatar,
+        image.fallback ? styles.placeholder : undefined,
+        className,
+      )}
     />
   )
 }

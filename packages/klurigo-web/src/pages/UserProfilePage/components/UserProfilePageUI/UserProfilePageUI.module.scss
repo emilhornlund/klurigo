@@ -1,6 +1,48 @@
+@use '../../../../styles/avatars.tokens' as avatars;
 @use '../../../../styles/border-radius.tokens' as radius;
 @use '../../../../styles/helpers' as helpers;
 @use '../../../../styles/spacing.semantic' as spacing;
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.avatar {
+  @include helpers.mobile {
+    width: avatars.$avatar-profile-size-mobile;
+    height: avatars.$avatar-profile-size-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-profile-size-tablet;
+    height: avatars.$avatar-profile-size-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-profile-size-desktop;
+    height: avatars.$avatar-profile-size-desktop;
+  }
+}
+
+.nickname {
+  overflow-wrap: anywhere;
+}
 
 .stats {
   display: grid;

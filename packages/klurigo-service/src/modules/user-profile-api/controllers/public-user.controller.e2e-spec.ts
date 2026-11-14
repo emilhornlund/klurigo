@@ -1,4 +1,9 @@
-import { Authority, QuizVisibility, TokenScope } from '@klurigo/common'
+import {
+  Authority,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  QuizVisibility,
+  TokenScope,
+} from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { getModelToken } from '@nestjs/mongoose'
@@ -62,6 +67,36 @@ describe('PublicUserController (e2e)', () => {
   }
 
   describe('/api/users/:userId/profile (GET)', () => {
+    it('returns another user’s exact saved avatar and no private fields', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app, {
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      })
+      const avatar = {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        body: 'blob' as const,
+        top: null,
+        cheeks: null,
+      }
+      const targetUser = await userModel.create(
+        buildMockSecondaryUser({ avatar }),
+      )
+      await supertest(app.getHttpServer())
+        .get(`/api/users/${targetUser._id}/profile`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            id: targetUser._id,
+            nickname: targetUser.defaultNickname,
+            avatar,
+            quizzesCount: 0,
+            hostedGamesCount: 0,
+            playedGamesCount: 0,
+            createdAt: targetUser.createdAt.toISOString(),
+          }),
+        )
+    })
+
     it('should return the public profile summary with aggregated counts', async () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
       const joinedAt = new Date('2024-05-10T12:00:00.000Z')

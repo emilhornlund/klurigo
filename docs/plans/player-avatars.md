@@ -1,7 +1,7 @@
 # Player Avatars: Design And Roadmap
 
-> **Status:** Phases 0 and 1 completed; profile/navigation and game integration
-> remain planned. See [current rendering documentation](../features/player-avatar-rendering.md)
+> **Status:** Phases 0, 1, and 2 completed; game integration remains planned.
+> See [current rendering documentation](../features/player-avatar-rendering.md)
 > for the delivered foundation and verification results.
 >
 > **Plan boundary:** This document records the agreed direction, investigation
@@ -392,18 +392,34 @@ display surface is settings; broader profile/game display is a later milestone.
 
 ### Phase 2 — Profile And Navigation Display
 
-**Status:** future proposal; follows the editor/persistence milestone.
+**Status:** completed on 2026-11-14.
 
-- Add avatars to the user-profile summary and appropriate navigation surfaces.
-- Extend the authenticated public-profile response with the avatar configuration,
-  preserving the existing access boundary and excluding private profile data.
-- Decide which desktop/mobile navigation surfaces benefit from avatar display.
-- Update shared current-user state/query invalidation as needed for immediate
-  refresh after saving, plus stable placeholders for users without avatars.
-- Verify small-size legibility, fallback states, and multiple SVGs on one page.
+- [x] Add avatars to the user-profile summary and account navigation.
+- [x] Extend the authenticated public-profile response with optional avatar
+      metadata, preserving user scope/authority and excluding private account fields.
+- [x] Show the avatar in the desktop/tablet profile button and the Profile menu
+      entry. Keep the recognizable hamburger trigger on mobile.
+- [x] Update the account-scoped current-user snapshot immediately after saves,
+      invalidate the owner's profile query, and preserve newer avatars through
+      unrelated details updates and stale hydration responses.
+- [x] Use stable placeholders for missing/unsupported designs and hydrate legacy
+      snapshots without introducing generated defaults or cross-account display.
+- [x] Verify small-size legibility, keyboard focus, responsive layouts, long
+      nicknames, and multiple image-isolated SVGs on one page.
 
 **Exit:** supported profile/navigation surfaces consistently render the saved
 design and update after a successful save.
+
+Verified with 2,280 frontend tests, 141 common tests, 20 focused backend unit
+tests, 10 authenticated profile HTTP tests, and two real-browser flows covering
+save/reload, cached-profile refresh, and fresh-session desktop/mobile display.
+Chrome DevTools inspection covered the running application and isolated profile
+stories at desktop, tablet, and constrained mobile sizes. Lint, types, production
+web/Storybook builds, package metadata, and dependency checks passed.
+
+**Remaining Phase 2 work:** none. No scope deviations; game identity remains
+Phase 3. Current behavior and verification are recorded in the
+[feature documentation](../features/player-avatar-rendering.md).
 
 ### Phase 3 — Game Identity Integration
 
@@ -472,7 +488,7 @@ roadmap rather than treating unfinished proposals as current behavior.
   the v1 configuration, local asset layout, renderer version, and recipe.
 - Initial palette and starting presets; whether to expose all inspected variants.
 - Whether saved-avatar removal belongs in the first milestone or a later phase.
-- Exact profile/navigation and game display surfaces.
+- Exact game display surfaces; profile/navigation surfaces are delivered in Phase 2.
 - Game snapshot versus live-profile semantics and historical-results behavior.
 - Whether and when guest editing, multiple designs, or animation are valuable.
 

@@ -1,5 +1,6 @@
 import {
   AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -55,6 +56,34 @@ describe('UserProfileService', () => {
   })
 
   describe('findPublicUserProfile', () => {
+    it('includes the requested user’s saved avatar without private profile fields', async () => {
+      const avatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null }
+      const created = new Date('2025-01-01T00:00:00Z')
+      userService.findUserProfileOrThrow.mockResolvedValue({
+        id: 'target-user',
+        defaultNickname: 'Target',
+        avatar,
+        created,
+        email: 'private@example.com',
+        unverifiedEmail: 'pending@example.com',
+        givenName: 'Private',
+        familyName: 'Name',
+        authProvider: AuthProvider.Google,
+      })
+      quizRepository.countPublicQuizzesByOwnerId.mockResolvedValue(0)
+      gameResultRepository.countHostedGamesByUserId.mockResolvedValue(0)
+      gameResultRepository.countPlayedGamesByUserId.mockResolvedValue(0)
+      expect(await service.findPublicUserProfile('target-user')).toEqual({
+        id: 'target-user',
+        nickname: 'Target',
+        avatar,
+        createdAt: created,
+        quizzesCount: 0,
+        hostedGamesCount: 0,
+        playedGamesCount: 0,
+      })
+    })
+
     it('should aggregate the public profile response', async () => {
       const userId = 'user-123'
       const createdAt = new Date('2025-01-01T12:00:00.000Z')

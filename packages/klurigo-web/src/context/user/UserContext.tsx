@@ -1,5 +1,17 @@
-import type { UserProfileResponseDto } from '@klurigo/common'
-import { createContext } from 'react'
+import type {
+  CrittersAvatarConfigurationV1,
+  UserProfileResponseDto,
+} from '@klurigo/common'
+import { createContext, type Dispatch, type SetStateAction } from 'react'
+
+/** Account-scoped snapshot used by navigation; never contains the full profile. */
+export type CurrentUserProfile = Pick<
+  UserProfileResponseDto,
+  'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
+> & {
+  /** Undefined identifies a legacy snapshot; null records a confirmed missing avatar. */
+  readonly avatar?: CrittersAvatarConfigurationV1 | null
+}
 
 /**
  * The shape of the user context.
@@ -11,16 +23,8 @@ import { createContext } from 'react'
  * @property clearCurrentUser - Clears the stored user snapshot.
  */
 export type UserContextType = {
-  currentUser?: Pick<
-    UserProfileResponseDto,
-    'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
-  >
-  setCurrentUser: (
-    currentUser: Pick<
-      UserProfileResponseDto,
-      'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
-    >,
-  ) => void
+  currentUser?: CurrentUserProfile
+  setCurrentUser: Dispatch<SetStateAction<CurrentUserProfile | undefined>>
   fetchCurrentUser: (accessToken: string) => Promise<void>
   clearCurrentUser: () => void
 }

@@ -86,6 +86,25 @@ const ProfileSettingsPage: FC = () => {
         queryClient.setQueryData<UserProfileResponseDto>(key, (old) =>
           old ? { ...old, avatar: saved } : old,
         )
+        setCurrentUser((previous) => {
+          if (activeUserId.current !== ownerId) return previous
+          return {
+            ...(previous?.id === ownerId
+              ? previous
+              : {
+                  id: data.id,
+                  email: data.email,
+                  unverifiedEmail: data.unverifiedEmail,
+                  defaultNickname: data.defaultNickname,
+                  authProvider: data.authProvider,
+                }),
+            avatar: saved,
+          }
+        })
+        // The public profile query also carries quiz data; preserve it while marking it stale.
+        await queryClient.invalidateQueries({
+          queryKey: ['user-profile', ownerId],
+        })
       }
     }
     return saved
@@ -121,13 +140,21 @@ const ProfileSettingsPage: FC = () => {
           )
           const { id, email, unverifiedEmail, defaultNickname, authProvider } =
             updated
-          setCurrentUser({
-            id,
-            email,
-            unverifiedEmail,
-            defaultNickname,
-            authProvider,
-          })
+          setCurrentUser((previous) =>
+            activeUserId.current !== ownerId
+              ? previous
+              : {
+                  id,
+                  email,
+                  unverifiedEmail,
+                  defaultNickname,
+                  authProvider,
+                  avatar:
+                    previous?.id === id
+                      ? (previous.avatar ?? null)
+                      : (updated.avatar ?? null),
+                },
+          )
         })
         .catch(() => undefined)
         .finally(() => {

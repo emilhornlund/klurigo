@@ -43,6 +43,17 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
    * Tracks the token of the currently in-flight `getUserProfile` request.
    */
   const inflight = useRef<string | null>(null)
+  const requestRevision = useRef(0)
+
+  /** A successful settings save supersedes any older profile hydration. */
+  const handleSetCurrentUser = useCallback<UserContextType['setCurrentUser']>(
+    (value) => {
+      requestRevision.current++
+      inflight.current = null
+      setCurrentUser(value)
+    },
+    [setCurrentUser],
+  )
 
   /**
    * Clears the current user from app state and Sentry.
@@ -52,6 +63,8 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
    * - `Sentry.setUser(null)` so subsequent events aren’t attributed to the user.
    */
   const handleClearCurrentUser = useCallback(() => {
+    requestRevision.current++
+    inflight.current = null
     console.debug('Cleaning up user...')
     clearCurrentUser()
     setUser(null)
@@ -68,9 +81,18 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
     async (accessToken: string) => {
       if (inflight.current === accessToken) return Promise.resolve()
       inflight.current = accessToken
+      const revision = ++requestRevision.current
       return getUserProfile(accessToken)
         .then(
-          ({ id, email, unverifiedEmail, defaultNickname, authProvider }) => {
+          ({
+            id,
+            email,
+            unverifiedEmail,
+            defaultNickname,
+            authProvider,
+            avatar,
+          }) => {
+            if (requestRevision.current !== revision) return
             console.debug('Setting up user...')
             setCurrentUser({
               id,
@@ -78,16 +100,22 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
               unverifiedEmail,
               defaultNickname,
               authProvider,
+              avatar: avatar ?? null,
             })
             setUser({ id, email, username: defaultNickname })
             setContext('auth', { provider: authProvider })
           },
         )
         .catch(() => {
+          if (requestRevision.current !== revision) return
           handleClearCurrentUser()
         })
         .finally(() => {
-          if (inflight.current === accessToken) inflight.current = null
+          if (
+            requestRevision.current === revision &&
+            inflight.current === accessToken
+          )
+            inflight.current = null
         })
     },
     [getUserProfile, setCurrentUser, handleClearCurrentUser],
@@ -149,11 +177,16 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
   const value = useMemo<UserContextType>(
     () => ({
       currentUser,
-      setCurrentUser,
+      setCurrentUser: handleSetCurrentUser,
       fetchCurrentUser,
       clearCurrentUser: handleClearCurrentUser,
     }),
-    [currentUser, setCurrentUser, fetchCurrentUser, handleClearCurrentUser],
+    [
+      currentUser,
+      handleSetCurrentUser,
+      fetchCurrentUser,
+      handleClearCurrentUser,
+    ],
   )
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>

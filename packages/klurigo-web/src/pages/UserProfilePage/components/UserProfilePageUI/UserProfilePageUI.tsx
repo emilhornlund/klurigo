@@ -12,6 +12,7 @@ import {
   LoadingSpinner,
   Page,
   PageDivider,
+  PlayerAvatar,
   QuizDiscoveryCard,
   RailHeader,
   Surface,
@@ -24,6 +25,9 @@ import {
 } from '../../../../utils/date.utils'
 
 import styles from './UserProfilePageUI.module.scss'
+
+const PROFILE_AVATAR_SIZE = 128
+const MIN_NICKNAME_FONT_SIZE = 24
 
 /**
  * Props for the `UserProfilePageUI` component.
@@ -96,13 +100,25 @@ const UserProfilePageUI: FC<UserProfilePageUIProps> = ({
 
   return (
     <Page layout="contained" align="start" discover profile>
-      <Typography
-        variant="title"
-        align="center"
-        color="inverse"
-        data-testid="user-profile-nickname">
-        {profile.nickname}
-      </Typography>
+      <div className={styles.identity}>
+        <PlayerAvatar
+          avatar={profile.avatar}
+          size={PROFILE_AVATAR_SIZE}
+          alt={`${profile.nickname}'s avatar`}
+          className={styles.avatar}
+        />
+        <Typography
+          variant="title"
+          className={styles.nickname}
+          maxLines={1}
+          minFontSize={MIN_NICKNAME_FONT_SIZE}
+          allowMoreLines
+          align="center"
+          color="inverse"
+          data-testid="user-profile-nickname">
+          {profile.nickname}
+        </Typography>
+      </div>
 
       <div className={styles.stats} data-testid="user-profile-stats">
         <Card title="Quizzes" value={profile.quizzesCount} />
