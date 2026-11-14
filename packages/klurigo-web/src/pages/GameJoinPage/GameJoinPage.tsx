@@ -3,14 +3,14 @@ import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
-import UsersIcon from '../../assets/images/users-icon.svg'
 import {
+  Button,
   CallToActionCard,
   IconButtonArrowLeft,
   IconButtonArrowRight,
   NicknameTextField,
   Page,
-  PageProminentIcon,
+  PlayerAvatar,
   RotatingMessage,
   Stack,
   Typography,
@@ -20,20 +20,24 @@ import { useGameContext } from '../../context/game'
 import { useUserContext } from '../../context/user'
 
 import { MESSAGES, TITLES } from './text.utils'
+import { useGameJoinAvatar } from './use-game-join-avatar'
 
-const GameJoinPage: FC = () => {
+const GameJoinSession: FC = () => {
   const navigate = useNavigate()
 
-  const { isUserAuthenticated, revokeGame } = useAuthContext()
+  const { user, isUserAuthenticated, revokeGame } = useAuthContext()
 
   const { currentUser } = useUserContext()
 
   const { gameID } = useGameContext()
 
   const { joinGame } = useKlurigoServiceClient()
+  const { avatar, isLoading, error, retry } = useGameJoinAvatar()
 
   const [nickname, setNickname] = useState<string>(
-    currentUser?.defaultNickname || '',
+    currentUser?.id === user?.ACCESS.sub
+      ? currentUser?.defaultNickname || ''
+      : '',
   )
   const [nicknameValid, setNicknameValid] = useState<boolean>(false)
 
@@ -46,9 +50,17 @@ const GameJoinPage: FC = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
 
-    if (gameID && nickname && nicknameValid) {
+    if (
+      gameID &&
+      nickname &&
+      nicknameValid &&
+      avatar &&
+      !isLoading &&
+      !error &&
+      !isJoiningGame
+    ) {
       setIsJoiningGame(true)
-      joinGame(gameID, nickname)
+      joinGame(gameID, nickname, avatar)
         .then(() => navigate(`/game`))
         .catch(() => undefined)
         .finally(() => setIsJoiningGame(false))
@@ -71,8 +83,6 @@ const GameJoinPage: FC = () => {
         />
       }
       hideLogin>
-      <PageProminentIcon src={UsersIcon} alt="Users" />
-
       <RotatingMessage
         messages={TITLES}
         renderMessage={(title) => (
@@ -99,14 +109,6 @@ const GameJoinPage: FC = () => {
         )}
       />
 
-      {!isUserAuthenticated && (
-        <CallToActionCard
-          title="Make every game count"
-          text="Anonymous play doesn’t keep history. Login to track stats, build quizzes, and host your own live games."
-          onClick={() => navigate('/auth/login')}
-        />
-      )}
-
       <Stack
         as="form"
         width="content"
@@ -114,6 +116,32 @@ const GameJoinPage: FC = () => {
         aria-label="Join game"
         name="join-game-form"
         onSubmit={handleSubmit}>
+        <Stack align="center" spacing="compact">
+          <Typography variant="title3" color="inverse" align="center">
+            Your game avatar
+          </Typography>
+          {avatar && (
+            <PlayerAvatar avatar={avatar} alt="Your game avatar preview" />
+          )}
+          {isLoading && (
+            <Typography variant="body" color="inverse">
+              Preparing your avatar…
+            </Typography>
+          )}
+          {error && (
+            <Typography variant="body" color="inverse" role="alert">
+              {error}
+            </Typography>
+          )}
+          {error && (
+            <Button
+              id="retry-avatar"
+              type="button"
+              value="Retry"
+              onClick={retry}
+            />
+          )}
+        </Stack>
         <NicknameTextField
           value={nickname}
           placeholder="Nickname"
@@ -128,10 +156,27 @@ const GameJoinPage: FC = () => {
           intent="accent"
           value="OK, Go!"
           loading={isJoiningGame}
-          disabled={!nicknameValid}
+          disabled={!nicknameValid || isLoading || !!error || !avatar}
         />
       </Stack>
+      {!isUserAuthenticated && (
+        <CallToActionCard
+          title="Make every game count"
+          text="Anonymous play doesn’t keep history. Login to track stats, build quizzes, and host your own live games."
+          onClick={() => navigate('/auth/login')}
+        />
+      )}
     </Page>
+  )
+}
+
+const GameJoinPage: FC = () => {
+  const { gameID, participantId } = useGameContext()
+  const { user, isUserAuthenticated } = useAuthContext()
+  return (
+    <GameJoinSession
+      key={`${gameID}:${participantId}:${isUserAuthenticated ? user?.ACCESS.sub : 'guest'}`}
+    />
   )
 }
 

@@ -42,6 +42,14 @@ Older task items resolve the accepted participant snapshot when available, other
 the stable default. Ranking, top-five limits, and mode-specific score visibility
 remain unchanged.
 
+Phase 9 previews the exact saved/default account design or a once-generated guest
+draft before joining. Guest drafts use local storage scoped to game, signed
+participant ID, and account/guest context; reloads and failed joins retain them.
+Supplied metadata matches the preview. Already-accepted members resume `/game`
+before generating or loading a fresh design. New account joins require matching
+account/game authentication and load the authenticated profile. Preparation failures
+offer retry, and joining does not save an unchanged account default.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports

@@ -1,6 +1,7 @@
 import {
   type CreateGameResponseDto,
   type CreateQuizRatingDto,
+  type GameAvatarSnapshot,
   type GameDetailsDto,
   type GameParticipantPlayerDto,
   type GameResultDto,
@@ -74,11 +75,15 @@ export const createGameResource = (
    *
    * @returns A promise that resolves when the player has successfully joined the game.
    */
-  const joinGame = (gameId: string, nickname: string): Promise<void> =>
+  const joinGame = (
+    gameId: string,
+    nickname: string,
+    avatar?: GameAvatarSnapshot,
+  ): Promise<void> =>
     api
       .apiPost<void>(
         `/games/${gameId}/players`,
-        { nickname },
+        { nickname, ...(avatar ? { avatar } : {}) },
         { scope: TokenScope.Game },
       )
       .catch((error) => {

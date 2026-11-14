@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactElement } from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -11,6 +12,12 @@ vi.mock('react-router-dom', async () => {
 })
 
 const mockJoinGame = vi.fn()
+vi.mock('./use-game-join-avatar', () => ({
+  useGameJoinAvatar: () => ({
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    isLoading: false,
+  }),
+}))
 vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({ joinGame: mockJoinGame }),
 }))
@@ -108,7 +115,11 @@ describe('GameJoinPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
 
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Emil')
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      'GAME123',
+      'Emil',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
 
     resolveJoin()
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
@@ -194,7 +205,11 @@ describe('GameJoinPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
 
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Runner')
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      'GAME123',
+      'Runner',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
     expect(input.disabled).toBe(true)
 
     resolveJoin()
@@ -223,7 +238,11 @@ describe('GameJoinPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
-    expect(mockJoinGame).toHaveBeenLastCalledWith('GAME123', 'RetryNick')
+    expect(mockJoinGame).toHaveBeenLastCalledWith(
+      'GAME123',
+      'RetryNick',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
   })
 
   it('submits when the form is submitted (Enter key equivalent)', async () => {
@@ -242,7 +261,11 @@ describe('GameJoinPage', () => {
 
     fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
 
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'KeyUser')
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      'GAME123',
+      'KeyUser',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
 
     resolveJoin()
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
@@ -268,7 +291,11 @@ describe('GameJoinPage', () => {
       fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
     })
 
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Speedy')
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      'GAME123',
+      'Speedy',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
     expect(input.disabled).toBe(true)
 
     resolveJoin()
@@ -343,7 +370,11 @@ describe('GameJoinPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
 
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'GuestUser')
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      'GAME123',
+      'GuestUser',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
 
     resolveJoin()
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))

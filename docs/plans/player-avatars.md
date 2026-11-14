@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–8 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–9 and the default-Critter fix are complete. Remaining game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -162,10 +162,16 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 9 — Join Preview And Defaults
 
-**Status:** Planned · **Depends on:** 4, 6
+**Status:** Complete · **Depends on:** 4, 6
 
 - **Work:** Preview the saved/default account avatar or one random guest draft on the join page and submit complete metadata. Scope drafts to game and participant.
 - **Done when:** The preview matches the accepted snapshot; reloads/retries retain it, and existing members resume instead of creating a new design.
+- **Verified:** 43 focused web tests and two real account/guest Playwright flows pass,
+  including preview/request/persisted-metadata equality, reloads, failed joins, and
+  accepted-member resume. Types, lint, and production build pass. Chrome inspection
+  covered 1440px, 768px, 390px, and 320px, reduced motion, guest joining, and saved
+  account previews. Removed the redundant hero icon and moved the login prompt below
+  the form to keep joining prominent. Final console/network checks were clean.
 
 ### Phase 10 — Guest Join Editor
 

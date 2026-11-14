@@ -1,4 +1,8 @@
-import { GameStatus, TokenScope } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameStatus,
+  TokenScope,
+} from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
@@ -59,6 +63,21 @@ const makeDeps = (): {
 }
 
 describe('createGameResource', () => {
+  it('submits exact avatar metadata through game scope', async () => {
+    const { api, apiPost } = makeApi()
+    apiPost.mockResolvedValue(undefined)
+    await createGameResource(api, makeDeps().deps).joinGame(
+      'g1',
+      'Player',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
+    expect(apiPost).toHaveBeenCalledWith(
+      '/games/g1/players',
+      { nickname: 'Player', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      { scope: TokenScope.Game },
+    )
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
   })
