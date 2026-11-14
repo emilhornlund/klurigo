@@ -1,4 +1,8 @@
-import { AuthProvider } from '@klurigo/common'
+import {
+  AuthProvider,
+  type CrittersAvatarConfigurationV1,
+  DEFAULT_CRITTERS_AVATAR_V1,
+} from '@klurigo/common'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -16,6 +20,10 @@ type Profile = {
 }
 
 type ProfileSettingsPageUIProps = {
+  avatar?: CrittersAvatarConfigurationV1
+  onChangeAvatar: (
+    avatar: CrittersAvatarConfigurationV1,
+  ) => Promise<CrittersAvatarConfigurationV1>
   authProvider: AuthProvider
   values: {
     email: string
@@ -36,6 +44,10 @@ type ProfileSettingsPageUIProps = {
 
 const h = vi.hoisted(() => ({
   getUserProfile: vi.fn(),
+  updateUserAvatar: vi.fn(),
+  cancelQueries: vi.fn().mockResolvedValue(undefined),
+  setQueryData: vi.fn(),
+  auth: { user: { ACCESS: { sub: 'user-1' } }, isUserAuthenticated: true },
   updateUserProfile: vi.fn(),
   updateUserPassword: vi.fn(),
   resendVerificationEmail: vi.fn(),
@@ -53,6 +65,7 @@ const h = vi.hoisted(() => ({
 vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({
     getUserProfile: h.getUserProfile,
+    updateUserAvatar: h.updateUserAvatar,
     updateUserProfile: h.updateUserProfile,
     updateUserPassword: h.updateUserPassword,
     resendVerificationEmail: h.resendVerificationEmail,
@@ -63,7 +76,13 @@ vi.mock('../../context/user', () => ({
   useUserContext: () => ({ setCurrentUser: h.setCurrentUser }),
 }))
 
+vi.mock('../../context/auth', () => ({ useAuthContext: () => h.auth }))
+
 vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({
+    cancelQueries: h.cancelQueries,
+    setQueryData: h.setQueryData,
+  }),
   useQuery: (options: { queryFn: () => Promise<Profile> }) => {
     h.queryOptions = options
     return { ...h.queryState, refetch: h.refetch }
@@ -72,6 +91,12 @@ vi.mock('@tanstack/react-query', () => ({
 
 vi.mock('../../components', () => ({
   LoadingSpinner: () => <div data-testid="loading-spinner" />,
+  Typography: ({ children }: { children: ReactNode }) => (
+    <p role="alert">{children}</p>
+  ),
+  Button: ({ children }: { children: ReactNode }) => (
+    <button>{children}</button>
+  ),
   Page: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
 }))
 
@@ -99,13 +124,15 @@ describe('ProfileSettingsPage', () => {
     h.uiProps = undefined
     h.queryState = { data: localProfile, isLoading: false, isError: false }
     h.getUserProfile.mockResolvedValue(localProfile)
+    h.auth.user.ACCESS.sub = 'user-1'
+    h.updateUserAvatar.mockImplementation(async (avatar) => avatar)
     h.updateUserProfile.mockResolvedValue(localProfile)
     h.updateUserPassword.mockResolvedValue(undefined)
     h.resendVerificationEmail.mockResolvedValue(undefined)
     h.refetch.mockResolvedValue(undefined)
   })
 
-  it('shows a spinner while the profile is loading, unavailable, or in error', () => {
+  it('keeps loaded forms mounted during background errors', () => {
     h.queryState = { data: undefined, isLoading: true, isError: false }
     const view = render(<ProfileSettingsPage />)
     expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
@@ -116,7 +143,7 @@ describe('ProfileSettingsPage', () => {
 
     h.queryState = { data: localProfile, isLoading: false, isError: true }
     view.rerender(<ProfileSettingsPage />)
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    expect(screen.getByTestId('profile-settings-ui')).toBeInTheDocument()
   })
 
   it('loads the profile and updates local user details with normalized names', async () => {
@@ -149,7 +176,9 @@ describe('ProfileSettingsPage', () => {
       defaultNickname: localProfile.defaultNickname,
       authProvider: localProfile.authProvider,
     })
-    expect(h.refetch).toHaveBeenCalledTimes(1)
+    expect(h.cancelQueries).toHaveBeenCalledWith({
+      queryKey: ['myUserProfile', 'user-1'],
+    })
     await waitFor(() => expect(h.uiProps?.loading).toBe(false))
   })
 
@@ -185,5 +214,66 @@ describe('ProfileSettingsPage', () => {
       expect(h.uiProps?.loading).toBe(false)
       expect(h.uiProps?.loadingPassword).toBe(false)
     })
+  })
+
+  it('merges only the avatar and keeps details props stable on avatar updates', async () => {
+    const view = render(<ProfileSettingsPage />)
+    const values = h.uiProps?.values
+    await act(async () => {
+      await h.uiProps?.onChangeAvatar(DEFAULT_CRITTERS_AVATAR_V1)
+    })
+    expect(h.updateUserAvatar).toHaveBeenCalledWith(DEFAULT_CRITTERS_AVATAR_V1)
+    const merge = h.setQueryData.mock.calls[0][1]
+    expect(merge(localProfile)).toEqual({
+      ...localProfile,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    h.queryState = {
+      ...h.queryState,
+      data: { ...localProfile, avatar: DEFAULT_CRITTERS_AVATAR_V1 } as Profile,
+    }
+    view.rerender(<ProfileSettingsPage />)
+    expect(h.uiProps?.values).toBe(values)
+  })
+
+  it('ignores a completed avatar save after account switching', async () => {
+    let finish!: (avatar: CrittersAvatarConfigurationV1) => void
+    h.updateUserAvatar.mockReturnValue(
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+    )
+    const view = render(<ProfileSettingsPage />)
+    let pending!: Promise<CrittersAvatarConfigurationV1>
+    act(() => {
+      pending = h.uiProps!.onChangeAvatar(DEFAULT_CRITTERS_AVATAR_V1)
+    })
+    h.auth.user.ACCESS.sub = 'user-2'
+    view.rerender(<ProfileSettingsPage />)
+    await act(async () => {
+      finish(DEFAULT_CRITTERS_AVATAR_V1)
+      await pending
+    })
+    expect(h.setQueryData).not.toHaveBeenCalled()
+    expect(h.setCurrentUser).not.toHaveBeenCalled()
+  })
+
+  it('does not restore user state when a details save completes after leaving settings', async () => {
+    let finish!: (profile: Profile) => void
+    const pending = new Promise<Profile>((resolve) => {
+      finish = resolve
+    })
+    h.updateUserProfile.mockReturnValue(pending)
+    const view = render(<ProfileSettingsPage />)
+    act(() => {
+      h.uiProps!.onChange(localProfile)
+    })
+    view.unmount()
+    await act(async () => {
+      finish(localProfile)
+      await pending
+    })
+    expect(h.setCurrentUser).not.toHaveBeenCalled()
+    expect(h.setQueryData).not.toHaveBeenCalled()
   })
 })

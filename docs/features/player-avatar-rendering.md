@@ -1,8 +1,8 @@
 # Player Avatar Rendering Foundation
 
 Phase 0 supplies a local, deterministic Critters renderer, a shared component
-catalog/configuration, and an isolated Storybook proof. The account editor,
-profile persistence, and profile/game placement are later milestones in the
+catalog/configuration, and an isolated Storybook proof. Phase 1 adds the account
+editor and persistence. Profile/game placement remains a later milestone in the
 [avatar roadmap](../plans/player-avatars.md).
 
 ## Source And Ownership
@@ -27,9 +27,9 @@ The configuration contains `version: 1`, `style: 'critters'`,
 top/pattern/cheek choices, and body/accent/background colors. Body and accent
 must differ. Preserve the complete configuration, including unused colors.
 
-The adapter expects an already valid configuration. Server request validation
-will be introduced with persistence; TypeScript types alone do not validate
-untrusted JSON.
+The adapter expects an already valid configuration. The avatar API validates the
+complete configuration and rejects unknown fields; TypeScript types alone do
+not validate untrusted JSON.
 
 The fixed v1 recipe uses:
 
@@ -47,6 +47,24 @@ Supply the `<img>` element's accessible `alt` text and desired dimensions.
 Treat artwork, catalog, and rendering recipe as a versioned unit. Review any
 dependency or artwork update against the existing fixtures. Do not regenerate
 golden snapshots simply to make an unexplained appearance change pass.
+
+## Account Editor And Persistence
+
+Signed-in local and Google users can build an avatar in `/profile/settings`.
+The editor uses Klurigo's shared controls and supports Body, Face, Head, Pattern,
+and Colors, plus Randomize, Save avatar, and Discard changes. Changes remain local
+until Save. Discard restores the latest loaded saved design, not a deletion.
+
+`PUT /api/profile/user/avatar` accepts and returns the complete v1 configuration.
+It uses user scope, `Authority.User`, and principal-derived ownership. Invalid
+metadata returns the existing HTTP 400 error format. `GET /api/profile/user`
+returns optional `avatar` metadata, absent until explicitly saved. Other profile
+updates and Google account synchronization preserve it.
+
+The editor preserves drafts after failed saves and background refetches, protects
+unsupported saved data, and scopes query state to the authenticated account.
+Local/Google API integration and a real browser save/reload/fresh-session flow
+cover persistence; desktop and 320px/390px mobile inspection covers the UI.
 
 ## Inspect And Verify
 

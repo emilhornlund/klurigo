@@ -3,7 +3,7 @@ import type {
   UpdateGoogleUserProfileRequestDto,
   UpdateLocalUserProfileRequestDto,
 } from '@klurigo/common'
-import { AuthProvider } from '@klurigo/common'
+import { AuthProvider, DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import {
   BadRequestException,
   ConflictException,
@@ -80,6 +80,20 @@ describe('UserService', () => {
       configService as any,
     )
     ;(service as any).logger = logger
+  })
+
+  it('saves only avatar metadata without triggering verification email', async () => {
+    userRepository.findUserByIdAndUpdateOrThrow.mockResolvedValue({
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
+    expect(
+      await service.updateUserAvatar('user-1', DEFAULT_CRITTERS_AVATAR_V1),
+    ).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(userRepository.findUserByIdAndUpdateOrThrow).toHaveBeenCalledWith(
+      'user-1',
+      { avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+    )
+    expect(emailService.sendVerificationEmail).not.toHaveBeenCalled()
   })
 
   describe('verifyUserCredentialsOrThrow', () => {

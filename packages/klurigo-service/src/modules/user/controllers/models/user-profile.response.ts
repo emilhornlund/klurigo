@@ -13,10 +13,18 @@ import {
   ApiUuidProperty,
 } from '../../../../app/swagger'
 
+import { UserAvatarResponse } from './user-avatar.response'
+
 /**
  * Response returned after successful user creation.
  */
 export class UserProfileResponse implements UserProfileResponseDto {
+  /** The complete saved avatar, absent until explicitly saved. */
+  @ApiPropertyOptional({
+    description: 'Saved avatar configuration.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar?: UserAvatarResponse
   /**
    * The user’s unique identifier.
    */

@@ -1,4 +1,8 @@
-import { TokenScope, TokenType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  TokenScope,
+  TokenType,
+} from '@klurigo/common'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ApiClientCore } from '../api-client-core'
@@ -62,6 +66,26 @@ const makeDeps = (): {
 }
 
 describe('createAuthResource', () => {
+  it('saves exact avatar metadata and rethrows failures after notification', async () => {
+    const { api, apiPut } = makeApi()
+    const { deps, notifySuccess, notifyError } = makeDeps()
+    const auth = createAuthResource(api, deps)
+    apiPut.mockResolvedValueOnce(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(await auth.updateUserAvatar(DEFAULT_CRITTERS_AVATAR_V1)).toEqual(
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
+    expect(apiPut).toHaveBeenCalledWith(
+      '/profile/user/avatar',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
+    expect(notifySuccess).toHaveBeenCalledTimes(1)
+    const error = new Error('Unavailable')
+    apiPut.mockRejectedValueOnce(error)
+    await expect(
+      auth.updateUserAvatar(DEFAULT_CRITTERS_AVATAR_V1),
+    ).rejects.toBe(error)
+    expect(notifyError).toHaveBeenCalledTimes(1)
+  })
   beforeEach(() => {
     vi.clearAllMocks()
   })

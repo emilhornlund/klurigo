@@ -40,6 +40,8 @@ import { UserService } from '../services'
 import {
   UpdateGoogleUserProfileRequest,
   UpdateLocalUserProfileRequest,
+  UpdateUserAvatarRequest,
+  UserAvatarResponse,
   UserProfileResponse,
 } from './models'
 
@@ -89,6 +91,30 @@ export class UserProfileController {
     @Principal() principal: User,
   ): Promise<UserProfileResponse> {
     return this.userService.findUserProfileOrThrow(principal._id)
+  }
+
+  /** Replace only the authenticated account's complete avatar configuration. */
+  @Put('avatar')
+  @ApiOperation({ summary: 'Save the current user’s avatar' })
+  @ApiBody({ type: UpdateUserAvatarRequest })
+  @ApiOkResponse({
+    description: 'The saved avatar configuration.',
+    type: UserAvatarResponse,
+  })
+  @ApiBadRequestResponse({
+    description: 'The avatar configuration is invalid.',
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({
+    description: 'The user token lacks the required authority or scope.',
+  })
+  @ApiNotFoundResponse({ description: 'The associated user was not found.' })
+  @HttpCode(HttpStatus.OK)
+  public async updateUserAvatar(
+    @Principal() principal: User,
+    @Body() request: UpdateUserAvatarRequest,
+  ): Promise<UserAvatarResponse> {
+    return this.userService.updateUserAvatar(principal._id, request)
   }
 
   /**

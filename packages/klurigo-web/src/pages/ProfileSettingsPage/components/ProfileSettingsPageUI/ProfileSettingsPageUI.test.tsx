@@ -1,9 +1,13 @@
 import { AuthProvider } from '@klurigo/common'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import ProfileSettingsPageUI from './ProfileSettingsPageUI'
+
+vi.mock('./components/UserAvatarForm', () => ({
+  default: () => <section data-testid="avatar-form" />,
+}))
 
 describe('ProfileSettingsPageUI', () => {
   it('should render ProfileSettingsPageUI for Local auth provider', async () => {
@@ -11,6 +15,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: '',
             unverifiedEmail: undefined,
@@ -35,6 +40,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: '',
             unverifiedEmail: undefined,
@@ -59,6 +65,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: 'user@example.com',
             unverifiedEmail: undefined,
@@ -83,6 +90,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: 'user@example.com',
             unverifiedEmail: undefined,
@@ -107,6 +115,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Local}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: 'user@example.com',
             unverifiedEmail: 'user@example.com',
@@ -131,6 +140,7 @@ describe('ProfileSettingsPageUI', () => {
       <MemoryRouter>
         <ProfileSettingsPageUI
           authProvider={AuthProvider.Google}
+          onChangeAvatar={async (avatar) => avatar}
           values={{
             email: 'user@example.com',
             unverifiedEmail: 'user@example.com',

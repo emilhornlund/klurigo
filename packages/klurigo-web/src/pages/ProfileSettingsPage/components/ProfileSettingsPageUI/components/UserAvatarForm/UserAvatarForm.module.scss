@@ -1,0 +1,74 @@
+@use '../../../../../../styles/avatars.tokens' as avatars;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.section {
+  align-items: center;
+  min-width: 0;
+}
+
+.description {
+  max-width: 100%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+
+  @include helpers.mobile {
+    margin-inline-start: 0;
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    margin-inline-start: calc(
+      avatars.$avatar-editor-preview-column-tablet + spacing.$space-stack-tablet
+    );
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    margin-inline-start: calc(
+      avatars.$avatar-editor-preview-column-desktop +
+        spacing.$space-stack-desktop
+    );
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include helpers.mobile {
+    flex-direction: column;
+    align-items: stretch;
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    flex-direction: row;
+    align-items: center;
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    flex-direction: row;
+    align-items: center;
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.saveAction {
+  @include helpers.mobile {
+    margin-inline-start: 0;
+  }
+
+  @include helpers.tablet {
+    margin-inline-start: auto;
+  }
+
+  @include helpers.desktop {
+    margin-inline-start: auto;
+  }
+}

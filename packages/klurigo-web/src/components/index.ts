@@ -1,4 +1,6 @@
 export type { BadgeProps, BadgeSize, BadgeColor } from './Badge'
+export { default as AvatarEditor, type AvatarEditorProps } from './AvatarEditor'
+export { default as PlayerAvatar, type PlayerAvatarProps } from './PlayerAvatar'
 export type { ButtonProps } from './Button'
 export {
   type CallToActionCardProps,

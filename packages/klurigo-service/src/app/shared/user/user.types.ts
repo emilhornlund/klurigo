@@ -1,4 +1,7 @@
-import { AuthProvider } from '@klurigo/common'
+import {
+  AuthProvider,
+  type CrittersAvatarConfigurationV1,
+} from '@klurigo/common'
 
 /**
  * Shared user model contracts.
@@ -8,6 +11,7 @@ import { AuthProvider } from '@klurigo/common'
  * be consumed from shared utilities without creating circular dependencies.
  */
 export interface SharedUserBase {
+  avatar?: CrittersAvatarConfigurationV1
   _id: string
   authProvider: AuthProvider
   email: string

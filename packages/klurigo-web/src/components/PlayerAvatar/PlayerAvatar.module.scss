@@ -1,0 +1,28 @@
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
+@use '../../styles/helpers' as helpers;
+
+.avatar {
+  display: block;
+  flex-shrink: 0;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: controls.$control-border-width-outside solid
+    colors.$color-border-glass-strong;
+  background-color: colors.$color-surface-glass-default-start;
+
+  @include helpers.mobile {
+    border-radius: radius.$radius-surface-sm;
+  }
+
+  @include helpers.tablet {
+    border-radius: radius.$radius-surface-md;
+  }
+
+  @include helpers.desktop {
+    border-radius: radius.$radius-surface-md;
+  }
+}

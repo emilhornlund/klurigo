@@ -1,0 +1,291 @@
+@use '../../styles/avatars.tokens' as avatars;
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
+@use '../../styles/helpers' as helpers;
+@use '../../styles/spacing.semantic' as spacing;
+@use '../../styles/typography.tokens' as typography;
+
+.editor {
+  display: grid;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+
+  @include helpers.mobile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: avatars.$avatar-editor-preview-column-tablet minmax(
+        0,
+        1fr
+      );
+    gap: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: avatars.$avatar-editor-preview-column-desktop minmax(
+        0,
+        1fr
+      );
+    gap: spacing.$space-stack-desktop;
+  }
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+    padding: spacing.$space-stack-mobile;
+    border-radius: radius.$radius-surface-md;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+    padding: spacing.$space-stack-tablet;
+    border-radius: radius.$radius-surface-md;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+    padding: spacing.$space-stack-desktop;
+    border-radius: radius.$radius-surface-lg;
+  }
+}
+
+.previewAvatar {
+  @include helpers.mobile {
+    width: avatars.$avatar-preview-size-mobile;
+    height: avatars.$avatar-preview-size-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-preview-size-tablet;
+    height: avatars.$avatar-preview-size-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-preview-size-desktop;
+    height: avatars.$avatar-preview-size-desktop;
+  }
+}
+
+.controls {
+  min-width: 0;
+}
+
+.categoryLabel {
+  font-weight: bold;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+  }
+}
+
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+
+  legend {
+    font-weight: bold;
+
+    @include helpers.mobile {
+      padding: spacing.$space-compact-mobile 0;
+      @include helpers.fontSize(typography.$font-size-control-normal-mobile);
+    }
+
+    @include helpers.tablet {
+      padding: spacing.$space-compact-tablet 0;
+      @include helpers.fontSize(typography.$font-size-control-normal-tablet);
+    }
+
+    @include helpers.desktop {
+      padding: spacing.$space-compact-desktop 0;
+      @include helpers.fontSize(typography.$font-size-control-normal-desktop);
+    }
+  }
+}
+
+.choices,
+.colors {
+  display: grid;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+
+  @include helpers.mobile {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(avatars.$avatar-option-min-width-mobile, 1fr)
+    );
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(avatars.$avatar-option-min-width-tablet, 1fr)
+    );
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(avatars.$avatar-option-min-width-desktop, 1fr)
+    );
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  cursor: pointer;
+  text-align: center;
+
+  @include helpers.mobile {
+    gap: spacing.$space-inline-mobile;
+    padding: spacing.$space-content-padding-mobile;
+    border-radius: radius.$radius-surface-sm;
+    @include helpers.fontSize(typography.$font-size-control-small-mobile);
+    line-height: typography.$line-height-control-small-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-inline-tablet;
+    padding: spacing.$space-content-padding-tablet;
+    border-radius: radius.$radius-surface-md;
+    @include helpers.fontSize(typography.$font-size-control-small-tablet);
+    line-height: typography.$line-height-control-small-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+    padding: spacing.$space-content-padding-desktop;
+    border-radius: radius.$radius-surface-md;
+    @include helpers.fontSize(typography.$font-size-control-small-desktop);
+    line-height: typography.$line-height-control-small-desktop;
+  }
+
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  &:has(input:checked) {
+    border-color: colors.$color-action-accent;
+  }
+
+  &:has(input:focus-visible) {
+    outline: controls.$control-border-width-outside solid
+      colors.$color-focus-ring;
+    outline-offset: controls.$control-focus-outline-offset;
+  }
+
+  &:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.choiceLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(#{avatars.$avatar-option-label-lines} * 1lh);
+  overflow-wrap: break-word;
+}
+
+.optionAvatar {
+  @include helpers.mobile {
+    width: avatars.$avatar-option-size-mobile;
+    height: avatars.$avatar-option-size-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-option-size-tablet;
+    height: avatars.$avatar-option-size-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-option-size-desktop;
+    height: avatars.$avatar-option-size-desktop;
+  }
+}
+
+.selected {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: radius.$radius-circle;
+  background-color: colors.$color-action-accent;
+  color: colors.$color-text-control-default;
+  font-weight: bold;
+  line-height: 1;
+
+  @include helpers.mobile {
+    top: spacing.$space-inline-mobile;
+    right: spacing.$space-inline-mobile;
+    width: avatars.$avatar-selection-size-mobile;
+    height: avatars.$avatar-selection-size-mobile;
+  }
+
+  @include helpers.tablet {
+    top: spacing.$space-inline-tablet;
+    right: spacing.$space-inline-tablet;
+    width: avatars.$avatar-selection-size-tablet;
+    height: avatars.$avatar-selection-size-tablet;
+  }
+
+  @include helpers.desktop {
+    top: spacing.$space-inline-desktop;
+    right: spacing.$space-inline-desktop;
+    width: avatars.$avatar-selection-size-desktop;
+    height: avatars.$avatar-selection-size-desktop;
+  }
+}
+
+.swatch {
+  flex-shrink: 0;
+
+  @include helpers.mobile {
+    width: avatars.$avatar-swatch-size-mobile;
+    height: avatars.$avatar-swatch-size-mobile;
+    border-radius: radius.$radius-control-sm;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-swatch-size-tablet;
+    height: avatars.$avatar-swatch-size-tablet;
+    border-radius: radius.$radius-control-md;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-swatch-size-desktop;
+    height: avatars.$avatar-swatch-size-desktop;
+    border-radius: radius.$radius-control-lg;
+  }
+}

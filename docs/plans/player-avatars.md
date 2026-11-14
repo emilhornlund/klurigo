@@ -1,6 +1,6 @@
 # Player Avatars: Design And Roadmap
 
-> **Status:** Phase 0 completed; account editing/persistence and subsequent phases
+> **Status:** Phases 0 and 1 completed; profile/navigation and game integration
 > remain planned. See [current rendering documentation](../features/player-avatar-rendering.md)
 > for the delivered foundation and verification results.
 >
@@ -373,11 +373,11 @@ Delivered artifacts:
 
 See [player avatar rendering](../features/player-avatar-rendering.md) for exact
 source paths, commands, measurement conditions, browser results, and remaining
-deployment considerations. Phase 1 has not started.
+deployment considerations. Phase 1 completed on 2026-11-14.
 
 ### Phase 1 — Account Editor And Persistence
 
-**Status:** not started. This is the first user-facing milestone.
+**Status:** completed on 2026-11-14. This is the first user-facing milestone.
 
 - Add shared contracts/catalogs, backend user types/schema, response mapping,
   validated save endpoint, and client API support.

@@ -1,4 +1,5 @@
 import { AuthProvider } from './auth'
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 
 /**
  * DTO for creating a new user.
@@ -79,6 +80,8 @@ export interface CreateUserResponseDto {
  * DTO for retrieving a user’s profile.
  */
 export interface UserProfileResponseDto {
+  /** Complete saved avatar; absent until the user explicitly saves a design. */
+  readonly avatar?: CrittersAvatarConfigurationV1
   /**
    * The user’s unique identifier (UUID).
    */

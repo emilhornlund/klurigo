@@ -1,4 +1,4 @@
-import { AuthProvider } from '@klurigo/common'
+import { AuthProvider, DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import supertest from 'supertest'
 
@@ -30,6 +30,80 @@ describe('UserProfileController (e2e)', () => {
 
   afterEach(async () => {
     await cleanupTestApp(app)
+  })
+
+  describe('/api/profile/user/avatar (PUT)', () => {
+    it.each([AuthProvider.Local, AuthProvider.Google])(
+      'persists an exact %s avatar through profile changes',
+      async (provider) => {
+        const { accessToken } = await createDefaultUserAndAuthenticate(
+          app,
+          provider === AuthProvider.Google
+            ? buildMockPrimaryGoogleUser()
+            : undefined,
+        )
+        const avatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          top: null,
+          cheeks: null,
+        }
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(avatar)
+          .expect(200)
+          .expect(avatar)
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .send({ authProvider: provider, defaultNickname: 'AvatarPlayer' })
+          .expect(200)
+        await supertest(app.getHttpServer())
+          .get('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => expect(body.avatar).toEqual(avatar))
+        const replacement = { ...avatar, top: 'sprout', pattern: null }
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(replacement)
+          .expect(200)
+          .expect(replacement)
+        await supertest(app.getHttpServer())
+          .get('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => expect(body.avatar).toEqual(replacement))
+      },
+    )
+
+    it('rejects invalid or unauthorized saves without assigning a default', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      await supertest(app.getHttpServer())
+        .put('/api/profile/user/avatar')
+        .send(DEFAULT_CRITTERS_AVATAR_V1)
+        .expect(401)
+      for (const invalid of [
+        { ...DEFAULT_CRITTERS_AVATAR_V1, top: undefined },
+        {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          accentColor: DEFAULT_CRITTERS_AVATAR_V1.bodyColor,
+        },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, userId: 'another-user' },
+      ]) {
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(invalid)
+          .expect(400)
+      }
+      await supertest(app.getHttpServer())
+        .get('/api/profile/user')
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }) => expect(body).not.toHaveProperty('avatar'))
+    })
   })
 
   describe('/api/profile/user (GET)', () => {

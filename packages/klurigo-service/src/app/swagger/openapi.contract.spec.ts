@@ -158,6 +158,38 @@ describe('generated OpenAPI contract', () => {
     await app?.close()
   })
 
+  it('documents the authenticated avatar replacement and required-nullable components', () => {
+    const operation = document.paths['/profile/user/avatar']?.put
+    expect(operation?.security).toBeDefined()
+    expect(operation?.responses['200']).toBeDefined()
+    expect(operation?.responses['400']).toBeDefined()
+    const schema = getSchema(document, 'UpdateUserAvatarRequest')
+    expect(schema.required).toEqual(
+      expect.arrayContaining([
+        'version',
+        'style',
+        'artworkVersion',
+        'body',
+        'top',
+        'eyes',
+        'mouth',
+        'pattern',
+        'cheeks',
+        'bodyColor',
+        'accentColor',
+        'backgroundColor',
+      ]),
+    )
+    for (const part of ['top', 'pattern', 'cheeks']) {
+      const property = schema.properties?.[part] as SchemaObject
+      expect(property.nullable).toBe(true)
+      expect(property.enum).toContain(null)
+    }
+    expect(
+      getSchema(document, 'UserProfileResponse').properties?.avatar,
+    ).toBeDefined()
+  })
+
   it('has intentional API metadata and a documented bearer scheme', () => {
     expect(document.info).toMatchObject({
       title: 'Klurigo API',

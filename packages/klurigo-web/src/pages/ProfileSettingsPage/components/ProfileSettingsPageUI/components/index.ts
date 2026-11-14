@@ -7,4 +7,5 @@ export type {
   UserPasswordFormProps,
 } from './UserPasswordForm'
 export { default as UserDetailsForm } from './UserDetailsForm'
+export { default as UserAvatarForm } from './UserAvatarForm'
 export { default as UserPasswordForm } from './UserPasswordForm'

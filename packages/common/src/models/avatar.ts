@@ -149,3 +149,19 @@ export interface CrittersAvatarConfigurationV1 {
   readonly accentColor: (typeof CRITTERS_V1_COLORS.accent)[number]
   readonly backgroundColor: (typeof CRITTERS_V1_COLORS.background)[number]
 }
+
+/** First-use editor draft only; never assigned to an account until explicitly saved. */
+export const DEFAULT_CRITTERS_AVATAR_V1: CrittersAvatarConfigurationV1 = {
+  version: 1,
+  style: 'critters',
+  artworkVersion: 'v1',
+  body: 'round',
+  top: 'horns',
+  eyes: 'happy',
+  mouth: 'tinySmile',
+  pattern: 'dots',
+  cheeks: 'blush',
+  bodyColor: '#c4b5fd',
+  accentColor: '#fcd34d',
+  backgroundColor: '#4338ca',
+}

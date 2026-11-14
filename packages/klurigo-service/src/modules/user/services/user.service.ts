@@ -2,6 +2,7 @@ import {
   AuthProvider,
   CreateUserRequestDto,
   CreateUserResponseDto,
+  CrittersAvatarConfigurationV1,
   generateNickname,
   UpdateGoogleUserProfileRequestDto,
   UserProfileResponseDto,
@@ -217,6 +218,38 @@ export class UserService {
   ): Promise<UserProfileResponseDto> {
     const user = await this.userRepository.findUserByIdOrThrow(userId)
     return UserService.toProfileUserResponse(user)
+  }
+
+  /** Save avatar metadata independently of personal details and email verification. */
+  public async updateUserAvatar(
+    userId: string,
+    avatar: CrittersAvatarConfigurationV1,
+  ): Promise<CrittersAvatarConfigurationV1> {
+    const updated = await this.userRepository.findUserByIdAndUpdateOrThrow(
+      userId,
+      { avatar },
+    )
+    return UserService.toAvatarResponse(updated.avatar!)
+  }
+
+  /** Explicit mapping avoids leaking Mongoose subdocument internals. */
+  private static toAvatarResponse(
+    avatar: CrittersAvatarConfigurationV1,
+  ): CrittersAvatarConfigurationV1 {
+    return {
+      version: avatar.version,
+      style: avatar.style,
+      artworkVersion: avatar.artworkVersion,
+      body: avatar.body,
+      top: avatar.top,
+      eyes: avatar.eyes,
+      mouth: avatar.mouth,
+      pattern: avatar.pattern,
+      cheeks: avatar.cheeks,
+      bodyColor: avatar.bodyColor,
+      accentColor: avatar.accentColor,
+      backgroundColor: avatar.backgroundColor,
+    }
   }
 
   /**
@@ -656,6 +689,9 @@ export class UserService {
     } = user
 
     return {
+      ...(user.avatar
+        ? { avatar: UserService.toAvatarResponse(user.avatar) }
+        : {}),
       id,
       email,
       unverifiedEmail,

@@ -1,0 +1,28 @@
+@use './helpers' as helpers;
+
+/* Editor geometry. Keep the preview column and its form footer aligned. */
+$avatar-editor-preview-column-tablet: helpers.pxToRem(208px);
+$avatar-editor-preview-column-desktop: helpers.pxToRem(256px);
+
+$avatar-preview-size-mobile: helpers.pxToRem(160px);
+$avatar-preview-size-tablet: helpers.pxToRem(160px);
+$avatar-preview-size-desktop: helpers.pxToRem(192px);
+
+$avatar-option-size-mobile: helpers.pxToRem(64px);
+$avatar-option-size-tablet: helpers.pxToRem(72px);
+$avatar-option-size-desktop: helpers.pxToRem(80px);
+
+$avatar-option-min-width-mobile: helpers.pxToRem(88px);
+$avatar-option-min-width-tablet: helpers.pxToRem(112px);
+$avatar-option-min-width-desktop: helpers.pxToRem(128px);
+
+$avatar-swatch-size-mobile: helpers.pxToRem(32px);
+$avatar-swatch-size-tablet: helpers.pxToRem(36px);
+$avatar-swatch-size-desktop: helpers.pxToRem(40px);
+
+$avatar-selection-size-mobile: helpers.pxToRem(18px);
+$avatar-selection-size-tablet: helpers.pxToRem(20px);
+$avatar-selection-size-desktop: helpers.pxToRem(22px);
+
+/* Reserve two caption lines so wrapping never shifts an avatar within its row. */
+$avatar-option-label-lines: 2;
