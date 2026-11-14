@@ -548,6 +548,7 @@ describe(GameService.name, () => {
           _id: 'game-1',
           status,
           name: 'Private game data',
+          participants: [],
         })
 
         await expect(service.getGame('game-1')).resolves.toEqual({

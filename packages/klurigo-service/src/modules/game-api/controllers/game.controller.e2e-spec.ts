@@ -110,6 +110,65 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID (GET)', () => {
+    it('returns only the requesting accepted identity and its game-time design', async () => {
+      const avatar = {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        body: 'block' as const,
+        top: null,
+      }
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+            createMockGamePlayerParticipantDocument({
+              participantId: playerUser._id,
+              nickname: 'Snapshot',
+              avatar,
+            }),
+          ],
+        }),
+      )
+      await userModel.findByIdAndUpdate(playerUser._id, {
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      })
+      const token = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(token))
+        .expect(200)
+        .expect({
+          id: game._id,
+          status: GameStatus.Active,
+          participant: {
+            id: playerUser._id,
+            type: GameParticipantType.PLAYER,
+            nickname: 'Snapshot',
+            avatar,
+          },
+        })
+      const hostToken = await authenticateGame(
+        app,
+        game._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}/players`)
+        .set(createBearerAuthHeader(hostToken))
+        .expect(200)
+        .expect([{ id: playerUser._id, nickname: 'Snapshot', avatar }])
+      expect(
+        (await gameModel.findById(game._id).lean())?.participants[0],
+      ).not.toHaveProperty('avatar')
+    })
+
     it.each(Object.values(GameStatus))(
       'returns a game with its %s lifecycle status',
       async (status) => {
@@ -138,6 +197,11 @@ describe('GameController (e2e)', () => {
             expect(res.body).toEqual({
               id: game._id,
               status,
+              participant: {
+                id: hostUser._id,
+                type: GameParticipantType.HOST,
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
             })
           })
       },
@@ -167,7 +231,16 @@ describe('GameController (e2e)', () => {
         .get(`/api/games/${game._id}`)
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
-        .expect({ id: game._id, status: GameStatus.Active })
+        .expect({
+          id: game._id,
+          status: GameStatus.Active,
+          participant: {
+            id: playerUser._id,
+            type: GameParticipantType.PLAYER,
+            nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+        })
     })
 
     it('allows an anonymous participant game token', async () => {
@@ -791,10 +864,12 @@ describe('GameController (e2e)', () => {
             {
               id: player1Id,
               nickname: player1Nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             {
               id: player2Id,
               nickname: player2Nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
           ])
         })

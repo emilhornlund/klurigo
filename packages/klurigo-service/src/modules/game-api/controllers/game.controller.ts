@@ -145,8 +145,9 @@ export class GameController {
   @ApiGameIdParam()
   public async getGame(
     @RouteGameIdParam() gameId: string,
+    @PrincipalId() participantId: string,
   ): Promise<GameDetailsResponse> {
-    return this.gameService.getGame(gameId)
+    return this.gameService.getGame(gameId, participantId)
   }
 
   /**

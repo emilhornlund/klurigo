@@ -23,6 +23,11 @@ alongside the existing trusted account ID. Host ownership and exclusion from pla
 scores are preserved, and subsequent profile edits do not change that snapshot.
 The existing creation endpoint requires an account.
 
+Phase 6 returns resolved avatars in the host-only player list. Authenticated game
+details also include optional `participant` with the caller's accepted ID, role,
+player nickname, and snapshot; it is absent before joining. Responses explicitly
+select public fields and resolve legacy data without writes or profile lookups.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports

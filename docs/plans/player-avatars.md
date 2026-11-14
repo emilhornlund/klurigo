@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–5 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–6 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -127,10 +127,14 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 6 — Game Identity REST Responses
 
-**Status:** Planned · **Depends on:** 4, 5
+**Status:** Complete · **Depends on:** 4, 5
 
 - **Work:** Expose resolved snapshots in existing game/participant-list responses.
 - **Done when:** Every returned identity has an avatar, including legacy records, with existing authorization and private-field exclusions preserved.
+- **Verified:** All 100 game HTTP tests and 48 service unit tests pass; common/service
+  lint and builds and service/web types pass. Host-only player lists resolve snapshots;
+  game details expose only the caller's accepted identity. Legacy reads do not backfill,
+  and profile changes do not affect returned snapshots.
 
 ### Phase 7 — Lobby And Self-Identity Events
 

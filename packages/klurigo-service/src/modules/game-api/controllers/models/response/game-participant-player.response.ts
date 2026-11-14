@@ -1,5 +1,7 @@
-import { GameResultParticipantDto } from '@klurigo/common'
+import { GameParticipantPlayerDto } from '@klurigo/common'
+import { ApiProperty } from '@nestjs/swagger'
 
+import { UserAvatarResponse } from '../../../../user/controllers/models/user-avatar.response'
 import {
   ApiGameParticipantIdProperty,
   ApiPlayerNicknameProperty,
@@ -8,7 +10,7 @@ import {
 /**
  * Response model representing a player participant in a game.
  */
-export class GameParticipantPlayerResponse implements GameResultParticipantDto {
+export class GameParticipantPlayerResponse implements GameParticipantPlayerDto {
   /**
    * The unique identifier of the participant.
    */
@@ -20,4 +22,7 @@ export class GameParticipantPlayerResponse implements GameResultParticipantDto {
    */
   @ApiPlayerNicknameProperty()
   nickname: string
+
+  @ApiProperty({ type: UserAvatarResponse })
+  avatar: UserAvatarResponse
 }

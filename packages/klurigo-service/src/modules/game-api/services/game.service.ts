@@ -208,15 +208,33 @@ export class GameService {
    * @param gameId - The unique identifier of the game.
    * @returns The game's identifier and current lifecycle status.
    */
-  public async getGame(gameId: string): Promise<GameDetailsDto> {
+  public async getGame(
+    gameId: string,
+    participantId?: string,
+  ): Promise<GameDetailsDto> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(
       gameId,
       false,
     )
 
+    const participant = gameDocument.participants.find(
+      (participant) => participant.participantId === participantId,
+    )
     return {
       id: gameDocument._id,
       status: gameDocument.status,
+      ...(participant
+        ? {
+            participant: {
+              id: participant.participantId,
+              type: participant.type,
+              ...(isParticipantPlayer(participant)
+                ? { nickname: participant.nickname }
+                : {}),
+              avatar: resolveGameAvatarSnapshot(participant.avatar),
+            },
+          }
+        : {}),
     }
   }
 
@@ -436,14 +454,15 @@ export class GameService {
    */
   public async getPlayerParticipants(
     gameId: string,
-  ): Promise<GameParticipantPlayerDto[]> {
+  ): Promise<(GameParticipantPlayerDto & { avatar: GameAvatarSnapshot })[]> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameId)
 
     return gameDocument.participants
       .filter(isParticipantPlayer)
-      .map(({ participantId, nickname }): GameParticipantPlayerDto => ({
+      .map(({ participantId, nickname, avatar }) => ({
         id: participantId,
         nickname,
+        avatar: resolveGameAvatarSnapshot(avatar),
       }))
   }
 
