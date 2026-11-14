@@ -18,6 +18,11 @@ one resolved random design. Retries preserve the original snapshot and do not
 look up profiles or randomize again. Joining never writes a user profile. Legacy
 participants remain untouched. Display/event integration follows in later phases.
 
+Phase 5 copies the creating host's saved/default avatar into the host participant
+alongside the existing trusted account ID. Host ownership and exclusion from player
+scores are preserved, and subsequent profile edits do not change that snapshot.
+The existing creation endpoint requires an account.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports

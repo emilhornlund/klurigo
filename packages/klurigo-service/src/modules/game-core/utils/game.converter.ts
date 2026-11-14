@@ -1,4 +1,8 @@
-import { GameParticipantType, GameStatus } from '@klurigo/common'
+import {
+  GameParticipantType,
+  GameStatus,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Quiz } from '../../quiz-core/repositories/models/schemas'
@@ -43,6 +47,7 @@ export function buildGameModel(
       {
         participantId: user._id,
         type: GameParticipantType.HOST,
+        avatar: resolveGameAvatarSnapshot(user.avatar),
         created: new Date(now),
         updated: new Date(now),
       },

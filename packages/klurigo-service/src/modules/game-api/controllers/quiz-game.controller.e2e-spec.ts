@@ -1,4 +1,8 @@
-import { QuizVisibility } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+  QuizVisibility,
+} from '@klurigo/common'
 import { getQueueToken } from '@nestjs/bullmq'
 import { INestApplication, Logger } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
@@ -56,6 +60,43 @@ describe('QuizGameController (e2e)', () => {
   })
 
   describe('/api/quizzes/:quizId/games (POST)', () => {
+    it.each([false, true])(
+      'snapshots a host design at creation (saved: %s)',
+      async (hasAvatar) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const design = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'block' as const,
+          pattern: null,
+        }
+        if (hasAvatar)
+          await userModel.findByIdAndUpdate(user._id, { avatar: design })
+        const quiz = await quizService.createQuiz(
+          createMockClassicQuizRequestDto(),
+          user,
+        )
+        const response = await supertest(app.getHttpServer())
+          .post(`/api/quizzes/${quiz.id}/games`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(201)
+        const first = await gameModel.findById(response.body.id).lean()
+        expect(first?.participants).toHaveLength(1)
+        expect(first?.participants[0]).toMatchObject({
+          participantId: user._id,
+          type: GameParticipantType.HOST,
+          avatar: hasAvatar ? design : DEFAULT_CRITTERS_AVATAR_V1,
+        })
+        expect(first?.participants[0]).not.toHaveProperty('totalScore')
+        await userModel.findByIdAndUpdate(user._id, {
+          avatar: { ...design, body: 'dome' },
+        })
+        expect(
+          (await gameModel.findById(response.body.id).lean())?.participants,
+        ).toEqual(first?.participants)
+      },
+    )
+
     it('should succeed in creating a new game from an existing classic mode quiz', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
 

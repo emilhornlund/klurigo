@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–4 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–5 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -116,10 +116,14 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 5 — Host Snapshots
 
-**Status:** Planned · **Depends on:** 3
+**Status:** Complete · **Depends on:** 3
 
 - **Work:** Snapshot host identity when the host participant is created, including account, anonymous, and no-saved-avatar cases supported by existing flows.
 - **Done when:** Hosts have a stable avatar without changing ownership, roles, or scoring.
+- **Verified:** All 9 game-creation HTTP tests pass, including exact saved/default
+  host persistence and stability after profile edits; service types, lint, and build
+  pass. Existing creation requires an account; no anonymous host-creation flow is
+  introduced. Legacy host identities use the shared stable resolver on read.
 
 ### Phase 6 — Game Identity REST Responses
 
