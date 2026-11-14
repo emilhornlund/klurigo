@@ -1,4 +1,8 @@
-import { GameEventType, GameStatus } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameStatus,
+} from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -43,6 +47,7 @@ describe('buildHostGameEvent', () => {
         expect(result.players[0]).toEqual({
           id: player.participantId,
           nickname: player.nickname,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         })
       }
     })

@@ -1,3 +1,4 @@
+import type { GameAvatarSnapshot } from './avatar'
 import { GameEventType } from './game-event-type.enum'
 import { GameMode } from './game-mode.enum'
 import { GameStatus } from './game-status.enum'
@@ -42,6 +43,7 @@ export type GameLoadingEvent = {
 
 export type GameLobbyHostEvent = {
   type: GameEventType.GameLobbyHost
+  host?: { avatar: GameAvatarSnapshot }
   game: {
     id: string
     pin: string
@@ -53,19 +55,23 @@ export type GameLobbyHostEvent = {
   players: {
     id: string
     nickname: string
+    avatar?: GameAvatarSnapshot
   }[]
 }
 
 export type GameLobbyPlayerEvent = {
   type: GameEventType.GameLobbyPlayer
+  host?: { avatar: GameAvatarSnapshot }
   game: {
     name: string
   }
   player: {
     nickname: string
+    avatar?: GameAvatarSnapshot
   }
   players: {
     nickname: string
+    avatar?: GameAvatarSnapshot
   }[]
 }
 
@@ -77,6 +83,7 @@ export type GameBeginPlayerEvent = {
   type: GameEventType.GameBeginPlayer
   player: {
     nickname: string
+    avatar?: GameAvatarSnapshot
   }
 }
 
@@ -102,6 +109,7 @@ export type GameQuestionPreviewPlayerEvent = {
   }
   player: {
     nickname: string
+    avatar?: GameAvatarSnapshot
     score: number
   }
   question: {
@@ -199,6 +207,7 @@ export type GameQuestionPlayerEvent = {
   type: GameEventType.GameQuestionPlayer
   player: {
     nickname: string
+    avatar?: GameAvatarSnapshot
     score: {
       total: number
     }
@@ -344,6 +353,7 @@ export type GameResultPlayerEvent =
       game: { mode: GameMode.Classic }
       player: {
         nickname: string
+        avatar?: GameAvatarSnapshot
         score: GameResultPlayerEventClassicScore
         behind?: GameResultPlayerEventBehind
       }
@@ -354,6 +364,7 @@ export type GameResultPlayerEvent =
       game: { mode: GameMode.ZeroToOneHundred }
       player: {
         nickname: string
+        avatar?: GameAvatarSnapshot
         score: GameResultPlayerEventZeroToOneHundredScore
         behind?: GameResultPlayerEventBehind
       }
@@ -397,6 +408,7 @@ export type GameOverPlayerEventRating = {
 
 type GameOverPlayerEventPlayer = {
   nickname: string
+  avatar?: GameAvatarSnapshot
   rank: number
   totalPlayers: number
   score: number

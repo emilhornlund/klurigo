@@ -28,6 +28,12 @@ details also include optional `participant` with the caller's accepted ID, role,
 player nickname, and snapshot; it is absent before joining. Responses explicitly
 select public fields and resolve legacy data without writes or profile lookups.
 
+Phase 7 includes host and player designs in lobby events and the current player's
+snapshot in every identity-bearing player event. The shared task mapper is used
+for live publication and initial/reconnect SSE recovery. Player-visible lobby lists
+retain their existing nickname-only identity boundary plus avatar metadata. No
+additional account information is exposed, and no avatar profile lookup is needed.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports

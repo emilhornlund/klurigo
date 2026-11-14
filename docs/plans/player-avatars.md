@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–6 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–7 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -138,10 +138,15 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 7 — Lobby And Self-Identity Events
 
-**Status:** Planned · **Depends on:** 6
+**Status:** Complete · **Depends on:** 6
 
 - **Work:** Carry host/player avatars through lobby and current-participant SSE payloads and their initial/reconnect snapshots.
 - **Done when:** New connections and reconnects receive identical accepted identities without fresh profile lookups or rerandomization.
+- **Verified:** 365 event unit tests and 3 real MongoDB/Redis stream tests pass.
+  Initial, live, and reconnect lobby payloads retain host/player snapshots after
+  profile edits; legacy reads stay non-persisting. Self snapshots cover every
+  identity-bearing task in both modes. Common/service lint, service/web types,
+  and service build pass.
 
 ### Phase 8 — Ranking And Podium Events
 
