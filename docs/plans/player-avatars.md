@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–7 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–8 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -150,10 +150,15 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 8 — Ranking And Podium Events
 
-**Status:** Planned · **Depends on:** 7
+**Status:** Complete · **Depends on:** 7
 
 - **Work:** Add participant snapshots to existing leaderboard, question-result ranking, and podium payloads/recovery mappings.
 - **Done when:** Host and participant streams retain avatar identity through ranking transitions and recovery without changing score visibility or ranking rules.
+- **Verified:** All 1,646 service unit tests pass. Five real MongoDB/Redis stream tests
+  cover lobby, question results, leaderboard, and podium initial/live/recovery payloads,
+  both modes and viewer roles, guest/account snapshots, and profile-edit isolation.
+  Task snapshots survive removed participants. Service types/lint/build, common lint,
+  and web types pass.
 
 ### Phase 9 — Join Preview And Defaults
 

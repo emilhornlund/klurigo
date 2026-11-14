@@ -3,6 +3,7 @@ import {
   GameMode,
   GameOverPlayerEvent,
   GameOverPlayerEventBehind,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 
 import {
@@ -104,5 +105,6 @@ function buildBehind(
   return {
     points: Math.abs(aheadParticipant.totalScore - player.totalScore),
     nickname: aheadParticipant.nickname,
+    avatar: resolveGameAvatarSnapshot(aheadParticipant.avatar),
   }
 }

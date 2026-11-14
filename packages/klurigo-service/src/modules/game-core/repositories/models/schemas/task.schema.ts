@@ -1,6 +1,8 @@
-import { QuestionType } from '@klurigo/common'
+import { type GameAvatarSnapshot, QuestionType } from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Schema as MongooseSchema } from 'mongoose'
+
+import { UserAvatarSchema } from '../../../../user/repositories/models/schemas/user-avatar.schema'
 
 export enum TaskType {
   Lobby = 'LOBBY',
@@ -415,6 +417,9 @@ questionTaskAnswerSchema.discriminator(
 
 @Schema({ _id: false, discriminatorKey: 'type' })
 export class QuestionResultTaskItem {
+  @Prop({ type: UserAvatarSchema, required: false })
+  avatar?: GameAvatarSnapshot
+
   @Prop({
     type: String,
     enum: [
@@ -761,6 +766,9 @@ export type QuestionResultTaskWithBase = BaseTask & QuestionResultTask
 
 @Schema({ _id: false })
 export class LeaderboardTaskItem {
+  @Prop({ type: UserAvatarSchema, required: false })
+  avatar?: GameAvatarSnapshot
+
   @Prop({ type: String, required: true })
   playerId: string
 

@@ -341,6 +341,7 @@ export type GameResultPlayerEventZeroToOneHundredScore =
 export type GameResultPlayerEventBehind = {
   points: number
   nickname: string
+  avatar?: GameAvatarSnapshot
 }
 
 /**
@@ -375,6 +376,7 @@ type GameLeaderboardHostEntry = {
   position: number
   previousPosition?: number
   nickname: string
+  avatar?: GameAvatarSnapshot
   score: number
 }
 
@@ -398,6 +400,7 @@ export type GameLeaderboardHostEvent =
 export type GameOverPlayerEventBehind = {
   readonly points: number
   readonly nickname: string
+  readonly avatar?: GameAvatarSnapshot
 }
 
 export type GameOverPlayerEventRating = {
@@ -452,7 +455,12 @@ export type GamePodiumHostEvent = {
   game: {
     name: string
   }
-  leaderboard: { position: number; nickname: string; score: number }[]
+  leaderboard: {
+    position: number
+    nickname: string
+    score: number
+    avatar?: GameAvatarSnapshot
+  }[]
 }
 
 export type GameQuitEvent = {

@@ -2,6 +2,7 @@ import {
   GameEventType,
   GameLeaderboardHostEvent,
   GameMode,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 
 import { Game, TaskType } from '../../game-core/repositories/models/schemas'
@@ -26,10 +27,24 @@ export function buildGameLeaderboardHostEvent(
         mode: game.mode,
       },
       leaderboard: leaderboard.map(
-        ({ position, previousPosition, nickname, score, streaks }) => ({
+        ({
+          playerId,
+          avatar,
           position,
           previousPosition,
           nickname,
+          score,
+          streaks,
+        }) => ({
+          position,
+          previousPosition,
+          nickname,
+          avatar: resolveGameAvatarSnapshot(
+            avatar ??
+              game.participants.find(
+                (participant) => participant.participantId === playerId,
+              )?.avatar,
+          ),
           score,
           streaks,
         }),
@@ -45,10 +60,16 @@ export function buildGameLeaderboardHostEvent(
       mode: game.mode,
     },
     leaderboard: leaderboard.map(
-      ({ position, previousPosition, nickname, score }) => ({
+      ({ playerId, avatar, position, previousPosition, nickname, score }) => ({
         position,
         previousPosition,
         nickname,
+        avatar: resolveGameAvatarSnapshot(
+          avatar ??
+            game.participants.find(
+              (participant) => participant.participantId === playerId,
+            )?.avatar,
+        ),
         score,
       }),
     ),

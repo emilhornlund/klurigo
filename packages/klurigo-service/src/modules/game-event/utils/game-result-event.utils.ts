@@ -8,6 +8,7 @@ import {
   GameResultPlayerEventScore,
   MediaType,
   PaginationEvent,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 
 import {
@@ -270,6 +271,13 @@ function buildGameResultPlayerEventFromQuestionResultTask(
     ? {
         points: Math.abs(previousQuestionResult.totalScore - total),
         nickname: previousQuestionResult.nickname,
+        avatar: resolveGameAvatarSnapshot(
+          previousQuestionResult.avatar ??
+            game.participants.find(
+              (participant) =>
+                participant.participantId === previousQuestionResult.playerId,
+            )?.avatar,
+        ),
       }
     : undefined
 

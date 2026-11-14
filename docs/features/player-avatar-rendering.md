@@ -34,6 +34,14 @@ for live publication and initial/reconnect SSE recovery. Player-visible lobby li
 retain their existing nickname-only identity boundary plus avatar metadata. No
 additional account information is exposed, and no avatar profile lookup is needed.
 
+Phase 8 carries game-time metadata through leaderboard, podium, and the existing
+player-ahead result identities. New avatar-bearing participants also copy their
+designs into persisted question-result and leaderboard task items, so task recovery
+does not depend on a current profile or a player remaining in the participant list.
+Older task items resolve the accepted participant snapshot when available, otherwise
+the stable default. Ranking, top-five limits, and mode-specific score visibility
+remain unchanged.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports
