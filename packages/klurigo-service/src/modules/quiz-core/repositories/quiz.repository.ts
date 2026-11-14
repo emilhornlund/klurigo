@@ -106,6 +106,55 @@ export class QuizRepository extends BaseRepository<Quiz> {
   }
 
   /**
+   * Lists public quizzes whose authors still exist, with a matching total.
+   *
+   * Owner resolution precedes pagination so deleted authors neither break a
+   * response nor leave short pages with an unreachable total. The ID tie-breaker
+   * keeps offset pagination deterministic when quizzes share a sort value.
+   */
+  public async findPublicQuizPage(
+    filter: QueryFilter<Quiz>,
+    sortField: 'title' | 'created' | 'updated',
+    sortOrder: 'asc' | 'desc',
+    limit: number,
+    offset: number,
+  ): Promise<{ documents: Quiz[]; total: number }> {
+    const direction = sortOrder === 'asc' ? 1 : -1
+    const [page] = await this.quizModel
+      .aggregate<{
+        documents: Quiz[]
+        counts: { total: number }[]
+      }>([
+        { $match: { ...filter, visibility: QuizVisibility.Public } },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'owner',
+            foreignField: '_id',
+            as: 'owner',
+          },
+        },
+        { $unwind: '$owner' },
+        {
+          $facet: {
+            documents: [
+              { $sort: { [sortField]: direction, _id: direction } },
+              { $skip: offset },
+              { $limit: limit },
+            ],
+            counts: [{ $count: 'total' }],
+          },
+        },
+      ])
+      .exec()
+
+    return {
+      documents: page?.documents ?? [],
+      total: page?.counts[0]?.total ?? 0,
+    }
+  }
+
+  /**
    * Creates a new quiz document.
    *
    * @param quiz - The quiz document to create.

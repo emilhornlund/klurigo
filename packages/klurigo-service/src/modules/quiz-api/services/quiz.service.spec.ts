@@ -47,6 +47,7 @@ describe(QuizService.name, () => {
     findQuizByIdOrThrow: jest.Mock
     countQuizzes: jest.Mock
     findQuizzes: jest.Mock
+    findPublicQuizPage: jest.Mock
     updateQuiz: jest.Mock
     deleteQuiz: jest.Mock
   }
@@ -62,6 +63,7 @@ describe(QuizService.name, () => {
       findQuizByIdOrThrow: jest.fn(),
       countQuizzes: jest.fn(),
       findQuizzes: jest.fn(),
+      findPublicQuizPage: jest.fn(),
       updateQuiz: jest.fn(),
       deleteQuiz: jest.fn(),
     }
@@ -310,8 +312,10 @@ describe(QuizService.name, () => {
   describe('quiz pagination', () => {
     it('constructs all public filters and maps paginated results', async () => {
       const quiz = createMockClassicQuiz({ _id: 'public-quiz' })
-      quizRepository.countQuizzes.mockResolvedValue(12)
-      quizRepository.findQuizzes.mockResolvedValue([quiz])
+      quizRepository.findPublicQuizPage.mockResolvedValue({
+        documents: [quiz],
+        total: 12,
+      })
 
       await expect(
         service.findPublicQuizzes(
@@ -338,8 +342,7 @@ describe(QuizService.name, () => {
         category: QuizCategory.Science,
         languageCode: LanguageCode.English,
       }
-      expect(quizRepository.countQuizzes).toHaveBeenCalledWith(filter)
-      expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
+      expect(quizRepository.findPublicQuizPage).toHaveBeenCalledWith(
         filter,
         'updated',
         'asc',
@@ -385,8 +388,10 @@ describe(QuizService.name, () => {
     })
 
     it('omits optional filters and applies public defaults', async () => {
-      quizRepository.countQuizzes.mockResolvedValue(0)
-      quizRepository.findQuizzes.mockResolvedValue([])
+      quizRepository.findPublicQuizPage.mockResolvedValue({
+        documents: [],
+        total: 0,
+      })
 
       await expect(service.findPublicQuizzes()).resolves.toEqual({
         results: [],
@@ -395,10 +400,7 @@ describe(QuizService.name, () => {
         offset: 0,
       })
 
-      expect(quizRepository.countQuizzes).toHaveBeenCalledWith({
-        visibility: QuizVisibility.Public,
-      })
-      expect(quizRepository.findQuizzes).toHaveBeenCalledWith(
+      expect(quizRepository.findPublicQuizPage).toHaveBeenCalledWith(
         { visibility: QuizVisibility.Public },
         'created',
         'desc',
@@ -407,9 +409,9 @@ describe(QuizService.name, () => {
       )
     })
 
-    it('propagates count errors and does not fetch public results', async () => {
-      const error = new Error('count failed')
-      quizRepository.countQuizzes.mockRejectedValue(error)
+    it('propagates public pagination errors', async () => {
+      const error = new Error('page failed')
+      quizRepository.findPublicQuizPage.mockRejectedValue(error)
 
       await expect(service.findPublicQuizzes()).rejects.toBe(error)
       expect(quizRepository.findQuizzes).not.toHaveBeenCalled()

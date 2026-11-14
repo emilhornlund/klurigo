@@ -1,111 +1,99 @@
-import type { QuizResponseDto } from '@klurigo/common'
 import { useQuery } from '@tanstack/react-query'
-import { type FC, useCallback, useState } from 'react'
+import { type FC } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../api'
 import type { FilterOptions } from '../../components/QuizTableFilter'
+import { useResponsiveInfiniteOffsetQuery } from '../../utils/hooks'
+import {
+  discoveryFilterParams,
+  useDiscoveryQuizFilters,
+} from '../../utils/useDiscoveryQuizFilters'
 
 import { DiscoverRailsPageUI } from './components'
 
-/** Default number of quiz cards fetched per page during search. */
-const DEFAULT_SEARCH_LIMIT = 20
-
-/**
- * Returns true when the filter has at least one active criterion.
- */
-const isFilterActive = (filter: FilterOptions): boolean =>
-  !!(filter.search || filter.category || filter.languageCode || filter.mode)
-
-/**
- * Container component for the discovery rails page.
- *
- * Fetches discovery rails data via React Query using the `['discover']` query
- * key and delegates rendering to DiscoverRailsPageUI. When a search filter is
- * active, fetches public quizzes instead and renders a grid results view.
- */
+/** Discovery rails and URL-backed public quiz browsing. */
 const DiscoverRailsPage: FC = () => {
   const { getDiscovery, getPublicQuizzes } = useKlurigoServiceClient()
-
-  const [filter, setFilter] = useState<FilterOptions>({})
-  const [searchOffset, setSearchOffset] = useState(0)
-  const [allSearchResults, setAllSearchResults] = useState<QuizResponseDto[]>(
-    [],
+  const { filter, setFilter } = useDiscoveryQuizFilters()
+  const navigate = useNavigate()
+  const filterActive = !!(
+    filter.search ||
+    filter.category ||
+    filter.languageCode ||
+    filter.mode ||
+    filter.sort ||
+    filter.order
   )
-  const [searchTotal, setSearchTotal] = useState(0)
 
-  const filterActive = isFilterActive(filter)
-
-  const { data: railsData, isLoading: isRailsLoading } = useQuery({
+  const {
+    data: railsData,
+    isLoading: isRailsLoading,
+    isError: isRailsError,
+    refetch,
+  } = useQuery({
     queryKey: ['discover'],
     queryFn: () => getDiscovery(),
-    enabled: !filterActive,
+    enabled: !filterActive && !filter.category,
   })
 
-  const { isLoading: isSearchLoading } = useQuery({
-    queryKey: [
-      'publicQuizzes',
-      filter.search,
-      filter.category,
-      filter.languageCode,
-      filter.mode,
-      filter.sort,
-      filter.order,
-      DEFAULT_SEARCH_LIMIT,
-      searchOffset,
-    ],
-    queryFn: async () => {
-      const data = await getPublicQuizzes({
-        search: filter.search,
-        mode: filter.mode,
-        category: filter.category,
-        languageCode: filter.languageCode,
-        sort: filter.sort,
-        order: filter.order,
-        limit: DEFAULT_SEARCH_LIMIT,
-        offset: searchOffset,
-      })
-      setSearchTotal(data.total)
-      setAllSearchResults((prev) =>
-        searchOffset === 0 ? data.results : [...prev, ...data.results],
+  const {
+    items,
+    isLoading,
+    isError,
+    hasMore,
+    isLoadingMore,
+    isLoadingMoreError,
+    loadMore,
+    retry,
+  } = useResponsiveInfiniteOffsetQuery({
+    queryKey: ['publicQuizzes', filter],
+    queryFn: ({ limit, offset }) =>
+      getPublicQuizzes({ ...filter, limit, offset }),
+    getResults: (page) => page.results,
+    getTotal: (page) => page.total,
+    enabled: filterActive && !filter.category,
+  })
+
+  const handleFilterChange = (next: FilterOptions) => {
+    if (next.category) {
+      const params = discoveryFilterParams({ ...next, category: undefined })
+      navigate(
+        `/discover/category/${next.category}${params.size ? `?${params}` : ''}`,
       )
-      return data
-    },
-    enabled: filterActive,
-    retry: false,
-  })
+    } else {
+      setFilter(next)
+    }
+  }
 
-  const handleFilterChange = useCallback((next: FilterOptions) => {
-    setFilter(next)
-    setSearchOffset(0)
-    setAllSearchResults([])
-    setSearchTotal(0)
-  }, [])
-
-  const handleClearFilter = useCallback(() => {
-    setFilter({})
-    setSearchOffset(0)
-    setAllSearchResults([])
-    setSearchTotal(0)
-  }, [])
-
-  const handleLoadMore = useCallback(() => {
-    setSearchOffset((prev) => prev + DEFAULT_SEARCH_LIMIT)
-  }, [])
-
-  const hasMore =
-    filterActive && searchOffset + allSearchResults.length < searchTotal
+  // Keep shared links from the earlier query-based category view canonical.
+  if (filter.category) {
+    const params = discoveryFilterParams({ ...filter, category: undefined })
+    return (
+      <Navigate
+        replace
+        to={`/discover/category/${filter.category}${params.size ? `?${params}` : ''}`}
+      />
+    )
+  }
 
   return (
     <DiscoverRailsPageUI
       sections={railsData?.sections ?? []}
       isLoading={isRailsLoading}
+      isRailsError={isRailsError}
+      onRetryRails={() => void refetch()}
       filter={filter}
       onFilterChange={handleFilterChange}
-      onClearFilter={handleClearFilter}
-      searchResults={allSearchResults}
-      isSearchLoading={isSearchLoading && searchOffset === 0}
-      hasMore={hasMore}
-      onLoadMore={handleLoadMore}
+      onClearFilter={() => setFilter({})}
+      searchResults={items}
+      isSearchLoading={isLoading}
+      isSearchError={isError && items.length === 0}
+      onRetrySearch={retry}
+      isLoadingMore={isLoadingMore}
+      isLoadingMoreError={isLoadingMoreError}
+      hasMore={!!hasMore}
+      onLoadMore={loadMore}
     />
   )
 }

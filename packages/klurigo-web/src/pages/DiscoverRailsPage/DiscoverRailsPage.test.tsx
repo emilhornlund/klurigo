@@ -13,7 +13,7 @@ import type {
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const h = vi.hoisted(() => ({
@@ -34,12 +34,6 @@ vi.mock('../../context/auth', () => ({
     revokeUser: vi.fn(),
   }),
 }))
-
-vi.mock('react-router-dom', async () => {
-  const actual =
-    await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
-  return { ...actual, useNavigate: () => vi.fn() }
-})
 
 import DiscoverRailsPage from './DiscoverRailsPage'
 
@@ -74,6 +68,181 @@ const mockResponse: DiscoveryResponseDto = {
 describe('DiscoverRailsPage', () => {
   beforeEach(() => {
     h.getDiscoveryMock.mockReset()
+    h.getPublicQuizzesMock.mockReset()
+  })
+
+  it('restores refinements from the URL and links to dedicated category pages', async () => {
+    h.getPublicQuizzesMock.mockResolvedValue({ results: [], total: 0 })
+    const Location = () => (
+      <output data-testid="location">{useLocation().search}</output>
+    )
+    render(
+      <QueryClientProvider
+        client={
+          new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }>
+        <MemoryRouter
+          initialEntries={[
+            '/discover?search=space&languageCode=en&mode=CLASSIC',
+          ]}>
+          <DiscoverRailsPage />
+          <Location />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    await waitFor(() =>
+      expect(h.getPublicQuizzesMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          category: undefined,
+          search: 'space',
+          languageCode: LanguageCode.English,
+          mode: GameMode.Classic,
+          offset: 0,
+        }),
+      ),
+    )
+    expect(screen.getByRole('link', { name: 'History' })).toHaveAttribute(
+      'href',
+      '/discover/category/HISTORY?search=space&languageCode=en&mode=CLASSIC',
+    )
+    expect(h.getDiscoveryMock).not.toHaveBeenCalled()
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Back to discovery' }),
+    )
+    expect(screen.getByTestId('location')).toBeEmptyDOMElement()
+  })
+
+  it('ignores invalid URL filters and keeps the full category directory available', async () => {
+    h.getDiscoveryMock.mockResolvedValue({ sections: [], generatedAt: null })
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter
+          initialEntries={[
+            '/discover?category=UNKNOWN&mode=INVALID&languageCode=unknown',
+          ]}>
+          <DiscoverRailsPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    await screen.findByTestId('empty-state')
+    expect(
+      screen
+        .getByRole('region', { name: 'Browse by category' })
+        .querySelectorAll('a'),
+    ).toHaveLength(21)
+    expect(h.getPublicQuizzesMock).not.toHaveBeenCalled()
+  })
+
+  it('redirects legacy category queries to the dedicated category page without fetching quizzes', async () => {
+    const Location = () => {
+      const location = useLocation()
+      return (
+        <div data-testid="location">
+          {location.pathname}
+          {location.search}
+        </div>
+      )
+    }
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter
+          initialEntries={['/discover?category=OTHER&search=space']}>
+          <Routes>
+            <Route path="/discover" element={<DiscoverRailsPage />} />
+            <Route path="/discover/category/:category" element={<Location />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    expect(await screen.findByTestId('location')).toHaveTextContent(
+      '/discover/category/OTHER?search=space',
+    )
+    expect(h.getPublicQuizzesMock).not.toHaveBeenCalled()
+    expect(h.getDiscoveryMock).not.toHaveBeenCalled()
+  })
+
+  it('opens a dedicated category page when a category is chosen in the filter modal', async () => {
+    h.getDiscoveryMock.mockResolvedValue({ sections: [], generatedAt: null })
+    const Location = () => (
+      <div data-testid="category-location">{useLocation().pathname}</div>
+    )
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter initialEntries={['/discover']}>
+          <Routes>
+            <Route path="/discover" element={<DiscoverRailsPage />} />
+            <Route path="/discover/category/:category" element={<Location />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Open filters' }))
+    await userEvent.selectOptions(
+      screen.getByTestId('test-category-select-select'),
+      QuizCategory.Other,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Apply' }))
+    expect(await screen.findByTestId('category-location')).toHaveTextContent(
+      '/discover/category/OTHER',
+    )
+    expect(h.getPublicQuizzesMock).not.toHaveBeenCalled()
+  })
+
+  it('loads every search page without hiding Load more early', async () => {
+    h.getPublicQuizzesMock.mockImplementation(({ offset, limit, category }) =>
+      Promise.resolve({
+        results: Array.from(
+          { length: Math.min(limit, 45 - offset) },
+          (_, i) => ({
+            ...mockResponse.sections[0].quizzes[0],
+            id: `${category ?? QuizCategory.Science}-${offset + i}`,
+            title: `${category ?? QuizCategory.Science} quiz ${offset + i}`,
+          }),
+        ),
+        total: 45,
+        limit,
+        offset,
+      }),
+    )
+    render(
+      <QueryClientProvider
+        client={
+          new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }>
+        <MemoryRouter initialEntries={['/discover?search=science']}>
+          <DiscoverRailsPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    await screen.findByText('SCIENCE quiz 19')
+    await userEvent.click(screen.getByRole('button', { name: 'Load more' }))
+    await screen.findByText('SCIENCE quiz 39')
+    expect(screen.getByRole('button', { name: 'Load more' })).toBeEnabled()
+    await userEvent.click(screen.getByRole('button', { name: 'Load more' }))
+    await screen.findByText('SCIENCE quiz 44')
+    expect(
+      screen.queryByRole('button', { name: 'Load more' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('offers a working retry after a search request fails', async () => {
+    h.getPublicQuizzesMock.mockRejectedValue(new Error('offline'))
+    render(
+      <QueryClientProvider
+        client={
+          new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }>
+        <MemoryRouter initialEntries={['/discover?search=science']}>
+          <DiscoverRailsPage />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    await screen.findByRole('alert')
+    expect(screen.queryByTestId('search-empty-state')).not.toBeInTheDocument()
+    h.getPublicQuizzesMock.mockResolvedValue({ results: [], total: 0 })
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    await screen.findByTestId('search-empty-state')
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('renders sections after loading', async () => {

@@ -49,6 +49,10 @@ export type UseResponsiveInfiniteOffsetQueryResult<TItem, TPage> = {
   readonly hasMore: boolean | undefined
   /** Indicates whether an additional page is currently being loaded. */
   readonly isLoadingMore: boolean
+  /** Indicates that fetching the next page failed without discarding loaded items. */
+  readonly isLoadingMoreError: boolean
+  /** Retries the failed page, or the initial request when no pages have loaded. */
+  readonly retry: () => void
   /** Loads the next page. */
   readonly loadMore: () => void
 }
@@ -83,6 +87,8 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetchNextPageError,
+    refetch,
   } = useInfiniteQuery({
     queryKey: [...queryKey, itemsPerPage, initialOffset],
     initialPageParam: initialOffset,
@@ -98,7 +104,9 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
     getNextPageParam: (lastPage, allPages) => {
       const loadedCount =
         initialOffset + allPages.flatMap((page) => getResults(page)).length
-      return loadedCount < getTotal(lastPage) ? loadedCount : undefined
+      return getResults(lastPage).length > 0 && loadedCount < getTotal(lastPage)
+        ? loadedCount
+        : undefined
     },
   })
 
@@ -113,6 +121,15 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
+  const retry = useCallback(() => {
+    if (isFetchingNextPage) return
+    if (isFetchNextPageError) {
+      void fetchNextPage()
+    } else {
+      void refetch()
+    }
+  }, [fetchNextPage, isFetchNextPageError, isFetchingNextPage, refetch])
+
   return {
     itemsPerPage,
     items,
@@ -121,6 +138,8 @@ export const useResponsiveInfiniteOffsetQuery = <TItem, TPage>({
     isError,
     hasMore: hasNextPage,
     isLoadingMore: isFetchingNextPage,
+    isLoadingMoreError: isFetchNextPageError,
+    retry,
     loadMore,
   }
 }

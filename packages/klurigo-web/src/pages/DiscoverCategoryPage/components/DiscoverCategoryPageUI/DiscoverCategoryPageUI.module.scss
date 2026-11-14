@@ -1,0 +1,49 @@
+@use '../../../../styles/helpers' as helpers;
+@use '../../../../styles/spacing.semantic' as spacing;
+
+.heading {
+  display: flex;
+  flex-direction: column;
+
+  @include helpers.mobile {
+    gap: spacing.$space-inline-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-inline-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+  }
+}
+
+.filterBar,
+.actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+
+  @include helpers.mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: spacing.$space-compact-desktop;
+  }
+
+  :global([data-testid='quiz-discovery-card']) {
+    width: 100%;
+  }
+}

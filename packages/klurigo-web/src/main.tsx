@@ -20,6 +20,7 @@ import {
   AuthPasswordResetPage,
   AuthRegisterPage,
   AuthVerifyPage,
+  DiscoverCategoryPage,
   DiscoverRailsPage,
   DiscoverSectionPage,
   ErrorPage,
@@ -110,6 +111,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DiscoverRailsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/discover/category/:category',
+        element: (
+          <ProtectedRoute>
+            <DiscoverCategoryPage />
           </ProtectedRoute>
         ),
       },
