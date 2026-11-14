@@ -15,7 +15,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import placeholder from '../../assets/images/avatar.svg'
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 import { formatTimeAgo } from '../../utils/date.utils'
 import * as quizUtils from '../../utils/quiz.utils'
 
@@ -179,7 +179,7 @@ describe('UserProfilePage', () => {
   })
 
   it.each([
-    ['saved', DEFAULT_CRITTERS_AVATAR_V1],
+    ['saved', { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' }],
     ['missing', undefined],
     ['unsupported', { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 }],
   ] as const)(
@@ -197,8 +197,13 @@ describe('UserProfilePage', () => {
         name: "QuizMasterJane's avatar",
       })
       if (avatar?.version === 1)
-        expect(image.getAttribute('src')).toMatch(/^data:image\/svg\+xml/)
-      else expect(image.getAttribute('src')).toBe(placeholder)
+        expect(image.getAttribute('src')).toBe(
+          getCrittersAvatarV1DataUri(avatar),
+        )
+      else
+        expect(image.getAttribute('src')).toBe(
+          getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+        )
       expect(screen.getByTestId('user-profile-stats')).toBeInTheDocument()
     },
   )

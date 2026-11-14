@@ -1,10 +1,10 @@
 import {
   type CrittersAvatarConfigurationV1,
+  DEFAULT_CRITTERS_AVATAR_V1,
   isCrittersAvatarConfigurationV1,
 } from '@klurigo/common'
 import { type FC, useMemo } from 'react'
 
-import placeholder from '../../assets/images/avatar.svg'
 import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 import { classNames } from '../../utils/helpers'
 
@@ -26,24 +26,22 @@ const PlayerAvatar: FC<PlayerAvatarProps> = ({
   alt,
   className,
 }) => {
-  const image = useMemo(
+  const source = useMemo(
     () =>
-      isCrittersAvatarConfigurationV1(avatar)
-        ? { source: getCrittersAvatarV1DataUri(avatar), fallback: false }
-        : { source: placeholder, fallback: true },
+      getCrittersAvatarV1DataUri(
+        isCrittersAvatarConfigurationV1(avatar)
+          ? avatar
+          : DEFAULT_CRITTERS_AVATAR_V1,
+      ),
     [avatar],
   )
   return (
     <img
-      src={image.source}
+      src={source}
       width={size}
       height={size}
       alt={alt}
-      className={classNames(
-        styles.avatar,
-        image.fallback ? styles.placeholder : undefined,
-        className,
-      )}
+      className={classNames(styles.avatar, className)}
     />
   )
 }

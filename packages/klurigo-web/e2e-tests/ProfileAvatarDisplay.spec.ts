@@ -31,18 +31,35 @@ test('saved avatars update account navigation and a previously cached profile on
     },
   )
   await authenticatePageThroughApi(page, email)
+  const unsavedProfile = page.waitForResponse(
+    (response) =>
+      response.url().endsWith(`/users/${id}/profile`) &&
+      response.request().resourceType() === 'fetch' &&
+      response.request().method() === 'GET',
+  )
   await page.goto(`/users/${id}/profile`)
+  expect(await (await unsavedProfile).json()).not.toHaveProperty('avatar')
   const profileAvatar = page.getByRole('img', {
     name: "AvatarDisplay's avatar",
   })
-  await expect(profileAvatar).toHaveClass(/placeholder/)
-  const placeholder = await profileAvatar.getAttribute('src')
+  await expect(profileAvatar).toHaveAttribute(
+    'src',
+    /^data:image\/svg\+xml;charset=utf-8,/,
+  )
+  const defaultSource = await profileAvatar.getAttribute('src')
+  expect(decodeURIComponent(defaultSource!)).toContain(
+    '<dc:title>Critters</dc:title>',
+  )
   const navigationAvatar = page
     .getByRole('button', { name: 'Profile', expanded: false })
     .locator('img')
-  await expect(navigationAvatar).toHaveAttribute('src', placeholder!)
+  await expect(navigationAvatar).toHaveAttribute('src', defaultSource!)
 
   await page.goto('/profile/settings')
+  await expect(page.getByAltText('Your avatar preview')).toHaveAttribute(
+    'src',
+    defaultSource!,
+  )
   await page.getByText('Block', { exact: true }).click()
   const savedResponse = page.waitForResponse(
     (response) =>

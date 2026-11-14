@@ -5,14 +5,15 @@ import {
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import placeholder from '../../assets/images/avatar.svg'
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import PlayerAvatar from './PlayerAvatar'
 
 describe('PlayerAvatar display', () => {
   it.each([undefined, { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 }])(
-    'uses the stable placeholder for missing or unsupported metadata',
+    'renders the default Critter for missing or unsupported metadata without changing the input',
     (avatar) => {
+      const before = JSON.stringify(avatar)
       render(
         <PlayerAvatar
           avatar={avatar as CrittersAvatarConfigurationV1 | undefined}
@@ -22,11 +23,17 @@ describe('PlayerAvatar display', () => {
       )
       expect(screen.getByRole('img', { name: 'Player' })).toHaveAttribute(
         'src',
-        placeholder,
+        getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
       )
-      expect(screen.getByRole('img', { name: 'Player' })).toHaveClass(
-        'placeholder',
+      expect(JSON.stringify(avatar)).toBe(before)
+      const svg = decodeURIComponent(
+        screen
+          .getByRole('img', { name: 'Player' })
+          .getAttribute('src')!
+          .split(',')[1],
       )
+      expect(svg).toContain('<dc:title>Critters</dc:title>')
+      expect(svg).toContain('body-round-')
     },
   )
 

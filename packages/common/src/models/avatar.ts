@@ -129,7 +129,7 @@ export const CRITTERS_V1_COLORS = {
 /**
  * Complete, seed-independent visual choices for Critters artwork/recipe v1.
  * Null explicitly hides an optional component. Missing fields never mean random.
- * This rendering contract is not yet connected to user profiles or an API.
+ * Shared by saved profiles, the editor, and local rendering.
  */
 export interface CrittersAvatarConfigurationV1 {
   /** Metadata contract version. */
@@ -150,7 +150,7 @@ export interface CrittersAvatarConfigurationV1 {
   readonly backgroundColor: (typeof CRITTERS_V1_COLORS.background)[number]
 }
 
-/** First-use editor draft only; never assigned to an account until explicitly saved. */
+/** Shared display fallback and first-use editor draft; persisted only on explicit save. */
 export const DEFAULT_CRITTERS_AVATAR_V1: CrittersAvatarConfigurationV1 = {
   version: 1,
   style: 'critters',

@@ -83,7 +83,11 @@ receiving the navigation glyph's white filter.
 The current-user snapshot carries avatar metadata. Internally, a null avatar
 records confirmed absence; older snapshots without the field are hydrated once
 for the current token. Navigation checks the snapshot's account ID before using
-it, and missing/unsupported metadata uses the existing local placeholder.
+it, and missing/unsupported metadata renders `DEFAULT_CRITTERS_AVATAR_V1` locally.
+This is the same friendly Critter offered as the editor's initial draft. Profiles,
+navigation, and the editor therefore share one consistent default. Displaying it
+does not create a saved avatar, overwrite unsupported metadata, or make an API
+write; an account still has no persisted avatar until the player explicitly saves.
 
 A successful avatar save updates that snapshot immediately and invalidates the
 owner's profile query, retaining the cached quiz data. Details saves preserve a

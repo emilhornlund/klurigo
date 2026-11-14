@@ -7,7 +7,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import placeholder from '../../assets/images/avatar.svg'
 import { AuthContext } from '../../context/auth/auth-context'
 import {
   type CurrentUserProfile,
@@ -38,12 +37,13 @@ const auth = {
   revokeUser: vi.fn().mockResolvedValue(undefined),
   revokeGame: vi.fn().mockResolvedValue(undefined),
 }
+const savedAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' as const }
 const snapshot: CurrentUserProfile = {
   id: 'user-1',
   email: 'user@example.com',
   defaultNickname: 'Player',
   authProvider: AuthProvider.Local,
-  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  avatar: savedAvatar,
 }
 
 function renderNavigation(
@@ -89,7 +89,7 @@ describe('Page avatar navigation', () => {
     })
     expect(button.querySelector('img')).toHaveAttribute(
       'src',
-      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+      getCrittersAvatarV1DataUri(savedAvatar),
     )
     fireEvent.click(button)
     expect(
@@ -107,7 +107,7 @@ describe('Page avatar navigation', () => {
     const entry = await screen.findByRole('button', { name: 'Profile' })
     expect(entry.querySelector('img')).toHaveAttribute(
       'src',
-      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+      getCrittersAvatarV1DataUri(savedAvatar),
     )
     expect(screen.getByRole('button', { name: 'Discover' })).toBeInTheDocument()
   })
@@ -116,7 +116,10 @@ describe('Page avatar navigation', () => {
     renderNavigation({ ...snapshot, id: 'another-user' })
     expect(
       screen.getByRole('button', { name: 'Profile' }).querySelector('img'),
-    ).toHaveAttribute('src', placeholder)
+    ).toHaveAttribute(
+      'src',
+      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+    )
   })
 
   it('refreshes legacy snapshots only once for the current token', () => {
@@ -132,12 +135,15 @@ describe('Page avatar navigation', () => {
     expect(view.fetchCurrentUser).toHaveBeenCalledTimes(1)
   })
 
-  it('keeps a confirmed missing avatar as a placeholder without repeated hydration', () => {
+  it('displays the default Critter for confirmed absence without repeated hydration', () => {
     const view = renderNavigation({ ...snapshot, avatar: null })
     expect(view.fetchCurrentUser).not.toHaveBeenCalled()
     expect(
       screen.getByRole('button', { name: 'Profile' }).querySelector('img'),
-    ).toHaveAttribute('src', placeholder)
+    ).toHaveAttribute(
+      'src',
+      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+    )
   })
 
   it('does not expose account navigation when signed out', () => {
