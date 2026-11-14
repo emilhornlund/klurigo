@@ -50,10 +50,11 @@ contributor or application documentation.
 
 ## Features
 
-There are no standalone current feature pages in this repository yet. Feature
-proposals and implementation notes are kept under
-[`plans/`](./plans/) and must not be used as the authority for shipped
-behavior.
+- [Discovery categories](./features/discovery-categories.md) - category browsing,
+  URL-backed filters, and public quiz pagination on Discover.
+
+Feature proposals and implementation notes are kept under [`plans/`](./plans/)
+and must not be used as the authority for shipped behavior.
 
 ## Current-System Documentation Tasks
 

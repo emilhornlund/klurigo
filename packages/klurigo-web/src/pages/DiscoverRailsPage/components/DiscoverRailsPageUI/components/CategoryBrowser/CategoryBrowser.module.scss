@@ -1,0 +1,105 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/shadows.tokens' as shadows;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+  }
+}
+
+.tile {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: radius.$radius-control-md;
+  background-color: colors.$color-surface-default;
+  color: colors.$color-text-default;
+  text-align: center;
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: shadows.$shadow-surface-hover-subtle;
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$color-focus-ring;
+    outline-offset: -3px;
+  }
+
+  @include helpers.mobile {
+    width: helpers.pxToRem(128px);
+    height: helpers.pxToRem(112px);
+    gap: spacing.$space-inline-mobile;
+    padding: spacing.$space-compact-mobile;
+    margin-block: spacing.$space-inline-tight-mobile;
+  }
+
+  @include helpers.tablet {
+    width: helpers.pxToRem(144px);
+    height: helpers.pxToRem(120px);
+    gap: spacing.$space-inline-tablet;
+    padding: spacing.$space-compact-tablet;
+    margin-block: spacing.$space-inline-tight-tablet;
+  }
+
+  @include helpers.desktop {
+    width: helpers.pxToRem(152px);
+    height: helpers.pxToRem(128px);
+    gap: spacing.$space-inline-desktop;
+    padding: spacing.$space-compact-desktop;
+    margin-block: spacing.$space-inline-tight-desktop;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: colors.$color-action-default;
+
+  @include helpers.mobile {
+    @include helpers.fontSize(24px);
+  }
+
+  @include helpers.tablet {
+    @include helpers.fontSize(26px);
+  }
+
+  @include helpers.desktop {
+    @include helpers.fontSize(28px);
+  }
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3em;
+}

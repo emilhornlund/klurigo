@@ -1,6 +1,7 @@
 import {
   GameMode,
   QuestionType,
+  QuizCategory,
   QuizRequestDto,
   QuizResponseDto,
   QuizVisibility,
@@ -154,6 +155,79 @@ describe('QuizController (e2e)', () => {
   })
 
   describe('/api/quizzes (GET)', () => {
+    it('paginates Other quizzes past a deleted author with accurate totals and stable ordering', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const created = new Date('2026-01-01T00:00:00.000Z')
+      const validIds = Array.from({ length: 45 }, () => uuidv4())
+        .sort()
+        .reverse()
+      await quizModel.create(
+        validIds.map((_id) =>
+          createMockClassicQuiz({
+            _id,
+            owner: user,
+            category: QuizCategory.Other,
+            visibility: QuizVisibility.Public,
+            created,
+          }),
+        ),
+      )
+      await quizModel.create(
+        createMockClassicQuiz({
+          _id: uuidv4(),
+          owner: { _id: uuidv4() } as User,
+          category: QuizCategory.Other,
+          visibility: QuizVisibility.Public,
+          created,
+        }),
+      )
+      await quizModel.create(
+        createMockClassicQuiz({
+          _id: uuidv4(),
+          owner: user,
+          category: QuizCategory.Other,
+          visibility: QuizVisibility.Private,
+          created,
+        }),
+      )
+      await quizModel.create(
+        createMockClassicQuiz({
+          _id: uuidv4(),
+          owner: user,
+          category: QuizCategory.Science,
+          visibility: QuizVisibility.Public,
+          created,
+        }),
+      )
+
+      const ids: string[] = []
+      for (const offset of [0, 20, 40, 60]) {
+        const { body } = await supertest(app.getHttpServer())
+          .get('/api/quizzes')
+          .query({
+            category: QuizCategory.Other,
+            sort: 'created',
+            order: 'desc',
+            limit: 20,
+            offset,
+          })
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+        expect(body.total).toBe(45)
+        expect(body.results.map((quiz: QuizResponseDto) => quiz.id)).toEqual(
+          validIds.slice(offset, offset + 20),
+        )
+        ids.push(...body.results.map((quiz: QuizResponseDto) => quiz.id))
+        expect(
+          body.results.every(
+            (quiz: QuizResponseDto) => quiz.author.id === user._id,
+          ),
+        ).toBe(true)
+      }
+      expect(ids).toEqual(validIds)
+      expect(new Set(ids).size).toBe(45)
+    })
+
     it('should return a paginated list of public quizzes', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
 

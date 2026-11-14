@@ -199,18 +199,22 @@ export class QuizService {
     limit: number = 10,
     offset: number = 0,
   ): Promise<PaginatedQuizResponseDto> {
-    return this.findQuizzes(
-      undefined,
-      search,
-      mode,
-      QuizVisibility.Public,
-      category,
-      languageCode,
+    const filter: QueryFilter<Quiz> = {
+      ...(search?.length ? { title: { $regex: search, $options: 'i' } } : {}),
+      ...(mode ? { mode } : {}),
+      visibility: QuizVisibility.Public,
+      ...(category ? { category } : {}),
+      ...(languageCode ? { languageCode } : {}),
+    }
+    const { documents, total } = await this.quizRepository.findPublicQuizPage(
+      filter,
       sortField,
       sortOrder,
       limit,
       offset,
     )
+
+    return { results: documents.map(toQuizResponseDto), total, limit, offset }
   }
 
   /**

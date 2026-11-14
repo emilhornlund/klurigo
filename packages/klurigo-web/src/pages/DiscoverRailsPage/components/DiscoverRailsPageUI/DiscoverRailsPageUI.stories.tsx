@@ -4,6 +4,7 @@ import {
   GameMode,
   LanguageCode,
   QuizCategory,
+  QuizVisibility,
 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
@@ -127,4 +128,31 @@ export const Empty = {
     sections: [],
     isLoading: false,
   },
+} satisfies Story
+
+export const SearchResults = {
+  args: {
+    ...defaultFilterProps,
+    sections: [],
+    isLoading: false,
+    filter: { search: 'science' },
+    searchResults: makeSections()[0].quizzes.map((quiz) => ({
+      ...quiz,
+      visibility: QuizVisibility.Public,
+      updated: quiz.created,
+    })),
+    hasMore: true,
+  },
+} satisfies Story
+
+export const EmptySearch = {
+  args: { ...Empty.args, filter: { search: 'no matches' } },
+} satisfies Story
+
+export const SearchLoading = {
+  args: { ...EmptySearch.args, isSearchLoading: true },
+} satisfies Story
+
+export const SearchError = {
+  args: { ...EmptySearch.args, isSearchError: true },
 } satisfies Story

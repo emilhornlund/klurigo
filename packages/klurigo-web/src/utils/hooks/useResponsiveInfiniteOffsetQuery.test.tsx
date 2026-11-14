@@ -67,6 +67,34 @@ describe('useResponsiveInfiniteOffsetQuery', () => {
     h.useDeviceSizeTypeMock.mockReturnValue(DeviceType.Desktop)
   })
 
+  it('stops pagination on an empty response even if the reported total is stale', async () => {
+    const queryFn = vi.fn().mockResolvedValue({ results: [], total: 100 })
+    const { result } = renderResponsiveInfiniteOffsetQuery(queryFn)
+    await waitFor(() => expect(result.current.hasMore).toBe(false))
+    act(() => result.current.loadMore())
+    expect(queryFn).toHaveBeenCalledTimes(1)
+  })
+
+  it('retries only the failed next page while retaining successfully loaded pages', async () => {
+    const queryFn = vi
+      .fn()
+      .mockResolvedValueOnce({ results: ['a', 'b'], total: 3 })
+      .mockRejectedValueOnce(new Error('offline'))
+    const { result } = renderResponsiveInfiniteOffsetQuery(queryFn)
+    await waitFor(() => expect(result.current.items).toEqual(['a', 'b']))
+    act(() => result.current.loadMore())
+    await waitFor(() => expect(result.current.isLoadingMoreError).toBe(true))
+    expect(result.current.items).toEqual(['a', 'b'])
+    queryFn.mockResolvedValueOnce({ results: ['c'], total: 3 })
+    act(() => result.current.retry())
+    await waitFor(() => expect(result.current.items).toEqual(['a', 'b', 'c']))
+    expect(queryFn.mock.calls.map(([options]) => options.offset)).toEqual([
+      0, 2, 2,
+    ])
+    expect(result.current.isLoadingMoreError).toBe(false)
+    expect(result.current.hasMore).toBe(false)
+  })
+
   it('query does not run until itemsPerPage is defined', () => {
     h.useDeviceSizeTypeMock.mockReturnValue(undefined)
     const queryFn = vi.fn<
