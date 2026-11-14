@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest'
 
 import { DEFAULT_CRITTERS_AVATAR_V1 } from '../models/avatar'
 
-import { isCrittersAvatarConfigurationV1 } from './avatar.utils'
+import {
+  isCrittersAvatarConfigurationV1,
+  resolveGameAvatarSnapshot,
+} from './avatar.utils'
 
 describe('isCrittersAvatarConfigurationV1', () => {
   it('accepts complete metadata and explicit absent components', () => {
@@ -46,4 +49,32 @@ describe('isCrittersAvatarConfigurationV1', () => {
       expect(isCrittersAvatarConfigurationV1(incomplete)).toBe(false)
     }
   })
+})
+
+describe('resolveGameAvatarSnapshot', () => {
+  it('copies complete metadata without storage internals or profile references', () => {
+    const stored = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, _id: 'storage' }
+    const snapshot = resolveGameAvatarSnapshot(stored)
+    expect(snapshot).toEqual({ ...DEFAULT_CRITTERS_AVATAR_V1, top: null })
+    expect(snapshot).not.toBe(stored)
+    stored.body = 'block'
+    expect(snapshot.body).toBe('round')
+  })
+
+  it.each([
+    undefined,
+    null,
+    {},
+    { ...DEFAULT_CRITTERS_AVATAR_V1, version: 99 },
+  ])(
+    'resolves legacy or unsupported metadata to an independent stable default: %j',
+    (stored) => {
+      const before = JSON.stringify(stored)
+      const first = resolveGameAvatarSnapshot(stored)
+      expect(first).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+      expect(resolveGameAvatarSnapshot(stored)).toEqual(first)
+      expect(first).not.toBe(DEFAULT_CRITTERS_AVATAR_V1)
+      expect(JSON.stringify(stored)).toBe(before)
+    },
+  )
 })

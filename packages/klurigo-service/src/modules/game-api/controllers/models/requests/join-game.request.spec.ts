@@ -1,3 +1,5 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
+import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 
 import { JoinGameRequest } from './join-game.request'
@@ -7,6 +9,59 @@ describe('JoinGameRequest', () => {
 
   beforeEach(() => {
     joinGameRequest = new JoinGameRequest()
+  })
+
+  describe('avatar', () => {
+    const check = (avatar?: unknown) =>
+      validate(
+        plainToInstance(JoinGameRequest, { nickname: 'FrostyBear', avatar }),
+        {
+          whitelist: true,
+          forbidNonWhitelisted: true,
+        },
+      )
+
+    it('accepts nickname-only legacy callers and complete account/guest designs', async () => {
+      expect(await check()).toEqual([])
+      expect(await check(DEFAULT_CRITTERS_AVATAR_V1)).toEqual([])
+      expect(await check({ ...DEFAULT_CRITTERS_AVATAR_V1, top: null })).toEqual(
+        [],
+      )
+    })
+
+    it.each([
+      null,
+      [],
+      'avatar',
+      {},
+      { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'unknown' },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, bodyColor: '#C4B5FD' },
+      {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        accentColor: DEFAULT_CRITTERS_AVATAR_V1.bodyColor,
+      },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, userId: 'someone-else' },
+    ])(
+      'rejects invalid or authority-bearing nested metadata: %j',
+      async (avatar) => {
+        expect(await check(avatar)).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ property: 'avatar' }),
+          ]),
+        )
+      },
+    )
+
+    it('requires every metadata field, including nullable parts', async () => {
+      for (const key of Object.keys(DEFAULT_CRITTERS_AVATAR_V1)) {
+        const incomplete: Record<string, unknown> = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+        }
+        delete incomplete[key]
+        expect((await check(incomplete)).length).toBeGreaterThan(0)
+      }
+    })
   })
 
   describe('nickname', () => {

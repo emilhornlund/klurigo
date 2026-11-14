@@ -1,6 +1,6 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–2 and the default-Critter fix are complete. Game integration,
+> **Status:** Phases 0–3 and the default-Critter fix are complete. Game integration,
 > guest customization, and animation are required upcoming work, not optional extras.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
@@ -95,10 +95,13 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 3 — Game Avatar Contracts
 
-**Status:** Planned · **Depends on:** 2
+**Status:** Complete · **Depends on:** 2
 
 - **Work:** Define shared join/snapshot metadata, validation, and legacy resolution.
 - **Done when:** Contracts support accounts and guests, reject invalid choices, and resolve missing data to a valid avatar. Keep old join callers compatible.
+- **Verified:** 146 common tests and 19 join-request tests pass; common/service types,
+  lint, and builds pass. Complete nested metadata is validated, nickname-only requests
+  remain valid, and legacy resolution copies a stable default without writes.
 
 ### Phase 4 — Player Join Snapshots
 

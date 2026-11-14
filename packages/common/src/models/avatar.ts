@@ -150,6 +150,9 @@ export interface CrittersAvatarConfigurationV1 {
   readonly backgroundColor: (typeof CRITTERS_V1_COLORS.background)[number]
 }
 
+/** Complete game-time metadata, copied on acceptance and never linked to a profile. */
+export type GameAvatarSnapshot = CrittersAvatarConfigurationV1
+
 /** Shared display fallback and first-use editor draft; persisted only on explicit save. */
 export const DEFAULT_CRITTERS_AVATAR_V1: CrittersAvatarConfigurationV1 = {
   version: 1,

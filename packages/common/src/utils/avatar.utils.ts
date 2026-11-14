@@ -2,6 +2,8 @@ import {
   CRITTERS_V1_COLORS,
   CRITTERS_V1_PARTS,
   type CrittersAvatarConfigurationV1,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  type GameAvatarSnapshot,
 } from '../models/avatar'
 
 /** Validate the complete persisted design without normalizing or randomizing it. */
@@ -33,4 +35,27 @@ export function isCrittersAvatarConfigurationV1(
       return false
   }
   return avatar.bodyColor !== avatar.accentColor
+}
+
+/** Resolve legacy metadata without mutating it or retaining a profile reference. */
+export function resolveGameAvatarSnapshot(value: unknown): GameAvatarSnapshot {
+  const avatar = isCrittersAvatarConfigurationV1(value)
+    ? value
+    : DEFAULT_CRITTERS_AVATAR_V1
+
+  // Pick only metadata: persisted subdocuments may also carry storage internals.
+  return {
+    version: avatar.version,
+    style: avatar.style,
+    artworkVersion: avatar.artworkVersion,
+    body: avatar.body,
+    top: avatar.top,
+    eyes: avatar.eyes,
+    mouth: avatar.mouth,
+    pattern: avatar.pattern,
+    cheeks: avatar.cheeks,
+    bodyColor: avatar.bodyColor,
+    accentColor: avatar.accentColor,
+    backgroundColor: avatar.backgroundColor,
+  }
 }

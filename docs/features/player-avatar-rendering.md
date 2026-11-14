@@ -6,6 +6,13 @@ editor and persistence. Phase 2 adds authenticated profile and navigation displa
 Game placement remains a later milestone in the
 [avatar roadmap](../plans/player-avatars.md).
 
+Phase 3 defines `GameAvatarSnapshot` and optional `JoinGameRequestDto.avatar`.
+Nickname-only clients remain compatible. Supplied designs require complete validated
+metadata; null, invalid choices, unsupported versions, and extra nested fields are
+rejected. `resolveGameAvatarSnapshot` copies supported metadata or the stable default,
+excluding persistence internals without modifying the source record. Participant
+snapshot persistence and join consumption are delivered in subsequent phases.
+
 ## Source And Ownership
 
 - [`avatar.ts`](../../packages/common/src/models/avatar.ts) exports
