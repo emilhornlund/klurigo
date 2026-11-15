@@ -130,6 +130,18 @@
   justify-content: center;
   width: 100%;
 
+  @include helpers.mobile {
+    gap: spacing.$space-inline-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-inline-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+  }
+
   .playerCounter {
     display: flex;
     flex-direction: row;
@@ -171,6 +183,8 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  min-width: 0;
+  width: 100%;
 
   .players {
     display: flex;

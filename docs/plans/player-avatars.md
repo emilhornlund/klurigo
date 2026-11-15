@@ -219,10 +219,17 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 13 — Host Lobby Display
 
-**Status:** Planned · **Depends on:** 7
+**Status:** Complete · **Depends on:** 7
 
 - **Work:** Display snapshot avatars in the host lobby's existing host/player identity surfaces.
 - **Done when:** Account and guest players remain visually consistent through joining, leaving, and reconnecting on desktop/mobile layouts.
+- **Verified:** Host/player chips render accepted designs and stable fallbacks without
+  profile reads. Avatar chips retain visible keyboard-accessible removal controls,
+  ellipsize long names, and fit a 20-player lobby at 320px. All 2,306 web tests pass;
+  both real account/guest join flows verify exact images after host reload and guest
+  removal. Web types/lint/build and Storybook build pass. Chrome inspection covered
+  1440px, 768px, 390px, and 320px, join/removal, keyboard/Escape/focus return, and
+  reduced motion; no console errors or failed avatar requests were observed.
 
 ### Phase 14 — Participant Lobby Display
 

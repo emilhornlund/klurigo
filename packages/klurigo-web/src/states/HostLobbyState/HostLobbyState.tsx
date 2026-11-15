@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { GameLobbyHostEvent } from '@klurigo/common'
-import { GAME_MAX_PLAYERS } from '@klurigo/common'
+import { GAME_MAX_PLAYERS, resolveGameAvatarSnapshot } from '@klurigo/common'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import QRCode from 'react-qr-code'
@@ -41,6 +41,7 @@ interface PlayerAnimationState {
 const HostLobbyState: FC<HostLobbyStateProps> = ({
   event: {
     game: { id, pin, settings },
+    host,
     players,
   },
 }) => {
@@ -164,6 +165,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
           <>
             <Button
               id="share-button"
+              aria-label={linkCopied ? 'Copied' : 'Copy link'}
               type="button"
               size="small"
               hideValue="mobile"
@@ -173,6 +175,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
             </Button>
             <Button
               id="game-settings-button"
+              aria-label="Settings"
               type="button"
               size="small"
               hideValue="mobile"
@@ -220,6 +223,10 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
         </div>
 
         <div className={styles.misc}>
+          <NicknameChip
+            value="Host"
+            avatar={resolveGameAvatarSnapshot(host?.avatar)}
+          />
           <Surface className={styles.playerCounter}>
             <FontAwesomeIcon icon={faUserGroup} className={styles.playerIcon} />
             <span className={styles.playerCount}>
@@ -230,10 +237,11 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
 
         <div className={styles.content}>
           <div className={styles.players}>
-            {players.map(({ id, nickname }) => (
+            {players.map(({ id, nickname, avatar }) => (
               <NicknameChip
                 key={id}
                 value={nickname}
+                avatar={resolveGameAvatarSnapshot(avatar)}
                 onDelete={() => handleRemovePlayerClick(id, nickname)}
                 animationState={playerAnimations[id]?.animationState || 'none'}
                 staggerDelay={playerAnimations[id]?.staggerDelay || 0}

@@ -186,8 +186,27 @@ for (const account of [false, true]) {
         { headers: { Authorization: `Bearer ${identity.token}` } },
       )
       expect((await details.json()).participant.avatar).toEqual(draft)
+      const hostPlayerAvatar = host
+        .getByText('JoinPreview', { exact: true })
+        .locator('..')
+        .locator('img')
+      await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
+      await host.reload()
+      await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
       await page.goto('/join')
       await expect(page).toHaveURL('/game')
+      if (!account) {
+        await host
+          .getByRole('button', { name: 'Remove JoinPreview', exact: true })
+          .click()
+        await host
+          .getByRole('button', { name: 'Remove Player', exact: true })
+          .click()
+        await expect(
+          host.getByText('JoinPreview', { exact: true }),
+        ).toHaveCount(0)
+        await expect(host.getByText('0 / 20', { exact: true })).toBeVisible()
+      }
       if (account) {
         await host.goto(
           `/quiz/details/${E2E_USERS.tester02.quizzes.classic.id}`,

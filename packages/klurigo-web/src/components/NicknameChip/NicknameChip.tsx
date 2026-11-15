@@ -1,8 +1,10 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
 import type { FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
+import PlayerAvatar from '../PlayerAvatar'
 import Surface from '../Surface'
 
 import styles from './NicknameChip.module.scss'
@@ -35,6 +37,9 @@ export interface NicknameChipProps {
    * The nickname text displayed inside the chip.
    */
   value: string
+
+  /** Optional resolved game-time design displayed beside the nickname. */
+  avatar?: CrittersAvatarConfigurationV1
 
   /**
    * Controls the visual emphasis of the chip.
@@ -79,6 +84,7 @@ export interface NicknameChipProps {
  */
 const NicknameChip: FC<NicknameChipProps> = ({
   value,
+  avatar,
   variant = 'subtle',
   onDelete,
   animationState = 'none',
@@ -102,6 +108,7 @@ const NicknameChip: FC<NicknameChipProps> = ({
       interactive={variant === 'subtle'}
       className={classNames(
         styles.main,
+        avatar ? styles.withAvatar : undefined,
         animationState === 'entrance' ? styles.entrance : undefined,
         animationState === 'exit' ? styles.exit : undefined,
         animationState === 'shake' ? styles.shake : undefined,
@@ -109,7 +116,19 @@ const NicknameChip: FC<NicknameChipProps> = ({
         variant === 'accent' ? styles.accent : undefined,
       )}
       style={inlineStyles}>
-      {value}
+      {avatar ? (
+        <>
+          <PlayerAvatar
+            avatar={avatar}
+            alt=""
+            size={36}
+            className={styles.avatar}
+          />
+          <span className={styles.nickname}>{value}</span>
+        </>
+      ) : (
+        value
+      )}
       {onDelete && (
         <button
           className={classNames(styles.deleteButton, styles.delete)}

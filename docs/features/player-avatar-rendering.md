@@ -81,6 +81,17 @@ rank ordering, and scoring are preserved. Verification covers independent copies
 complete null-bearing configurations, persistence, cleanup, profile changes, and
 read-only legacy fallback (103 result unit tests and 15 HTTP tests).
 
+Phase 13 displays host/player snapshots in the host lobby through an optional
+avatar presentation in the existing nickname chip. Missing or unsupported event
+metadata resolves to the stable default. Avatar chips keep removal buttons visible
+and keyboard-accessible, and truncate long names without clipping the avatar or
+removal control. The host indicator uses the host's game-time design. Live joining,
+leaving, and reconnect recovery preserve the supplied identity; no profile lookup
+or player visibility change is introduced. Storybook includes a full-capacity
+constrained-width proof. Browser inspection covered desktop/tablet/mobile/320px,
+keyboard removal and focus return, and reduced motion. Real account/guest flows
+compare exact preview/lobby images after host reload and exercise guest removal.
+
 ## Review Corrections
 
 The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.
