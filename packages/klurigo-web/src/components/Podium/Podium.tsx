@@ -1,9 +1,11 @@
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
 import type { CSSProperties, FC } from 'react'
 import { useState } from 'react'
 
 import { classNames } from '../../utils/helpers'
 import Confetti, { getCelebrationLevel } from '../Confetti'
 import NicknameChip from '../NicknameChip'
+import PlayerAvatar from '../PlayerAvatar'
 import ScoreChip from '../ScoreChip'
 
 import styles from './Podium.module.scss'
@@ -11,6 +13,8 @@ import styles from './Podium.module.scss'
 export interface PodiumValue {
   position: number
   nickname?: string
+  /** Accepted winner design; missing metadata uses the stable default. */
+  avatar?: CrittersAvatarConfigurationV1
   score?: number
 }
 
@@ -34,6 +38,7 @@ const getPositionClassNames = (position: number): string | undefined => {
 const Stack: FC<StackProps> = ({
   position,
   nickname,
+  avatar,
   score,
   animationIndex,
   onReveal,
@@ -52,7 +57,17 @@ const Stack: FC<StackProps> = ({
         // Ignore animation events bubbling from the crown or chip.
         if (event.target === event.currentTarget) onReveal?.()
       }}>
-      {nickname && <NicknameChip value={nickname} />}
+      {nickname && (
+        <>
+          <PlayerAvatar
+            avatar={avatar}
+            alt=""
+            size={96}
+            className={styles.avatar}
+          />
+          <NicknameChip value={nickname} />
+        </>
+      )}
       {position === 1 && nickname && (
         <div className={styles.crown} aria-hidden="true">
           👑
@@ -122,12 +137,14 @@ const Podium: FC<PodiumProps> = ({ values }) => {
       <Stack
         position={2}
         nickname={values?.[1]?.nickname}
+        avatar={values?.[1]?.avatar}
         score={values?.[1]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(1))}
       />
       <Stack
         position={1}
         nickname={values?.[0]?.nickname}
+        avatar={values?.[0]?.avatar}
         score={values?.[0]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(0))}
         onReveal={() => setWinnerRevealed(true)}
@@ -135,6 +152,7 @@ const Podium: FC<PodiumProps> = ({ values }) => {
       <Stack
         position={3}
         nickname={values?.[2]?.nickname}
+        avatar={values?.[2]?.avatar}
         score={values?.[2]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(2))}
       />

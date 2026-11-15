@@ -1,4 +1,8 @@
-import { GameMode, type GameOverPlayerEvent } from '@klurigo/common'
+import {
+  GameMode,
+  type GameOverPlayerEvent,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import type { FC } from 'react'
 import { useCallback, useMemo } from 'react'
 
@@ -9,6 +13,7 @@ import {
   getCelebrationLevel,
   IconButtonArrowLeft,
   IconButtonArrowRight,
+  NicknameChip,
   ScoreChip,
   Stack,
   StreakBadge,
@@ -110,7 +115,11 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
 
       <div className={styles.spacing} />
 
-      <Stack spacing="compact" align="center">
+      <Stack spacing="compact" align="center" width="full">
+        <NicknameChip
+          value={player.nickname}
+          avatar={resolveGameAvatarSnapshot(player.avatar)}
+        />
         <Badge
           size="large"
           backgroundColor={getBadgePositionBackgroundColor(rank)}

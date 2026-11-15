@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
@@ -26,8 +27,18 @@ type Story = StoryObj<typeof meta>
 export const Default = {
   args: {
     values: [
-      { position: 1, nickname: 'ShadowCyborg', score: 18456 },
-      { position: 2, nickname: 'Radar', score: 18398 },
+      {
+        position: 1,
+        nickname: 'ShadowCyborg',
+        score: 18456,
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
+      },
+      {
+        position: 2,
+        nickname: 'Radar',
+        score: 18398,
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'blob', cheeks: null },
+      },
       { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
       { position: 4, nickname: 'WhiskerFox', score: 14118 },
       { position: 5, nickname: 'JollyNimbus', score: 13463 },

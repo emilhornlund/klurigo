@@ -119,6 +119,14 @@ with existing top-five and mode-specific streak rules preserved. Verification
 covers 119 focused tests, types, lint, build, and Chrome at desktop/tablet/mobile/
 320px including round updates and reduced motion.
 
+Phase 17 displays the accepted designs above occupied podium names, retaining
+the existing placement/reveal order and empty-place treatment. Participant
+game-over views show the caller's own game-time identity. Tests compare exact
+configurations after recovery for one, two, and three occupied places. All 143
+focused podium/game-over/results tests, types, lint, and build pass. Browser
+inspection covered responsive podiums, a lone winner, participant game-over,
+and reduced motion.
+
 ## Review Corrections
 
 The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.

@@ -1,5 +1,8 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import Podium from './Podium'
 import styles from './Podium.module.scss'
@@ -16,6 +19,42 @@ describe('Podium', () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
+
+  it.each([1, 2, 3])(
+    'retains exact winner designs on recovery with %i occupied places',
+    (count) => {
+      const designs = [
+        { ...DEFAULT_CRITTERS_AVATAR_V1, top: null },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null },
+        DEFAULT_CRITTERS_AVATAR_V1,
+      ]
+      const values = ['Account', 'Guest', 'Legacy']
+        .slice(0, count)
+        .map((nickname, index) => ({
+          position: index + 1,
+          nickname,
+          score: 100 - index,
+          avatar: index < 2 ? designs[index] : undefined,
+        }))
+      const view = render(<Podium values={values} />)
+      const sources = () =>
+        values.map(({ nickname }) =>
+          screen
+            .getByText(nickname)
+            .closest('[data-testid="podium-column"]')
+            ?.querySelector('img')
+            ?.getAttribute('src'),
+        )
+      expect(sources()).toEqual(
+        designs.slice(0, count).map(getCrittersAvatarV1DataUri),
+      )
+      expect(view.container.querySelectorAll('img')).toHaveLength(count)
+      view.rerender(<Podium values={JSON.parse(JSON.stringify(values))} />)
+      expect(sources()).toEqual(
+        designs.slice(0, count).map(getCrittersAvatarV1DataUri),
+      )
+    },
+  )
 
   it('should render Podium from a full leaderboard', async () => {
     const { container } = render(

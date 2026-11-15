@@ -277,10 +277,16 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 17 — Podium Display
 
-**Status:** Planned · **Depends on:** 8
+**Status:** Complete · **Depends on:** 8
 
 - **Work:** Add snapshot avatars to existing podium presentations for both viewer roles.
 - **Done when:** Winners, fewer-than-three-player games, fallbacks, and reconnects render correctly without changing placement rules.
+- **Verified:** Occupied podium places display snapshot avatars above existing names;
+  empty places remain empty. Participant game-over identity uses its accepted design.
+  One/two/three-player recovery tests compare complete designs and stable defaults.
+  All 143 focused podium/game-over/results tests, types, lint, and build pass.
+  Chrome inspection covered desktop/tablet/mobile/320px podiums, a lone winner,
+  participant game-over views, and reduced motion; placement/reveal rules remain intact.
 
 ### Phase 18 — Game Results Display
 

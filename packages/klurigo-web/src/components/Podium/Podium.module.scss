@@ -74,7 +74,7 @@
       width: 100%;
 
       // Keep long nicknames inside their column, including narrow game layouts.
-      > :first-child:not(.crown) {
+      > :not(.crown):not(.avatar) {
         box-sizing: border-box;
         max-width: 100%;
         display: block;
@@ -84,13 +84,28 @@
       }
 
       @include helpers.mobile {
-        min-height: helpers.pxToRem(37px);
+        min-height: helpers.pxToRem(101px) + spacing.$space-inline-mobile;
+        gap: spacing.$space-inline-mobile;
+        .avatar {
+          width: helpers.pxToRem(64px);
+          height: helpers.pxToRem(64px);
+        }
       }
       @include helpers.tablet {
-        min-height: helpers.pxToRem(45px);
+        min-height: helpers.pxToRem(125px) + spacing.$space-inline-tablet;
+        gap: spacing.$space-inline-tablet;
+        .avatar {
+          width: helpers.pxToRem(80px);
+          height: helpers.pxToRem(80px);
+        }
       }
       @include helpers.desktop {
-        min-height: helpers.pxToRem(52px);
+        min-height: helpers.pxToRem(148px) + spacing.$space-inline-desktop;
+        gap: spacing.$space-inline-desktop;
+        .avatar {
+          width: helpers.pxToRem(96px);
+          height: helpers.pxToRem(96px);
+        }
       }
 
       .crown {
