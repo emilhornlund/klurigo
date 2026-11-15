@@ -1,4 +1,10 @@
-import { AuthProvider, type UserProfileResponseDto } from '@klurigo/common'
+import {
+  AuthProvider,
+  type CrittersAvatarConfigurationV1,
+  deepEqual,
+  isCrittersAvatarConfigurationV1,
+  type UserProfileResponseDto,
+} from '@klurigo/common'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { FC } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -7,7 +13,6 @@ import { useKlurigoServiceClient } from '../../api'
 import { Button, LoadingSpinner, Page, Typography } from '../../components'
 import { useAuthContext } from '../../context/auth'
 import { useUserContext } from '../../context/user'
-import { useAccountAvatarSave } from '../../hooks/useAccountAvatarSave'
 import { trimToUndefined } from '../../utils/helpers'
 
 import type { UpdateUserDetailsFormFields } from './components'
@@ -19,6 +24,7 @@ const ProfileSettingsPage: FC = () => {
   const {
     getUserProfile,
     updateUserProfile,
+    updateUserAvatar,
     updateUserPassword,
     resendVerificationEmail,
   } = useKlurigoServiceClient()
@@ -71,10 +77,43 @@ const ProfileSettingsPage: FC = () => {
     ],
   )
 
-  const handleAvatarChange = useAccountAvatarSave({
-    profile: data?.id === userId ? data : undefined,
-    isCurrentIdentity: () => !!userId && activeUserId.current === userId,
-  })
+  const handleAvatarChange = async (avatar: CrittersAvatarConfigurationV1) => {
+    if (!userId || data?.id !== userId || activeUserId.current !== userId) {
+      throw new Error('Account is not ready')
+    }
+
+    const saved = await updateUserAvatar(avatar)
+    if (activeUserId.current !== userId) {
+      throw new Error('Account identity changed')
+    }
+    if (!isCrittersAvatarConfigurationV1(saved) || !deepEqual(saved, avatar)) {
+      throw new Error('Avatar response did not match')
+    }
+
+    await queryClient.cancelQueries({ queryKey })
+    if (activeUserId.current !== userId) {
+      throw new Error('Account identity changed')
+    }
+    queryClient.setQueryData<UserProfileResponseDto>(queryKey, (previous) =>
+      previous ? { ...previous, avatar: saved } : previous,
+    )
+    const { id, email, unverifiedEmail, defaultNickname, authProvider } = data
+    setCurrentUser((previous) =>
+      activeUserId.current !== userId
+        ? previous
+        : {
+            ...(previous?.id === id
+              ? previous
+              : { id, email, unverifiedEmail, defaultNickname, authProvider }),
+            avatar: saved,
+          },
+    )
+    await queryClient.invalidateQueries({ queryKey: ['user-profile', userId] })
+    if (activeUserId.current !== userId) {
+      throw new Error('Account identity changed')
+    }
+    return saved
+  }
 
   const handleChange = (request: UpdateUserDetailsFormFields): void => {
     if (data?.authProvider && data.id === userId) {
