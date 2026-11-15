@@ -26,9 +26,6 @@ export const Default = {
   args: {
     event: {
       type: GameEventType.GameLobbyPlayer,
-      host: {
-        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'tower', top: null },
-      },
       game: { name: 'The Big Brain Quiz' },
       players: [{ nickname: 'FrostyBear', avatar: DEFAULT_CRITTERS_AVATAR_V1 }],
       player: {

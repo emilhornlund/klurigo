@@ -76,9 +76,6 @@ export const Default = {
   args: {
     event: {
       type: GameEventType.GameLobbyHost,
-      host: {
-        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'tower', top: null },
-      },
       game: {
         id: 'de6f4af5-f472-4e30-bbeb-97b881e0a569',
         pin: '123456',

@@ -96,13 +96,11 @@ describe('HostLobbyState', () => {
     h.updateGameSettings.mockClear()
   })
 
-  it('retains complete host/player snapshots through joining, leaving, and reconnect recovery', () => {
-    const hostAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+  it('retains complete player snapshots through joining, leaving, and reconnect recovery', () => {
     const accountAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null }
     const guestAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, pattern: null }
     const event: GameLobbyHostEvent = {
       ...sampleEvent,
-      host: { avatar: hostAvatar },
       players: [{ id: 'account', nickname: 'Account', avatar: accountAvatar }],
     }
     const view = render(
@@ -114,10 +112,7 @@ describe('HostLobbyState', () => {
       Array.from(view.container.querySelectorAll('main img')).map((image) =>
         image.getAttribute('src'),
       )
-    expect(imageSources()).toEqual([
-      getCrittersAvatarV1DataUri(hostAvatar),
-      getCrittersAvatarV1DataUri(accountAvatar),
-    ])
+    expect(imageSources()).toEqual([getCrittersAvatarV1DataUri(accountAvatar)])
 
     const joined = {
       ...event,
@@ -137,7 +132,7 @@ describe('HostLobbyState', () => {
       </MemoryRouter>,
     )
     expect(imageSources()).toEqual(
-      [hostAvatar, accountAvatar, guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(
+      [accountAvatar, guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(
         getCrittersAvatarV1DataUri,
       ),
     )
@@ -151,11 +146,10 @@ describe('HostLobbyState', () => {
       </MemoryRouter>,
     )
     expect(imageSources()).toEqual(
-      [hostAvatar, guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(
-        getCrittersAvatarV1DataUri,
-      ),
+      [guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(getCrittersAvatarV1DataUri),
     )
     expect(screen.queryByText('Account')).not.toBeInTheDocument()
+    expect(screen.queryByText('Host', { exact: true })).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Remove Guest' }),
     ).toBeInTheDocument()

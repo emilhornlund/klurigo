@@ -43,7 +43,6 @@ export type GameLoadingEvent = {
 
 export type GameLobbyHostEvent = {
   type: GameEventType.GameLobbyHost
-  host?: { avatar: CrittersAvatarConfigurationV1 }
   game: {
     id: string
     pin: string
@@ -61,7 +60,6 @@ export type GameLobbyHostEvent = {
 
 export type GameLobbyPlayerEvent = {
   type: GameEventType.GameLobbyPlayer
-  host?: { avatar: CrittersAvatarConfigurationV1 }
   game: {
     name: string
   }

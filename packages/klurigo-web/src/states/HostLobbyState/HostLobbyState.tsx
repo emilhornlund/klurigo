@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { GameLobbyHostEvent } from '@klurigo/common'
-import { GAME_MAX_PLAYERS, resolveGameAvatarSnapshot } from '@klurigo/common'
+import { GAME_MAX_PLAYERS } from '@klurigo/common'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import QRCode from 'react-qr-code'
@@ -41,7 +41,6 @@ interface PlayerAnimationState {
 const HostLobbyState: FC<HostLobbyStateProps> = ({
   event: {
     game: { id, pin, settings },
-    host,
     players,
   },
 }) => {
@@ -223,10 +222,6 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
         </div>
 
         <div className={styles.misc}>
-          <NicknameChip
-            value="Host"
-            avatar={resolveGameAvatarSnapshot(host?.avatar)}
-          />
           <Surface className={styles.playerCounter}>
             <FontAwesomeIcon icon={faUserGroup} className={styles.playerIcon} />
             <span className={styles.playerCount}>
@@ -241,7 +236,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
               <NicknameChip
                 key={id}
                 value={nickname}
-                avatar={resolveGameAvatarSnapshot(avatar)}
+                avatar={avatar}
                 onDelete={() => handleRemovePlayerClick(id, nickname)}
                 animationState={playerAnimations[id]?.animationState || 'none'}
                 staggerDelay={playerAnimations[id]?.staggerDelay || 0}

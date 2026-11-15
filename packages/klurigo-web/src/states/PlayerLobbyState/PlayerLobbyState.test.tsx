@@ -351,16 +351,13 @@ describe('PlayerLobbyState', () => {
   it.each([
     DEFAULT_CRITTERS_AVATAR_V1,
     { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null },
-    undefined,
     { version: 99 },
   ])(
-    'retains resolved self and host identity %p across count updates and recovery',
+    'retains resolved self identity %p across count updates and recovery',
     (avatar) => {
-      const hostAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, pattern: null }
       const event: GameLobbyPlayerEvent = {
         type: GameEventType.GameLobbyPlayer,
         game: { name: 'Snapshot lobby' },
-        host: { avatar: hostAvatar },
         player: { nickname: 'Current', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
         players: [{ nickname: 'Current', avatar: DEFAULT_CRITTERS_AVATAR_V1 }],
       }
@@ -371,7 +368,7 @@ describe('PlayerLobbyState', () => {
         </MemoryRouter>,
       )
       const imageSources = () =>
-        ['Current', 'Host'].map((nickname) =>
+        ['Current'].map((nickname) =>
           screen
             .getByText(nickname)
             .parentElement?.querySelector('img')
@@ -380,10 +377,7 @@ describe('PlayerLobbyState', () => {
       const initial = imageSources()
       const expected =
         avatar && 'style' in avatar ? avatar : DEFAULT_CRITTERS_AVATAR_V1
-      expect(initial).toEqual([
-        getCrittersAvatarV1DataUri(expected),
-        getCrittersAvatarV1DataUri(hostAvatar),
-      ])
+      expect(initial).toEqual([getCrittersAvatarV1DataUri(expected)])
 
       const recovered = JSON.parse(
         JSON.stringify({
@@ -399,6 +393,9 @@ describe('PlayerLobbyState', () => {
       expect(imageSources()).toEqual(initial)
       expect(screen.getByText('2')).toBeInTheDocument()
       expect(screen.queryByText('Guest')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('Host', { exact: true }),
+      ).not.toBeInTheDocument()
       expect(event.player.avatar).toBe(avatar)
     },
   )

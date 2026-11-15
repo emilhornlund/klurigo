@@ -12,7 +12,7 @@ import {
   ParticipantPlayerWithBase,
   TaskType,
 } from '../../game-core/repositories/models/schemas'
-import { isParticipantHost, isParticipantPlayer } from '../../game-core/utils'
+import { isParticipantPlayer } from '../../game-core/utils'
 
 /**
  * Builds a lobby event for the host, including game and player details.
@@ -27,11 +27,6 @@ export function buildGameLobbyHostEvent(
   const { randomizeQuestionOrder, randomizeAnswerOrder } = game.settings
   return {
     type: GameEventType.GameLobbyHost,
-    host: {
-      avatar: resolveGameAvatarSnapshot(
-        game.participants.find(isParticipantHost)?.avatar,
-      ),
-    },
     game: {
       id: game._id,
       pin: game.pin,
@@ -65,11 +60,6 @@ export function buildGameLobbyPlayerEvent(
   const { nickname } = player
   return {
     type: GameEventType.GameLobbyPlayer,
-    host: {
-      avatar: resolveGameAvatarSnapshot(
-        game.participants.find(isParticipantHost)?.avatar,
-      ),
-    },
     game: { name: game.name },
     player: { nickname, avatar: resolveGameAvatarSnapshot(player.avatar) },
     players: game.participants

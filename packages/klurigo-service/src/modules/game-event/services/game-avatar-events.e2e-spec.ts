@@ -208,7 +208,6 @@ describe('Game avatar event snapshots (e2e)', () => {
           viewer === 'host'
             ? GameEventType.GameLobbyHost
             : GameEventType.GameLobbyPlayer,
-        host: { avatar },
         players: [
           {
             nickname: player.nickname,
