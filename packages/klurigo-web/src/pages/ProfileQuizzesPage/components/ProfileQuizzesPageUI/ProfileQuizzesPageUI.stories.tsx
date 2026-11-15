@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -40,7 +41,11 @@ export const Default = {
         imageCoverURL: 'https://wallpaperaccess.com/full/157316.jpg',
         languageCode: LanguageCode.English,
         numberOfQuestions: 14,
-        author: { id: authorId, name: 'FrostyBear' },
+        author: {
+          id: authorId,
+          name: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 9,
           totalPlayerCount: 102,
@@ -61,7 +66,11 @@ export const Default = {
         category: QuizCategory.GeneralKnowledge,
         languageCode: LanguageCode.English,
         numberOfQuestions: 20,
-        author: { id: authorId, name: 'FrostyBear' },
+        author: {
+          id: authorId,
+          name: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 6,
           totalPlayerCount: 58,
@@ -82,7 +91,11 @@ export const Default = {
         category: QuizCategory.GeneralKnowledge,
         languageCode: LanguageCode.English,
         numberOfQuestions: 16,
-        author: { id: authorId, name: 'FrostyBear' },
+        author: {
+          id: authorId,
+          name: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 4,
           totalPlayerCount: 31,
@@ -103,7 +116,11 @@ export const Default = {
         category: QuizCategory.GeneralKnowledge,
         languageCode: LanguageCode.English,
         numberOfQuestions: 28,
-        author: { id: authorId, name: 'FrostyBear' },
+        author: {
+          id: authorId,
+          name: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 2,
           totalPlayerCount: 17,
@@ -124,7 +141,11 @@ export const Default = {
         category: QuizCategory.GeneralKnowledge,
         languageCode: LanguageCode.English,
         numberOfQuestions: 24,
-        author: { id: authorId, name: 'FrostyBear' },
+        author: {
+          id: authorId,
+          name: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 1,
           totalPlayerCount: 9,

@@ -46,7 +46,11 @@ const quizzes: DiscoveryQuizCardDto[] = Array.from(
     languageCode: LanguageCode.English,
     mode: GameMode.Classic,
     numberOfQuestions: 10 + index,
-    author: { id: 'user-1', name: 'FrostyBear' },
+    author: {
+      id: 'user-1',
+      name: 'FrostyBear',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
     gameplaySummary: {
       count: 12 + index,
       totalPlayerCount: 40 + index * 5,

@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom'
 
 import colors from '../../styles/colors.tokens.module.scss'
 import { CardInfoItem, CardMetaItem, MediaInfoCard } from '../MediaInfoCard'
+import PlayerAvatar from '../PlayerAvatar'
+
+import styles from './QuizDiscoveryCard.module.scss'
 
 /**
  * Props for the QuizDiscoveryCard component.
@@ -29,8 +32,13 @@ const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
   }
 
   const info = (
-    <CardInfoItem size="small" data-testid="info-author">
-      {quiz.author.name}
+    <CardInfoItem
+      size="small"
+      data-testid="info-author"
+      className={styles.author}
+      title={quiz.author.name}>
+      <PlayerAvatar avatar={quiz.author.avatar} size={24} alt="" />
+      <span className={styles.name}>{quiz.author.name}</span>
     </CardInfoItem>
   )
 

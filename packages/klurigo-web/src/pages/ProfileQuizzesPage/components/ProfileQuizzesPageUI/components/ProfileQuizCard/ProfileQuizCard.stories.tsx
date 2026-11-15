@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -23,7 +24,11 @@ const makeQuiz = (overrides?: Partial<QuizResponseDto>): QuizResponseDto => ({
   imageCoverURL: 'https://picsum.photos/seed/geo/400/250',
   languageCode: LanguageCode.English,
   numberOfQuestions: 20,
-  author: { id: 'author-1', name: 'GeoMaster' },
+  author: {
+    id: 'author-1',
+    name: 'GeoMaster',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 150,
     totalPlayerCount: 800,

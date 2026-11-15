@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
+import { DEFAULT_CRITTERS_AVATAR_V1 } from './avatar'
 import {
   DiscoveryQuizCardDto,
   DiscoveryResponseDto,
@@ -47,7 +48,11 @@ describe('DiscoveryQuizCardDto shape', () => {
     languageCode: LanguageCode.English,
     mode: GameMode.Classic,
     numberOfQuestions: 10,
-    author: { id: 'author-1', name: 'Alice' },
+    author: {
+      id: 'author-1',
+      name: 'Alice',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
     gameplaySummary: { count: 42, totalPlayerCount: 150 },
     ratingSummary: { stars: 4.5, comments: 8, total: 10 },
     created: new Date('2024-01-15T12:00:00Z'),

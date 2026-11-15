@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -25,7 +26,11 @@ const makeQuiz = (
   imageCoverURL: 'https://example.com/cover.jpg',
   languageCode: LanguageCode.English,
   numberOfQuestions: 14,
-  author: { id: 'author-1', name: 'Quiz author' },
+  author: {
+    id: 'author-1',
+    name: 'Quiz author',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 3,
     totalPlayerCount: 24,

@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -49,7 +50,11 @@ export const Default: Story = {
       languageCode: LanguageCode.English,
       visibility: QuizVisibility.Public,
       numberOfQuestions: 10 + i,
-      author: { id: 'author', name: 'Quiz creator' },
+      author: {
+        id: 'author',
+        name: 'Quiz creator',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       gameplaySummary: { count: 100 + i, totalPlayerCount: 200 + i },
       ratingSummary: { stars: 4.5, comments: 5, total: 10 },
       created: new Date(),

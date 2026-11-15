@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   DiscoverySectionKey,
   GameMode,
   LanguageCode,
@@ -22,7 +23,11 @@ const makeQuizzes = (count: number): DiscoveryQuizCardDto[] =>
     languageCode: LanguageCode.English,
     mode: GameMode.Classic,
     numberOfQuestions: 12 + i,
-    author: { id: `a-${i}`, name: `Author ${i + 1}` },
+    author: {
+      id: `a-${i}`,
+      name: `Author ${i + 1}`,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
     gameplaySummary: {
       count: 200 + i * 50,
       totalPlayerCount: 80 + i * 20,

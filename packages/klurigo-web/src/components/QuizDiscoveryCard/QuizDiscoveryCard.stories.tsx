@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   type DiscoveryQuizCardDto,
   GameMode,
   LanguageCode,
@@ -18,7 +19,11 @@ const sampleQuiz: DiscoveryQuizCardDto = {
   languageCode: LanguageCode.English,
   mode: GameMode.Classic,
   numberOfQuestions: 20,
-  author: { id: 'author-1', name: 'Jane Doe' },
+  author: {
+    id: 'author-1',
+    name: 'Jane Doe',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 1234,
     totalPlayerCount: 500,
@@ -30,7 +35,14 @@ const sampleQuiz: DiscoveryQuizCardDto = {
 const meta = {
   title: 'Components/QuizDiscoveryCard',
   component: QuizDiscoveryCard,
-  decorators: [withRouter],
+  decorators: [
+    withRouter,
+    (Story) => (
+      <div style={{ width: 'calc(100vw - 2rem)', maxWidth: 1024 }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'centered',
   },

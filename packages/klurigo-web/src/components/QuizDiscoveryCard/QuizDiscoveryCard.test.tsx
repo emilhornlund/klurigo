@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   type DiscoveryQuizCardDto,
   GameMode,
   LanguageCode,
@@ -8,6 +9,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import QuizDiscoveryCard from './QuizDiscoveryCard'
 
@@ -36,7 +39,11 @@ const makeQuiz = (
   languageCode: LanguageCode.English,
   mode: GameMode.Classic,
   numberOfQuestions: 15,
-  author: { id: 'author-1', name: 'Jane Doe' },
+  author: {
+    id: 'author-1',
+    name: 'Jane Doe',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 42,
     totalPlayerCount: 100,
@@ -47,6 +54,21 @@ const makeQuiz = (
 })
 
 describe('QuizDiscoveryCard', () => {
+  it('uses the supplied author design in the existing identity row', () => {
+    const avatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    render(
+      <MemoryRouter>
+        <QuizDiscoveryCard
+          quiz={makeQuiz({ author: { id: 'owner', name: 'Owner', avatar } })}
+        />
+      </MemoryRouter>,
+    )
+    expect(
+      screen.getByTestId('info-author').querySelector('img'),
+    ).toHaveAttribute('src', getCrittersAvatarV1DataUri(avatar))
+    expect(screen.getByText('Owner')).toBeVisible()
+  })
+
   beforeEach(() => {
     navigateMock.mockReset()
   })

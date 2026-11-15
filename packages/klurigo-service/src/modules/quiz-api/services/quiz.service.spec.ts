@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuestionMultiChoiceDto,
@@ -94,6 +95,7 @@ describe(QuizService.name, () => {
     author: {
       id: quiz.owner._id,
       name: quiz.owner.defaultNickname,
+      avatar: quiz.owner.avatar ?? DEFAULT_CRITTERS_AVATAR_V1,
     },
     gameplaySummary: {
       count: quiz.gameplaySummary.count,

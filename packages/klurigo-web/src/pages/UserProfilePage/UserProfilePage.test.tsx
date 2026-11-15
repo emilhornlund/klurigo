@@ -62,6 +62,7 @@ const makeQuiz = (overrides?: Partial<QuizResponseDto>): QuizResponseDto => ({
   author: {
     id: 'user-1',
     name: 'QuizMasterJane',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
   },
   gameplaySummary: {
     count: 24,
@@ -235,6 +236,7 @@ describe('UserProfilePage', () => {
       author: {
         id: 'user-1',
         name: 'QuizMasterJane',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       },
     })
 
