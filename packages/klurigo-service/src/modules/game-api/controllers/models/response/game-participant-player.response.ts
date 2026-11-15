@@ -23,6 +23,14 @@ export class GameParticipantPlayerResponse implements GameParticipantPlayerDto {
   @ApiPlayerNicknameProperty()
   nickname: string
 
-  @ApiProperty({ type: AvatarConfigurationResponse })
+  /**
+   * Accepted game-time avatar, resolving historical missing or unsupported metadata to the stable default.
+   */
+  @ApiProperty({
+    title: 'Avatar',
+    description:
+      'Accepted game-time avatar, with a stable default for historical missing or unsupported metadata.',
+    type: AvatarConfigurationResponse,
+  })
   avatar: AvatarConfigurationResponse
 }

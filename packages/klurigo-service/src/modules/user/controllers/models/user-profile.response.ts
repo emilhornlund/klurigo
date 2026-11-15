@@ -16,16 +16,9 @@ import {
 import { UserAvatarResponse } from './user-avatar.response'
 
 /**
- * Response returned after successful user creation.
+ * Response containing the authenticated account's profile and saved preferences.
  */
 export class UserProfileResponse implements UserProfileResponseDto {
-  /** The complete saved avatar, absent until explicitly saved. */
-  @ApiPropertyOptional({
-    description: 'Saved avatar configuration.',
-    type: UserAvatarResponse,
-  })
-  readonly avatar?: UserAvatarResponse
-
   /**
    * The user’s unique identifier.
    */
@@ -87,6 +80,17 @@ export class UserProfileResponse implements UserProfileResponseDto {
       'A nickname chosen by the user, must be 2 to 20 characters long and contain only letters, numbers, or underscores.',
   })
   readonly defaultNickname: string
+
+  /**
+   * Complete account avatar preference, absent until saved through settings or an accepted join.
+   */
+  @ApiPropertyOptional({
+    title: 'Avatar',
+    description:
+      'Complete account avatar preference saved through settings or an accepted join.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar?: UserAvatarResponse
 
   /**
    * The user’s authentication provider.

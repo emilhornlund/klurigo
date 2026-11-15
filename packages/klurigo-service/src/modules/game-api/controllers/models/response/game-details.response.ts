@@ -28,7 +28,11 @@ class GameParticipantIdentityResponse implements GameParticipantIdentityDto {
   readonly nickname?: string
 
   /** Resolved accepted metadata without private account properties. */
-  @ApiProperty({ type: AvatarConfigurationResponse })
+  @ApiProperty({
+    title: 'Avatar',
+    description: 'Accepted game-time avatar, with a stable historical default.',
+    type: AvatarConfigurationResponse,
+  })
   readonly avatar: AvatarConfigurationResponse
 }
 

@@ -12,13 +12,6 @@ import { UserAvatarResponse } from '../../../user/controllers/models'
  * Response returned when fetching a user's public profile.
  */
 export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
-  /** Saved avatar metadata only; no private account details are exposed. */
-  @ApiPropertyOptional({
-    description: 'Saved avatar configuration.',
-    type: UserAvatarResponse,
-  })
-  readonly avatar?: UserAvatarResponse
-
   /**
    * The user's unique identifier.
    */
@@ -36,6 +29,16 @@ export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
     description: 'Public nickname displayed for the user.',
   })
   readonly nickname: string
+
+  /**
+   * Public saved avatar metadata, absent when the account has no saved preference.
+   */
+  @ApiPropertyOptional({
+    title: 'Avatar',
+    description: 'Public saved avatar configuration, when available.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar?: UserAvatarResponse
 
   /**
    * The total number of public quizzes authored by the user.
