@@ -12,6 +12,10 @@
   object-fit: cover;
   border: controls.$control-border-width-outside solid
     colors.$color-border-glass-strong;
+  border-width: max(
+    controls.$control-border-width-outside,
+    calc(var(--avatar-intrinsic-size) / 48)
+  );
   background-color: colors.$color-surface-glass-default-start;
 
   @include helpers.mobile {

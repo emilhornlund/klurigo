@@ -3,7 +3,7 @@ import {
   DEFAULT_CRITTERS_AVATAR_V1,
   isCrittersAvatarConfigurationV1,
 } from '@klurigo/common'
-import { type FC, useMemo } from 'react'
+import { type CSSProperties, type FC, useMemo } from 'react'
 
 import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 import { classNames } from '../../utils/helpers'
@@ -45,6 +45,7 @@ const PlayerAvatar: FC<PlayerAvatarProps> = ({
       src={source}
       width={size}
       height={size}
+      style={{ '--avatar-intrinsic-size': `${size}px` } as CSSProperties}
       alt={alt}
       className={classNames(styles.avatar, className)}
     />

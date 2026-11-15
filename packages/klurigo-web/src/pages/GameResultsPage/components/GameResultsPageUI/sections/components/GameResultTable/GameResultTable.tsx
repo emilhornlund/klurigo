@@ -67,7 +67,7 @@ const GameResultTableRow: FC<TableItem> = ({
               <PlayerAvatar
                 avatar={avatar}
                 alt=""
-                size={32}
+                size={40}
                 className={styles.avatar}
               />
               <span className={styles.name}>{value}</span>
