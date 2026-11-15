@@ -1,4 +1,8 @@
-import { GameEventType, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -6,7 +10,14 @@ import PlayerResultState from './PlayerResultState'
 
 const meta = {
   component: PlayerResultState,
-  decorators: [withRouter],
+  decorators: [
+    withRouter,
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -22,6 +33,7 @@ export const Correct = {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'FrostyBear',
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
         score: {
           correct: true,
           last: 634,
@@ -32,6 +44,7 @@ export const Correct = {
         behind: {
           points: 123,
           nickname: 'WhiskerFox',
+          avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'blob', cheeks: null },
         },
       },
       pagination: {
@@ -175,6 +188,24 @@ export const ZeroToOneHundredIncorrect = {
       player: {
         nickname: 'FrostyBear',
         score: { correct: false, last: 20, total: 44, position: 7 },
+      },
+    },
+  },
+} satisfies Story
+
+/** Dense self/rival identities preserve score visibility on small screens. */
+export const LongIdentities = {
+  args: {
+    event: {
+      ...Correct.args.event,
+      player: {
+        ...Correct.args.event.player,
+        nickname: 'W'.repeat(20),
+        score: { ...Correct.args.event.player.score, total: 999999 },
+        behind: {
+          ...Correct.args.event.player.behind,
+          nickname: 'W'.repeat(20),
+        },
       },
     },
   },

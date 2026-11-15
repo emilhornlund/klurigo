@@ -1,4 +1,5 @@
 import type { GameParticipantPlayerDto } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -104,12 +105,14 @@ vi.mock('../../../../../components', () => ({
 
   NicknameChip: ({
     value,
+    avatar,
     variant,
     animationState,
     staggerDelay,
     onDelete,
   }: {
     value: string
+    avatar?: GameParticipantPlayerDto['avatar']
     variant?: 'subtle' | 'accent'
     animationState?: 'entrance' | 'exit' | 'shake' | 'none'
     staggerDelay?: number
@@ -117,6 +120,7 @@ vi.mock('../../../../../components', () => ({
   }) => (
     <div
       data-testid={`chip-${value}`}
+      data-avatar={JSON.stringify(avatar)}
       data-variant={variant}
       data-animation={animationState}
       data-delay={String(staggerDelay ?? 0)}>
@@ -224,6 +228,51 @@ describe('PlayerManagementModal', () => {
       'none',
     )
     expect(screen.getByTestId('chip-Alice')).toHaveAttribute('data-delay', '0')
+  })
+
+  it('keeps complete account/guest designs and legacy defaults associated with players after reopening', async () => {
+    const accountAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    const guestAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null }
+    const players = [
+      { ...makePlayer('account', 'Account'), avatar: accountAvatar },
+      { ...makePlayer('guest', 'Guest'), avatar: guestAvatar },
+      makePlayer('legacy', 'Legacy'),
+    ]
+    const getPlayers = vi
+      .fn()
+      .mockResolvedValueOnce(players)
+      .mockResolvedValueOnce([...players].reverse())
+    mockedUseGameContext.mockReturnValue({
+      getPlayers,
+      isFullscreenActive: false,
+      toggleFullscreen: vi.fn(),
+    })
+    const view = render(<PlayerManagementModal open />)
+    await screen.findByTestId('chip-Account')
+    for (const [nickname, avatar] of [
+      ['Account', accountAvatar],
+      ['Guest', guestAvatar],
+      ['Legacy', DEFAULT_CRITTERS_AVATAR_V1],
+    ] as const) {
+      expect(screen.getByTestId(`chip-${nickname}`)).toHaveAttribute(
+        'data-avatar',
+        JSON.stringify(avatar),
+      )
+    }
+
+    view.rerender(<PlayerManagementModal open={false} />)
+    view.rerender(<PlayerManagementModal open />)
+    await screen.findByTestId('chip-Account')
+    expect(screen.getByTestId('chip-Account')).toHaveAttribute(
+      'data-avatar',
+      JSON.stringify(accountAvatar),
+    )
+    expect(screen.getByTestId('chip-Guest')).toHaveAttribute(
+      'data-avatar',
+      JSON.stringify(guestAvatar),
+    )
+    expect(getPlayers).toHaveBeenCalledTimes(2)
+    expect(players[0].avatar).toBe(accountAvatar)
   })
 
   it('does not call getPlayers when open is false/undefined', () => {

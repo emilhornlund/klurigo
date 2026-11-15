@@ -248,10 +248,19 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 15 — Gameplay Player Lists
 
-**Status:** Planned · **Depends on:** 6, 7
+**Status:** Complete · **Depends on:** 6, 7
 
 - **Work:** Add avatars beside existing in-game player identities/lists outside the lobby, in host and participant views.
 - **Done when:** Lists retain snapshot identity through updates and reconnects without introducing new player/score visibility.
+- **Verified:** Existing player-management chips, player-start identity, result footer,
+  and player-ahead indicator use transported snapshots with stable fallbacks. Modal
+  reopening and score-update tests retain complete designs. All 2,312 web tests pass,
+  alongside types, lint, application/Storybook builds, and both real join flows;
+  the account flow verifies the active player-management image after host reload.
+  Chrome inspection covered desktop/tablet/mobile/320px, both result modes, reduced
+  motion, and removal-dialog focus return. Constrained layout fixes keep avatars,
+  long names, question counts, and scores contained. No relevant console errors or
+  failed avatar resources were observed.
 
 ### Phase 16 — Leaderboard Display
 

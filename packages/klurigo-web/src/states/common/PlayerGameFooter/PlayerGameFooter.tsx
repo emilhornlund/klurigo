@@ -1,8 +1,9 @@
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
 import type { FC } from 'react'
 
-import { Typography } from '../../../components'
+import { PlayerAvatar, Typography } from '../../../components'
 import GameFooterShell from '../GameFooterShell'
 
 import styles from './PlayerGameFooter.module.scss'
@@ -11,6 +12,8 @@ export interface PlayerGameFooterProps {
   currentQuestion: number
   totalQuestions: number
   nickname: string
+  /** Accepted self identity from the current game event; absent on legacy events. */
+  avatar?: CrittersAvatarConfigurationV1
   totalScore?: number
 }
 
@@ -18,6 +21,7 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
   currentQuestion,
   totalQuestions,
   nickname,
+  avatar,
   totalScore,
 }) => (
   <GameFooterShell
@@ -30,9 +34,23 @@ const PlayerGameFooter: FC<PlayerGameFooterProps> = ({
       </>
     }
     center={
-      <Typography variant="body2" align="center" color="inverse" noOpacity bold>
-        {nickname}
-      </Typography>
+      <div className={styles.identity}>
+        <PlayerAvatar
+          avatar={avatar}
+          alt=""
+          size={36}
+          className={styles.avatar}
+        />
+        <Typography
+          variant="body2"
+          align="center"
+          color="inverse"
+          noOpacity
+          bold
+          truncate>
+          {nickname}
+        </Typography>
+      </div>
     }
     trailing={
       totalScore === undefined ? null : (

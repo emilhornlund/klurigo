@@ -101,6 +101,17 @@ covered desktop/tablet/mobile/320px, reduced motion, and leave-dialog focus retu
 Both real guest/account join flows compare exact participant images after reload;
 53 focused lobby/chip/avatar tests, types, lint, and both frontend builds pass.
 
+Phase 15 adds snapshots to the existing active-game player-management chips,
+player-start identity, result footer, and player-ahead indicator. The supplied
+game identity remains associated with its player through modal reopening,
+score changes, and reconnects. Missing metadata uses the stable renderer default.
+Constrained flex sections and bounded ranking details prevent long names from
+pushing avatars or scores off-screen. Existing player/score visibility is retained.
+Verification includes all 2,312 web tests, types, lint, application/Storybook builds,
+both real join flows, and active player-management image equality after host reload.
+Chrome inspection covered desktop/tablet/mobile/320px, both result modes, reduced
+motion, and nested removal-dialog dismissal/focus return.
+
 ## Review Corrections
 
 The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.

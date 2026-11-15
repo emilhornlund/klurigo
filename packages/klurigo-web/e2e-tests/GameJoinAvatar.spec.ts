@@ -215,6 +215,21 @@ for (const account of [false, true]) {
         await expect(host.getByText('0 / 20', { exact: true })).toBeVisible()
       }
       if (account) {
+        await host.getByRole('button', { name: 'Start', exact: true }).click()
+        await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
+        await host.locator('#settings-button').click({ timeout: 30_000 })
+        await host.getByRole('button', { name: 'Players', exact: true }).click()
+        await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
+        await host
+          .getByRole('button', { name: 'Close dialog', exact: true })
+          .click()
+        await host.reload()
+        await host.locator('#settings-button').click({ timeout: 30_000 })
+        await host.getByRole('button', { name: 'Players', exact: true }).click()
+        await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
+        await host
+          .getByRole('button', { name: 'Close dialog', exact: true })
+          .click()
         await host.goto(
           `/quiz/details/${E2E_USERS.tester02.quizzes.classic.id}`,
         )

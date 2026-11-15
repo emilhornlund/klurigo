@@ -45,7 +45,7 @@ const PlayerResultState: FC<PlayerResultStateProps> = ({ event }) => (
 
 const PlayerResultPresentation: FC<PlayerResultStateProps> = ({ event }) => {
   const { mode } = event.game
-  const { nickname, score, behind } = event.player
+  const { nickname, avatar, score, behind } = event.player
   const { correct, last: lastScore, total: totalScore, position } = score
   const partiallyCorrect =
     mode === GameMode.Classic && !correct && lastScore > 0
@@ -99,6 +99,7 @@ const PlayerResultPresentation: FC<PlayerResultStateProps> = ({ event }) => {
           currentQuestion={currentQuestion}
           totalQuestions={totalQuestions}
           nickname={nickname}
+          avatar={avatar}
           totalScore={totalScore}
         />
       }>
