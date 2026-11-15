@@ -400,6 +400,36 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/players (POST)', () => {
+    it('persists accepted nickname and avatar preferences through the registered listener', async () => {
+      const game = await gameModel.create(createMockGameDocument())
+      const avatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null }
+      const token = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/players`)
+        .set(createBearerAuthHeader(token))
+        .send({ nickname: 'NewPreference', avatar })
+        .expect(204)
+
+      // Join preferences use the existing asynchronous, best-effort event boundary.
+      let account = await userModel.findById(playerUser._id).lean()
+      for (
+        let attempt = 0;
+        attempt < 50 && account?.defaultNickname !== 'NewPreference';
+        attempt++
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 20))
+        account = await userModel.findById(playerUser._id).lean()
+      }
+      expect(account?.defaultNickname).toBe('NewPreference')
+      expect(account?.avatar).toEqual(avatar)
+    })
+
     it('preserves unsupported stored snapshots when another participant joins', async () => {
       const game = await gameModel.create(
         createMockGameDocument({
