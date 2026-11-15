@@ -102,6 +102,7 @@ test.describe('Game session: host UI with simulated players', () => {
       expect(playerQuestion.pagination).toEqual({ current: 1, total: 1 })
       expect(playerQuestion.player).toEqual({
         nickname: playerNickname,
+        avatar: gamePlayer.avatar,
         score: { total: 0 },
       })
       expect(hostPreview.question).toEqual({
@@ -353,10 +354,12 @@ test.describe('Game session: host UI with simulated players', () => {
       expect(incorrectQuestion.pagination).toEqual({ current: 1, total: 1 })
       expect(correctQuestion.player).toEqual({
         nickname: correctPlayerNickname,
+        avatar: correctPlayer.avatar,
         score: { total: 0 },
       })
       expect(incorrectQuestion.player).toEqual({
         nickname: incorrectPlayerNickname,
+        avatar: incorrectPlayer.avatar,
         score: { total: 0 },
       })
       expect(hostPreview.question).toEqual({

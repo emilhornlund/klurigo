@@ -171,6 +171,7 @@ describe('PublicUserController (e2e)', () => {
             id: targetUser._id,
             nickname: targetUser.defaultNickname,
             quizzesCount: 2,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             hostedGamesCount: 1,
             playedGamesCount: 1,
             createdAt: joinedAt.toISOString(),
@@ -280,6 +281,7 @@ describe('PublicUserController (e2e)', () => {
             author: {
               id: targetUser._id,
               name: targetUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             gameplaySummary: {
               count: 0,

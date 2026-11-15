@@ -21,6 +21,7 @@ import styles from './UserProfilePageUI.stories.module.scss'
 const profile: PublicUserProfileResponseDto = {
   id: 'user-1',
   nickname: 'FrostyBear',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
   quizzesCount: 10,
   hostedGamesCount: 18,
   playedGamesCount: 42,

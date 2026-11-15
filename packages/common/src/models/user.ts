@@ -65,6 +65,9 @@ export interface CreateUserResponseDto {
    */
   readonly defaultNickname: string
 
+  /** Complete initial avatar, using the stable default until a preference is saved. */
+  readonly avatar: CrittersAvatarConfigurationV1
+
   /**
    * Timestamp when the user was created (ISO 8601 string).
    */
@@ -80,9 +83,6 @@ export interface CreateUserResponseDto {
  * DTO for retrieving a user’s profile.
  */
 export interface UserProfileResponseDto {
-  /** Complete saved avatar; absent until the user explicitly saves a design. */
-  readonly avatar?: CrittersAvatarConfigurationV1
-
   /**
    * The user’s unique identifier (UUID).
    */
@@ -113,6 +113,9 @@ export interface UserProfileResponseDto {
    */
   readonly defaultNickname: string
 
+  /** Complete avatar preference, using the stable default when stored metadata is missing or unsupported. */
+  readonly avatar: CrittersAvatarConfigurationV1
+
   /**
    * The user’s authentication provider.
    */
@@ -133,9 +136,6 @@ export interface UserProfileResponseDto {
  * DTO for retrieving a user's public profile summary.
  */
 export interface PublicUserProfileResponseDto {
-  /** Saved public avatar metadata; absent for accounts without a saved design. */
-  readonly avatar?: CrittersAvatarConfigurationV1
-
   /**
    * The user's unique identifier (UUID).
    */
@@ -145,6 +145,9 @@ export interface PublicUserProfileResponseDto {
    * The public nickname displayed for the user.
    */
   readonly nickname: string
+
+  /** Complete public avatar, using the stable default when stored metadata is missing or unsupported. */
+  readonly avatar: CrittersAvatarConfigurationV1
 
   /**
    * The total number of public quizzes authored by the user.

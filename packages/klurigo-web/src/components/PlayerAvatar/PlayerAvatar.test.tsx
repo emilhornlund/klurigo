@@ -16,7 +16,7 @@ describe('PlayerAvatar display', () => {
       const before = JSON.stringify(avatar)
       render(
         <PlayerAvatar
-          avatar={avatar as CrittersAvatarConfigurationV1 | undefined}
+          avatar={avatar as unknown as CrittersAvatarConfigurationV1}
           alt="Player"
           size={32}
         />,

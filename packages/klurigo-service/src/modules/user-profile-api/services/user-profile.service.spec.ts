@@ -91,6 +91,7 @@ describe('UserProfileService', () => {
         id: userId,
         email: 'user@example.com',
         defaultNickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         authProvider: AuthProvider.Local,
         created: createdAt,
         updated: createdAt,
@@ -104,6 +105,7 @@ describe('UserProfileService', () => {
       await expect(service.findPublicUserProfile(userId)).resolves.toEqual({
         id: userId,
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         quizzesCount: 7,
         hostedGamesCount: 11,
         playedGamesCount: 19,
@@ -197,6 +199,7 @@ describe('UserProfileService', () => {
             author: {
               id: userId,
               name: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             gameplaySummary: {
               count: 4,

@@ -5,6 +5,7 @@ import {
   faLightbulb,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons'
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import {
   type FC,
   type ReactNode,
@@ -148,8 +149,8 @@ const Page: FC<PageProps> = ({
   const accessToken = user?.ACCESS?.token
   const avatar =
     userId && currentUser?.id === userId
-      ? (currentUser?.avatar ?? undefined)
-      : undefined
+      ? (currentUser.avatar ?? DEFAULT_CRITTERS_AVATAR_V1)
+      : DEFAULT_CRITTERS_AVATAR_V1
   const hydratedToken = useRef<string | undefined>(undefined)
 
   // Older persisted snapshots predate avatar support. Hydrate once without

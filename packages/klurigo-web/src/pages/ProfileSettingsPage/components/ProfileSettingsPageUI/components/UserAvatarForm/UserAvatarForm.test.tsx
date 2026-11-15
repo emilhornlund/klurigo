@@ -11,7 +11,7 @@ import UserAvatarForm from './UserAvatarForm'
 describe('UserAvatarForm', () => {
   it('can explicitly save the first starter without changing any choices', async () => {
     const save = vi.fn().mockResolvedValue(DEFAULT_CRITTERS_AVATAR_V1)
-    render(<UserAvatarForm onSave={save} />)
+    render(<UserAvatarForm value={DEFAULT_CRITTERS_AVATAR_V1} onSave={save} />)
     await userEvent.click(screen.getByRole('button', { name: 'Save avatar' }))
     await waitFor(() =>
       expect(save).toHaveBeenCalledWith(DEFAULT_CRITTERS_AVATAR_V1),

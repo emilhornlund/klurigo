@@ -155,9 +155,7 @@ const ProfileSettingsPage: FC = () => {
                   defaultNickname,
                   authProvider,
                   avatar:
-                    previous?.id === id
-                      ? (previous.avatar ?? null)
-                      : (updated.avatar ?? null),
+                    previous?.id === id ? previous.avatar : updated.avatar,
                 },
           )
         })

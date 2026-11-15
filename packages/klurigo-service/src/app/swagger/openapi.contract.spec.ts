@@ -158,12 +158,19 @@ describe('generated OpenAPI contract', () => {
     await app?.close()
   })
 
-  it('adds only optional avatar metadata to the authenticated public profile schema', () => {
+  it('requires resolved avatars in account creation, account profiles, and public profiles', () => {
+    for (const name of [
+      'CreateUserResponse',
+      'UserProfileResponse',
+      'PublicUserProfileResponse',
+    ]) {
+      expect(getSchema(document, name).required).toContain('avatar')
+    }
     const schema = getSchema(document, 'PublicUserProfileResponse')
     expect(JSON.stringify(schema.properties?.avatar)).toContain(
       'UserAvatarResponse',
     )
-    expect(schema.required).not.toContain('avatar')
+    expect(schema.required).toContain('avatar')
     for (const field of [
       'email',
       'unverifiedEmail',

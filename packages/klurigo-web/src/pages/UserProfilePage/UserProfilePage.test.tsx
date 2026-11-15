@@ -43,6 +43,7 @@ import UserProfilePage from './UserProfilePage'
 const profile: PublicUserProfileResponseDto = {
   id: 'user-1',
   nickname: 'QuizMasterJane',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
   quizzesCount: 7,
   hostedGamesCount: 11,
   playedGamesCount: 23,

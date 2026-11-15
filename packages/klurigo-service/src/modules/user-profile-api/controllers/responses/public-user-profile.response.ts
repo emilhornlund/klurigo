@@ -1,5 +1,5 @@
 import { PublicUserProfileResponseDto } from '@klurigo/common'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 
 import {
   ApiDateTimeProperty,
@@ -31,14 +31,15 @@ export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
   readonly nickname: string
 
   /**
-   * Public saved avatar metadata, absent when the account has no saved preference.
+   * Complete public avatar, with the stable default for missing or unsupported stored metadata.
    */
-  @ApiPropertyOptional({
+  @ApiProperty({
     title: 'Avatar',
-    description: 'Public saved avatar configuration, when available.',
+    description:
+      'Complete public avatar, with the stable default for missing or unsupported stored metadata.',
     type: UserAvatarResponse,
   })
-  readonly avatar?: UserAvatarResponse
+  readonly avatar: UserAvatarResponse
 
   /**
    * The total number of public quizzes authored by the user.

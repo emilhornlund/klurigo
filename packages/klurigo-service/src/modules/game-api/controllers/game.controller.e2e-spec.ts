@@ -2563,7 +2563,7 @@ describe('GameController (e2e)', () => {
         const previousQuestion = updated?.previousTasks.find(
           (previousTask) => previousTask._id === task._id,
         ) as QuestionTaskWithBase
-        expect(previousQuestion).toEqual(
+        expect(toPlain(previousQuestion)).toEqual(
           expect.objectContaining({
             _id: task._id,
             type: TaskType.Question,
@@ -4610,6 +4610,7 @@ function buildCorrectQuestionResultTaskItem(
     type: options.answer.type,
     playerId: options.user._id,
     nickname: options.user.defaultNickname,
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     answer: {
       type: options.answer.type,
       playerId: options.user._id,
@@ -4648,6 +4649,7 @@ function buildIncorrectQuestionResultTaskItem(
     type: options.answer.type,
     playerId: options.user._id,
     nickname: options.user.defaultNickname,
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     answer: {
       type: options.answer.type,
       playerId: options.user._id,

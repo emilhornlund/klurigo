@@ -46,6 +46,7 @@ type Story = StoryObj<typeof meta>
 export const Default = {
   args: {
     authProvider: AuthProvider.Local,
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     onChangeAvatar: async (avatar) => avatar,
     values: {
       email: '',
@@ -65,6 +66,7 @@ export const Default = {
 export const UnverifiedEmail = {
   args: {
     authProvider: AuthProvider.Local,
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     onChangeAvatar: async (avatar) => avatar,
     values: {
       email: 'user@example.com',

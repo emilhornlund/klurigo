@@ -113,6 +113,7 @@ test.describe('Game session: Classic True/False', () => {
       expect(playerQuestion.pagination).toEqual({ current: 1, total: 1 })
       expect(playerQuestion.player).toEqual({
         nickname: playerNickname,
+        avatar: gamePlayer.avatar,
         score: { total: 0 },
       })
       expect(playerQuestion.question).toEqual(

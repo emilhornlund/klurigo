@@ -1,4 +1,7 @@
-import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
+import {
+  type CrittersAvatarConfigurationV1,
+  DEFAULT_CRITTERS_AVATAR_V1,
+} from '@klurigo/common'
 import type { CSSProperties, FC } from 'react'
 import { useState } from 'react'
 
@@ -13,8 +16,8 @@ import styles from './Podium.module.scss'
 export interface PodiumValue {
   position: number
   nickname?: string
-  /** Accepted winner design; missing metadata uses the stable default. */
-  avatar?: CrittersAvatarConfigurationV1
+  /** Complete resolved winner design. */
+  avatar: CrittersAvatarConfigurationV1
   score?: number
 }
 
@@ -137,14 +140,14 @@ const Podium: FC<PodiumProps> = ({ values }) => {
       <Stack
         position={2}
         nickname={values?.[1]?.nickname}
-        avatar={values?.[1]?.avatar}
+        avatar={values[1]?.avatar ?? DEFAULT_CRITTERS_AVATAR_V1}
         score={values?.[1]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(1))}
       />
       <Stack
         position={1}
         nickname={values?.[0]?.nickname}
-        avatar={values?.[0]?.avatar}
+        avatar={values[0]?.avatar ?? DEFAULT_CRITTERS_AVATAR_V1}
         score={values?.[0]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(0))}
         onReveal={() => setWinnerRevealed(true)}
@@ -152,7 +155,7 @@ const Podium: FC<PodiumProps> = ({ values }) => {
       <Stack
         position={3}
         nickname={values?.[2]?.nickname}
-        avatar={values?.[2]?.avatar}
+        avatar={values[2]?.avatar ?? DEFAULT_CRITTERS_AVATAR_V1}
         score={values?.[2]?.score}
         animationIndex={Math.max(0, revealOrder.indexOf(2))}
       />

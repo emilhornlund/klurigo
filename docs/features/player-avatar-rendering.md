@@ -66,9 +66,9 @@ values to a complete supported design. No backfill or read-time rewrite is
 performed. Version-tolerant snapshot storage also prevents unrelated game
 updates from failing on an older or unsupported avatar.
 
-Account profile responses may omit the saved preference. The renderer displays
-the starter without creating a saved preference. The settings editor protects
-unsupported saved metadata from accidental replacement.
+Every identity response includes a complete avatar, including account creation,
+account profiles, and public profiles. Missing or unsupported stored preferences
+return the stable default without creating or rewriting a saved preference.
 
 ## Account Settings And Public Profiles
 
@@ -89,8 +89,8 @@ unmounting. Failed saves retain the exact draft for retry. Details saves retain
 a newer avatar rather than restoring stale response metadata. Current-user
 hydration cannot overwrite a newer save or restore a cleared account.
 
-`GET /api/profile/user` exposes the account preference when present.
-`GET /api/users/:userId/profile` exposes optional saved avatar metadata alongside
+`GET /api/profile/user` exposes the resolved account avatar.
+`GET /api/users/:userId/profile` exposes the resolved avatar alongside
 the existing public nickname and statistics. Public responses do not include
 email, private names, or authentication-provider details; their existing scope
 and authority requirements remain in place.
@@ -99,9 +99,10 @@ The profile summary uses responsive 96px/112px/128px portraits.
 Desktop/tablet navigation displays the current account's avatar in its profile
 button. The Profile menu entry includes a 32px avatar, while mobile retains the
 hamburger trigger. Navigation verifies the cached account ID before using its
-avatar. Confirmed absence is stored as null in the local current-user snapshot;
-older snapshots without the field are hydrated through the existing profile
-request. Avatar images retain their colors instead of receiving icon filters.
+avatar. Newly hydrated current-user snapshots always contain the resolved
+configuration; older snapshots without the field are hydrated through the
+existing profile request. Avatar images retain their colors instead of receiving
+icon filters.
 
 ## Joining And Account Preferences
 

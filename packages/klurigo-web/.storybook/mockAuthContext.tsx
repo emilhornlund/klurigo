@@ -1,4 +1,9 @@
-import { Authority, AuthProvider, GameParticipantType } from '@klurigo/common'
+import {
+  Authority,
+  AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+} from '@klurigo/common'
 import type { Decorator } from '@storybook/react'
 import { type FC, type ReactNode, useContext } from 'react'
 
@@ -71,7 +76,7 @@ const MockAuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           email: 'storybook@example.com',
           defaultNickname: 'Storybook player',
           authProvider: AuthProvider.Local,
-          avatar: null,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
       }
 

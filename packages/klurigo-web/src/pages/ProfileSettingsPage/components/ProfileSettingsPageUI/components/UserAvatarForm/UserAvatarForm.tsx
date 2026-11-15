@@ -124,9 +124,7 @@ const UserAvatarForm: FC<UserAvatarFormProps> = ({
                 intent="accent"
                 icon={faFloppyDisk}
                 loading={busy}
-                disabled={
-                  busy || (value !== undefined && deepEqual(draft, persisted))
-                }>
+                disabled={busy}>
                 Save avatar
               </Button>
             </div>

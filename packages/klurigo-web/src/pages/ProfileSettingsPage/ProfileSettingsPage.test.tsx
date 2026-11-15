@@ -17,11 +17,11 @@ type Profile = {
   familyName?: string
   defaultNickname: string
   authProvider: AuthProvider
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
 }
 
 type ProfileSettingsPageUIProps = {
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
   onChangeAvatar: (
     avatar: CrittersAvatarConfigurationV1,
   ) => Promise<CrittersAvatarConfigurationV1>
@@ -118,6 +118,7 @@ const localProfile: Profile = {
   familyName: 'Doe',
   defaultNickname: 'QuizFox',
   authProvider: AuthProvider.Local,
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
 }
 
 describe('ProfileSettingsPage', () => {
@@ -174,7 +175,7 @@ describe('ProfileSettingsPage', () => {
     })
     const updateSnapshot = h.setCurrentUser.mock.calls[0][0]
     expect(updateSnapshot(undefined)).toEqual({
-      avatar: null,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
       id: localProfile.id,
       email: localProfile.email,
       unverifiedEmail: localProfile.unverifiedEmail,

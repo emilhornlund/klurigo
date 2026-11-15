@@ -4,6 +4,7 @@ import {
   CreateUserResponseDto,
   CrittersAvatarConfigurationV1,
   generateNickname,
+  resolveGameAvatarSnapshot,
   UpdateGoogleUserProfileRequestDto,
   UserProfileResponseDto,
 } from '@klurigo/common'
@@ -229,27 +230,7 @@ export class UserService {
       userId,
       { avatar },
     )
-    return UserService.toAvatarResponse(updated.avatar!)
-  }
-
-  /** Explicit mapping avoids leaking Mongoose subdocument internals. */
-  private static toAvatarResponse(
-    avatar: CrittersAvatarConfigurationV1,
-  ): CrittersAvatarConfigurationV1 {
-    return {
-      version: avatar.version,
-      style: avatar.style,
-      artworkVersion: avatar.artworkVersion,
-      body: avatar.body,
-      top: avatar.top,
-      eyes: avatar.eyes,
-      mouth: avatar.mouth,
-      pattern: avatar.pattern,
-      cheeks: avatar.cheeks,
-      bodyColor: avatar.bodyColor,
-      accentColor: avatar.accentColor,
-      backgroundColor: avatar.backgroundColor,
-    }
+    return resolveGameAvatarSnapshot(updated.avatar)
   }
 
   /**
@@ -662,6 +643,7 @@ export class UserService {
       givenName,
       familyName,
       defaultNickname,
+      avatar: resolveGameAvatarSnapshot(createdUser.avatar),
       created: createdAt,
       updated: updatedAt,
     }
@@ -689,15 +671,13 @@ export class UserService {
     } = user
 
     return {
-      ...(user.avatar
-        ? { avatar: UserService.toAvatarResponse(user.avatar) }
-        : {}),
       id,
       email,
       unverifiedEmail,
       givenName,
       familyName,
       defaultNickname,
+      avatar: resolveGameAvatarSnapshot(user.avatar),
       authProvider,
       created,
       updated,

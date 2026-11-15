@@ -82,15 +82,15 @@ export class UserProfileResponse implements UserProfileResponseDto {
   readonly defaultNickname: string
 
   /**
-   * Complete account avatar preference, absent until saved through settings or an accepted join.
+   * Complete account avatar preference, with the stable default for missing or unsupported stored metadata.
    */
-  @ApiPropertyOptional({
+  @ApiProperty({
     title: 'Avatar',
     description:
-      'Complete account avatar preference saved through settings or an accepted join.',
+      'Complete account avatar preference, with the stable default for missing or unsupported stored metadata.',
     type: UserAvatarResponse,
   })
-  readonly avatar?: UserAvatarResponse
+  readonly avatar: UserAvatarResponse
 
   /**
    * The user’s authentication provider.

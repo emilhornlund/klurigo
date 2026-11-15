@@ -51,6 +51,7 @@ const PROFILE_A = {
   email: 'a@example.com',
   unverifiedEmail: undefined as string | undefined,
   defaultNickname: 'Alpha',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
 }
 
 const PROFILE_B = {
@@ -58,6 +59,7 @@ const PROFILE_B = {
   email: 'b@example.com',
   unverifiedEmail: 'b@pending.com',
   defaultNickname: 'Beta',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
 }
 
 // --- Tests -------------------------------------------------------------------
@@ -159,7 +161,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
+      expect(getCtx().currentUser).toEqual(PROFILE_A)
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
     expect(getUserProfileMock).toHaveBeenCalledWith('token-1')
@@ -179,7 +181,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
+      expect(getCtx().currentUser).toEqual(PROFILE_A)
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
   })
@@ -193,7 +195,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
+      expect(getCtx().currentUser).toEqual(PROFILE_A)
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(1)
 
@@ -205,7 +207,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
+      expect(getCtx().currentUser).toEqual(PROFILE_A)
     })
 
     expect(getUserProfileMock).toHaveBeenCalledTimes(2)
@@ -225,7 +227,7 @@ describe('UserContextProvider', () => {
     })
 
     await waitFor(() => {
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_B, avatar: null })
+      expect(getCtx().currentUser).toEqual(PROFILE_B)
     })
     expect(getUserProfileMock).toHaveBeenCalledTimes(2)
     expect(getUserProfileMock).toHaveBeenCalledWith('tA')
@@ -240,9 +242,7 @@ describe('UserContextProvider', () => {
     await act(async () => {
       await getCtx().fetchCurrentUser('ok')
     })
-    await waitFor(() =>
-      expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null }),
-    )
+    await waitFor(() => expect(getCtx().currentUser).toEqual(PROFILE_A))
 
     // Now fail a fetch and ensure it clears.
     getUserProfileMock.mockRejectedValueOnce(new Error('boom'))
@@ -274,6 +274,6 @@ describe('UserContextProvider', () => {
       await Promise.all([p1, p2])
     })
 
-    expect(getCtx().currentUser).toEqual({ ...PROFILE_A, avatar: null })
+    expect(getCtx().currentUser).toEqual(PROFILE_A)
   })
 })

@@ -1,17 +1,16 @@
-import type {
-  CrittersAvatarConfigurationV1,
-  UserProfileResponseDto,
-} from '@klurigo/common'
+import type { UserProfileResponseDto } from '@klurigo/common'
 import { createContext, type Dispatch, type SetStateAction } from 'react'
 
 /** Account-scoped snapshot used by navigation; never contains the full profile. */
 export type CurrentUserProfile = Pick<
   UserProfileResponseDto,
-  'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
-> & {
-  /** Undefined identifies a legacy snapshot; null records a confirmed missing avatar. */
-  readonly avatar?: CrittersAvatarConfigurationV1 | null
-}
+  | 'id'
+  | 'email'
+  | 'unverifiedEmail'
+  | 'defaultNickname'
+  | 'authProvider'
+  | 'avatar'
+>
 
 /**
  * The shape of the user context.

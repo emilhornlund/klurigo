@@ -21,6 +21,7 @@ test('account avatar saves exactly, survives a fresh session, and retains failed
     },
   })
   expect(created.status()).toBe(201)
+  expect((await created.json()).avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
   const external: string[] = []
   await page.route(
     /https?:\/\/([^/]*dicebear\.com|cdn\.hopjs\.net)\//,
@@ -34,6 +35,15 @@ test('account avatar saves exactly, survives a fresh session, and retains failed
   await expect(
     page.getByRole('heading', { name: 'Avatar', exact: true }),
   ).toBeVisible()
+  const defaultSaveResponse = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/profile/user/avatar') &&
+      response.request().method() === 'PUT',
+  )
+  await page.getByRole('button', { name: 'Save avatar' }).click()
+  expect(await (await defaultSaveResponse).json()).toEqual(
+    DEFAULT_CRITTERS_AVATAR_V1,
+  )
   await page.getByPlaceholder('Default Nickname').fill('UnsavedNickname')
   await page.getByText('Block', { exact: true }).click()
   const savedResponse = page.waitForResponse(

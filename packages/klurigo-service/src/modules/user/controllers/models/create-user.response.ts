@@ -3,7 +3,7 @@ import {
   FAMILY_NAME_REGEX,
   GIVEN_NAME_REGEX,
 } from '@klurigo/common'
-import { ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import {
   ApiDateTimeProperty,
@@ -11,6 +11,8 @@ import {
   ApiNicknameProperty,
   ApiUuidProperty,
 } from '../../../../app/swagger'
+
+import { UserAvatarResponse } from './user-avatar.response'
 
 /**
  * Response returned after successful user creation.
@@ -77,6 +79,17 @@ export class CreateUserResponse implements CreateUserResponseDto {
       'A nickname chosen by the player, must be 2 to 20 characters long and contain only letters, numbers, or underscores.',
   })
   readonly defaultNickname: string
+
+  /**
+   * Complete initial avatar, using the stable default until a preference is saved.
+   */
+  @ApiProperty({
+    title: 'Avatar',
+    description:
+      'Complete initial avatar, using the stable default until a preference is saved.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar: UserAvatarResponse
 
   /**
    * ISO 8601 timestamp when the user was created.

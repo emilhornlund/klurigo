@@ -36,7 +36,11 @@ describe('GamePlayerClient', () => {
 
     await expect(
       client.authenticateAndJoin({ gamePIN: '123456' }, 'Ada'),
-    ).resolves.toEqual({ gameId: GAME_ID, participantId: PLAYER_ID })
+    ).resolves.toEqual({
+      gameId: GAME_ID,
+      participantId: PLAYER_ID,
+      avatar: client.avatar,
+    })
     await client.submitAnswer({
       type: QuestionType.MultiChoice,
       optionIndex: 2,
@@ -87,6 +91,7 @@ describe('GamePlayerClient', () => {
     }
     expect(joined.nickname).toBe('Ada')
     expect(isCrittersAvatarConfigurationV1(joined.avatar)).toBe(true)
+    expect(joined.avatar).toEqual(client.avatar)
     expect(Object.keys(joined)).toEqual(['nickname', 'avatar'])
 
     client.close()

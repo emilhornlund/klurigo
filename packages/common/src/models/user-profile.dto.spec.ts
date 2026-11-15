@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
+import { DEFAULT_CRITTERS_AVATAR_V1 } from './avatar'
 import type { UserQuizzesPageFilterDto } from './quiz.dto'
 import type { PublicUserProfileResponseDto } from './user'
 
@@ -7,6 +8,7 @@ describe('PublicUserProfileResponseDto shape', () => {
   const response: PublicUserProfileResponseDto = {
     id: 'user-1',
     nickname: 'QuizMaster',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     quizzesCount: 12,
     hostedGamesCount: 34,
     playedGamesCount: 56,

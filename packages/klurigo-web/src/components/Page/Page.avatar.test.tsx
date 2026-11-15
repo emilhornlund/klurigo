@@ -128,15 +128,18 @@ describe('Page avatar navigation', () => {
       email: snapshot.email,
       defaultNickname: snapshot.defaultNickname,
       authProvider: snapshot.authProvider,
-    }
+    } as unknown as CurrentUserProfile
     const view = renderNavigation(legacy)
     expect(view.fetchCurrentUser).toHaveBeenCalledWith('access-token')
     view.rerender(view.content({ ...legacy }))
     expect(view.fetchCurrentUser).toHaveBeenCalledTimes(1)
   })
 
-  it('displays the default Critter for confirmed absence without repeated hydration', () => {
-    const view = renderNavigation({ ...snapshot, avatar: null })
+  it('displays the resolved default Critter without repeated hydration', () => {
+    const view = renderNavigation({
+      ...snapshot,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    })
     expect(view.fetchCurrentUser).not.toHaveBeenCalled()
     expect(
       screen.getByRole('button', { name: 'Profile' }).querySelector('img'),

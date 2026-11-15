@@ -100,7 +100,7 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
               unverifiedEmail,
               defaultNickname,
               authProvider,
-              avatar: avatar ?? null,
+              avatar,
             })
             setUser({ id, email, username: defaultNickname })
             setContext('auth', { provider: authProvider })

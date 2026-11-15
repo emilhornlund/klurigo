@@ -1,4 +1,4 @@
-import { AuthProvider } from '@klurigo/common'
+import { AuthProvider, DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
@@ -14,6 +14,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Local}
           onChangeAvatar={async (avatar) => avatar}
           values={{
@@ -39,6 +40,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Google}
           onChangeAvatar={async (avatar) => avatar}
           values={{
@@ -64,6 +66,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Local}
           onChangeAvatar={async (avatar) => avatar}
           values={{
@@ -89,6 +92,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Google}
           onChangeAvatar={async (avatar) => avatar}
           values={{
@@ -114,6 +118,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Local}
           onChangeAvatar={async (avatar) => avatar}
           values={{
@@ -139,6 +144,7 @@ describe('ProfileSettingsPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileSettingsPageUI
+          avatar={DEFAULT_CRITTERS_AVATAR_V1}
           authProvider={AuthProvider.Google}
           onChangeAvatar={async (avatar) => avatar}
           values={{

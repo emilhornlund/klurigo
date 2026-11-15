@@ -38,7 +38,9 @@ test('saved avatars update account navigation and a previously cached profile on
       response.request().method() === 'GET',
   )
   await page.goto(`/users/${id}/profile`)
-  expect(await (await unsavedProfile).json()).not.toHaveProperty('avatar')
+  expect((await (await unsavedProfile).json()).avatar).toEqual(
+    DEFAULT_CRITTERS_AVATAR_V1,
+  )
   const profileAvatar = page.getByRole('img', {
     name: "AvatarDisplay's avatar",
   })

@@ -226,6 +226,7 @@ describe('UserService', () => {
       )
       expect(result).toEqual({
         id: 'user-new',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         email: createUserRequest.email,
         unverifiedEmail: createUserRequest.email,
         givenName: createUserRequest.givenName,
@@ -501,6 +502,7 @@ describe('UserService', () => {
       )
       expect(result).toEqual({
         id: 'user-123',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         email: 'user@example.com',
         unverifiedEmail: undefined,
         givenName: 'John',
