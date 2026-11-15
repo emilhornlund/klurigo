@@ -225,6 +225,59 @@ describe('GameJoinPage', () => {
     expect(mockNavigate).not.toHaveBeenCalled()
   })
 
+  it.each(['game', 'account'])(
+    'ignores an old join response after an in-place %s switch',
+    async (scope) => {
+      let finish!: () => void
+      mockJoinGame.mockReturnValue(
+        new Promise<void>((resolve) => {
+          finish = resolve
+        }),
+      )
+      const view = renderJoin()
+      enterNickname()
+      submit()
+      if (scope === 'game') gameID = 'OTHER'
+      else authenticated = false
+      view.rerender(
+        <MemoryRouter>
+          <GameJoinPage />
+        </MemoryRouter>,
+      )
+
+      await act(async () => finish())
+
+      expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockSetCurrentUser).not.toHaveBeenCalled()
+      expect(screen.getByPlaceholderText('Nickname')).toBeEnabled()
+    },
+  )
+
+  it('closes an old identity dialog and restores the new game draft on an in-place switch', () => {
+    const view = renderJoin()
+    fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+    gameID = 'OTHER'
+    const nextAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, eyes: 'wink' }
+    localStorage.setItem(
+      'klurigo:join-avatar:OTHER:account:account',
+      JSON.stringify(nextAvatar),
+    )
+    view.rerender(
+      <MemoryRouter>
+        <GameJoinPage />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(storedAvatar()).toEqual(nextAvatar)
+    expect(
+      JSON.parse(
+        localStorage.getItem('klurigo:join-avatar:GAME123:account:account')!,
+      ),
+    ).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+  })
+
   it('resumes accepted participants without preparing or changing their design', async () => {
     mockGetGame.mockResolvedValue({
       participant: { id: 'account', avatar: DEFAULT_CRITTERS_AVATAR_V1 },

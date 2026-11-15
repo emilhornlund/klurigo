@@ -32,18 +32,16 @@ import { JoinAvatarDialog } from './components'
 import styles from './GameJoinPage.module.scss'
 import { MESSAGES, TITLES } from './text.utils'
 
-/** Submits the nickname and previewed design through the existing game join. */
-const GameJoinPage: FC = () => {
+/** Submits the nickname and previewed design for one mounted game/account scope. */
+const GameJoinPageContent: FC<{ readonly storageKey: string }> = ({
+  storageKey,
+}) => {
   const navigate = useNavigate()
   const { user, isUserAuthenticated, revokeGame } = useAuthContext()
   const { currentUser, setCurrentUser } = useUserContext()
   const { gameID, participantId } = useGameContext()
   const { getGame, joinGame } = useKlurigoServiceClient()
   const isMounted = useIsMounted()
-  const storageKey =
-    gameID && participantId
-      ? `klurigo:join-avatar:${gameID}:${participantId}:${user?.ACCESS.sub ?? 'guest'}`
-      : ''
   const savedAvatar =
     currentUser?.id === user?.ACCESS.sub ? currentUser?.avatar : undefined
   const initialAvatar = useMemo(
@@ -216,6 +214,18 @@ const GameJoinPage: FC = () => {
       )}
     </Page>
   )
+}
+
+/** Scope changes discard transient UI state and invalidate old async responses. */
+const GameJoinPage: FC = () => {
+  const { user } = useAuthContext()
+  const { gameID, participantId } = useGameContext()
+  const storageKey =
+    gameID && participantId
+      ? `klurigo:join-avatar:${gameID}:${participantId}:${user?.ACCESS.sub ?? 'guest'}`
+      : ''
+
+  return <GameJoinPageContent key={storageKey} storageKey={storageKey} />
 }
 
 export default GameJoinPage
