@@ -233,10 +233,18 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 14 — Participant Lobby Display
 
-**Status:** Planned · **Depends on:** 7
+**Status:** Complete · **Depends on:** 7
 
 - **Work:** Display snapshot avatars in participant lobby/self-identity surfaces.
 - **Done when:** Participants see the same identities as the host, with usable small-size and fallback rendering.
+- **Verified:** Self/host chips render event snapshots and stable fallbacks without
+  account reads or additional player-list visibility. Four configuration/recovery
+  cases preserve exact designs through count updates. All 53 focused lobby/chip/avatar
+  tests and both account/guest Playwright flows pass, including exact participant
+  images after reload. Types, changed-file lint, application and Storybook builds
+  pass. Chrome inspection at 1440/768/390/320px caught and corrected long-name avatar
+  clipping; reduced motion, leave-dialog dismissal/focus return, console, and failed
+  resource checks pass.
 
 ### Phase 15 — Gameplay Player Lists
 

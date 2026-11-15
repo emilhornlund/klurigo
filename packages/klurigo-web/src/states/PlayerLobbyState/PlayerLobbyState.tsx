@@ -1,6 +1,7 @@
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { GameLobbyPlayerEvent } from '@klurigo/common'
+import { resolveGameAvatarSnapshot } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -46,8 +47,9 @@ export interface PlayerLobbyStateProps {
  */
 const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
   event: {
-    player: { nickname },
+    player: { nickname, avatar },
     game: { name: quizTitle },
+    host,
     players,
   },
 }) => {
@@ -110,11 +112,14 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
               You’re in!
             </Typography>
           </Stack>
-          <Stack align="center" spacing="stack">
+          <Stack align="center" spacing="stack" width="full">
             <Typography variant="body" align="center" color="inverse">
               Welcome,
             </Typography>
-            <NicknameChip value={nickname} />
+            <NicknameChip
+              value={nickname}
+              avatar={resolveGameAvatarSnapshot(avatar)}
+            />
           </Stack>
           <Surface className={styles.quizCard}>
             <Stack align="center" spacing="compact">
@@ -166,6 +171,10 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
               color="inverse">
               Waiting for the host to start…
             </Typography>
+            <NicknameChip
+              value="Host"
+              avatar={resolveGameAvatarSnapshot(host?.avatar)}
+            />
             <RotatingMessage
               messages={MESSAGES}
               renderMessage={(message) => (

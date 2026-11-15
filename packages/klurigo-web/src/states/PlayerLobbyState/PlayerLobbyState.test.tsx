@@ -1,4 +1,8 @@
-import { GameEventType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  type GameLobbyPlayerEvent,
+} from '@klurigo/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -28,6 +32,8 @@ vi.mock('react-router-dom', async (orig) => {
 vi.mock('./message.utils', () => ({
   MESSAGES: ['Be nice and wait', 'Get ready for questions!'],
 }))
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import PlayerLobbyState from './PlayerLobbyState'
 
@@ -298,4 +304,59 @@ describe('PlayerLobbyState', () => {
 
     vi.useRealTimers()
   })
+
+  it.each([
+    DEFAULT_CRITTERS_AVATAR_V1,
+    { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null },
+    undefined,
+    { version: 99 },
+  ])(
+    'retains resolved self and host identity %p across count updates and recovery',
+    (avatar) => {
+      const hostAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, pattern: null }
+      const event: GameLobbyPlayerEvent = {
+        type: GameEventType.GameLobbyPlayer,
+        game: { name: 'Snapshot lobby' },
+        host: { avatar: hostAvatar },
+        player: { nickname: 'Current' },
+        players: [{ nickname: 'Current' }],
+      }
+      Object.assign(event.player, { avatar })
+      const view = render(
+        <MemoryRouter>
+          <PlayerLobbyState event={event} />
+        </MemoryRouter>,
+      )
+      const imageSources = () =>
+        ['Current', 'Host'].map((nickname) =>
+          screen
+            .getByText(nickname)
+            .parentElement?.querySelector('img')
+            ?.getAttribute('src'),
+        )
+      const initial = imageSources()
+      const expected =
+        avatar && 'style' in avatar ? avatar : DEFAULT_CRITTERS_AVATAR_V1
+      expect(initial).toEqual([
+        getCrittersAvatarV1DataUri(expected),
+        getCrittersAvatarV1DataUri(hostAvatar),
+      ])
+
+      const recovered = JSON.parse(
+        JSON.stringify({
+          ...event,
+          players: [...event.players, { nickname: 'Guest' }],
+        }),
+      ) as GameLobbyPlayerEvent
+      view.rerender(
+        <MemoryRouter>
+          <PlayerLobbyState event={recovered} />
+        </MemoryRouter>,
+      )
+      expect(imageSources()).toEqual(initial)
+      expect(screen.getByText('2')).toBeInTheDocument()
+      expect(screen.queryByText('Guest')).not.toBeInTheDocument()
+      expect(event.player.avatar).toBe(avatar)
+    },
+  )
 })

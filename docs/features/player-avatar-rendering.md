@@ -92,6 +92,15 @@ constrained-width proof. Browser inspection covered desktop/tablet/mobile/320px,
 keyboard removal and focus return, and reduced motion. Real account/guest flows
 compare exact preview/lobby images after host reload and exercise guest removal.
 
+Phase 14 reuses the avatar nickname chip for the participant's own accepted
+design and the host's lobby snapshot. Player-count updates retain these designs;
+the existing count-only presentation of other participants is preserved. Missing
+and unsupported metadata uses stable defaults. A full-width welcome row prevents
+long nicknames from clipping the avatar at constrained widths. Browser inspection
+covered desktop/tablet/mobile/320px, reduced motion, and leave-dialog focus return.
+Both real guest/account join flows compare exact participant images after reload;
+53 focused lobby/chip/avatar tests, types, lint, and both frontend builds pass.
+
 ## Review Corrections
 
 The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.

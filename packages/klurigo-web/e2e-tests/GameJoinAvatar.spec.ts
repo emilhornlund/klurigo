@@ -167,6 +167,13 @@ for (const account of [false, true]) {
         avatar: draft,
       })
       await expect(page).toHaveURL('/game')
+      const playerLobbyAvatar = page
+        .getByText('JoinPreview', { exact: true })
+        .locator('..')
+        .locator('img')
+      await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
+      await page.reload()
+      await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
       expect(profileWrites).toHaveLength(account ? 2 : 0)
       if (account)
         expect(
