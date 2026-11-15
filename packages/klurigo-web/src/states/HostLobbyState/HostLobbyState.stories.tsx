@@ -91,14 +91,18 @@ export const Default = {
         {
           id: uuidv4(),
           nickname: 'ShadowCyborg',
-          avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
+          avatar: {
+            ...DEFAULT_CRITTERS_AVATAR_V1,
+            body: 'block' as const,
+            top: null,
+          },
         },
         {
           id: uuidv4(),
           nickname: 'Radar',
           avatar: {
             ...DEFAULT_CRITTERS_AVATAR_V1,
-            body: 'blob',
+            body: 'blob' as const,
             pattern: null,
           },
         },
@@ -110,7 +114,7 @@ export const Default = {
         { id: uuidv4(), nickname: 'FrostyBear' },
         { id: uuidv4(), nickname: 'Willo' },
         { id: uuidv4(), nickname: 'ScarletFlame' },
-      ],
+      ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
     },
   },
 } satisfies Story

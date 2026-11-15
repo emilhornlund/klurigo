@@ -15,8 +15,8 @@ export type GameParticipantPlayerDto = {
    */
   readonly nickname: string
 
-  /** Optional during rollout; current servers always return a resolved snapshot. */
-  readonly avatar?: CrittersAvatarConfigurationV1
+  /** Complete game-time design, resolved to the stable default for historical records. */
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 /** Resolved identity of the authenticated participant, when already accepted. */

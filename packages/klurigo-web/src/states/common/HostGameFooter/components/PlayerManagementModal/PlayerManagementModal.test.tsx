@@ -147,7 +147,7 @@ const flushMicrotasks = async () => {
 
 const makePlayer = (id: string, nickname: string): GameParticipantPlayerDto =>
   // This matches the typical shape used in the app (id/nickname).
-  ({ id, nickname })
+  ({ id, nickname, avatar: DEFAULT_CRITTERS_AVATAR_V1 })
 
 const never = () => new Promise<never>(() => {})
 

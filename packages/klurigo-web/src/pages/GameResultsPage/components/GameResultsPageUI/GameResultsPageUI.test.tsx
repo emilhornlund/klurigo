@@ -20,6 +20,7 @@ const createOrUpdateQuizRatingMock = vi.fn()
 const host = {
   id: 'fd22f8fe-5217-4f4c-85b9-3a1fccf99e7a',
   nickname: 'FrostyBear',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
 }
 
 vi.mock('../../../../api', () => ({
@@ -56,7 +57,11 @@ describe('GameResultsPageUI', () => {
             numberOfQuestions: 4,
             playerMetrics: [
               {
-                player: { id: uuidv4(), nickname: 'ShadowCyborg' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'ShadowCyborg',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 1,
                 comebackRankGain: 1,
                 correct: 4,
@@ -67,7 +72,11 @@ describe('GameResultsPageUI', () => {
                 score: 3891,
               },
               {
-                player: { id: uuidv4(), nickname: 'ShadowWhirlwind' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'ShadowWhirlwind',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 2,
                 comebackRankGain: 0,
                 correct: 3,
@@ -78,7 +87,11 @@ describe('GameResultsPageUI', () => {
                 score: 2742,
               },
               {
-                player: { id: uuidv4(), nickname: 'WhiskerFox' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'WhiskerFox',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 3,
                 comebackRankGain: 0,
                 correct: 1,
@@ -148,7 +161,11 @@ describe('GameResultsPageUI', () => {
             numberOfQuestions: 4,
             playerMetrics: [
               {
-                player: { id: uuidv4(), nickname: 'ShadowCyborg' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'ShadowCyborg',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 1,
                 comebackRankGain: 1,
                 averagePrecision: 1,
@@ -157,7 +174,11 @@ describe('GameResultsPageUI', () => {
                 score: -40,
               },
               {
-                player: { id: uuidv4(), nickname: 'ShadowWhirlwind' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'ShadowWhirlwind',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 2,
                 comebackRankGain: 0,
                 averagePrecision: 0.95,
@@ -166,7 +187,11 @@ describe('GameResultsPageUI', () => {
                 score: 10,
               },
               {
-                player: { id: uuidv4(), nickname: 'WhiskerFox' },
+                player: {
+                  id: uuidv4(),
+                  nickname: 'WhiskerFox',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+                },
                 rank: 3,
                 comebackRankGain: 0,
                 averagePrecision: 0.72,
@@ -226,7 +251,11 @@ describe('GameResultsPageUI', () => {
     numberOfQuestions: 2,
     playerMetrics: [
       {
-        player: { id: uuidv4(), nickname: 'Alice' },
+        player: {
+          id: uuidv4(),
+          nickname: 'Alice',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         rank: 1,
         comebackRankGain: 1,
         correct: 2,
@@ -237,7 +266,11 @@ describe('GameResultsPageUI', () => {
         score: 200,
       },
       {
-        player: { id: uuidv4(), nickname: 'Bob' },
+        player: {
+          id: uuidv4(),
+          nickname: 'Bob',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         rank: 2,
         comebackRankGain: 0,
         correct: 1,
@@ -280,7 +313,11 @@ describe('GameResultsPageUI', () => {
     numberOfQuestions: 2,
     playerMetrics: [
       {
-        player: { id: uuidv4(), nickname: 'Carol' },
+        player: {
+          id: uuidv4(),
+          nickname: 'Carol',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         rank: 1,
         comebackRankGain: 1,
         averagePrecision: 0.8,
@@ -289,7 +326,11 @@ describe('GameResultsPageUI', () => {
         score: 10,
       },
       {
-        player: { id: uuidv4(), nickname: 'Dave' },
+        player: {
+          id: uuidv4(),
+          nickname: 'Dave',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         rank: 2,
         comebackRankGain: 0,
         averagePrecision: 0.6,
@@ -748,7 +789,11 @@ describe('GameResultsPageUI', () => {
     it('shows N/A as host nickname when host.nickname is an empty string', () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        host: { id: uuidv4(), nickname: '' },
+        host: {
+          id: uuidv4(),
+          nickname: '',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       }
 
       render(

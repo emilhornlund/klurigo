@@ -44,6 +44,7 @@ describe('PlayerGameFooter', () => {
         currentQuestion={1}
         totalQuestions={20}
         nickname="FrostyBear"
+        avatar={DEFAULT_CRITTERS_AVATAR_V1}
         totalScore={10361}
       />,
     )
@@ -57,6 +58,7 @@ describe('PlayerGameFooter', () => {
         currentQuestion={2}
         totalQuestions={10}
         nickname="FrostyBear"
+        avatar={DEFAULT_CRITTERS_AVATAR_V1}
       />,
     )
 

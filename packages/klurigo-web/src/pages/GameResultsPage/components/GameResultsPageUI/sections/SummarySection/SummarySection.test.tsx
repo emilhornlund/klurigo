@@ -1,4 +1,8 @@
-import { GameMode, type GameResultDto } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  type GameResultDto,
+} from '@klurigo/common'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -84,7 +88,11 @@ afterEach(() => {
 })
 
 const CREATED_DATE = new Date('2025-01-01T12:00:00.000Z')
-const HOST = { id: 'host-1', nickname: 'FrostyBear' }
+const HOST = {
+  id: 'host-1',
+  nickname: 'FrostyBear',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
+}
 
 describe('SummarySection', () => {
   it('renders Classic summary, uses getCorrectPercentage, shows fastest and longest streak', () => {
@@ -97,14 +105,14 @@ describe('SummarySection', () => {
         score: 120,
         averageResponseTime: 3.2,
         longestCorrectStreak: 5,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
         rank: 2,
         score: 90,
         averageResponseTime: 4.5,
         longestCorrectStreak: 7,
-        player: { nickname: 'Bob' },
+        player: { nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
     const questionMetrics = [
@@ -173,13 +181,13 @@ describe('SummarySection', () => {
         rank: 1,
         score: 120,
         averageResponseTime: 2.1,
-        player: { nickname: 'Carol' },
+        player: { nickname: 'Carol', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
         rank: 2,
         score: 90,
         averageResponseTime: 2.7,
-        player: { nickname: 'Dave' },
+        player: { nickname: 'Dave', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
     const questionMetrics = [
@@ -278,7 +286,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 
@@ -330,7 +338,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 
@@ -420,7 +428,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 
@@ -476,7 +484,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 
@@ -553,7 +561,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 
@@ -611,7 +619,7 @@ describe('SummarySection', () => {
         score: 100,
         averageResponseTime: 2,
         longestCorrectStreak: 3,
-        player: { nickname: 'Alice' },
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
 

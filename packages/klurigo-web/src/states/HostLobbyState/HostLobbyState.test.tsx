@@ -61,7 +61,10 @@ describe('HostLobbyState', () => {
               { id: uuidv4(), nickname: 'FrostyBear' },
               { id: uuidv4(), nickname: 'Willo' },
               { id: uuidv4(), nickname: 'ScarletFlame' },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -121,7 +124,11 @@ describe('HostLobbyState', () => {
       players: [
         ...event.players,
         { id: 'guest', nickname: 'Guest', avatar: guestAvatar },
-        { id: 'legacy', nickname: 'Legacy' },
+        {
+          id: 'legacy',
+          nickname: 'Legacy',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       ],
     }
     view.rerender(

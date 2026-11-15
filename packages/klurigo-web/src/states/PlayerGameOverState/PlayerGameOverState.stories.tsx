@@ -1,4 +1,9 @@
-import { GAME_MAX_PLAYERS, GameEventType, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GAME_MAX_PLAYERS,
+  GameEventType,
+  GameMode,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -26,6 +31,7 @@ export const Winner = {
       quiz: { id: 'quiz-1', title: 'Science Trivia' },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 1,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 12500,
@@ -50,12 +56,17 @@ export const TopThree = {
       quiz: { id: 'quiz-1', title: 'World Geography' },
       player: {
         nickname: 'WhiskerFox',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 3,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 9800,
         currentStreak: 3,
         comebackRankGain: 0,
-        behind: { points: 1200, nickname: 'FrostyBear' },
+        behind: {
+          points: 1200,
+          nickname: 'FrostyBear',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
       rating: {
         canRateQuiz: true,
@@ -74,12 +85,17 @@ export const TopTen = {
       quiz: { id: 'quiz-1', title: 'Movie Classics' },
       player: {
         nickname: 'BreezyOwl',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 7,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 6400,
         currentStreak: 0,
         comebackRankGain: 0,
-        behind: { points: 3100, nickname: 'WhiskerFox' },
+        behind: {
+          points: 3100,
+          nickname: 'WhiskerFox',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
       rating: {
         canRateQuiz: true,
@@ -98,12 +114,17 @@ export const Unranked = {
       quiz: { id: 'quiz-1', title: 'History Challenge' },
       player: {
         nickname: 'GloomyToad',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 18,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 1200,
         currentStreak: 0,
         comebackRankGain: 0,
-        behind: { points: 8200, nickname: 'BreezyOwl' },
+        behind: {
+          points: 8200,
+          nickname: 'BreezyOwl',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
       rating: {
         canRateQuiz: true,
@@ -122,6 +143,7 @@ export const WithRating = {
       quiz: { id: 'quiz-1', title: 'Science Trivia' },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 1,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 12500,
@@ -146,12 +168,17 @@ export const CannotRate = {
       quiz: { id: 'quiz-1', title: 'My Own Quiz' },
       player: {
         nickname: 'QuizCreator',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 2,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 9000,
         currentStreak: 4,
         comebackRankGain: 0,
-        behind: { points: 500, nickname: 'TopPlayer' },
+        behind: {
+          points: 500,
+          nickname: 'TopPlayer',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
       rating: {
         canRateQuiz: false,
@@ -170,12 +197,17 @@ export const Comeback = {
       quiz: { id: 'quiz-1', title: 'Sports Trivia' },
       player: {
         nickname: 'RocketCat',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 4,
         totalPlayers: GAME_MAX_PLAYERS,
         score: 8200,
         currentStreak: 6,
         comebackRankGain: 8,
-        behind: { points: 700, nickname: 'WhiskerFox' },
+        behind: {
+          points: 700,
+          nickname: 'WhiskerFox',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
       rating: {
         canRateQuiz: true,

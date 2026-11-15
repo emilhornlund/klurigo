@@ -323,9 +323,7 @@ function buildQuestionResultTaskItem(
     type,
     playerId: participantId,
     nickname,
-    ...(participantPlayer.avatar
-      ? { avatar: resolveGameAvatarSnapshot(participantPlayer.avatar) }
-      : {}),
+    avatar: resolveGameAvatarSnapshot(participantPlayer.avatar),
     answer,
     correct,
     lastScore: nextScore,

@@ -32,7 +32,11 @@ export const Default = {
       {
         position: 1,
         nickname: 'ShadowCyborg',
-        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
+        avatar: {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'block' as const,
+          top: null,
+        },
         score: 18456,
         streaks: 5,
         previousPosition: 2,
@@ -42,7 +46,11 @@ export const Default = {
         nickname: 'Radar',
         score: 18398,
         previousPosition: 1,
-        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'blob', cheeks: null },
+        avatar: {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'blob' as const,
+          cheeks: null,
+        },
       },
       {
         position: 3,
@@ -80,7 +88,7 @@ export const Default = {
         score: 6723,
         previousPosition: 12,
       },
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 
@@ -97,7 +105,7 @@ export const WithoutPodium = {
       { position: 8, nickname: 'FrostyBear', score: 10361 },
       { position: 9, nickname: 'Willo', score: 9360 },
       { position: 10, nickname: 'ScarletFlame', score: 6723 },
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
     includePodium: false,
   },
 } satisfies Story
@@ -176,7 +184,7 @@ export const WithRankChanges = {
         streaks: 1,
         previousPosition: 8,
       }, // Rank up
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 
@@ -212,7 +220,7 @@ export const MixedRankChanges = {
         streaks: 1,
         previousPosition: 7,
       }, // Rank up
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 

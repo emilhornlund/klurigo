@@ -1,4 +1,8 @@
-import { type GameEvent, GameEventType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  type GameEvent,
+  GameEventType,
+} from '@klurigo/common'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { GameHostClient } from '../../e2e-tests/support/api/game-host-client'
@@ -222,7 +226,13 @@ function createLobbyEvent(nickname: string): GameEvent {
         randomizeAnswerOrder: false,
       },
     },
-    players: [{ id: `player-${nickname}`, nickname }],
+    players: [
+      {
+        id: `player-${nickname}`,
+        nickname,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
+    ],
   }
 }
 

@@ -1,5 +1,4 @@
 import type { GameParticipantPlayerDto } from '@klurigo/common'
-import { resolveGameAvatarSnapshot } from '@klurigo/common'
 import { type FC, useEffect, useRef, useState } from 'react'
 
 import {
@@ -222,7 +221,7 @@ const PlayerManagementModal: FC<PlayerManagementModalProps> = ({
             <NicknameChip
               key={id}
               value={nickname}
-              avatar={resolveGameAvatarSnapshot(avatar)}
+              avatar={avatar}
               variant="accent"
               animationState={playerAnimations[id]?.animationState || 'none'}
               staggerDelay={playerAnimations[id]?.staggerDelay || 0}

@@ -240,8 +240,6 @@ function buildGameResultPlayerEventFromQuestionResultTask(
     )
   }
 
-  const { nickname } = player
-
   const {
     correct,
     lastScore: last,
@@ -283,7 +281,7 @@ function buildGameResultPlayerEventFromQuestionResultTask(
 
   return createGameResultPlayerEvent(
     game.mode,
-    nickname,
+    player,
     score,
     pagination,
     behind,
@@ -308,7 +306,7 @@ function buildFallbackGameResultPlayerEventForQuestionResultTask(
   questionResultTask: QuestionResultTaskWithBase,
   player: ParticipantPlayerWithBase,
 ): GameResultPlayerEvent {
-  const { nickname, totalScore: total, rank } = player
+  const { totalScore: total, rank } = player
 
   const position =
     typeof rank === 'number' && player.rank > 0
@@ -327,7 +325,7 @@ function buildFallbackGameResultPlayerEventForQuestionResultTask(
     questionResultTask,
   )
 
-  return createGameResultPlayerEvent(game.mode, nickname, score, pagination)
+  return createGameResultPlayerEvent(game.mode, player, score, pagination)
 }
 
 /**
@@ -369,7 +367,7 @@ function buildGameResultPlayerEventFromLeaderboardOrPodiumTask(
  * final event payload consistently.
  *
  * @param mode - The mode the game is played in.
- * @param nickname - Player nickname to include in the event.
+ * @param player - Accepted participant whose public game-time identity is included.
  * @param score - Player score details for the current question and overall game.
  * @param pagination - Pagination metadata for the current question index.
  * @param behind - Optional information about the player directly ahead in score.
@@ -378,18 +376,22 @@ function buildGameResultPlayerEventFromLeaderboardOrPodiumTask(
  */
 function createGameResultPlayerEvent(
   mode: GameMode,
-  nickname: string,
+  player: ParticipantPlayerWithBase,
   score: GameResultPlayerEventScore,
   pagination: PaginationEvent,
   behind?: GameResultPlayerEventBehind,
   streak?: number,
 ): GameResultPlayerEvent {
+  const identity = {
+    nickname: player.nickname,
+    avatar: resolveGameAvatarSnapshot(player.avatar),
+  }
   if (mode === GameMode.Classic) {
     return {
       type: GameEventType.GameResultPlayer,
       game: { mode },
       player: {
-        nickname,
+        ...identity,
         score: { ...score, streak: streak ?? 0 },
         behind,
       },
@@ -400,7 +402,7 @@ function createGameResultPlayerEvent(
   return {
     type: GameEventType.GameResultPlayer,
     game: { mode },
-    player: { nickname, score, behind },
+    player: { ...identity, score, behind },
     pagination,
   }
 }

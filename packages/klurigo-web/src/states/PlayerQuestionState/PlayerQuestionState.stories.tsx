@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   type GameQuestionPlayerAnswerEvent,
   MediaType,
@@ -81,6 +82,7 @@ const layoutStory = (
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -111,6 +113,7 @@ export const QuestionMultiChoiceTwoAnswers = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -139,6 +142,7 @@ export const QuestionMultiChoiceFourAnswers = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -172,6 +176,7 @@ export const QuestionMultiChoiceSixAnswers = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -207,6 +212,7 @@ export const QuestionSlider = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -237,6 +243,7 @@ export const QuestionTrueFalse = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -264,6 +271,7 @@ export const QuestionTypeAnswer = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -287,6 +295,7 @@ export const QuestionPin = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {
@@ -313,6 +322,7 @@ export const QuestionPuzzle = {
       type: GameEventType.GameQuestionPlayer,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { total: 10458 },
       },
       question: {

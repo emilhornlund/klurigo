@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   GameMode,
   type GameResultPlayerEvent,
@@ -40,6 +41,7 @@ describe('PlayerResultState', () => {
             game: { mode: GameMode.Classic },
             player: {
               nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               score: {
                 correct: true,
                 last: 634,
@@ -47,7 +49,11 @@ describe('PlayerResultState', () => {
                 position: 1,
                 streak: 3,
               },
-              behind: { points: 123, nickname: 'WhiskerFox' },
+              behind: {
+                points: 123,
+                nickname: 'WhiskerFox',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
             },
             pagination: { current: 1, total: 20 },
           }}
@@ -72,6 +78,7 @@ describe('PlayerResultState', () => {
             game: { mode: GameMode.Classic },
             player: {
               nickname: 'Radar',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               score: {
                 correct: false,
                 last: 0,
@@ -102,6 +109,7 @@ describe('PlayerResultState', () => {
             game: { mode: GameMode.Classic },
             player: {
               nickname: 'AlmostThere',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               score: {
                 correct: false,
                 last: 250,
@@ -133,6 +141,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'Winner',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 1000,
@@ -166,6 +175,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'StreakMaster',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 500,
@@ -199,6 +209,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'ThirdPlace',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 800,
@@ -232,6 +243,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'StreakBuilder',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 400,
@@ -265,6 +277,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'StreakStarter',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 300,
@@ -298,6 +311,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'TopTen',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 200,
@@ -331,6 +345,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'SimpleCorrect',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 100,
@@ -371,6 +386,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'WrongAnswer',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: false,
                   last: 0,
@@ -411,6 +427,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'SecondPlace',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 900,
@@ -443,6 +460,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'HighStreak',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 600,
@@ -486,6 +504,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.Classic },
               player: {
                 nickname: 'TestPlayer',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: true,
                   last: 100,
@@ -556,6 +575,7 @@ describe('PlayerResultState', () => {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'TestPlayer',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: true,
           last: 500,
@@ -692,6 +712,7 @@ describe('PlayerResultState', () => {
                 game: { mode: GameMode.ZeroToOneHundred },
                 player: {
                   nickname: 'ZTOHPlayer',
+                  avatar: DEFAULT_CRITTERS_AVATAR_V1,
                   score: {
                     correct: true,
                     last: -10,
@@ -729,6 +750,7 @@ describe('PlayerResultState', () => {
               game: { mode: GameMode.ZeroToOneHundred },
               player: {
                 nickname: 'ZTOHPlayer',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
                 score: {
                   correct: false,
                   last: -5,

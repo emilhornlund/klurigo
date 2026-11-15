@@ -25,8 +25,8 @@ const getPodiumClassName = (position: number): string | null => {
 export type LeaderboardValue = {
   position: number
   nickname: string
-  /** Accepted game-time design; legacy rows use the renderer's stable default. */
-  avatar?: CrittersAvatarConfigurationV1
+  /** Accepted game-time design resolved by the game/result boundary. */
+  avatar: CrittersAvatarConfigurationV1
   score: number
   streaks?: number
   previousPosition?: number

@@ -55,7 +55,7 @@ export type GameLobbyHostEvent = {
   players: {
     id: string
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
   }[]
 }
 
@@ -67,11 +67,11 @@ export type GameLobbyPlayerEvent = {
   }
   player: {
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
   }
   players: {
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
   }[]
 }
 
@@ -83,7 +83,7 @@ export type GameBeginPlayerEvent = {
   type: GameEventType.GameBeginPlayer
   player: {
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
   }
 }
 
@@ -109,7 +109,7 @@ export type GameQuestionPreviewPlayerEvent = {
   }
   player: {
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
     score: number
   }
   question: {
@@ -207,7 +207,7 @@ export type GameQuestionPlayerEvent = {
   type: GameEventType.GameQuestionPlayer
   player: {
     nickname: string
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
     score: {
       total: number
     }
@@ -341,7 +341,7 @@ export type GameResultPlayerEventZeroToOneHundredScore =
 export type GameResultPlayerEventBehind = {
   points: number
   nickname: string
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
 }
 
 /**
@@ -354,7 +354,7 @@ export type GameResultPlayerEvent =
       game: { mode: GameMode.Classic }
       player: {
         nickname: string
-        avatar?: CrittersAvatarConfigurationV1
+        avatar: CrittersAvatarConfigurationV1
         score: GameResultPlayerEventClassicScore
         behind?: GameResultPlayerEventBehind
       }
@@ -365,7 +365,7 @@ export type GameResultPlayerEvent =
       game: { mode: GameMode.ZeroToOneHundred }
       player: {
         nickname: string
-        avatar?: CrittersAvatarConfigurationV1
+        avatar: CrittersAvatarConfigurationV1
         score: GameResultPlayerEventZeroToOneHundredScore
         behind?: GameResultPlayerEventBehind
       }
@@ -376,7 +376,7 @@ type GameLeaderboardHostEntry = {
   position: number
   previousPosition?: number
   nickname: string
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
   score: number
 }
 
@@ -400,7 +400,7 @@ export type GameLeaderboardHostEvent =
 export type GameOverPlayerEventBehind = {
   readonly points: number
   readonly nickname: string
-  readonly avatar?: CrittersAvatarConfigurationV1
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 export type GameOverPlayerEventRating = {
@@ -411,7 +411,7 @@ export type GameOverPlayerEventRating = {
 
 type GameOverPlayerEventPlayer = {
   nickname: string
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
   rank: number
   totalPlayers: number
   score: number
@@ -459,7 +459,7 @@ export type GamePodiumHostEvent = {
     position: number
     nickname: string
     score: number
-    avatar?: CrittersAvatarConfigurationV1
+    avatar: CrittersAvatarConfigurationV1
   }[]
 }
 

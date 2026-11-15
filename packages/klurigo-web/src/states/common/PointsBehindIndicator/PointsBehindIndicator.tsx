@@ -9,7 +9,7 @@ export interface PointBehindIndicatorProps {
   points: number
   nickname: string
   /** Game-time design of the already-visible player ahead. */
-  avatar?: CrittersAvatarConfigurationV1
+  avatar: CrittersAvatarConfigurationV1
 }
 
 const PointBehindIndicator: FC<PointBehindIndicatorProps> = ({

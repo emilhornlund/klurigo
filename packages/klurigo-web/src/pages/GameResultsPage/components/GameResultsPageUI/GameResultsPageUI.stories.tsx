@@ -90,6 +90,7 @@ export const Classic = {
           player: {
             id: uuidv4(),
             nickname: 'BrainiacBert',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 3,
           comebackRankGain: 1,
@@ -104,6 +105,7 @@ export const Classic = {
           player: {
             id: uuidv4(),
             nickname: 'TriviaTitan',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 4,
           comebackRankGain: 3,
@@ -118,6 +120,7 @@ export const Classic = {
           player: {
             id: uuidv4(),
             nickname: 'SmartyPants',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 5,
           comebackRankGain: 0,
@@ -132,6 +135,7 @@ export const Classic = {
           player: {
             id: CURRENT_PARTICIPANT_ID,
             nickname: 'FrostyBear',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 7,
           comebackRankGain: 0,
@@ -195,7 +199,11 @@ export const ZeroToOneHundred = {
         canRateQuiz: false,
         canHostLiveGame: false,
       },
-      host: { id: uuidv4(), nickname: 'FrostyBear' },
+      host: {
+        id: uuidv4(),
+        nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       numberOfPlayers: 10,
       numberOfQuestions: 4,
       playerMetrics: [
@@ -203,6 +211,7 @@ export const ZeroToOneHundred = {
           player: {
             id: uuidv4(),
             nickname: 'GuessLord',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 1,
           comebackRankGain: 2,
@@ -215,6 +224,7 @@ export const ZeroToOneHundred = {
           player: {
             id: uuidv4(),
             nickname: 'QuickThinker',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 2,
           comebackRankGain: 3,
@@ -227,6 +237,7 @@ export const ZeroToOneHundred = {
           player: {
             id: uuidv4(),
             nickname: 'SharpShooter',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 3,
           comebackRankGain: 1,
@@ -239,6 +250,7 @@ export const ZeroToOneHundred = {
           player: {
             id: uuidv4(),
             nickname: 'ThinkFast',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 4,
           comebackRankGain: 0,
@@ -251,6 +263,7 @@ export const ZeroToOneHundred = {
           player: {
             id: uuidv4(),
             nickname: 'PrecisionPete',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 5,
           comebackRankGain: 0,

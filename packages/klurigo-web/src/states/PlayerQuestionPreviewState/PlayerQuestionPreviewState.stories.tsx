@@ -1,4 +1,9 @@
-import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -22,6 +27,7 @@ export const Default = {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: 10458,
       },
       question: {
@@ -47,6 +53,7 @@ export const ZeroToOneHundred = {
       game: { mode: GameMode.ZeroToOneHundred },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: 10458,
       },
       question: {
@@ -71,6 +78,7 @@ export const Long = {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: 10458,
       },
       question: {

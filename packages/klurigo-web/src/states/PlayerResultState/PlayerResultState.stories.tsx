@@ -62,6 +62,7 @@ export const PartiallyCorrect = {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: false,
           last: 250,
@@ -85,6 +86,7 @@ export const Incorrect = {
       game: { mode: GameMode.Classic },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: false,
           last: 0,
@@ -95,6 +97,7 @@ export const Incorrect = {
         behind: {
           points: 123,
           nickname: 'WhiskerFox',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
       },
       pagination: {
@@ -113,6 +116,7 @@ export const ZeroToOneHundred = {
       game: { mode: GameMode.ZeroToOneHundred },
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: true,
           last: -10,
@@ -122,6 +126,7 @@ export const ZeroToOneHundred = {
         behind: {
           points: 12,
           nickname: 'WhiskerFox',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
       },
       pagination: {
@@ -138,6 +143,7 @@ export const OrdinaryCorrect = {
       ...Correct.args.event,
       player: {
         nickname: 'SteadyPlayer',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: true,
           last: 420,
@@ -145,7 +151,11 @@ export const OrdinaryCorrect = {
           position: 15,
           streak: 1,
         },
-        behind: { points: 80, nickname: 'NextPlayer' },
+        behind: {
+          points: 80,
+          nickname: 'NextPlayer',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       },
     },
   },
@@ -157,6 +167,7 @@ export const HighStreak = {
       ...Correct.args.event,
       player: {
         nickname: 'StreakMaster',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: {
           correct: true,
           last: 950,
@@ -187,6 +198,7 @@ export const ZeroToOneHundredIncorrect = {
       ...ZeroToOneHundred.args.event,
       player: {
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         score: { correct: false, last: 20, total: 44, position: 7 },
       },
     },

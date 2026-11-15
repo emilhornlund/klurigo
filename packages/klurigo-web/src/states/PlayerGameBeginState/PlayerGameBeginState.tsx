@@ -1,5 +1,4 @@
 import type { GameBeginPlayerEvent } from '@klurigo/common'
-import { resolveGameAvatarSnapshot } from '@klurigo/common'
 import type { FC } from 'react'
 
 import BellRingIcon from '../../assets/images/bell-ring-icon.svg'
@@ -22,7 +21,7 @@ const PlayerGameBeginState: FC<PlayerGameBeginStateProps> = ({
 }) => (
   <GamePage layout="contained">
     <PageProminentIcon src={BellRingIcon} alt="BellRing" />
-    <NicknameChip value={nickname} avatar={resolveGameAvatarSnapshot(avatar)} />
+    <NicknameChip value={nickname} avatar={avatar} />
     <Typography variant="title" width="medium" align="center" color="inverse">
       Get ready!
     </Typography>

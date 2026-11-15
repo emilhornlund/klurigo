@@ -30,7 +30,7 @@ export const Default = {
         avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'tower', top: null },
       },
       game: { name: 'The Big Brain Quiz' },
-      players: [{ nickname: 'FrostyBear' }],
+      players: [{ nickname: 'FrostyBear', avatar: DEFAULT_CRITTERS_AVATAR_V1 }],
       player: {
         nickname: 'FrostyBear',
         avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', cheeks: null },
@@ -59,8 +59,9 @@ export const Multiplayer = {
       game: { name: 'The Big Brain Quiz' },
       players: Array.from({ length: 8 }, (_, index) => ({
         nickname: `Player${index + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })),
-      player: { nickname: 'FrostyBear' },
+      player: { nickname: 'FrostyBear', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
     },
   },
 } satisfies Story

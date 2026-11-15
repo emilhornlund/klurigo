@@ -210,9 +210,11 @@ describe('createGameResource', () => {
 
     const game = createGameResource(api, deps)
 
-    apiGet.mockResolvedValue([{ id: 'p1', nickname: 'A' }])
+    apiGet.mockResolvedValue([
+      { id: 'p1', nickname: 'A', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+    ])
     await expect(game.getPlayers('g1')).resolves.toEqual([
-      { id: 'p1', nickname: 'A' },
+      { id: 'p1', nickname: 'A', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
     ])
 
     expect(apiGet).toHaveBeenCalledWith('/games/g1/players', {

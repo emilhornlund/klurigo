@@ -17,7 +17,6 @@ import {
   type GameResultParticipantDto,
   type GameResultQuizDto,
   type GameResultZeroToOneHundredModeQuestionMetricDto,
-  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 import { type FC, type ReactElement, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -96,7 +95,7 @@ const MetricCard: FC<{
         <NicknameChip
           key={`${nickname}_${index}`}
           value={nickname}
-          avatar={resolveGameAvatarSnapshot(avatar)}
+          avatar={avatar}
         />
       ))}
     </div>

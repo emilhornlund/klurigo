@@ -1,4 +1,4 @@
-import { GameMode } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameMode } from '@klurigo/common'
 import type {
   GameResultClassicModePlayerMetricDto,
   GameResultDto,
@@ -21,6 +21,7 @@ const buildParticipant = (
 ): GameResultParticipantDto => ({
   id,
   nickname,
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
 })
 
 const buildClassicPlayerMetric = (args: {

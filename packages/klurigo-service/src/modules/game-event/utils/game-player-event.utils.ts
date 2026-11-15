@@ -1,8 +1,4 @@
-import {
-  GameEvent,
-  GameStatus,
-  resolveGameAvatarSnapshot,
-} from '@klurigo/common'
+import { GameEvent, GameStatus } from '@klurigo/common'
 
 import {
   Game,
@@ -45,19 +41,6 @@ export function buildPlayerGameEvent(
   game: Game,
   player: ParticipantPlayerWithBase,
   metadata: Partial<GameEventMetaData> = {},
-): GameEvent {
-  const event = buildPlayerTaskEvent(game, player, metadata)
-  if ('player' in event) {
-    event.player.avatar = resolveGameAvatarSnapshot(player.avatar)
-  }
-  return event
-}
-
-/** Task mapping shared by live publication and initial/recovery event construction. */
-function buildPlayerTaskEvent(
-  game: Game,
-  player: ParticipantPlayerWithBase,
-  metadata: Partial<GameEventMetaData>,
 ): GameEvent {
   if (
     GameStatus.Expired === game.status ||

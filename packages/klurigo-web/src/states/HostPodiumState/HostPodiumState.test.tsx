@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameEventType } from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -51,7 +51,10 @@ describe('HostPodiumState', () => {
               { position: 8, nickname: 'FrostyBear', score: 10361 },
               { position: 9, nickname: 'Willo', score: 9360 },
               { position: 10, nickname: 'ScarletFlame', score: 6723 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -79,7 +82,10 @@ describe('HostPodiumState', () => {
               { position: 1, nickname: 'ShadowCyborg', score: 18456 },
               { position: 2, nickname: 'Radar', score: 18398 },
               { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -101,7 +107,10 @@ describe('HostPodiumState', () => {
               { position: 1, nickname: 'Alpha', score: 100 },
               { position: 2, nickname: 'Beta', score: 90 },
               { position: 3, nickname: 'Gamma', score: 80 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -127,7 +136,10 @@ describe('HostPodiumState', () => {
               { position: 1, nickname: 'Alpha', score: 100 },
               { position: 2, nickname: 'Beta', score: 90 },
               { position: 3, nickname: 'Gamma', score: 80 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -159,7 +171,10 @@ describe('HostPodiumState', () => {
               { position: 1, nickname: 'Alpha', score: 100 },
               { position: 2, nickname: 'Beta', score: 90 },
               { position: 3, nickname: 'Gamma', score: 80 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -199,7 +214,10 @@ describe('HostPodiumState', () => {
               { position: 1, nickname: 'Alpha', score: 100 },
               { position: 2, nickname: 'Beta', score: 90 },
               { position: 3, nickname: 'Gamma', score: 80 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -225,7 +243,10 @@ describe('HostPodiumState', () => {
             },
             leaderboard: [
               { position: 1, nickname: 'ShadowCyborg', score: 18456 },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,

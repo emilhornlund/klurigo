@@ -3,6 +3,7 @@ import {
   type AuthResponseDto,
   GameParticipantType,
   type GameTokenDto,
+  randomizeCrittersAvatar,
   type SubmitQuestionAnswerRequestDto,
   TokenScope,
 } from '@klurigo/common'
@@ -66,7 +67,7 @@ export class GamePlayerClient extends GameSessionEventClient {
     this.setSession(token, claims.gameId)
 
     await this.postNoContent(this.gamePath('players'), {
-      body: { nickname },
+      body: { nickname, avatar: randomizeCrittersAvatar() },
       token,
     })
 

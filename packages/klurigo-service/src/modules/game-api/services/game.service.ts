@@ -448,9 +448,7 @@ export class GameService {
    */
   public async getPlayerParticipants(
     gameId: string,
-  ): Promise<
-    (GameParticipantPlayerDto & { avatar: CrittersAvatarConfigurationV1 })[]
-  > {
+  ): Promise<GameParticipantPlayerDto[]> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(gameId)
 
     return gameDocument.participants

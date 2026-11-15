@@ -12,8 +12,8 @@ export interface PlayerGameFooterProps {
   currentQuestion: number
   totalQuestions: number
   nickname: string
-  /** Accepted self identity from the current game event; absent on legacy events. */
-  avatar?: CrittersAvatarConfigurationV1
+  /** Accepted self identity resolved by the game event boundary. */
+  avatar: CrittersAvatarConfigurationV1
   totalScore?: number
 }
 

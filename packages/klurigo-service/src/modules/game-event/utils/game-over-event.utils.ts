@@ -50,6 +50,7 @@ export function buildGameOverPlayerEvent(
     },
     player: {
       nickname: player.nickname,
+      avatar: resolveGameAvatarSnapshot(player.avatar),
       rank: player.rank,
       totalPlayers,
       score: player.totalScore,

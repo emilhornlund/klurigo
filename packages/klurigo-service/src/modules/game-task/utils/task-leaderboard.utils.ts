@@ -95,9 +95,7 @@ export function updateParticipantsAndBuildLeaderboard(
       return {
         playerId: participant.participantId,
         nickname: participant.nickname,
-        ...(participant.avatar
-          ? { avatar: resolveGameAvatarSnapshot(participant.avatar) }
-          : {}),
+        avatar: resolveGameAvatarSnapshot(participant.avatar),
         position,
         previousPosition: previousRank,
         score: participant.totalScore,

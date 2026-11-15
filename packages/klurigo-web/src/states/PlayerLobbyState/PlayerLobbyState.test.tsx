@@ -55,8 +55,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -81,8 +85,13 @@ describe('PlayerLobbyState', () => {
           event={{
             type: GameEventType.GameLobbyPlayer,
             game: { name: 'The Big Brain Quiz' },
-            players: [{ nickname: 'FrostyBear' }],
-            player: { nickname: 'FrostyBear' },
+            players: [
+              { nickname: 'FrostyBear', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+            ],
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -97,8 +106,14 @@ describe('PlayerLobbyState', () => {
           event={{
             type: GameEventType.GameLobbyPlayer,
             game: { name: 'The Big Brain Quiz' },
-            players: [{ nickname: 'FrostyBear' }, { nickname: 'Player2' }],
-            player: { nickname: 'FrostyBear' },
+            players: [
+              { nickname: 'FrostyBear', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+              { nickname: 'Player2', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+            ],
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -117,8 +132,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -146,8 +165,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -174,8 +197,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -203,8 +230,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -229,8 +260,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -250,8 +285,12 @@ describe('PlayerLobbyState', () => {
             game: { name: 'The Big Brain Quiz' },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,
@@ -285,9 +324,13 @@ describe('PlayerLobbyState', () => {
           event={{
             type: GameEventType.GameLobbyPlayer,
             game: { name: 'The Big Brain Quiz' },
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
             players: ['FrostyBear', 'Player2', 'Player3'].map((nickname) => ({
               nickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             })),
           }}
         />
@@ -318,8 +361,8 @@ describe('PlayerLobbyState', () => {
         type: GameEventType.GameLobbyPlayer,
         game: { name: 'Snapshot lobby' },
         host: { avatar: hostAvatar },
-        player: { nickname: 'Current' },
-        players: [{ nickname: 'Current' }],
+        player: { nickname: 'Current', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+        players: [{ nickname: 'Current', avatar: DEFAULT_CRITTERS_AVATAR_V1 }],
       }
       Object.assign(event.player, { avatar })
       const view = render(

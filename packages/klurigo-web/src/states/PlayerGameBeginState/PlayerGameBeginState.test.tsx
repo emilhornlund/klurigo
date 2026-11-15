@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameEventType } from '@klurigo/common'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -12,7 +12,10 @@ describe('PlayerGameBeginState', () => {
         <PlayerGameBeginState
           event={{
             type: GameEventType.GameBeginPlayer,
-            player: { nickname: 'FrostyBear' },
+            player: {
+              nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
           }}
         />
       </MemoryRouter>,

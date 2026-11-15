@@ -160,9 +160,6 @@ export type GameResultZeroToOneHundredModeDto = Extract<
  * Represents a participant in a game, such as the host or a player.
  */
 export interface GameResultParticipantDto {
-  /** Game-time design; optional for rollout clients, resolved by current servers. */
-  readonly avatar?: CrittersAvatarConfigurationV1
-
   /**
    * The unique identifier of the participant.
    */
@@ -172,6 +169,12 @@ export interface GameResultParticipantDto {
    * The nickname of the participant.
    */
   readonly nickname: string
+
+  /**
+   * The participant's game-time avatar snapshot. Historical results without
+   * supported metadata resolve to the stable default design.
+   */
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 /**
