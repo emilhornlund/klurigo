@@ -25,18 +25,15 @@
 
 .avatar {
   @include helpers.mobile {
-    width: avatars.$avatar-profile-size-mobile;
-    height: avatars.$avatar-profile-size-mobile;
+    @include avatars.size(avatars.$avatar-profile-size-mobile);
   }
 
   @include helpers.tablet {
-    width: avatars.$avatar-profile-size-tablet;
-    height: avatars.$avatar-profile-size-tablet;
+    @include avatars.size(avatars.$avatar-profile-size-tablet);
   }
 
   @include helpers.desktop {
-    width: avatars.$avatar-profile-size-desktop;
-    height: avatars.$avatar-profile-size-desktop;
+    @include avatars.size(avatars.$avatar-profile-size-desktop);
   }
 }
 

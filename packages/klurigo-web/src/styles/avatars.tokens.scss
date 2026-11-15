@@ -1,5 +1,12 @@
 @use './helpers' as helpers;
 
+/* Keep responsive image geometry and its proportional frame on the same size. */
+@mixin size($size) {
+  --avatar-responsive-size: #{$size};
+  width: $size;
+  height: $size;
+}
+
 /* Editor geometry. Keep the preview column and its form footer aligned. */
 $avatar-editor-preview-column-tablet: helpers.pxToRem(208px);
 $avatar-editor-preview-column-desktop: helpers.pxToRem(256px);

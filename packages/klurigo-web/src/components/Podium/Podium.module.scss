@@ -1,3 +1,4 @@
+@use '../../styles/avatars.tokens' as avatars;
 @use '../../styles/border-radius.tokens' as radius;
 @use '../../styles/celebration.effects.tokens' as celebrationEffects;
 @use '../../styles/colors.celebration' as celebration;
@@ -87,24 +88,21 @@
         min-height: helpers.pxToRem(101px) + spacing.$space-inline-mobile;
         gap: spacing.$space-inline-mobile;
         .avatar {
-          width: helpers.pxToRem(64px);
-          height: helpers.pxToRem(64px);
+          @include avatars.size(helpers.pxToRem(64px));
         }
       }
       @include helpers.tablet {
         min-height: helpers.pxToRem(125px) + spacing.$space-inline-tablet;
         gap: spacing.$space-inline-tablet;
         .avatar {
-          width: helpers.pxToRem(80px);
-          height: helpers.pxToRem(80px);
+          @include avatars.size(helpers.pxToRem(80px));
         }
       }
       @include helpers.desktop {
         min-height: helpers.pxToRem(148px) + spacing.$space-inline-desktop;
         gap: spacing.$space-inline-desktop;
         .avatar {
-          width: helpers.pxToRem(96px);
-          height: helpers.pxToRem(96px);
+          @include avatars.size(helpers.pxToRem(96px));
         }
       }
 

@@ -60,18 +60,15 @@
 
 .previewAvatar {
   @include helpers.mobile {
-    width: avatars.$avatar-preview-size-mobile;
-    height: avatars.$avatar-preview-size-mobile;
+    @include avatars.size(avatars.$avatar-preview-size-mobile);
   }
 
   @include helpers.tablet {
-    width: avatars.$avatar-preview-size-tablet;
-    height: avatars.$avatar-preview-size-tablet;
+    @include avatars.size(avatars.$avatar-preview-size-tablet);
   }
 
   @include helpers.desktop {
-    width: avatars.$avatar-preview-size-desktop;
-    height: avatars.$avatar-preview-size-desktop;
+    @include avatars.size(avatars.$avatar-preview-size-desktop);
   }
 }
 
@@ -220,18 +217,15 @@
 
 .optionAvatar {
   @include helpers.mobile {
-    width: avatars.$avatar-option-size-mobile;
-    height: avatars.$avatar-option-size-mobile;
+    @include avatars.size(avatars.$avatar-option-size-mobile);
   }
 
   @include helpers.tablet {
-    width: avatars.$avatar-option-size-tablet;
-    height: avatars.$avatar-option-size-tablet;
+    @include avatars.size(avatars.$avatar-option-size-tablet);
   }
 
   @include helpers.desktop {
-    width: avatars.$avatar-option-size-desktop;
-    height: avatars.$avatar-option-size-desktop;
+    @include avatars.size(avatars.$avatar-option-size-desktop);
   }
 }
 
@@ -318,18 +312,15 @@
 
   .previewAvatar {
     @include helpers.mobile {
-      width: avatars.$avatar-dialog-preview-mobile;
-      height: avatars.$avatar-dialog-preview-mobile;
+      @include avatars.size(avatars.$avatar-dialog-preview-mobile);
     }
 
     @include helpers.tablet {
-      width: avatars.$avatar-dialog-preview-tablet;
-      height: avatars.$avatar-dialog-preview-tablet;
+      @include avatars.size(avatars.$avatar-dialog-preview-tablet);
     }
 
     @include helpers.desktop {
-      width: avatars.$avatar-dialog-preview-desktop;
-      height: avatars.$avatar-dialog-preview-desktop;
+      @include avatars.size(avatars.$avatar-dialog-preview-desktop);
     }
   }
 

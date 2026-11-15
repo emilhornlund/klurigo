@@ -26,18 +26,15 @@
 
 .avatar {
   @include helpers.mobile {
-    width: avatars.$avatar-join-size-mobile;
-    height: avatars.$avatar-join-size-mobile;
+    @include avatars.size(avatars.$avatar-join-size-mobile);
   }
 
   @include helpers.tablet {
-    width: avatars.$avatar-join-size-tablet;
-    height: avatars.$avatar-join-size-tablet;
+    @include avatars.size(avatars.$avatar-join-size-tablet);
   }
 
   @include helpers.desktop {
-    width: avatars.$avatar-join-size-desktop;
-    height: avatars.$avatar-join-size-desktop;
+    @include avatars.size(avatars.$avatar-join-size-desktop);
   }
 }
 

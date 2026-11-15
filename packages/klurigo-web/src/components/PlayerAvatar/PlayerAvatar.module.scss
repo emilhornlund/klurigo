@@ -12,9 +12,12 @@
   object-fit: cover;
   border: controls.$control-border-width-outside solid
     colors.$color-border-glass-strong;
-  border-width: max(
+  border-width: clamp(
     controls.$control-border-width-outside,
-    calc(var(--avatar-intrinsic-size) / 48)
+    calc(
+      1px + var(--avatar-responsive-size, var(--avatar-intrinsic-size)) / 96
+    ),
+    helpers.pxToRem(3px)
   );
   background-color: colors.$color-surface-glass-default-start;
 
