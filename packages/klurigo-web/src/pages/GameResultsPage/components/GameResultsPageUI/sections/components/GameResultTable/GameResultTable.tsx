@@ -1,6 +1,7 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
@@ -8,6 +9,7 @@ import {
   CircularProgressBar,
   CircularProgressBarKind,
   CircularProgressBarSize,
+  PlayerAvatar,
   Surface,
 } from '../../../../../../../components'
 import { classNames } from '../../../../../../../utils/helpers'
@@ -18,6 +20,8 @@ export type TableItem = {
   type: 'table-row'
   badge: number
   value: string
+  /** Optional resolved player design; question rows do not provide an avatar. */
+  avatar?: CrittersAvatarConfigurationV1
   label?: string
   progress: number
   details?: {
@@ -39,6 +43,7 @@ export interface GameResultTableProps {
 const GameResultTableRow: FC<TableItem> = ({
   badge,
   value,
+  avatar,
   label,
   progress,
   details,
@@ -57,7 +62,19 @@ const GameResultTableRow: FC<TableItem> = ({
       <div className={styles.main}>
         <Surface interactive className={styles.badge}>{`${badge}`}</Surface>
         <div className={styles.value} title={value}>
-          {value}
+          {avatar ? (
+            <span className={styles.identity}>
+              <PlayerAvatar
+                avatar={avatar}
+                alt=""
+                size={32}
+                className={styles.avatar}
+              />
+              <span className={styles.name}>{value}</span>
+            </span>
+          ) : (
+            value
+          )}
           {label && <div className={styles.label}>{label}</div>}
         </div>
         <div>

@@ -47,6 +47,33 @@
       flex-direction: row;
       align-items: center;
 
+      .avatar {
+        flex-shrink: 0;
+      }
+
+      .identity {
+        display: flex;
+        align-items: center;
+        max-width: 100%;
+        min-width: 0;
+        @include helpers.mobile {
+          gap: spacing.$space-inline-mobile;
+        }
+        @include helpers.tablet {
+          gap: spacing.$space-inline-tablet;
+        }
+        @include helpers.desktop {
+          gap: spacing.$space-inline-desktop;
+        }
+      }
+
+      .name {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       @include helpers.mobile {
         column-gap: spacing.$space-page-mobile;
       }
@@ -89,6 +116,8 @@
         align-items: center;
         flex-wrap: wrap;
         flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
         font-weight: bold;
         opacity: 0.88;
 

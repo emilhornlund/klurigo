@@ -1,4 +1,8 @@
-import { GameMode, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 import { v4 as uuidv4 } from 'uuid'
@@ -10,7 +14,15 @@ import GameResultsPageUI from './GameResultsPageUI'
 const meta = {
   title: 'Pages/GameResultsPage',
   component: GameResultsPageUI,
-  decorators: [withRouter, withMockAuth],
+  decorators: [
+    withRouter,
+    withMockAuth,
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -32,7 +44,11 @@ export const Classic = {
         canRateQuiz: true,
         canHostLiveGame: true,
       },
-      host: { id: uuidv4(), nickname: 'FrostyBear' },
+      host: {
+        id: uuidv4(),
+        nickname: 'FrostyBear',
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'tower', top: null },
+      },
       numberOfPlayers: 10,
       numberOfQuestions: 4,
       playerMetrics: [
@@ -40,6 +56,7 @@ export const Classic = {
           player: {
             id: uuidv4(),
             nickname: 'GuessMachine',
+            avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
           },
           rank: 1,
           comebackRankGain: 2,
@@ -54,6 +71,11 @@ export const Classic = {
           player: {
             id: uuidv4(),
             nickname: 'QuizWhiz',
+            avatar: {
+              ...DEFAULT_CRITTERS_AVATAR_V1,
+              body: 'blob',
+              cheeks: null,
+            },
           },
           rank: 2,
           comebackRankGain: 4,

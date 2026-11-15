@@ -3,7 +3,7 @@ import type {
   GameResultDto,
   GameResultZeroToOneHundredModePlayerMetricDto,
 } from '@klurigo/common'
-import { GameMode } from '@klurigo/common'
+import { GameMode, resolveGameAvatarSnapshot } from '@klurigo/common'
 import type { FC } from 'react'
 import { useMemo } from 'react'
 
@@ -46,6 +46,7 @@ const PlayerSection: FC<PlayerSectionProps> = ({
         type: 'table-row' as const,
         badge: metric.rank,
         value: metric.player.nickname,
+        avatar: resolveGameAvatarSnapshot(metric.player.avatar),
         label: metric.player.id === currentParticipantId ? 'You' : undefined,
         progress: getProgress(mode, metric),
         details: buildPlayerSectionMetricDetails(mode, metric),

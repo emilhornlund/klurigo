@@ -4,7 +4,8 @@ Phase 0 supplies a local, deterministic Critters renderer, a shared component
 catalog/configuration, and an isolated Storybook proof. Phase 1 adds the account
 editor and persistence. Phase 2 adds authenticated profile and navigation display.
 Phases 3–11 add game-time metadata and joining. Phase 12 persists durable result
-avatars. Remaining game display surfaces and animation are tracked in the
+avatars. Phases 13–18 display those snapshots throughout lobbies, gameplay,
+rankings, and results. Animation remains planned in the
 [avatar roadmap](../plans/player-avatars.md).
 
 Phase 3 adds optional `JoinGameRequestDto.avatar` using the existing complete
@@ -126,6 +127,19 @@ configurations after recovery for one, two, and three occupied places. All 143
 focused podium/game-over/results tests, types, lint, and build pass. Browser
 inspection covered responsive podiums, a lone winner, participant game-over,
 and reduced motion.
+
+Phase 18 displays durable result configurations in the summary podium/leaderboard,
+host detail, metric-winner chips, and player rows. These surfaces use result data,
+never the current account avatar. History cards retain their existing access and
+navigation into results; they do not introduce a new participant identity surface.
+Sorting for the summary copies the metrics array rather than mutating cached result
+data. Narrow player names ellipsize beside their avatars, and host-grid sizing keeps
+long names contained. All 2,318 web tests, lint/types/build, Storybook build, and 15
+result HTTP tests pass. Both-mode UI tests compare exact host/account/guest designs
+across sections and recovered data; HTTP tests verify profile-edit/cleanup stability
+and legacy fallback. Browser inspection covered desktop/tablet/mobile/320px,
+summary/player sections, expanded details, both modes, long host names, and reduced
+motion. Phases 0–18 are complete; Phase 19 has not been started.
 
 ## Review Corrections
 

@@ -1,8 +1,15 @@
-import { GameMode, type GameResultDto, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  type GameResultDto,
+  QuestionType,
+} from '@klurigo/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../../../utils/avatar/critters-v1'
 
 import GameResultsPageUI from './GameResultsPageUI'
 
@@ -323,6 +330,74 @@ describe('GameResultsPageUI', () => {
     const target = (el.closest('button') as HTMLElement) ?? (el as HTMLElement)
     fireEvent.click(target)
   }
+
+  it.each(Object.values(GameMode))(
+    'renders durable host/account/guest designs across sections and reload data in %s',
+    (mode) => {
+      const results = structuredClone(
+        mode === GameMode.Classic ? classicMinimal() : z2hMinimal(),
+      )
+      const hostAvatar = {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        body: 'block' as const,
+        top: null,
+      }
+      const designs = [
+        { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, pattern: null },
+      ]
+      Object.assign(results.host, { avatar: hostAvatar })
+      results.playerMetrics.forEach(({ player }, index) =>
+        Object.assign(player, { avatar: designs[index] }),
+      )
+      const currentId = results.playerMetrics[0].player.id
+      const view = render(
+        <MemoryRouter>
+          <GameResultsPageUI
+            results={results}
+            currentParticipantId={currentId}
+          />
+        </MemoryRouter>,
+      )
+      const podiumSources = () =>
+        Array.from(
+          view.container.querySelectorAll('[data-testid="podium-column"] img'),
+        ).map((image) => image.getAttribute('src'))
+      expect(podiumSources()).toEqual([
+        getCrittersAvatarV1DataUri(designs[1]),
+        getCrittersAvatarV1DataUri(designs[0]),
+      ])
+      expect(
+        screen
+          .getByRole('link', { name: host.nickname })
+          .parentElement?.querySelector('img'),
+      ).toHaveAttribute('src', getCrittersAvatarV1DataUri(hostAvatar))
+
+      clickSegment('Players')
+      const rowSources = () =>
+        results.playerMetrics.map(({ player }) =>
+          screen
+            .getByText(player.nickname)
+            .parentElement?.parentElement?.querySelector('img')
+            ?.getAttribute('src'),
+        )
+      expect(rowSources()).toEqual(designs.map(getCrittersAvatarV1DataUri))
+      view.rerender(
+        <MemoryRouter>
+          <GameResultsPageUI
+            results={structuredClone(results)}
+            currentParticipantId={currentId}
+          />
+        </MemoryRouter>,
+      )
+      expect(rowSources()).toEqual(designs.map(getCrittersAvatarV1DataUri))
+      clickSegment('Summary')
+      expect(podiumSources()).toEqual([
+        getCrittersAvatarV1DataUri(designs[1]),
+        getCrittersAvatarV1DataUri(designs[0]),
+      ])
+    },
+  )
 
   it('shows Summary by default and switches to Players and Questions (Classic)', () => {
     const { container } = render(

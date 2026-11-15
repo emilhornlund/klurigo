@@ -201,8 +201,8 @@ Every phase includes its own focused tests and applicable quality checks.
   join scenarios support visual review. Four real Playwright avatar flows and 128
   focused backend HTTP/stream tests pass. Chrome inspection covered desktop, tablet,
   mobile, constrained widths, keyboard/focus, and reduced motion. Commit-by-commit
-  review corrections are recorded in the feature documentation. Phases 12–23 remain
-  planned while the implementation is reviewed.
+  review corrections are recorded in the feature documentation. Subsequent delivery
+  is tracked below.
 
 ### Phase 12 — Durable Result Snapshots
 
@@ -290,10 +290,18 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 18 — Game Results Display
 
-**Status:** Planned · **Depends on:** 12
+**Status:** Complete · **Depends on:** 12
 
 - **Work:** Display host/player snapshot avatars on applicable host and participant results/history views under existing access rules.
 - **Done when:** Guests and account players keep their game-time appearance after reload, cleanup, and subsequent account-avatar edits.
+- **Verified:** Summary podium/leaderboard, host detail, metric winners, and player
+  rows render durable result designs. Both-mode section/recovery tests compare exact
+  host/account/guest configurations. All 2,318 web tests, web lint/types/build,
+  Storybook build, and 15 durable-result HTTP tests pass; HTTP coverage includes
+  profile edits, terminal cleanup, and read-only legacy defaults. Chrome inspection
+  covered desktop/tablet/mobile/320px, both modes, summary/player sections, expanded
+  details, reduced motion, and long host names. Narrow-name wrapping and host-grid
+  overflow were corrected. Existing result/history access rules are preserved.
 
 ### Phase 19 — Local Animation Proof
 
