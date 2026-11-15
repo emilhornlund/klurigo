@@ -3,8 +3,9 @@
 Phase 0 supplies a local, deterministic Critters renderer, a shared component
 catalog/configuration, and an isolated Storybook proof. Phase 1 adds the account
 editor and persistence. Phase 2 adds authenticated profile and navigation display.
-Phases 3–11 add game-time metadata and joining. Remaining game display surfaces,
-durable results, and animation are tracked in the [avatar roadmap](../plans/player-avatars.md).
+Phases 3–11 add game-time metadata and joining. Phase 12 persists durable result
+avatars. Remaining game display surfaces and animation are tracked in the
+[avatar roadmap](../plans/player-avatars.md).
 
 Phase 3 adds optional `JoinGameRequestDto.avatar` using the existing complete
 `CrittersAvatarConfigurationV1` contract. Game-time copies use that same configuration
@@ -67,8 +68,18 @@ avatar API before the game join; unchanged defaults require no profile write.
 Acknowledged saves survive failed joins and reloads without repeating the save.
 Failures retain the draft and distinguish profile-save failure from saved-design/
 failed-join state. Account switches invalidate pending work, and successful saves
-refresh account context and profile caches. Further feature phases are paused for
-review of this implementation.
+refresh account context and profile caches.
+
+Phase 12 copies accepted host/player configurations into durable result storage.
+Result responses resolve those copies rather than current account avatars or
+active participants. Account and guest designs survive terminal answer-state
+cleanup and subsequent profile edits in both modes. Historical missing, null,
+malformed, or unsupported metadata renders the stable default without rewriting
+the result. Mixed persistence tolerates historical versions, while conversion
+copies only supported public fields. Existing access rules, nickname behavior,
+rank ordering, and scoring are preserved. Verification covers independent copies,
+complete null-bearing configurations, persistence, cleanup, profile changes, and
+read-only legacy fallback (103 result unit tests and 15 HTTP tests).
 
 ## Review Corrections
 

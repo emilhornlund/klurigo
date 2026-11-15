@@ -1,3 +1,4 @@
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 import { GameMode } from './game-mode.enum'
 import { QuestionType } from './question-type.enum'
 
@@ -159,6 +160,9 @@ export type GameResultZeroToOneHundredModeDto = Extract<
  * Represents a participant in a game, such as the host or a player.
  */
 export interface GameResultParticipantDto {
+  /** Game-time design; optional for rollout clients, resolved by current servers. */
+  readonly avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The unique identifier of the participant.
    */

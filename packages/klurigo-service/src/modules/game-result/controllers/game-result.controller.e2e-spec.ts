@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   GameParticipantType,
   GameStatus,
@@ -16,6 +17,15 @@ import {
   buildMockSecondaryUser,
   buildMockTertiaryUser,
   createMockClassicQuiz,
+  createMockGameDocument,
+  createMockGameHostParticipantDocument,
+  createMockGamePlayerParticipantDocument,
+  createMockLeaderboardTaskItem,
+  createMockMultiChoiceQuestionDocument,
+  createMockPodiumTaskDocument,
+  createMockQuestionResultTaskDocument,
+  createMockQuestionTaskDocument,
+  createMockRangeQuestionDocument,
   createMockZeroToOneHundredQuiz,
 } from '../../../../test-utils/data'
 import {
@@ -24,6 +34,7 @@ import {
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
+import { GameExpirySchedulerService } from '../../game-cleanup/services/game-expiry-scheduler.service'
 import {
   Game,
   GameModel,
@@ -37,6 +48,21 @@ import {
 } from '../../quiz-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
 import { GameResult, GameResultModel } from '../repositories/models/schemas'
+import { GameResultService } from '../services'
+
+/** Adds the newly resolved default to existing exact legacy-response fixtures. */
+function withDefaultAvatars<
+  T extends { host: object; playerMetrics: { player: object }[] },
+>(expected: T) {
+  return {
+    ...expected,
+    host: { ...expected.host, avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+    playerMetrics: expected.playerMetrics.map((metric) => ({
+      ...metric,
+      player: { ...metric.player, avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+    })),
+  }
+}
 
 describe('GameResultController (e2e)', () => {
   let app: INestApplication
@@ -62,6 +88,172 @@ describe('GameResultController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/results (GET)', () => {
+    it.each([
+      null,
+      { version: 99 },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'unsupported' },
+    ])(
+      'reads historical result metadata %p as the stable default without backfilling',
+      async (avatar) => {
+        const { accessToken, user: hostUser } =
+          await createDefaultUserAndAuthenticate(app)
+        const quiz = await quizModel.create(
+          createMockClassicQuiz({ owner: hostUser }),
+        )
+        const game = await gameModel.create({
+          ...buildMockClassicModeGame(hostUser, playerUser),
+          quiz,
+        })
+        const result = await gameResultModel.create(
+          buildMockClassicModeGameResult(game, hostUser, playerUser),
+        )
+        // Simulate persisted historical data without weakening the write types.
+        await gameResultModel.collection.updateOne(
+          { game: game._id },
+          { $set: { hostAvatar: avatar, 'players.$[].avatar': avatar } },
+        )
+
+        await supertest(app.getHttpServer())
+          .get(`/api/games/${game._id}/results`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => {
+            expect(body.host.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+            for (const metric of body.playerMetrics)
+              expect(metric.player.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+          })
+
+        const unchanged = await gameResultModel.findById(result._id).lean()
+        expect(unchanged?.hostAvatar).toEqual(avatar)
+        for (const player of unchanged?.players ?? [])
+          expect(player.avatar).toEqual(avatar)
+      },
+    )
+
+    it.each(Object.values(GameMode))(
+      'retains durable account/guest/host designs after cleanup and profile edits in %s',
+      async (mode) => {
+        const hostAvatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'block' as const,
+          top: null,
+        }
+        const accountAvatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'dome' as const,
+          cheeks: null,
+        }
+        const guestAvatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'blob' as const,
+          pattern: null,
+        }
+        const { accessToken, user: hostUser } =
+          await createDefaultUserAndAuthenticate(app, { avatar: hostAvatar })
+        const question =
+          mode === GameMode.Classic
+            ? createMockMultiChoiceQuestionDocument()
+            : createMockRangeQuestionDocument()
+        const quiz = await quizModel.create(
+          mode === GameMode.Classic
+            ? createMockClassicQuiz({ owner: hostUser, questions: [question] })
+            : createMockZeroToOneHundredQuiz({
+                owner: hostUser,
+                questions: [question],
+              }),
+        )
+        const players = [
+          createMockGamePlayerParticipantDocument({
+            participantId: playerUser._id,
+            nickname: 'Account',
+            avatar: accountAvatar,
+            rank: 1,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: uuidv4(),
+            nickname: 'Guest',
+            avatar: guestAvatar,
+            rank: 2,
+          }),
+          createMockGamePlayerParticipantDocument({
+            participantId: uuidv4(),
+            nickname: 'Legacy',
+            rank: 3,
+          }),
+        ]
+        const game = await gameModel.create(
+          createMockGameDocument({
+            mode,
+            name: 'Durable avatar identities',
+            quiz,
+            status: GameStatus.Completed,
+            participants: [
+              createMockGameHostParticipantDocument({
+                participantId: hostUser._id,
+                avatar: hostAvatar,
+              }),
+              ...players,
+            ],
+            questions: [question],
+            nextQuestion: 1,
+            previousTasks: [
+              createMockQuestionTaskDocument({ status: 'completed' }),
+              createMockQuestionResultTaskDocument({ status: 'completed' }),
+            ],
+            currentTask: createMockPodiumTaskDocument({
+              status: 'completed',
+              leaderboard: players.map((player) =>
+                createMockLeaderboardTaskItem({
+                  playerId: player.participantId,
+                  nickname: player.nickname,
+                  position: player.rank,
+                }),
+              ),
+            }),
+          }),
+        )
+        await app.get(GameResultService).createGameResult(game)
+
+        await userModel.updateMany(
+          { _id: { $in: [hostUser._id, playerUser._id] } },
+          { avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+        )
+        await app.get(GameExpirySchedulerService).clean()
+
+        const stored = await gameResultModel
+          .findOne({ game: game._id as never })
+          .lean()
+        expect(stored?.hostAvatar).toEqual(hostAvatar)
+        expect(stored?.players.map(({ avatar }) => avatar)).toEqual([
+          accountAvatar,
+          guestAvatar,
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ])
+        expect(
+          (await gameModel.findById(game._id).lean())
+            ?.transientAnswerStateCleared,
+        ).toBe(true)
+
+        await supertest(app.getHttpServer())
+          .get(`/api/games/${game._id}/results`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => {
+            expect(body.host).toEqual({
+              id: hostUser._id,
+              nickname: hostUser.defaultNickname,
+              avatar: hostAvatar,
+            })
+            expect(
+              body.playerMetrics.map(
+                (metric: { player: { avatar: unknown } }) =>
+                  metric.player.avatar,
+              ),
+            ).toEqual([accountAvatar, guestAvatar, DEFAULT_CRITTERS_AVATAR_V1])
+          })
+      },
+    )
+
     it('should succeed in retrieving game results for a classic mode game as a host participant', async () => {
       const gameId = uuidv4()
 
@@ -87,7 +279,7 @@ describe('GameResultController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
-          expect(res.body).toEqual({
+          const expected = {
             id: gameResult.game._id,
             name: 'Classic Quiz Debug',
             mode: GameMode.Classic,
@@ -280,7 +472,8 @@ describe('GameResultController (e2e)', () => {
             ],
             duration: 36.035,
             created: gameResult.hosted.toISOString(),
-          })
+          }
+          expect(res.body).toEqual(withDefaultAvatars(expected))
         })
     })
 
@@ -311,7 +504,7 @@ describe('GameResultController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
-          expect(res.body).toEqual({
+          const expected = {
             id: gameResult.game._id,
             name: 'Classic Quiz Debug',
             mode: GameMode.Classic,
@@ -504,7 +697,8 @@ describe('GameResultController (e2e)', () => {
             ],
             duration: 36.035,
             created: gameResult.hosted.toISOString(),
-          })
+          }
+          expect(res.body).toEqual(withDefaultAvatars(expected))
         })
     })
 
@@ -530,7 +724,7 @@ describe('GameResultController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
-          expect(res.body).toEqual({
+          const expected = {
             id: gameResult.game._id,
             name: '0-100 Quiz Debug',
             mode: GameMode.ZeroToOneHundred,
@@ -699,7 +893,8 @@ describe('GameResultController (e2e)', () => {
             ],
             duration: 57.077,
             created: gameResult.hosted.toISOString(),
-          })
+          }
+          expect(res.body).toEqual(withDefaultAvatars(expected))
         })
     })
 
@@ -727,7 +922,7 @@ describe('GameResultController (e2e)', () => {
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
         .expect((res) => {
-          expect(res.body).toEqual({
+          const expected = {
             id: gameResult.game._id,
             name: '0-100 Quiz Debug',
             mode: GameMode.ZeroToOneHundred,
@@ -896,7 +1091,8 @@ describe('GameResultController (e2e)', () => {
             ],
             duration: 57.077,
             created: gameResult.hosted.toISOString(),
-          })
+          }
+          expect(res.body).toEqual(withDefaultAvatars(expected))
         })
     })
 

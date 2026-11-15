@@ -206,10 +206,16 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 12 — Durable Result Snapshots
 
-**Status:** Planned · **Depends on:** 4, 5
+**Status:** Complete · **Depends on:** 4, 5
 
 - **Work:** Preserve host/player snapshots in existing result storage/conversion and result API responses, reusing embedded game identity where appropriate.
 - **Done when:** Account and guest avatars survive active-game cleanup and later profile edits; old results use stable defaults.
+- **Verified:** Result conversion copies complete host/player configurations independently
+  of participants and ranking items. Both modes retain account/guest/host designs through
+  terminal-game cleanup and later profile edits. Legacy/malformed/unsupported metadata
+  resolves to stable defaults without backfills. All 103 result unit tests and 15 result
+  HTTP tests pass, alongside service build/lint/types, common lint/types/146 tests, and
+  frontend types. Existing result access and scoring assertions remain intact.
 
 ### Phase 13 — Host Lobby Display
 

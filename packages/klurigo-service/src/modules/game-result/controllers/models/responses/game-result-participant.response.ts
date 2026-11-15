@@ -1,5 +1,7 @@
 import { GameResultParticipantDto } from '@klurigo/common'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 
+import { AvatarConfigurationResponse } from '../../../../../app/shared/avatar/avatar-configuration.response'
 import {
   ApiGameParticipantIdProperty,
   ApiPlayerNicknameProperty,
@@ -9,6 +11,10 @@ import {
  * Response model representing a participant (either host or player) in a game result.
  */
 export class GameResultParticipantResponse implements GameResultParticipantDto {
+  /** Resolved game-time design, never fetched from the current account profile. */
+  @ApiPropertyOptional({ type: AvatarConfigurationResponse })
+  avatar?: AvatarConfigurationResponse
+
   /**
    * The unique identifier of the participant.
    */

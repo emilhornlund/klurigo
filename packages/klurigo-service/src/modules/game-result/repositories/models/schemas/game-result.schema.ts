@@ -1,6 +1,9 @@
-import { QuestionType } from '@klurigo/common'
+import {
+  type CrittersAvatarConfigurationV1,
+  QuestionType,
+} from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { HydratedDocument, Model } from 'mongoose'
+import { HydratedDocument, Model, Schema as MongooseSchema } from 'mongoose'
 
 import { Game } from '../../../../game-core/repositories/models/schemas'
 
@@ -9,6 +12,10 @@ import { Game } from '../../../../game-core/repositories/models/schemas'
  */
 @Schema({ _id: false })
 export class PlayerMetric {
+  /** Accepted game-time metadata; absent only on pre-avatar results. */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The player participant's unique identifier.
    */
@@ -152,6 +159,10 @@ export const QuestionMetricSchema = SchemaFactory.createForClass(QuestionMetric)
  */
 @Schema({ _id: true, collection: 'game_results' })
 export class GameResult {
+  /** Host design retained independently of the active-game/profile records. */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  hostAvatar?: CrittersAvatarConfigurationV1
+
   /**
    * The unique identifier for the game result document.
    */
