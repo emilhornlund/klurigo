@@ -1,4 +1,8 @@
-import type { QuizRatingDto, QuizRatingSummaryDto } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  type QuizRatingDto,
+  type QuizRatingSummaryDto,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 
 import RatingsSection from './RatingsSection'
@@ -12,6 +16,10 @@ const makeRatings = (count: number): QuizRatingDto[] =>
     author: {
       id: `user-${i}`,
       nickname: `User ${i + 1}`,
+      avatar: {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        eyes: i % 2 ? 'happy' : 'sleepy',
+      },
     },
     createdAt: new Date(Date.now() - i * 1000 * 60 * 60),
     updatedAt: new Date(Date.now() - i * 1000 * 60 * 60),
@@ -26,8 +34,15 @@ const defaultSummary: QuizRatingSummaryDto = {
 const meta = {
   title: 'Components/RatingsSection',
   component: RatingsSection,
+  decorators: [
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
   },
 } satisfies Meta<typeof RatingsSection>
 
@@ -45,6 +60,16 @@ export const FewRatings = {
   args: {
     summary: { stars: 3.2, comments: 3, total: 5 },
     ratings: makeRatings(3),
+  },
+} satisfies Story
+
+export const LongNicknames = {
+  args: {
+    summary: defaultSummary,
+    ratings: makeRatings(3).map((rating) => ({
+      ...rating,
+      author: { ...rating.author, nickname: 'WWWWWWWWWWWWWWWWWWWW' },
+    })),
   },
 } satisfies Story
 
@@ -78,7 +103,11 @@ export const AllComments = {
       quizId: 'quiz-1',
       stars: 5,
       comment: `Excellent quiz! Loved question number ${i + 1}.`,
-      author: { id: `user-${i}`, nickname: `Reviewer ${i + 1}` },
+      author: {
+        id: `user-${i}`,
+        nickname: `Reviewer ${i + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       createdAt: new Date(Date.now() - i * 1000 * 60 * 30),
       updatedAt: new Date(Date.now() - i * 1000 * 60 * 30),
     })),
@@ -93,7 +122,11 @@ export const NoComments = {
       quizId: 'quiz-1',
       stars: (i % 5) + 1,
       comment: undefined,
-      author: { id: `user-${i}`, nickname: `User ${i + 1}` },
+      author: {
+        id: `user-${i}`,
+        nickname: `User ${i + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       createdAt: new Date(Date.now() - i * 1000 * 60 * 120),
       updatedAt: new Date(Date.now() - i * 1000 * 60 * 120),
     })),

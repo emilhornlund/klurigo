@@ -25,6 +25,7 @@ const makeRatings = (count: number): QuizRatingDto[] =>
     author: {
       id: `user-${i}`,
       nickname: `User ${i + 1}`,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
     },
     createdAt: new Date(Date.now() - i * 1000 * 60 * 60),
     updatedAt: new Date(Date.now() - i * 1000 * 60 * 60),

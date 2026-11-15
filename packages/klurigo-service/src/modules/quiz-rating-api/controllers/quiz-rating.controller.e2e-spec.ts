@@ -1,4 +1,4 @@
-import { QuizVisibility } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, QuizVisibility } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
@@ -539,6 +539,7 @@ describe(`${QuizRatingController.name} (e2e)`, () => {
           author: {
             id: e.author.id,
             nickname: e.author.nickname,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           stars: e.stars,
           createdAt: e.createdAt,

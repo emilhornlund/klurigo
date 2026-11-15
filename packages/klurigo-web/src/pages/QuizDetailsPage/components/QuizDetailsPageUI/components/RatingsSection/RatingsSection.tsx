@@ -3,6 +3,7 @@ import { type FC } from 'react'
 
 import {
   HorizontalRail,
+  PlayerAvatar,
   Stack,
   StarRating,
   Typography,
@@ -80,9 +81,12 @@ const RatingsSection: FC<RatingsSectionProps> = ({
                 {formatTimeAgo(rating.updatedAt)}
               </Typography>
             </div>
-            <Typography variant="control" bold>
-              {rating.author.nickname}
-            </Typography>
+            <Stack direction="horizontal" align="center" spacing="compact">
+              <PlayerAvatar avatar={rating.author.avatar} size={32} alt="" />
+              <Typography variant="control" bold truncate>
+                {rating.author.nickname}
+              </Typography>
+            </Stack>
             {rating.comment && (
               <Typography variant="control2">{rating.comment}</Typography>
             )}

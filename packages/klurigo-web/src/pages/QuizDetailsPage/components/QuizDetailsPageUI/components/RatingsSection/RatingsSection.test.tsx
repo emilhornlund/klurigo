@@ -1,4 +1,8 @@
-import type { QuizRatingDto, QuizRatingSummaryDto } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  type QuizRatingDto,
+  type QuizRatingSummaryDto,
+} from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
@@ -21,7 +25,11 @@ const makeRating = (overrides: Partial<QuizRatingDto> = {}): QuizRatingDto => ({
   quizId: 'quiz-1',
   stars: 4,
   comment: 'Great quiz!',
-  author: { id: 'user-1', nickname: 'Alice' },
+  author: {
+    id: 'user-1',
+    nickname: 'Alice',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   createdAt: new Date('2025-01-01T00:00:00.000Z'),
   updatedAt: new Date('2025-01-01T00:00:00.000Z'),
   ...overrides,
@@ -146,8 +154,22 @@ describe('RatingsSection', () => {
         <RatingsSection
           summary={defaultSummary}
           ratings={[
-            makeRating({ id: 'r1', author: { id: 'u1', nickname: 'Alice' } }),
-            makeRating({ id: 'r2', author: { id: 'u2', nickname: 'Bob' } }),
+            makeRating({
+              id: 'r1',
+              author: {
+                id: 'u1',
+                nickname: 'Alice',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
+            }),
+            makeRating({
+              id: 'r2',
+              author: {
+                id: 'u2',
+                nickname: 'Bob',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
+            }),
           ]}
         />,
       )

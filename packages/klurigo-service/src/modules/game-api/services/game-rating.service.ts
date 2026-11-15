@@ -1,4 +1,8 @@
-import { QuizRatingAuthorType, QuizRatingDto } from '@klurigo/common'
+import {
+  QuizRatingAuthorType,
+  QuizRatingDto,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import { ForbiddenException, Injectable } from '@nestjs/common'
 
 import { GameRepository } from '../../game-core/repositories'
@@ -103,6 +107,7 @@ export class GameRatingService {
         type: QuizRatingAuthorType.Anonymous,
         participantId,
         nickname,
+        avatar: resolveGameAvatarSnapshot(participant?.avatar),
       } as QuizRatingAnonymousAuthorWithBase
     }
 

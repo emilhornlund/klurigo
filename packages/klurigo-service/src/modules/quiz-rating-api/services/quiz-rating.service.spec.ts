@@ -1,4 +1,7 @@
-import { QuizRatingAuthorType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  QuizRatingAuthorType,
+} from '@klurigo/common'
 import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 
@@ -152,6 +155,7 @@ describe(QuizRatingService.name, () => {
         author: {
           id: author._id,
           nickname: author.defaultNickname,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
         createdAt: rating.created,
         updatedAt: rating.updated,
@@ -191,6 +195,55 @@ describe(QuizRatingService.name, () => {
   })
 
   describe('findQuizRatingsWithPagination', () => {
+    it.each([
+      [
+        'saved',
+        { ...DEFAULT_CRITTERS_AVATAR_V1, eyes: 'wink' },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, eyes: 'wink' },
+      ],
+      ['missing', undefined, DEFAULT_CRITTERS_AVATAR_V1],
+      [
+        'unsupported',
+        { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 },
+        DEFAULT_CRITTERS_AVATAR_V1,
+      ],
+    ])(
+      'resolves %s metadata for account and anonymous authors without rewriting it',
+      async (_label, avatar, expected) => {
+        const account = createRating()
+        const anonymous = createRating()
+        Object.assign((account.author as QuizRatingUserAuthorWithBase).user, {
+          avatar,
+        })
+        anonymous.author = {
+          type: QuizRatingAuthorType.Anonymous,
+          participantId: 'guest-1',
+          nickname: 'Guest',
+          avatar,
+        } as QuizRatingAnonymousAuthorWithBase
+        quizRatingRepository.findQuizRatingsWithPagination.mockResolvedValue({
+          results: [account, anonymous],
+          total: 2,
+          limit: 10,
+          offset: 0,
+        })
+
+        const result = await service.findQuizRatingsWithPagination('quiz-1', {})
+
+        expect(result.results.map((rating) => rating.author.avatar)).toEqual([
+          expected,
+          expected,
+        ])
+        expect(
+          (account.author as QuizRatingUserAuthorWithBase).user.avatar,
+        ).toBe(avatar)
+        expect(
+          (anonymous.author as QuizRatingAnonymousAuthorWithBase).avatar,
+        ).toBe(avatar)
+        expect(quizRatingRepository.updateQuizRating).not.toHaveBeenCalled()
+      },
+    )
+
     it('delegates to repository, logs debug messages, and maps results to DTOs', async () => {
       const quizId = 'quiz-1'
       const options = {
@@ -256,7 +309,11 @@ describe(QuizRatingService.name, () => {
             quizId,
             stars: 5,
             comment: 'Fantastic',
-            author: { id: 'u1', nickname: 'A' },
+            author: {
+              id: 'u1',
+              nickname: 'A',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
             createdAt: rating1.created,
             updatedAt: rating1.updated,
           },
@@ -265,7 +322,11 @@ describe(QuizRatingService.name, () => {
             quizId,
             stars: 2,
             comment: 'Meh',
-            author: { id: 'u2', nickname: 'B' },
+            author: {
+              id: 'u2',
+              nickname: 'B',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
             createdAt: rating2.created,
             updatedAt: rating2.updated,
           },
@@ -364,7 +425,11 @@ describe(QuizRatingService.name, () => {
         quizId,
         stars: 4,
         comment: 'Nice',
-        author: { id: 'user-1', nickname: 'Emil' },
+        author: {
+          id: 'user-1',
+          nickname: 'Emil',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         createdAt: createdRating.created,
         updatedAt: createdRating.updated,
       })
@@ -438,7 +503,11 @@ describe(QuizRatingService.name, () => {
         quizId,
         stars,
         comment,
-        author: { id: participantId, nickname },
+        author: {
+          id: participantId,
+          nickname,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         createdAt: createdRating.created,
         updatedAt: createdRating.updated,
       })
@@ -528,7 +597,11 @@ describe(QuizRatingService.name, () => {
         quizId,
         stars: 2,
         comment: 'Changed my mind',
-        author: { id: 'user-1', nickname: 'Emil' },
+        author: {
+          id: 'user-1',
+          nickname: 'Emil',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         createdAt: updatedRating.created,
         updatedAt: updatedRating.updated,
       })

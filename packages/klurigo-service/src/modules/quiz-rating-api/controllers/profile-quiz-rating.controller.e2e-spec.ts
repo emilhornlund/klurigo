@@ -1,4 +1,4 @@
-import { GameStatus } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameStatus } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
@@ -228,6 +228,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
             author: {
               id: gameParticipantPlayerUser._id,
               nickname: gameParticipantPlayerUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -269,6 +270,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
             author: {
               id: gameParticipantHostUser._id,
               nickname: gameParticipantHostUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -308,6 +310,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
             author: {
               id: gameParticipantPlayerUser._id,
               nickname: gameParticipantPlayerUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -398,6 +401,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
             author: {
               id: gameParticipantPlayerUser._id,
               nickname: gameParticipantPlayerUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: defaultDate.toISOString(),
             updatedAt: expect.any(String),
@@ -452,6 +456,7 @@ describe(`${ProfileQuizRatingController.name} (e2e)`, () => {
             author: {
               id: gameParticipantPlayerUser._id,
               nickname: gameParticipantPlayerUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: defaultDate.toISOString(),
             updatedAt: expect.any(String),
