@@ -1,7 +1,9 @@
 @use '../../styles/animations';
+@use '../../styles/avatars.tokens' as avatars;
 @use '../../styles/breakpoints.tokens' as breakpoints;
 @use '../../styles/colors.page' as pageColors;
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/filters.tokens' as filters;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
@@ -216,7 +218,7 @@
           flex-direction: column;
           outline: none;
 
-          img {
+          .navigationIcon {
             filter: brightness(0) saturate(100%) invert(100%) sepia(4%)
               saturate(1%) hue-rotate(271deg) brightness(104%) contrast(100%);
 
@@ -226,6 +228,16 @@
             }
 
             @include iconSize();
+          }
+
+          .profileAvatar {
+            @include iconSize();
+          }
+
+          &:focus-visible {
+            outline: controls.$control-border-width-outside solid
+              colors.$color-focus-ring;
+            outline-offset: controls.$control-focus-outline-offset;
           }
         }
       }
@@ -486,6 +498,52 @@
         @include helpers.fontSize(typography.$font-size-link2-desktop);
       }
     }
+  }
+}
+
+.profileMenuIdentity {
+  display: flex;
+  align-items: center;
+
+  @include helpers.mobile {
+    gap: spacing.$space-content-padding-mobile * 2;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-content-padding-tablet * 2;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-content-padding-desktop * 2;
+  }
+}
+
+.profileMenuAvatarSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: controls.$control-menu-icon-size;
+
+  .menuAvatar {
+    max-width: none;
+  }
+}
+
+.menuAvatar {
+  @include helpers.mobile {
+    width: avatars.$avatar-navigation-menu-size-mobile;
+    height: avatars.$avatar-navigation-menu-size-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-navigation-menu-size-tablet;
+    height: avatars.$avatar-navigation-menu-size-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-navigation-menu-size-desktop;
+    height: avatars.$avatar-navigation-menu-size-desktop;
   }
 }
 

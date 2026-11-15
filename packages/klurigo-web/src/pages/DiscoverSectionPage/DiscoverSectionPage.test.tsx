@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   DiscoverySectionKey,
   GameMode,
   LanguageCode,
@@ -52,7 +53,7 @@ const makeQuiz = (id: string, title: string) => ({
   languageCode: LanguageCode.English,
   mode: GameMode.Classic,
   numberOfQuestions: 10,
-  author: { id: 'a1', name: 'Author' },
+  author: { id: 'a1', name: 'Author', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
   gameplaySummary: { count: 5, totalPlayerCount: 10 },
   ratingSummary: { stars: 4.0, comments: 2, total: 5 },
   created: new Date(),

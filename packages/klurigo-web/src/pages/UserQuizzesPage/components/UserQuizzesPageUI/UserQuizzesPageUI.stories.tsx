@@ -1,5 +1,10 @@
 import type { DiscoveryQuizCardDto } from '@klurigo/common'
-import { GameMode, LanguageCode, QuizCategory } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  LanguageCode,
+  QuizCategory,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -23,7 +28,11 @@ const makeQuiz = (
   languageCode: LanguageCode.English,
   mode: GameMode.Classic,
   numberOfQuestions: 14,
-  author: { id: authorId, name: 'FrostyBear' },
+  author: {
+    id: authorId,
+    name: 'FrostyBear',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 9,
     totalPlayerCount: 102,

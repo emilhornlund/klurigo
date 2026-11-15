@@ -1,4 +1,4 @@
-import { QuizResponseDto } from '@klurigo/common'
+import { QuizResponseDto, resolveGameAvatarSnapshot } from '@klurigo/common'
 
 import { Quiz } from '../../../quiz-core/repositories/models/schemas'
 
@@ -42,6 +42,7 @@ export function toQuizResponseDto(quiz: Quiz): QuizResponseDto {
     author: {
       id: owner._id,
       name: owner.defaultNickname,
+      avatar: resolveGameAvatarSnapshot(owner.avatar),
     },
     gameplaySummary: {
       count: gameplaySummary.count,

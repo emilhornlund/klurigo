@@ -3,6 +3,7 @@ import {
   DiscoveryQuizCardDto,
   DiscoveryResponseDto,
   DiscoverySectionKey,
+  resolveGameAvatarSnapshot,
   TokenScope,
 } from '@klurigo/common'
 import {
@@ -330,6 +331,7 @@ export class DiscoveryController {
       author: {
         id: owner._id,
         name: owner.defaultNickname,
+        avatar: resolveGameAvatarSnapshot(owner.avatar),
       },
       gameplaySummary: {
         count: quiz.gameplaySummary.count,

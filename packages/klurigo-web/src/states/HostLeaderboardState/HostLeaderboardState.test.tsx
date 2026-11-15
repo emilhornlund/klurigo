@@ -1,4 +1,8 @@
-import { GameEventType, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+} from '@klurigo/common'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -51,7 +55,10 @@ describe('HostLeaderboardState', () => {
                 score: 6723,
                 streaks: 0,
               },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
             pagination: { current: 1, total: 20 },
           }}
         />

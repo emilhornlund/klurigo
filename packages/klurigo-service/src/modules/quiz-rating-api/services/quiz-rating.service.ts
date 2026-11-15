@@ -1,4 +1,9 @@
-import { PaginatedQuizRatingDto, QuizRatingDto } from '@klurigo/common'
+import {
+  PaginatedQuizRatingDto,
+  QuizRatingAuthorDto,
+  QuizRatingDto,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 import { MurLock } from 'murlock'
 
@@ -228,23 +233,31 @@ export class QuizRatingService {
   /**
    * Maps a discriminated author subdocument to the public author DTO shape.
    *
-   * The external shape `{ id, nickname }` is the same for both user and
+   * The external shape `{ id, nickname, avatar }` is the same for both user and
    * anonymous authors — consumers do not need to know the author type.
    *
-   * For user authors, the nickname is resolved from the populated User document.
-   * For anonymous authors, the nickname stored at rating time is used directly.
+   * User identities are resolved from the populated User document; anonymous
+   * identities use the stored rating-time snapshot. Missing or unsupported
+   * avatar metadata resolves to the stable default without modifying storage.
    *
    * @param author - The discriminated author subdocument.
    * @returns The mapped author DTO.
    */
-  private static toQuizRatingAuthorDto(author: QuizRatingAuthor): {
-    id: string
-    nickname: string
-  } {
+  private static toQuizRatingAuthorDto(
+    author: QuizRatingAuthor,
+  ): QuizRatingAuthorDto {
     if (isQuizRatingUserAuthor(author)) {
-      return { id: author.user._id, nickname: author.user.defaultNickname }
+      return {
+        id: author.user._id,
+        nickname: author.user.defaultNickname,
+        avatar: resolveGameAvatarSnapshot(author.user.avatar),
+      }
     } else if (isQuizRatingAnonymousAuthor(author)) {
-      return { id: author.participantId, nickname: author.nickname }
+      return {
+        id: author.participantId,
+        nickname: author.nickname,
+        avatar: resolveGameAvatarSnapshot(author.avatar),
+      }
     } else {
       throw new Error('Unknown author')
     }

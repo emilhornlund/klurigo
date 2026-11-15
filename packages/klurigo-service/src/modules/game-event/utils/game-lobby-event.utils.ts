@@ -4,6 +4,7 @@ import {
   GameEventType,
   GameLobbyHostEvent,
   GameLobbyPlayerEvent,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 
 import {
@@ -36,9 +37,10 @@ export function buildGameLobbyHostEvent(
     },
     players: game.participants
       .filter(isParticipantPlayer)
-      .map(({ participantId: id, nickname }) => ({
+      .map(({ participantId: id, nickname, avatar }) => ({
         id,
         nickname,
+        avatar: resolveGameAvatarSnapshot(avatar),
       })),
   }
 }
@@ -59,10 +61,13 @@ export function buildGameLobbyPlayerEvent(
   return {
     type: GameEventType.GameLobbyPlayer,
     game: { name: game.name },
-    player: { nickname },
+    player: { nickname, avatar: resolveGameAvatarSnapshot(player.avatar) },
     players: game.participants
       .filter(isParticipantPlayer)
-      .map(({ nickname }) => ({ nickname })),
+      .map(({ nickname, avatar }) => ({
+        nickname,
+        avatar: resolveGameAvatarSnapshot(avatar),
+      })),
   }
 }
 
@@ -88,6 +93,6 @@ export function buildGameBeginPlayerEvent(
   const { nickname } = player
   return {
     type: GameEventType.GameBeginPlayer,
-    player: { nickname },
+    player: { nickname, avatar: resolveGameAvatarSnapshot(player.avatar) },
   }
 }

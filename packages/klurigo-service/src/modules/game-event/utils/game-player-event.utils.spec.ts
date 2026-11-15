@@ -1,4 +1,9 @@
-import { GameEventType, GameStatus } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+  GameStatus,
+} from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -16,6 +21,41 @@ import { buildPlayerGameEvent } from './game-player-event.utils'
 
 describe('buildPlayerGameEvent', () => {
   const mockPlayer = createMockGamePlayerParticipantDocument()
+
+  it.each(Object.values(GameMode))(
+    'retains exact self metadata through every identity-bearing task in %s',
+    (mode) => {
+      const avatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, pattern: null }
+      const player = createMockGamePlayerParticipantDocument({ avatar })
+      const tasks = [
+        createMockLobbyTaskDocument({ status: 'active' }),
+        createMockLobbyTaskDocument({ status: 'completed' }),
+        createMockQuestionTaskDocument({ status: 'pending' }),
+        createMockQuestionTaskDocument({ status: 'active' }),
+        createMockQuestionResultTaskDocument({ status: 'active' }),
+        createMockLeaderboardTaskDocument({ status: 'active' }),
+        createMockPodiumTaskDocument({ status: 'active' }),
+      ]
+      for (const currentTask of tasks) {
+        const game = createMockGameDocument({
+          mode,
+          currentTask,
+          questions: [createMockMultiChoiceQuestionDocument()],
+          participants: [player],
+          previousTasks: [
+            createMockQuestionResultTaskDocument({ status: 'completed' }),
+          ],
+        })
+        const event = buildPlayerGameEvent(game, player)
+        expect(event).toHaveProperty('player.avatar', avatar)
+        if ('player' in event) expect(event.player.avatar).not.toBe(avatar)
+        expect(buildPlayerGameEvent(game, player)).toHaveProperty(
+          'player.avatar',
+          avatar,
+        )
+      }
+    },
+  )
 
   describe('Lobby Task', () => {
     it('should return loading event when lobby task status is pending', () => {

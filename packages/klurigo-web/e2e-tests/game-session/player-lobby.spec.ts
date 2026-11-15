@@ -41,8 +41,13 @@ test('updates connected player lobby events as players join', async ({
     (event) => event.players.length === 1,
   )
   expect(firstLobby.game.name).toBe(quiz.title)
-  expect(firstLobby.player).toEqual({ nickname: firstNickname })
-  expect(firstLobby.players).toEqual([{ nickname: firstNickname }])
+  expect(firstLobby.player).toEqual({
+    nickname: firstNickname,
+    avatar: firstPlayer.avatar,
+  })
+  expect(firstLobby.players).toEqual([
+    { nickname: firstNickname, avatar: firstPlayer.avatar },
+  ])
 
   const secondPlayerLobby = firstPlayer.waitForEvent(
     GameEventType.GameLobbyPlayer,

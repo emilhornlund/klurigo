@@ -1,4 +1,9 @@
-import { GameMode, type GameResultDto, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  type GameResultDto,
+  QuestionType,
+} from '@klurigo/common'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
@@ -39,12 +44,16 @@ const makeClassicResults = (name: string): ClassicResult => ({
   mode: GameMode.Classic,
   name,
   quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
-  host: { id: 'host-1', nickname: 'Hosty' },
+  host: { id: 'host-1', nickname: 'Hosty', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
   numberOfPlayers: 2,
   numberOfQuestions: 2,
   playerMetrics: [
     {
-      player: { id: 'p1', nickname: 'Alice' },
+      player: {
+        id: 'p1',
+        nickname: 'Alice',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       rank: 1,
       comebackRankGain: 1,
       correct: 2,
@@ -55,7 +64,7 @@ const makeClassicResults = (name: string): ClassicResult => ({
       score: 200,
     },
     {
-      player: { id: 'p2', nickname: 'Bob' },
+      player: { id: 'p2', nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       rank: 2,
       comebackRankGain: 1,
       correct: 1,
@@ -93,12 +102,16 @@ const makeZ2HResults = (name: string): Z2HResult => ({
   mode: GameMode.ZeroToOneHundred,
   name,
   quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: false },
-  host: { id: 'host-1', nickname: 'Hosty' },
+  host: { id: 'host-1', nickname: 'Hosty', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
   numberOfPlayers: 2,
   numberOfQuestions: 2,
   playerMetrics: [
     {
-      player: { id: 'p1', nickname: 'Carol' },
+      player: {
+        id: 'p1',
+        nickname: 'Carol',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       rank: 1,
       comebackRankGain: 1,
       averagePrecision: 0.8,
@@ -107,7 +120,11 @@ const makeZ2HResults = (name: string): Z2HResult => ({
       score: 10,
     },
     {
-      player: { id: 'p2', nickname: 'Dave' },
+      player: {
+        id: 'p2',
+        nickname: 'Dave',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       rank: 2,
       comebackRankGain: 1,
       averagePrecision: 0.6,

@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -29,7 +30,7 @@ const quiz = (id: string): QuizResponseDto => ({
   mode: GameMode.Classic,
   visibility: QuizVisibility.Public,
   numberOfQuestions: 10,
-  author: { id: 'author', name: 'Author' },
+  author: { id: 'author', name: 'Author', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
   gameplaySummary: { count: 0, totalPlayerCount: 0 },
   ratingSummary: { stars: 0, comments: 0, total: 0 },
   created: new Date(),

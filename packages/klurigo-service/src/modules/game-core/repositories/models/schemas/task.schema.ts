@@ -1,4 +1,7 @@
-import { QuestionType } from '@klurigo/common'
+import {
+  type CrittersAvatarConfigurationV1,
+  QuestionType,
+} from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Schema as MongooseSchema } from 'mongoose'
 
@@ -415,6 +418,10 @@ questionTaskAnswerSchema.discriminator(
 
 @Schema({ _id: false, discriminatorKey: 'type' })
 export class QuestionResultTaskItem {
+  /** Copied from accepted identity; preserve unsupported versions during recovery. */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  avatar?: CrittersAvatarConfigurationV1
+
   @Prop({
     type: String,
     enum: [
@@ -761,6 +768,10 @@ export type QuestionResultTaskWithBase = BaseTask & QuestionResultTask
 
 @Schema({ _id: false })
 export class LeaderboardTaskItem {
+  /** Copied from accepted identity; preserve unsupported versions during recovery. */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  avatar?: CrittersAvatarConfigurationV1
+
   @Prop({ type: String, required: true })
   playerId: string
 

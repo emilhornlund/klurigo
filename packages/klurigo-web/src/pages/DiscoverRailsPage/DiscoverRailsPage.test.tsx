@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   DiscoverySectionKey,
   GameMode,
   LanguageCode,
@@ -51,7 +52,11 @@ const mockResponse: DiscoveryResponseDto = {
           languageCode: LanguageCode.English,
           mode: GameMode.Classic,
           numberOfQuestions: 10,
-          author: { id: 'a1', name: 'Author' },
+          author: {
+            id: 'a1',
+            name: 'Author',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
           gameplaySummary: {
             count: 5,
             totalPlayerCount: 10,
@@ -303,7 +308,7 @@ describe('DiscoverRailsPage', () => {
       mode: GameMode.Classic,
       visibility: QuizVisibility.Public,
       numberOfQuestions: 10,
-      author: { id: 'a1', name: 'Author' },
+      author: { id: 'a1', name: 'Author', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       gameplaySummary: { count: 2, totalPlayerCount: 4 },
       ratingSummary: { stars: 4.0, comments: 1, total: 10 },
       created: new Date(),
@@ -389,7 +394,11 @@ describe('DiscoverRailsPage', () => {
         mode: GameMode.Classic,
         visibility: QuizVisibility.Public,
         numberOfQuestions: 10,
-        author: { id: 'a1', name: 'Author' },
+        author: {
+          id: 'a1',
+          name: 'Author',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: { count: 1, totalPlayerCount: 2 },
         ratingSummary: { stars: 4, comments: 0, total: 10 },
         created: new Date(),

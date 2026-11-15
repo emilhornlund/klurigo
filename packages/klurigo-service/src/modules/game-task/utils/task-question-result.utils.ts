@@ -1,4 +1,9 @@
-import { GameMode, isDefined, QuestionType } from '@klurigo/common'
+import {
+  GameMode,
+  isDefined,
+  QuestionType,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -318,6 +323,7 @@ function buildQuestionResultTaskItem(
     type,
     playerId: participantId,
     nickname,
+    avatar: resolveGameAvatarSnapshot(participantPlayer.avatar),
     answer,
     correct,
     lastScore: nextScore,

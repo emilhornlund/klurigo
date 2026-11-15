@@ -196,6 +196,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Google 
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
         </div>
       </div>
     </main>
@@ -396,6 +402,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI for Local a
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
           <hr
             class="pageDivider"
           />
@@ -700,6 +712,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
         </div>
       </div>
     </main>
@@ -899,6 +917,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with prepop
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
           <hr
             class="pageDivider"
           />
@@ -1223,6 +1247,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
         </div>
       </div>
     </main>
@@ -1442,6 +1472,12 @@ exports[`ProfileSettingsPageUI > should render ProfileSettingsPageUI with unveri
               </button>
             </div>
           </form>
+          <hr
+            class="pageDivider"
+          />
+          <section
+            data-testid="avatar-form"
+          />
           <hr
             class="pageDivider"
           />

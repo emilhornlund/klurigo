@@ -9,6 +9,7 @@ import {
   GameQuestionPreviewPlayerEvent,
   MediaType,
   QuestionType,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 
 import {
@@ -96,6 +97,7 @@ export function buildGameQuestionPreviewPlayerEvent(
     game: { mode: game.mode },
     player: {
       nickname,
+      avatar: resolveGameAvatarSnapshot(player.avatar),
       score,
     },
     question: {
@@ -169,6 +171,7 @@ export function buildGameQuestionPlayerEvent(
     type: GameEventType.GameQuestionPlayer,
     player: {
       nickname,
+      avatar: resolveGameAvatarSnapshot(player.avatar),
       score: {
         total,
       },

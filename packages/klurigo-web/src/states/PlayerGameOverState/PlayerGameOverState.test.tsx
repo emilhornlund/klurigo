@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   GameMode,
   type GameOverPlayerEvent,
@@ -38,6 +39,7 @@ const makeEvent = (
     quiz: { id: 'quiz-1', title: 'Science Quiz' },
     player: {
       nickname: 'FrostyBear',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
       rank: 1,
       totalPlayers: 10,
       score: 8500,
@@ -92,6 +94,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 2,
               totalPlayers: 10,
               score: 100,
@@ -115,6 +118,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 5,
               totalPlayers: 15,
               score: 100,
@@ -138,6 +142,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 11,
               totalPlayers: 20,
               score: 100,
@@ -162,6 +167,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 1,
               totalPlayers: 10,
               score: 8500,
@@ -185,6 +191,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 1,
               totalPlayers: 10,
               score: 8500,
@@ -206,6 +213,7 @@ describe('PlayerGameOverState', () => {
       game: { id: 'game-42', mode: GameMode.ZeroToOneHundred },
       player: {
         nickname: 'P',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         rank: 11,
         totalPlayers: 20,
         score: 8500,
@@ -232,6 +240,7 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 3,
               totalPlayers: 20,
               score: 7000,
@@ -264,12 +273,17 @@ describe('PlayerGameOverState', () => {
           event={makeEvent({
             player: {
               nickname: 'P',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               rank: 2,
               totalPlayers: 10,
               score: 100,
               currentStreak: 0,
               comebackRankGain: 0,
-              behind: { points: 250, nickname: 'TopPlayer' },
+              behind: {
+                points: 250,
+                nickname: 'TopPlayer',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
             },
           })}
         />

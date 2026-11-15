@@ -1,8 +1,17 @@
-import { Authority, GameParticipantType } from '@klurigo/common'
+import {
+  Authority,
+  AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+} from '@klurigo/common'
 import type { Decorator } from '@storybook/react'
+import { type FC, type ReactNode, useContext } from 'react'
 
 import type { AuthContextType } from '../src/context/auth'
 import { AuthContext } from '../src/context/auth'
+import { UserContext } from '../src/context/user'
+
+const mockToken = `storybook.${btoa(JSON.stringify({ sub: 'MOCK', exp: 4102444800 }))}.signature`
 
 /**
  * Storybook decorator supplying a mock AuthContext with dummy tokens
@@ -12,36 +21,36 @@ const mockAuth: AuthContextType = {
   user: {
     ACCESS: {
       sub: 'MOCK',
-      exp: -1,
+      exp: 4102444800,
       authorities: [
         Authority.Game,
         Authority.User,
         Authority.Quiz,
         Authority.Media,
       ],
-      token: 'MOCK',
+      token: mockToken,
     },
     REFRESH: {
       sub: 'MOCK',
-      exp: -1,
+      exp: 4102444800,
       authorities: [Authority.RefreshAuth],
-      token: 'MOCK',
+      token: mockToken,
     },
   },
   game: {
     ACCESS: {
       sub: 'MOCK',
-      exp: -1,
+      exp: 4102444800,
       authorities: [Authority.Game],
-      token: 'MOCK',
+      token: mockToken,
       gameId: 'MOCK',
       participantType: GameParticipantType.HOST,
     },
     REFRESH: {
       sub: 'MOCK',
-      exp: -1,
+      exp: 4102444800,
       authorities: [Authority.RefreshAuth],
-      token: 'MOCK',
+      token: mockToken,
       gameId: 'MOCK',
       participantType: GameParticipantType.HOST,
     },
@@ -54,10 +63,33 @@ const mockAuth: AuthContextType = {
 }
 
 /**
- * Wraps a story in AuthContext.Provider using `mockAuth`.
+ * Supplies isolated authentication and confirmed profile state without hydration requests.
  */
+const MockAuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const userContext = useContext(UserContext)
+  const value = userContext.currentUser
+    ? userContext
+    : {
+        ...userContext,
+        currentUser: {
+          id: 'MOCK',
+          email: 'storybook@example.com',
+          defaultNickname: 'Storybook player',
+          authProvider: AuthProvider.Local,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+      }
+
+  return (
+    <AuthContext.Provider value={mockAuth}>
+      <UserContext.Provider value={value}>{children}</UserContext.Provider>
+    </AuthContext.Provider>
+  )
+}
+
+/** Wraps a story with mock credentials while preserving a story-specific user context. */
 export const withMockAuth: Decorator = (Story, context) => (
-  <AuthContext.Provider value={mockAuth}>
+  <MockAuthProvider>
     <Story {...context.args} />
-  </AuthContext.Provider>
+  </MockAuthProvider>
 )

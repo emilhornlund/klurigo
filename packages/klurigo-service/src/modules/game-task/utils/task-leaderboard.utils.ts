@@ -1,4 +1,4 @@
-import { GameMode } from '@klurigo/common'
+import { GameMode, resolveGameAvatarSnapshot } from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -95,6 +95,7 @@ export function updateParticipantsAndBuildLeaderboard(
       return {
         playerId: participant.participantId,
         nickname: participant.nickname,
+        avatar: resolveGameAvatarSnapshot(participant.avatar),
         position,
         previousPosition: previousRank,
         score: participant.totalScore,

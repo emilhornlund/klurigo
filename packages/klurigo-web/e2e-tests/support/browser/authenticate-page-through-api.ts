@@ -22,7 +22,7 @@ type StoredAuthState = {
 type StoredCurrentUser = Pick<
   UserProfileResponseDto,
   'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
->
+> & { avatar: UserProfileResponseDto['avatar'] | null }
 
 /**
  * Authenticates through the public API and hydrates the browser's normal auth
@@ -66,6 +66,7 @@ export async function authenticatePageThroughApi(
     unverifiedEmail: profile.unverifiedEmail,
     defaultNickname: profile.defaultNickname,
     authProvider: profile.authProvider,
+    avatar: profile.avatar ?? null,
   }
 
   await page.goto('/')

@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 
 import PlayerGameFooter from './PlayerGameFooter'
@@ -15,6 +16,7 @@ export const Default = {
     currentQuestion: 1,
     totalQuestions: 20,
     nickname: 'FrostyBear',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
     totalScore: 10361,
   },
 } satisfies Story

@@ -52,6 +52,7 @@ export class UserProfileService {
     return {
       id: user.id,
       nickname: user.defaultNickname,
+      avatar: user.avatar,
       quizzesCount,
       hostedGamesCount,
       playedGamesCount,

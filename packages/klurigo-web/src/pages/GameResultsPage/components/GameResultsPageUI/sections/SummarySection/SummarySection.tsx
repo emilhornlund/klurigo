@@ -31,6 +31,7 @@ import {
   type LeaderboardValue,
   NicknameChip,
   PageDivider,
+  PlayerAvatar,
   Podium,
   type PodiumValue,
   Surface,
@@ -77,11 +78,11 @@ const DetailsItem: FC<{
   </div>
 )
 
-const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
-  title,
-  value,
-  nicknames,
-}) => (
+const MetricCard: FC<{
+  title: string
+  value: string
+  players: GameResultParticipantDto[]
+}> = ({ title, value, players }) => (
   <Surface className={classNames(styles.card, styles.metric)}>
     <Typography variant="body2" align="center" color="inverse">
       {title}
@@ -90,8 +91,12 @@ const MetricCard: FC<{ title: string; value: string; nicknames: string[] }> = ({
       {value}
     </Typography>
     <div className={styles.nicknames}>
-      {nicknames.map((nickname, index) => (
-        <NicknameChip key={`${nickname}_${index}`} value={nickname} />
+      {players.map(({ nickname, avatar }, index) => (
+        <NicknameChip
+          key={`${nickname}_${index}`}
+          value={nickname}
+          avatar={avatar}
+        />
       ))}
     </div>
   </Surface>
@@ -194,23 +199,25 @@ const SummarySection: FC<SummarySectionProps> = ({
   )
 
   const podiumValues = useMemo<PodiumValue[]>(() => {
-    return playerMetrics
+    return [...playerMetrics]
       .sort((lhs, rhs) => lhs.rank - rhs.rank)
       .slice(0, 3)
       .map(({ rank, player, score }) => ({
         position: rank,
         nickname: player?.nickname ?? '',
+        avatar: player?.avatar,
         score,
       }))
   }, [playerMetrics])
 
   const leaderboardValues = useMemo<LeaderboardValue[]>(
     () =>
-      playerMetrics
+      [...playerMetrics]
         .sort((lhs, rhs) => lhs.rank - rhs.rank)
         .map(({ rank, player, score }) => ({
           position: rank,
           nickname: player?.nickname ?? '',
+          avatar: player?.avatar,
           score,
         })),
     [playerMetrics],
@@ -316,11 +323,14 @@ const SummarySection: FC<SummarySectionProps> = ({
 
           <div className={styles.column}>
             <DetailsItem title="Host" icon={faUserTie}>
-              {host.nickname ? (
-                <Link to={`/users/${host.id}/profile`}>{host.nickname}</Link>
-              ) : (
-                'N/A'
-              )}
+              <span className={styles.hostIdentity}>
+                <PlayerAvatar avatar={host.avatar} alt="" size={32} />
+                {host.nickname ? (
+                  <Link to={`/users/${host.id}/profile`}>{host.nickname}</Link>
+                ) : (
+                  'N/A'
+                )}
+              </span>
             </DetailsItem>
 
             <DetailsItem title="Date" icon={faCalendar}>
@@ -337,9 +347,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <MetricCard
             title="Fastest Overall Player"
             value={formatRoundedSeconds(averageResponseTimeMetric.value)}
-            nicknames={averageResponseTimeMetric.players.map(
-              ({ nickname }) => nickname,
-            )}
+            players={averageResponseTimeMetric.players}
           />
         )}
 
@@ -347,9 +355,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <MetricCard
             title="Longest Correct Streak"
             value={`${longestCorrectStreakMetric.value}`}
-            nicknames={longestCorrectStreakMetric.players.map(
-              ({ nickname }) => nickname,
-            )}
+            players={longestCorrectStreakMetric.players}
           />
         )}
 
@@ -357,9 +363,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <MetricCard
             title="Most Accurate Player"
             value={`${mostAccuratePlayer.value}%`}
-            nicknames={mostAccuratePlayer.players.map(
-              ({ nickname }) => nickname,
-            )}
+            players={mostAccuratePlayer.players}
           />
         )}
 
@@ -367,9 +371,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <MetricCard
             title="Precision Champion"
             value={`${precisionChampion.value}%`}
-            nicknames={precisionChampion.players.map(
-              ({ nickname }) => nickname,
-            )}
+            players={precisionChampion.players}
           />
         )}
 
@@ -377,7 +379,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           <MetricCard
             title="Biggest Comeback"
             value={`${comebackRankGain.value}`}
-            nicknames={comebackRankGain.players.map(({ nickname }) => nickname)}
+            players={comebackRankGain.players}
           />
         )}
       </div>

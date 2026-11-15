@@ -1,3 +1,4 @@
+import type { GameParticipantIdentityDto } from './game-participant.dto'
 import { GameStatus } from './game-status.enum'
 
 /**
@@ -23,4 +24,7 @@ export interface GameDetailsDto {
    * Current lifecycle status of the game.
    */
   status: GameStatus
+
+  /** Present only for this authenticated identity after its first accepted join. */
+  participant?: GameParticipantIdentityDto
 }

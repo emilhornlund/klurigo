@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { expect, within } from 'storybook/test'
@@ -10,6 +11,13 @@ import Leaderboard from './Leaderboard'
 const meta = {
   title: 'Gameplay Components/Leaderboard',
   component: Leaderboard,
+  decorators: [
+    (Story) => (
+      <div style={{ width: '100vw', maxWidth: 1024 }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -24,11 +32,26 @@ export const Default = {
       {
         position: 1,
         nickname: 'ShadowCyborg',
+        avatar: {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'block' as const,
+          top: null,
+        },
         score: 18456,
         streaks: 5,
         previousPosition: 2,
       },
-      { position: 2, nickname: 'Radar', score: 18398, previousPosition: 1 },
+      {
+        position: 2,
+        nickname: 'Radar',
+        score: 18398,
+        previousPosition: 1,
+        avatar: {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          body: 'blob' as const,
+          cheeks: null,
+        },
+      },
       {
         position: 3,
         nickname: 'ShadowWhirlwind',
@@ -65,7 +88,7 @@ export const Default = {
         score: 6723,
         previousPosition: 12,
       },
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 
@@ -82,7 +105,7 @@ export const WithoutPodium = {
       { position: 8, nickname: 'FrostyBear', score: 10361 },
       { position: 9, nickname: 'Willo', score: 9360 },
       { position: 10, nickname: 'ScarletFlame', score: 6723 },
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
     includePodium: false,
   },
 } satisfies Story
@@ -161,7 +184,7 @@ export const WithRankChanges = {
         streaks: 1,
         previousPosition: 8,
       }, // Rank up
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 
@@ -197,7 +220,7 @@ export const MixedRankChanges = {
         streaks: 1,
         previousPosition: 7,
       }, // Rank up
-    ],
+    ].map((player) => ({ avatar: DEFAULT_CRITTERS_AVATAR_V1, ...player })),
   },
 } satisfies Story
 

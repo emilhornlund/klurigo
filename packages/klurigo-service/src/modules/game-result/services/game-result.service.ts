@@ -9,6 +9,7 @@ import {
   GameResultZeroToOneHundredModePlayerMetricDto,
   GameResultZeroToOneHundredModeQuestionMetricDto,
   QuizVisibility,
+  resolveGameAvatarSnapshot,
 } from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 
@@ -98,6 +99,7 @@ export class GameResultService {
     const {
       game: { _id: id, name, mode, quiz },
       hostParticipantId,
+      hostAvatar,
       players,
       questions,
       hosted: created,
@@ -134,6 +136,7 @@ export class GameResultService {
       host: {
         id: hostParticipantId,
         nickname: hostUser?.defaultNickname || 'N/A',
+        avatar: resolveGameAvatarSnapshot(hostAvatar),
       },
       numberOfPlayers: players.length,
       numberOfQuestions: questions.length,
@@ -281,7 +284,11 @@ export class GameResultService {
       score,
     } = playerMetric
     return {
-      player: { id, nickname },
+      player: {
+        id,
+        nickname,
+        avatar: resolveGameAvatarSnapshot(playerMetric.avatar),
+      },
       rank,
       comebackRankGain,
       unanswered,

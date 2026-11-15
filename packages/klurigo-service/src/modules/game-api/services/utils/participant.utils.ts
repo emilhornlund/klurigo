@@ -1,4 +1,8 @@
-import { GameMode, GameParticipantType } from '@klurigo/common'
+import {
+  CrittersAvatarConfigurationV1,
+  GameMode,
+  GameParticipantType,
+} from '@klurigo/common'
 
 import {
   Game,
@@ -36,12 +40,14 @@ type QuestionResultRankingData = Pick<
  * @param game - The game document to mutate.
  * @param participantId - The unique participant identifier to assign to the new player.
  * @param nickname - The nickname to assign to the new player.
+ * @param avatar - Complete validated design to copy into the new participant.
  * @returns The same game document instance with the new player participant appended.
  */
 export function addPlayerParticipantToGame<T extends Game>(
   game: T,
   participantId: string,
   nickname: string,
+  avatar: CrittersAvatarConfigurationV1,
 ): T {
   const now = new Date()
 
@@ -53,6 +59,7 @@ export function addPlayerParticipantToGame<T extends Game>(
     participantId,
     type: GameParticipantType.PLAYER,
     nickname,
+    avatar: { ...avatar },
     rank,
     worstRank: rank,
     totalScore,

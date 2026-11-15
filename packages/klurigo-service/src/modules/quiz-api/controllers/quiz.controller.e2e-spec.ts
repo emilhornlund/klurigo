@@ -1,5 +1,7 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
+  isCrittersAvatarConfigurationV1,
   QuestionType,
   QuizCategory,
   QuizRequestDto,
@@ -500,6 +502,40 @@ describe('QuizController (e2e)', () => {
   })
 
   describe('/api/quizzes/:quizId (GET)', () => {
+    it.each([
+      undefined,
+      { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null },
+      { version: 99 },
+    ])(
+      'resolves the current author design %p without rewriting stored metadata',
+      async (avatar) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const { id } = await quizService.createQuiz(originalData, user)
+        const users = userModel.db.collection<{
+          _id: string
+          avatar?: unknown
+        }>(userModel.collection.collectionName)
+        if (avatar !== undefined)
+          await users.updateOne({ _id: user._id }, { $set: { avatar } })
+
+        await supertest(app.getHttpServer())
+          .get(`/api/quizzes/${id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => {
+            expect(body.author).toEqual({
+              id: user._id,
+              name: user.defaultNickname,
+              avatar: isCrittersAvatarConfigurationV1(avatar)
+                ? avatar
+                : DEFAULT_CRITTERS_AVATAR_V1,
+            })
+          })
+        expect((await users.findOne({ _id: user._id }))?.avatar).toEqual(avatar)
+      },
+    )
+
     it('should succeed in retrieving an existing quiz', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
 
@@ -591,6 +627,7 @@ describe('QuizController (e2e)', () => {
             author: {
               id: user._id,
               name: user.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             gameplaySummary: {
               count: 0,
@@ -686,6 +723,7 @@ describe('QuizController (e2e)', () => {
             author: {
               id: user._id,
               name: user.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             gameplaySummary: {
               count: 2,

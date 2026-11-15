@@ -16,12 +16,12 @@ export interface PlayerGameBeginStateProps {
 
 const PlayerGameBeginState: FC<PlayerGameBeginStateProps> = ({
   event: {
-    player: { nickname },
+    player: { nickname, avatar },
   },
 }) => (
   <GamePage layout="contained">
     <PageProminentIcon src={BellRingIcon} alt="BellRing" />
-    <NicknameChip value={nickname} />
+    <NicknameChip value={nickname} avatar={avatar} />
     <Typography variant="title" width="medium" align="center" color="inverse">
       Get ready!
     </Typography>

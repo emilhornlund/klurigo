@@ -1,16 +1,57 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import Leaderboard from './Leaderboard'
 
 describe('Leaderboard Component', () => {
+  it('keeps account and guest designs attached to their names through ties and rank changes', () => {
+    const account = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    const guest = { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null }
+    const values = [
+      { position: 1, nickname: 'Account', avatar: account, score: 100 },
+      { position: 1, nickname: 'Guest', avatar: guest, score: 100 },
+      {
+        position: 3,
+        nickname: 'Legacy',
+        score: 90,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
+    ]
+    const view = render(<Leaderboard values={values} />)
+    const source = (nickname: string) =>
+      screen
+        .getByText(nickname)
+        .parentElement?.querySelector('img')
+        ?.getAttribute('src')
+    expect(source('Account')).toBe(getCrittersAvatarV1DataUri(account))
+    expect(source('Guest')).toBe(getCrittersAvatarV1DataUri(guest))
+    expect(source('Legacy')).toBe(
+      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+    )
+    view.rerender(
+      <Leaderboard
+        values={[
+          { ...values[1], position: 1, score: 120 },
+          { ...values[0], position: 2 },
+          values[2],
+        ]}
+        showStreaks={false}
+      />,
+    )
+    expect(source('Account')).toBe(getCrittersAvatarV1DataUri(account))
+    expect(source('Guest')).toBe(getCrittersAvatarV1DataUri(guest))
+  })
+
   const mockValues = [
     { position: 1, nickname: 'Player1', score: 100, streaks: 5 },
     { position: 2, nickname: 'Player2', score: 80, streaks: 3 },
     { position: 3, nickname: 'Player3', score: 60, streaks: 2 },
     { position: 4, nickname: 'Player4', score: 40, streaks: 1 },
     { position: 5, nickname: 'Player5', score: 20, streaks: 0 },
-  ]
+  ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
   describe('Basic Rendering', () => {
     it('should render Leaderboard including podium', () => {
@@ -49,7 +90,7 @@ describe('Leaderboard Component', () => {
       const moreValues = [
         ...mockValues,
         { position: 6, nickname: 'Player6', score: 10, streaks: 0 },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={moreValues} includePodium={true} />)
 
@@ -62,7 +103,7 @@ describe('Leaderboard Component', () => {
       const fewValues = [
         { position: 1, nickname: 'Player1', score: 100, streaks: 0 },
         { position: 2, nickname: 'Player2', score: 80, streaks: 0 },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={fewValues} includePodium={false} />)
 
@@ -81,7 +122,7 @@ describe('Leaderboard Component', () => {
           streaks: 5,
           previousPosition: 3, // Moved up from 3rd to 1st
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithRankChange} />)
 
@@ -98,7 +139,7 @@ describe('Leaderboard Component', () => {
           streaks: 2,
           previousPosition: 1, // Moved down from 1st to 3rd
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithRankChange} />)
 
@@ -117,7 +158,7 @@ describe('Leaderboard Component', () => {
           streaks: 3,
           previousPosition: 2, // No change
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithNoChange} />)
 
@@ -137,7 +178,7 @@ describe('Leaderboard Component', () => {
           streaks: 5,
           // previousPosition is undefined
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithoutPrevious} />)
 
@@ -176,7 +217,7 @@ describe('Leaderboard Component', () => {
           streaks: 1,
           previousPosition: 1, // Rank down
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={mixedValues} />)
 
@@ -297,7 +338,7 @@ describe('Leaderboard Component', () => {
           streaks: 5,
           previousPosition: 3,
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithRankChange} />)
 
@@ -318,7 +359,7 @@ describe('Leaderboard Component', () => {
     it('handles single player', () => {
       const singlePlayer = [
         { position: 1, nickname: 'Solo', score: 100, streaks: 1 },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={singlePlayer} />)
 
@@ -331,7 +372,7 @@ describe('Leaderboard Component', () => {
       const valuesWithoutStreaks = [
         { position: 1, nickname: 'Player1', score: 100 },
         { position: 2, nickname: 'Player2', score: 80 },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithoutStreaks} />)
 
@@ -348,7 +389,7 @@ describe('Leaderboard Component', () => {
           streaks: 5,
           previousPosition: 10, // Big jump from 10th to 1st
         },
-      ]
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }))
 
       render(<Leaderboard values={valuesWithLargeChange} />)
 

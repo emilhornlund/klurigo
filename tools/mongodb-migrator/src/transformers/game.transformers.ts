@@ -6,6 +6,7 @@ import {
   toDateOrThrow,
 } from '../utils'
 
+import { copyAvatarMetadata } from './avatar.transformers'
 import { buildQuizQuestions } from './quiz.transformers'
 
 /**
@@ -143,6 +144,7 @@ function buildGameParticipants(document: BSONDocument): Array<BSONDocument> {
       updated: toDateOrThrow(
         extractValueOrThrow<string>(participant, {}, 'updated'),
       ),
+      ...copyAvatarMetadata(participant),
     }
   })
 }
@@ -399,6 +401,7 @@ function buildGameQuestionResults(task: BSONDocument): Array<BSONDocument> {
         totalResponseTime:
           extractValue<number>(item, {}, 'totalResponseTime') ?? 0,
         responseCount: extractValue<number>(item, {}, 'responseCount') ?? 0,
+        ...copyAvatarMetadata(item),
       }
     },
   )
@@ -446,5 +449,6 @@ function buildGameLeaderboardTaskItem(
     nickname: extractValueOrThrow<string>(leaderboardTaskItem, {}, 'nickname'),
     score: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'score'),
     streaks: extractValueOrThrow<number>(leaderboardTaskItem, {}, 'streaks'),
+    ...copyAvatarMetadata(leaderboardTaskItem),
   }
 }

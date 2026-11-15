@@ -11,6 +11,7 @@ import {
   UserController,
   UserProfileController,
 } from './controllers'
+import { GameEventListener } from './listeners/game-event.listener'
 import {
   GoogleUserSchema,
   LocalUserSchema,
@@ -42,7 +43,7 @@ import { UserEventHandler, UserService } from './services'
     TokenModule,
   ],
   controllers: [UserController, UserProfileController, UserAuthController],
-  providers: [UserService, UserRepository, UserEventHandler],
+  providers: [UserService, UserRepository, UserEventHandler, GameEventListener],
   exports: [UserService, UserRepository],
 })
 export class UserModule {}

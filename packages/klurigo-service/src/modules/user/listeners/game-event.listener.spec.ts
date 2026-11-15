@@ -1,3 +1,4 @@
+import { AuthProvider, DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 
@@ -39,6 +40,53 @@ describe(GameEventListener.name, () => {
   })
 
   describe('handleGamePlayerJoined', () => {
+    it.each([AuthProvider.Local, AuthProvider.Google])(
+      'persists the exact accepted account avatar alongside the nickname for %s',
+      async (authProvider) => {
+        const avatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          top: null,
+          cheeks: null,
+        }
+        userRepository.findUserById.mockResolvedValue({
+          _id: 'account',
+          authProvider,
+        })
+
+        await listener.handleGamePlayerJoined({
+          gameId: 'game',
+          participantId: 'account',
+          nickname: 'Player',
+          avatar,
+        })
+
+        expect(userRepository.update).toHaveBeenCalledWith('account', {
+          defaultNickname: 'Player',
+          avatar,
+          updatedAt: expect.any(Date),
+        })
+      },
+    )
+
+    it('preserves anonymous nickname persistence without writing an account avatar', async () => {
+      userRepository.findUserById.mockResolvedValue({
+        _id: 'guest',
+        authProvider: AuthProvider.None,
+      })
+
+      await listener.handleGamePlayerJoined({
+        gameId: 'game',
+        participantId: 'guest',
+        nickname: 'Guest',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      })
+
+      expect(userRepository.update).toHaveBeenCalledWith('guest', {
+        defaultNickname: 'Guest',
+        updatedAt: expect.any(Date),
+      })
+    })
+
     it('updates user defaultNickname when user exists', async () => {
       userRepository.findUserById.mockResolvedValueOnce({ _id: 'user-123' })
       userRepository.update.mockResolvedValueOnce(undefined)
@@ -47,6 +95,7 @@ describe(GameEventListener.name, () => {
         gameId: 'game-456',
         participantId: 'user-123',
         nickname: 'CoolPlayer',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
 
       expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
@@ -69,6 +118,7 @@ describe(GameEventListener.name, () => {
         gameId: 'game-456',
         participantId: 'unknown-user',
         nickname: 'GhostPlayer',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
 
       expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
@@ -86,6 +136,7 @@ describe(GameEventListener.name, () => {
           gameId: 'game-456',
           participantId: 'user-123',
           nickname: 'FailingPlayer',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         }),
       ).resolves.toBeUndefined()
 

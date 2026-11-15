@@ -1,5 +1,9 @@
-import { QuizRatingAuthorType } from '@klurigo/common'
+import {
+  type CrittersAvatarConfigurationV1,
+  QuizRatingAuthorType,
+} from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Schema as MongooseSchema } from 'mongoose'
 
 import { User } from '../../../../user/repositories'
 
@@ -83,6 +87,12 @@ export class QuizRatingAnonymousAuthor {
    */
   @Prop({ type: String, required: true })
   nickname: string
+
+  /**
+   * Accepted participant avatar captured at rating time. Optional for historical ratings.
+   */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  avatar?: CrittersAvatarConfigurationV1
 }
 
 /**

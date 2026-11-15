@@ -164,6 +164,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
           <>
             <Button
               id="share-button"
+              aria-label={linkCopied ? 'Copied' : 'Copy link'}
               type="button"
               size="small"
               hideValue="mobile"
@@ -173,6 +174,7 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
             </Button>
             <Button
               id="game-settings-button"
+              aria-label="Settings"
               type="button"
               size="small"
               hideValue="mobile"
@@ -230,10 +232,11 @@ const HostLobbyState: FC<HostLobbyStateProps> = ({
 
         <div className={styles.content}>
           <div className={styles.players}>
-            {players.map(({ id, nickname }) => (
+            {players.map(({ id, nickname, avatar }) => (
               <NicknameChip
                 key={id}
                 value={nickname}
+                avatar={avatar}
                 onDelete={() => handleRemovePlayerClick(id, nickname)}
                 animationState={playerAnimations[id]?.animationState || 'none'}
                 staggerDelay={playerAnimations[id]?.staggerDelay || 0}

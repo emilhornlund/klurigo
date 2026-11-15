@@ -1,5 +1,8 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import Podium from './Podium'
 import styles from './Podium.module.scss'
@@ -17,20 +20,106 @@ describe('Podium', () => {
     vi.restoreAllMocks()
   })
 
+  it.each([1, 2, 3])(
+    'retains exact winner designs on recovery with %i occupied places',
+    (count) => {
+      const designs = [
+        { ...DEFAULT_CRITTERS_AVATAR_V1, top: null },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null },
+        DEFAULT_CRITTERS_AVATAR_V1,
+      ]
+      const values = ['Account', 'Guest', 'Legacy']
+        .slice(0, count)
+        .map((nickname, index) => ({
+          position: index + 1,
+          nickname,
+          score: 100 - index,
+          avatar: designs[index],
+        }))
+      const view = render(<Podium values={values} />)
+      const sources = () =>
+        values.map(({ nickname }) =>
+          screen
+            .getByText(nickname)
+            .closest('[data-testid="podium-column"]')
+            ?.querySelector('img')
+            ?.getAttribute('src'),
+        )
+      expect(sources()).toEqual(
+        designs.slice(0, count).map(getCrittersAvatarV1DataUri),
+      )
+      expect(view.container.querySelectorAll('img')).toHaveLength(count)
+      view.rerender(<Podium values={JSON.parse(JSON.stringify(values))} />)
+      expect(sources()).toEqual(
+        designs.slice(0, count).map(getCrittersAvatarV1DataUri),
+      )
+    },
+  )
+
   it('should render Podium from a full leaderboard', async () => {
     const { container } = render(
       <Podium
         values={[
-          { position: 1, nickname: 'ShadowCyborg', score: 18456 },
-          { position: 2, nickname: 'Radar', score: 18398 },
-          { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
-          { position: 4, nickname: 'WhiskerFox', score: 14118 },
-          { position: 5, nickname: 'JollyNimbus', score: 13463 },
-          { position: 6, nickname: 'PuddingPop', score: 12459 },
-          { position: 7, nickname: 'MysticPine', score: 11086 },
-          { position: 8, nickname: 'FrostyBear', score: 10361 },
-          { position: 9, nickname: 'Willo', score: 9360 },
-          { position: 10, nickname: 'ScarletFlame', score: 6723 },
+          {
+            position: 1,
+            nickname: 'ShadowCyborg',
+            score: 18456,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 2,
+            nickname: 'Radar',
+            score: 18398,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 3,
+            nickname: 'ShadowWhirlwind',
+            score: 15492,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 4,
+            nickname: 'WhiskerFox',
+            score: 14118,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 5,
+            nickname: 'JollyNimbus',
+            score: 13463,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 6,
+            nickname: 'PuddingPop',
+            score: 12459,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 7,
+            nickname: 'MysticPine',
+            score: 11086,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 8,
+            nickname: 'FrostyBear',
+            score: 10361,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 9,
+            nickname: 'Willo',
+            score: 9360,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 10,
+            nickname: 'ScarletFlame',
+            score: 6723,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
         ]}
       />,
     )
@@ -40,9 +129,24 @@ describe('Podium', () => {
 
   it('should render Podium from a leaderboard with 3 players', async () => {
     const mockValues = [
-      { position: 1, nickname: 'ShadowCyborg', score: 18456 },
-      { position: 2, nickname: 'Radar', score: 18398 },
-      { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
+      {
+        position: 1,
+        nickname: 'ShadowCyborg',
+        score: 18456,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
+      {
+        position: 2,
+        nickname: 'Radar',
+        score: 18398,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
+      {
+        position: 3,
+        nickname: 'ShadowWhirlwind',
+        score: 15492,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
     ]
 
     const { container } = render(<Podium values={mockValues} />)
@@ -66,8 +170,18 @@ describe('Podium', () => {
     const { container } = render(
       <Podium
         values={[
-          { position: 1, nickname: 'ShadowCyborg', score: 18456 },
-          { position: 2, nickname: 'Radar', score: 18398 },
+          {
+            position: 1,
+            nickname: 'ShadowCyborg',
+            score: 18456,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 2,
+            nickname: 'Radar',
+            score: 18398,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
         ]}
       />,
     )
@@ -78,7 +192,14 @@ describe('Podium', () => {
   it('should render Podium from a leaderboard with 1 player', async () => {
     const { container } = render(
       <Podium
-        values={[{ position: 1, nickname: 'ShadowCyborg', score: 18456 }]}
+        values={[
+          {
+            position: 1,
+            nickname: 'ShadowCyborg',
+            score: 18456,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+        ]}
       />,
     )
 
@@ -106,7 +227,18 @@ describe('Podium', () => {
 
   it('should celebrate only when the winner nickname has finished revealing', () => {
     vi.useFakeTimers()
-    render(<Podium values={[{ position: 1, nickname: 'A', score: 1 }]} />)
+    render(
+      <Podium
+        values={[
+          {
+            position: 1,
+            nickname: 'A',
+            score: 1,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+        ]}
+      />,
+    )
 
     expect(screen.queryByTestId('confetti')).not.toBeInTheDocument()
     // Child animations must not trigger the celebration early.
@@ -128,9 +260,24 @@ describe('Podium', () => {
     'assigns consecutive reveal beats for %i players',
     (count) => {
       const values = [
-        { position: 1, nickname: 'First', score: 100 },
-        { position: 2, nickname: 'Second', score: 90 },
-        { position: 3, nickname: 'Third', score: 80 },
+        {
+          position: 1,
+          nickname: 'First',
+          score: 100,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+        {
+          position: 2,
+          nickname: 'Second',
+          score: 90,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+        {
+          position: 3,
+          nickname: 'Third',
+          score: 80,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       ].slice(0, count)
       render(<Podium values={values} />)
 
@@ -170,9 +317,24 @@ describe('Podium', () => {
     render(
       <Podium
         values={[
-          { position: 1, nickname: 'First', score: 100 },
-          { position: 2, nickname: 'Second', score: 90 },
-          { position: 3, nickname: 'Third', score: 80 },
+          {
+            position: 1,
+            nickname: 'First',
+            score: 100,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 2,
+            nickname: 'Second',
+            score: 90,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
+          {
+            position: 3,
+            nickname: 'Third',
+            score: 80,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
         ]}
       />,
     )
@@ -187,7 +349,12 @@ describe('Podium', () => {
     const { container } = render(
       <Podium
         values={[
-          { position: 1, nickname: 'First', score: 100 },
+          {
+            position: 1,
+            nickname: 'First',
+            score: 100,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
           // position 2 is missing entirely
           // position 3 is missing entirely
         ]}

@@ -1,5 +1,16 @@
 import type { UserProfileResponseDto } from '@klurigo/common'
-import { createContext } from 'react'
+import { createContext, type Dispatch, type SetStateAction } from 'react'
+
+/** Account-scoped snapshot used by navigation; never contains the full profile. */
+export type CurrentUserProfile = Pick<
+  UserProfileResponseDto,
+  | 'id'
+  | 'email'
+  | 'unverifiedEmail'
+  | 'defaultNickname'
+  | 'authProvider'
+  | 'avatar'
+>
 
 /**
  * The shape of the user context.
@@ -11,16 +22,8 @@ import { createContext } from 'react'
  * @property clearCurrentUser - Clears the stored user snapshot.
  */
 export type UserContextType = {
-  currentUser?: Pick<
-    UserProfileResponseDto,
-    'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
-  >
-  setCurrentUser: (
-    currentUser: Pick<
-      UserProfileResponseDto,
-      'id' | 'email' | 'unverifiedEmail' | 'defaultNickname' | 'authProvider'
-    >,
-  ) => void
+  currentUser?: CurrentUserProfile
+  setCurrentUser: Dispatch<SetStateAction<CurrentUserProfile | undefined>>
   fetchCurrentUser: (accessToken: string) => Promise<void>
   clearCurrentUser: () => void
 }

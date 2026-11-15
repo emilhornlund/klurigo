@@ -1,4 +1,9 @@
-import { GameEventType, GameMode, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
@@ -26,6 +31,7 @@ describe('PlayerQuestionPreviewState', () => {
             game: { mode: GameMode.Classic },
             player: {
               nickname: 'FrostyBear',
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
               score: 10458,
             },
             question: {
@@ -58,7 +64,11 @@ describe('PlayerQuestionPreviewState', () => {
           event={{
             type: GameEventType.GameQuestionPreviewPlayer,
             game: { mode: GameMode.ZeroToOneHundred },
-            player: { nickname: 'FrostyBear', score: 0 },
+            player: {
+              nickname: 'FrostyBear',
+              score: 0,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            },
             question: {
               type: QuestionType.Range,
               question: 'How many?',

@@ -2,17 +2,26 @@ import type {
   DiscoveryQuizCardDto,
   PublicUserProfileResponseDto,
 } from '@klurigo/common'
-import { GameMode, LanguageCode, QuizCategory } from '@klurigo/common'
+import {
+  AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  LanguageCode,
+  QuizCategory,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
 import { withMockAuth } from '../../../../../.storybook/mockAuthContext'
+import { UserContext } from '../../../../context/user/UserContext'
 
 import UserProfilePageUI from './UserProfilePageUI'
+import styles from './UserProfilePageUI.stories.module.scss'
 
 const profile: PublicUserProfileResponseDto = {
   id: 'user-1',
   nickname: 'FrostyBear',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
   quizzesCount: 10,
   hostedGamesCount: 18,
   playedGamesCount: 42,
@@ -38,7 +47,11 @@ const quizzes: DiscoveryQuizCardDto[] = Array.from(
     languageCode: LanguageCode.English,
     mode: GameMode.Classic,
     numberOfQuestions: 10 + index,
-    author: { id: 'user-1', name: 'FrostyBear' },
+    author: {
+      id: 'user-1',
+      name: 'FrostyBear',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
     gameplaySummary: {
       count: 12 + index,
       totalPlayerCount: 40 + index * 5,
@@ -57,7 +70,15 @@ const quizzes: DiscoveryQuizCardDto[] = Array.from(
 const meta = {
   title: 'Pages/UserProfilePage',
   component: UserProfilePageUI,
-  decorators: [withRouter, withMockAuth],
+  decorators: [
+    withRouter,
+    withMockAuth,
+    (Story) => (
+      <div className={styles.viewport}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -93,5 +114,57 @@ export const ErrorState = {
     quizzes: [],
     isLoading: false,
     isError: true,
+  },
+} satisfies Story
+
+export const WithAvatar = {
+  args: {
+    ...EmptyRail.args,
+    profile: { ...profile, avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+  },
+  decorators: [
+    (Story) => (
+      <UserContext.Provider
+        value={{
+          currentUser: {
+            id: 'MOCK',
+            email: 'mock@example.com',
+            defaultNickname: 'Current player',
+            authProvider: AuthProvider.Local,
+            avatar: {
+              ...DEFAULT_CRITTERS_AVATAR_V1,
+              body: 'block',
+              top: 'sprout',
+              bodyColor: '#6ee7b9',
+              backgroundColor: '#0f766e',
+            },
+          },
+          setCurrentUser: () => undefined,
+          fetchCurrentUser: async () => undefined,
+          clearCurrentUser: () => undefined,
+        }}>
+        <Story />
+      </UserContext.Provider>
+    ),
+  ],
+} satisfies Story
+
+export const UnsupportedAvatar = {
+  args: {
+    ...EmptyRail.args,
+    profile: {
+      ...profile,
+      avatar: {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        version: 2,
+      } as unknown as PublicUserProfileResponseDto['avatar'],
+    },
+  },
+} satisfies Story
+
+export const LongNickname = {
+  args: {
+    ...WithAvatar.args,
+    profile: { ...WithAvatar.args.profile, nickname: 'ExtraordinaryPlayer' },
   },
 } satisfies Story

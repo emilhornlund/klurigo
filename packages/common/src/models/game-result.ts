@@ -1,3 +1,4 @@
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 import { GameMode } from './game-mode.enum'
 import { QuestionType } from './question-type.enum'
 
@@ -168,6 +169,12 @@ export interface GameResultParticipantDto {
    * The nickname of the participant.
    */
   readonly nickname: string
+
+  /**
+   * The participant's game-time avatar snapshot. Historical results without
+   * supported metadata resolve to the stable default design.
+   */
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 /**

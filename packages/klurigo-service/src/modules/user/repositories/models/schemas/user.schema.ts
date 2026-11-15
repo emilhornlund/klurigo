@@ -1,8 +1,12 @@
-import { AuthProvider } from '@klurigo/common'
+import {
+  AuthProvider,
+  type CrittersAvatarConfigurationV1,
+} from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
 import { SkipValidation } from '../../../../../app/decorators'
+import { AvatarSchema } from '../../../../../app/shared/avatar/avatar.schema'
 import type {
   SharedGoogleUser,
   SharedLocalUser,
@@ -20,6 +24,10 @@ import type {
   discriminatorKey: 'authProvider',
 })
 export class User implements SharedUserBase {
+  /** Optional until explicitly saved; shared by all authentication providers. */
+  @Prop({ type: AvatarSchema, required: false, default: undefined })
+  avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The unique identifier of the user.
    * Acts as the primary key in the database.
@@ -114,6 +122,8 @@ export const UserSchema = SchemaFactory.createForClass(User)
  */
 @Schema({ _id: false })
 export class LocalUser implements SharedLocalUser {
+  avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The user’s unique identifier.
    */
@@ -180,6 +190,8 @@ export const LocalUserSchema = SchemaFactory.createForClass(LocalUser)
 
 @Schema({ _id: false })
 export class GoogleUser implements SharedGoogleUser {
+  avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The user’s unique identifier.
    */
@@ -247,6 +259,8 @@ export const GoogleUserSchema = SchemaFactory.createForClass(GoogleUser)
  */
 @Schema({ _id: false })
 export class NoneUser implements SharedNoneUser {
+  avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The user’s unique identifier.
    */

@@ -46,7 +46,7 @@ export interface PlayerLobbyStateProps {
  */
 const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
   event: {
-    player: { nickname },
+    player: { nickname, avatar },
     game: { name: quizTitle },
     players,
   },
@@ -110,11 +110,11 @@ const PlayerLobbyState: FC<PlayerLobbyStateProps> = ({
               You’re in!
             </Typography>
           </Stack>
-          <Stack align="center" spacing="stack">
+          <Stack align="center" spacing="stack" width="full">
             <Typography variant="body" align="center" color="inverse">
               Welcome,
             </Typography>
-            <NicknameChip value={nickname} />
+            <NicknameChip value={nickname} avatar={avatar} />
           </Stack>
           <Surface className={styles.quizCard}>
             <Stack align="center" spacing="compact">

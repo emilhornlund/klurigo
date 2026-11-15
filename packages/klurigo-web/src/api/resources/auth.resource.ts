@@ -10,6 +10,7 @@ import type {
   AuthRevokeRequestDto,
   CreateUserRequestDto,
   CreateUserResponseDto,
+  CrittersAvatarConfigurationV1,
   UpdateGoogleUserProfileRequestDto,
   UpdateLocalUserProfileRequestDto,
   UserProfileResponseDto,
@@ -421,7 +422,23 @@ export const createAuthResource = (
         throw error
       })
 
+  /** Save only the current account's exact avatar metadata. */
+  const updateUserAvatar = (
+    request: CrittersAvatarConfigurationV1,
+  ): Promise<CrittersAvatarConfigurationV1> =>
+    api
+      .apiPut<CrittersAvatarConfigurationV1>('/profile/user/avatar', request)
+      .then((saved) => {
+        deps.notifySuccess('Your avatar is saved!')
+        return saved
+      })
+      .catch((error) => {
+        deps.notifyError('We couldn’t save your avatar. Please try again.')
+        throw error
+      })
+
   return {
+    updateUserAvatar,
     login,
     googleExchangeCode,
     authenticateGame,

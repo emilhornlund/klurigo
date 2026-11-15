@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -25,7 +26,11 @@ const makeQuiz = (
   imageCoverURL: 'https://example.com/cover.jpg',
   languageCode: LanguageCode.English,
   numberOfQuestions: 14,
-  author: { id: 'author-1', name: 'Quiz author' },
+  author: {
+    id: 'author-1',
+    name: 'Quiz author',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 3,
     totalPlayerCount: 24,
@@ -43,7 +48,11 @@ const makeRating = (overrides: Partial<QuizRatingDto> = {}): QuizRatingDto => ({
   quizId: 'quiz-1',
   stars: 4,
   comment: 'Great quiz!',
-  author: { id: 'user-1', nickname: 'Alice' },
+  author: {
+    id: 'user-1',
+    nickname: 'Alice',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   createdAt: new Date('2025-01-01T00:00:00.000Z'),
   updatedAt: new Date('2025-01-01T00:00:00.000Z'),
   ...overrides,

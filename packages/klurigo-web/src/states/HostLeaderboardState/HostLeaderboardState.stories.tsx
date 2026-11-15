@@ -1,4 +1,8 @@
-import { GameEventType, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+} from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { withRouter } from 'storybook-addon-remix-react-router'
@@ -113,7 +117,7 @@ export const Default = {
           streaks: 0,
           previousPosition: 12,
         },
-      ],
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 })),
       pagination: { current: 1, total: 20 },
     },
   },

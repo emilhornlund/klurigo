@@ -1,7 +1,47 @@
 @use '../../../styles/border-radius.tokens' as radius;
 @use '../../../styles/colors.semantic' as colors;
+@use '../../../styles/controls.tokens' as controls;
 @use '../../../styles/helpers' as helpers;
 @use '../../../styles/spacing.semantic' as spacing;
+
+.identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+
+  .avatar {
+    flex-shrink: 0;
+  }
+
+  @include helpers.mobile {
+    gap: spacing.$space-inline-mobile;
+
+    .avatar {
+      width: controls.$control-small-height-mobile;
+      height: controls.$control-small-height-mobile;
+    }
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-inline-tablet;
+
+    .avatar {
+      width: controls.$control-small-height-tablet;
+      height: controls.$control-small-height-tablet;
+    }
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+
+    .avatar {
+      width: controls.$control-small-height-desktop;
+      height: controls.$control-small-height-desktop;
+    }
+  }
+}
 
 .badge {
   margin: 0;

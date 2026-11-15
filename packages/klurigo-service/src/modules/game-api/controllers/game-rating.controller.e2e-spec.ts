@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameParticipantType,
   GameStatus,
   QuizRatingAuthorType,
@@ -57,10 +58,15 @@ describe(`${GameRatingController.name} (e2e)`, () => {
 
   describe('/api/games/:gameID/ratings (PUT)', () => {
     let quizOwnerUser: User
+    let quizOwnerAccessToken: string
     let playerUser: User
 
     let anonymousParticipantId: string
     const anonymousNickname = 'QuizMaster'
+    const anonymousAvatar = {
+      ...DEFAULT_CRITTERS_AVATAR_V1,
+      eyes: 'wink',
+    } as const
 
     let quiz: Quiz
     let completedGame: Game
@@ -74,6 +80,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
         buildMockTertiaryUser(),
       )
       quizOwnerUser = quizOwnerAuthenticated.user
+      quizOwnerAccessToken = quizOwnerAuthenticated.accessToken
 
       const playerAuthenticated = await createDefaultUserAndAuthenticate(
         app,
@@ -111,6 +118,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
             createMockGamePlayerParticipantDocument({
               participantId: anonymousParticipantId,
               nickname: anonymousNickname,
+              avatar: anonymousAvatar,
             }),
           ],
           status: GameStatus.Completed,
@@ -140,6 +148,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
             author: {
               id: playerUser._id,
               nickname: playerUser.defaultNickname,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
             },
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -194,7 +203,7 @@ describe(`${GameRatingController.name} (e2e)`, () => {
       expect(ratingCount).toBe(1)
     })
 
-    it('should create a rating for an anonymous player participant', async () => {
+    it('should retain the anonymous participant avatar after the game is deleted', async () => {
       const anonymousToken = await authenticateGame(
         app,
         completedGame._id,
@@ -216,9 +225,23 @@ describe(`${GameRatingController.name} (e2e)`, () => {
             author: {
               id: anonymousParticipantId,
               nickname: anonymousNickname,
+              avatar: anonymousAvatar,
             },
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
+          })
+        })
+
+      await gameModel.deleteOne({ _id: completedGame._id })
+      await supertest(app.getHttpServer())
+        .get(`/api/quizzes/${quiz._id}/ratings`)
+        .set(createBearerAuthHeader(quizOwnerAccessToken))
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.results[0].author).toEqual({
+            id: anonymousParticipantId,
+            nickname: anonymousNickname,
+            avatar: anonymousAvatar,
           })
         })
 

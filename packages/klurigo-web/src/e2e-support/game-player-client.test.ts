@@ -1,4 +1,10 @@
-import { type GameEvent, GameEventType, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  type GameEvent,
+  GameEventType,
+  isCrittersAvatarConfigurationV1,
+  QuestionType,
+} from '@klurigo/common'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { GamePlayerClient } from '../../e2e-tests/support/api/game-player-client'
@@ -30,7 +36,11 @@ describe('GamePlayerClient', () => {
 
     await expect(
       client.authenticateAndJoin({ gamePIN: '123456' }, 'Ada'),
-    ).resolves.toEqual({ gameId: GAME_ID, participantId: PLAYER_ID })
+    ).resolves.toEqual({
+      gameId: GAME_ID,
+      participantId: PLAYER_ID,
+      avatar: client.avatar,
+    })
     await client.submitAnswer({
       type: QuestionType.MultiChoice,
       optionIndex: 2,
@@ -57,7 +67,7 @@ describe('GamePlayerClient', () => {
         headers: expect.objectContaining({
           Authorization: `Bearer ${gameToken}`,
         }),
-        body: JSON.stringify({ nickname: 'Ada' }),
+        body: expect.any(String),
       }),
     )
     expect(fetchMock).toHaveBeenNthCalledWith(
@@ -75,6 +85,15 @@ describe('GamePlayerClient', () => {
       }),
     )
 
+    const joined = JSON.parse(String(fetchMock.mock.calls[1][1]?.body)) as {
+      nickname: string
+      avatar: unknown
+    }
+    expect(joined.nickname).toBe('Ada')
+    expect(isCrittersAvatarConfigurationV1(joined.avatar)).toBe(true)
+    expect(joined.avatar).toEqual(client.avatar)
+    expect(Object.keys(joined)).toEqual(['nickname', 'avatar'])
+
     client.close()
   })
 
@@ -90,29 +109,37 @@ describe('GamePlayerClient', () => {
     emit({
       type: GameEventType.GameLobbyPlayer,
       game: { name: 'Test quiz' },
-      player: { nickname: 'Other player' },
-      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
+      player: { nickname: 'Other player', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }].map(
+        (player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }),
+      ),
     })
     emit({
       type: GameEventType.GameLobbyPlayer,
       game: { name: 'Test quiz' },
-      player: { nickname: 'Ada' },
-      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
+      player: { nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }].map(
+        (player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }),
+      ),
     })
 
     await expect(matchingEvent).resolves.toEqual({
       type: GameEventType.GameLobbyPlayer,
       game: { name: 'Test quiz' },
-      player: { nickname: 'Ada' },
-      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
+      player: { nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }].map(
+        (player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }),
+      ),
     })
     await expect(
       client.waitForEvent(GameEventType.GameLobbyPlayer),
     ).resolves.toEqual({
       type: GameEventType.GameLobbyPlayer,
       game: { name: 'Test quiz' },
-      player: { nickname: 'Other player' },
-      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }],
+      player: { nickname: 'Other player', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      players: [{ nickname: 'Ada' }, { nickname: 'Other player' }].map(
+        (player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 }),
+      ),
     })
 
     client.close()
@@ -151,8 +178,8 @@ describe('GamePlayerClient', () => {
     emit({
       type: GameEventType.GameLobbyPlayer,
       game: { name: 'Test quiz' },
-      player: { nickname: 'Ada' },
-      players: [{ nickname: 'Ada' }],
+      player: { nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      players: [{ nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 }],
     })
     const timeoutAssertion = expect(pendingEvent).rejects.toThrow(
       'Timed out after 25ms waiting for game event type "GAME_BEGIN_PLAYER". ' +
@@ -170,12 +197,12 @@ describe('GamePlayerClient', () => {
     )
     emit({
       type: GameEventType.GameBeginPlayer,
-      player: { nickname: 'Ada' },
+      player: { nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
     })
 
     await expect(nextEvent).resolves.toEqual({
       type: GameEventType.GameBeginPlayer,
-      player: { nickname: 'Ada' },
+      player: { nickname: 'Ada', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
     })
     client.close()
   })

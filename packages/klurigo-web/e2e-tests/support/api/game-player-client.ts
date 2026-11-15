@@ -1,8 +1,10 @@
 import {
   type AuthGameRequestDto,
   type AuthResponseDto,
+  type CrittersAvatarConfigurationV1,
   GameParticipantType,
   type GameTokenDto,
+  randomizeCrittersAvatar,
   type SubmitQuestionAnswerRequestDto,
   TokenScope,
 } from '@klurigo/common'
@@ -13,6 +15,7 @@ import { GameSessionEventClient } from './game-event-client'
 export type GamePlayerIdentity = {
   readonly gameId: string
   readonly participantId: string
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 /**
@@ -23,6 +26,9 @@ export type GamePlayerIdentity = {
  * or another real participant.
  */
 export class GamePlayerClient extends GameSessionEventClient {
+  /** Complete design selected once and submitted unchanged for this participant. */
+  public readonly avatar = randomizeCrittersAvatar()
+
   public constructor(apiBaseUrl: string) {
     super(
       apiBaseUrl,
@@ -66,11 +72,15 @@ export class GamePlayerClient extends GameSessionEventClient {
     this.setSession(token, claims.gameId)
 
     await this.postNoContent(this.gamePath('players'), {
-      body: { nickname },
+      body: { nickname, avatar: this.avatar },
       token,
     })
 
-    return { gameId: claims.gameId, participantId: claims.sub }
+    return {
+      gameId: claims.gameId,
+      participantId: claims.sub,
+      avatar: this.avatar,
+    }
   }
 
   /**

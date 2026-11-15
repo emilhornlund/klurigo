@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   GameLeaderboardHostEvent,
   GameMode,
@@ -128,6 +129,7 @@ describe('Game Leaderboard Event Utils', () => {
       expect(actual.type).toEqual(GameEventType.GameLeaderboardHost)
       expect(actual.leaderboard).toHaveLength(3)
       expect(actual.leaderboard[0]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 1,
         previousPosition: 2,
         nickname: 'Player1',
@@ -135,6 +137,7 @@ describe('Game Leaderboard Event Utils', () => {
         streaks: 5,
       })
       expect(actual.leaderboard[1]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 2,
         previousPosition: 1,
         nickname: 'Player2',
@@ -142,6 +145,7 @@ describe('Game Leaderboard Event Utils', () => {
         streaks: 3,
       })
       expect(actual.leaderboard[2]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 3,
         previousPosition: 4,
         nickname: 'Player3',
@@ -267,6 +271,7 @@ describe('Game Leaderboard Event Utils', () => {
         previousPosition: 1,
         nickname: 'PrecisePlayer',
         score: 100,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
       expect(actual.leaderboard[0]).not.toHaveProperty('streaks')
     })

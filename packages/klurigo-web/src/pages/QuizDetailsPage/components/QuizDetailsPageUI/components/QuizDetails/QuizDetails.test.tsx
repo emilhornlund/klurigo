@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -8,6 +9,8 @@ import {
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../../../../../utils/avatar/critters-v1'
 
 import QuizDetails from './QuizDetails'
 
@@ -23,7 +26,11 @@ const makeQuiz = (
   imageCoverURL: '',
   languageCode: LanguageCode.English,
   numberOfQuestions: 2,
-  author: { id: 'author-1', name: 'Quiz author' },
+  author: {
+    id: 'author-1',
+    name: 'Quiz author',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 12,
     totalPlayerCount: 42,
@@ -44,6 +51,17 @@ const renderDetails = (quiz: QuizResponseDto = makeQuiz()) =>
   )
 
 describe('QuizDetails', () => {
+  it('displays the author’s complete saved design beside the existing profile link', () => {
+    const avatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null, cheeks: null }
+    renderDetails(makeQuiz({ author: { id: 'owner', name: 'Owner', avatar } }))
+    const link = screen.getByRole('link', { name: 'Owner' })
+    expect(link).toHaveAttribute('href', '/users/owner/profile')
+    expect(link.querySelector('img')).toHaveAttribute(
+      'src',
+      getCrittersAvatarV1DataUri(avatar),
+    )
+  })
+
   it('renders all quiz metadata and links the author profile', () => {
     renderDetails()
 
@@ -78,7 +96,11 @@ describe('QuizDetails', () => {
   it('uses fallback values for absent or zero activity metadata', () => {
     renderDetails(
       makeQuiz({
-        author: { id: 'author-2', name: '' },
+        author: {
+          id: 'author-2',
+          name: '',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 0,
           totalPlayerCount: 0,

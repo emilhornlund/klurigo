@@ -1,4 +1,8 @@
-import { TokenScope, TokenType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  TokenScope,
+  TokenType,
+} from '@klurigo/common'
 import { renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -329,9 +333,17 @@ describe('useKlurigoServiceClient', () => {
     expect(getQuiz).toHaveBeenCalledWith('q1')
 
     await expect(
-      result.current.joinGame('g1' as never, 'Emil' as never),
+      result.current.joinGame(
+        'g1' as never,
+        'Emil' as never,
+        DEFAULT_CRITTERS_AVATAR_V1,
+      ),
     ).resolves.toBeUndefined()
-    expect(joinGame).toHaveBeenCalledWith('g1', 'Emil')
+    expect(joinGame).toHaveBeenCalledWith(
+      'g1',
+      'Emil',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
 
     const file = new File(['x'], 'x.png', { type: 'image/png' })
     const onProgress = vi.fn()

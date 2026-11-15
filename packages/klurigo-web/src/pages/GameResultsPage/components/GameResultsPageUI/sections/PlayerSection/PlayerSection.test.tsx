@@ -1,5 +1,5 @@
 import type { GameResultDto } from '@klurigo/common'
-import { GameMode } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameMode } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -31,15 +31,25 @@ beforeEach(() => {
 function buildMetrics(ranks: number[]): GameResultDto['playerMetrics'] {
   return ranks.map((rank) => ({
     rank,
-    player: { id: `p-${rank}`, nickname: `Player ${rank}` },
+    player: {
+      id: `p-${rank}`,
+      nickname: `Player ${rank}`,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
   })) as unknown as GameResultDto['playerMetrics']
 }
 
 describe('PlayerSection', () => {
   it('renders rows with badges and nicknames for Classic mode and uses getCorrectPercentage', () => {
     const metrics = [
-      { rank: 1, player: { nickname: 'Alice' } },
-      { rank: 2, player: { nickname: 'Bob' } },
+      {
+        rank: 1,
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
+      {
+        rank: 2,
+        player: { nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
     ] as unknown as GameResultDto['playerMetrics']
 
     const { container } = render(
@@ -76,7 +86,10 @@ describe('PlayerSection', () => {
 
   it('toggles details for a row and shows detail items for Classic mode', () => {
     const metrics = [
-      { rank: 1, player: { nickname: 'Alice' } },
+      {
+        rank: 1,
+        player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
     ] as unknown as GameResultDto['playerMetrics']
 
     const { container } = render(
@@ -105,9 +118,18 @@ describe('PlayerSection', () => {
 
   it('renders rows for ZeroToOneHundred mode and uses getAveragePrecision', () => {
     const metrics = [
-      { rank: 1, player: { nickname: 'Carol' } },
-      { rank: 2, player: { nickname: 'Dave' } },
-      { rank: 3, player: { nickname: 'Eve' } },
+      {
+        rank: 1,
+        player: { nickname: 'Carol', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
+      {
+        rank: 2,
+        player: { nickname: 'Dave', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
+      {
+        rank: 3,
+        player: { nickname: 'Eve', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+      },
     ] as unknown as GameResultDto['playerMetrics']
 
     const { container } = render(

@@ -1,3 +1,4 @@
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 import { GameMode } from './game-mode.enum'
 import { LanguageCode } from './language-code.enum'
 import {
@@ -131,6 +132,12 @@ export interface QuizAuthorResponseDto {
    * The name of the author.
    */
   name: string
+
+  /**
+   * The author's current public avatar, resolved to the stable default when
+   * the account has no supported saved design.
+   */
+  avatar: CrittersAvatarConfigurationV1
 }
 
 /**

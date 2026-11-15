@@ -9,6 +9,7 @@ import {
   getCelebrationLevel,
   IconButtonArrowLeft,
   IconButtonArrowRight,
+  NicknameChip,
   ScoreChip,
   Stack,
   StreakBadge,
@@ -110,7 +111,8 @@ const PlayerGameOverState: FC<PlayerGameOverStateProps> = ({
 
       <div className={styles.spacing} />
 
-      <Stack spacing="compact" align="center">
+      <Stack spacing="compact" align="center" width="full">
+        <NicknameChip value={player.nickname} avatar={player.avatar} />
         <Badge
           size="large"
           backgroundColor={getBadgePositionBackgroundColor(rank)}

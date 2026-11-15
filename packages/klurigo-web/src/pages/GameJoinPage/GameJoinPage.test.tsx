@@ -1,351 +1,398 @@
+import {
+  AuthProvider,
+  type CrittersAvatarConfigurationV1,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  isCrittersAvatarConfigurationV1,
+} from '@klurigo/common'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import type { ReactElement } from 'react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockNavigate = vi.fn()
-vi.mock('react-router-dom', async () => {
-  const actual =
-    await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
-  return { ...actual, useNavigate: () => mockNavigate }
-})
-
 const mockJoinGame = vi.fn()
-vi.mock('../../api', () => ({
-  useKlurigoServiceClient: () => ({ joinGame: mockJoinGame }),
-}))
-
+const mockGetGame = vi.fn()
 const mockRevokeGame = vi.fn()
-let providedIsUserAuthenticated = true
+const mockSetCurrentUser = vi.fn()
+let authenticated = true
+let gameID: string | undefined = 'GAME123'
+let defaultNickname = ''
+let savedAvatar: CrittersAvatarConfigurationV1 | undefined =
+  DEFAULT_CRITTERS_AVATAR_V1
 
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom',
+  )),
+  useNavigate: () => mockNavigate,
+}))
+vi.mock('../../api', () => ({
+  useKlurigoServiceClient: () => ({
+    joinGame: mockJoinGame,
+    getGame: mockGetGame,
+  }),
+}))
 vi.mock('../../context/auth', () => ({
   useAuthContext: () => ({
-    isUserAuthenticated: providedIsUserAuthenticated,
+    isUserAuthenticated: authenticated,
+    user: authenticated ? { ACCESS: { sub: 'account' } } : undefined,
     revokeGame: mockRevokeGame,
   }),
 }))
-
-let providedGameID: string | undefined = 'GAME123'
-let providedDefaultNickname: string | undefined = undefined
-
 vi.mock('../../context/game', () => ({
-  useGameContext: () => ({ gameID: providedGameID }),
-}))
-
-vi.mock('../../context/user', () => ({
-  useUserContext: () => ({
-    currentUser: providedDefaultNickname
-      ? { defaultNickname: providedDefaultNickname }
-      : undefined,
+  useGameContext: () => ({
+    gameID,
+    participantId: authenticated ? 'account' : 'guest',
   }),
 }))
-
+vi.mock('../../context/user', () => ({
+  useUserContext: () => ({
+    currentUser: authenticated
+      ? {
+          id: 'account',
+          email: 'account@example.com',
+          authProvider: AuthProvider.Local,
+          defaultNickname,
+          avatar: savedAvatar,
+        }
+      : undefined,
+    setCurrentUser: mockSetCurrentUser,
+  }),
+}))
+vi.mock('../../components/PlayerAvatar', () => ({
+  default: ({ alt }: { alt: string }) => (
+    <img alt={alt} src="avatar-preview.svg" />
+  ),
+}))
 vi.mock('./text.utils', () => ({
-  TITLES: ['Join the game', 'Another title'],
-  MESSAGES: ['Pick a nickname and jump in!', 'Another message'],
+  TITLES: ['Join the game'],
+  MESSAGES: ['Pick a nickname and jump in!'],
 }))
 
 import GameJoinPage from './GameJoinPage'
 
-const renderWithRouter = (ui: ReactElement, route = '/join') =>
-  render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>)
+const renderJoin = () =>
+  render(
+    <MemoryRouter>
+      <GameJoinPage />
+    </MemoryRouter>,
+  )
+const enterNickname = (value = 'Player') =>
+  fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+    target: { value },
+  })
+const submit = () =>
+  fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
+const storedAvatar = () =>
+  JSON.parse(
+    localStorage.getItem(
+      `klurigo:join-avatar:${gameID}:${authenticated ? 'account:account' : 'guest:guest'}`,
+    )!,
+  ) as CrittersAvatarConfigurationV1
 
 beforeEach(() => {
   vi.clearAllMocks()
-  providedGameID = 'GAME123'
-  providedDefaultNickname = undefined
-  providedIsUserAuthenticated = true
+  localStorage.clear()
+  authenticated = true
+  gameID = 'GAME123'
+  defaultNickname = ''
+  savedAvatar = DEFAULT_CRITTERS_AVATAR_V1
   mockJoinGame.mockResolvedValue(undefined)
+  mockGetGame.mockResolvedValue({ id: gameID })
   mockRevokeGame.mockResolvedValue(undefined)
 })
 
 describe('GameJoinPage', () => {
-  it('renders title and message (via RotatingMessage)', () => {
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    expect(screen.getByText('Join the game')).toBeInTheDocument()
-    expect(screen.getByText('Pick a nickname and jump in!')).toBeInTheDocument()
-
+  it('retains the original title, message, and form layout with an avatar trigger', () => {
+    const { container } = renderJoin()
+    expect(screen.getByText('Join the game')).toBeVisible()
+    expect(screen.getByText('Pick a nickname and jump in!')).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'Customize avatar' }),
+    ).toBeVisible()
+    expect(screen.queryByText('Preparing your avatar…')).not.toBeInTheDocument()
     expect(container).toMatchSnapshot()
   })
 
-  it('navigates back when clicking the back button', () => {
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    fireEvent.click(screen.getByRole('button', { name: /back/i }))
+  it('revokes game authentication through the existing Back action', () => {
+    renderJoin()
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
     expect(mockRevokeGame).toHaveBeenCalledWith({ redirectTo: '/' })
-
-    expect(container).toMatchSnapshot()
   })
 
-  it('join button stays disabled until nickname is valid', () => {
-    const { container } = renderWithRouter(<GameJoinPage />)
+  it.each(['', '   '])(
+    'does not join with an invalid nickname %p',
+    (nickname) => {
+      renderJoin()
+      enterNickname(nickname)
+      expect(screen.getByRole('button', { name: 'OK, Go!' })).toBeDisabled()
+      submit()
+      expect(mockJoinGame).not.toHaveBeenCalled()
+    },
+  )
 
-    const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
-    expect(joinBtn).toBeDisabled()
-
-    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
-      target: { value: 'Emil' },
-    })
-
-    expect(joinBtn).not.toBeDisabled()
-    expect(container).toMatchSnapshot()
-  })
-
-  it('submits with gameID and nickname and navigates to /game', async () => {
-    let resolveJoin!: () => void
-    mockJoinGame.mockReturnValueOnce(
-      new Promise<void>((r) => {
-        resolveJoin = r
-      }),
+  it('prefills the account nickname and submits the saved avatar with it', async () => {
+    defaultNickname = 'PreFilledNick'
+    savedAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    renderJoin()
+    expect(screen.getByPlaceholderText('Nickname')).toHaveValue(defaultNickname)
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'OK, Go!' })).toBeEnabled(),
     )
-
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
-      target: { value: 'Emil' },
-    })
-
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Emil')
-
-    resolveJoin()
+    submit()
+    expect(mockJoinGame).toHaveBeenCalledExactlyOnceWith(
+      gameID,
+      defaultNickname,
+      savedAvatar,
+    )
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
-
-    expect(container).toMatchSnapshot()
   })
 
-  it('does nothing when gameID is missing', () => {
-    providedGameID = undefined
-    const { container } = renderWithRouter(<GameJoinPage />)
+  it('uses the stable default for an account with no saved avatar', async () => {
+    savedAvatar = undefined
+    renderJoin()
+    enterNickname()
+    submit()
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      gameID,
+      'Player',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('Nickname')).toBeEnabled(),
+    )
+  })
 
-    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
-      target: { value: 'Someone' },
-    })
-
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
+  it('does not join without a game ID', () => {
+    gameID = undefined
+    renderJoin()
+    enterNickname()
+    submit()
     expect(mockJoinGame).not.toHaveBeenCalled()
-    expect(mockNavigate).not.toHaveBeenCalledWith('/game')
-
-    expect(container).toMatchSnapshot()
   })
 
-  it('starts with empty nickname when user has no default, keeping Join disabled', () => {
-    providedDefaultNickname = undefined
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
-    const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
-
-    expect(input.value).toBe('')
-    expect(joinBtn).toBeDisabled()
-
-    expect(container).toMatchSnapshot()
-  })
-
-  it('prefills nickname from user default and enables Join after validation is triggered', async () => {
-    providedDefaultNickname = 'PreFilledNick'
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText(/nickname/i) as HTMLInputElement
-    const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
-
-    expect(input.value).toBe('PreFilledNick')
-    expect(joinBtn).not.toBeDisabled()
-
-    fireEvent.change(input, { target: { value: 'PreFilledNick2' } })
-
-    await waitFor(() => {
-      expect(joinBtn).not.toBeDisabled()
-    })
-
-    expect(container).toMatchSnapshot()
-  })
-
-  it('does not submit when nickname is blank or whitespace', () => {
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText('Nickname')
-    const joinBtn = screen.getByRole('button', { name: /ok, go!/i })
-
-    fireEvent.change(input, { target: { value: '   ' } })
-    expect(joinBtn).toBeDisabled()
-
-    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
-
-    expect(mockJoinGame).not.toHaveBeenCalled()
-    expect(container).toMatchSnapshot()
-  })
-
-  it('disables the input while joining and re-enables after promise resolves', async () => {
-    let resolveJoin!: () => void
-    mockJoinGame.mockReturnValueOnce(
-      new Promise<void>((r) => {
-        resolveJoin = r
+  it('disables input and customization during a join, then restores the controls', async () => {
+    let finish!: () => void
+    mockJoinGame.mockReturnValue(
+      new Promise<void>((resolve) => {
+        finish = resolve
       }),
     )
-
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
-    fireEvent.change(input, { target: { value: 'Runner' } })
-
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Runner')
-    expect(input.disabled).toBe(true)
-
-    resolveJoin()
-    await waitFor(() => expect(input.disabled).toBe(false))
-
-    expect(container).toMatchSnapshot()
+    renderJoin()
+    enterNickname()
+    submit()
+    expect(screen.getByPlaceholderText('Nickname')).toBeDisabled()
+    expect(
+      screen.getByRole('button', { name: 'Customize avatar' }),
+    ).toBeDisabled()
+    await act(async () => finish())
+    expect(screen.getByPlaceholderText('Nickname')).toBeEnabled()
+    expect(mockNavigate).toHaveBeenCalledWith('/game')
   })
 
-  it('handles a rejected join without navigating and re-enables the controls', async () => {
-    mockJoinGame.mockRejectedValueOnce(new Error('Active game not found'))
-
-    renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText('Nickname') as HTMLInputElement
-    fireEvent.change(input, { target: { value: 'Runner' } })
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
-    await waitFor(() => expect(input.disabled).toBe(false))
-
-    expect(mockNavigate).not.toHaveBeenCalledWith('/game')
-    expect(input).toHaveValue('Runner')
-    expect(screen.getByRole('button', { name: /ok, go!/i })).not.toBeDisabled()
-
-    mockJoinGame.mockResolvedValueOnce(undefined)
-    fireEvent.change(input, { target: { value: 'RetryNick' } })
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
+  it('retains the nickname and exact design after failure and retries only the join', async () => {
+    mockJoinGame.mockRejectedValueOnce(new Error('Join failed'))
+    renderJoin()
+    enterNickname()
+    submit()
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('Nickname')).toBeEnabled(),
+    )
+    expect(screen.getByPlaceholderText('Nickname')).toHaveValue('Player')
+    expect(mockNavigate).not.toHaveBeenCalled()
+    submit()
+    expect(mockJoinGame).toHaveBeenNthCalledWith(
+      2,
+      gameID,
+      'Player',
+      DEFAULT_CRITTERS_AVATAR_V1,
+    )
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
-    expect(mockJoinGame).toHaveBeenLastCalledWith('GAME123', 'RetryNick')
   })
 
-  it('submits when the form is submitted (Enter key equivalent)', async () => {
-    let resolveJoin!: () => void
-    mockJoinGame.mockReturnValueOnce(
-      new Promise<void>((r) => {
-        resolveJoin = r
+  it('does not navigate after the joining page was unmounted', async () => {
+    let finish!: () => void
+    mockJoinGame.mockReturnValue(
+      new Promise<void>((resolve) => {
+        finish = resolve
       }),
     )
-
-    const { container } = renderWithRouter(<GameJoinPage />)
-
-    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
-      target: { value: 'KeyUser' },
-    })
-
-    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
-
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'KeyUser')
-
-    resolveJoin()
-    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
-
-    expect(container).toMatchSnapshot()
+    const view = renderJoin()
+    enterNickname()
+    submit()
+    view.unmount()
+    await act(async () => finish())
+    expect(mockNavigate).not.toHaveBeenCalled()
   })
 
-  it('disables the input immediately after submit while join is in-flight', async () => {
-    let resolveJoin!: () => void
-    mockJoinGame.mockReturnValueOnce(
-      new Promise<void>((r) => {
-        resolveJoin = r
-      }),
+  it.each(['game', 'account'])(
+    'ignores an old join response after an in-place %s switch',
+    async (scope) => {
+      let finish!: () => void
+      mockJoinGame.mockReturnValue(
+        new Promise<void>((resolve) => {
+          finish = resolve
+        }),
+      )
+      const view = renderJoin()
+      enterNickname()
+      submit()
+      if (scope === 'game') gameID = 'OTHER'
+      else authenticated = false
+      view.rerender(
+        <MemoryRouter>
+          <GameJoinPage />
+        </MemoryRouter>,
+      )
+
+      await act(async () => finish())
+
+      expect(mockNavigate).not.toHaveBeenCalled()
+      expect(mockSetCurrentUser).not.toHaveBeenCalled()
+      expect(screen.getByPlaceholderText('Nickname')).toBeEnabled()
+    },
+  )
+
+  it('closes an old identity dialog and restores the new game draft on an in-place switch', () => {
+    const view = renderJoin()
+    fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+    gameID = 'OTHER'
+    const nextAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, eyes: 'wink' }
+    localStorage.setItem(
+      'klurigo:join-avatar:OTHER:account:account',
+      JSON.stringify(nextAvatar),
+    )
+    view.rerender(
+      <MemoryRouter>
+        <GameJoinPage />
+      </MemoryRouter>,
     )
 
-    renderWithRouter(<GameJoinPage />)
-
-    const input = screen.getByPlaceholderText(/nickname/i) as HTMLInputElement
-
-    fireEvent.change(input, { target: { value: 'Speedy' } })
-
-    await act(async () => {
-      fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
-    })
-
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'Speedy')
-    expect(input.disabled).toBe(true)
-
-    resolveJoin()
-    await waitFor(() => expect(input.disabled).toBe(false))
-  })
-
-  it('does not render the create-account call-to-action when the user is authenticated', () => {
-    providedIsUserAuthenticated = true
-    renderWithRouter(<GameJoinPage />)
-
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(storedAvatar()).toEqual(nextAvatar)
     expect(
-      screen.queryByRole('button', { name: /make every game count/i }),
-    ).not.toBeInTheDocument()
-
-    expect(
-      screen.queryByText(/create an account to save your results/i),
-    ).not.toBeInTheDocument()
-  })
-
-  it('renders the create-account call-to-action when the user is not authenticated', () => {
-    providedIsUserAuthenticated = false
-    renderWithRouter(<GameJoinPage />)
-
-    expect(
-      screen.getByText(/anonymous play doesn’t keep history/i),
-    ).toBeInTheDocument()
-
-    expect(
-      screen.getByText(
-        /login to track stats, build quizzes, and host your own live games/i,
+      JSON.parse(
+        localStorage.getItem('klurigo:join-avatar:GAME123:account:account')!,
       ),
-    ).toBeInTheDocument()
+    ).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
   })
 
-  it('navigates to /auth/login when clicking the create-account call-to-action', () => {
-    providedIsUserAuthenticated = false
-    renderWithRouter(<GameJoinPage />)
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /make every game count/i }),
+  it('resumes accepted participants without preparing or changing their design', async () => {
+    mockGetGame.mockResolvedValue({
+      participant: { id: 'account', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+    })
+    renderJoin()
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith('/game', { replace: true }),
     )
-
-    expect(mockNavigate).toHaveBeenCalledWith('/auth/login')
-  })
-
-  it('does not attempt to join the game when clicking the create-account call-to-action', () => {
-    providedIsUserAuthenticated = false
-    renderWithRouter(<GameJoinPage />)
-
-    fireEvent.click(
-      screen.getByRole('button', { name: /make every game count/i }),
-    )
-
     expect(mockJoinGame).not.toHaveBeenCalled()
   })
 
-  it('still joins successfully when not authenticated (CTA present)', async () => {
-    providedIsUserAuthenticated = false
-
-    let resolveJoin!: () => void
-    mockJoinGame.mockReturnValueOnce(
-      new Promise<void>((r) => {
-        resolveJoin = r
-      }),
+  it('keeps joining available if the optional accepted-participant check fails', async () => {
+    mockGetGame.mockRejectedValue(new Error('Unavailable'))
+    renderJoin()
+    enterNickname()
+    await act(async () => {})
+    submit()
+    expect(mockJoinGame).toHaveBeenCalledWith(
+      gameID,
+      'Player',
+      DEFAULT_CRITTERS_AVATAR_V1,
     )
-
-    renderWithRouter(<GameJoinPage />)
-
-    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
-      target: { value: 'GuestUser' },
-    })
-
-    fireEvent.click(screen.getByRole('button', { name: /ok, go!/i }))
-
-    expect(mockJoinGame).toHaveBeenCalledWith('GAME123', 'GuestUser')
-
-    resolveJoin()
-    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/game'))
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('Nickname')).toBeEnabled(),
+    )
   })
+
+  it('discards dialog changes on Escape and restores focus without unmounting the nickname input', async () => {
+    renderJoin()
+    const input = screen.getByPlaceholderText('Nickname')
+    enterNickname('KeepMyName')
+    const trigger = screen.getByRole('button', { name: 'Customize avatar' })
+    await userEvent.click(trigger)
+    await userEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+    await userEvent.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(input).toHaveValue('KeepMyName')
+    expect(storedAvatar()).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+    await waitFor(() => expect(trigger).toHaveFocus())
+  })
+
+  it.each([true, false])(
+    'applies complete dialog choices and restores them after reload (account=%s)',
+    async (account) => {
+      authenticated = account
+      const view = renderJoin()
+      const initial = storedAvatar()
+      fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+      fireEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Use design' }))
+      expect(storedAvatar()).toEqual({ ...initial, body: 'block' })
+      view.unmount()
+      renderJoin()
+      enterNickname()
+      submit()
+      expect(mockJoinGame).toHaveBeenCalledWith(gameID, 'Player', {
+        ...initial,
+        body: 'block',
+      })
+      await waitFor(() =>
+        expect(screen.getByPlaceholderText('Nickname')).toBeEnabled(),
+      )
+    },
+  )
+
+  it('generates a complete guest design once and preserves it through rerenders and reloads', () => {
+    authenticated = false
+    const view = renderJoin()
+    const initial = storedAvatar()
+    expect(isCrittersAvatarConfigurationV1(initial)).toBe(true)
+    enterNickname('Guest')
+    expect(storedAvatar()).toEqual(initial)
+    view.unmount()
+    renderJoin()
+    expect(storedAvatar()).toEqual(initial)
+  })
+
+  it('randomizes only when explicitly requested and keeps the design complete', () => {
+    renderJoin()
+    fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Randomize' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Use design' }))
+    expect(isCrittersAvatarConfigurationV1(storedAvatar())).toBe(true)
+    expect(mockJoinGame).not.toHaveBeenCalled()
+  })
+
+  it('isolates drafts between games and rejects malformed browser data', () => {
+    const view = renderJoin()
+    view.unmount()
+    gameID = 'OTHER'
+    localStorage.setItem(
+      'klurigo:join-avatar:OTHER:account:account',
+      JSON.stringify({ version: 99 }),
+    )
+    renderJoin()
+    expect(storedAvatar()).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(
+      localStorage.getItem('klurigo:join-avatar:GAME123:account:account'),
+    ).not.toBeNull()
+  })
+
+  it.each([true, false])(
+    'preserves the original guest login prompt (authenticated=%s)',
+    (account) => {
+      authenticated = account
+      renderJoin()
+      const prompt = screen.queryByRole('button', {
+        name: /make every game count/i,
+      })
+      if (account) expect(prompt).not.toBeInTheDocument()
+      else {
+        fireEvent.click(prompt!)
+        expect(mockNavigate).toHaveBeenCalledWith('/auth/login')
+        expect(mockJoinGame).not.toHaveBeenCalled()
+      }
+    },
+  )
 })

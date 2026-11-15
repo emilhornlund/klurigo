@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { Test } from '@nestjs/testing'
 
 import { PaginatedQuizResponse } from '../../quiz-api/controllers/models'
@@ -37,6 +38,7 @@ describe('PublicUserController', () => {
       const profile: PublicUserProfileResponse = {
         id: userId,
         nickname: 'FrostyBear',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         quizzesCount: 7,
         hostedGamesCount: 11,
         playedGamesCount: 19,

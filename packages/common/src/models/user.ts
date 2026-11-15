@@ -1,4 +1,5 @@
 import { AuthProvider } from './auth'
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 
 /**
  * DTO for creating a new user.
@@ -64,6 +65,9 @@ export interface CreateUserResponseDto {
    */
   readonly defaultNickname: string
 
+  /** Complete initial avatar, using the stable default until a preference is saved. */
+  readonly avatar: CrittersAvatarConfigurationV1
+
   /**
    * Timestamp when the user was created (ISO 8601 string).
    */
@@ -109,6 +113,9 @@ export interface UserProfileResponseDto {
    */
   readonly defaultNickname: string
 
+  /** Complete avatar preference, using the stable default when stored metadata is missing or unsupported. */
+  readonly avatar: CrittersAvatarConfigurationV1
+
   /**
    * The user’s authentication provider.
    */
@@ -138,6 +145,9 @@ export interface PublicUserProfileResponseDto {
    * The public nickname displayed for the user.
    */
   readonly nickname: string
+
+  /** Complete public avatar, using the stable default when stored metadata is missing or unsupported. */
+  readonly avatar: CrittersAvatarConfigurationV1
 
   /**
    * The total number of public quizzes authored by the user.

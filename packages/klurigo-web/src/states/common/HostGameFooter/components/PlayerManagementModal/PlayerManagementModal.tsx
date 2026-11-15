@@ -217,10 +217,11 @@ const PlayerManagementModal: FC<PlayerManagementModalProps> = ({
         </Typography>
 
         <div className={styles.flow}>
-          {players.map(({ id, nickname }) => (
+          {players.map(({ id, nickname, avatar }) => (
             <NicknameChip
               key={id}
               value={nickname}
+              avatar={avatar}
               variant="accent"
               animationState={playerAnimations[id]?.animationState || 'none'}
               staggerDelay={playerAnimations[id]?.staggerDelay || 0}

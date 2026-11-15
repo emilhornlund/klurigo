@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import supertest from 'supertest'
 
@@ -44,6 +45,7 @@ describe('UserController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: expect.any(String),
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -186,6 +188,7 @@ describe('UserController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: expect.any(String),
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,

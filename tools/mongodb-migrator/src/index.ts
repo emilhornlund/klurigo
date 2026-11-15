@@ -19,6 +19,7 @@ import { join, resolve } from 'path'
 
 import { Command } from 'commander'
 
+import { patchCollectionAvatars } from './patches/missing-avatars.patch'
 import {
   cleanCollections,
   parseCollections,
@@ -57,7 +58,8 @@ const bsonFiles = readdirSync(inputDir)
   .filter((f) => f.endsWith('.bson'))
   .filter((f) => /^[^.].*\.bson$/.test(f))
 
-let collections = parseCollections(inputDir, bsonFiles)
-collections = cleanCollections(collections)
+const collections = cleanCollections(parseCollections(inputDir, bsonFiles))
+// Temporary backfill: remove this call and its import after the initial migration.
+patchCollectionAvatars(collections)
 printCollectionsDiff(collections)
 writeCollections(outputDir, collections)

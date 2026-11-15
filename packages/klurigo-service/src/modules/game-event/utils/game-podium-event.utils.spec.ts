@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   GamePodiumHostEvent,
   generateNickname,
@@ -16,6 +17,23 @@ import { buildGamePodiumHostEvent } from './game-podium-event.utils'
 
 describe('Game Podium Event Utils', () => {
   describe('buildGamePodiumHostEvent', () => {
+    it('retains the task snapshot even after the player has left the participant list', () => {
+      const avatar = {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        top: null,
+        body: 'block' as const,
+      }
+      const game = createMockGameDocument({
+        participants: [],
+        currentTask: createMockPodiumTaskDocument({
+          leaderboard: [createMockLeaderboardTaskItem({ avatar })],
+        }),
+      })
+      expect(
+        buildGamePodiumHostEvent(game as never).leaderboard[0].avatar,
+      ).toEqual(avatar)
+    })
+
     it('should not include more than 5 players in the leaderboard', () => {
       const gameDocument = createMockGameDocument({
         currentTask: createMockPodiumTaskDocument({
@@ -125,16 +143,19 @@ describe('Game Podium Event Utils', () => {
       expect(actual.game.name).toEqual(MOCK_DEFAULT_GAME_NAME)
       expect(actual.leaderboard).toHaveLength(3)
       expect(actual.leaderboard[0]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 1,
         nickname: 'Player1',
         score: 1000,
       })
       expect(actual.leaderboard[1]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 2,
         nickname: 'Player2',
         score: 900,
       })
       expect(actual.leaderboard[2]).toEqual({
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
         position: 3,
         nickname: 'Player3',
         score: 800,

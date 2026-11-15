@@ -6,6 +6,7 @@ import {
   ApiNicknameProperty,
   ApiUuidProperty,
 } from '../../../../app/swagger'
+import { UserAvatarResponse } from '../../../user/controllers/models'
 
 /**
  * Response returned when fetching a user's public profile.
@@ -28,6 +29,17 @@ export class PublicUserProfileResponse implements PublicUserProfileResponseDto {
     description: 'Public nickname displayed for the user.',
   })
   readonly nickname: string
+
+  /**
+   * Complete public avatar, with the stable default for missing or unsupported stored metadata.
+   */
+  @ApiProperty({
+    title: 'Avatar',
+    description:
+      'Complete public avatar, with the stable default for missing or unsupported stored metadata.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar: UserAvatarResponse
 
   /**
    * The total number of public quizzes authored by the user.

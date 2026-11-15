@@ -1,4 +1,5 @@
 @use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
 @use '../../styles/helpers' as helpers;
 @use '../../styles/mixins/_button' as button;
 @use '../../styles/spacing.semantic' as spacing;
@@ -12,6 +13,15 @@
   font-weight: bold;
   position: relative;
   overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+
+  .nickname {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   @include helpers.mobile {
     padding: 0 spacing.$space-content-inline-mobile;
@@ -112,6 +122,57 @@
 
     .delete {
       display: inline-flex;
+    }
+  }
+}
+
+// Avatar identities keep removal visible and keyboard-accessible alongside the name.
+.main.withAvatar {
+  flex-direction: row;
+
+  @include helpers.mobile {
+    height: controls.$control-normal-height-mobile;
+    gap: spacing.$space-inline-mobile;
+  }
+
+  @include helpers.tablet {
+    height: controls.$control-normal-height-tablet;
+    gap: spacing.$space-inline-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-inline-desktop;
+  }
+
+  .avatar {
+    flex-shrink: 0;
+
+    @include helpers.mobile {
+      width: controls.$control-small-height-mobile;
+      height: controls.$control-small-height-mobile;
+    }
+
+    @include helpers.tablet {
+      width: controls.$control-small-height-tablet;
+      height: controls.$control-small-height-tablet;
+    }
+
+    @include helpers.desktop {
+      width: controls.$control-small-height-desktop;
+      height: controls.$control-small-height-desktop;
+    }
+  }
+
+  .deleteButton {
+    display: inline-flex;
+    position: static;
+    flex: 0 0 auto;
+    width: controls.$control-small-height-mobile;
+    background: transparent;
+
+    &:focus-visible {
+      outline: controls.$control-border-width-outside solid currentColor;
+      outline-offset: -#{controls.$control-border-width-outside};
     }
   }
 }

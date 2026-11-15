@@ -1,5 +1,10 @@
 import type { DiscoveryQuizCardDto } from '@klurigo/common'
-import { GameMode, LanguageCode, QuizCategory } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  LanguageCode,
+  QuizCategory,
+} from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -18,7 +23,11 @@ const makeQuiz = (id: string, title: string): DiscoveryQuizCardDto => ({
   languageCode: LanguageCode.English,
   mode: GameMode.Classic,
   numberOfQuestions: 14,
-  author: { id: authorId, name: 'FrostyBear' },
+  author: {
+    id: authorId,
+    name: 'FrostyBear',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 9,
     totalPlayerCount: 102,

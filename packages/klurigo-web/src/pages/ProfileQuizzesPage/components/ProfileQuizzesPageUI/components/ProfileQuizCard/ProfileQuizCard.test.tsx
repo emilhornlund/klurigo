@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -29,7 +30,11 @@ const mockQuiz = {
   imageCoverURL: 'https://example.com/cover.jpg',
   languageCode: LanguageCode.English,
   numberOfQuestions: 15,
-  author: { id: 'author-1', name: 'John Doe' },
+  author: {
+    id: 'author-1',
+    name: 'John Doe',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
+  },
   gameplaySummary: {
     count: 100,
     totalPlayerCount: 500,

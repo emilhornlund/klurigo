@@ -95,6 +95,81 @@ If a collection is not handled explicitly, it will be skipped.
 
 You can extend the `transformOriginalDocument()` function in `src/index.ts` to add your own rules.
 
+## Avatar Backfill
+
+The **existing migration command** preserves avatars through its normal
+collection transformers and cleanup. A temporary missing-avatar patch runs after
+those steps for the initial backfill. There is no separate migration command.
+
+```bash
+yarn workspace mongodb-migrator build
+node tools/mongodb-migrator/dist/index.js --inputDir ./input --outputDir ./output
+```
+
+The patch covers:
+
+- `users.avatar`, for accounts and legacy anonymous user records.
+- `games.participants[].avatar`, including hosts and players.
+- Avatar snapshots in current and previous question-result, leaderboard, and
+  podium tasks.
+- `game_results.hostAvatar` and `game_results.players[].avatar`.
+- `quiz_ratings.author.avatar` for anonymous authors. Account-authored ratings
+  keep their existing user reference and resolve avatars through that account.
+
+**Only absent fields are filled.** Existing avatar values—including explicit
+`null`, incomplete metadata, and unsupported versions—are preserved. The patch
+does not replace these fields. Permanent transformer mappings copy existing
+avatar values unchanged, and cleanup leaves avatar metadata intact so explicit
+null choices cannot be dropped. Other transformation behavior remains unchanged.
+
+After the initial migration, remove the temporary import, backfill call, and its
+statistics log from `src/index.ts`, then delete
+`src/patches/missing-avatars.patch.ts` and its temporary
+`tests/avatar-backfill.test.mjs`. Keep `src/transformers/avatar.transformers.ts`,
+the avatar mappings in the collection transformers, and the avatar-preserving
+cleanup in `src/utils/bson.utils.ts`. These preserve future avatar data without
+generating any new avatars.
+The permanent regression tests in `tests/avatar-transformers.test.mjs` do not
+depend on the temporary patch and should remain.
+
+### Historical Consistency
+
+An existing supported account avatar is preferred when filling missing history.
+If the account has no supported avatar, an existing historical snapshot can
+anchor its missing preference and other history. One lookup per user/player ID
+is used for every missing field across all collections. Existing conflicting
+snapshots are never overwritten to force uniformity.
+
+When no supported existing design is available, the patch generates complete
+Critters v1 choices using SHA-512-derived, identity-seeded randomization. The
+same identity receives the same generated design across users, games, results,
+and reviews, independently of document order or repeated migration runs. The
+complete configuration is written to BSON; rendering does not depend on this
+seed. Body and accent colors are distinct, and optional parts retain explicit
+nulls.
+
+Identity matching uses stored IDs, including equivalent UUID/ObjectId string
+and BSON references. Nicknames and email addresses are not used to guess links.
+Different anonymous participant IDs remain different identities. Missing fields
+without a usable identity are left untouched and reported in the CLI's skipped
+count. The CLI also prints the number of avatar fields added per collection.
+
+### Verification
+
+Build the shared package first when its artifacts are not already available:
+
+```bash
+yarn workspace @klurigo/common build
+yarn workspace mongodb-migrator build
+node --test tools/mongodb-migrator/tests/*.test.mjs
+```
+
+The tests cover missing-only updates, preservation of existing metadata,
+cross-game identity reuse, existing preference precedence, deterministic
+generation, repeat runs, and the existing BSON CLI pipeline. They also verify
+that normal transformers and cleanup retain migrated avatars with the temporary
+backfill disabled.
+
 ## 🧱 Metadata
 
 The tool auto-generates metadata for known collections like:

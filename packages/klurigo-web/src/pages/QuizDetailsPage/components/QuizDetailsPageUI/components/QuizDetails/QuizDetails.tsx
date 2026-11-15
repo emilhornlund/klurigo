@@ -18,7 +18,7 @@ import type { QuizResponseDto } from '@klurigo/common'
 import type { FC, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Surface, Typography } from '../../../../../../components'
+import { PlayerAvatar, Surface, Typography } from '../../../../../../components'
 import {
   GameModeLabels,
   LanguageLabels,
@@ -63,8 +63,9 @@ const QuizDetails: FC<QuizDetailsProps> = ({ quiz }) => (
       value={`${quiz.numberOfQuestions} ${quiz.numberOfQuestions === 1 ? 'Question' : 'Questions'}`}
     />
     <DetailItem icon={faUser} title={quiz.author.name || 'N/A'}>
-      <Link to={`/users/${quiz.author.id}/profile`}>
-        {quiz.author.name || 'N/A'}
+      <Link to={`/users/${quiz.author.id}/profile`} className={styles.author}>
+        <PlayerAvatar avatar={quiz.author.avatar} size={32} alt="" />
+        <span>{quiz.author.name || 'N/A'}</span>
       </Link>
     </DetailItem>
     <DetailItem

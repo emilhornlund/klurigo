@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   type DiscoverySectionDto,
   DiscoverySectionKey,
   GameMode,
@@ -54,7 +55,11 @@ const makeSections = (count: number): DiscoverySectionDto[] =>
         languageCode: LanguageCode.English,
         mode: GameMode.Classic,
         numberOfQuestions: 10,
-        author: { id: 'a1', name: 'Author' },
+        author: {
+          id: 'a1',
+          name: 'Author',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         gameplaySummary: {
           count: 5,
           totalPlayerCount: 10,
@@ -76,7 +81,7 @@ const makeQuizResults = (count: number): QuizResponseDto[] =>
     mode: GameMode.Classic,
     visibility: QuizVisibility.Public,
     numberOfQuestions: 5,
-    author: { id: 'a1', name: 'Author' },
+    author: { id: 'a1', name: 'Author', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
     gameplaySummary: { count: 2, totalPlayerCount: 4 },
     ratingSummary: { stars: 3.5, comments: 1, total: 5 },
     created: new Date(),

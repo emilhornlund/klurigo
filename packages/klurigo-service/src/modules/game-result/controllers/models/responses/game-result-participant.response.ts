@@ -1,5 +1,7 @@
 import { GameResultParticipantDto } from '@klurigo/common'
+import { ApiProperty } from '@nestjs/swagger'
 
+import { AvatarConfigurationResponse } from '../../../../../app/shared/avatar/avatar-configuration.response'
 import {
   ApiGameParticipantIdProperty,
   ApiPlayerNicknameProperty,
@@ -20,4 +22,14 @@ export class GameResultParticipantResponse implements GameResultParticipantDto {
    */
   @ApiPlayerNicknameProperty()
   nickname: string
+
+  /**
+   * The participant's game-time avatar snapshot, resolved to the stable default
+   * when historical result metadata is missing or unsupported.
+   */
+  @ApiProperty({
+    type: AvatarConfigurationResponse,
+    description: 'The participant’s game-time avatar.',
+  })
+  avatar: AvatarConfigurationResponse
 }

@@ -71,5 +71,27 @@
       font-weight: 600;
       opacity: 1;
     }
+
+    .author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      max-width: 100%;
+      span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      @include helpers.mobile {
+        gap: spacing.$space-inline-mobile;
+      }
+      @include helpers.tablet {
+        gap: spacing.$space-inline-tablet;
+      }
+      @include helpers.desktop {
+        gap: spacing.$space-inline-desktop;
+      }
+    }
   }
 }

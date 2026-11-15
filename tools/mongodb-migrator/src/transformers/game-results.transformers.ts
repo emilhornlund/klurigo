@@ -5,6 +5,8 @@ import {
   toDate,
 } from '../utils'
 
+import { copyAvatarMetadata } from './avatar.transformers'
+
 /**
  * Transforms a document from the `game_results` collection into a `game_results` document format.
  *
@@ -49,6 +51,7 @@ export function transformGameResultsDocument(
           'longestCorrectStreak',
         ),
         score: extractValueOrThrow<number>(player, {}, 'score'),
+        ...copyAvatarMetadata(player),
       }),
     ),
     questions: extractValueOrThrow<BSONDocument[]>(
@@ -70,5 +73,6 @@ export function transformGameResultsDocument(
     })),
     hosted: toDate(extractValueOrThrow<string>(document, {}, 'hosted')),
     completed: toDate(extractValueOrThrow<string>(document, {}, 'completed')),
+    ...copyAvatarMetadata(document, 'hostAvatar'),
   }
 }

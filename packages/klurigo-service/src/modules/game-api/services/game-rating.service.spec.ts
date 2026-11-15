@@ -1,4 +1,8 @@
-import { QuizRatingAuthorType, QuizRatingDto } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  QuizRatingAuthorType,
+  QuizRatingDto,
+} from '@klurigo/common'
 import { ForbiddenException } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { v4 as uuidv4 } from 'uuid'
@@ -49,7 +53,11 @@ describe(GameRatingService.name, () => {
     quizId: mockQuiz._id,
     stars: 4,
     comment: 'Great quiz!',
-    author: { id: mockUser._id, nickname: mockUser.defaultNickname },
+    author: {
+      id: mockUser._id,
+      nickname: mockUser.defaultNickname,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    },
     createdAt: new Date('2026-01-10T12:00:00.000Z'),
     updatedAt: new Date('2026-01-10T12:00:00.000Z'),
   }
@@ -146,6 +154,7 @@ describe(GameRatingService.name, () => {
           createMockGamePlayerParticipantDocument({
             participantId: mockAnonymousParticipantId,
             nickname: mockAnonymousNickname,
+            avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, eyes: 'wink' },
           }),
         ],
       }) as unknown as GameDocument
@@ -155,6 +164,7 @@ describe(GameRatingService.name, () => {
         author: {
           id: mockAnonymousParticipantId,
           nickname: mockAnonymousNickname,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
       }
 
@@ -179,6 +189,11 @@ describe(GameRatingService.name, () => {
       expect(authorArg.type).toBe(QuizRatingAuthorType.Anonymous)
       expect(authorArg.participantId).toBe(mockAnonymousParticipantId)
       expect(authorArg.nickname).toBe(mockAnonymousNickname)
+      expect(authorArg.avatar).toEqual({
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        eyes: 'wink',
+      })
+      expect(authorArg.avatar).not.toBe(mockGame.participants[0].avatar)
       expect(quizRatingService.createOrUpdateQuizRating).toHaveBeenCalledWith(
         mockQuiz._id,
         authorArg,
@@ -199,7 +214,11 @@ describe(GameRatingService.name, () => {
 
       const anonRatingDto: QuizRatingDto = {
         ...mockRatingDto,
-        author: { id: unknownParticipantId, nickname: unknownParticipantId },
+        author: {
+          id: unknownParticipantId,
+          nickname: unknownParticipantId,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       }
 
       gameRepository.findGameByIDOrThrow.mockResolvedValue(mockGame)
@@ -221,6 +240,7 @@ describe(GameRatingService.name, () => {
       expect(authorArg.type).toBe(QuizRatingAuthorType.Anonymous)
       expect(authorArg.participantId).toBe(unknownParticipantId)
       expect(authorArg.nickname).toBe(unknownParticipantId)
+      expect(authorArg.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
     })
 
     it('should throw ForbiddenException when logged-in participant is the quiz owner', async () => {

@@ -1,6 +1,8 @@
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
 import type { FC } from 'react'
 
 import { classNames } from '../../utils/helpers'
+import PlayerAvatar from '../PlayerAvatar'
 import Stack from '../Stack'
 import StreakBadge from '../StreakBadge'
 import Surface from '../Surface'
@@ -23,6 +25,8 @@ const getPodiumClassName = (position: number): string | null => {
 export type LeaderboardValue = {
   position: number
   nickname: string
+  /** Accepted game-time design resolved by the game/result boundary. */
+  avatar: CrittersAvatarConfigurationV1
   score: number
   streaks?: number
   previousPosition?: number
@@ -48,7 +52,10 @@ const Leaderboard: FC<LeaderboardProps> = ({
   return (
     <Stack width="full">
       {displayedValues.map(
-        ({ position, nickname, score, streaks, previousPosition }, index) => {
+        (
+          { position, nickname, avatar, score, streaks, previousPosition },
+          index,
+        ) => {
           const rowStyle = { '--row-index': index } as React.CSSProperties
           const isTopPosition = includePodium && position <= 3
           const isRankImprovement =
@@ -78,6 +85,12 @@ const Leaderboard: FC<LeaderboardProps> = ({
               </Surface>
 
               <div className={classNames(styles.column, styles.nickname)}>
+                <PlayerAvatar
+                  avatar={avatar}
+                  alt=""
+                  size={40}
+                  className={styles.avatar}
+                />
                 <span>{nickname}</span>
               </div>
 

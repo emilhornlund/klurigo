@@ -1,3 +1,5 @@
+import type { CrittersAvatarConfigurationV1 } from '@klurigo/common'
+
 /**
  * Event key emitted when a participant joins a game.
  *
@@ -27,4 +29,9 @@ export type GamePlayerJoinEvent = {
    * The nickname used by the participant when joining the game.
    */
   nickname: string
+
+  /**
+   * The complete avatar snapshot accepted for this participant in the game.
+   */
+  avatar: CrittersAvatarConfigurationV1
 }

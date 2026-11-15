@@ -1,5 +1,9 @@
-import { GameParticipantType } from '@klurigo/common'
+import {
+  type CrittersAvatarConfigurationV1,
+  GameParticipantType,
+} from '@klurigo/common'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Schema as MongooseSchema } from 'mongoose'
 
 /**
  * Represents a participant in a game, including host and player details.
@@ -11,6 +15,13 @@ export class ParticipantBase {
    */
   @Prop({ type: String, required: true })
   participantId: string
+
+  /**
+   * Immutable, request-validated metadata. Keep unknown historical versions intact
+   * when an unrelated participant or task is saved; readers resolve supported data.
+   */
+  @Prop({ type: MongooseSchema.Types.Mixed, required: false })
+  avatar?: CrittersAvatarConfigurationV1
 
   /**
    * The type of participant, either host or player.

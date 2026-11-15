@@ -1,16 +1,59 @@
 @use '../../../styles/helpers' as helpers;
+@use '../../../styles/spacing.semantic' as spacing;
 @use '../../../styles/typography.tokens' as typography;
 
 .pointsBehindIndicator {
+  max-width: 100%;
+  text-align: center;
+
+  .identity {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    vertical-align: middle;
+
+    strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .avatar {
+    flex-shrink: 0;
+  }
+
   @include helpers.mobile {
+    .identity {
+      gap: spacing.$space-inline-mobile;
+    }
+    .avatar {
+      width: helpers.pxToRem(24px);
+      height: helpers.pxToRem(24px);
+    }
     @include helpers.fontSize(typography.$font-size-body2-mobile);
   }
 
   @include helpers.tablet {
+    .identity {
+      gap: spacing.$space-inline-tablet;
+    }
+    .avatar {
+      width: helpers.pxToRem(28px);
+      height: helpers.pxToRem(28px);
+    }
     @include helpers.fontSize(typography.$font-size-body2-tablet);
   }
 
   @include helpers.desktop {
+    .identity {
+      gap: spacing.$space-inline-desktop;
+    }
+    .avatar {
+      width: helpers.pxToRem(32px);
+      height: helpers.pxToRem(32px);
+    }
     @include helpers.fontSize(typography.$font-size-body2-desktop);
   }
 }

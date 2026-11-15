@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -24,6 +25,7 @@ const makeRatings = (count: number): QuizRatingDto[] =>
     author: {
       id: `user-${i}`,
       nickname: `User ${i + 1}`,
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
     },
     createdAt: new Date(Date.now() - i * 1000 * 60 * 60),
     updatedAt: new Date(Date.now() - i * 1000 * 60 * 60),
@@ -32,7 +34,15 @@ const makeRatings = (count: number): QuizRatingDto[] =>
 const meta = {
   title: 'Pages/QuizDetailsPage',
   component: QuizDetailsPageUI,
-  decorators: [withRouter, withMockAuth],
+  decorators: [
+    withRouter,
+    withMockAuth,
+    (Story) => (
+      <div style={{ width: '100vw' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -55,7 +65,11 @@ export const Default = {
         'https://0utwqfl7.cdn.imgeng.in/explore-academics/programs/images/undergraduate/henson/geographymajorMH.jpg',
       languageCode: LanguageCode.English,
       numberOfQuestions: 14,
-      author: { id: uuidv4(), name: 'FrostyBear' },
+      author: {
+        id: uuidv4(),
+        name: 'FrostyBear',
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, top: null },
+      },
       gameplaySummary: {
         count: 5,
         totalPlayerCount: 42,

@@ -1,5 +1,7 @@
 import { QuizRatingAuthorDto } from '@klurigo/common'
+import { ApiProperty } from '@nestjs/swagger'
 
+import { AvatarConfigurationResponse } from '../../../../app/shared/avatar/avatar-configuration.response'
 import { ApiNicknameProperty, ApiUuidProperty } from '../../../../app/swagger'
 
 /**
@@ -18,13 +20,24 @@ export class QuizRatingAuthorResponse implements QuizRatingAuthorDto {
   readonly id: string
 
   /**
-   * The nickname displayed for the author at the time the rating was created.
+   * The current account nickname or anonymous nickname captured at rating time.
    */
   @ApiNicknameProperty({
     title: 'Nickname',
     description:
-      'The nickname displayed for the author at the time the rating was created.',
+      'The current account nickname or anonymous nickname captured at rating time.',
     example: 'Emil',
   })
   readonly nickname: string
+
+  /**
+   * Current account avatar or anonymous participant snapshot, with a stable historical default.
+   */
+  @ApiProperty({
+    title: 'Avatar',
+    description:
+      'Current account avatar or anonymous participant snapshot, with a stable historical default.',
+    type: AvatarConfigurationResponse,
+  })
+  readonly avatar: AvatarConfigurationResponse
 }

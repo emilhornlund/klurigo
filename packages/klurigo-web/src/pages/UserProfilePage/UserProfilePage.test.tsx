@@ -4,6 +4,7 @@ import type {
   QuizResponseDto,
 } from '@klurigo/common'
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -14,6 +15,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 import { formatTimeAgo } from '../../utils/date.utils'
 import * as quizUtils from '../../utils/quiz.utils'
 
@@ -41,6 +43,7 @@ import UserProfilePage from './UserProfilePage'
 const profile: PublicUserProfileResponseDto = {
   id: 'user-1',
   nickname: 'QuizMasterJane',
+  avatar: DEFAULT_CRITTERS_AVATAR_V1,
   quizzesCount: 7,
   hostedGamesCount: 11,
   playedGamesCount: 23,
@@ -60,6 +63,7 @@ const makeQuiz = (overrides?: Partial<QuizResponseDto>): QuizResponseDto => ({
   author: {
     id: 'user-1',
     name: 'QuizMasterJane',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
   },
   gameplaySummary: {
     count: 24,
@@ -176,6 +180,36 @@ describe('UserProfilePage', () => {
     expect(screen.queryByTestId('horizontal-rail')).not.toBeInTheDocument()
   })
 
+  it.each([
+    ['saved', { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' }],
+    ['missing', undefined],
+    ['unsupported', { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 }],
+  ] as const)(
+    'renders the %s profile avatar without losing the profile summary',
+    async (_name, avatar) => {
+      h.getUserPublicProfileMock.mockResolvedValue({ ...profile, avatar })
+      h.getUserPublicQuizzesMock.mockResolvedValue({
+        results: [],
+        total: 0,
+        limit: 10,
+        offset: 0,
+      })
+      renderUserProfilePage()
+      const image = await screen.findByRole('img', {
+        name: "QuizMasterJane's avatar",
+      })
+      if (avatar?.version === 1)
+        expect(image.getAttribute('src')).toBe(
+          getCrittersAvatarV1DataUri(avatar),
+        )
+      else
+        expect(image.getAttribute('src')).toBe(
+          getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+        )
+      expect(screen.getByTestId('user-profile-stats')).toBeInTheDocument()
+    },
+  )
+
   it('renders the shared not-found or error state when profile loading fails', async () => {
     h.getUserPublicProfileMock.mockRejectedValue(new Error('Not found'))
     h.getUserPublicQuizzesMock.mockResolvedValue({
@@ -203,6 +237,7 @@ describe('UserProfilePage', () => {
       author: {
         id: 'user-1',
         name: 'QuizMasterJane',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       },
     })
 

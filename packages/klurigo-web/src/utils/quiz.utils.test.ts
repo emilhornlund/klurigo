@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   type DiscoveryQuizCardDto,
   GameMode,
   LanguageCode,
@@ -29,6 +30,7 @@ const makeQuizResponse = (
   author: {
     id: 'author-1',
     name: 'Jane Doe',
+    avatar: DEFAULT_CRITTERS_AVATAR_V1,
   },
   gameplaySummary: {
     count: 42,
@@ -111,6 +113,7 @@ describe('quiz.utils', () => {
         author: {
           id: 'author-1',
           name: 'Jane Doe',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
         gameplaySummary: {
           count: 42,
@@ -150,6 +153,7 @@ describe('quiz.utils', () => {
         author: {
           id: 'author-2',
           name: 'John Smith',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
         },
       })
 

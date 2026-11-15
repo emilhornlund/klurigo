@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameEventType } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { withRouter } from 'storybook-addon-remix-react-router'
 
@@ -43,7 +43,7 @@ export const Default = {
         { position: 8, nickname: 'FrostyBear', score: 10361 },
         { position: 9, nickname: 'Willo', score: 9360 },
         { position: 10, nickname: 'ScarletFlame', score: 6723 },
-      ],
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 })),
     },
   },
 } satisfies Story
@@ -59,7 +59,7 @@ export const ThreePlayers = {
         { position: 1, nickname: 'ShadowCyborg', score: 18456 },
         { position: 2, nickname: 'Radar', score: 18398 },
         { position: 3, nickname: 'ShadowWhirlwind', score: 15492 },
-      ],
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 })),
     },
   },
 } satisfies Story
@@ -74,7 +74,7 @@ export const TwoPlayers = {
       leaderboard: [
         { position: 1, nickname: 'ShadowCyborg', score: 18456 },
         { position: 2, nickname: 'Radar', score: 18398 },
-      ],
+      ].map((player) => ({ ...player, avatar: DEFAULT_CRITTERS_AVATAR_V1 })),
     },
   },
 } satisfies Story
@@ -86,7 +86,14 @@ export const OnePlayer = {
       game: {
         name: 'Trivia Battle',
       },
-      leaderboard: [{ position: 1, nickname: 'ShadowCyborg', score: 18456 }],
+      leaderboard: [
+        {
+          position: 1,
+          nickname: 'ShadowCyborg',
+          score: 18456,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+      ],
     },
   },
 } satisfies Story

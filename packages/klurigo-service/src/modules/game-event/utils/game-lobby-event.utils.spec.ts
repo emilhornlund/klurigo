@@ -1,4 +1,4 @@
-import { GameEventType } from '@klurigo/common'
+import { DEFAULT_CRITTERS_AVATAR_V1, GameEventType } from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -51,8 +51,16 @@ describe('Game Lobby Event Utils', () => {
       })
       expect(result.players).toHaveLength(2)
       expect(result.players).toEqual([
-        { id: 'player-1', nickname: 'PlayerOne' },
-        { id: 'player-2', nickname: 'PlayerTwo' },
+        {
+          id: 'player-1',
+          nickname: 'PlayerOne',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+        {
+          id: 'player-2',
+          nickname: 'PlayerTwo',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
       ])
     })
 
@@ -117,10 +125,12 @@ describe('Game Lobby Event Utils', () => {
       expect(result.players[0]).toEqual({
         id: 'player-0',
         nickname: 'Player0',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
       expect(result.players[9]).toEqual({
         id: 'player-9',
         nickname: 'Player9',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
     })
 
@@ -242,8 +252,12 @@ describe('Game Lobby Event Utils', () => {
 
       expect(result.players).toHaveLength(2)
       expect(result.players).toEqual([
-        { id: 'player-1', nickname: 'Alice' },
-        { id: 'player-2', nickname: 'Bob' },
+        {
+          id: 'player-1',
+          nickname: 'Alice',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+        { id: 'player-2', nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       ])
       expect(result.players.some((p) => p.id === 'host-123')).toBe(false)
     })
@@ -272,8 +286,8 @@ describe('Game Lobby Event Utils', () => {
       expect(result.player.nickname).toBe('TestPlayer')
       expect(result.game.name).toBe('A Great Quiz')
       expect(result.players).toEqual([
-        { nickname: 'TestPlayer' },
-        { nickname: 'AnotherPlayer' },
+        { nickname: 'TestPlayer', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
+        { nickname: 'AnotherPlayer', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       ])
     })
 

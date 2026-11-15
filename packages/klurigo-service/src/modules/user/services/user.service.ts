@@ -2,7 +2,9 @@ import {
   AuthProvider,
   CreateUserRequestDto,
   CreateUserResponseDto,
+  CrittersAvatarConfigurationV1,
   generateNickname,
+  resolveGameAvatarSnapshot,
   UpdateGoogleUserProfileRequestDto,
   UserProfileResponseDto,
 } from '@klurigo/common'
@@ -217,6 +219,18 @@ export class UserService {
   ): Promise<UserProfileResponseDto> {
     const user = await this.userRepository.findUserByIdOrThrow(userId)
     return UserService.toProfileUserResponse(user)
+  }
+
+  /** Save avatar metadata independently of personal details and email verification. */
+  public async updateUserAvatar(
+    userId: string,
+    avatar: CrittersAvatarConfigurationV1,
+  ): Promise<CrittersAvatarConfigurationV1> {
+    const updated = await this.userRepository.findUserByIdAndUpdateOrThrow(
+      userId,
+      { avatar },
+    )
+    return resolveGameAvatarSnapshot(updated.avatar)
   }
 
   /**
@@ -629,6 +643,7 @@ export class UserService {
       givenName,
       familyName,
       defaultNickname,
+      avatar: resolveGameAvatarSnapshot(createdUser.avatar),
       created: createdAt,
       updated: updatedAt,
     }
@@ -662,6 +677,7 @@ export class UserService {
       givenName,
       familyName,
       defaultNickname,
+      avatar: resolveGameAvatarSnapshot(user.avatar),
       authProvider,
       created,
       updated,

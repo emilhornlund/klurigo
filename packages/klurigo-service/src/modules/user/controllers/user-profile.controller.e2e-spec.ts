@@ -1,5 +1,10 @@
-import { AuthProvider } from '@klurigo/common'
+import {
+  AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+} from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
+import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
 
 import {
@@ -14,12 +19,13 @@ import {
   MOCK_SECONDARY_USER_GIVEN_NAME,
 } from '../../../../test-utils/data'
 import {
+  authenticateGame,
   cleanupTestApp,
   createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
-import { LocalUser } from '../repositories'
+import { LocalUser, User, UserModel } from '../repositories'
 
 describe('UserProfileController (e2e)', () => {
   let app: INestApplication
@@ -32,7 +38,140 @@ describe('UserProfileController (e2e)', () => {
     await cleanupTestApp(app)
   })
 
+  describe('/api/profile/user/avatar (PUT)', () => {
+    it('does not allow game credentials to update an account avatar', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const gameToken = await authenticateGame(
+        app,
+        '00000000-0000-4000-8000-000000000099',
+        user._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .put('/api/profile/user/avatar')
+        .set(createBearerAuthHeader(gameToken))
+        .send(DEFAULT_CRITTERS_AVATAR_V1)
+        .expect(403)
+
+      await supertest(app.getHttpServer())
+        .get('/api/profile/user')
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1),
+        )
+    })
+
+    it.each([AuthProvider.Local, AuthProvider.Google])(
+      'persists an exact %s avatar through profile changes',
+      async (provider) => {
+        const { accessToken } = await createDefaultUserAndAuthenticate(
+          app,
+          provider === AuthProvider.Google
+            ? buildMockPrimaryGoogleUser()
+            : undefined,
+        )
+        const avatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          top: null,
+          cheeks: null,
+        }
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(avatar)
+          .expect(200)
+          .expect(avatar)
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .send({ authProvider: provider, defaultNickname: 'AvatarPlayer' })
+          .expect(200)
+        await supertest(app.getHttpServer())
+          .get('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => expect(body.avatar).toEqual(avatar))
+        const replacement = { ...avatar, top: 'sprout', pattern: null }
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(replacement)
+          .expect(200)
+          .expect(replacement)
+        await supertest(app.getHttpServer())
+          .get('/api/profile/user')
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+          .expect(({ body }) => expect(body.avatar).toEqual(replacement))
+      },
+    )
+
+    it('rejects invalid or unauthorized saves without assigning a default', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      await supertest(app.getHttpServer())
+        .put('/api/profile/user/avatar')
+        .send(DEFAULT_CRITTERS_AVATAR_V1)
+        .expect(401)
+      for (const invalid of [
+        { ...DEFAULT_CRITTERS_AVATAR_V1, top: undefined },
+        {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          accentColor: DEFAULT_CRITTERS_AVATAR_V1.bodyColor,
+        },
+        { ...DEFAULT_CRITTERS_AVATAR_V1, userId: 'another-user' },
+      ]) {
+        await supertest(app.getHttpServer())
+          .put('/api/profile/user/avatar')
+          .set(createBearerAuthHeader(accessToken))
+          .send(invalid)
+          .expect(400)
+      }
+      await supertest(app.getHttpServer())
+        .get('/api/profile/user')
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1),
+        )
+    })
+  })
+
   describe('/api/profile/user (GET)', () => {
+    it.each([
+      ['missing', undefined],
+      ['null', null],
+      ['unsupported', { ...DEFAULT_CRITTERS_AVATAR_V1, version: 2 }],
+    ])(
+      'returns complete defaults in both profile endpoints for %s metadata without rewriting storage',
+      async (_label, avatar) => {
+        const { accessToken, user } =
+          await createDefaultUserAndAuthenticate(app)
+        const model = app.get<UserModel>(getModelToken(User.name))
+        const users = model.db.collection<{ _id: string; avatar?: unknown }>(
+          model.collection.collectionName,
+        )
+        if (avatar !== undefined) {
+          await users.updateOne({ _id: user._id }, { $set: { avatar } })
+        }
+        for (const path of [
+          '/api/profile/user',
+          `/api/users/${user._id}/profile`,
+        ]) {
+          await supertest(app.getHttpServer())
+            .get(path)
+            .set(createBearerAuthHeader(accessToken))
+            .expect(200)
+            .expect(({ body }) =>
+              expect(body.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1),
+            )
+        }
+        const stored = await users.findOne({ _id: user._id })
+        expect(stored?.avatar).toEqual(avatar)
+      },
+    )
+
     it('should succeed in retrieving the associated profile from a local user', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(
         app,
@@ -46,6 +185,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_SECONDARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -73,6 +213,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_SECONDARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -117,6 +258,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_SECONDARY_USER_EMAIL,
             givenName: MOCK_SECONDARY_USER_GIVEN_NAME,
@@ -149,6 +291,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
             familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
@@ -177,6 +320,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: undefined,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -206,6 +350,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: undefined,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -235,6 +380,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_SECONDARY_USER_EMAIL,
             givenName: MOCK_SECONDARY_USER_GIVEN_NAME,
@@ -270,6 +416,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: undefined,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -305,6 +452,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             unverifiedEmail: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
@@ -336,6 +484,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
             familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
@@ -369,6 +518,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
             familyName: MOCK_PRIMARY_USER_FAMILY_NAME,
@@ -397,6 +547,7 @@ describe('UserProfileController (e2e)', () => {
         .expect((res) => {
           expect(res.body).toEqual({
             id: user._id,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             email: MOCK_PRIMARY_USER_EMAIL,
             givenName: MOCK_PRIMARY_USER_GIVEN_NAME,
             familyName: MOCK_PRIMARY_USER_FAMILY_NAME,

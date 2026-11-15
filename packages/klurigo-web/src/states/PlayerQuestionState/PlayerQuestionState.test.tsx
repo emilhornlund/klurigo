@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventType,
   MediaType,
   QuestionType,
@@ -51,7 +52,11 @@ function renderEvent(
       <PlayerQuestionState
         event={{
           type: GameEventType.GameQuestionPlayer,
-          player: { nickname: 'FrostyBear', score: { total: 10458 } },
+          player: {
+            nickname: 'FrostyBear',
+            score: { total: 10458 },
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          },
           question: {
             type: QuestionType.MultiChoice,
             question: 'Who painted The Starry Night?',

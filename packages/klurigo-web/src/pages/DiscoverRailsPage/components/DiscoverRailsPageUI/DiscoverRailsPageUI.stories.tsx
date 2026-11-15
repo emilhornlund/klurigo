@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   type DiscoverySectionDto,
   DiscoverySectionKey,
   GameMode,
@@ -25,7 +26,11 @@ const makeSections = (): DiscoverySectionDto[] => [
       languageCode: LanguageCode.English,
       mode: GameMode.Classic,
       numberOfQuestions: 15 + i,
-      author: { id: `a-${i}`, name: `Author ${i + 1}` },
+      author: {
+        id: `a-${i}`,
+        name: `Author ${i + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       gameplaySummary: {
         count: 500 + i * 100,
         totalPlayerCount: 200 + i * 50,
@@ -49,7 +54,11 @@ const makeSections = (): DiscoverySectionDto[] => [
       languageCode: LanguageCode.English,
       mode: GameMode.Classic,
       numberOfQuestions: 12 + i,
-      author: { id: `b-${i}`, name: `Creator ${i + 1}` },
+      author: {
+        id: `b-${i}`,
+        name: `Creator ${i + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       gameplaySummary: {
         count: 300 + i * 50,
         totalPlayerCount: 100 + i * 20,
@@ -69,7 +78,11 @@ const makeSections = (): DiscoverySectionDto[] => [
       languageCode: LanguageCode.English,
       mode: GameMode.Classic,
       numberOfQuestions: 20,
-      author: { id: `c-${i}`, name: `Expert ${i + 1}` },
+      author: {
+        id: `c-${i}`,
+        name: `Expert ${i + 1}`,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
+      },
       gameplaySummary: {
         count: 1000 + i * 200,
         totalPlayerCount: 400 + i * 80,

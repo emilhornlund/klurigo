@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   QuestionRangeAnswerMargin,
   QuestionType,
@@ -35,6 +36,84 @@ import { buildGameResultModel } from './game-result.converter'
 
 describe('Game Result Converter', () => {
   describe('buildGameResultModel', () => {
+    it.each(Object.values(GameMode))(
+      'copies complete game-time designs independently of participants and ranking items in %s',
+      (mode) => {
+        const avatar = {
+          ...DEFAULT_CRITTERS_AVATAR_V1,
+          top: null,
+          cheeks: null,
+          pattern: null,
+        }
+        const host = createMockGameHostParticipantDocument({
+          participantId: 'host',
+          avatar,
+        })
+        const player = createMockGamePlayerParticipantDocument({
+          participantId: 'player',
+          avatar,
+        })
+        const game = createMockGameDocument({
+          mode,
+          participants: [host, player],
+          previousTasks: [createMockQuestionTaskDocument()],
+          currentTask: createMockPodiumTaskDocument({
+            leaderboard: [
+              createMockLeaderboardTaskItem({
+                playerId: 'player',
+                avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' },
+              }),
+            ],
+          }),
+        }) as GameDocument
+
+        const result = buildGameResultModel(game)
+
+        expect(result.hostAvatar).toEqual(avatar)
+        expect(result.players[0].avatar).toEqual(avatar)
+        expect(result.hostAvatar).not.toBe(avatar)
+        expect(result.players[0].avatar).not.toBe(avatar)
+        expect(result.players[0].avatar).not.toBe(result.hostAvatar)
+
+        avatar.body = 'block'
+        expect(result.hostAvatar?.body).toBe(DEFAULT_CRITTERS_AVATAR_V1.body)
+        expect(result.players[0].avatar?.body).toBe(
+          DEFAULT_CRITTERS_AVATAR_V1.body,
+        )
+      },
+    )
+
+    it.each([
+      undefined,
+      null,
+      { version: 99 },
+      { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'unsupported' },
+    ])(
+      'resolves historical participant metadata %p without rewriting the source',
+      (avatar) => {
+        const participants = [
+          createMockGameHostParticipantDocument({ participantId: 'host' }),
+          createMockGamePlayerParticipantDocument({ participantId: 'player' }),
+        ]
+        participants.forEach((participant) =>
+          Object.assign(participant, { avatar }),
+        )
+        const game = createMockGameDocument({
+          participants,
+          previousTasks: [createMockQuestionTaskDocument()],
+          currentTask: createMockPodiumTaskDocument(),
+        }) as GameDocument
+
+        const result = buildGameResultModel(game)
+
+        expect(result.hostAvatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+        expect(result.players[0].avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
+        participants.forEach((participant) =>
+          expect(participant.avatar).toBe(avatar),
+        )
+      },
+    )
+
     it('should create a game result model for a classic mode game', () => {
       const hostId = 'ecd312eb-b732-4232-9621-d9d075d7cef1'
       const cosmicScorpionId = 'c36386fd-34c9-4a93-b282-805c026fb62e'
@@ -482,9 +561,11 @@ describe('Game Result Converter', () => {
         name: gameDocument.name,
         game: gameDocument,
         hostParticipantId: hostId,
+        hostAvatar: DEFAULT_CRITTERS_AVATAR_V1,
         players: [
           {
             participantId: cosmicScorpionId,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             nickname: 'CosmicScorpion',
             rank: 1,
             comebackRankGain: 1,
@@ -497,6 +578,7 @@ describe('Game Result Converter', () => {
           },
           {
             participantId: fieryBearId,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             nickname: 'FieryBear',
             rank: 2,
             comebackRankGain: 1,
@@ -509,6 +591,7 @@ describe('Game Result Converter', () => {
           },
           {
             participantId: braveStallionId,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             nickname: 'BraveStallion',
             rank: 3,
             comebackRankGain: 0,
@@ -973,9 +1056,11 @@ describe('Game Result Converter', () => {
         name: gameDocument.name,
         game: gameDocument,
         hostParticipantId: hostId,
+        hostAvatar: DEFAULT_CRITTERS_AVATAR_V1,
         players: [
           {
             nickname: 'BraveBison',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             participantId: braveBisonId,
             rank: 1,
             comebackRankGain: 1,
@@ -986,6 +1071,7 @@ describe('Game Result Converter', () => {
           },
           {
             nickname: 'FieryBear',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             participantId: fieryBearId,
             rank: 2,
             comebackRankGain: 1,
@@ -996,6 +1082,7 @@ describe('Game Result Converter', () => {
           },
           {
             nickname: 'AtomicBasilisk',
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
             participantId: atomicBasiliskId,
             rank: 3,
             comebackRankGain: 0,

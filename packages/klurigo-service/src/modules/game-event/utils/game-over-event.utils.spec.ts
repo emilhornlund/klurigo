@@ -1,4 +1,9 @@
-import { GameEventType, GameMode, GameStatus } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  GameMode,
+  GameStatus,
+} from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -122,6 +127,7 @@ describe('buildGameOverPlayerEvent', () => {
     expect(result.player.behind).toEqual({
       points: 300,
       nickname: 'TopPlayer',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
     })
   })
 
@@ -152,6 +158,7 @@ describe('buildGameOverPlayerEvent', () => {
     expect(result.player.behind).toEqual({
       points: 10,
       nickname: 'TopPlayer',
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
     })
   })
 

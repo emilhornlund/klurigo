@@ -1,4 +1,8 @@
-import { GameMode, QuestionType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -134,7 +138,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 
@@ -222,7 +229,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 
@@ -310,7 +320,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 
@@ -400,7 +413,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 
@@ -488,7 +504,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 
@@ -578,7 +597,10 @@ describe('Task Question Result Utils', () => {
               totalResponseTime: 30000,
               responseCount: 1,
             }),
-          ],
+          ].map((result) => ({
+            ...result,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          })),
           created: expect.anything(),
         })
 

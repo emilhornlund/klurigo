@@ -1,6 +1,14 @@
+import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  randomizeCrittersAvatar,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import type { FC, FormEvent } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useIsMounted, useLocalStorage } from 'usehooks-ts'
 
 import { useKlurigoServiceClient } from '../../api'
 import UsersIcon from '../../assets/images/users-icon.svg'
@@ -11,6 +19,7 @@ import {
   NicknameTextField,
   Page,
   PageProminentIcon,
+  PlayerAvatar,
   RotatingMessage,
   Stack,
   Typography,
@@ -19,25 +28,62 @@ import { useAuthContext } from '../../context/auth'
 import { useGameContext } from '../../context/game'
 import { useUserContext } from '../../context/user'
 
+import { JoinAvatarDialog } from './components'
+import styles from './GameJoinPage.module.scss'
 import { MESSAGES, TITLES } from './text.utils'
 
-const GameJoinPage: FC = () => {
+/** Submits the nickname and previewed design for one mounted game/account scope. */
+const GameJoinPageContent: FC<{ readonly storageKey: string }> = ({
+  storageKey,
+}) => {
   const navigate = useNavigate()
-
-  const { isUserAuthenticated, revokeGame } = useAuthContext()
-
-  const { currentUser } = useUserContext()
-
-  const { gameID } = useGameContext()
-
-  const { joinGame } = useKlurigoServiceClient()
-
-  const [nickname, setNickname] = useState<string>(
-    currentUser?.defaultNickname || '',
+  const { user, isUserAuthenticated, revokeGame } = useAuthContext()
+  const { currentUser, setCurrentUser } = useUserContext()
+  const { gameID, participantId } = useGameContext()
+  const { getGame, joinGame } = useKlurigoServiceClient()
+  const isMounted = useIsMounted()
+  const savedAvatar =
+    currentUser?.id === user?.ACCESS.sub ? currentUser?.avatar : undefined
+  const initialAvatar = useMemo(
+    () =>
+      !storageKey
+        ? DEFAULT_CRITTERS_AVATAR_V1
+        : isUserAuthenticated
+          ? resolveGameAvatarSnapshot(savedAvatar)
+          : randomizeCrittersAvatar(),
+    [storageKey, isUserAuthenticated, savedAvatar],
   )
-  const [nicknameValid, setNicknameValid] = useState<boolean>(false)
-
+  const [avatar, setAvatar] = useLocalStorage(storageKey, initialAvatar, {
+    deserializer: (stored) => resolveGameAvatarSnapshot(JSON.parse(stored)),
+  })
+  const [editing, setEditing] = useState(false)
+  const [nickname, setNickname] = useState(currentUser?.defaultNickname || '')
+  const [nicknameValid, setNicknameValid] = useState(false)
   const [isJoiningGame, setIsJoiningGame] = useState(false)
+
+  // An accepted participant resumes the game; this does not prepare or block the draft.
+  useEffect(() => {
+    if (!gameID) return
+    let cancelled = false
+    void getGame(gameID)
+      .then(({ participant }) => {
+        if (!cancelled && participant) navigate('/game', { replace: true })
+      })
+      .catch(() => undefined)
+    return () => {
+      cancelled = true
+    }
+  }, [gameID, participantId, getGame, navigate])
+
+  // Persist the initial guest proposal as well as applied edits, including reloads.
+  useEffect(() => {
+    if (!storageKey) return
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(avatar))
+    } catch {
+      // Blocked storage does not prevent joining with the in-memory design.
+    }
+  }, [storageKey, avatar])
 
   const handleBack = useCallback(() => {
     void revokeGame({ redirectTo: '/' })
@@ -46,12 +92,22 @@ const GameJoinPage: FC = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
 
-    if (gameID && nickname && nicknameValid) {
+    if (gameID && nickname && nicknameValid && !isJoiningGame) {
       setIsJoiningGame(true)
-      joinGame(gameID, nickname)
-        .then(() => navigate(`/game`))
+      joinGame(gameID, nickname, avatar)
+        .then(() => {
+          if (!isMounted()) return
+          setCurrentUser((previous) =>
+            previous && previous.id === participantId
+              ? { ...previous, defaultNickname: nickname, avatar }
+              : previous,
+          )
+          navigate('/game')
+        })
         .catch(() => undefined)
-        .finally(() => setIsJoiningGame(false))
+        .finally(() => {
+          if (isMounted()) setIsJoiningGame(false)
+        })
     }
   }
 
@@ -72,7 +128,6 @@ const GameJoinPage: FC = () => {
       }
       hideLogin>
       <PageProminentIcon src={UsersIcon} alt="Users" />
-
       <RotatingMessage
         messages={TITLES}
         renderMessage={(title) => (
@@ -85,7 +140,6 @@ const GameJoinPage: FC = () => {
           </Typography>
         )}
       />
-
       <RotatingMessage
         messages={MESSAGES}
         renderMessage={(message) => (
@@ -98,7 +152,6 @@ const GameJoinPage: FC = () => {
           </Typography>
         )}
       />
-
       {!isUserAuthenticated && (
         <CallToActionCard
           title="Make every game count"
@@ -106,7 +159,6 @@ const GameJoinPage: FC = () => {
           onClick={() => navigate('/auth/login')}
         />
       )}
-
       <Stack
         as="form"
         width="content"
@@ -114,6 +166,25 @@ const GameJoinPage: FC = () => {
         aria-label="Join game"
         name="join-game-form"
         onSubmit={handleSubmit}>
+        <Stack align="center" spacing="compact">
+          <button
+            id="customize-avatar"
+            type="button"
+            aria-label="Customize avatar"
+            className={styles.avatarButton}
+            disabled={isJoiningGame}
+            onClick={() => setEditing(true)}>
+            <PlayerAvatar
+              avatar={avatar}
+              size={192}
+              alt="Your game avatar preview"
+              className={styles.avatar}
+            />
+            <span className={styles.editIcon} aria-hidden="true">
+              <FontAwesomeIcon icon={faPen} />
+            </span>
+          </button>
+        </Stack>
         <NicknameTextField
           value={nickname}
           placeholder="Nickname"
@@ -131,8 +202,30 @@ const GameJoinPage: FC = () => {
           disabled={!nicknameValid}
         />
       </Stack>
+      {editing && (
+        <JoinAvatarDialog
+          avatar={avatar}
+          onClose={() => setEditing(false)}
+          onApply={(design) => {
+            setAvatar(design)
+            setEditing(false)
+          }}
+        />
+      )}
     </Page>
   )
+}
+
+/** Scope changes discard transient UI state and invalidate old async responses. */
+const GameJoinPage: FC = () => {
+  const { user } = useAuthContext()
+  const { gameID, participantId } = useGameContext()
+  const storageKey =
+    gameID && participantId
+      ? `klurigo:join-avatar:${gameID}:${participantId}:${user?.ACCESS.sub ?? 'guest'}`
+      : ''
+
+  return <GameJoinPageContent key={storageKey} storageKey={storageKey} />
 }
 
 export default GameJoinPage

@@ -25,6 +25,7 @@ exports[`PlayerManagementModal > matches snapshot (after players load) 1`] = `
     >
       <div
         data-animation="none"
+        data-avatar="{"version":1,"style":"critters","artworkVersion":"v1","body":"round","top":"horns","eyes":"happy","mouth":"tinySmile","pattern":"dots","cheeks":"blush","bodyColor":"#c4b5fd","accentColor":"#fcd34d","backgroundColor":"#4338ca"}"
         data-delay="0"
         data-testid="chip-Alice"
         data-variant="accent"
@@ -41,6 +42,7 @@ exports[`PlayerManagementModal > matches snapshot (after players load) 1`] = `
       </div>
       <div
         data-animation="none"
+        data-avatar="{"version":1,"style":"critters","artworkVersion":"v1","body":"round","top":"horns","eyes":"happy","mouth":"tinySmile","pattern":"dots","cheeks":"blush","bodyColor":"#c4b5fd","accentColor":"#fcd34d","backgroundColor":"#4338ca"}"
         data-delay="0"
         data-testid="chip-Bob"
         data-variant="accent"
@@ -85,6 +87,7 @@ exports[`PlayerManagementModal > matches snapshot (confirm dialog open for selec
     >
       <div
         data-animation="none"
+        data-avatar="{"version":1,"style":"critters","artworkVersion":"v1","body":"round","top":"horns","eyes":"happy","mouth":"tinySmile","pattern":"dots","cheeks":"blush","bodyColor":"#c4b5fd","accentColor":"#fcd34d","backgroundColor":"#4338ca"}"
         data-delay="0"
         data-testid="chip-Alice"
         data-variant="accent"

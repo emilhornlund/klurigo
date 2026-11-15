@@ -18,6 +18,8 @@ export type CardInfoItemProps = {
   readonly size?: 'normal' | 'small'
   /** Optional tooltip text shown on hover. */
   readonly title?: string
+  /** Optional consumer-owned layout class. */
+  readonly className?: string
   /** Content rendered inside the item. */
   readonly children: ReactNode
   /** Optional test id for the rendered element. */
@@ -32,6 +34,7 @@ const CardInfoItem: FC<CardInfoItemProps> = ({
   iconColor,
   size,
   title,
+  className,
   children,
   'data-testid': dataTestId,
 }) => {
@@ -40,6 +43,7 @@ const CardInfoItem: FC<CardInfoItemProps> = ({
       className={classNames(
         styles.infoItem,
         size === 'small' ? styles.infoItemSmall : undefined,
+        className,
       )}
       title={title}
       data-testid={dataTestId}>

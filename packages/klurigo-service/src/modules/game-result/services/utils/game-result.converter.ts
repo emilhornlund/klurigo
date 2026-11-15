@@ -1,4 +1,9 @@
-import { GameMode, GameParticipantType, isDefined } from '@klurigo/common'
+import {
+  GameMode,
+  GameParticipantType,
+  isDefined,
+  resolveGameAvatarSnapshot,
+} from '@klurigo/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -38,9 +43,8 @@ export function buildGameResultModel(gameDocument: GameDocument): GameResult {
   const { mode, name, participants, currentTask, previousTasks, questions } =
     gameDocument
 
-  const hostParticipantId = participants.find(
-    (p) => p.type === GameParticipantType.HOST,
-  )?.participantId
+  const host = participants.find((p) => p.type === GameParticipantType.HOST)
+  const hostParticipantId = host?.participantId
 
   if (!hostParticipantId) {
     throw new Error('No host participantId found.')
@@ -75,6 +79,7 @@ export function buildGameResultModel(gameDocument: GameDocument): GameResult {
     name,
     game: gameDocument,
     hostParticipantId,
+    hostAvatar: resolveGameAvatarSnapshot(host?.avatar),
     players: buildPlayerMetrics(
       mode,
       currentTask.leaderboard,
@@ -147,6 +152,7 @@ function buildPlayerMetrics(
         {
           participantId: participantPlayer.participantId,
           nickname: participantPlayer.nickname,
+          avatar: resolveGameAvatarSnapshot(participantPlayer.avatar),
           rank,
           comebackRankGain: Math.max(0, participantPlayer.worstRank - rank),
           correct: mode === GameMode.Classic ? 0 : undefined,

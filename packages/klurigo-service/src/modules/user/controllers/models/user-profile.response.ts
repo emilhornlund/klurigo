@@ -13,8 +13,10 @@ import {
   ApiUuidProperty,
 } from '../../../../app/swagger'
 
+import { UserAvatarResponse } from './user-avatar.response'
+
 /**
- * Response returned after successful user creation.
+ * Response containing the authenticated account's profile and saved preferences.
  */
 export class UserProfileResponse implements UserProfileResponseDto {
   /**
@@ -78,6 +80,17 @@ export class UserProfileResponse implements UserProfileResponseDto {
       'A nickname chosen by the user, must be 2 to 20 characters long and contain only letters, numbers, or underscores.',
   })
   readonly defaultNickname: string
+
+  /**
+   * Complete account avatar preference, with the stable default for missing or unsupported stored metadata.
+   */
+  @ApiProperty({
+    title: 'Avatar',
+    description:
+      'Complete account avatar preference, with the stable default for missing or unsupported stored metadata.',
+    type: UserAvatarResponse,
+  })
+  readonly avatar: UserAvatarResponse
 
   /**
    * The user’s authentication provider.

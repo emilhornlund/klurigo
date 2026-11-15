@@ -1,5 +1,9 @@
 import { JoinGameRequestDto } from '@klurigo/common'
+import { ApiProperty } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
+import { IsDefined, IsObject, ValidateNested } from 'class-validator'
 
+import { AvatarConfigurationRequest } from '../../../../../app/shared/avatar/avatar-configuration.request'
 import { ApiNicknameProperty } from '../../../../../app/swagger'
 
 export class JoinGameRequest implements JoinGameRequestDto {
@@ -9,4 +13,15 @@ export class JoinGameRequest implements JoinGameRequestDto {
     validateString: true,
   })
   nickname: string
+
+  /** Complete validated avatar accepted alongside the player's nickname. */
+  @ApiProperty({
+    description: 'Complete avatar metadata for the first accepted join.',
+    type: AvatarConfigurationRequest,
+  })
+  @IsDefined()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => AvatarConfigurationRequest)
+  avatar: AvatarConfigurationRequest
 }

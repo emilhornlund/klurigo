@@ -1,4 +1,9 @@
-import { GameMode, type GameResultDto, QuizVisibility } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  type GameResultDto,
+  QuizVisibility,
+} from '@klurigo/common'
 import { Logger } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 
@@ -262,7 +267,11 @@ describe(GameResultService.name, () => {
       expect(result).toMatchObject({
         id: doc.game._id,
         name: doc.game.name,
-        host: { id: doc.hostParticipantId, nickname: 'N/A' },
+        host: {
+          id: doc.hostParticipantId,
+          nickname: 'N/A',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
         numberOfPlayers: 1,
         numberOfQuestions: 1,
         created: doc.hosted,

@@ -1,3 +1,5 @@
+import type { CrittersAvatarConfigurationV1 } from './avatar'
+
 /**
  * DTO representing the author of a quiz rating.
  *
@@ -13,6 +15,12 @@ export type QuizRatingAuthorDto = {
    * The displayed nickname of the author at the time of retrieval.
    */
   readonly nickname: string
+
+  /**
+   * The author's current account avatar or stored anonymous participant avatar.
+   * Historical missing or unsupported metadata resolves to the stable default.
+   */
+  readonly avatar: CrittersAvatarConfigurationV1
 }
 
 /**

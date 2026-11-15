@@ -1,5 +1,6 @@
 import {
   arraysEqual,
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameEventQuestionResults,
   GameEventQuestionResultsMultiChoice,
   GameEventQuestionResultsPin,
@@ -1044,6 +1045,7 @@ describe('Game Result Event Utils', () => {
       expect(result.player.behind).toEqual({
         points: Math.abs(aheadResult.totalScore - currentResult.totalScore),
         nickname: aheadResult.nickname,
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
 
       expect(result.pagination.current).toBe(

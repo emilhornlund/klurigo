@@ -1,4 +1,5 @@
 import {
+  DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
   QuizCategory,
@@ -32,7 +33,11 @@ describe('ProfileQuizzesPageUI', () => {
               imageCoverURL: 'https://wallpaperaccess.com/full/157316.jpg',
               languageCode: LanguageCode.English,
               numberOfQuestions: 14,
-              author: { id: authorId, name: 'FrostyBear' },
+              author: {
+                id: authorId,
+                name: 'FrostyBear',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
               gameplaySummary: {
                 count: 9,
                 totalPlayerCount: 102,
@@ -53,7 +58,11 @@ describe('ProfileQuizzesPageUI', () => {
               category: QuizCategory.GeneralKnowledge,
               languageCode: LanguageCode.English,
               numberOfQuestions: 20,
-              author: { id: authorId, name: 'FrostyBear' },
+              author: {
+                id: authorId,
+                name: 'FrostyBear',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
               gameplaySummary: {
                 count: 6,
                 totalPlayerCount: 58,
@@ -74,7 +83,11 @@ describe('ProfileQuizzesPageUI', () => {
               category: QuizCategory.GeneralKnowledge,
               languageCode: LanguageCode.English,
               numberOfQuestions: 16,
-              author: { id: authorId, name: 'FrostyBear' },
+              author: {
+                id: authorId,
+                name: 'FrostyBear',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
               gameplaySummary: {
                 count: 4,
                 totalPlayerCount: 31,
@@ -95,7 +108,11 @@ describe('ProfileQuizzesPageUI', () => {
               category: QuizCategory.GeneralKnowledge,
               languageCode: LanguageCode.English,
               numberOfQuestions: 28,
-              author: { id: authorId, name: 'FrostyBear' },
+              author: {
+                id: authorId,
+                name: 'FrostyBear',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
               gameplaySummary: {
                 count: 2,
                 totalPlayerCount: 17,
@@ -116,7 +133,11 @@ describe('ProfileQuizzesPageUI', () => {
               category: QuizCategory.GeneralKnowledge,
               languageCode: LanguageCode.English,
               numberOfQuestions: 24,
-              author: { id: authorId, name: 'FrostyBear' },
+              author: {
+                id: authorId,
+                name: 'FrostyBear',
+                avatar: DEFAULT_CRITTERS_AVATAR_V1,
+              },
               gameplaySummary: {
                 count: 1,
                 totalPlayerCount: 9,

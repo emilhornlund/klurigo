@@ -1,4 +1,8 @@
-import { GameEventType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameEventType,
+  type GameLobbyHostEvent,
+} from '@klurigo/common'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -26,6 +30,8 @@ vi.mock('../../context/game', () => ({
 vi.mock('../../config', () => ({
   default: { baseUrl: 'https://example.com' },
 }))
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import HostLobbyState from './HostLobbyState'
 
@@ -55,7 +61,10 @@ describe('HostLobbyState', () => {
               { id: uuidv4(), nickname: 'FrostyBear' },
               { id: uuidv4(), nickname: 'Willo' },
               { id: uuidv4(), nickname: 'ScarletFlame' },
-            ],
+            ].map((player) => ({
+              ...player,
+              avatar: DEFAULT_CRITTERS_AVATAR_V1,
+            })),
           }}
         />
       </MemoryRouter>,
@@ -85,6 +94,91 @@ describe('HostLobbyState', () => {
     h.completeTask.mockClear()
     h.leaveGame.mockClear()
     h.updateGameSettings.mockClear()
+  })
+
+  it('retains complete player snapshots through joining, leaving, and reconnect recovery', () => {
+    const accountAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null }
+    const guestAvatar = { ...DEFAULT_CRITTERS_AVATAR_V1, pattern: null }
+    const event: GameLobbyHostEvent = {
+      ...sampleEvent,
+      players: [{ id: 'account', nickname: 'Account', avatar: accountAvatar }],
+    }
+    const view = render(
+      <MemoryRouter>
+        <HostLobbyState event={event} />
+      </MemoryRouter>,
+    )
+    const imageSources = () =>
+      Array.from(view.container.querySelectorAll('main img')).map((image) =>
+        image.getAttribute('src'),
+      )
+    expect(imageSources()).toEqual([getCrittersAvatarV1DataUri(accountAvatar)])
+
+    const joined = {
+      ...event,
+      players: [
+        ...event.players,
+        { id: 'guest', nickname: 'Guest', avatar: guestAvatar },
+        {
+          id: 'legacy',
+          nickname: 'Legacy',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+      ],
+    }
+    view.rerender(
+      <MemoryRouter>
+        <HostLobbyState event={joined} />
+      </MemoryRouter>,
+    )
+    expect(imageSources()).toEqual(
+      [accountAvatar, guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(
+        getCrittersAvatarV1DataUri,
+      ),
+    )
+
+    const recovered = JSON.parse(
+      JSON.stringify({ ...joined, players: joined.players.slice(1) }),
+    ) as GameLobbyHostEvent
+    view.rerender(
+      <MemoryRouter>
+        <HostLobbyState event={recovered} />
+      </MemoryRouter>,
+    )
+    expect(imageSources()).toEqual(
+      [guestAvatar, DEFAULT_CRITTERS_AVATAR_V1].map(getCrittersAvatarV1DataUri),
+    )
+    expect(screen.queryByText('Account')).not.toBeInTheDocument()
+    expect(screen.queryByText('Host', { exact: true })).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Remove Guest' }),
+    ).toBeInTheDocument()
+  })
+
+  it('resolves unsupported event metadata to defaults without rewriting it', () => {
+    const unsupported = { version: 99 }
+    const event: GameLobbyHostEvent = {
+      ...sampleEvent,
+      players: [
+        {
+          id: 'legacy',
+          nickname: 'Legacy',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        },
+      ],
+    }
+    Object.assign(event.players[0], { avatar: unsupported })
+    const view = render(
+      <MemoryRouter>
+        <HostLobbyState event={event} />
+      </MemoryRouter>,
+    )
+    for (const image of view.container.querySelectorAll('main img'))
+      expect(image).toHaveAttribute(
+        'src',
+        getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+      )
+    expect(event.players[0].avatar).toBe(unsupported)
   })
 
   it('shows join URL and PIN', () => {

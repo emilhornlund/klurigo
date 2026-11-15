@@ -1,5 +1,6 @@
 import {
   CreateGameResponseDto,
+  CrittersAvatarConfigurationV1,
   GameDetailsDto,
   GameHistoryBaseDto,
   GameParticipantPlayerDto,
@@ -14,6 +15,7 @@ import {
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_REGEX,
   RangeQuestionCorrectAnswerDto,
+  resolveGameAvatarSnapshot,
   SubmitQuestionAnswerRequestDto,
   TrueFalseQuestionCorrectAnswerDto,
   TypeAnswerQuestionCorrectAnswerDto,
@@ -202,17 +204,36 @@ export class GameService {
    * persisted status.
    *
    * @param gameId - The unique identifier of the game.
-   * @returns The game's identifier and current lifecycle status.
+   * @param participantId - Optional signed caller identity; omitted by legacy service callers.
+   * @returns Lifecycle details and the caller's accepted game identity, when present.
    */
-  public async getGame(gameId: string): Promise<GameDetailsDto> {
+  public async getGame(
+    gameId: string,
+    participantId?: string,
+  ): Promise<GameDetailsDto> {
     const gameDocument = await this.gameRepository.findGameByIDOrThrow(
       gameId,
       false,
     )
 
+    const participant = gameDocument.participants.find(
+      (participant) => participant.participantId === participantId,
+    )
     return {
       id: gameDocument._id,
       status: gameDocument.status,
+      ...(participant
+        ? {
+            participant: {
+              id: participant.participantId,
+              type: participant.type,
+              ...(isParticipantPlayer(participant)
+                ? { nickname: participant.nickname }
+                : {}),
+              avatar: resolveGameAvatarSnapshot(participant.avatar),
+            },
+          }
+        : {}),
     }
   }
 
@@ -297,6 +318,7 @@ export class GameService {
    * @param gameId - The unique identifier of the game the player wants to join.
    * @param participantId - The unique identifier of the player joining the game.
    * @param nickname - The nickname chosen by the player. Must be unique within the game.
+   * @param avatar - Complete validated design submitted with the nickname.
    *
    * @returns {Promise<void>} A Promise that resolves when the player is successfully added to the game.
    *
@@ -309,6 +331,7 @@ export class GameService {
     gameId: string,
     participantId: string,
     nickname: string,
+    avatar: CrittersAvatarConfigurationV1,
   ): Promise<void> {
     await this.gameRepository.findGameByIDOrThrow(gameId)
 
@@ -366,6 +389,7 @@ export class GameService {
             currentDocument,
             participantId,
             nickname,
+            avatar,
           )
         },
       )
@@ -374,7 +398,7 @@ export class GameService {
 
     await this.gameEventPublisher.publish(savedGameDocument)
 
-    this.emitGamePlayerJoinEvent(gameId, participantId, nickname)
+    this.emitGamePlayerJoinEvent(gameId, participantId, nickname, { ...avatar })
   }
 
   /**
@@ -386,16 +410,23 @@ export class GameService {
    * @param gameId - The ID of the game that the participant joined.
    * @param participantId - The ID of the participant (user) that joined the game.
    * @param nickname - The nickname used by the participant when joining the game.
+   * @param avatar - The accepted game-time design to retain as an account preference.
    * @private
    */
   private emitGamePlayerJoinEvent(
     gameId: string,
     participantId: string,
     nickname: string,
+    avatar: CrittersAvatarConfigurationV1,
   ) {
     try {
       this.logger.debug(`Emitting player join event for game '${gameId}'`)
-      const event: GamePlayerJoinEvent = { gameId, participantId, nickname }
+      const event: GamePlayerJoinEvent = {
+        gameId,
+        participantId,
+        nickname,
+        avatar,
+      }
       this.eventEmitter.emit(GamePlayerJoinEventKey, event)
     } catch (error) {
       this.logger.error(
@@ -422,9 +453,10 @@ export class GameService {
 
     return gameDocument.participants
       .filter(isParticipantPlayer)
-      .map(({ participantId, nickname }): GameParticipantPlayerDto => ({
+      .map(({ participantId, nickname, avatar }) => ({
         id: participantId,
         nickname,
+        avatar: resolveGameAvatarSnapshot(avatar),
       }))
   }
 

@@ -171,6 +171,8 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  min-width: 0;
+  width: 100%;
 
   .players {
     display: flex;
