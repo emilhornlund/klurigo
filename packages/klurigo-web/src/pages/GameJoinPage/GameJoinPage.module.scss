@@ -1,9 +1,9 @@
-@use '../../../../../../styles/avatars.tokens' as avatars;
-@use '../../../../../../styles/border-radius.tokens' as radius;
-@use '../../../../../../styles/colors.semantic' as colors;
-@use '../../../../../../styles/controls.tokens' as controls;
-@use '../../../../../../styles/helpers' as helpers;
-@use '../../../../../../styles/spacing.semantic' as spacing;
+@use '../../styles/avatars.tokens' as avatars;
+@use '../../styles/border-radius.tokens' as radius;
+@use '../../styles/colors.semantic' as colors;
+@use '../../styles/controls.tokens' as controls;
+@use '../../styles/helpers' as helpers;
+@use '../../styles/spacing.semantic' as spacing;
 
 .avatarButton {
   position: relative;

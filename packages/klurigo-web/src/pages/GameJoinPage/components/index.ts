@@ -1,1 +1,1 @@
-export { default as GameJoinPageUI } from './GameJoinPageUI'
+export { default as JoinAvatarDialog } from './JoinAvatarDialog'

@@ -4,7 +4,7 @@ import {
 } from '@klurigo/common'
 import { type FC, useState } from 'react'
 
-import { AvatarEditor, Modal } from '../../../../../../components'
+import { AvatarEditor, Modal } from '../../../../components'
 
 /** A temporary editor whose changes are applied only by the primary action. */
 interface JoinAvatarDialogProps {

@@ -12,7 +12,7 @@ import { startHostGame } from './support/browser/start-host-game'
 import { E2E_API_BASE_URL, E2E_USER_PASSWORD } from './support/e2e-runtime'
 
 for (const account of [false, true]) {
-  test(`join preview preserves the accepted ${account ? 'account' : 'guest'} snapshot`, async ({
+  test(`join submits one accepted ${account ? 'account' : 'guest'} design with the nickname`, async ({
     page,
     browser,
     request,
@@ -41,21 +41,23 @@ for (const account of [false, true]) {
           ).status(),
         ).toBe(201)
         await authenticatePageThroughApi(page, email)
-        const token = await page.evaluate(
+        accountToken = await page.evaluate(
           () =>
             JSON.parse(localStorage.getItem('auth')!).USER.ACCESS
               .token as string,
         )
-        accountToken = token
         expect(
           (
             await request.put(`${E2E_API_BASE_URL}/profile/user/avatar`, {
-              headers: { Authorization: `Bearer ${token}` },
+              headers: { Authorization: `Bearer ${accountToken}` },
               data: saved,
             })
           ).status(),
         ).toBe(200)
+        // The normal login snapshot must contain the saved design used by the join page.
+        await authenticatePageThroughApi(page, email)
       } else await page.goto('/')
+
       await page.getByPlaceholder('Game PIN').fill(pin)
       await page.getByRole('button', { name: /join the game/i }).click()
       await expect(page).toHaveURL('/join')
@@ -69,30 +71,18 @@ for (const account of [false, true]) {
         )
           profileWrites.push(req.url())
       })
-      if (!account) {
-        await page.getByRole('button', { name: 'Customize avatar' }).click()
-        await page.getByText('Block', { exact: true }).click()
-        await page.getByLabel('Customize', { exact: true }).selectOption('Head')
-        await page.getByText('None', { exact: true }).click()
-        await page.getByRole('button', { name: 'Use design' }).click()
-        const chosen = await preview.getAttribute('src')
-        await page.getByRole('button', { name: 'Customize avatar' }).click()
-        await page.getByRole('button', { name: 'Randomize' }).click()
-        await page.getByRole('button', { name: 'Discard changes' }).click()
-        await expect(preview).toHaveAttribute('src', chosen!)
-        expect(profileWrites).toEqual([])
-      } else {
-        await page.getByRole('button', { name: 'Customize avatar' }).click()
-        await page.getByText('Blob', { exact: true }).click()
-        await page.getByRole('button', { name: 'Use design' }).click()
-        const profile = await request.get(`${E2E_API_BASE_URL}/profile/user`, {
-          headers: { Authorization: `Bearer ${accountToken}` },
-        })
-        expect((await profile.json()).avatar).toEqual(saved)
-        expect(profileWrites).toEqual([])
-      }
+
+      await page.getByRole('button', { name: 'Customize avatar' }).click()
+      await page.getByText(account ? 'Blob' : 'Block', { exact: true }).click()
+      await page.getByLabel('Customize', { exact: true }).selectOption('Head')
+      await page.getByText('None', { exact: true }).click()
+      await page.getByRole('button', { name: 'Use design' }).click()
       const source = await preview.getAttribute('src')
-      const stored = await page.evaluate(() =>
+      await page.getByRole('button', { name: 'Customize avatar' }).click()
+      await page.getByRole('button', { name: 'Randomize' }).click()
+      await page.getByRole('button', { name: 'Discard changes' }).click()
+      await expect(preview).toHaveAttribute('src', source!)
+      const draft = await page.evaluate(() =>
         JSON.parse(
           localStorage.getItem(
             Object.keys(localStorage).find((key) =>
@@ -101,13 +91,15 @@ for (const account of [false, true]) {
           )!,
         ),
       )
-      const draft = account ? stored.avatar : stored
       expect(isCrittersAvatarConfigurationV1(draft)).toBe(true)
-      if (account) expect(draft).toEqual({ ...saved, body: 'blob' })
-      else expect(draft).toMatchObject({ body: 'block', top: null })
+      expect(draft).toMatchObject({
+        body: account ? 'blob' : 'block',
+        top: null,
+      })
       await page.reload()
       await expect(preview).toHaveAttribute('src', source!)
       await page.getByPlaceholder('Nickname').fill('JoinPreview')
+
       await page.route(
         '**/games/*/players',
         (route) =>
@@ -118,45 +110,17 @@ for (const account of [false, true]) {
           }),
         { times: 1 },
       )
+      await page.getByRole('button', { name: 'OK, Go!' }).click()
+      await expect(page.getByRole('button', { name: 'OK, Go!' })).toBeEnabled()
+      await expect(preview).toHaveAttribute('src', source!)
+      expect(profileWrites).toEqual([])
       if (account) {
-        await page.route(
-          '**/profile/user/avatar',
-          (route) =>
-            route.fulfill({
-              status: 503,
-              contentType: 'application/json',
-              body: JSON.stringify({ message: 'Retry save' }),
-            }),
-          { times: 1 },
-        )
-        await page.getByRole('button', { name: 'OK, Go!' }).click()
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: 'We couldn’t save your account avatar' }),
-        ).toBeVisible()
         const profile = await request.get(`${E2E_API_BASE_URL}/profile/user`, {
           headers: { Authorization: `Bearer ${accountToken}` },
         })
         expect((await profile.json()).avatar).toEqual(saved)
       }
-      await page.getByRole('button', { name: 'OK, Go!' }).click()
-      await expect(page.getByRole('button', { name: 'OK, Go!' })).toBeEnabled()
-      if (account) {
-        await expect(
-          page.getByRole('alert').filter({
-            hasText: 'Your account avatar was saved, but joining failed',
-          }),
-        ).toBeVisible()
-        const profile = await request.get(`${E2E_API_BASE_URL}/profile/user`, {
-          headers: { Authorization: `Bearer ${accountToken}` },
-        })
-        expect((await profile.json()).avatar).toEqual(draft)
-        expect(profileWrites).toHaveLength(2)
-        await page.reload()
-        await page.getByPlaceholder('Nickname').fill('JoinPreview')
-      }
-      await expect(preview).toHaveAttribute('src', source!)
+
       const submitted = page.waitForRequest(
         (req) =>
           req.method() === 'POST' && /\/games\/[^/]+\/players$/.test(req.url()),
@@ -167,20 +131,22 @@ for (const account of [false, true]) {
         avatar: draft,
       })
       await expect(page).toHaveURL('/game')
-      const playerLobbyAvatar = page
+      expect(profileWrites).toEqual([])
+      const playerAvatar = page
         .getByText('JoinPreview', { exact: true })
         .locator('..')
         .locator('img')
-      await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
+      await expect(playerAvatar).toHaveAttribute('src', source!)
       await page.reload()
-      await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
-      expect(profileWrites).toHaveLength(account ? 2 : 0)
-      if (account)
-        expect(
-          await page.evaluate(
-            () => JSON.parse(localStorage.getItem('currentUser')!).avatar,
-          ),
-        ).toEqual(draft)
+      await expect(playerAvatar).toHaveAttribute('src', source!)
+      const hostAvatar = host
+        .getByText('JoinPreview', { exact: true })
+        .locator('..')
+        .locator('img')
+      await expect(hostAvatar).toHaveAttribute('src', source!)
+      await host.reload()
+      await expect(hostAvatar).toHaveAttribute('src', source!)
+
       const identity = await page.evaluate(
         () =>
           JSON.parse(localStorage.getItem('auth')!).GAME.ACCESS as {
@@ -193,40 +159,33 @@ for (const account of [false, true]) {
         { headers: { Authorization: `Bearer ${identity.token}` } },
       )
       expect((await details.json()).participant.avatar).toEqual(draft)
-      const hostPlayerAvatar = host
-        .getByText('JoinPreview', { exact: true })
-        .locator('..')
-        .locator('img')
-      await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
-      await host.reload()
-      await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
       await page.goto('/join')
       await expect(page).toHaveURL('/game')
-      if (!account) {
-        await host
-          .getByRole('button', { name: 'Remove JoinPreview', exact: true })
-          .click()
-        await host
-          .getByRole('button', { name: 'Remove Player', exact: true })
-          .click()
-        await expect(
-          host.getByText('JoinPreview', { exact: true }),
-        ).toHaveCount(0)
-        await expect(host.getByText('0 / 20', { exact: true })).toBeVisible()
-      }
+
       if (account) {
+        await expect
+          .poll(
+            async () =>
+              (
+                await (
+                  await request.get(`${E2E_API_BASE_URL}/profile/user`, {
+                    headers: { Authorization: `Bearer ${accountToken}` },
+                  })
+                ).json()
+              ).avatar,
+          )
+          .toEqual(draft)
         await host.getByRole('button', { name: 'Start', exact: true }).click()
-        await expect(playerLobbyAvatar).toHaveAttribute('src', source!)
         await host.locator('#settings-button').click({ timeout: 30_000 })
         await host.getByRole('button', { name: 'Players', exact: true }).click()
-        await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
+        await expect(hostAvatar).toHaveAttribute('src', source!)
         await host
           .getByRole('button', { name: 'Close dialog', exact: true })
           .click()
         await host.reload()
         await host.locator('#settings-button').click({ timeout: 30_000 })
         await host.getByRole('button', { name: 'Players', exact: true }).click()
-        await expect(hostPlayerAvatar).toHaveAttribute('src', source!)
+        await expect(hostAvatar).toHaveAttribute('src', source!)
         await host
           .getByRole('button', { name: 'Close dialog', exact: true })
           .click()
@@ -238,25 +197,18 @@ for (const account of [false, true]) {
         await page.getByPlaceholder('Game PIN').fill(nextPin)
         await page.getByRole('button', { name: /join the game/i }).click()
         await expect(preview).toHaveAttribute('src', source!)
-        expect(profileWrites).toHaveLength(2)
-
-        // User and game credentials are independent. Logging out must not turn
-        // an unaccepted account-bound game identity into a fresh guest draft.
-        await page.evaluate(() => {
-          const auth = JSON.parse(localStorage.getItem('auth')!)
-          delete auth.USER
-          localStorage.setItem('auth', JSON.stringify(auth))
-          localStorage.removeItem('currentUser')
-        })
-        await page.reload()
+        expect(profileWrites).toEqual([])
+      } else {
+        await host
+          .getByRole('button', { name: 'Remove JoinPreview', exact: true })
+          .click()
+        await host
+          .getByRole('button', { name: 'Remove Player', exact: true })
+          .click()
         await expect(
-          page.getByRole('alert').filter({ hasText: 'Your account changed' }),
-        ).toBeVisible()
-        await expect(
-          page.getByRole('button', { name: 'OK, Go!' }),
-        ).toBeDisabled()
-        await expect(preview).toHaveCount(0)
-        expect(profileWrites).toHaveLength(2)
+          host.getByText('JoinPreview', { exact: true }),
+        ).toHaveCount(0)
+        await expect(host.getByText('0 / 20', { exact: true })).toBeVisible()
       }
     } finally {
       await hostContext.close()
