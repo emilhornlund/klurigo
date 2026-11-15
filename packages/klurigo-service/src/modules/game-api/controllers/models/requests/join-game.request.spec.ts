@@ -9,6 +9,9 @@ describe('JoinGameRequest', () => {
 
   beforeEach(() => {
     joinGameRequest = new JoinGameRequest()
+    joinGameRequest.avatar = plainToInstance(JoinGameRequest, {
+      avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    }).avatar
   })
 
   describe('avatar', () => {
@@ -21,8 +24,7 @@ describe('JoinGameRequest', () => {
         },
       )
 
-    it('accepts nickname-only legacy callers and complete account/guest designs', async () => {
-      expect(await check()).toEqual([])
+    it('accepts complete account and guest designs', async () => {
       expect(await check(DEFAULT_CRITTERS_AVATAR_V1)).toEqual([])
       expect(await check({ ...DEFAULT_CRITTERS_AVATAR_V1, top: null })).toEqual(
         [],
@@ -30,6 +32,7 @@ describe('JoinGameRequest', () => {
     })
 
     it.each([
+      undefined,
       null,
       [],
       'avatar',

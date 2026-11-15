@@ -1,4 +1,8 @@
-import { GameMode, GameParticipantType } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  GameParticipantType,
+} from '@klurigo/common'
 
 import {
   createMockGameDocument,
@@ -32,7 +36,12 @@ describe('Participant Utils', () => {
       const beforeRef = game
       const beforeLength = game.participants.length
 
-      const result = addPlayerParticipantToGame(game, 'player-2', 'New Player')
+      const result = addPlayerParticipantToGame(
+        game,
+        'player-2',
+        'New Player',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       expect(result).toBe(beforeRef)
       expect(result.participants.length).toBe(beforeLength + 1)
@@ -75,6 +84,7 @@ describe('Participant Utils', () => {
         game,
         'player-3',
         'Lobby Joiner',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -103,7 +113,12 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(game, 'player-4', 'Late Joiner')
+      const result = addPlayerParticipantToGame(
+        game,
+        'player-4',
+        'Late Joiner',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(6)
@@ -146,7 +161,12 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(game, 'player-3', 'Late Joiner')
+      const result = addPlayerParticipantToGame(
+        game,
+        'player-3',
+        'Late Joiner',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(3)
@@ -192,6 +212,7 @@ describe('Participant Utils', () => {
         game,
         'player-3',
         'Average Starter',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -221,6 +242,7 @@ describe('Participant Utils', () => {
         game,
         'player-3',
         'Average Starter',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -243,7 +265,12 @@ describe('Participant Utils', () => {
         ],
       })
 
-      addPlayerParticipantToGame(game, 'late-player', 'Late Player')
+      addPlayerParticipantToGame(
+        game,
+        'late-player',
+        'Late Player',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       const added = game.participants[1] as any
       expect(added.totalScore).toBe(0)
@@ -279,7 +306,12 @@ describe('Participant Utils', () => {
         ],
       })
 
-      const result = addPlayerParticipantToGame(game, 'player-3', 'Late Joiner')
+      const result = addPlayerParticipantToGame(
+        game,
+        'player-3',
+        'Late Joiner',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       const added = result.participants[result.participants.length - 1] as any
       expect(added.rank).toBe(3)
@@ -296,6 +328,7 @@ describe('Participant Utils', () => {
         game,
         'player-1',
         'First Player',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -331,6 +364,7 @@ describe('Participant Utils', () => {
         game,
         'player-4',
         'Average Starter',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -356,6 +390,7 @@ describe('Participant Utils', () => {
         game,
         'player-2',
         'Lobby Joiner',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any
@@ -383,6 +418,7 @@ describe('Participant Utils', () => {
         game,
         'player-2',
         'Timed Player',
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const added = result.participants[result.participants.length - 1] as any

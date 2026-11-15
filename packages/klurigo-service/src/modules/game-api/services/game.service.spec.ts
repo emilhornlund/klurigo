@@ -37,7 +37,7 @@ import type {
 import { GameEventPublisher } from '../../game-event/services'
 import { GameTaskTransitionScheduler } from '../../game-task/services'
 import { QuizRepository } from '../../quiz-core/repositories'
-import { User, UserRepository } from '../../user/repositories'
+import { User } from '../../user/repositories'
 
 import { GameService } from './game.service'
 
@@ -64,7 +64,6 @@ describe(GameService.name, () => {
     emit: jest.Mock
   }
   let quizRepository: { findQuizByIdOrThrow: jest.Mock }
-  let userRepository: { findUserById: jest.Mock }
   let gameTaskTransitionScheduler: { scheduleTaskTransition: jest.Mock }
 
   let debugSpy: jest.SpyInstance
@@ -92,7 +91,6 @@ describe(GameService.name, () => {
       emit: jest.fn(),
     }
     quizRepository = { findQuizByIdOrThrow: jest.fn() }
-    userRepository = { findUserById: jest.fn().mockResolvedValue(null) }
     gameTaskTransitionScheduler = {
       scheduleTaskTransition: jest.fn().mockResolvedValue(undefined),
     }
@@ -103,7 +101,6 @@ describe(GameService.name, () => {
         { provide: GameRepository, useValue: gameRepository },
         { provide: GameAnswerRepository, useValue: gameAnswerRepository },
         { provide: QuizRepository, useValue: quizRepository },
-        { provide: UserRepository, useValue: userRepository },
         {
           provide: GameTaskTransitionScheduler,
           useValue: gameTaskTransitionScheduler,
@@ -748,33 +745,6 @@ describe(GameService.name, () => {
         ...DEFAULT_CRITTERS_AVATAR_V1,
         top: null,
       })
-      expect(userRepository.findUserById).not.toHaveBeenCalled()
-    })
-
-    it('uses the signed account identity and preserves its first snapshot after profile edits', async () => {
-      const user = { avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block' } }
-      userRepository.findUserById.mockResolvedValue(user)
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
-      user.avatar.body = 'round'
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
-      const game =
-        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
-      expect(game.participants[0].avatar).toEqual({
-        ...DEFAULT_CRITTERS_AVATAR_V1,
-        body: 'block',
-      })
-      expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
-      expect(userRepository.findUserById).toHaveBeenCalledWith(
-        'participant-456',
-      )
-    })
-
-    it('uses the default for accounts without a saved design', async () => {
-      userRepository.findUserById.mockResolvedValue({})
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
-      const game =
-        await gameRepository.findGameByIDOrThrow.mock.results[0]!.value
-      expect(game.participants[0].avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1)
     })
 
     it('completes successfully when event emission throws', async () => {
@@ -783,7 +753,12 @@ describe(GameService.name, () => {
       })
 
       await expect(
-        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+        service.joinGame(
+          'game-123',
+          'participant-456',
+          'TestNickname',
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ),
       ).resolves.toBeUndefined()
 
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
@@ -799,8 +774,18 @@ describe(GameService.name, () => {
     })
 
     it('treats a repeated join with the same nickname as a no-op', async () => {
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       expect(gameRepository.findGameByIDOrThrow.mock.results).toHaveLength(2)
       expect(
@@ -819,8 +804,18 @@ describe(GameService.name, () => {
 
     it('serializes concurrent joins for the same identity into one player', async () => {
       await Promise.all([
-        service.joinGame('game-123', 'participant-456', 'TestNickname'),
-        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+        service.joinGame(
+          'game-123',
+          'participant-456',
+          'TestNickname',
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ),
+        service.joinGame(
+          'game-123',
+          'participant-456',
+          'TestNickname',
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ),
       ])
 
       const game =
@@ -829,15 +824,24 @@ describe(GameService.name, () => {
       expect(isCrittersAvatarConfigurationV1(game.participants[0].avatar)).toBe(
         true,
       )
-      expect(userRepository.findUserById).toHaveBeenCalledTimes(1)
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
     })
 
     it('rejects a repeated join that changes the player nickname', async () => {
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       await expect(
-        service.joinGame('game-123', 'participant-456', 'OtherNickname'),
+        service.joinGame(
+          'game-123',
+          'participant-456',
+          'OtherNickname',
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ),
       ).rejects.toThrow('Player has already joined this game')
     })
 
@@ -853,7 +857,12 @@ describe(GameService.name, () => {
       )
 
       await expect(
-        service.joinGame('game-123', 'participant-456', 'TestNickname'),
+        service.joinGame(
+          'game-123',
+          'participant-456',
+          'TestNickname',
+          DEFAULT_CRITTERS_AVATAR_V1,
+        ),
       ).rejects.toThrow('final leaderboard is active')
 
       expect(eventEmitter.emit).not.toHaveBeenCalled()

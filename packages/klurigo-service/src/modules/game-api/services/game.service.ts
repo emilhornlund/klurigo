@@ -1,5 +1,4 @@
 import {
-  AuthProvider,
   CreateGameResponseDto,
   CrittersAvatarConfigurationV1,
   GameDetailsDto,
@@ -15,7 +14,6 @@ import {
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MAX_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_MIN_LENGTH,
   QUIZ_TYPE_ANSWER_OPTIONS_VALUE_REGEX,
-  randomizeCrittersAvatar,
   RangeQuestionCorrectAnswerDto,
   resolveGameAvatarSnapshot,
   SubmitQuestionAnswerRequestDto,
@@ -74,7 +72,7 @@ import {
   isTrueFalseQuestion,
   isTypeAnswerQuestion,
 } from '../../quiz-core/utils'
-import { User, UserRepository } from '../../user/repositories'
+import { User } from '../../user/repositories'
 import {
   GameFullException,
   NicknameNotUniqueException,
@@ -127,7 +125,6 @@ export class GameService {
    * @param gameEventPublisher - Service responsible for publishing game events to clients.
    * @param quizRepository - Repository for accessing and modifying quiz documents.
    * @param eventEmitter - Emits application events (e.g., `game.deleted`) for cross-module cleanup.
-   * @param userRepository - Resolves signed account identity and first-join avatar defaults.
    */
   constructor(
     @InjectRedis() private readonly redis: Redis,
@@ -137,7 +134,6 @@ export class GameService {
     private readonly gameEventPublisher: GameEventPublisher,
     private readonly quizRepository: QuizRepository,
     private readonly eventEmitter: EventEmitter2,
-    private readonly userRepository: UserRepository,
   ) {}
 
   /**
@@ -209,7 +205,7 @@ export class GameService {
    *
    * @param gameId - The unique identifier of the game.
    * @param participantId - Optional signed caller identity; omitted by legacy service callers.
-   * @returns Lifecycle details and only the caller's accepted identity or pre-join account binding.
+   * @returns Lifecycle details and the caller's accepted game identity, when present.
    */
   public async getGame(
     gameId: string,
@@ -223,23 +219,9 @@ export class GameService {
     const participant = gameDocument.participants.find(
       (participant) => participant.participantId === participantId,
     )
-    const joiningAccount =
-      !participant && participantId
-        ? await this.userRepository.findUserById(participantId)
-        : undefined
-
     return {
       id: gameDocument._id,
       status: gameDocument.status,
-      ...(!participant && participantId
-        ? {
-            joiningAccountId:
-              joiningAccount &&
-              joiningAccount.authProvider !== AuthProvider.None
-                ? participantId
-                : null,
-          }
-        : {}),
       ...(participant
         ? {
             participant: {
@@ -336,7 +318,7 @@ export class GameService {
    * @param gameId - The unique identifier of the game the player wants to join.
    * @param participantId - The unique identifier of the player joining the game.
    * @param nickname - The nickname chosen by the player. Must be unique within the game.
-   * @param avatar - Complete chosen metadata, or undefined for legacy caller defaults.
+   * @param avatar - Complete validated design submitted with the nickname.
    *
    * @returns {Promise<void>} A Promise that resolves when the player is successfully added to the game.
    *
@@ -349,7 +331,7 @@ export class GameService {
     gameId: string,
     participantId: string,
     nickname: string,
-    avatar?: CrittersAvatarConfigurationV1,
+    avatar: CrittersAvatarConfigurationV1,
   ): Promise<void> {
     await this.gameRepository.findGameByIDOrThrow(gameId)
 
@@ -402,19 +384,12 @@ export class GameService {
             throw new NicknameNotUniqueException(nickname)
           }
 
-          // Resolve only after acceptance checks, under the same participant lock.
-          // The signed principal determines account ownership; the body never does.
-          const snapshot = await this.resolveJoiningAvatar(
-            participantId,
-            avatar,
-          )
-
           joined = true
           return addPlayerParticipantToGame(
             currentDocument,
             participantId,
             nickname,
-            snapshot,
+            avatar,
           )
         },
       )
@@ -423,30 +398,7 @@ export class GameService {
 
     await this.gameEventPublisher.publish(savedGameDocument)
 
-    this.emitGamePlayerJoinEvent(
-      gameId,
-      participantId,
-      nickname,
-      resolveGameAvatarSnapshot(
-        savedGameDocument.participants.find(
-          (participant) => participant.participantId === participantId,
-        )?.avatar,
-      ),
-    )
-  }
-
-  /** Called only for a new accepted identity, while holding the game lock. */
-  private async resolveJoiningAvatar(
-    participantId: string,
-    chosen?: CrittersAvatarConfigurationV1,
-  ): Promise<CrittersAvatarConfigurationV1> {
-    if (chosen !== undefined) return resolveGameAvatarSnapshot(chosen)
-
-    const account = await this.userRepository.findUserById(participantId)
-
-    return account && account.authProvider !== AuthProvider.None
-      ? resolveGameAvatarSnapshot(account.avatar)
-      : randomizeCrittersAvatar()
+    this.emitGamePlayerJoinEvent(gameId, participantId, nickname, { ...avatar })
   }
 
   /**

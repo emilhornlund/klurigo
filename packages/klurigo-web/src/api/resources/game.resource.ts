@@ -78,12 +78,12 @@ export const createGameResource = (
   const joinGame = (
     gameId: string,
     nickname: string,
-    avatar?: CrittersAvatarConfigurationV1,
+    avatar: CrittersAvatarConfigurationV1,
   ): Promise<void> =>
     api
       .apiPost<void>(
         `/games/${gameId}/players`,
-        { nickname, ...(avatar ? { avatar } : {}) },
+        { nickname, avatar },
         { scope: TokenScope.Game },
       )
       .catch((error) => {

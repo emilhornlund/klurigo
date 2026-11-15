@@ -111,7 +111,7 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID (GET)', () => {
-    it('keeps legacy anonymous user records guest-bound before joining', async () => {
+    it('returns lifecycle details for an unjoined anonymous identity', async () => {
       const anonymous = await userModel.create({
         ...buildMockTertiaryUser(),
         authProvider: AuthProvider.None,
@@ -139,11 +139,10 @@ describe('GameController (e2e)', () => {
         .expect({
           id: game._id,
           status: GameStatus.Active,
-          joiningAccountId: null,
         })
     })
 
-    it('returns only the caller account binding before its first accepted join', async () => {
+    it('returns lifecycle details without account information before joining', async () => {
       const game = await gameModel.create(
         createMockGameDocument({
           participants: [
@@ -167,7 +166,6 @@ describe('GameController (e2e)', () => {
         .expect({
           id: game._id,
           status: GameStatus.Active,
-          joiningAccountId: playerUser._id,
         })
     })
 
@@ -320,7 +318,6 @@ describe('GameController (e2e)', () => {
         .expect({
           id: game._id,
           status: GameStatus.Active,
-          joiningAccountId: null,
         })
     })
 
@@ -527,18 +524,21 @@ describe('GameController (e2e)', () => {
           participantId,
           GameParticipantType.PLAYER,
         )
-        const submit = (avatar?: unknown) =>
+        const avatar =
+          scenario === 'account'
+            ? saved
+            : scenario === 'chosen'
+              ? chosen
+              : DEFAULT_CRITTERS_AVATAR_V1
+        const submit = (avatar: unknown) =>
           supertest(app.getHttpServer())
             .post(`/api/games/${game._id}/players`)
             .set(createBearerAuthHeader(token))
             .send({
               nickname: 'SnapshotPlayer',
-              ...(avatar === undefined ? {} : { avatar }),
+              avatar,
             })
-        const responses = await Promise.all([
-          submit(scenario === 'chosen' ? chosen : undefined),
-          submit(scenario === 'chosen' ? chosen : undefined),
-        ])
+        const responses = await Promise.all([submit(avatar), submit(avatar)])
         expect(responses.map(({ status }) => status)).toEqual([204, 204])
         const readPlayer = async () => {
           const stored = await gameModel.findById(game._id).lean()
@@ -550,15 +550,7 @@ describe('GameController (e2e)', () => {
         }
         const first = (await readPlayer()).avatar
         expect(isCrittersAvatarConfigurationV1(first)).toBe(true)
-        if (scenario !== 'guest') {
-          expect(first).toEqual(
-            scenario === 'account'
-              ? saved
-              : scenario === 'chosen'
-                ? chosen
-                : DEFAULT_CRITTERS_AVATAR_V1,
-          )
-        }
+        expect(first).toEqual(avatar)
         await userModel.findByIdAndUpdate(playerUser._id, { avatar: chosen })
         await submit(saved).expect(204)
         expect((await readPlayer()).avatar).toEqual(first)
@@ -570,6 +562,7 @@ describe('GameController (e2e)', () => {
     )
 
     it.each([
+      undefined,
       null,
       {},
       { ...DEFAULT_CRITTERS_AVATAR_V1, userId: 'other' },
@@ -608,7 +601,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})
@@ -639,7 +635,10 @@ describe('GameController (e2e)', () => {
       await supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})
@@ -684,7 +683,10 @@ describe('GameController (e2e)', () => {
       await supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: playerUser.defaultNickname })
+        .send({
+          nickname: playerUser.defaultNickname,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(204)
 
       const updatedGame = await gameModel.findById(gameId)
@@ -713,13 +715,16 @@ describe('GameController (e2e)', () => {
       await supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(204)
 
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: 'OtherNickname' })
+        .send({ nickname: 'OtherNickname', avatar: DEFAULT_CRITTERS_AVATAR_V1 })
         .expect(409)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -748,11 +753,17 @@ describe('GameController (e2e)', () => {
         supertest(app.getHttpServer())
           .post(`/api/games/${gameId}/players`)
           .set(createBearerAuthHeader(accessToken))
-          .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME }),
+          .send({
+            nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          }),
         supertest(app.getHttpServer())
           .post(`/api/games/${gameId}/players`)
           .set(createBearerAuthHeader(accessToken))
-          .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME }),
+          .send({
+            nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+            avatar: DEFAULT_CRITTERS_AVATAR_V1,
+          }),
       ])
 
       expect(responses.map((response) => response.status)).toEqual([204, 204])
@@ -798,7 +809,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(409)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -832,7 +846,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -857,7 +874,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(404)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -882,7 +902,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${gameId}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(400)
         .expect((res) => {
           expect(res.body).toHaveProperty(
@@ -924,7 +947,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${game._id}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(204)
         .expect((res) => {
           expect(res.body).toEqual({})
@@ -961,7 +987,10 @@ describe('GameController (e2e)', () => {
       return supertest(app.getHttpServer())
         .post(`/api/games/${game._id}/players`)
         .set(createBearerAuthHeader(accessToken))
-        .send({ nickname: MOCK_DEFAULT_PLAYER_NICKNAME })
+        .send({
+          nickname: MOCK_DEFAULT_PLAYER_NICKNAME,
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
         .expect(403)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -1399,6 +1428,7 @@ describe('GameController (e2e)', () => {
         gameId,
         playerUser._id,
         MOCK_DEFAULT_PLAYER_NICKNAME,
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       const accessToken = await authenticateGame(
@@ -2007,6 +2037,7 @@ describe('GameController (e2e)', () => {
         gameId,
         playerUser._id,
         MOCK_DEFAULT_PLAYER_NICKNAME,
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       await gameModel
@@ -2564,6 +2595,7 @@ describe('GameController (e2e)', () => {
         gameId,
         playerUser._id,
         MOCK_DEFAULT_PLAYER_NICKNAME,
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       await gameModel
@@ -2613,6 +2645,7 @@ describe('GameController (e2e)', () => {
         gameId,
         playerUser._id,
         MOCK_DEFAULT_PLAYER_NICKNAME,
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       await gameModel
@@ -2655,6 +2688,7 @@ describe('GameController (e2e)', () => {
         gameId,
         playerUser._id,
         MOCK_DEFAULT_PLAYER_NICKNAME,
+        DEFAULT_CRITTERS_AVATAR_V1,
       )
 
       await gameModel

@@ -53,8 +53,4 @@ export class GameDetailsResponse implements GameDetailsDto {
   /** Caller-only identity, absent before its first accepted join. */
   @ApiPropertyOptional({ type: GameParticipantIdentityResponse })
   readonly participant?: GameParticipantIdentityResponse
-
-  /** Caller-only binding used to detect logout/account changes before joining. */
-  @ApiPropertyOptional({ type: String, format: 'uuid', nullable: true })
-  readonly joiningAccountId?: string | null
 }

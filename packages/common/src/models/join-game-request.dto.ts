@@ -3,6 +3,6 @@ import type { CrittersAvatarConfigurationV1 } from './avatar'
 export interface JoinGameRequestDto {
   nickname: string
 
-  /** Optional for older callers; the server resolves a complete first-join snapshot. */
-  avatar?: CrittersAvatarConfigurationV1
+  /** Complete design submitted with the nickname for the first accepted join. */
+  avatar: CrittersAvatarConfigurationV1
 }

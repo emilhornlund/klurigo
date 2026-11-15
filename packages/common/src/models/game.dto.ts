@@ -27,10 +27,4 @@ export interface GameDetailsDto {
 
   /** Present only for this authenticated identity after its first accepted join. */
   participant?: GameParticipantIdentityDto
-
-  /**
-   * Account bound to an unaccepted signed game identity, or null for a guest.
-   * Older servers may omit this rollout hint. Accepted identities use participant.
-   */
-  joiningAccountId?: string | null
 }

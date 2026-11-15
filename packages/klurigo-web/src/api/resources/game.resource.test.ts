@@ -109,18 +109,22 @@ describe('createGameResource', () => {
     const game = createGameResource(api, deps)
 
     apiPost.mockResolvedValue(undefined)
-    await expect(game.joinGame('g1', 'Emil')).resolves.toBeUndefined()
+    await expect(
+      game.joinGame('g1', 'Emil', DEFAULT_CRITTERS_AVATAR_V1),
+    ).resolves.toBeUndefined()
 
     expect(apiPost).toHaveBeenCalledWith(
       '/games/g1/players',
-      { nickname: 'Emil' },
+      { nickname: 'Emil', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       { scope: TokenScope.Game },
     )
 
     const err = new Error('fail')
     apiPost.mockRejectedValueOnce(err)
 
-    await expect(game.joinGame('g1', 'Emil')).rejects.toBe(err)
+    await expect(
+      game.joinGame('g1', 'Emil', DEFAULT_CRITTERS_AVATAR_V1),
+    ).rejects.toBe(err)
     expect(notifyError).toHaveBeenCalledWith(
       'Couldn’t join the game. Check the code and try again.',
     )
@@ -137,7 +141,9 @@ describe('createGameResource', () => {
 
     apiPost.mockRejectedValueOnce(conflict)
 
-    await expect(game.joinGame('game-1', 'Emil')).rejects.toBe(conflict)
+    await expect(
+      game.joinGame('game-1', 'Emil', DEFAULT_CRITTERS_AVATAR_V1),
+    ).rejects.toBe(conflict)
     expect(notifyError).toHaveBeenCalledExactlyOnceWith(
       'That nickname is already in use in this game. Choose another.',
     )
@@ -145,9 +151,9 @@ describe('createGameResource', () => {
     const unrelatedConflict = new ApiError('Game has already started', 409)
     apiPost.mockRejectedValueOnce(unrelatedConflict)
 
-    await expect(game.joinGame('game-1', 'Emil')).rejects.toBe(
-      unrelatedConflict,
-    )
+    await expect(
+      game.joinGame('game-1', 'Emil', DEFAULT_CRITTERS_AVATAR_V1),
+    ).rejects.toBe(unrelatedConflict)
     expect(notifyError).toHaveBeenLastCalledWith(
       'Couldn’t join the game. Check the code and try again.',
     )
