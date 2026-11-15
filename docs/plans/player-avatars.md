@@ -1,7 +1,7 @@
 # Player Avatars: Small-Task Roadmap
 
-> **Status:** Phases 0–10 and the default-Critter fix are complete. Remaining game integration,
-> guest customization, and animation are required upcoming work, not optional extras.
+> **Status:** Phases 0–11 and the default-Critter fix are complete. Remaining game
+> display integration, durable results, and animation are required upcoming work.
 > This is a plan; [feature documentation](../features/player-avatar-rendering.md)
 > describes delivered behavior. Future phases below replace the previous large
 > game-integration and optional-extension phases.
@@ -170,8 +170,9 @@ Every phase includes its own focused tests and applicable quality checks.
   including preview/request/persisted-metadata equality, reloads, failed joins, and
   accepted-member resume. Types, lint, and production build pass. Chrome inspection
   covered 1440px, 768px, 390px, and 320px, reduced motion, guest joining, and saved
-  account previews. Removed the redundant hero icon and moved the login prompt below
-  the form to keep joining prominent. Final console/network checks were clean.
+  account previews. The reviewed UI preserves the original hero and login-prompt
+  placement and uses a larger clickable avatar without an extra heading/button/save
+  notice. Final console/network checks were clean.
 
 ### Phase 10 — Guest Join Editor
 
@@ -187,17 +188,21 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 11 — Account Join Editor And Save
 
-**Status:** Implemented; review checkpoint · **Depends on:** 9
+**Status:** Complete · **Depends on:** 9
 
 - **Work:** Reuse the editor for account join drafts; save edited metadata through user scope before submitting the game join, then refresh account state.
 - **Done when:** The join snapshot and acknowledged account design match; the next join starts with that design. Cancel, save/join failures, retries, and account switches follow the product rules.
-- **Checkpoint:** Account editing, save-before-join, acknowledged retry persistence,
-  cache/context refresh, and account-switch guards are implemented. All 2,298 web
-  tests and two real Playwright join flows passed; 34 focused join tests passed.
-  Root build and all workspace type checks passed. Storybook builds successfully;
-  join-story fixture initialization was corrected after a browser failure, but its
-  final rendered verification remains outstanding. Work stopped at the user's
-  explicit request for immediate code review; phases 12–23 remain planned.
+- **Verified:** Account editing, save-before-join, acknowledged retry persistence,
+  cache/context refresh, account switching, and logout-before-acceptance are covered.
+  The repaired UI uses a neutral modal opened by the avatar, with local apply/discard
+  state and properly scoped component directories. The full repository validation
+  passes: 2,302 web, 1,646 service, and 146 common tests; all builds, types, lint,
+  formatting, and circular-dependency checks pass. Storybook builds; eight isolated
+  join scenarios support visual review. Four real Playwright avatar flows and 128
+  focused backend HTTP/stream tests pass. Chrome inspection covered desktop, tablet,
+  mobile, constrained widths, keyboard/focus, and reduced motion. Commit-by-commit
+  review corrections are recorded in the feature documentation. Phases 12–23 remain
+  planned while the implementation is reviewed.
 
 ### Phase 12 — Durable Result Snapshots
 

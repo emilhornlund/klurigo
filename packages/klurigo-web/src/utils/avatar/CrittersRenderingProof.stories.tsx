@@ -5,6 +5,9 @@ import {
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
+import { Button, Select, Typography } from '../../components'
+
+import { avatarChoiceLabel } from './avatar-editor.utils'
 import { getCrittersAvatarV1DataUri } from './critters-v1'
 import {
   CRITTERS_V1_FIXTURES,
@@ -21,8 +24,12 @@ function CrittersRenderingProof() {
 
   return (
     <main className={styles.proof}>
-      <h1>Critters · local rendering proof</h1>
-      <p>Repository-owned artwork · fixed v1 recipe · static SVG images</p>
+      <Typography variant="title" color="inverse" align="center">
+        Critters · local rendering proof
+      </Typography>
+      <Typography variant="body2" color="inverse" align="center">
+        Repository-owned artwork · fixed v1 recipe · static SVG images
+      </Typography>
       <section className={styles.preview} aria-label="Reference design preview">
         <img
           src={source}
@@ -32,26 +39,30 @@ function CrittersRenderingProof() {
         />
         <div className={styles.controls}>
           <label htmlFor="critter-reference">Reference design</label>
-          <select
+          <Select
             id="critter-reference"
-            value={selectedIndex}
-            onChange={(event) => setSelectedIndex(Number(event.target.value))}>
-            {CRITTERS_V1_FIXTURES.map(({ name }, index) => (
-              <option key={name} value={index}>
-                {name}
-              </option>
-            ))}
-          </select>
-          <button
+            value={String(selectedIndex)}
+            values={CRITTERS_V1_FIXTURES.map(({ name }, index) => ({
+              key: name,
+              value: String(index),
+              valueLabel: name,
+            }))}
+            onChange={(next) => setSelectedIndex(Number(next))}
+          />
+          <Button
+            id="repeat-avatar-render"
             type="button"
+            variant="outline"
             onClick={() => setRepetitions((value) => value + 1)}>
             Repeat identical render
-          </button>
+          </Button>
           <output aria-live="polite">Repeated renders: {repetitions}</output>
         </div>
       </section>
       <section aria-label="Small-size legibility">
-        <h2>Small-size legibility</h2>
+        <Typography variant="title3" color="inverse">
+          Small-size legibility
+        </Typography>
         <div className={styles.sizes}>
           {[24, 32, 48, 64, 96].map((size) => (
             <figure key={size}>
@@ -67,7 +78,9 @@ function CrittersRenderingProof() {
         </div>
       </section>
       <section>
-        <h2>Golden reference designs</h2>
+        <Typography variant="title3" color="inverse">
+          Golden reference designs
+        </Typography>
         <div className={styles.grid}>
           {CRITTERS_V1_FIXTURES.map(({ name, configuration }) => (
             <Preview key={name} name={name} configuration={configuration} />
@@ -78,12 +91,14 @@ function CrittersRenderingProof() {
         Object.keys(CRITTERS_V1_PARTS) as (keyof typeof CRITTERS_V1_PARTS)[]
       ).map((part) => (
         <section key={part} aria-label={`${part} variants`}>
-          <h2>{part}</h2>
+          <Typography variant="title3" color="inverse">
+            {part === 'top' ? 'Head decoration' : avatarChoiceLabel(part)}
+          </Typography>
           <div className={styles.grid}>
             {CRITTERS_V1_PARTS[part].map((variant) => (
               <Preview
                 key={variant}
-                name={variant}
+                name={avatarChoiceLabel(variant)}
                 configuration={{ ...CRITTERS_V1_REFERENCE, [part]: variant }}
               />
             ))}
@@ -100,6 +115,7 @@ function CrittersRenderingProof() {
   )
 }
 
+/** A named static image used only within the rendering compatibility story. */
 function Preview({
   name,
   configuration,

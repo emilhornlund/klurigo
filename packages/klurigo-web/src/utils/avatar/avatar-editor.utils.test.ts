@@ -1,10 +1,10 @@
-import { isCrittersAvatarConfigurationV1 } from '@klurigo/common'
+import {
+  isCrittersAvatarConfigurationV1,
+  randomizeCrittersAvatar,
+} from '@klurigo/common'
 import { describe, expect, it, vi } from 'vitest'
 
-import {
-  avatarChoiceLabel,
-  randomizeCrittersAvatar,
-} from './avatar-editor.utils'
+import { avatarChoiceLabel } from './avatar-editor.utils'
 
 describe('avatar editor helpers', () => {
   it('provides readable, consistently spaced component labels', () => {

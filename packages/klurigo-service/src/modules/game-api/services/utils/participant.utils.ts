@@ -1,5 +1,5 @@
 import {
-  GameAvatarSnapshot,
+  CrittersAvatarConfigurationV1,
   GameMode,
   GameParticipantType,
   resolveGameAvatarSnapshot,
@@ -41,13 +41,14 @@ type QuestionResultRankingData = Pick<
  * @param game - The game document to mutate.
  * @param participantId - The unique participant identifier to assign to the new player.
  * @param nickname - The nickname to assign to the new player.
+ * @param avatar - Accepted complete design, copied independently; older callers use the default.
  * @returns The same game document instance with the new player participant appended.
  */
 export function addPlayerParticipantToGame<T extends Game>(
   game: T,
   participantId: string,
   nickname: string,
-  avatar?: GameAvatarSnapshot,
+  avatar?: CrittersAvatarConfigurationV1,
 ): T {
   const now = new Date()
 

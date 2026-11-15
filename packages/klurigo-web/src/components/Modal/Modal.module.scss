@@ -33,6 +33,8 @@
     background-color: colors.$color-surface-default;
     color: colors.$color-text-default;
     width: breakpoints.$breakpoint-mobile;
+    max-width: 100%;
+    min-width: 0;
     max-height: 100%;
     border-radius: radius.$radius-surface-lg;
 

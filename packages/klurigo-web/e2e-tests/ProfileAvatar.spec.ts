@@ -32,7 +32,7 @@ test('account avatar saves exactly, survives a fresh session, and retains failed
   await authenticatePageThroughApi(page, email)
   await page.goto('/profile/settings')
   await expect(
-    page.getByRole('heading', { name: 'Your quiz avatar' }),
+    page.getByRole('heading', { name: 'Avatar', exact: true }),
   ).toBeVisible()
   await page.getByPlaceholder('Default Nickname').fill('UnsavedNickname')
   await page.getByText('Block', { exact: true }).click()

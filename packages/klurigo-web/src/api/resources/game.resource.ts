@@ -1,7 +1,7 @@
 import {
   type CreateGameResponseDto,
   type CreateQuizRatingDto,
-  type GameAvatarSnapshot,
+  type CrittersAvatarConfigurationV1,
   type GameDetailsDto,
   type GameParticipantPlayerDto,
   type GameResultDto,
@@ -78,7 +78,7 @@ export const createGameResource = (
   const joinGame = (
     gameId: string,
     nickname: string,
-    avatar?: GameAvatarSnapshot,
+    avatar?: CrittersAvatarConfigurationV1,
   ): Promise<void> =>
     api
       .apiPost<void>(

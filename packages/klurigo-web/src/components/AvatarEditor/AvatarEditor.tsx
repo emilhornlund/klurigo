@@ -1,52 +1,63 @@
-import {
-  CRITTERS_V1_COLORS,
+import type {
   CRITTERS_V1_PARTS,
-  type CrittersAvatarConfigurationV1,
+  CrittersAvatarConfigurationV1,
 } from '@klurigo/common'
 import { type FC, useId, useState } from 'react'
 
-import {
-  AVATAR_COLOR_LABELS,
-  avatarChoiceLabel,
-} from '../../utils/avatar/avatar-editor.utils'
+import { classNames } from '../../utils/helpers'
+import Button from '../Button'
 import PlayerAvatar from '../PlayerAvatar'
 import Select from '../Select'
 import Stack from '../Stack'
 import Surface from '../Surface'
-import Typography from '../Typography'
 
 import styles from './AvatarEditor.module.scss'
+import AvatarColorChoices from './components/AvatarColorChoices'
+import AvatarPartChoices from './components/AvatarPartChoices'
 
+/** Controlled avatar metadata and the surface on which choices are presented. */
 export interface AvatarEditorProps {
+  /** Complete selected design, including colors not currently visible. */
   readonly value: CrittersAvatarConfigurationV1
+  /** Prevents editing while persistence is in progress. */
   readonly disabled?: boolean
+  /** Brand page styling or compact neutral styling inside a dialog. */
+  readonly presentation?: 'page' | 'dialog'
+  /** Optional explicit randomization action owned by the parent draft. */
+  readonly onRandomize?: () => void
+  /** Replaces the draft with a complete configuration after a choice changes. */
   readonly onChange: (value: CrittersAvatarConfigurationV1) => void
 }
 
 const categories = ['Body', 'Face', 'Head', 'Pattern', 'Colors'] as const
+const partsByCategory: Record<
+  string,
+  readonly (keyof typeof CRITTERS_V1_PARTS)[]
+> = {
+  Body: ['body'],
+  Face: ['eyes', 'mouth', 'cheeks'],
+  Head: ['top'],
+  Pattern: ['pattern'],
+}
 const PREVIEW_IMAGE_SIZE = 192
-const OPTION_IMAGE_SIZE = 80
-type Part = keyof typeof CRITTERS_V1_PARTS
 
-/** Controlled customization; account persistence and draft ownership belong to its form. */
+/** Controlled customization; draft ownership and persistence belong to the parent. */
 const AvatarEditor: FC<AvatarEditorProps> = ({
   value,
   disabled = false,
+  presentation = 'page',
+  onRandomize,
   onChange,
 }) => {
   const id = useId()
   const [category, setCategory] = useState('Body')
-  const parts: Part[] =
-    category === 'Face'
-      ? ['eyes', 'mouth', 'cheeks']
-      : category === 'Head'
-        ? ['top']
-        : category === 'Pattern'
-          ? ['pattern']
-          : ['body']
 
   return (
-    <div className={styles.editor}>
+    <div
+      className={classNames(
+        styles.editor,
+        presentation === 'dialog' ? styles.dialog : undefined,
+      )}>
       <Surface className={styles.preview}>
         <PlayerAvatar
           avatar={value}
@@ -54,18 +65,33 @@ const AvatarEditor: FC<AvatarEditorProps> = ({
           alt="Your avatar preview"
           className={styles.previewAvatar}
         />
-        <Typography variant="control" align="center" color="inverse">
-          Your quiz sidekick
-        </Typography>
+        {onRandomize && (
+          <Button
+            id="randomize-join-avatar"
+            type="button"
+            variant="outline"
+            surface={presentation === 'dialog' ? 'light' : 'brand'}
+            size="small"
+            disabled={disabled}
+            onClick={onRandomize}>
+            Randomize
+          </Button>
+        )}
       </Surface>
       <Stack className={styles.controls} spacing="compact">
-        <label htmlFor={`${id}-category`} className={styles.categoryLabel}>
+        <label
+          htmlFor={`${id}-category`}
+          className={classNames(
+            styles.categoryLabel,
+            presentation === 'dialog' ? styles.hiddenLabel : undefined,
+          )}>
           Customize
         </label>
         <Select
           id={`${id}-category`}
           value={category}
           disabled={disabled}
+          surface={presentation === 'dialog' ? 'light' : 'brand'}
           values={categories.map((name) => ({
             key: name,
             value: name,
@@ -73,109 +99,28 @@ const AvatarEditor: FC<AvatarEditorProps> = ({
           }))}
           onChange={setCategory}
         />
-        {category !== 'Colors' ? (
-          parts.map((part) => {
-            const choices: readonly (string | null)[] =
-              part === 'top' || part === 'pattern' || part === 'cheeks'
-                ? [null, ...CRITTERS_V1_PARTS[part]]
-                : CRITTERS_V1_PARTS[part]
-            const title =
-              part === 'top' ? 'Head decoration' : avatarChoiceLabel(part)
-            return (
-              <fieldset key={part} className={styles.group} disabled={disabled}>
-                <legend>{title}</legend>
-                <div className={styles.choices}>
-                  {choices.map((choice) => {
-                    const label =
-                      choice === null ? 'None' : avatarChoiceLabel(choice)
-                    const next = { ...value, [part]: choice }
-                    return (
-                      <Surface
-                        as="label"
-                        interactive={!disabled}
-                        className={styles.choice}
-                        key={choice ?? 'none'}>
-                        <input
-                          type="radio"
-                          name={`${id}-${part}`}
-                          value={choice ?? 'none'}
-                          aria-label={`${title}: ${label}`}
-                          checked={value[part] === choice}
-                          onChange={() => onChange(next)}
-                        />
-                        <PlayerAvatar
-                          avatar={next}
-                          size={OPTION_IMAGE_SIZE}
-                          alt=""
-                          className={styles.optionAvatar}
-                        />
-                        <span className={styles.choiceLabel}>{label}</span>
-                        {value[part] === choice && (
-                          <span className={styles.selected} aria-hidden="true">
-                            ✓
-                          </span>
-                        )}
-                      </Surface>
-                    )
-                  })}
-                </div>
-              </fieldset>
-            )
-          })
-        ) : (
+        {category === 'Colors' ? (
           <>
-            <Typography variant="control" color="inverse" align="left">
-              Body and accent colors must be different.
-            </Typography>
             {(['body', 'accent', 'background'] as const).map((color) => (
-              <fieldset
+              <AvatarColorChoices
                 key={color}
-                className={styles.group}
-                disabled={disabled}>
-                <legend>{avatarChoiceLabel(color)} color</legend>
-                <div className={styles.colors}>
-                  {CRITTERS_V1_COLORS[color].map((hex) => {
-                    const conflict =
-                      color === 'body'
-                        ? hex === value.accentColor
-                        : color === 'accent' && hex === value.bodyColor
-                    const selected = value[`${color}Color`] === hex
-                    return (
-                      <Surface
-                        as="label"
-                        interactive={!disabled && !conflict}
-                        className={styles.choice}
-                        key={hex}>
-                        <input
-                          type="radio"
-                          name={`${id}-${color}-color`}
-                          value={hex}
-                          aria-label={`${avatarChoiceLabel(color)} color: ${AVATAR_COLOR_LABELS[hex]}${conflict ? ' (matches other color)' : ''}`}
-                          disabled={conflict}
-                          checked={selected}
-                          onChange={() =>
-                            onChange({ ...value, [`${color}Color`]: hex })
-                          }
-                        />
-                        <span
-                          className={styles.swatch}
-                          style={{ backgroundColor: hex }}
-                        />
-                        <span className={styles.choiceLabel}>
-                          {AVATAR_COLOR_LABELS[hex]}
-                        </span>
-                        {selected && (
-                          <span className={styles.selected} aria-hidden="true">
-                            ✓
-                          </span>
-                        )}
-                      </Surface>
-                    )
-                  })}
-                </div>
-              </fieldset>
+                color={color}
+                value={value}
+                disabled={disabled}
+                onChange={onChange}
+              />
             ))}
           </>
+        ) : (
+          partsByCategory[category]?.map((part) => (
+            <AvatarPartChoices
+              key={part}
+              part={part}
+              value={value}
+              disabled={disabled}
+              onChange={onChange}
+            />
+          ))
         )}
       </Stack>
     </div>

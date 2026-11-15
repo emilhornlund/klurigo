@@ -53,7 +53,7 @@ contributor or application documentation.
 - [Discovery categories](./features/discovery-categories.md) - category browsing,
   URL-backed filters, and public quiz pagination on Discover.
 - [Player avatar rendering](./features/player-avatar-rendering.md) - local Critters
-  artwork, account editing/persistence, and authenticated profile/navigation display.
+  artwork, account editing/persistence, profile/navigation display, and game joining.
 
 Feature proposals and implementation notes are kept under [`plans/`](./plans/)
 and must not be used as the authority for shipped behavior.

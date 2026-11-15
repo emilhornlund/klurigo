@@ -52,6 +52,20 @@ vi.mock('react-router-dom', () => ({ useNavigate: () => navigate }))
 import { useGameJoinAvatar } from './use-game-join-avatar'
 
 describe('useGameJoinAvatar', () => {
+  it('blocks a fresh guest draft after logging out of an account-bound game identity', async () => {
+    participantId = 'account-1'
+    getGame.mockResolvedValue({ id: gameID, joiningAccountId: participantId })
+
+    const hook = renderHook(useGameJoinAvatar)
+
+    await waitFor(() =>
+      expect(hook.result.current.error).toMatch(/account changed/),
+    )
+    expect(hook.result.current.avatar).toBeUndefined()
+    expect(getUserProfile).not.toHaveBeenCalled()
+    expect(localStorage.length).toBe(0)
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.clear()
@@ -77,6 +91,28 @@ describe('useGameJoinAvatar', () => {
     await waitFor(() => expect(second.result.current.isLoading).toBe(false))
     expect(second.result.current.avatar).toEqual(avatar)
     expect(getUserProfile).not.toHaveBeenCalled()
+  })
+
+  it('copies only supported metadata from a restored account draft', async () => {
+    accountId = participantId = 'account-1'
+    const design = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    localStorage.setItem(
+      'klurigo:join-avatar:game-1:account-1:account-1',
+      JSON.stringify({
+        avatar: { ...design, seed: 'obsolete-browser-field' },
+        baseline: DEFAULT_CRITTERS_AVATAR_V1,
+        acknowledged: { ...design, storageInternal: 'obsolete' },
+      }),
+    )
+
+    const hook = renderHook(useGameJoinAvatar)
+
+    await waitFor(() => expect(hook.result.current.isLoading).toBe(false))
+    expect(hook.result.current.avatar).toEqual(design)
+    await act(async () =>
+      expect(await hook.result.current.commitAvatar()).toEqual(design),
+    )
+    expect(updateUserAvatar).not.toHaveBeenCalled()
   })
 
   it('saves an edited account design once and retains the acknowledgement across reloads', async () => {

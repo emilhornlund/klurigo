@@ -1,4 +1,8 @@
-import { AuthProvider, DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
+import {
+  AuthProvider,
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameParticipantType,
+} from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import supertest from 'supertest'
 
@@ -14,6 +18,7 @@ import {
   MOCK_SECONDARY_USER_GIVEN_NAME,
 } from '../../../../test-utils/data'
 import {
+  authenticateGame,
   cleanupTestApp,
   createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
@@ -33,6 +38,28 @@ describe('UserProfileController (e2e)', () => {
   })
 
   describe('/api/profile/user/avatar (PUT)', () => {
+    it('does not allow game credentials to update an account avatar', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const gameToken = await authenticateGame(
+        app,
+        '00000000-0000-4000-8000-000000000099',
+        user._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .put('/api/profile/user/avatar')
+        .set(createBearerAuthHeader(gameToken))
+        .send(DEFAULT_CRITTERS_AVATAR_V1)
+        .expect(403)
+
+      await supertest(app.getHttpServer())
+        .get('/api/profile/user')
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }) => expect(body).not.toHaveProperty('avatar'))
+    })
+
     it.each([AuthProvider.Local, AuthProvider.Google])(
       'persists an exact %s avatar through profile changes',
       async (provider) => {

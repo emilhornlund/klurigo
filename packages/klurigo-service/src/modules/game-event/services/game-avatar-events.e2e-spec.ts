@@ -1,6 +1,6 @@
 import {
+  CrittersAvatarConfigurationV1,
   DEFAULT_CRITTERS_AVATAR_V1,
-  GameAvatarSnapshot,
   GameEvent,
   GameEventType,
   GameMode,
@@ -139,7 +139,8 @@ describe('Game avatar event snapshots (e2e)', () => {
           if (initial && 'leaderboard' in initial)
             expect(
               initial.leaderboard.map(
-                (entry: { avatar?: GameAvatarSnapshot }) => entry.avatar,
+                (entry: { avatar?: CrittersAvatarConfigurationV1 }) =>
+                  entry.avatar,
               ),
             ).toEqual([guestAvatar, avatar])
           if (initial && 'player' in initial) {

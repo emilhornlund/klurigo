@@ -13,8 +13,11 @@ import type {
 import { UserAvatarForm, UserDetailsForm, UserPasswordForm } from './components'
 
 export interface ProfileSettingsPageUIProps {
+  /** Retries a failed background refresh without replacing unsaved form values. */
   onRetryProfile?: () => void
+  /** Saved avatar metadata displayed alongside the existing profile forms. */
   avatar?: CrittersAvatarConfigurationV1
+  /** Persists only a complete avatar configuration for the current account. */
   onChangeAvatar: (
     avatar: CrittersAvatarConfigurationV1,
   ) => Promise<CrittersAvatarConfigurationV1>

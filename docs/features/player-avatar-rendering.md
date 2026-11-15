@@ -3,10 +3,12 @@
 Phase 0 supplies a local, deterministic Critters renderer, a shared component
 catalog/configuration, and an isolated Storybook proof. Phase 1 adds the account
 editor and persistence. Phase 2 adds authenticated profile and navigation display.
-Game placement remains a later milestone in the
-[avatar roadmap](../plans/player-avatars.md).
+Phases 3–11 add game-time metadata and joining. Remaining game display surfaces,
+durable results, and animation are tracked in the [avatar roadmap](../plans/player-avatars.md).
 
-Phase 3 defines `GameAvatarSnapshot` and optional `JoinGameRequestDto.avatar`.
+Phase 3 adds optional `JoinGameRequestDto.avatar` using the existing complete
+`CrittersAvatarConfigurationV1` contract. Game-time copies use that same configuration
+type; copying and persistence are enforced by acceptance logic, not a type alias.
 Nickname-only clients remain compatible. Supplied designs require complete validated
 metadata; null, invalid choices, unsupported versions, and extra nested fields are
 rejected. `resolveGameAvatarSnapshot` copies supported metadata or the stable default,
@@ -25,8 +27,12 @@ The existing creation endpoint requires an account.
 
 Phase 6 returns resolved avatars in the host-only player list. Authenticated game
 details also include optional `participant` with the caller's accepted ID, role,
-player nickname, and snapshot; it is absent before joining. Responses explicitly
+player nickname, and snapshot; it is absent before joining. Accepted snapshot reads
 select public fields and resolve legacy data without writes or profile lookups.
+Before acceptance, optional `joiningAccountId` identifies only the caller's account
+binding, or null for a guest. This prevents logout/account changes from treating an
+unaccepted account-bound game credential as a new guest identity. Accepted identity
+reads do not need that account lookup, and game credentials still cannot write profiles.
 
 Phase 7 includes host and player designs in lobby events and the current player's
 snapshot in every identity-bearing player event. The shared task mapper is used
@@ -50,19 +56,75 @@ before generating or loading a fresh design. New account joins require matching
 account/game authentication and load the authenticated profile. Preparation failures
 offer retry, and joining does not save an unchanged account default.
 
-Phase 10 lets guests open the shared editor before joining. Part/color edits and
-explicit Randomize update only the scoped local draft. Use design returns to the
-join form, while Discard restores the design present when the editor was opened.
-Both return keyboard focus to Customize avatar. Nickname state is retained, and
-neither editing nor randomizing writes an account profile or joins the game.
+Phase 10 lets guests click the avatar to open a customization dialog. Part/color
+edits and Randomize stay inside that dialog until Use design applies them to the
+scoped join draft. Discard, Escape, and backdrop dismissal leave the applied design
+unchanged. Closing returns keyboard focus to the avatar button. The nickname form
+stays mounted, and editing does not write an account profile or join the game.
 
 Phase 11 adds account join drafts. Edited designs are saved through the user-scoped
 avatar API before the game join; unchanged defaults require no profile write.
 Acknowledged saves survive failed joins and reloads without repeating the save.
 Failures retain the draft and distinguish profile-save failure from saved-design/
 failed-join state. Account switches invalidate pending work, and successful saves
-refresh account context and profile caches. This implementation is paused for user
-review; final rendered verification of the updated Storybook fixtures is outstanding.
+refresh account context and profile caches. Further feature phases are paused for
+review of this implementation.
+
+## Review Corrections
+
+The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.
+There is no separate Customize button, avatar heading, or proactive save notice.
+The customization dialog uses a compact neutral presentation of the shared editor;
+the settings editor retains the established brand-page surface. Both use the same
+part/color controls and immutable renderer. The original join hero and login prompt
+placement are preserved.
+
+Production subcomponents live in `components/ComponentName/ComponentName.tsx` with
+their own barrel exports. `GameJoinPage` owns context, avatar preparation, and join
+submission. Its presentational `GameJoinPageUI` owns dialog visibility and contains
+`JoinGameForm` and `JoinAvatarDialog` under its own `components` directory. Identity
+changes remount that UI and invalidate prior asynchronous preparation/submission
+owners, including when returning to a previously visited identity.
+
+The shared randomizer is imported directly from `@klurigo/common`; the frontend
+label utility does not forward it. Join fixtures, HTTP responses, failure scenarios, and
+providers are local to `GameJoinPage.stories.tsx`; there is no production storybook
+folder. The story installs decodable user/game token fixtures before mounting and
+keeps successful joins visible within its isolated router.
+
+The review against `origin/main` retained existing routing, authorization, scoring,
+password handling, email handling, and menu styling. Avatar-specific account cache
+updates and stale-response guards remain necessary to prevent cross-account state
+leaks and old responses overwriting a saved design. An attempted wholesale extraction
+of profile settings was removed; existing form orchestration remains in its page.
+The shared modal has only a width constraint correction for demonstrated tablet
+overflow. Shared request validation/response metadata live under `app/shared/avatar`,
+not behind a user controller dependency.
+
+A reproduced HTTP 500 from an unsupported stored participant avatar was corrected:
+immutable game/task metadata is preserved as version-tolerant snapshots, while new
+HTTP writes remain strictly validated. A regression test verifies an unrelated join
+succeeds, unknown metadata remains intact, and reads still return the stable default.
+
+### Commit-by-commit Review
+
+| Commit     | Reviewed scope and resulting correction or decision                                                                                                                                                                               |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `a2708f4a` | Roadmap and product rules: keep incomplete results/display/motion work explicit.                                                                                                                                                  |
+| `5d8e8d78` | Artwork, licenses, recipe, catalogs, fixtures, bundle probe: retain byte-exact artwork and unchanged static SVG fixtures; align proof controls and styling with shared components/tokens.                                         |
+| `6e00a9a7` | Account persistence/editor: keep principal-derived writes and complete validation; document props/actions, separate editor choice groups, and share avatar-only cache reconciliation.                                             |
+| `a41529c5` | Profile/navigation: keep avatar rendering and account guards; remove unrelated menu restyling. Use existing Typography fitting props for the long-nickname wrapping defect observed at 320px, without changing Typography itself. |
+| `b8b22584` | Default Critter fallback: retain local, non-persisting resolution and metadata immutability.                                                                                                                                      |
+| `203fe87e` | Small-phase roadmap: preserve dependencies and correct stale UI/verification notes.                                                                                                                                               |
+| `d62a983f` | Join contracts: retain nickname-only compatibility and nested validation; move reusable transport metadata to the shared backend boundary.                                                                                        |
+| `76ed4016` | First-join snapshots: retain locked/idempotent acceptance; fix unsupported stored metadata blocking unrelated saves.                                                                                                              |
+| `489b849c` | Host snapshot: retain the minimal game-creation mapping without adding roles or score fields.                                                                                                                                     |
+| `2ee05ac6` | REST identity mapping: retain caller-only fields and host-only player access; use existing participant-ID documentation helpers.                                                                                                  |
+| `197a69e9` | Lobby/self SSE: retain shared live/recovery mapping and existing identity/score visibility.                                                                                                                                       |
+| `7675a368` | Ranking/podium metadata: retain placement rules and limits; preserve versioned task metadata on storage/recovery.                                                                                                                 |
+| `9b1b72f8` | Join preview: replace heading/button/save-copy clutter with the larger avatar trigger; preserve the original surrounding page UI.                                                                                                 |
+| `da10490b` | Guest customization: replace inline form substitution with a neutral, focus-managed modal and explicit apply/discard semantics.                                                                                                   |
+| `096808ad` | Account joins: retain save-before-join and acknowledged retries; repair and strongly type isolated stories, and separate page/form/dialog/storage/submission responsibilities.                                                    |
 
 ## Source And Ownership
 

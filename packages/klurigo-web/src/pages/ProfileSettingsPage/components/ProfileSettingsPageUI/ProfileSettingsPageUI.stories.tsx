@@ -23,6 +23,21 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  render: function ProfileSettingsStory(args) {
+    const [avatar, setAvatar] = useState(args.avatar)
+
+    return (
+      <ProfileSettingsPageUI
+        {...args}
+        avatar={avatar}
+        onChangeAvatar={async (next) => {
+          const saved = await args.onChangeAvatar(next)
+          setAvatar(saved)
+          return saved
+        }}
+      />
+    )
+  },
 } satisfies Meta<typeof ProfileSettingsPageUI>
 
 export default meta
@@ -68,19 +83,6 @@ export const UnverifiedEmail = {
 
 export const SavedAvatar = {
   args: { ...Default.args, avatar: DEFAULT_CRITTERS_AVATAR_V1 },
-  render: function SavedAvatarStory(args) {
-    const [avatar, setAvatar] = useState(args.avatar)
-    return (
-      <ProfileSettingsPageUI
-        {...args}
-        avatar={avatar}
-        onChangeAvatar={async (next) => {
-          setAvatar(next)
-          return next
-        }}
-      />
-    )
-  },
 } satisfies Story
 
 export const GoogleAvatar = {

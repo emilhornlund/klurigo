@@ -13,6 +13,9 @@ const style = new Style(definition)
  * Render a complete v1 design with immutable visual defaults.
  * SVG IDs are isolated by the image data URI; never inline this SVG repeatedly.
  * Input must be a validated Klurigo configuration, not arbitrary renderer options.
+ *
+ * @param config - Complete resolved v1 choices; nullable features remain explicit.
+ * @returns Deterministic SVG markup using only repository-owned artwork.
  */
 export function renderCrittersAvatarV1(
   config: CrittersAvatarConfigurationV1,
@@ -47,7 +50,12 @@ export function renderCrittersAvatarV1(
   }).toString()
 }
 
-/** Encode the local SVG as a self-contained image, preserving its fragment IDs. */
+/**
+ * Encodes the local SVG as a self-contained image, preserving its fragment IDs.
+ *
+ * @param config - Complete validated v1 choices.
+ * @returns A local SVG data URI suitable for an image-isolated img element.
+ */
 export function getCrittersAvatarV1DataUri(
   config: CrittersAvatarConfigurationV1,
 ): string {

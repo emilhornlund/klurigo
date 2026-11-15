@@ -289,3 +289,110 @@
     border-radius: radius.$radius-control-lg;
   }
 }
+
+/* Dialog styling is neutral and compact; account settings retain their page layout. */
+.dialog {
+  color: colors.$color-text-default;
+
+  @include helpers.mobile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    grid-template-columns: avatars.$avatar-dialog-preview-tablet minmax(0, 1fr);
+    gap: spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    grid-template-columns: avatars.$avatar-dialog-preview-desktop minmax(0, 1fr);
+    gap: spacing.$space-stack-desktop;
+  }
+
+  .preview {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .previewAvatar {
+    @include helpers.mobile {
+      width: avatars.$avatar-dialog-preview-mobile;
+      height: avatars.$avatar-dialog-preview-mobile;
+    }
+
+    @include helpers.tablet {
+      width: avatars.$avatar-dialog-preview-tablet;
+      height: avatars.$avatar-dialog-preview-tablet;
+    }
+
+    @include helpers.desktop {
+      width: avatars.$avatar-dialog-preview-desktop;
+      height: avatars.$avatar-dialog-preview-desktop;
+    }
+  }
+
+  .choices,
+  .colors {
+    @include helpers.mobile {
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(avatars.$avatar-dialog-choice-min-mobile, 1fr)
+      );
+    }
+
+    @include helpers.tablet {
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(avatars.$avatar-dialog-choice-min-tablet, 1fr)
+      );
+    }
+
+    @include helpers.desktop {
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(avatars.$avatar-dialog-choice-min-desktop, 1fr)
+      );
+    }
+  }
+
+  .choice {
+    color: colors.$color-text-default;
+    border-color: colors.$color-border-muted;
+    background: colors.$color-surface-default;
+    box-shadow: none;
+    transform: none;
+
+    &:hover:not(:has(input:disabled)) {
+      background: colors.$color-surface-muted;
+      border-color: colors.$color-action-default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    &:has(input:checked) {
+      background: colors.$color-action-subtle;
+      border-color: colors.$color-action-default;
+    }
+  }
+
+  .selected {
+    background: colors.$color-action-default;
+    color: colors.$color-text-inverse;
+  }
+
+  .previewAvatar,
+  .optionAvatar {
+    border-color: colors.$color-border-muted;
+  }
+}
+
+.hiddenLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

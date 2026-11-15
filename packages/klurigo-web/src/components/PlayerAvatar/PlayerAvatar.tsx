@@ -12,10 +12,15 @@ import styles from './PlayerAvatar.module.scss'
 
 const DEFAULT_AVATAR_SIZE = 96
 
+/** Accessible local image rendering for supported avatar metadata or the default. */
 export interface PlayerAvatarProps {
+  /** Complete configuration; missing or unsupported metadata uses the stable default. */
   readonly avatar?: CrittersAvatarConfigurationV1
+  /** Intrinsic square image size; responsive layouts may constrain it with CSS. */
   readonly size?: number
+  /** Accessible identity label, or an empty string when adjacent text names it. */
   readonly alt: string
+  /** Consumer-owned sizing or layout class. */
   readonly className?: string
 }
 

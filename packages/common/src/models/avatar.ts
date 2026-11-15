@@ -138,20 +138,25 @@ export interface CrittersAvatarConfigurationV1 {
   readonly style: 'critters'
   /** Immutable local artwork and rendering recipe. */
   readonly artworkVersion: 'v1'
+  /** Resolved body silhouette from the immutable artwork catalog. */
   readonly body: (typeof CRITTERS_V1_PARTS.body)[number]
+  /** Head decoration, or null to hide it. */
   readonly top: (typeof CRITTERS_V1_PARTS.top)[number] | null
+  /** Resolved eye expression. */
   readonly eyes: (typeof CRITTERS_V1_PARTS.eyes)[number]
+  /** Resolved mouth expression. */
   readonly mouth: (typeof CRITTERS_V1_PARTS.mouth)[number]
+  /** Body pattern, or null to hide it. */
   readonly pattern: (typeof CRITTERS_V1_PARTS.pattern)[number] | null
+  /** Cheek decoration, or null to hide it. */
   readonly cheeks: (typeof CRITTERS_V1_PARTS.cheeks)[number] | null
+  /** Canonical color of the body silhouette. */
   readonly bodyColor: (typeof CRITTERS_V1_COLORS.body)[number]
   /** Retained even when no visible component currently uses the accent. */
   readonly accentColor: (typeof CRITTERS_V1_COLORS.accent)[number]
+  /** Canonical solid background color of the square image. */
   readonly backgroundColor: (typeof CRITTERS_V1_COLORS.background)[number]
 }
-
-/** Complete game-time metadata, copied on acceptance and never linked to a profile. */
-export type GameAvatarSnapshot = CrittersAvatarConfigurationV1
 
 /** Shared display fallback and first-use editor draft; persisted only on explicit save. */
 export const DEFAULT_CRITTERS_AVATAR_V1: CrittersAvatarConfigurationV1 = {

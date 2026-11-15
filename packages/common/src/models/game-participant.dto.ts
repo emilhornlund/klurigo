@@ -1,4 +1,4 @@
-import type { GameAvatarSnapshot } from './avatar'
+import type { CrittersAvatarConfigurationV1 } from './avatar'
 import { GameParticipantType } from './game-participant-type.enum'
 
 /**
@@ -14,13 +14,19 @@ export type GameParticipantPlayerDto = {
    * The nickname of the participant.
    */
   readonly nickname: string
+
   /** Optional during rollout; current servers always return a resolved snapshot. */
-  readonly avatar?: GameAvatarSnapshot
+  readonly avatar?: CrittersAvatarConfigurationV1
 }
+
 /** Resolved identity of the authenticated participant, when already accepted. */
 export interface GameParticipantIdentityDto {
+  /** Stable signed participant identifier; never inferred from avatar metadata. */
   readonly id: string
+  /** Existing host/player role used for game authorization and presentation. */
   readonly type: GameParticipantType
+  /** Player nickname; hosts do not gain a synthetic player nickname. */
   readonly nickname?: string
-  readonly avatar: GameAvatarSnapshot
+  /** Accepted game-time design, resolved to the default for legacy records. */
+  readonly avatar: CrittersAvatarConfigurationV1
 }

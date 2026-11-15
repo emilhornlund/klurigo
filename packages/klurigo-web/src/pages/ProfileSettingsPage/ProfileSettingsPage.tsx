@@ -1,8 +1,4 @@
-import {
-  AuthProvider,
-  type CrittersAvatarConfigurationV1,
-  type UserProfileResponseDto,
-} from '@klurigo/common'
+import { AuthProvider, type UserProfileResponseDto } from '@klurigo/common'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { FC } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -11,17 +7,18 @@ import { useKlurigoServiceClient } from '../../api'
 import { Button, LoadingSpinner, Page, Typography } from '../../components'
 import { useAuthContext } from '../../context/auth'
 import { useUserContext } from '../../context/user'
+import { useAccountAvatarSave } from '../../hooks/useAccountAvatarSave'
 import { trimToUndefined } from '../../utils/helpers'
 
 import type { UpdateUserDetailsFormFields } from './components'
 import { ProfileSettingsPageUI } from './components'
 import type { UpdateUserPasswordFormFields } from './components/ProfileSettingsPageUI/components'
 
+/** Keeps the existing settings flow, with account-scoped avatar persistence. */
 const ProfileSettingsPage: FC = () => {
   const {
     getUserProfile,
     updateUserProfile,
-    updateUserAvatar,
     updateUserPassword,
     resendVerificationEmail,
   } = useKlurigoServiceClient()
@@ -40,7 +37,6 @@ const ProfileSettingsPage: FC = () => {
   useEffect(() => {
     activeUserId.current = userId
     setIsSavingUserProfile(false)
-    setIsSavingUserPassword(false)
     return () => {
       activeUserId.current = undefined
     }
@@ -75,40 +71,10 @@ const ProfileSettingsPage: FC = () => {
     ],
   )
 
-  const handleAvatarChange = async (avatar: CrittersAvatarConfigurationV1) => {
-    if (!userId || data?.id !== userId) throw new Error('Profile is not ready')
-    const ownerId = userId
-    const saved = await updateUserAvatar(avatar)
-    if (activeUserId.current === ownerId) {
-      const key = ['myUserProfile', ownerId]
-      await queryClient.cancelQueries({ queryKey: key })
-      if (activeUserId.current === ownerId) {
-        queryClient.setQueryData<UserProfileResponseDto>(key, (old) =>
-          old ? { ...old, avatar: saved } : old,
-        )
-        setCurrentUser((previous) => {
-          if (activeUserId.current !== ownerId) return previous
-          return {
-            ...(previous?.id === ownerId
-              ? previous
-              : {
-                  id: data.id,
-                  email: data.email,
-                  unverifiedEmail: data.unverifiedEmail,
-                  defaultNickname: data.defaultNickname,
-                  authProvider: data.authProvider,
-                }),
-            avatar: saved,
-          }
-        })
-        // The public profile query also carries quiz data; preserve it while marking it stale.
-        await queryClient.invalidateQueries({
-          queryKey: ['user-profile', ownerId],
-        })
-      }
-    }
-    return saved
-  }
+  const handleAvatarChange = useAccountAvatarSave({
+    profile: data?.id === userId ? data : undefined,
+    isCurrentIdentity: () => !!userId && activeUserId.current === userId,
+  })
 
   const handleChange = (request: UpdateUserDetailsFormFields): void => {
     if (data?.authProvider && data.id === userId) {
@@ -166,17 +132,12 @@ const ProfileSettingsPage: FC = () => {
   const handlePasswordChange = (
     request: UpdateUserPasswordFormFields,
   ): void => {
-    const ownerId = userId
     setIsSavingUserPassword(true)
-    updateUserPassword(request)
-      .catch(() => undefined)
-      .finally(() => {
-        if (activeUserId.current === ownerId) setIsSavingUserPassword(false)
-      })
+    updateUserPassword(request).finally(() => setIsSavingUserPassword(false))
   }
 
   const handleResendVerificationEmail = () => {
-    resendVerificationEmail().catch(() => undefined)
+    resendVerificationEmail().then(() => {})
   }
 
   if (!data && isError) {
@@ -188,9 +149,7 @@ const ProfileSettingsPage: FC = () => {
         <Button
           id="retry-user-profile"
           type="button"
-          onClick={() => {
-            void refetch()
-          }}>
+          onClick={() => void refetch()}>
           Try again
         </Button>
       </Page>
@@ -210,13 +169,7 @@ const ProfileSettingsPage: FC = () => {
       key={userId}
       avatar={data.avatar}
       onChangeAvatar={handleAvatarChange}
-      onRetryProfile={
-        isError
-          ? () => {
-              void refetch()
-            }
-          : undefined
-      }
+      onRetryProfile={isError ? () => void refetch() : undefined}
       authProvider={data.authProvider}
       values={values}
       loading={isLoadingUserProfile || isSavingUserProfile}

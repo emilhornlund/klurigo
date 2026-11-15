@@ -198,6 +198,24 @@ for (const account of [false, true]) {
         await page.getByRole('button', { name: /join the game/i }).click()
         await expect(preview).toHaveAttribute('src', source!)
         expect(profileWrites).toHaveLength(2)
+
+        // User and game credentials are independent. Logging out must not turn
+        // an unaccepted account-bound game identity into a fresh guest draft.
+        await page.evaluate(() => {
+          const auth = JSON.parse(localStorage.getItem('auth')!)
+          delete auth.USER
+          localStorage.setItem('auth', JSON.stringify(auth))
+          localStorage.removeItem('currentUser')
+        })
+        await page.reload()
+        await expect(
+          page.getByRole('alert').filter({ hasText: 'Your account changed' }),
+        ).toBeVisible()
+        await expect(
+          page.getByRole('button', { name: 'OK, Go!' }),
+        ).toBeDisabled()
+        await expect(preview).toHaveCount(0)
+        expect(profileWrites).toHaveLength(2)
       }
     } finally {
       await hostContext.close()

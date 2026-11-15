@@ -3,8 +3,8 @@ import { ApiPropertyOptional } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import { IsObject, ValidateIf, ValidateNested } from 'class-validator'
 
+import { AvatarConfigurationRequest } from '../../../../../app/shared/avatar/avatar-configuration.request'
 import { ApiNicknameProperty } from '../../../../../app/swagger'
-import { UpdateUserAvatarRequest } from '../../../../user/controllers/models/update-user-avatar.request'
 
 export class JoinGameRequest implements JoinGameRequestDto {
   @ApiNicknameProperty({
@@ -16,11 +16,11 @@ export class JoinGameRequest implements JoinGameRequestDto {
 
   @ApiPropertyOptional({
     description: 'Complete avatar metadata for the first accepted join.',
-    type: UpdateUserAvatarRequest,
+    type: AvatarConfigurationRequest,
   })
   @ValidateIf((_request, value: unknown) => value !== undefined)
   @IsObject()
   @ValidateNested()
-  @Type(() => UpdateUserAvatarRequest)
-  avatar?: UpdateUserAvatarRequest
+  @Type(() => AvatarConfigurationRequest)
+  avatar?: AvatarConfigurationRequest
 }

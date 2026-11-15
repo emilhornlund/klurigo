@@ -273,7 +273,7 @@ describe('ProfileSettingsPage', () => {
     view.rerender(<ProfileSettingsPage />)
     await act(async () => {
       finish(DEFAULT_CRITTERS_AVATAR_V1)
-      await pending
+      await expect(pending).rejects.toThrow('Account identity changed')
     })
     expect(h.setQueryData).not.toHaveBeenCalled()
     expect(h.setCurrentUser).not.toHaveBeenCalled()

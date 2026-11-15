@@ -3,6 +3,7 @@ import {
   isCrittersAvatarConfigurationV1,
 } from '@klurigo/common'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { ReactElement } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -15,6 +16,12 @@ vi.mock('react-router-dom', async () => {
 })
 
 const mockJoinGame = vi.fn()
+// Renderer compatibility has its own golden fixtures. Keep page snapshots readable.
+vi.mock('../../components/PlayerAvatar', () => ({
+  default: ({ alt }: { alt: string }) => (
+    <img alt={alt} src="avatar-preview.svg" />
+  ),
+}))
 const mockSetAvatar = vi.fn()
 const mockCommitAvatar = vi.fn()
 let providedNeedsSave = false
@@ -22,6 +29,7 @@ let providedHasSavedAccountDesign = false
 vi.mock('./use-game-join-avatar', () => ({
   useGameJoinAvatar: () => ({
     avatar: DEFAULT_CRITTERS_AVATAR_V1,
+    canEdit: true,
     setAvatar: mockSetAvatar,
     needsSave: providedNeedsSave,
     hasSavedAccountDesign: providedHasSavedAccountDesign,
@@ -81,6 +89,113 @@ beforeEach(() => {
 })
 
 describe('GameJoinPage', () => {
+  it('resets the form and closes customization when the signed game changes', async () => {
+    const view = renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'PreviousGame' },
+    })
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Customize avatar' }),
+    )
+
+    providedGameID = 'GAME456'
+    view.rerender(
+      <MemoryRouter>
+        <GameJoinPage />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Nickname')).toHaveValue('')
+    expect(mockSetAvatar).not.toHaveBeenCalled()
+  })
+
+  it('ignores an old join response even after returning to the same game identity', async () => {
+    let finishOld!: () => void
+    let finishCurrent!: () => void
+    mockJoinGame.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finishOld = resolve
+      }),
+    )
+    mockJoinGame.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finishCurrent = resolve
+      }),
+    )
+    const view = renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'OldAttempt' },
+    })
+    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
+
+    providedGameID = 'GAME456'
+    view.rerender(
+      <MemoryRouter>
+        <GameJoinPage />
+      </MemoryRouter>,
+    )
+    providedGameID = 'GAME123'
+    view.rerender(
+      <MemoryRouter>
+        <GameJoinPage />
+      </MemoryRouter>,
+    )
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'CurrentAttempt' },
+    })
+    fireEvent.submit(screen.getByRole('form', { name: 'Join game' }))
+
+    await act(async () => finishOld())
+
+    expect(mockNavigate).not.toHaveBeenCalled()
+    expect(screen.getByPlaceholderText('Nickname')).toBeDisabled()
+    expect(mockJoinGame).toHaveBeenCalledTimes(2)
+
+    await act(async () => finishCurrent())
+
+    expect(mockNavigate).toHaveBeenCalledExactlyOnceWith('/game')
+  })
+
+  it('keeps the join form mounted and discards unapplied changes on Escape', async () => {
+    renderWithRouter(<GameJoinPage />)
+    const input = screen.getByPlaceholderText('Nickname')
+    fireEvent.change(input, { target: { value: 'KeepMyName' } })
+    const customize = screen.getByRole('button', { name: 'Customize avatar' })
+
+    await userEvent.click(customize)
+    await userEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
+    expect(
+      screen.getByRole('dialog', { name: 'Customize avatar' }),
+    ).toBeVisible()
+    expect(mockSetAvatar).not.toHaveBeenCalled()
+
+    await userEvent.keyboard('{Escape}')
+
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
+    expect(input).toHaveValue('KeepMyName')
+    expect(mockSetAvatar).not.toHaveBeenCalled()
+    await waitFor(() => expect(customize).toHaveFocus())
+  })
+
+  it('accepts only one join when the form is submitted twice before rerendering', async () => {
+    mockJoinGame.mockReturnValueOnce(new Promise(() => undefined))
+    renderWithRouter(<GameJoinPage />)
+    fireEvent.change(screen.getByPlaceholderText('Nickname'), {
+      target: { value: 'OnceOnly' },
+    })
+    const form = screen.getByRole('form', { name: 'Join game' })
+
+    act(() => {
+      fireEvent.submit(form)
+      fireEvent.submit(form)
+    })
+
+    expect(mockJoinGame).toHaveBeenCalledTimes(1)
+  })
+
   it('blocks joining until the account save is acknowledged and retries a failed join without saving again', async () => {
     providedNeedsSave = true
     let acknowledge!: () => void
@@ -138,12 +253,9 @@ describe('GameJoinPage', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
     fireEvent.click(screen.getByRole('radio', { name: 'Body: Block' }))
-    expect(mockSetAvatar).toHaveBeenCalledWith({
-      ...DEFAULT_CRITTERS_AVATAR_V1,
-      body: 'block',
-    })
+    expect(mockSetAvatar).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Discard changes' }))
-    expect(mockSetAvatar).toHaveBeenLastCalledWith(DEFAULT_CRITTERS_AVATAR_V1)
+    expect(mockSetAvatar).not.toHaveBeenCalled()
     expect(screen.getByPlaceholderText('Nickname')).toHaveValue('GuestDraft')
     expect(mockJoinGame).not.toHaveBeenCalled()
   })
@@ -153,10 +265,10 @@ describe('GameJoinPage', () => {
     renderWithRouter(<GameJoinPage />)
     fireEvent.click(screen.getByRole('button', { name: 'Customize avatar' }))
     fireEvent.click(screen.getByRole('button', { name: 'Randomize' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Use design' }))
     expect(
       isCrittersAvatarConfigurationV1(mockSetAvatar.mock.lastCall?.[0]),
     ).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'Use design' }))
     expect(screen.getByRole('form', { name: 'Join game' })).toBeVisible()
     expect(mockJoinGame).not.toHaveBeenCalled()
   })

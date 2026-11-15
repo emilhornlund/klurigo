@@ -6,22 +6,30 @@ import {
 } from '@klurigo/common'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { UserAvatarResponse } from '../../../../user/controllers/models/user-avatar.response'
-import { ApiGameIdProperty, ApiGameStatusProperty } from '../../decorators/api'
+import { AvatarConfigurationResponse } from '../../../../../app/shared/avatar/avatar-configuration.response'
+import {
+  ApiGameIdProperty,
+  ApiGameParticipantIdProperty,
+  ApiGameStatusProperty,
+} from '../../decorators/api'
 
 /** Only the requesting participant's public game-time identity. */
 class GameParticipantIdentityResponse implements GameParticipantIdentityDto {
-  @ApiProperty()
+  /** Stable identity of the authenticated participant. */
+  @ApiGameParticipantIdProperty()
   readonly id: string
 
+  /** Existing authorization role; hosts remain outside player scoring. */
   @ApiProperty({ enum: GameParticipantType })
   readonly type: GameParticipantType
 
+  /** Public nickname for players; absent for host identities. */
   @ApiPropertyOptional()
   readonly nickname?: string
 
-  @ApiProperty({ type: UserAvatarResponse })
-  readonly avatar: UserAvatarResponse
+  /** Resolved accepted metadata without private account properties. */
+  @ApiProperty({ type: AvatarConfigurationResponse })
+  readonly avatar: AvatarConfigurationResponse
 }
 
 /**
@@ -42,6 +50,11 @@ export class GameDetailsResponse implements GameDetailsDto {
   @ApiGameStatusProperty()
   readonly status: GameStatus
 
+  /** Caller-only identity, absent before its first accepted join. */
   @ApiPropertyOptional({ type: GameParticipantIdentityResponse })
   readonly participant?: GameParticipantIdentityResponse
+
+  /** Caller-only binding used to detect logout/account changes before joining. */
+  @ApiPropertyOptional({ type: String, format: 'uuid', nullable: true })
+  readonly joiningAccountId?: string | null
 }

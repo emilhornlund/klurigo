@@ -4,6 +4,7 @@ import {
   deepEqual,
   DEFAULT_CRITTERS_AVATAR_V1,
   isCrittersAvatarConfigurationV1,
+  randomizeCrittersAvatar,
 } from '@klurigo/common'
 import { type FC, type FormEvent, useEffect, useRef, useState } from 'react'
 
@@ -13,18 +14,22 @@ import {
   Stack,
   Typography,
 } from '../../../../../../components'
-import { randomizeCrittersAvatar } from '../../../../../../utils/avatar/avatar-editor.utils'
 
 import styles from './UserAvatarForm.module.scss'
 
+/** Saved account metadata and the explicit persistence operation for the editor. */
 export interface UserAvatarFormProps {
+  /** Saved design; missing metadata starts from the shared default. */
   readonly value?: CrittersAvatarConfigurationV1
+  /** Optional external loading state that disables editing. */
   readonly loading?: boolean
+  /** Saves the whole design and returns the server's acknowledged metadata. */
   readonly onSave: (
     value: CrittersAvatarConfigurationV1,
   ) => Promise<CrittersAvatarConfigurationV1>
 }
 
+/** Preserves dirty drafts across refreshes and restores the latest saved design on discard. */
 const UserAvatarForm: FC<UserAvatarFormProps> = ({
   value,
   loading = false,
@@ -71,16 +76,7 @@ const UserAvatarForm: FC<UserAvatarFormProps> = ({
   return (
     <Stack as="section" width="full" spacing="stack" className={styles.section}>
       <Typography variant="title2" align="center" color="inverse">
-        Your quiz avatar
-      </Typography>
-      <Typography
-        variant="body"
-        width="medium"
-        align="center"
-        color="inverse"
-        className={styles.description}>
-        Build a little sidekick that’s uniquely you. Save your design to keep it
-        with your account.
+        Avatar
       </Typography>
       {!supported ? (
         <Typography variant="control" color="inverse" role="alert">

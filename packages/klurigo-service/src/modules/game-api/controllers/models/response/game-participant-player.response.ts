@@ -1,7 +1,7 @@
 import { GameParticipantPlayerDto } from '@klurigo/common'
 import { ApiProperty } from '@nestjs/swagger'
 
-import { UserAvatarResponse } from '../../../../user/controllers/models/user-avatar.response'
+import { AvatarConfigurationResponse } from '../../../../../app/shared/avatar/avatar-configuration.response'
 import {
   ApiGameParticipantIdProperty,
   ApiPlayerNicknameProperty,
@@ -23,6 +23,6 @@ export class GameParticipantPlayerResponse implements GameParticipantPlayerDto {
   @ApiPlayerNicknameProperty()
   nickname: string
 
-  @ApiProperty({ type: UserAvatarResponse })
-  avatar: UserAvatarResponse
+  @ApiProperty({ type: AvatarConfigurationResponse })
+  avatar: AvatarConfigurationResponse
 }

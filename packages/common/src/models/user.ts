@@ -82,6 +82,7 @@ export interface CreateUserResponseDto {
 export interface UserProfileResponseDto {
   /** Complete saved avatar; absent until the user explicitly saves a design. */
   readonly avatar?: CrittersAvatarConfigurationV1
+
   /**
    * The user’s unique identifier (UUID).
    */

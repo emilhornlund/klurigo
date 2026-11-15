@@ -25,6 +25,7 @@ export class UserProfileResponse implements UserProfileResponseDto {
     type: UserAvatarResponse,
   })
   readonly avatar?: UserAvatarResponse
+
   /**
    * The user’s unique identifier.
    */

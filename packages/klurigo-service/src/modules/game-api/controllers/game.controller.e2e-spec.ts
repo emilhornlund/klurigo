@@ -1,4 +1,5 @@
 import {
+  AuthProvider,
   DEFAULT_CRITTERS_AVATAR_V1,
   GAME_MAX_PLAYERS,
   GameParticipantType,
@@ -110,6 +111,66 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID (GET)', () => {
+    it('keeps legacy anonymous user records guest-bound before joining', async () => {
+      const anonymous = await userModel.create({
+        ...buildMockTertiaryUser(),
+        authProvider: AuthProvider.None,
+      })
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+        }),
+      )
+      const token = await authenticateGame(
+        app,
+        game._id,
+        anonymous._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(token))
+        .expect(200)
+        .expect({
+          id: game._id,
+          status: GameStatus.Active,
+          joiningAccountId: null,
+        })
+    })
+
+    it('returns only the caller account binding before its first accepted join', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+        }),
+      )
+      const token = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(token))
+        .expect(200)
+        .expect({
+          id: game._id,
+          status: GameStatus.Active,
+          joiningAccountId: playerUser._id,
+        })
+    })
+
     it('returns only the requesting accepted identity and its game-time design', async () => {
       const avatar = {
         ...DEFAULT_CRITTERS_AVATAR_V1,
@@ -256,7 +317,11 @@ describe('GameController (e2e)', () => {
         .get(`/api/games/${game._id}`)
         .set(createBearerAuthHeader(accessToken))
         .expect(200)
-        .expect({ id: game._id, status: GameStatus.Active })
+        .expect({
+          id: game._id,
+          status: GameStatus.Active,
+          joiningAccountId: null,
+        })
     })
 
     it('rejects a game token belonging to another game', async () => {
@@ -335,6 +400,66 @@ describe('GameController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/players (POST)', () => {
+    it('preserves unsupported stored snapshots when another participant joins', async () => {
+      const game = await gameModel.create(
+        createMockGameDocument({
+          participants: [
+            createMockGameHostParticipantDocument({
+              participantId: hostUser._id,
+            }),
+          ],
+          currentTask: createMockLobbyTaskDocument(),
+        }),
+      )
+      const futureAvatar = {
+        ...DEFAULT_CRITTERS_AVATAR_V1,
+        version: 99,
+        futureChoice: 'preserve-me',
+      }
+      const rawGames = gameModel.db.collection<{
+        _id: string
+        participants: { avatar?: unknown }[]
+      }>(gameModel.collection.collectionName)
+
+      await rawGames.updateOne(
+        { _id: game._id },
+        { $set: { 'participants.0.avatar': futureAvatar } },
+      )
+
+      const token = await authenticateGame(
+        app,
+        game._id,
+        playerUser._id,
+        GameParticipantType.PLAYER,
+      )
+
+      await supertest(app.getHttpServer())
+        .post(`/api/games/${game._id}/players`)
+        .set(createBearerAuthHeader(token))
+        .send({
+          nickname: 'LegacyNeighbor',
+          avatar: DEFAULT_CRITTERS_AVATAR_V1,
+        })
+        .expect(204)
+
+      const stored = await rawGames.findOne({ _id: game._id })
+      expect(stored?.participants[0].avatar).toEqual(futureAvatar)
+
+      const hostToken = await authenticateGame(
+        app,
+        game._id,
+        hostUser._id,
+        GameParticipantType.HOST,
+      )
+      await supertest(app.getHttpServer())
+        .get(`/api/games/${game._id}`)
+        .set(createBearerAuthHeader(hostToken))
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body.participant.avatar).toEqual(DEFAULT_CRITTERS_AVATAR_V1),
+        )
+    })
+
     it.each(['account', 'default', 'guest', 'chosen', 'late'] as const)(
       'persists one immutable avatar for %s joins and concurrent retries',
       async (scenario) => {

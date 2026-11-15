@@ -1,8 +1,11 @@
 import { CRITTERS_V1_COLORS } from '@klurigo/common'
 
-export { randomizeCrittersAvatar } from '@klurigo/common'
-
-/** UI labels never change persisted component identifiers. */
+/**
+ * Formats catalog identifiers for display without changing persisted values.
+ *
+ * @param value - Immutable part or component identifier from the shared catalog.
+ * @returns A readable label, including the special-case inverted wedge name.
+ */
 export const avatarChoiceLabel = (value: string): string =>
   value === 'wedgeInv'
     ? 'Inverted wedge'
@@ -14,6 +17,7 @@ export const avatarChoiceLabel = (value: string): string =>
 type AvatarColor = (typeof CRITTERS_V1_COLORS)[
   'body' | 'accent' | 'background'][number]
 
+/** Human-readable labels for every canonical player-selectable palette color. */
 export const AVATAR_COLOR_LABELS: Record<AvatarColor, string> = {
   '#7dd3fc': 'Sky',
   '#a5b4fc': 'Periwinkle',

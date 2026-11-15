@@ -35,3 +35,17 @@ $avatar-profile-size-desktop: helpers.pxToRem(128px);
 $avatar-navigation-menu-size-mobile: helpers.pxToRem(32px);
 $avatar-navigation-menu-size-tablet: helpers.pxToRem(32px);
 $avatar-navigation-menu-size-desktop: helpers.pxToRem(32px);
+
+/* Join trigger and compact, light-surface dialog geometry. */
+$avatar-join-size-mobile: helpers.pxToRem(160px);
+$avatar-join-size-tablet: helpers.pxToRem(176px);
+$avatar-join-size-desktop: helpers.pxToRem(192px);
+$avatar-edit-icon-size-mobile: helpers.pxToRem(28px);
+$avatar-edit-icon-size-tablet: helpers.pxToRem(32px);
+$avatar-edit-icon-size-desktop: helpers.pxToRem(32px);
+$avatar-dialog-preview-mobile: helpers.pxToRem(112px);
+$avatar-dialog-preview-tablet: helpers.pxToRem(144px);
+$avatar-dialog-preview-desktop: helpers.pxToRem(160px);
+$avatar-dialog-choice-min-mobile: helpers.pxToRem(88px);
+$avatar-dialog-choice-min-tablet: helpers.pxToRem(96px);
+$avatar-dialog-choice-min-desktop: helpers.pxToRem(104px);
