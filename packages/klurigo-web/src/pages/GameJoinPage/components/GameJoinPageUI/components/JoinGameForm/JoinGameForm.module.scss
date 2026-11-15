@@ -1,0 +1,73 @@
+@use '../../../../../../styles/avatars.tokens' as avatars;
+@use '../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/controls.tokens' as controls;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.avatarButton {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: radius.$radius-surface-lg;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: controls.$control-border-width-outside solid
+      colors.$color-focus-ring;
+    outline-offset: controls.$control-focus-outline-offset;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.avatar {
+  @include helpers.mobile {
+    width: avatars.$avatar-join-size-mobile;
+    height: avatars.$avatar-join-size-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-join-size-tablet;
+    height: avatars.$avatar-join-size-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-join-size-desktop;
+    height: avatars.$avatar-join-size-desktop;
+  }
+}
+
+.editIcon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: radius.$radius-circle;
+  color: colors.$color-text-default;
+  background: colors.$color-action-accent;
+
+  @include helpers.mobile {
+    width: avatars.$avatar-edit-icon-size-mobile;
+    height: avatars.$avatar-edit-icon-size-mobile;
+    right: spacing.$space-inline-mobile;
+    bottom: spacing.$space-inline-mobile;
+  }
+
+  @include helpers.tablet {
+    width: avatars.$avatar-edit-icon-size-tablet;
+    height: avatars.$avatar-edit-icon-size-tablet;
+    right: spacing.$space-inline-tablet;
+    bottom: spacing.$space-inline-tablet;
+  }
+
+  @include helpers.desktop {
+    width: avatars.$avatar-edit-icon-size-desktop;
+    height: avatars.$avatar-edit-icon-size-desktop;
+    right: spacing.$space-inline-desktop;
+    bottom: spacing.$space-inline-desktop;
+  }
+}
