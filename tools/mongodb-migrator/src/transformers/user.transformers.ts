@@ -7,6 +7,8 @@ import {
   toDate,
 } from '../utils'
 
+import { copyAvatarMetadata } from './avatar.transformers'
+
 /**
  * Transforms a document from the `players` collection into a `users` document format.
  *
@@ -43,5 +45,6 @@ export function transformPlayerOrUserDocument(
     updatedAt: toDate(
       extractValueOrThrow<string>(document, {}, 'updatedAt', 'modified'),
     ),
+    ...copyAvatarMetadata(document),
   }
 }

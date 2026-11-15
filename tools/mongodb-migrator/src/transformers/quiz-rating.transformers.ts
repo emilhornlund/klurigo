@@ -7,6 +7,8 @@ import {
   toDateOrThrow,
 } from '../utils'
 
+import { copyAvatarMetadata } from './avatar.transformers'
+
 /**
  * Transforms a document from the `quiz_ratings` collection into a `QuizRating` document format.
  *
@@ -34,6 +36,10 @@ export function transformQuizRatingDocument(
 
 function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
   const rawAuthor = extractValue<BSONDocument | string>(document, {}, 'author')
+  const avatar =
+    rawAuthor && typeof rawAuthor === 'object'
+      ? copyAvatarMetadata(rawAuthor)
+      : {}
   const type =
     rawAuthor && typeof rawAuthor === 'object'
       ? extractValue<string>(rawAuthor, {}, 'type')
@@ -52,6 +58,7 @@ function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
     return {
       type: resolvedType,
       user: extractValueOrThrow<string>(document, {}, 'author.user'),
+      ...avatar,
     }
   } else if (resolvedType === QuizRatingAuthorType.Anonymous) {
     return {
@@ -62,6 +69,7 @@ function extractAuthorOrThrow(document: BSONDocument): BSONDocument {
         'author.participantId',
       ),
       nickname: extractValueOrThrow<string>(document, {}, 'author.nickname'),
+      ...avatar,
     }
   } else {
     throw new Error('Unknown author type')

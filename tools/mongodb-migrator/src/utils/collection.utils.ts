@@ -86,12 +86,13 @@ export function parseCollections(
 }
 
 /**
- * Removes `null` values from a BSON document recursively.
+ * Removes `null` values outside avatar metadata from a BSON document recursively.
  *
  * - Object properties whose value is `null` are removed.
  * - Array items that resolve to `null` are removed.
  *
- * This is used to produce cleaner BSON output (MongoDB distinguishes between missing fields and explicit `null`).
+ * Avatar metadata is kept whole because explicit null choices must survive migration.
+ * Other BSON output retains the existing distinction between missing and null values.
  *
  * @param document - The document to clean.
  * @returns A new document with all `null` values removed.
@@ -100,7 +101,7 @@ const cleanDocument = (document: BSONDocument): BSONDocument =>
   cleanBSONValue(document) as BSONDocument
 
 /**
- * Cleans every document in every collection by removing `null` values recursively.
+ * Cleans every document by removing `null` values outside avatar metadata recursively.
  *
  * Both `originalDocuments` and `documents` are cleaned to make diffs consistent and output deterministic.
  *

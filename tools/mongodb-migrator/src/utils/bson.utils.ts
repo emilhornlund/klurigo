@@ -98,11 +98,12 @@ const isPlainObject = (value: unknown): value is BSONDocument =>
   !(value instanceof Date)
 
 /**
- * Recursively removes `null` values from a BSON value.
+ * Recursively removes `null` values outside stored avatar metadata.
  *
  * - `null` becomes `undefined` (caller may drop the field).
  * - Arrays are cleaned element-wise and `undefined` entries are removed.
  * - Plain objects are cleaned property-wise and `undefined` properties are removed.
+ * - Avatar fields are preserved whole: null parts are meaningful persisted choices.
  * - All other values are returned unchanged.
  *
  * @param value - The BSON value to clean.
@@ -123,6 +124,10 @@ export const cleanBSONValue = (value: BSONValue): BSONValue | undefined => {
     const cleanedObject: BSONDocument = {}
 
     for (const [key, childValue] of Object.entries(value)) {
+      if (key === 'avatar' || key === 'hostAvatar') {
+        cleanedObject[key] = childValue
+        continue
+      }
       const cleanedChild = cleanBSONValue(childValue)
       if (cleanedChild !== undefined) {
         cleanedObject[key] = cleanedChild
