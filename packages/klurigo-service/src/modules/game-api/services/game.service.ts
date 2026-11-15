@@ -423,7 +423,16 @@ export class GameService {
 
     await this.gameEventPublisher.publish(savedGameDocument)
 
-    this.emitGamePlayerJoinEvent(gameId, participantId, nickname)
+    this.emitGamePlayerJoinEvent(
+      gameId,
+      participantId,
+      nickname,
+      resolveGameAvatarSnapshot(
+        savedGameDocument.participants.find(
+          (participant) => participant.participantId === participantId,
+        )?.avatar,
+      ),
+    )
   }
 
   /** Called only for a new accepted identity, while holding the game lock. */
@@ -449,16 +458,23 @@ export class GameService {
    * @param gameId - The ID of the game that the participant joined.
    * @param participantId - The ID of the participant (user) that joined the game.
    * @param nickname - The nickname used by the participant when joining the game.
+   * @param avatar - The accepted game-time design to retain as an account preference.
    * @private
    */
   private emitGamePlayerJoinEvent(
     gameId: string,
     participantId: string,
     nickname: string,
+    avatar: CrittersAvatarConfigurationV1,
   ) {
     try {
       this.logger.debug(`Emitting player join event for game '${gameId}'`)
-      const event: GamePlayerJoinEvent = { gameId, participantId, nickname }
+      const event: GamePlayerJoinEvent = {
+        gameId,
+        participantId,
+        nickname,
+        avatar,
+      }
       this.eventEmitter.emit(GamePlayerJoinEventKey, event)
     } catch (error) {
       this.logger.error(

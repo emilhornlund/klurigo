@@ -532,7 +532,7 @@ describe('GameController (e2e)', () => {
         await userModel.findByIdAndUpdate(playerUser._id, { avatar: chosen })
         await submit(saved).expect(204)
         expect((await readPlayer()).avatar).toEqual(first)
-        // Joining never writes an account avatar, even when metadata was supplied.
+        // A duplicate join must not overwrite a later account preference edit.
         expect(
           (await userModel.findById(playerUser._id).lean())?.avatar,
         ).toEqual(chosen)

@@ -19,8 +19,10 @@ snapshots are persisted by Phase 4 on the first accepted player join under the
 existing game lock. Supplied designs are copied exactly; older account callers
 load their signed principal's saved/default design, and older guest callers get
 one resolved random design. Retries preserve the original snapshot and do not
-look up profiles or randomize again. Joining never writes a user profile. Legacy
-participants remain untouched. Display/event integration follows in later phases.
+look up profiles or randomize again. After acceptance, the existing player-join
+event retains local/Google account avatar preferences alongside the nickname as a
+best-effort update. Anonymous joins do not persist an account avatar. Preference
+update failures do not undo the game snapshot. Legacy participants remain untouched.
 
 Phase 5 copies the creating host's saved/default avatar into the host participant
 alongside the existing trusted account ID. Host ownership and exclusion from player

@@ -1,3 +1,4 @@
+import { AuthProvider, resolveGameAvatarSnapshot } from '@klurigo/common'
 import { Injectable, Logger } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 
@@ -11,8 +12,8 @@ import { UserRepository } from '../repositories'
  * Listens to game events and performs user-related side-effects.
  *
  * Current responsibility:
- * - When a participant joins a game, persist the used nickname as the user's
- *   `defaultNickname` (best-effort).
+ * - After an accepted join, retain the nickname and account avatar preferences
+ *   through the existing best-effort user update.
  */
 @Injectable()
 export class GameEventListener {
@@ -29,7 +30,10 @@ export class GameEventListener {
    * Handles `game.player.join` events.
    *
    * If the joining participant exists as a user, the user's `defaultNickname` is
-   * updated to match the nickname used when joining the game.
+   * updated to match the nickname used when joining the game. Local and Google
+   * accounts also retain the accepted avatar for future games. Anonymous users
+   * retain the existing nickname behavior without persisting an account avatar.
+   * Preference-update failures do not undo the accepted game snapshot.
    *
    * @param event - The player join event payload.
    */
@@ -43,11 +47,14 @@ export class GameEventListener {
       try {
         await this.userRepository.update(user._id, {
           defaultNickname: event.nickname,
+          ...(user.authProvider !== AuthProvider.None
+            ? { avatar: resolveGameAvatarSnapshot(event.avatar) }
+            : {}),
           updatedAt: new Date(),
         })
       } catch (error) {
         this.logger.error(
-          `Failed to update default nickname '${event.nickname}' for user '${user._id}' and game '${event.gameId}'.`,
+          `Failed to update join preferences for user '${user._id}' and game '${event.gameId}'.`,
           error instanceof Error ? error.stack : String(error),
         )
       }

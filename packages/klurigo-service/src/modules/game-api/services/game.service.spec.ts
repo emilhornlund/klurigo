@@ -711,13 +711,19 @@ describe(GameService.name, () => {
     })
 
     it('emits game.player.join event with correct key and payload', async () => {
-      await service.joinGame('game-123', 'participant-456', 'TestNickname')
+      await service.joinGame(
+        'game-123',
+        'participant-456',
+        'TestNickname',
+        DEFAULT_CRITTERS_AVATAR_V1,
+      )
 
       expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
       expect(eventEmitter.emit).toHaveBeenCalledWith(GamePlayerJoinEventKey, {
         gameId: 'game-123',
         participantId: 'participant-456',
         nickname: 'TestNickname',
+        avatar: DEFAULT_CRITTERS_AVATAR_V1,
       })
     })
 
