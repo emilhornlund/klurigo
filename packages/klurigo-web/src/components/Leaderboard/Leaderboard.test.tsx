@@ -1,9 +1,45 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+
+import { getCrittersAvatarV1DataUri } from '../../utils/avatar/critters-v1'
 
 import Leaderboard from './Leaderboard'
 
 describe('Leaderboard Component', () => {
+  it('keeps account and guest designs attached to their names through ties and rank changes', () => {
+    const account = { ...DEFAULT_CRITTERS_AVATAR_V1, top: null }
+    const guest = { ...DEFAULT_CRITTERS_AVATAR_V1, cheeks: null }
+    const values = [
+      { position: 1, nickname: 'Account', avatar: account, score: 100 },
+      { position: 1, nickname: 'Guest', avatar: guest, score: 100 },
+      { position: 3, nickname: 'Legacy', score: 90 },
+    ]
+    const view = render(<Leaderboard values={values} />)
+    const source = (nickname: string) =>
+      screen
+        .getByText(nickname)
+        .parentElement?.querySelector('img')
+        ?.getAttribute('src')
+    expect(source('Account')).toBe(getCrittersAvatarV1DataUri(account))
+    expect(source('Guest')).toBe(getCrittersAvatarV1DataUri(guest))
+    expect(source('Legacy')).toBe(
+      getCrittersAvatarV1DataUri(DEFAULT_CRITTERS_AVATAR_V1),
+    )
+    view.rerender(
+      <Leaderboard
+        values={[
+          { ...values[1], position: 1, score: 120 },
+          { ...values[0], position: 2 },
+          values[2],
+        ]}
+        showStreaks={false}
+      />,
+    )
+    expect(source('Account')).toBe(getCrittersAvatarV1DataUri(account))
+    expect(source('Guest')).toBe(getCrittersAvatarV1DataUri(guest))
+  })
+
   const mockValues = [
     { position: 1, nickname: 'Player1', score: 100, streaks: 5 },
     { position: 2, nickname: 'Player2', score: 80, streaks: 3 },

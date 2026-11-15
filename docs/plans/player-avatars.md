@@ -264,10 +264,16 @@ Every phase includes its own focused tests and applicable quality checks.
 
 ### Phase 16 — Leaderboard Display
 
-**Status:** Planned · **Depends on:** 8
+**Status:** Complete · **Depends on:** 8
 
 - **Work:** Extend the existing leaderboard presentation for snapshot avatars in host and participant views.
 - **Done when:** Rank changes, ties, long names, and both game modes remain correct and readable with avatars.
+- **Verified:** Existing leaderboard rows render transported designs and stable
+  defaults, retaining name association through ties/reordering. Top-five limits,
+  rank indicators, and mode-specific streak visibility are preserved. All 119
+  focused leaderboard/podium/results tests, types, lint, and web build pass.
+  Chrome inspection covered 1440/768/390/320px, constrained names/scores, round
+  updates, and reduced motion without relevant console errors.
 
 ### Phase 17 — Podium Display
 

@@ -112,6 +112,13 @@ both real join flows, and active player-management image equality after host rel
 Chrome inspection covered desktop/tablet/mobile/320px, both result modes, reduced
 motion, and nested removal-dialog dismissal/focus return.
 
+Phase 16 adds local snapshot avatars to the shared leaderboard rows. Existing
+host ranking events already supply the configurations; missing metadata uses
+stable defaults. Name-keyed rows keep identities through ties and rank updates,
+with existing top-five and mode-specific streak rules preserved. Verification
+covers 119 focused tests, types, lint, build, and Chrome at desktop/tablet/mobile/
+320px including round updates and reduced motion.
+
 ## Review Corrections
 
 The join trigger is a 160px/176px/192px avatar button at mobile/tablet/desktop sizes.

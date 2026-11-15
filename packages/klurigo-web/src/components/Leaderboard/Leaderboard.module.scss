@@ -91,6 +91,34 @@
       min-width: 0;
       justify-content: flex-start;
 
+      @include helpers.mobile {
+        gap: spacing.$space-inline-mobile;
+        .avatar {
+          width: helpers.pxToRem(24px);
+          height: helpers.pxToRem(24px);
+        }
+      }
+
+      @include helpers.tablet {
+        gap: spacing.$space-inline-tablet;
+        .avatar {
+          width: helpers.pxToRem(32px);
+          height: helpers.pxToRem(32px);
+        }
+      }
+
+      @include helpers.desktop {
+        gap: spacing.$space-inline-desktop;
+        .avatar {
+          width: helpers.pxToRem(40px);
+          height: helpers.pxToRem(40px);
+        }
+      }
+
+      .avatar {
+        flex-shrink: 0;
+      }
+
       span {
         display: block;
         min-width: 0;

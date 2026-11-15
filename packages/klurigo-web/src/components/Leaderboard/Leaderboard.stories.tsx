@@ -1,3 +1,4 @@
+import { DEFAULT_CRITTERS_AVATAR_V1 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { expect, within } from 'storybook/test'
@@ -10,6 +11,13 @@ import Leaderboard from './Leaderboard'
 const meta = {
   title: 'Gameplay Components/Leaderboard',
   component: Leaderboard,
+  decorators: [
+    (Story) => (
+      <div style={{ width: '100vw', maxWidth: 1024 }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -24,11 +32,18 @@ export const Default = {
       {
         position: 1,
         nickname: 'ShadowCyborg',
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'block', top: null },
         score: 18456,
         streaks: 5,
         previousPosition: 2,
       },
-      { position: 2, nickname: 'Radar', score: 18398, previousPosition: 1 },
+      {
+        position: 2,
+        nickname: 'Radar',
+        score: 18398,
+        previousPosition: 1,
+        avatar: { ...DEFAULT_CRITTERS_AVATAR_V1, body: 'blob', cheeks: null },
+      },
       {
         position: 3,
         nickname: 'ShadowWhirlwind',
