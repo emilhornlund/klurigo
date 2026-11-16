@@ -19,7 +19,7 @@
   "dependencies": {
     "@klurigo/common": "1.0.0",
     "bson": "^7.3.4",
-    "commander": "^15.0.0",
+    "commander": "^15.1.0",
     "json-diff": "^1.0.6"
   },
   "engines": {
