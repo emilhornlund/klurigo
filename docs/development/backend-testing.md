@@ -81,7 +81,13 @@ The test environment is defined in
 
 The Compose file provides the same MongoDB and Redis containers used for local
 development; the test run selects separate logical databases rather than
-separate containers. Use the [canonical backend test commands](./commands.md#backend-end-to-end-tests)
+separate containers. When running in the Agent Orchestrator stack, inherited
+`MONGODB_HOST`/`MONGODB_PORT` and `REDIS_HOST`/`REDIS_PORT` override the local
+`.env.test` host defaults. The standalone reset and seed helpers build their
+connection URLs from these service addresses and `MONGODB_DB`/`REDIS_DB`, while
+explicit `MONGODB_URI` and `REDIS_URL` retain precedence. The MongoDB reset
+helper still rejects database names without `_test`.
+Use the [canonical backend test commands](./commands.md#backend-end-to-end-tests)
 to start the services and run the suites.
 
 Destructive e2e reset helpers must target test infrastructure only. The

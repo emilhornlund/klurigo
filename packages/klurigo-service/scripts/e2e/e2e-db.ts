@@ -7,10 +7,11 @@ type ResetOptions = {
   seed?: (ctx: { mongo: typeof mongoose; redis: Redis }) => Promise<void>
 }
 
-function getMongoUri(): string {
-  return (
-    process.env.MONGODB_URI ?? 'mongodb://localhost:27017/klurigo_service_test'
-  )
+export function getMongoUri(): string {
+  const host = process.env.MONGODB_HOST ?? 'localhost'
+  const port = process.env.MONGODB_PORT ?? '27017'
+  const database = process.env.MONGODB_DB ?? 'klurigo_service_test'
+  return process.env.MONGODB_URI ?? `mongodb://${host}:${port}/${database}`
 }
 
 function assertSafeMongoUri(mongoUri: string): void {
@@ -22,9 +23,11 @@ function assertSafeMongoUri(mongoUri: string): void {
   }
 }
 
-function getRedisUrl(): string {
+export function getRedisUrl(): string {
   const redisDb = process.env.REDIS_DB ?? '1'
-  const base = process.env.REDIS_URL ?? 'redis://localhost:6379'
+  const host = process.env.REDIS_HOST ?? 'localhost'
+  const port = process.env.REDIS_PORT ?? '6379'
+  const base = process.env.REDIS_URL ?? `redis://${host}:${port}`
   return `${base}/${redisDb}`
 }
 
