@@ -103,6 +103,29 @@ beforeEach(() => {
 })
 
 describe('GameJoinPage', () => {
+  it.each([true, false])(
+    'shows the join content and controls without the users graphic (authenticated=%s)',
+    (account) => {
+      authenticated = account
+      renderJoin()
+      expect(
+        screen.queryByRole('img', { name: 'Users' }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('heading', { name: 'Join the game' }),
+      ).toBeVisible()
+      expect(screen.getByText('Pick a nickname and jump in!')).toBeVisible()
+      expect(
+        screen.getByRole('img', { name: 'Your game avatar preview' }),
+      ).toBeVisible()
+      expect(
+        screen.getByRole('button', { name: 'Customize avatar' }),
+      ).toBeVisible()
+      expect(screen.getByPlaceholderText('Nickname')).toBeVisible()
+      expect(screen.getByRole('button', { name: 'OK, Go!' })).toBeVisible()
+    },
+  )
+
   it('retains the original title, message, and form layout with an avatar trigger', () => {
     const { container } = renderJoin()
     expect(screen.getByText('Join the game')).toBeVisible()
