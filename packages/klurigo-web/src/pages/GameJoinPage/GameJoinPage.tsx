@@ -11,14 +11,12 @@ import { useNavigate } from 'react-router-dom'
 import { useIsMounted, useLocalStorage } from 'usehooks-ts'
 
 import { useKlurigoServiceClient } from '../../api'
-import UsersIcon from '../../assets/images/users-icon.svg'
 import {
   CallToActionCard,
   IconButtonArrowLeft,
   IconButtonArrowRight,
   NicknameTextField,
   Page,
-  PageProminentIcon,
   PlayerAvatar,
   RotatingMessage,
   Stack,
@@ -127,7 +125,6 @@ const GameJoinPageContent: FC<{ readonly storageKey: string }> = ({
         />
       }
       hideLogin>
-      <PageProminentIcon src={UsersIcon} alt="Users" />
       <RotatingMessage
         messages={TITLES}
         renderMessage={(title) => (
