@@ -94,7 +94,6 @@ exports[`Critters artwork/recipe v1 compatibility > preserves the complete Minim
 <path d="M14 106V64c0-12 4-24 12-28 6-3 6-10 14-12 6-2 8 3 12 2s3-4 10-3c8 1 6 9 12 13 8 5 12 16 12 28v42Z"/>
 </clipPath>
 <g id="body-blob-ff279aa1">
-<g class="dbcr-t"/>
 <path d="M17 109.5v-42c0-12 4-24 12-28 6-3 6-10 14-12 6-2 8 3 12 2s3-4 10-3c8 1 6 9 12 13 8 5 12 16 12 28v42Z" fill="#1e293b" opacity=".15"/>
 <path d="M14 106V64c0-12 4-24 12-28 6-3 6-10 14-12 6-2 8 3 12 2s3-4 10-3c8 1 6 9 12 13 8 5 12 16 12 28v42Z" fill="#6ee7b9"/>
 <g clip-path="url(#dbcrb-blob)">
