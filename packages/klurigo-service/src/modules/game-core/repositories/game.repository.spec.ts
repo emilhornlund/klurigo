@@ -1,4 +1,4 @@
-import { GameMode, GameStatus } from '@klurigo/common'
+import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
 import type { QueryFilter } from 'mongoose'
 
 import type { Quiz } from '../../quiz-core/repositories/models/schemas'
@@ -7,6 +7,116 @@ import type { User } from '../../user/repositories/models'
 import { GameRepository } from './game.repository'
 import type { Game, GameDocument } from './models/schemas'
 import { GameSchema, TaskType } from './models/schemas'
+
+describe('GameRepository.findGamesByParticipantId', () => {
+  let repository: GameRepository
+  let findWithPagination: jest.Mock
+
+  beforeEach(() => {
+    repository = Object.create(GameRepository.prototype) as GameRepository
+    findWithPagination = jest
+      .fn()
+      .mockResolvedValue({ documents: [], total: 0 })
+    repository.findWithPagination = findWithPagination
+  })
+
+  it('restricts membership and lifecycle statuses with the existing pagination defaults', async () => {
+    await expect(repository.findGamesByParticipantId('user')).resolves.toEqual({
+      results: [],
+      total: 0,
+    })
+    expect(findWithPagination).toHaveBeenCalledWith(
+      {
+        status: { $in: [GameStatus.Completed, GameStatus.Active] },
+        'participants.participantId': 'user',
+      },
+      { skip: 0, limit: 5, sort: { updated: -1, _id: -1 }, populate: 'quiz' },
+    )
+  })
+
+  it('combines literal search, same-participant role, mode, and effective completed status before pagination', async () => {
+    const documents = [{ _id: 'match' }]
+    findWithPagination.mockResolvedValue({ documents, total: 12 })
+    await expect(
+      repository.findGamesByParticipantId(
+        'user',
+        5,
+        10,
+        'A.[x]+\\',
+        GameParticipantType.PLAYER,
+        GameMode.ZeroToOneHundred,
+        GameStatus.Completed,
+        'name',
+        'asc',
+      ),
+    ).resolves.toEqual({ results: documents, total: 12 })
+    const [filter, options] = findWithPagination.mock.calls[0]
+    expect(filter).toEqual({
+      status: { $in: [GameStatus.Completed, GameStatus.Active] },
+      'participants.participantId': 'user',
+      participants: {
+        $elemMatch: { participantId: 'user', type: GameParticipantType.PLAYER },
+      },
+      name: { $regex: 'A\\.\\[x\\]\\+\\\\', $options: 'i' },
+      mode: GameMode.ZeroToOneHundred,
+      $or: [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ],
+    })
+    expect(options).toEqual({
+      skip: 5,
+      limit: 10,
+      sort: { name: 1, _id: 1 },
+      populate: 'quiz',
+    })
+  })
+
+  it('excludes podium games when filtering active history', async () => {
+    await repository.findGamesByParticipantId(
+      'user',
+      0,
+      5,
+      undefined,
+      undefined,
+      undefined,
+      GameStatus.Active,
+    )
+    expect(findWithPagination.mock.calls[0][0]).toEqual({
+      status: GameStatus.Active,
+      'participants.participantId': 'user',
+      'currentTask.type': { $ne: TaskType.Podium },
+    })
+  })
+
+  it.each(['name', 'created', 'updated'] as const)(
+    'sorts %s in both directions with an ID tie-breaker',
+    async (sort) => {
+      for (const order of ['asc', 'desc'] as const) {
+        await repository.findGamesByParticipantId(
+          'user',
+          0,
+          5,
+          '',
+          undefined,
+          undefined,
+          undefined,
+          sort,
+          order,
+        )
+        expect(findWithPagination).toHaveBeenLastCalledWith(
+          expect.not.objectContaining({ name: expect.anything() }),
+          expect.objectContaining({
+            sort: {
+              [sort]: order === 'asc' ? 1 : -1,
+              _id: order === 'asc' ? 1 : -1,
+            },
+          }),
+        )
+      }
+    },
+  )
+})
 
 describe('GameRepository.findGameByIDWithStatuses', () => {
   let repository: GameRepository

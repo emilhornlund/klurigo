@@ -1,5 +1,6 @@
 import {
   DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
   GameParticipantType,
   GameStatus,
   isCrittersAvatarConfigurationV1,
@@ -268,6 +269,12 @@ describe(GameService.name, () => {
         'p-1',
         10,
         25,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        'updated',
+        'desc',
       )
     })
 
@@ -283,6 +290,41 @@ describe(GameService.name, () => {
         'p-1',
         0,
         5,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        'updated',
+        'desc',
+      )
+    })
+
+    it('forwards combined history query options', async () => {
+      gameRepository.findGamesByParticipantId.mockResolvedValue({
+        results: [],
+        total: 0,
+      })
+      await service.findGamesByParticipantId(
+        'p-1',
+        5,
+        10,
+        'Trivia',
+        GameParticipantType.PLAYER,
+        GameMode.Classic,
+        GameStatus.Completed,
+        'name',
+        'asc',
+      )
+      expect(gameRepository.findGamesByParticipantId).toHaveBeenCalledWith(
+        'p-1',
+        5,
+        10,
+        'Trivia',
+        GameParticipantType.PLAYER,
+        GameMode.Classic,
+        GameStatus.Completed,
+        'name',
+        'asc',
       )
     })
 

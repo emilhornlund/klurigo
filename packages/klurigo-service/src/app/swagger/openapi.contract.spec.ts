@@ -2,6 +2,7 @@ import {
   AuthProvider,
   GameMode,
   GameParticipantType,
+  GameStatus,
   QuestionType,
 } from '@klurigo/common'
 import type { INestApplication } from '@nestjs/common'
@@ -343,6 +344,38 @@ describe('generated OpenAPI contract', () => {
         }
       }
     }
+  })
+
+  it('documents optional game history filters, sorting, and pagination', () => {
+    const parameters = document.paths['/profile/games']?.get?.parameters ?? []
+    expect(parameters).toHaveLength(8)
+    const schemas = Object.fromEntries(
+      parameters.map((parameter) => {
+        if ('$ref' in parameter)
+          throw new Error('Unexpected query parameter reference')
+        expect(parameter.in).toBe('query')
+        expect(parameter.required).toBe(false)
+        return [parameter.name, parameter.schema]
+      }),
+    )
+    expect(schemas.search).toMatchObject({ type: 'string' })
+    expect(schemas.participantType).toMatchObject({
+      enum: Object.values(GameParticipantType),
+    })
+    expect(schemas.mode).toMatchObject({ enum: Object.values(GameMode) })
+    expect(schemas.status).toMatchObject({
+      enum: [GameStatus.Active, GameStatus.Completed],
+    })
+    expect(schemas.sort).toMatchObject({
+      enum: ['name', 'created', 'updated'],
+      default: 'updated',
+    })
+    expect(schemas.order).toMatchObject({
+      enum: ['asc', 'desc'],
+      default: 'desc',
+    })
+    expect(schemas.limit).toMatchObject({ minimum: 5, maximum: 50, default: 5 })
+    expect(schemas.offset).toMatchObject({ minimum: 0, default: 0 })
   })
 
   it('documents quiz and question polymorphism with stable discriminators', () => {
