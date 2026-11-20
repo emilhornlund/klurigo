@@ -3,6 +3,7 @@ import {
   CrittersAvatarConfigurationV1,
   GameDetailsDto,
   GameHistoryBaseDto,
+  GameMode,
   GameParticipantPlayerDto,
   GameParticipantType,
   GameStatus,
@@ -243,18 +244,36 @@ export class GameService {
    * @param participantId - The ID of the participant whose games should be fetched.
    * @param offset - The number of games to skip for pagination.
    * @param limit - The maximum number of games to return.
+   * @param search - Literal, case-insensitive partial game name search.
+   * @param participantType - The user's participation type to include.
+   * @param mode - The game mode to include.
+   * @param status - The effective history status to include.
+   * @param sort - The primary sorting field; defaults to updated.
+   * @param order - The sorting direction; defaults to descending.
    * @returns A paginated list of game history DTOs.
    */
   public async findGamesByParticipantId(
     participantId: string,
     offset: number = 0,
     limit: number = 5,
+    search?: string,
+    participantType?: GameParticipantType,
+    mode?: GameMode,
+    status?: GameStatus.Active | GameStatus.Completed,
+    sort: 'name' | 'created' | 'updated' = 'updated',
+    order: 'asc' | 'desc' = 'desc',
   ): Promise<PaginatedGameHistoryDto> {
     const { results, total } =
       await this.gameRepository.findGamesByParticipantId(
         participantId,
         offset,
         limit,
+        search,
+        participantType,
+        mode,
+        status,
+        sort,
+        order,
       )
 
     return {
