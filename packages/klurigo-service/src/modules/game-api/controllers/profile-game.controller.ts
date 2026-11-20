@@ -55,14 +55,14 @@ export class ProfileGameController {
    * Retrieves the games associated with the authenticated user.
    *
    * @param userId - The unique identifier of the authenticated user making the request.
-   * @param filter - The pagination parameters.
+   * @param filter - The filtering, sorting, and pagination parameters.
    * @returns A paginated list of games where the user is a participant.
    */
   @Get()
   @ApiOperation({
     summary: 'Retrieve associated games',
     description:
-      'Retrieves a paginated list of games where the authenticated user has participated.',
+      'Retrieves games where the authenticated user has participated, with optional name, participation, mode, and effective-status filters. Defaults to updated descending.',
   })
   @ApiQuery({
     name: 'offset',
@@ -79,7 +79,7 @@ export class ProfileGameController {
     example: 10,
   })
   @ApiBadRequestResponse({
-    description: 'One or more pagination parameters are invalid.',
+    description: 'One or more game history query parameters are invalid.',
   })
   @ApiOkResponse({
     description: 'Successfully retrieved the list of associated games.',
@@ -96,6 +96,12 @@ export class ProfileGameController {
       userId,
       filter.offset ?? 0,
       filter.limit ?? 5,
+      filter.search,
+      filter.participantType,
+      filter.mode,
+      filter.status,
+      filter.sort,
+      filter.order,
     )
   }
 }

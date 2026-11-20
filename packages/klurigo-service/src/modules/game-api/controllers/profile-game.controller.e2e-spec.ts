@@ -1,5 +1,11 @@
-import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
+import {
+  GameMode,
+  GameParticipantType,
+  GameStatus,
+  TokenScope,
+} from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { getModelToken } from '@nestjs/mongoose'
 import supertest from 'supertest'
 
@@ -13,6 +19,7 @@ import {
   offsetSeconds,
 } from '../../../../test-utils/data'
 import {
+  authenticateGame,
   cleanupTestApp,
   createBearerAuthHeader,
   createDefaultUserAndAuthenticate,
@@ -116,6 +123,7 @@ describe('ProfileGameController (e2e)', () => {
           ],
           currentTask: createMockPodiumTaskDocument(),
           created: offsetSeconds(0),
+          updated: offsetSeconds(0),
         }),
       ])
 
@@ -162,10 +170,8 @@ describe('ProfileGameController (e2e)', () => {
     })
 
     it('should return a 401 error when the request is unauthorized', () => {
-      const gameID = createMockUniqueId(507)
-
       return supertest(app.getHttpServer())
-        .get(`/api/games/${gameID}/results`)
+        .get('/api/profile/games')
         .expect(401)
         .expect((res) => {
           expect(res.body).toEqual({
@@ -174,6 +180,185 @@ describe('ProfileGameController (e2e)', () => {
             timestamp: expect.anything(),
           })
         })
+    })
+
+    it('filters independently and in combination using effective status and the current user role', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const games = buildQueryGameDocuments(user)
+      await gameModel.insertMany(games)
+      const all = Array.from({ length: 18 }, (_, i) => i)
+      const completedHosts = Array.from({ length: 12 }, (_, i) => i)
+      const cases: [Record<string, string>, number[]][] = [
+        [{}, all],
+        [{ search: '' }, all],
+        [{ search: 'tRiViA' }, completedHosts],
+        [{ search: '.[x]+\\' }, completedHosts],
+        [{ search: '[' }, completedHosts],
+        [{ search: 'missing' }, []],
+        [
+          { participantType: GameParticipantType.HOST },
+          [...completedHosts, 12, 15, 17],
+        ],
+        [{ participantType: GameParticipantType.PLAYER }, [13, 14, 16]],
+        [{ mode: GameMode.Classic }, [...completedHosts, 13, 15, 16]],
+        [{ mode: GameMode.ZeroToOneHundred }, [12, 14, 17]],
+        [{ status: GameStatus.Active }, [12, 13, 15]],
+        [{ status: GameStatus.Completed }, [...completedHosts, 14, 16, 17]],
+        [
+          {
+            participantType: GameParticipantType.PLAYER,
+            status: GameStatus.Completed,
+          },
+          [14, 16],
+        ],
+        [
+          {
+            search: 'tRiViA.[x]+\\',
+            participantType: GameParticipantType.HOST,
+            mode: GameMode.Classic,
+            status: GameStatus.Completed,
+          },
+          completedHosts,
+        ],
+        [{ search: 'Trivia', participantType: GameParticipantType.PLAYER }, []],
+      ]
+      for (const [query, indices] of cases) {
+        const response = await supertest(app.getHttpServer())
+          .get('/api/profile/games')
+          .query({ ...query, limit: 50 })
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+        expect(response.body.total).toBe(indices.length)
+        expect(
+          response.body.results.map((game: { id: string }) => game.id),
+        ).toEqual(
+          sortGames(
+            indices.map((i) => games[i]),
+            'updated',
+            'desc',
+          ).map((game) => game._id),
+        )
+        for (const result of response.body.results) {
+          const index = games.findIndex((game) => game._id === result.id)
+          expect(result.status).toBe(
+            [12, 13, 15].includes(index)
+              ? GameStatus.Active
+              : GameStatus.Completed,
+          )
+          expect(result.participantType).toBe(
+            [13, 14, 16].includes(index)
+              ? GameParticipantType.PLAYER
+              : GameParticipantType.HOST,
+          )
+        }
+      }
+    })
+
+    it('sorts all fields and directions deterministically across filtered pages', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const games = buildQueryGameDocuments(user)
+      await gameModel.insertMany(games)
+      for (const sort of ['name', 'created', 'updated'] as const) {
+        for (const order of ['asc', 'desc'] as const) {
+          const expected = sortGames(games.slice(0, 12), sort, order).map(
+            (game) => game._id,
+          )
+          const ids: string[] = []
+          for (const offset of [0, 5, 10, 15]) {
+            const response = await supertest(app.getHttpServer())
+              .get('/api/profile/games')
+              .query({
+                search: 'Trivia',
+                participantType: GameParticipantType.HOST,
+                mode: GameMode.Classic,
+                status: GameStatus.Completed,
+                sort,
+                order,
+                offset,
+                limit: 5,
+              })
+              .set(createBearerAuthHeader(accessToken))
+              .expect(200)
+            expect(response.body).toMatchObject({ total: 12, offset, limit: 5 })
+            const pageIds = response.body.results.map(
+              (game: { id: string }) => game.id,
+            )
+            expect(pageIds).toEqual(expected.slice(offset, offset + 5))
+            ids.push(...pageIds)
+          }
+          expect(ids).toEqual(expected)
+        }
+      }
+      for (const [query, sort, order] of [
+        [{}, 'updated', 'desc'],
+        [{ sort: 'created' }, 'created', 'desc'],
+        [{ order: 'asc' }, 'updated', 'asc'],
+      ] as const) {
+        const response = await supertest(app.getHttpServer())
+          .get('/api/profile/games')
+          .query(query)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+        expect(response.body).toMatchObject({ total: 18, offset: 0, limit: 5 })
+        expect(
+          response.body.results.map((game: { id: string }) => game.id),
+        ).toEqual(
+          sortGames(games.slice(0, 18), sort, order)
+            .slice(0, 5)
+            .map((game) => game._id),
+        )
+      }
+    })
+
+    it('rejects invalid query parameters', async () => {
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      for (const query of [
+        { participantType: 'OWNER' },
+        { mode: 'OTHER' },
+        { status: 'OTHER' },
+        { status: GameStatus.Expired },
+        { status: GameStatus.Terminated },
+        { sort: 'status' },
+        { order: 'ascending' },
+        { limit: '4' },
+        { limit: '51' },
+        { offset: '-1' },
+        { search: ['a', 'b'] },
+      ]) {
+        await supertest(app.getHttpServer())
+          .get('/api/profile/games')
+          .query(query)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(400)
+      }
+    })
+
+    it('rejects invalid tokens, game scope, and missing game authority', async () => {
+      const { user } = await createDefaultUserAndAuthenticate(app)
+      await supertest(app.getHttpServer())
+        .get('/api/profile/games')
+        .set(createBearerAuthHeader('invalid'))
+        .expect(401)
+      const gameToken = await authenticateGame(
+        app,
+        createMockUniqueId(800),
+        user._id,
+        GameParticipantType.HOST,
+      )
+      await supertest(app.getHttpServer())
+        .get('/api/profile/games')
+        .set(createBearerAuthHeader(gameToken))
+        .expect(403)
+      const token = await app
+        .get(JwtService)
+        .signAsync(
+          { scope: TokenScope.User, authorities: [] },
+          { subject: user._id },
+        )
+      await supertest(app.getHttpServer())
+        .get('/api/profile/games')
+        .set(createBearerAuthHeader(token))
+        .expect(403)
     })
   })
 })
@@ -193,6 +378,7 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(1),
+      updated: offsetSeconds(1),
     }),
     createMockGameDocument({
       _id: createMockUniqueId(502),
@@ -200,6 +386,7 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(2),
+      updated: offsetSeconds(2),
     }),
     createMockGameDocument({
       _id: createMockUniqueId(503),
@@ -213,6 +400,7 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       ],
       currentTask: createMockPodiumTaskDocument(),
       created: offsetSeconds(3),
+      updated: offsetSeconds(3),
     }),
     createMockGameDocument({
       _id: createMockUniqueId(504),
@@ -220,6 +408,7 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       participants: [createMockGameHostParticipantDocument({ participantId })],
       currentTask: createMockQuestionTaskDocument(),
       created: offsetSeconds(4),
+      updated: offsetSeconds(4),
     }),
     createMockGameDocument({
       _id: createMockUniqueId(505),
@@ -233,6 +422,60 @@ function buildFirstPageGameDocuments(user: User): Game[] {
       ],
       currentTask: createMockQuestionTaskDocument(),
       created: offsetSeconds(5),
+      updated: offsetSeconds(5),
     }),
   ]
+}
+
+function buildQueryGameDocuments(user: User): Game[] {
+  return Array.from({ length: 21 }, (_, i) => {
+    const player = [13, 14, 16].includes(i)
+    const participantId = i === 20 ? createMockUniqueId(900) : user._id
+    const active = [12, 13, 15].includes(i)
+    return createMockGameDocument({
+      _id: createMockUniqueId(600 + i),
+      name: i < 12 ? `Trivia.[x]+\\ ${Math.floor(i / 4)}` : `Other ${i}`,
+      mode: [12, 14, 17].includes(i)
+        ? GameMode.ZeroToOneHundred
+        : GameMode.Classic,
+      status:
+        i === 18
+          ? GameStatus.Expired
+          : i === 19
+            ? GameStatus.Terminated
+            : active || i % 2 === 0
+              ? GameStatus.Active
+              : GameStatus.Completed,
+      currentTask: active
+        ? createMockQuestionTaskDocument()
+        : createMockPodiumTaskDocument(),
+      participants: player
+        ? [
+            createMockGamePlayerParticipantDocument({ participantId }),
+            createMockGameHostParticipantDocument({
+              participantId: createMockUniqueId(901),
+            }),
+          ]
+        : [
+            createMockGameHostParticipantDocument({ participantId }),
+            createMockGamePlayerParticipantDocument({
+              participantId: createMockUniqueId(901),
+            }),
+          ],
+      created: new Date(Date.UTC(2026, 0, 1, 0, 0, Math.floor(i / 3))),
+      updated: new Date(Date.UTC(2026, 0, 1, 0, 0, Math.floor((20 - i) / 3))),
+    })
+  })
+}
+
+function sortGames(
+  games: Game[],
+  sort: 'name' | 'created' | 'updated',
+  order: 'asc' | 'desc',
+): Game[] {
+  const direction = order === 'asc' ? 1 : -1
+  return [...games].sort((a, b) => {
+    const primary = a[sort] < b[sort] ? -1 : a[sort] > b[sort] ? 1 : 0
+    return direction * (primary || (a._id < b._id ? -1 : 1))
+  })
 }

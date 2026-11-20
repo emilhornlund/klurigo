@@ -1,4 +1,4 @@
-import { GameStatus } from '@klurigo/common'
+import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model, QueryFilter } from 'mongoose'
@@ -447,12 +447,24 @@ export class GameRepository extends BaseRepository<Game> {
    * @param participantId - The ID of the participant.
    * @param offset - The number of games to skip for pagination.
    * @param limit - The maximum number of games to return.
+   * @param search - Literal, case-insensitive partial game name search.
+   * @param participantType - The specified participant's role to include.
+   * @param mode - The game mode to include.
+   * @param status - The effective history status, treating active podium games as completed.
+   * @param sort - The primary sorting field; defaults to updated.
+   * @param order - The sorting direction; defaults to descending, including the ID tie-breaker.
    * @returns An object containing the list of games and the total number of matching games.
    */
   public async findGamesByParticipantId(
     participantId: string,
     offset: number = 0,
     limit: number = 5,
+    search?: string,
+    participantType?: GameParticipantType,
+    mode?: GameMode,
+    status?: GameStatus.Active | GameStatus.Completed,
+    sort: 'name' | 'created' | 'updated' = 'updated',
+    order: 'asc' | 'desc' = 'desc',
   ): Promise<{
     results: GameDocument[]
     total: number
@@ -460,12 +472,41 @@ export class GameRepository extends BaseRepository<Game> {
     const filter: QueryFilter<Game> = {
       status: { $in: [GameStatus.Completed, GameStatus.Active] },
       'participants.participantId': participantId,
+      ...(participantType
+        ? {
+            participants: {
+              $elemMatch: { participantId, type: participantType },
+            },
+          }
+        : {}),
+      ...(search?.length
+        ? {
+            name: {
+              $regex: search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+              $options: 'i',
+            },
+          }
+        : {}),
+      ...(mode ? { mode } : {}),
     }
 
+    // Match the effective status used by the history response, without changing
+    // the stored game lifecycle status.
+    if (status === GameStatus.Active) {
+      filter.status = GameStatus.Active
+      filter['currentTask.type'] = { $ne: TaskType.Podium }
+    } else if (status === GameStatus.Completed) {
+      filter.$or = [
+        { status: GameStatus.Completed },
+        { status: GameStatus.Active, 'currentTask.type': TaskType.Podium },
+      ]
+    }
+
+    const direction = order === 'asc' ? 1 : -1
     const result = await this.findWithPagination(filter, {
       skip: offset,
       limit,
-      sort: { status: 1, created: -1 },
+      sort: { [sort]: direction, _id: direction },
       populate: 'quiz',
     })
 
