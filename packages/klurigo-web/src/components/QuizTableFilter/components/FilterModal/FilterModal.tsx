@@ -13,11 +13,10 @@ import {
   QuizCategoryLabels,
   QuizVisibilityLabels,
 } from '../../../../models'
-import Modal from '../../../Modal'
 import Select from '../../../Select'
-import Stack from '../../../Stack'
 import Typography from '../../../Typography'
 
+import FilterDialog, { FilterDialogBody } from './FilterDialog'
 import styles from './FilterModal.module.scss'
 
 const ALL_KEY = 'all'
@@ -69,15 +68,12 @@ const FilterModal: FC<FilterModalProps> = ({
   }
 
   return (
-    <Modal
+    <FilterDialog
       title="Refine Your Quiz Search"
       open={open}
-      closeAction={{ label: 'Close', onClick: onClose }}
-      primaryAction={{ label: 'Apply', onClick: handleApplyFilter }}>
-      <Stack>
-        <Typography variant="body2" noOpacity>
-          Narrow down your search and find the perfect quiz!
-        </Typography>
+      onClose={onClose}
+      onApply={handleApplyFilter}>
+      <FilterDialogBody description="Narrow down your search and find the perfect quiz!">
         <div className={styles.row}>
           <Typography variant="control" noOpacity bold>
             Category
@@ -214,8 +210,8 @@ const FilterModal: FC<FilterModalProps> = ({
             }
           />
         </div>
-      </Stack>
-    </Modal>
+      </FilterDialogBody>
+    </FilterDialog>
   )
 }
 

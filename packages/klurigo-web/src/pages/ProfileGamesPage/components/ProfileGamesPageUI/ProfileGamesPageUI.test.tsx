@@ -14,6 +14,11 @@ vi.mock('../../../../../context/auth', () => ({
 import ProfileGamesPageUI from './ProfileGamesPageUI'
 
 const now = new Date('2025-04-27T09:54:14.000Z')
+const filterProps = {
+  filter: {},
+  hasNoMatchingGames: false,
+  onChangeFilter: () => undefined,
+}
 
 const makeGames = (): GameHistoryDto[] => [
   {
@@ -63,6 +68,7 @@ describe('ProfileGamesPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={makeGames()}
           isLoading={false}
           isLoadingMore={false}
@@ -82,6 +88,7 @@ describe('ProfileGamesPageUI', () => {
     const { container } = render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={[]}
           isLoading={false}
           isLoadingMore={false}
@@ -101,6 +108,7 @@ describe('ProfileGamesPageUI', () => {
     render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={[]}
           isLoading={false}
           isLoadingMore={false}
@@ -121,6 +129,7 @@ describe('ProfileGamesPageUI', () => {
     render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={[]}
           isLoading={false}
           isLoadingMore={false}
@@ -140,6 +149,7 @@ describe('ProfileGamesPageUI', () => {
     render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={[]}
           isLoading={true}
           isLoadingMore={false}
@@ -160,6 +170,7 @@ describe('ProfileGamesPageUI', () => {
     render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={makeGames()}
           isLoading={false}
           isLoadingMore={false}
@@ -181,6 +192,7 @@ describe('ProfileGamesPageUI', () => {
     render(
       <MemoryRouter>
         <ProfileGamesPageUI
+          {...filterProps}
           games={makeGames()}
           isLoading={false}
           isLoadingMore={false}

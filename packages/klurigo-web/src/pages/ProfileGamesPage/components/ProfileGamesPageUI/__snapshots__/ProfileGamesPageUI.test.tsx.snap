@@ -192,6 +192,91 @@ exports[`ProfileGamesPageUI > should render ProfileGamesPageUI with card grid 1`
             Review your past games and track your performance.
           </p>
           <div
+            class="quizTableFilter"
+          >
+            <form>
+              <div
+                class="column full"
+              >
+                <div
+                  class="inputContainer"
+                >
+                  <div
+                    class="textFieldInputContainer surfaceBrand"
+                  >
+                    <input
+                      class="textfield"
+                      data-testid="test-search-textfield-textfield"
+                      id="search-textfield"
+                      name="search-textfield"
+                      placeholder="Search"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="column"
+              >
+                <div
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
+                >
+                  <button
+                    aria-label="Search games"
+                    data-testid="test-search-button-button"
+                    id="search-button"
+                    name="search-button"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-magnifying-glass icon"
+                      data-icon="magnifying-glass"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="column"
+              >
+                <div
+                  class="buttonContainer variantPrimary surfaceBrand intentDefault iconOnly"
+                >
+                  <button
+                    aria-label="Open filters"
+                    data-testid="test-filter-button-button"
+                    id="filter-button"
+                    name="filter-button"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-filter icon"
+                      data-icon="filter"
+                      data-prefix="fas"
+                      role="img"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        d="M32 64C19.1 64 7.4 71.8 2.4 83.8S.2 109.5 9.4 118.6L192 301.3 192 416c0 8.5 3.4 16.6 9.4 22.6l64 64c9.2 9.2 22.9 11.9 34.9 6.9S320 492.9 320 480l0-178.7 182.6-182.6c9.2-9.2 11.9-22.9 6.9-34.9S492.9 64 480 64L32 64z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div
             class="grid"
             data-testid="profile-game-grid"
           >

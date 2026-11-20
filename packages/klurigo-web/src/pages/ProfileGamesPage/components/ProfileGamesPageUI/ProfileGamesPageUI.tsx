@@ -8,9 +8,11 @@ import { GameStatus } from '@klurigo/common'
 import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import type { GameHistorySearchOptions } from '../../../../api/resources/game.resource'
 import { Button, Page, PageDivider, Typography } from '../../../../components'
 
 import { ProfileGameCard, ProfileGameCardSkeleton } from './components'
+import GameHistoryFilter from './GameHistoryFilter'
 import styles from './ProfileGamesPageUI.module.scss'
 
 /**
@@ -19,6 +21,12 @@ import styles from './ProfileGamesPageUI.module.scss'
 export interface ProfileGamesPageUIProps {
   /** The games to display in the grid. */
   readonly games: readonly GameHistoryDto[]
+  /** The applied search, filters and sorting. */
+  readonly filter: GameHistorySearchOptions
+  /** Applies new search, filter and sorting values. */
+  readonly onChangeFilter: (options: GameHistorySearchOptions) => void
+  /** A filtered search returned no matches. */
+  readonly hasNoMatchingGames: boolean
   /** Indicates whether the initial page data is loading. */
   readonly isLoading: boolean
   /** Indicates whether an additional page is currently loading. */
@@ -40,6 +48,9 @@ export interface ProfileGamesPageUIProps {
  */
 const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
   games,
+  filter,
+  onChangeFilter,
+  hasNoMatchingGames,
   isLoading,
   isLoadingMore,
   isError,
@@ -50,7 +61,7 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
 }) => {
   const navigate = useNavigate()
 
-  if (!isLoading && !isError && games.length === 0) {
+  if (!isLoading && !isError && games.length === 0 && !hasNoMatchingGames) {
     return (
       <Page layout="compact" align="start" discover profile>
         <Typography variant="title" align="center" color="inverse">
@@ -128,6 +139,7 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
       <Typography variant="body" width="medium" align="center" color="inverse">
         Review your past games and track your performance.
       </Typography>
+      <GameHistoryFilter filter={filter} onChange={onChangeFilter} />
       {isError ? (
         <Typography
           variant="body2"
@@ -136,6 +148,10 @@ const ProfileGamesPageUI: FC<ProfileGamesPageUIProps> = ({
           data-testid="profile-games-empty-state">
           Oops! Your game history is playing hide-and-seek right now. Please try
           again.
+        </Typography>
+      ) : !isLoading && hasNoMatchingGames ? (
+        <Typography variant="body2" align="center" color="inverse">
+          No matching games. Try a different search or adjust your filters.
         </Typography>
       ) : (
         <>

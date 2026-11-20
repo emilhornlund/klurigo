@@ -1,6 +1,7 @@
 import type { GameHistoryDto } from '@klurigo/common'
 import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
+import { userEvent } from 'storybook/test'
 import { withRouter } from 'storybook-addon-remix-react-router'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -79,6 +80,9 @@ const makeGames = (): GameHistoryDto[] => [
 export const Default = {
   args: {
     games: makeGames(),
+    filter: {},
+    hasNoMatchingGames: false,
+    onChangeFilter: () => undefined,
     isLoading: false,
     isLoadingMore: false,
     isError: false,
@@ -98,14 +102,29 @@ export const AllLoaded = {
 
 export const Empty = {
   args: {
+    ...Default.args,
     games: [],
-    isLoading: false,
-    isLoadingMore: false,
-    isError: false,
     hasMore: false,
-    skeletonCount: 10,
-    onLoadMore: () => undefined,
-    onClick: () => undefined,
+  },
+} satisfies Story
+
+export const NoMatchingGames = {
+  args: {
+    ...Empty.args,
+    filter: { search: 'Film trivia' },
+    hasNoMatchingGames: true,
+  },
+} satisfies Story
+
+export const FilterModal = {
+  args: {
+    ...Default.args,
+    games: Default.args.games.filter((game) => game.mode === GameMode.Classic),
+    filter: { mode: GameMode.Classic, sort: 'name', order: 'asc' },
+    hasMore: false,
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open filters' }))
   },
 } satisfies Story
 

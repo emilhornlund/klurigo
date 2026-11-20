@@ -1,5 +1,7 @@
 import {
   DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  GameParticipantType,
   GameStatus,
   TokenScope,
 } from '@klurigo/common'
@@ -431,7 +433,7 @@ describe('createGameResource', () => {
     )
   })
 
-  it('getProfileGames calls parseQueryParams with the provided pagination options', async () => {
+  it('getProfileGames serializes the provided search, filters, sorting and pagination', async () => {
     const { api, apiGet } = makeApi()
     const { deps } = makeDeps()
 
@@ -439,10 +441,29 @@ describe('createGameResource', () => {
 
     const game = createGameResource(api, deps)
 
-    apiGet.mockResolvedValue({ items: [], limit: 10, offset: 20, total: 0 })
-    await game.getProfileGames({ limit: 10, offset: 20 })
+    const options = {
+      search: 'History & Science',
+      participantType: GameParticipantType.HOST,
+      mode: GameMode.Classic,
+      status: GameStatus.Completed,
+      sort: 'name',
+      order: 'asc',
+      limit: 10,
+      offset: 20,
+    } as const
+    const actual =
+      await vi.importActual<typeof import('../api.utils')>('../api.utils')
+    vi.mocked(parseQueryParams).mockImplementationOnce(actual.parseQueryParams)
+    apiGet.mockResolvedValue({ results: [], limit: 10, offset: 20, total: 0 })
+    await game.getProfileGames(options)
 
-    expect(parseQueryParams).toHaveBeenCalledWith({ limit: 10, offset: 20 })
+    const url = new URL(apiGet.mock.calls[0][0], 'https://example.test')
+    expect(url.pathname).toBe('/profile/games')
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      ...options,
+      limit: '10',
+      offset: '20',
+    })
   })
 
   it('createOrUpdateGameRating puts to /games/:gameId/ratings with game scope; notifies and rethrows on failure', async () => {
