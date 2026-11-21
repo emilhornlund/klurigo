@@ -1,7 +1,15 @@
-import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common'
+import {
+  applyDecorators,
+  createParamDecorator,
+  ExecutionContext,
+  InternalServerErrorException,
+  SetMetadata,
+  UseGuards,
+} from '@nestjs/common'
 
 import { AUTHORIZED_QUIZ_ALLOW_PUBLIC } from '../../../../app/shared/auth'
 import { QuizAuthGuard } from '../../guards'
+import type { QuizAuthRequest } from '../../guards/quiz-auth.guard'
 
 /**
  * Decorator for authorizing quiz-related requests.
@@ -22,3 +30,16 @@ export function AuthorizedQuiz(
     UseGuards(QuizAuthGuard),
   )
 }
+
+/** Returns the same quiz snapshot checked by `@AuthorizedQuiz`. */
+export const AuthorizedQuizDocument = createParamDecorator(
+  (_data: unknown, context: ExecutionContext) => {
+    const { authorizedQuiz } = context
+      .switchToHttp()
+      .getRequest<QuizAuthRequest>()
+    if (!authorizedQuiz) {
+      throw new InternalServerErrorException('Authorized quiz is missing')
+    }
+    return authorizedQuiz
+  },
+)

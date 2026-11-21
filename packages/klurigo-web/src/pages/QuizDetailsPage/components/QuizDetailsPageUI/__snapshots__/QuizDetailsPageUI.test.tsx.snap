@@ -456,6 +456,22 @@ exports[`QuizDetailsPageUI > renders title, optional description and image 1`] =
                 </p>
               </div>
             </div>
+            <section
+              aria-labelledby="_r_q_"
+              class="stack vertical spacing-stack align-stretch justify-start width-full"
+            >
+              <h3
+                class="typography title3 alignCenter widthFull colorInverse"
+                id="_r_q_"
+              >
+                Sample questions
+              </h3>
+              <p
+                class="typography body2 alignCenter widthFull colorInverse"
+              >
+                No sample questions available.
+              </p>
+            </section>
           </div>
         </div>
       </div>

@@ -15,6 +15,11 @@ import {
 } from '../../../app/shared/auth'
 import { User } from '../../user/repositories'
 import { QuizRepository } from '../repositories'
+import type { Quiz } from '../repositories/models/schemas'
+
+export type QuizAuthRequest = AuthGuardRequest<TokenDto, User> & {
+  authorizedQuiz?: Quiz
+}
 
 /**
  * Guard to authorize access to quizzes based on ownership.
@@ -47,9 +52,7 @@ export class QuizAuthGuard implements CanActivate {
    * @throws ForbiddenException If the user is not the owner of the quiz.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context
-      .switchToHttp()
-      .getRequest<AuthGuardRequest<TokenDto, User>>()
+    const request = context.switchToHttp().getRequest<QuizAuthRequest>()
 
     if (!request.user?._id) {
       throw new UnauthorizedException()
@@ -78,6 +81,7 @@ export class QuizAuthGuard implements CanActivate {
       throw new ForbiddenException()
     }
 
+    request.authorizedQuiz = quiz
     return true
   }
 }

@@ -25,6 +25,7 @@ import {
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
+import { Game, GameModel } from '../../game-core/repositories/models/schemas'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
 import { QuizService } from '../services'
@@ -977,6 +978,100 @@ describe('QuizController (e2e)', () => {
           expect(res.body).toHaveProperty('status', 403)
           expect(res.body).toHaveProperty('timestamp')
         })
+    })
+  })
+
+  describe('/api/quizzes/:quizId/questions/preview (GET)', () => {
+    it('returns only the first three prompts in stored order to a signed-in non-owner of a public quiz', async () => {
+      const owner = await userModel.create(buildMockSecondaryUser())
+      const quiz = await quizService.createQuiz(originalData, owner)
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const api = supertest(app.getHttpServer())
+      const path = `/api/quizzes/${quiz.id}/questions/preview`
+      const games = app.get<GameModel>(getModelToken(Game.name))
+
+      await api
+        .get(path)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([
+          {
+            type: QuestionType.MultiChoice,
+            question: originalData.questions[0].question,
+          },
+          {
+            type: QuestionType.Range,
+            question: originalData.questions[1].question,
+          },
+          {
+            type: QuestionType.TrueFalse,
+            question: originalData.questions[2].question,
+          },
+        ])
+
+      await api.get(path).expect(401)
+      await api
+        .get(`/api/quizzes/${quiz.id}/questions`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(403)
+
+      await api
+        .get(`/api/quizzes/${quiz.id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }: { body: QuizResponseDto }) => {
+          expect(body.gameplaySummary).toEqual(quiz.gameplaySummary)
+        })
+      await expect(
+        games.countDocuments({ 'quiz._id': quiz.id }).exec(),
+      ).resolves.toBe(0)
+    })
+
+    it('returns prompts for type-answer, pin and puzzle without their solutions or media', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const questions = originalData.questions.slice(3)
+      const quiz = await quizService.createQuiz(
+        { ...originalData, questions },
+        user,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/quizzes/${quiz.id}/questions/preview`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([
+          { type: QuestionType.TypeAnswer, question: questions[0].question },
+          { type: QuestionType.Pin, question: questions[1].question },
+          { type: QuestionType.Puzzle, question: questions[2].question },
+        ])
+    })
+
+    it('returns a shorter private 0 to 100 preview only to its owner', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(updatedData, user)
+      const otherOwner = await userModel.create(buildMockSecondaryUser())
+      const otherQuiz = await quizService.createQuiz(updatedData, otherOwner)
+      const api = supertest(app.getHttpServer())
+      const auth = createBearerAuthHeader(accessToken)
+
+      await api
+        .get(`/api/quizzes/${quiz.id}/questions/preview`)
+        .set(auth)
+        .expect(200)
+        .expect([
+          {
+            type: QuestionType.Range,
+            question: updatedData.questions[0].question,
+          },
+        ])
+      await api
+        .get(`/api/quizzes/${otherQuiz.id}/questions/preview`)
+        .set(auth)
+        .expect(403)
+      await api
+        .get(`/api/quizzes/${uuidv4()}/questions/preview`)
+        .set(auth)
+        .expect(404)
     })
   })
 

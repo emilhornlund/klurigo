@@ -4,6 +4,12 @@ import { QuestionPinTolerance } from './question-pin-tolerance.enum'
 import { QuestionRangeAnswerMargin } from './question-range-answer-margin.enum'
 import { QuestionType } from './question-type.enum'
 
+/** A quiz sample containing only the question type and prompt text. */
+export interface QuestionPreviewDto {
+  type: QuestionType
+  question: string
+}
+
 /**
  * Base DTO representing shared properties for question media.
  *

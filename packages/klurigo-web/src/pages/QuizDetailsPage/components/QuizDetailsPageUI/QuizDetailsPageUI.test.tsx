@@ -2,6 +2,7 @@ import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
+  QuestionType,
   QuizCategory,
   type QuizRatingDto,
   type QuizResponseDto,
@@ -199,6 +200,70 @@ describe('QuizDetailsPageUI', () => {
       screen.queryByRole('dialog', { name: 'Host Game' }),
     ).not.toBeInTheDocument()
   })
+
+  it('shows ordered sample prompts and labels after the quiz metadata and before ratings', () => {
+    renderUI({
+      quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 1, total: 1 } }),
+      sampleQuestions: {
+        status: 'ready',
+        questions: [
+          { type: QuestionType.Pin, question: 'Where is the Eiffel Tower?' },
+          {
+            type: QuestionType.Puzzle,
+            question: 'Order these cities from north to south.',
+          },
+        ],
+      },
+    })
+
+    const samples = screen.getByRole('region', { name: 'Sample questions' })
+    const list = within(samples).getByRole('list')
+    expect(list.tagName).toBe('OL')
+    const items = within(list).getAllByRole('listitem')
+    expect(items).toHaveLength(2)
+    expect(items[0]).toHaveTextContent(/Pin.*Where is the Eiffel Tower\?/)
+    expect(items[1]).toHaveTextContent(
+      /Puzzle.*Order these cities from north to south\./,
+    )
+    expect(within(samples).queryByRole('button')).not.toBeInTheDocument()
+    expect(
+      screen.getByText('General Knowledge').compareDocumentPosition(samples),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      samples.compareDocumentPosition(screen.getByTestId('ratings-section')),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+  })
+
+  it.each(['loading', 'error'] as const)(
+    'keeps hosting available while sample questions are %s',
+    (status) => {
+      const onHostGame = vi.fn()
+      const onRetry = vi.fn()
+      renderUI({
+        sampleQuestions: status === 'error' ? { status, onRetry } : { status },
+        onHostGame,
+      })
+
+      const samples = screen.getByRole('region', { name: 'Sample questions' })
+      if (status === 'error') {
+        expect(within(samples).getByRole('status')).toHaveTextContent(
+          'We couldn’t load the sample questions.',
+        )
+        fireEvent.click(within(samples).getByRole('button', { name: 'Retry' }))
+        expect(onRetry).toHaveBeenCalledOnce()
+      } else {
+        expect(within(samples).getByRole('status')).toHaveTextContent(
+          'Loading sample questions',
+        )
+      }
+      expect(onHostGame).not.toHaveBeenCalled()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
+      const dialog = screen.getByRole('dialog', { name: 'Host Game' })
+      fireEvent.click(within(dialog).getByRole('button', { name: /confirm/i }))
+      expect(onHostGame).toHaveBeenCalledOnce()
+    },
+  )
 
   it('opens destructive delete confirmation only for owners and invokes deletion', () => {
     const onDeleteQuiz = vi.fn()

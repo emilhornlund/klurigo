@@ -16,10 +16,14 @@ import {
 
 import QuizDetails from './components/QuizDetails'
 import RatingsSection from './components/RatingsSection'
+import SampleQuestions, {
+  type SampleQuestionsState,
+} from './components/SampleQuestions'
 import styles from './QuizDetailsPageUI.module.scss'
 
 export interface QuizDetailsPageUIProps {
   quiz?: QuizResponseDto
+  sampleQuestions?: SampleQuestionsState
   ratings?: QuizRatingDto[]
   isOwner?: boolean
   isLoadingQuiz?: boolean
@@ -33,6 +37,7 @@ export interface QuizDetailsPageUIProps {
 
 const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
   quiz,
+  sampleQuestions = { status: 'ready', questions: [] },
   ratings,
   isOwner = false,
   isLoadingQuiz,
@@ -124,6 +129,8 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
         )}
 
         <QuizDetails quiz={quiz} />
+
+        <SampleQuestions state={sampleQuestions} />
 
         {quiz.ratingSummary.stars > 0 && (
           <>

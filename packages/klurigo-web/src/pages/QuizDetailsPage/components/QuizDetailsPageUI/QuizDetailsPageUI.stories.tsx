@@ -2,6 +2,7 @@ import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
+  QuestionType,
   QuizCategory,
   type QuizRatingDto,
   QuizVisibility,
@@ -80,6 +81,25 @@ export const Default = {
       created: new Date(),
       updated: new Date(),
     },
+    sampleQuestions: {
+      status: 'ready',
+      questions: [
+        {
+          type: QuestionType.MultiChoice,
+          question: 'Which country has the most natural lakes?',
+        },
+        {
+          type: QuestionType.TrueFalse,
+          question:
+            'The Pacific Ocean is larger than all of Earth’s land area combined.',
+        },
+        {
+          type: QuestionType.Puzzle,
+          question:
+            'Put these cities in order from north to south, starting with the one closest to the Arctic Circle.',
+        },
+      ],
+    },
     ratings: makeRatings(10),
     isOwner: true,
     isLoadingQuiz: false,
@@ -88,6 +108,17 @@ export const Default = {
     onHostGame: () => undefined,
     onEditQuiz: () => undefined,
     onDeleteQuiz: () => undefined,
+  },
+} satisfies Story
+
+export const SampleQuestionsLoading = {
+  args: { ...Default.args, sampleQuestions: { status: 'loading' } },
+} satisfies Story
+
+export const SampleQuestionsError = {
+  args: {
+    ...Default.args,
+    sampleQuestions: { status: 'error', onRetry: () => undefined },
   },
 } satisfies Story
 
