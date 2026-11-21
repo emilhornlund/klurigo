@@ -3,9 +3,12 @@ import {
   type CreateQuizRatingDto,
   type CrittersAvatarConfigurationV1,
   type GameDetailsDto,
+  type GameMode,
   type GameParticipantPlayerDto,
+  type GameParticipantType,
   type GameResultDto,
   type GameSettingsDto,
+  type GameStatus,
   type PaginatedGameHistoryDto,
   type QuestionCorrectAnswerDto,
   type QuizRatingDto,
@@ -16,6 +19,16 @@ import {
 import type { ApiClientCore } from '../api-client-core'
 import { ApiError } from '../api.utils'
 import { parseQueryParams } from '../api.utils'
+
+/** Optional search, filter and sorting parameters for the game history endpoint. */
+export type GameHistorySearchOptions = {
+  search?: string
+  participantType?: GameParticipantType
+  mode?: GameMode
+  status?: GameStatus.Active | GameStatus.Completed
+  sort?: 'name' | 'created' | 'updated'
+  order?: 'asc' | 'desc'
+}
 
 /**
  * Side-effect hooks used by `createGameResource`.
@@ -307,15 +320,15 @@ export const createGameResource = (
   /**
    * Retrieves the game history associated with the current player.
    *
+   * @param options - Search, filters, sorting and pagination for game history.
    * @param options.limit - The maximum number of games to retrieve per page.
    * @param options.offset - The number of games to skip before starting retrieval.
    *
    * @returns A promise that resolves to a paginated list of past games.
    */
-  const getProfileGames = (options: {
-    limit: number
-    offset: number
-  }): Promise<PaginatedGameHistoryDto> =>
+  const getProfileGames = (
+    options: GameHistorySearchOptions & { limit: number; offset: number },
+  ): Promise<PaginatedGameHistoryDto> =>
     api
       .apiGet<PaginatedGameHistoryDto>(
         `/profile/games${parseQueryParams(options)}`,
