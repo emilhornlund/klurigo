@@ -58,9 +58,11 @@ import {
   getLongestCorrectStreakMetric,
   getMostAccuratePlayerMetric,
   getPrecisionChampionMetric,
+  getToughestQuestionMetric,
   type Metric,
 } from './summary-section.metrics'
 import styles from './SummarySection.module.scss'
+import ToughestQuestionCard from './ToughestQuestionCard'
 import YourResultCard from './YourResultCard'
 
 const DetailsItem: FC<{
@@ -176,6 +178,16 @@ const SummarySection: FC<SummarySectionProps> = ({
     [mode, questionMetrics],
   )
 
+  const toughestQuestion = useMemo(
+    () =>
+      mode === GameMode.Classic
+        ? getToughestQuestionMetric(
+            questionMetrics as GameResultClassicModeQuestionMetricDto[],
+          )
+        : null,
+    [mode, questionMetrics],
+  )
+
   const averageResponseTimeMetric = useMemo<Metric | null>(
     () =>
       getFastestOverallPlayerMetric({ mode, playerMetrics, numberOfQuestions }),
@@ -283,6 +295,8 @@ const SummarySection: FC<SummarySectionProps> = ({
             {getQuizDifficultyMessage(percentage)}
           </Typography>
         </Surface>
+
+        {toughestQuestion && <ToughestQuestionCard metric={toughestQuestion} />}
 
         <RatingCard
           canRateQuiz={quiz.canRateQuiz}

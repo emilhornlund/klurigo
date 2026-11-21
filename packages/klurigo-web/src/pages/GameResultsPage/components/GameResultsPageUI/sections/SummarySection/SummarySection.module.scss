@@ -248,6 +248,98 @@ $contrast-opacity: 0.8;
       }
     }
 
+    &.questionHighlight {
+      --highlight-gap: #{spacing.$space-compact-mobile};
+      --highlight-padding: #{spacing.$space-page-mobile};
+
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 10rem);
+      justify-content: stretch;
+      gap: var(--highlight-padding);
+      padding: var(--highlight-padding);
+      overflow-wrap: anywhere;
+      background-image:
+        radial-gradient(
+          ellipse at top left,
+          color-mix(in srgb, colors.$color-action-accent 11%, transparent),
+          transparent 65%
+        ),
+        linear-gradient(
+          135deg,
+          colors.$color-surface-glass-default-start,
+          colors.$color-surface-glass-default-end
+        );
+
+      @include helpers.mobile {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      @include helpers.tablet {
+        --highlight-gap: #{spacing.$space-compact-tablet};
+        --highlight-padding: #{spacing.$space-page-tablet};
+      }
+
+      @include helpers.desktop {
+        --highlight-gap: #{spacing.$space-compact-desktop};
+        --highlight-padding: #{spacing.$space-page-desktop};
+      }
+
+      .highlightContent {
+        display: grid;
+        gap: var(--highlight-gap);
+        text-wrap: pretty;
+      }
+
+      .highlightHeader {
+        display: flex;
+        align-items: center;
+        gap: var(--highlight-gap);
+
+        > div {
+          min-width: 0;
+        }
+      }
+
+      .highlightIcon {
+        display: grid;
+        place-items: center;
+        flex: none;
+        inline-size: 2.5rem;
+        aspect-ratio: 1;
+        border-radius: radius.$radius-surface-md;
+        border: 1px solid colors.$color-shadow-glow-accent;
+        background: colors.$color-shadow-glow-accent-soft;
+        color: colors.$color-text-warning-soft;
+        font-size: 1.125rem;
+
+        @include helpers.desktop {
+          inline-size: 3rem;
+          font-size: 1.375rem;
+        }
+      }
+
+      .highlightStat {
+        display: grid;
+        gap: spacing.$space-inline-tight-desktop;
+        text-align: center;
+        text-wrap: balance;
+        padding: var(--highlight-gap) spacing.$space-compact-mobile;
+        border-radius: radius.$radius-surface-md;
+
+        @include helpers.mobile {
+          grid-template-columns: max-content minmax(0, 1fr);
+          gap: var(--highlight-gap);
+          text-align: start;
+          padding-inline: var(--highlight-padding);
+        }
+      }
+
+      .highlightValue {
+        justify-content: center;
+        font-variant-numeric: tabular-nums;
+      }
+    }
+
     &.hostGameButton {
       display: flex;
       flex-direction: row;

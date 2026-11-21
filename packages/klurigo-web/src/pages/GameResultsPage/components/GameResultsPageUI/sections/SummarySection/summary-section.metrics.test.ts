@@ -1,6 +1,11 @@
-import { DEFAULT_CRITTERS_AVATAR_V1, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import type {
   GameResultClassicModePlayerMetricDto,
+  GameResultClassicModeQuestionMetricDto,
   GameResultDto,
   GameResultParticipantDto,
   GameResultZeroToOneHundredModePlayerMetricDto,
@@ -13,7 +18,86 @@ import {
   getLongestCorrectStreakMetric,
   getMostAccuratePlayerMetric,
   getPrecisionChampionMetric,
+  getToughestQuestionMetric,
 } from './summary-section.metrics'
+
+describe('getToughestQuestionMetric', () => {
+  const buildQuestion = (
+    text: string,
+    correct: number,
+    incorrect: number,
+    unanswered = 0,
+  ): GameResultClassicModeQuestionMetricDto => ({
+    text,
+    type: QuestionType.MultiChoice,
+    correct,
+    incorrect,
+    unanswered,
+    averageResponseTime: 0,
+  })
+
+  const unanswered = buildQuestion('Unanswered', 0, 0, 4)
+  const perfect = buildQuestion('Perfect', 4, 0)
+  const allIncorrect = buildQuestion('All incorrect', 0, 4)
+
+  it('counts unanswered attempts in the ratio without selecting all-unanswered questions', () => {
+    const toughest = buildQuestion('One correct, three unanswered', 1, 0, 3)
+    const easier = buildQuestion('Two correct, two incorrect', 2, 2)
+
+    expect(getToughestQuestionMetric([unanswered, toughest, easier])).toEqual({
+      question: toughest,
+      number: 2,
+      tied: false,
+    })
+  })
+
+  it('selects the earliest question when raw ratios tie', () => {
+    const earliest = buildQuestion('First tie', 1, 2)
+    const later = buildQuestion('Second tie', 2, 3, 1)
+
+    expect(getToughestQuestionMetric([perfect, earliest, later])).toEqual({
+      question: earliest,
+      number: 2,
+      tied: true,
+    })
+  })
+
+  it('uses raw ratios when both percentages round up to 12%', () => {
+    const earlier = buildQuestion('Two of seventeen', 2, 15)
+    const tougher = buildQuestion('Two of eighteen', 2, 16)
+
+    expect(getToughestQuestionMetric([earlier, tougher])).toEqual({
+      question: tougher,
+      number: 2,
+      tied: false,
+    })
+  })
+
+  it('selects a question everyone answered incorrectly, even after a tie among easier questions', () => {
+    const easier = buildQuestion('One correct', 1, 3)
+
+    expect(getToughestQuestionMetric([easier, easier, allIncorrect])).toEqual({
+      question: allIncorrect,
+      number: 3,
+      tied: false,
+    })
+  })
+
+  it.each([
+    { name: 'no questions', questions: [] },
+    { name: 'no submissions', questions: [unanswered, unanswered] },
+    {
+      name: 'only one eligible question',
+      questions: [allIncorrect, unanswered],
+    },
+    {
+      name: 'all eligible questions perfect',
+      questions: [perfect, perfect, unanswered],
+    },
+  ])('returns no highlight with $name', ({ questions }) => {
+    expect(getToughestQuestionMetric(questions)).toBeNull()
+  })
+})
 
 const buildParticipant = (
   id: string,

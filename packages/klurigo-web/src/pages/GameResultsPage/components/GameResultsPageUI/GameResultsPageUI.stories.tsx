@@ -188,6 +188,29 @@ export const Classic = {
   },
 } satisfies Story
 
+export const TiedToughestQuestionWithLongText = {
+  args: {
+    ...Classic.args,
+    results: {
+      ...Classic.args.results,
+      questionMetrics: Classic.args.results.questionMetrics.map(
+        (question, index) => {
+          if (index === 1) {
+            return {
+              ...question,
+              text: 'What was the highest air temperature ever recorded in Death Valley, California, measured in degrees Celsius in 1913?',
+            }
+          }
+          if (index === 2) {
+            return { ...question, correct: 1, incorrect: 2 }
+          }
+          return question
+        },
+      ),
+    },
+  },
+} satisfies Story
+
 export const ZeroToOneHundred = {
   args: {
     results: {

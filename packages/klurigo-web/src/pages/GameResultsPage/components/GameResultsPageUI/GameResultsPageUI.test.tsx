@@ -558,6 +558,9 @@ describe('GameResultsPageUI', () => {
 
       expect(within(resultCard()).getByText('0 of 2')).toBeInTheDocument()
       expect(
+        screen.queryByRole('region', { name: /toughest question/i }),
+      ).not.toBeInTheDocument()
+      expect(
         screen.queryByText(
           /^(Fastest Overall Player|Most Accurate Player|Precision Champion|Biggest Comeback|Longest Correct Streak)$/,
         ),
@@ -697,6 +700,59 @@ describe('GameResultsPageUI', () => {
     },
   )
 
+  it.each([
+    { tied: false, label: 'Toughest question' },
+    { tied: true, label: 'One of the toughest questions' },
+  ])(
+    'shows $label with the Questions-tab number and percentage',
+    ({ tied, label }) => {
+      const results = classicMinimal()
+      const [first, toughest] = results.questionMetrics
+      const questionMetrics = [
+        { ...first, correct: 0, unanswered: 3 },
+        { ...toughest, unanswered: 1 },
+        {
+          ...first,
+          text: 'Which is the largest ocean?',
+          correct: tied ? 1 : 2,
+          incorrect: tied ? 2 : 1,
+        },
+      ]
+
+      render(
+        <MemoryRouter>
+          <GameResultsPageUI
+            results={{
+              ...results,
+              numberOfPlayers: 3,
+              numberOfQuestions: 3,
+              questionMetrics,
+            }}
+            currentParticipantId={
+              tied ? results.playerMetrics[0].player.id : host.id
+            }
+          />
+        </MemoryRouter>,
+      )
+
+      const highlight = screen.getByRole('region', { name: label })
+      expect(within(highlight).getByText('Question 2')).toBeInTheDocument()
+      expect(within(highlight).getByText(toughest.text)).toBeInTheDocument()
+      expect(highlight).toHaveTextContent('34% of players answered correctly')
+      expect(highlight.previousElementSibling).toHaveTextContent(
+        'Challenging quiz!',
+      )
+
+      clickSegment('Questions')
+      expect(highlight).not.toBeInTheDocument()
+      const row = screen
+        .getByText(toughest.text)
+        .closest('.tableRow') as HTMLElement
+      expect(within(row).getByText('2')).toBeInTheDocument()
+      expect(within(row).getByText('34%')).toBeInTheDocument()
+    },
+  )
+
   it('shows Summary by default and switches to Players and Questions (Classic)', () => {
     const { container } = render(
       <MemoryRouter>
@@ -748,6 +804,9 @@ describe('GameResultsPageUI', () => {
     expect(screen.getByText('Summary')).toBeInTheDocument()
     expect(screen.getByText('Game Mode')).toBeInTheDocument()
     expect(screen.getByText('0 to 100')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: /toughest question/i }),
+    ).not.toBeInTheDocument()
     expect(container).toMatchSnapshot()
 
     clickSegment('Players')

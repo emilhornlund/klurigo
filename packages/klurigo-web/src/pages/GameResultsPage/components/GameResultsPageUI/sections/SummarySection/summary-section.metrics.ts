@@ -1,6 +1,7 @@
 import {
   GameMode,
   type GameResultClassicModePlayerMetricDto,
+  type GameResultClassicModeQuestionMetricDto,
   type GameResultDto,
   type GameResultParticipantDto,
   type GameResultPlayerMetricDto,
@@ -19,6 +20,47 @@ type AwardMetricArgs = Pick<
   GameResultDto,
   'mode' | 'playerMetrics' | 'numberOfQuestions'
 >
+
+/** The toughest eligible question, with its original 1-based number and tie status. */
+export type ToughestQuestionMetric = {
+  question: GameResultClassicModeQuestionMetricDto
+  number: number
+  tied: boolean
+}
+
+/**
+ * Selects the Classic question with the lowest unrounded correctness ratio.
+ * Unanswered attempts count toward the ratio, but each eligible question must
+ * have at least one submission. Ties keep the earliest question in the list.
+ *
+ * @param questionMetrics - Classic question metrics in Questions-tab order.
+ * @returns The toughest question, or `null` if fewer than two qualify or all are perfect.
+ */
+export const getToughestQuestionMetric = (
+  questionMetrics: readonly GameResultClassicModeQuestionMetricDto[],
+): ToughestQuestionMetric | null => {
+  let eligibleCount = 0
+  let lowestRatio = Infinity
+  let toughest: ToughestQuestionMetric | null = null
+
+  for (const [index, question] of questionMetrics.entries()) {
+    const { correct, incorrect, unanswered } = question
+    const submitted = correct + incorrect
+    const total = submitted + unanswered
+    if (!(submitted > 0) || !Number.isFinite(total)) continue
+
+    eligibleCount++
+    const ratio = correct / total
+    if (ratio < lowestRatio) {
+      lowestRatio = ratio
+      toughest = { question, number: index + 1, tied: false }
+    } else if (toughest && ratio === lowestRatio) {
+      toughest.tied = true
+    }
+  }
+
+  return eligibleCount >= 2 && lowestRatio < 1 ? toughest : null
+}
 
 /**
  * Selects the best finite value and all tied players, sorted by nickname.
