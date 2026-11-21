@@ -309,7 +309,7 @@ export class QuizController {
   @ApiOperation({
     summary: 'Retrieve recent quiz games',
     description:
-      'Returns up to three completed games with player participants, newest first.',
+      'Returns up to three games with saved results and player participants, newest first, including games still on the podium.',
   })
   @ApiQuizIdParam()
   @ApiOkResponse({

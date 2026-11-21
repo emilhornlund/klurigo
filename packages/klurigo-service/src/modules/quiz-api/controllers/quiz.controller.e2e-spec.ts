@@ -22,6 +22,7 @@ import {
   createMockGameDocument,
   createMockGameResultDocument,
   createMockGameResultPlayerMetric,
+  createMockPodiumTaskDocument,
   createMockZeroToOneHundredGameResultQuestionMetric,
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
@@ -1000,6 +1001,8 @@ describe('QuizController (e2e)', () => {
       const api = supertest(app.getHttpServer())
       const path = `/api/quizzes/${quiz.id}/questions/preview`
       const games = app.get<GameModel>(getModelToken(Game.name))
+      const gameFilter = { quiz: quiz.id }
+      const gameCountBefore = await games.collection.countDocuments(gameFilter)
 
       await api
         .get(path)
@@ -1020,6 +1023,9 @@ describe('QuizController (e2e)', () => {
           },
         ])
 
+      expect(await games.collection.countDocuments(gameFilter)).toBe(
+        gameCountBefore,
+      )
       await api.get(path).expect(401)
       await api
         .get(`/api/quizzes/${quiz.id}/questions`)
@@ -1033,9 +1039,6 @@ describe('QuizController (e2e)', () => {
         .expect(({ body }: { body: QuizResponseDto }) => {
           expect(body.gameplaySummary).toEqual(quiz.gameplaySummary)
         })
-      await expect(
-        games.countDocuments({ 'quiz._id': quiz.id }).exec(),
-      ).resolves.toBe(0)
     })
 
     it('returns prompts for type-answer, pin and puzzle without their solutions or media', async () => {
@@ -1090,7 +1093,12 @@ describe('QuizController (e2e)', () => {
     const saveGame = async (
       quiz: QuizResponseDto,
       completed: string,
-      { mode = quiz.mode, status = GameStatus.Completed, playerCount = 4 } = {},
+      {
+        mode = quiz.mode,
+        status = GameStatus.Completed,
+        playerCount = 4,
+        onPodium = false,
+      } = {},
       questions: QuestionMetric[] = [
         createMockClassicGameResultQuestionMetric({ correct: 3, incorrect: 1 }),
         createMockClassicGameResultQuestionMetric({
@@ -1102,7 +1110,16 @@ describe('QuizController (e2e)', () => {
       const games = app.get<GameModel>(getModelToken(Game.name))
       const results = app.get<GameResultModel>(getModelToken(GameResult.name))
       const game = await games.create({
-        ...createMockGameDocument({ _id: uuidv4(), status, mode }),
+        ...createMockGameDocument({
+          _id: uuidv4(),
+          status,
+          mode,
+          ...(onPodium
+            ? {
+                currentTask: createMockPodiumTaskDocument({ status: 'active' }),
+              }
+            : {}),
+        }),
         quiz: { _id: quiz.id },
       })
       await results.create(
@@ -1125,11 +1142,15 @@ describe('QuizController (e2e)', () => {
       const { accessToken } = await createDefaultUserAndAuthenticate(app)
       const date = (day: number) => `2026-01-1${day}T12:00:00.000Z`
 
-      await saveGame(quiz, date(4), { playerCount: 3 }, [
-        createMockClassicGameResultQuestionMetric({ incorrect: 3 }),
-      ])
+      await saveGame(
+        quiz,
+        date(4),
+        { status: GameStatus.Active, onPodium: true, playerCount: 3 },
+        [createMockClassicGameResultQuestionMetric({ incorrect: 3 })],
+      )
       await saveGame(quiz, date(1))
       await saveGame(quiz, date(5), { playerCount: 0 })
+      // A saved result does not make an active non-podium game eligible.
       await saveGame(quiz, date(6), { status: GameStatus.Active })
       await saveGame(quiz, date(3))
       await saveGame(otherQuiz, date(7))

@@ -594,7 +594,7 @@ export class GameRepository extends BaseRepository<Game> {
     ])
   }
 
-  /** Returns up to three completed games with players, ordered by result completion. */
+  /** Returns up to three finished games with players, including active podium games. */
   public async findRecentQuizGames(
     quizId: string,
   ): Promise<QuizRecentGameDto[]> {
@@ -607,7 +607,18 @@ export class GameRepository extends BaseRepository<Game> {
         incorrect: number
         averagePrecision: number | null
       }>([
-        { $match: { quiz: quizId, status: GameStatus.Completed } },
+        {
+          $match: {
+            quiz: quizId,
+            $or: [
+              { status: GameStatus.Completed },
+              {
+                status: GameStatus.Active,
+                'currentTask.type': TaskType.Podium,
+              },
+            ],
+          },
+        },
         { $project: { mode: 1 } },
         {
           $lookup: {
