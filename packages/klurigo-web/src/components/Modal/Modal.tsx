@@ -29,6 +29,7 @@ export interface ModalProps {
 
 export interface ModalCloseAction {
   label?: string
+  disabled?: boolean
   onClick: () => void
 }
 
@@ -50,12 +51,12 @@ const Modal: FC<ModalProps> = ({
 }) => {
   const { refs, context } = useFloating({
     open,
-    onOpenChange: closeAction?.onClick,
+    onOpenChange: closeAction?.disabled ? undefined : closeAction?.onClick,
   })
 
   const click = useClick(context)
   const dismiss = useDismiss(context, {
-    escapeKey: Boolean(closeAction),
+    escapeKey: Boolean(closeAction && !closeAction.disabled),
     outsidePressEvent: 'mousedown',
   })
   const role = useRole(context)
@@ -95,6 +96,7 @@ const Modal: FC<ModalProps> = ({
                 icon={faXmark}
                 iconColor="gray"
                 aria-label="Close dialog"
+                disabled={closeAction.disabled}
                 onClick={closeAction.onClick}
               />
             )}
@@ -111,6 +113,7 @@ const Modal: FC<ModalProps> = ({
                   variant="outline"
                   surface="light"
                   value={closeAction.label}
+                  disabled={closeAction.disabled}
                   onClick={closeAction.onClick}
                   grow
                 />

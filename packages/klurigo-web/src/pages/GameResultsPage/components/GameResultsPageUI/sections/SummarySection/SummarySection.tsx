@@ -18,11 +18,19 @@ import {
   type GameResultQuizDto,
   type GameResultZeroToOneHundredModeQuestionMetricDto,
 } from '@klurigo/common'
-import { type FC, type ReactElement, useMemo, useState } from 'react'
+import {
+  type FC,
+  type ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useKlurigoServiceClient } from '../../../../../../api'
 import {
+  Button,
   CircularProgressBar,
   CircularProgressBarKind,
   CircularProgressBarSize,
@@ -51,6 +59,7 @@ import {
   getQuizDifficultyMessage,
 } from '../../utils'
 
+import PublishQuizDialog from './PublishQuizDialog'
 import RatingCard, { type RatingCardProps } from './RatingCard'
 import {
   getComebackRankGainMetric,
@@ -58,9 +67,12 @@ import {
   getLongestCorrectStreakMetric,
   getMostAccuratePlayerMetric,
   getPrecisionChampionMetric,
+  getToughestQuestionMetric,
   type Metric,
 } from './summary-section.metrics'
 import styles from './SummarySection.module.scss'
+import ToughestQuestionCard from './ToughestQuestionCard'
+import YourResultCard from './YourResultCard'
 
 const DetailsItem: FC<{
   title: string
@@ -109,6 +121,7 @@ export type SummarySectionProps = {
   numberOfPlayers: number
   numberOfQuestions: number
   playerMetrics: GameResultDto['playerMetrics']
+  currentParticipantId: string
   questionMetrics: GameResultDto['questionMetrics']
   duration: number
   created: Date
@@ -121,6 +134,7 @@ const SummarySection: FC<SummarySectionProps> = ({
   numberOfPlayers,
   numberOfQuestions,
   playerMetrics,
+  currentParticipantId,
   questionMetrics,
   duration,
   created,
@@ -132,10 +146,35 @@ const SummarySection: FC<SummarySectionProps> = ({
   const navigate = useNavigate()
 
   const { createGame, authenticateGame } = useKlurigoServiceClient()
+  const showPublishPrompt = quiz.canPublishQuiz === true
+  const [showPublishQuizDialog, setShowPublishQuizDialog] = useState(false)
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const publishedQuizRef = useRef(false)
 
   const [showConfirmHostGameModal, setShowConfirmHostGameModal] =
     useState<boolean>(false)
   const [isHostGameLoading, setIsHostGameLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!publishedQuizRef.current || showPublishPrompt || showPublishQuizDialog)
+      return
+
+    publishedQuizRef.current = false
+    // The dialog trigger was removed, so hand keyboard focus to the nearby replay action.
+    cardsRef.current
+      ?.querySelector<HTMLButtonElement>('#host-game-button')
+      ?.focus({ preventScroll: true })
+  }, [showPublishPrompt, showPublishQuizDialog])
+
+  const currentPlayerMetric =
+    currentParticipantId !== host.id
+      ? playerMetrics.find(
+          ({ player, rank }) =>
+            player?.id === currentParticipantId &&
+            Number.isInteger(rank) &&
+            rank > 0,
+        )
+      : undefined
 
   const percentage = useMemo<number>(
     () =>
@@ -163,9 +202,20 @@ const SummarySection: FC<SummarySectionProps> = ({
     [mode, questionMetrics],
   )
 
+  const toughestQuestion = useMemo(
+    () =>
+      mode === GameMode.Classic
+        ? getToughestQuestionMetric(
+            questionMetrics as GameResultClassicModeQuestionMetricDto[],
+          )
+        : null,
+    [mode, questionMetrics],
+  )
+
   const averageResponseTimeMetric = useMemo<Metric | null>(
-    () => getFastestOverallPlayerMetric(playerMetrics),
-    [playerMetrics],
+    () =>
+      getFastestOverallPlayerMetric({ mode, playerMetrics, numberOfQuestions }),
+    [mode, playerMetrics, numberOfQuestions],
   )
 
   const longestCorrectStreakMetric = useMemo<Metric | null>(
@@ -189,8 +239,9 @@ const SummarySection: FC<SummarySectionProps> = ({
   )
 
   const precisionChampion = useMemo<Metric | null>(
-    () => getPrecisionChampionMetric({ mode, playerMetrics }),
-    [mode, playerMetrics],
+    () =>
+      getPrecisionChampionMetric({ mode, playerMetrics, numberOfQuestions }),
+    [mode, playerMetrics, numberOfQuestions],
   )
 
   const comebackRankGain = useMemo<Metric | null>(
@@ -237,8 +288,20 @@ const SummarySection: FC<SummarySectionProps> = ({
 
   return (
     <section>
-      <div className={styles.cards}>
-        <div className={styles.podiumWrapper}>
+      <div ref={cardsRef} className={styles.cards}>
+        {currentPlayerMetric && (
+          <YourResultCard mode={mode} metric={currentPlayerMetric} />
+        )}
+        <div
+          className={classNames(
+            styles.podiumWrapper,
+            currentPlayerMetric ? styles.withResultDivider : undefined,
+          )}>
+          {currentPlayerMetric && (
+            <div className={styles.resultDivider}>
+              <PageDivider />
+            </div>
+          )}
           <Podium values={podiumValues} />
           <Leaderboard values={leaderboardValues} includePodium={false} />
           <PageDivider />
@@ -256,6 +319,8 @@ const SummarySection: FC<SummarySectionProps> = ({
             {getQuizDifficultyMessage(percentage)}
           </Typography>
         </Surface>
+
+        {toughestQuestion && <ToughestQuestionCard metric={toughestQuestion} />}
 
         <RatingCard
           canRateQuiz={quiz.canRateQuiz}
@@ -302,6 +367,33 @@ const SummarySection: FC<SummarySectionProps> = ({
             </>
           )}
         </Surface>
+
+        {showPublishPrompt && (
+          <Surface
+            className={classNames(
+              styles.card,
+              styles.full,
+              styles.publishPrompt,
+            )}>
+            <div className={styles.publishPromptContent}>
+              <Typography variant="title3" align="left" color="inverse">
+                Let others discover your quiz
+              </Typography>
+              <Typography variant="body2" align="left" color="inverse">
+                Your quiz is private. Make it public so other people can
+                discover it and host their own games.
+              </Typography>
+            </div>
+            <Button
+              id="review-quiz-visibility"
+              type="button"
+              variant="outline"
+              className={styles.publishPromptAction}
+              value="Review quiz visibility"
+              onClick={() => setShowPublishQuizDialog(true)}
+            />
+          </Surface>
+        )}
 
         <Surface
           className={classNames(styles.card, styles.full, styles.details)}>
@@ -351,7 +443,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           />
         )}
 
-        {mode === GameMode.Classic && longestCorrectStreakMetric && (
+        {longestCorrectStreakMetric && (
           <MetricCard
             title="Longest Correct Streak"
             value={`${longestCorrectStreakMetric.value}`}
@@ -384,6 +476,16 @@ const SummarySection: FC<SummarySectionProps> = ({
         )}
       </div>
 
+      {showPublishPrompt && showPublishQuizDialog && (
+        <PublishQuizDialog
+          quizId={quiz.id}
+          onClose={() => setShowPublishQuizDialog(false)}
+          onPublished={() => {
+            publishedQuizRef.current = true
+            setShowPublishQuizDialog(false)
+          }}
+        />
+      )}
       <ConfirmDialog
         title="Host Game"
         message="Are you sure you want to start hosting a new game? Players will be able to join as soon as the game starts."

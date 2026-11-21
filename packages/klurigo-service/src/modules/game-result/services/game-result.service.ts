@@ -56,11 +56,12 @@ export class GameResultService {
   /**
    * Retrieves the result of a completed quiz game.
    * Player metrics include all ranked players, sorted by ascending rank.
+   * Quiz capabilities are derived from the current quiz record, even for older games.
    *
    * @param gameID - The ID of the game to retrieve.
    * @param participantId - The authenticated participant’s ID.
    *
-   * @returns The structured result of the game.
+   * @returns The structured result of the game with caller-specific quiz capabilities.
    *
    * @throws GameResultsNotFoundException if the result is not found.
    */
@@ -85,6 +86,14 @@ export class GameResultService {
     }
   }
 
+  /**
+   * Maps stored result metrics and current quiz metadata to the response DTO.
+   *
+   * @param gameID - The unique identifier of the completed game.
+   * @param participantId - The authenticated participant whose capabilities and rating are returned.
+   * @returns The result with ranked metrics, quiz capabilities, and the caller's rating if present.
+   * @throws GameResultsNotFoundException If the game result or referenced quiz is missing.
+   */
   private async getGameResultInternal(
     gameID: string,
     participantId: string,
@@ -121,6 +130,7 @@ export class GameResultService {
     const isPublicQuiz = quiz.visibility === QuizVisibility.Public
     const canRateQuiz = !isOwner
     const canHostLiveGame = isOwner || isPublicQuiz
+    const canPublishQuiz = isOwner && quiz.visibility === QuizVisibility.Private
 
     const hostUser = await this.userRepository.findUserById(hostParticipantId)
 
@@ -132,7 +142,7 @@ export class GameResultService {
     return {
       id,
       name,
-      quiz: { id: quiz._id, canRateQuiz, canHostLiveGame },
+      quiz: { id: quiz._id, canRateQuiz, canHostLiveGame, canPublishQuiz },
       host: {
         id: hostParticipantId,
         nickname: hostUser?.defaultNickname || 'N/A',

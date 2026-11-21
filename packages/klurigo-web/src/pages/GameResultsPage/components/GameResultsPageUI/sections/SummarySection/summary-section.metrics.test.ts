@@ -1,6 +1,11 @@
-import { DEFAULT_CRITTERS_AVATAR_V1, GameMode } from '@klurigo/common'
+import {
+  DEFAULT_CRITTERS_AVATAR_V1,
+  GameMode,
+  QuestionType,
+} from '@klurigo/common'
 import type {
   GameResultClassicModePlayerMetricDto,
+  GameResultClassicModeQuestionMetricDto,
   GameResultDto,
   GameResultParticipantDto,
   GameResultZeroToOneHundredModePlayerMetricDto,
@@ -13,7 +18,86 @@ import {
   getLongestCorrectStreakMetric,
   getMostAccuratePlayerMetric,
   getPrecisionChampionMetric,
+  getToughestQuestionMetric,
 } from './summary-section.metrics'
+
+describe('getToughestQuestionMetric', () => {
+  const buildQuestion = (
+    text: string,
+    correct: number,
+    incorrect: number,
+    unanswered = 0,
+  ): GameResultClassicModeQuestionMetricDto => ({
+    text,
+    type: QuestionType.MultiChoice,
+    correct,
+    incorrect,
+    unanswered,
+    averageResponseTime: 0,
+  })
+
+  const unanswered = buildQuestion('Unanswered', 0, 0, 4)
+  const perfect = buildQuestion('Perfect', 4, 0)
+  const allIncorrect = buildQuestion('All incorrect', 0, 4)
+
+  it('counts unanswered attempts in the ratio without selecting all-unanswered questions', () => {
+    const toughest = buildQuestion('One correct, three unanswered', 1, 0, 3)
+    const easier = buildQuestion('Two correct, two incorrect', 2, 2)
+
+    expect(getToughestQuestionMetric([unanswered, toughest, easier])).toEqual({
+      question: toughest,
+      number: 2,
+      tied: false,
+    })
+  })
+
+  it('selects the earliest question when raw ratios tie', () => {
+    const earliest = buildQuestion('First tie', 1, 2)
+    const later = buildQuestion('Second tie', 2, 3, 1)
+
+    expect(getToughestQuestionMetric([perfect, earliest, later])).toEqual({
+      question: earliest,
+      number: 2,
+      tied: true,
+    })
+  })
+
+  it('uses raw ratios when both percentages round up to 12%', () => {
+    const earlier = buildQuestion('Two of seventeen', 2, 15)
+    const tougher = buildQuestion('Two of eighteen', 2, 16)
+
+    expect(getToughestQuestionMetric([earlier, tougher])).toEqual({
+      question: tougher,
+      number: 2,
+      tied: false,
+    })
+  })
+
+  it('selects a question everyone answered incorrectly, even after a tie among easier questions', () => {
+    const easier = buildQuestion('One correct', 1, 3)
+
+    expect(getToughestQuestionMetric([easier, easier, allIncorrect])).toEqual({
+      question: allIncorrect,
+      number: 3,
+      tied: false,
+    })
+  })
+
+  it.each([
+    { name: 'no questions', questions: [] },
+    { name: 'no submissions', questions: [unanswered, unanswered] },
+    {
+      name: 'only one eligible question',
+      questions: [allIncorrect, unanswered],
+    },
+    {
+      name: 'all eligible questions perfect',
+      questions: [perfect, perfect, unanswered],
+    },
+  ])('returns no highlight with $name', ({ questions }) => {
+    expect(getToughestQuestionMetric(questions)).toBeNull()
+  })
+})
 
 const buildParticipant = (
   id: string,
@@ -65,15 +149,115 @@ const buildZeroToOneHundredPlayerMetric = (args: {
 })
 
 describe('summary-section.metrics', () => {
+  const player = buildParticipant('p1', 'Alice')
+  const classic = buildClassicPlayerMetric({
+    player,
+    averageResponseTime: 1000,
+    longestCorrectStreak: 2,
+    correct: 2,
+    comebackRankGain: 1,
+  })
+  const zeroToOneHundred = buildZeroToOneHundredPlayerMetric({
+    player,
+    averageResponseTime: 1000,
+    averagePrecision: 0.5,
+  })
+  const classicArgs = { mode: GameMode.Classic, numberOfQuestions: 10 }
+  const z2hArgs = { mode: GameMode.ZeroToOneHundred, numberOfQuestions: 10 }
+
+  it('omits answer-based awards when nobody submits an answer in either mode', () => {
+    const unansweredClassic = {
+      ...classicArgs,
+      playerMetrics: [{ ...classic, correct: 0, unanswered: 10 }],
+    }
+    const unansweredZ2h = {
+      ...z2hArgs,
+      playerMetrics: [{ ...zeroToOneHundred, unanswered: 10 }],
+    }
+
+    expect(getFastestOverallPlayerMetric(unansweredClassic)).toBeNull()
+    expect(getMostAccuratePlayerMetric(unansweredClassic)).toBeNull()
+    expect(getFastestOverallPlayerMetric(unansweredZ2h)).toBeNull()
+    expect(getPrecisionChampionMetric(unansweredZ2h)).toBeNull()
+  })
+
+  it.each([undefined, null, NaN, Infinity, -Infinity])(
+    'ignores invalid award values (%s) without hiding valid winners',
+    (invalid) => {
+      const value = invalid as number
+      const invalidClassic = {
+        ...classic,
+        player: buildParticipant('p2', 'Bob'),
+        averageResponseTime: value,
+        longestCorrectStreak: value,
+        comebackRankGain: value,
+        correct: value,
+      }
+      const invalidTiming = { ...invalidClassic, correct: classic.correct }
+      const invalidZ2h = {
+        ...zeroToOneHundred,
+        player: invalidClassic.player,
+        averagePrecision: value,
+      }
+
+      expect(getComebackRankGainMetric([invalidClassic, classic])).toEqual({
+        value: 1,
+        players: [player],
+      })
+      expect(getLongestCorrectStreakMetric([invalidClassic, classic])).toEqual({
+        value: 2,
+        players: [player],
+      })
+      expect(
+        getFastestOverallPlayerMetric({
+          ...classicArgs,
+          playerMetrics: [invalidTiming, classic],
+        }),
+      ).toEqual({ value: 1000, players: [player] })
+      expect(
+        getMostAccuratePlayerMetric({
+          ...classicArgs,
+          playerMetrics: [invalidClassic, classic],
+        }),
+      ).toEqual({ value: 20, players: [player] })
+      expect(
+        getPrecisionChampionMetric({
+          ...z2hArgs,
+          playerMetrics: [invalidZ2h, zeroToOneHundred],
+        }),
+      ).toEqual({ value: 50, players: [player] })
+    },
+  )
+
+  it('does not infer submissions from missing or non-finite answer counts', () => {
+    const invalidClassic = {
+      ...classicArgs,
+      playerMetrics: [
+        { ...classic, incorrect: undefined as unknown as number },
+      ],
+    }
+    const invalidZ2h = {
+      ...z2hArgs,
+      playerMetrics: [{ ...zeroToOneHundred, unanswered: -Infinity }],
+    }
+
+    expect(getFastestOverallPlayerMetric(invalidClassic)).toBeNull()
+    expect(getMostAccuratePlayerMetric(invalidClassic)).toBeNull()
+    expect(getFastestOverallPlayerMetric(invalidZ2h)).toBeNull()
+    expect(getPrecisionChampionMetric(invalidZ2h)).toBeNull()
+  })
+
   describe('getFastestOverallPlayerMetric', () => {
     it('returns null when there are no players', () => {
-      const result = getFastestOverallPlayerMetric(
-        [] as unknown as GameResultDto['playerMetrics'],
-      )
+      const result = getFastestOverallPlayerMetric({
+        mode: GameMode.Classic,
+        playerMetrics: [],
+        numberOfQuestions: 10,
+      })
       expect(result).toBeNull()
     })
 
-    it('returns the lowest average response time and the matching player', () => {
+    it('returns the lowest unrounded average response time and the matching player', () => {
       const alice = buildParticipant('p1', 'Alice')
       const bob = buildParticipant('p2', 'Bob')
 
@@ -86,21 +270,25 @@ describe('summary-section.metrics', () => {
         }),
         buildClassicPlayerMetric({
           player: bob,
-          averageResponseTime: 900,
+          averageResponseTime: 1199,
           longestCorrectStreak: 3,
           correct: 4,
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
-      const result = getFastestOverallPlayerMetric(playerMetrics)
+      const result = getFastestOverallPlayerMetric({
+        mode: GameMode.Classic,
+        playerMetrics,
+        numberOfQuestions: 10,
+      })
 
       expect(result).toEqual({
-        value: 900,
+        value: 1199,
         players: [bob],
       })
     })
 
-    it('returns all tied players, sorted by nickname', () => {
+    it('returns all eligible players tied at 0 ms, sorted by nickname', () => {
       const zoe = buildParticipant('p1', 'Zoe')
       const anna = buildParticipant('p2', 'Anna')
       const bob = buildParticipant('p3', 'Bob')
@@ -108,28 +296,58 @@ describe('summary-section.metrics', () => {
       const playerMetrics = [
         buildClassicPlayerMetric({
           player: zoe,
-          averageResponseTime: 700,
-          longestCorrectStreak: 1,
-          correct: 1,
+          averageResponseTime: 0,
+          longestCorrectStreak: 0,
+          correct: 0,
+          incorrect: 1,
+          unanswered: 9,
         }),
         buildClassicPlayerMetric({
           player: anna,
-          averageResponseTime: 700,
+          averageResponseTime: 0,
           longestCorrectStreak: 2,
           correct: 2,
         }),
         buildClassicPlayerMetric({
           player: bob,
-          averageResponseTime: 900,
-          longestCorrectStreak: 3,
-          correct: 3,
+          averageResponseTime: 0,
+          longestCorrectStreak: 0,
+          correct: 0,
+          unanswered: 10,
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
-      const result = getFastestOverallPlayerMetric(playerMetrics)
+      const result = getFastestOverallPlayerMetric({
+        mode: GameMode.Classic,
+        playerMetrics,
+        numberOfQuestions: 10,
+      })
 
-      expect(result?.value).toBe(700)
+      expect(result?.value).toBe(0)
       expect(result?.players.map((p) => p.nickname)).toEqual(['Anna', 'Zoe'])
+    })
+
+    it('excludes Zero to One Hundred players who skipped every question', () => {
+      const skipped = buildZeroToOneHundredPlayerMetric({
+        player: buildParticipant('p1', 'Alice'),
+        averageResponseTime: 0,
+        averagePrecision: 0,
+        unanswered: 10,
+      })
+      const answered = buildZeroToOneHundredPlayerMetric({
+        player: buildParticipant('p2', 'Bob'),
+        averageResponseTime: 1900,
+        averagePrecision: 0,
+        unanswered: 9,
+      })
+
+      expect(
+        getFastestOverallPlayerMetric({
+          mode: GameMode.ZeroToOneHundred,
+          playerMetrics: [skipped, answered],
+          numberOfQuestions: 10,
+        }),
+      ).toEqual({ value: 1900, players: [answered.player] })
     })
 
     it('does not mutate the input array order', () => {
@@ -154,7 +372,11 @@ describe('summary-section.metrics', () => {
         second,
       ] as unknown as GameResultDto['playerMetrics']
 
-      getFastestOverallPlayerMetric(playerMetrics)
+      getFastestOverallPlayerMetric({
+        mode: GameMode.Classic,
+        playerMetrics,
+        numberOfQuestions: 10,
+      })
 
       expect(playerMetrics[0]).toBe(first)
       expect(playerMetrics[1]).toBe(second)
@@ -167,6 +389,19 @@ describe('summary-section.metrics', () => {
         [] as unknown as GameResultClassicModePlayerMetricDto[],
       )
       expect(result).toBeNull()
+    })
+
+    it('returns null when the longest streak is one', () => {
+      const playerMetrics = [0, 1].map((streak) =>
+        buildClassicPlayerMetric({
+          player: buildParticipant(`p${streak}`, `Player ${streak}`),
+          averageResponseTime: 1000,
+          longestCorrectStreak: streak,
+          correct: streak,
+        }),
+      )
+
+      expect(getLongestCorrectStreakMetric(playerMetrics)).toBeNull()
     })
 
     it('returns the highest streak and the matching player', () => {
@@ -206,13 +441,13 @@ describe('summary-section.metrics', () => {
         buildClassicPlayerMetric({
           player: zoe,
           averageResponseTime: 800,
-          longestCorrectStreak: 5,
-          correct: 1,
+          longestCorrectStreak: 2,
+          correct: 2,
         }),
         buildClassicPlayerMetric({
           player: anna,
           averageResponseTime: 900,
-          longestCorrectStreak: 5,
+          longestCorrectStreak: 2,
           correct: 2,
         }),
       ] as unknown as GameResultDto['playerMetrics']
@@ -221,7 +456,7 @@ describe('summary-section.metrics', () => {
         playerMetrics as unknown as GameResultClassicModePlayerMetricDto[],
       )
 
-      expect(result?.value).toBe(5)
+      expect(result?.value).toBe(2)
       expect(result?.players.map((p) => p.nickname)).toEqual(['Anna', 'Zoe'])
     })
   })
@@ -245,26 +480,18 @@ describe('summary-section.metrics', () => {
       expect(result).toBeNull()
     })
 
-    it('returns null when numberOfQuestions is 0 or less', () => {
-      const alice = buildParticipant('p1', 'Alice')
+    it.each([0, -1, Infinity, NaN])(
+      'returns null when numberOfQuestions is %s',
+      (numberOfQuestions) => {
+        const result = getMostAccuratePlayerMetric({
+          mode: GameMode.Classic,
+          playerMetrics: [classic],
+          numberOfQuestions,
+        })
 
-      const playerMetrics = [
-        buildClassicPlayerMetric({
-          player: alice,
-          averageResponseTime: 1000,
-          longestCorrectStreak: 1,
-          correct: 3,
-        }),
-      ] as unknown as GameResultDto['playerMetrics']
-
-      const result = getMostAccuratePlayerMetric({
-        mode: GameMode.Classic,
-        playerMetrics,
-        numberOfQuestions: 0,
-      })
-
-      expect(result).toBeNull()
-    })
+        expect(result).toBeNull()
+      },
+    )
 
     it('returns the highest accuracy as a rounded percentage and the matching player', () => {
       const alice = buildParticipant('p1', 'Alice')
@@ -297,7 +524,7 @@ describe('summary-section.metrics', () => {
       })
     })
 
-    it('returns all tied players, sorted by nickname', () => {
+    it('returns all players tied before rounding, sorted by nickname', () => {
       const zoe = buildParticipant('p1', 'Zoe')
       const anna = buildParticipant('p2', 'Anna')
       const bob = buildParticipant('p3', 'Bob')
@@ -307,30 +534,49 @@ describe('summary-section.metrics', () => {
           player: zoe,
           averageResponseTime: 800,
           longestCorrectStreak: 2,
-          correct: 9,
+          correct: 200,
         }),
         buildClassicPlayerMetric({
           player: anna,
           averageResponseTime: 900,
           longestCorrectStreak: 3,
-          correct: 9,
+          correct: 200,
         }),
         buildClassicPlayerMetric({
           player: bob,
           averageResponseTime: 950,
           longestCorrectStreak: 1,
-          correct: 8,
+          correct: 199,
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
       const result = getMostAccuratePlayerMetric({
         mode: GameMode.Classic,
         playerMetrics,
-        numberOfQuestions: 10,
+        numberOfQuestions: 1000,
       })
 
-      expect(result?.value).toBe(90)
+      expect(result?.value).toBe(20)
       expect(result?.players.map((p) => p.nickname)).toEqual(['Anna', 'Zoe'])
+    })
+
+    it('returns null when submitted answers were all incorrect', () => {
+      const answered = buildClassicPlayerMetric({
+        player: buildParticipant('p1', 'Alice'),
+        averageResponseTime: 1000,
+        longestCorrectStreak: 0,
+        correct: 0,
+        incorrect: 1,
+        unanswered: 9,
+      })
+
+      expect(
+        getMostAccuratePlayerMetric({
+          mode: GameMode.Classic,
+          playerMetrics: [answered],
+          numberOfQuestions: 10,
+        }),
+      ).toBeNull()
     })
   })
 
@@ -339,6 +585,7 @@ describe('summary-section.metrics', () => {
       const result = getPrecisionChampionMetric({
         mode: GameMode.Classic,
         playerMetrics: [] as unknown as GameResultDto['playerMetrics'],
+        numberOfQuestions: 10,
       })
       expect(result).toBeNull()
     })
@@ -347,6 +594,7 @@ describe('summary-section.metrics', () => {
       const result = getPrecisionChampionMetric({
         mode: GameMode.ZeroToOneHundred,
         playerMetrics: [] as unknown as GameResultDto['playerMetrics'],
+        numberOfQuestions: 10,
       })
       expect(result).toBeNull()
     })
@@ -371,6 +619,7 @@ describe('summary-section.metrics', () => {
       const result = getPrecisionChampionMetric({
         mode: GameMode.ZeroToOneHundred,
         playerMetrics,
+        numberOfQuestions: 10,
       })
 
       expect(result).toEqual({
@@ -379,10 +628,11 @@ describe('summary-section.metrics', () => {
       })
     })
 
-    it('returns all tied players, sorted by nickname', () => {
+    it('returns all eligible players tied before rounding, sorted by nickname', () => {
       const zoe = buildParticipant('p1', 'Zoe')
       const anna = buildParticipant('p2', 'Anna')
       const bob = buildParticipant('p3', 'Bob')
+      const alice = buildParticipant('p4', 'Alice')
 
       const playerMetrics = [
         buildZeroToOneHundredPlayerMetric({
@@ -398,17 +648,41 @@ describe('summary-section.metrics', () => {
         buildZeroToOneHundredPlayerMetric({
           player: bob,
           averageResponseTime: 900,
-          averagePrecision: 0.89,
+          averagePrecision: 0.899,
+        }),
+        buildZeroToOneHundredPlayerMetric({
+          player: alice,
+          averageResponseTime: 0,
+          averagePrecision: 1,
+          unanswered: 10,
         }),
       ] as unknown as GameResultDto['playerMetrics']
 
       const result = getPrecisionChampionMetric({
         mode: GameMode.ZeroToOneHundred,
         playerMetrics,
+        numberOfQuestions: 10,
       })
 
       expect(result?.value).toBe(90)
       expect(result?.players.map((p) => p.nickname)).toEqual(['Anna', 'Zoe'])
+    })
+
+    it('returns null when submitted answers have zero precision', () => {
+      const answered = buildZeroToOneHundredPlayerMetric({
+        player: buildParticipant('p1', 'Alice'),
+        averageResponseTime: 1000,
+        averagePrecision: 0,
+        unanswered: 9,
+      })
+
+      expect(
+        getPrecisionChampionMetric({
+          mode: GameMode.ZeroToOneHundred,
+          playerMetrics: [answered],
+          numberOfQuestions: 10,
+        }),
+      ).toBeNull()
     })
   })
 
@@ -418,6 +692,20 @@ describe('summary-section.metrics', () => {
         [] as unknown as GameResultDto['playerMetrics'],
       )
       expect(result).toBeNull()
+    })
+
+    it('returns null when every comeback value is zero', () => {
+      const playerMetrics = ['Alice', 'Bob'].map((nickname) =>
+        buildClassicPlayerMetric({
+          player: buildParticipant(nickname, nickname),
+          averageResponseTime: 1000,
+          longestCorrectStreak: 2,
+          correct: 2,
+          comebackRankGain: 0,
+        }),
+      )
+
+      expect(getComebackRankGainMetric(playerMetrics)).toBeNull()
     })
 
     it('returns the highest comeback rank gain and the matching player', () => {

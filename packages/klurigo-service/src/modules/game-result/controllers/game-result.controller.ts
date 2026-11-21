@@ -62,6 +62,7 @@ export class GameResultController {
    * individual scores, and per-question performance metrics. The structure of the
    * response depends on the game mode (classic or zero to one hundred). Streak
    * metrics are included only for Classic mode.
+   * The result also includes caller-specific capabilities based on the current quiz.
    *
    * Authorization:
    * - Requires a valid access token (`@ApiBearerAuth`)
@@ -75,7 +76,7 @@ export class GameResultController {
   @ApiOperation({
     summary: 'Retrieve final game results',
     description:
-      'Returns performance metrics for players and questions based on the game mode (classic or zero to one hundred). Streak metrics are Classic-only.',
+      'Returns performance metrics for players and questions based on the game mode (classic or zero to one hundred), and caller-specific capabilities based on the current quiz. Streak metrics are Classic-only.',
   })
   @ApiGameIdParam()
   @ApiOkResponse({

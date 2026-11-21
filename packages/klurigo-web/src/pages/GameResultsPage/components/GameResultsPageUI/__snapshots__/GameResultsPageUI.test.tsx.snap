@@ -349,6 +349,67 @@ exports[`GameResultsPageUI > should render GameResultsPageUI for classic game mo
                     Well played! Most players handled the challenge with confidence.
                   </p>
                 </div>
+                <section
+                  aria-labelledby="_r_0_"
+                  class="surface card full questionHighlight"
+                >
+                  <div
+                    class="highlightContent"
+                  >
+                    <div
+                      class="highlightHeader"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="highlightIcon"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-bullseye"
+                          data-icon="bullseye"
+                          data-prefix="fas"
+                          role="img"
+                          viewBox="0 0 512 512"
+                        >
+                          <path
+                            d="M448 256a192 192 0 1 0 -384 0 192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <div>
+                        <h2
+                          class="typography title4 alignLeft widthFull colorInverse noOpacity"
+                          id="_r_0_"
+                        >
+                          Toughest question
+                        </h2>
+                        <p
+                          class="typography control2 alignLeft widthFull colorInverse"
+                        >
+                          Question 2
+                        </p>
+                      </div>
+                    </div>
+                    <p
+                      class="typography body2 alignLeft widthFull colorInverse noOpacity"
+                    >
+                      Guess the temperature of the hottest day ever recorded.
+                    </p>
+                  </div>
+                  <p
+                    class="surface highlightStat typography control2 alignLeft widthFull colorInverse noOpacity"
+                  >
+                    <strong
+                      class="typography title2 alignLeft widthFull colorInverse noOpacity highlightValue"
+                    >
+                      34%
+                    </strong>
+                    <span>
+                       of players answered correctly
+                    </span>
+                  </p>
+                </section>
                 <div
                   class="surface card rating"
                 >
@@ -1984,6 +2045,67 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     Well played! Most players handled the challenge with confidence.
                   </p>
                 </div>
+                <section
+                  aria-labelledby="_r_n8_"
+                  class="surface card full questionHighlight"
+                >
+                  <div
+                    class="highlightContent"
+                  >
+                    <div
+                      class="highlightHeader"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="highlightIcon"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-bullseye"
+                          data-icon="bullseye"
+                          data-prefix="fas"
+                          role="img"
+                          viewBox="0 0 512 512"
+                        >
+                          <path
+                            d="M448 256a192 192 0 1 0 -384 0 192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <div>
+                        <h2
+                          class="typography title4 alignLeft widthFull colorInverse noOpacity"
+                          id="_r_n8_"
+                        >
+                          Toughest question
+                        </h2>
+                        <p
+                          class="typography control2 alignLeft widthFull colorInverse"
+                        >
+                          Question 2
+                        </p>
+                      </div>
+                    </div>
+                    <p
+                      class="typography body2 alignLeft widthFull colorInverse noOpacity"
+                    >
+                      Q2: 2 + 2?
+                    </p>
+                  </div>
+                  <p
+                    class="surface highlightStat typography control2 alignLeft widthFull colorInverse noOpacity"
+                  >
+                    <strong
+                      class="typography title2 alignLeft widthFull colorInverse noOpacity highlightValue"
+                    >
+                      50%
+                    </strong>
+                    <span>
+                       of players answered correctly
+                    </span>
+                  </p>
+                </section>
                 <div
                   class="surface card rating"
                 >
@@ -3967,6 +4089,67 @@ exports[`GameResultsPageUI > shows Summary by default and switches to Players an
                     Well played! Most players handled the challenge with confidence.
                   </p>
                 </div>
+                <section
+                  aria-labelledby="_r_pm_"
+                  class="surface card full questionHighlight"
+                >
+                  <div
+                    class="highlightContent"
+                  >
+                    <div
+                      class="highlightHeader"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="highlightIcon"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-bullseye"
+                          data-icon="bullseye"
+                          data-prefix="fas"
+                          role="img"
+                          viewBox="0 0 512 512"
+                        >
+                          <path
+                            d="M448 256a192 192 0 1 0 -384 0 192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <div>
+                        <h2
+                          class="typography title4 alignLeft widthFull colorInverse noOpacity"
+                          id="_r_pm_"
+                        >
+                          Toughest question
+                        </h2>
+                        <p
+                          class="typography control2 alignLeft widthFull colorInverse"
+                        >
+                          Question 2
+                        </p>
+                      </div>
+                    </div>
+                    <p
+                      class="typography body2 alignLeft widthFull colorInverse noOpacity"
+                    >
+                      Q2: 2 + 2?
+                    </p>
+                  </div>
+                  <p
+                    class="surface highlightStat typography control2 alignLeft widthFull colorInverse noOpacity"
+                  >
+                    <strong
+                      class="typography title2 alignLeft widthFull colorInverse noOpacity highlightValue"
+                    >
+                      50%
+                    </strong>
+                    <span>
+                       of players answered correctly
+                    </span>
+                  </p>
+                </section>
                 <div
                   class="surface card rating"
                 >

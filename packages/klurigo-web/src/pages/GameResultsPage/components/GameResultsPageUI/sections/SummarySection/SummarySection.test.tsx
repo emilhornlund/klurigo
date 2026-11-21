@@ -2,7 +2,9 @@ import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   type GameResultDto,
+  QuizVisibility,
 } from '@klurigo/common'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -42,11 +44,13 @@ vi.mock('react-router-dom', async () => {
 
 const createGameMock = vi.fn()
 const authenticateGameMock = vi.fn()
+const updateQuizVisibilityMock = vi.fn()
 
 vi.mock('../../../../../../api', () => ({
   useKlurigoServiceClient: () => ({
     createGame: createGameMock,
     authenticateGame: authenticateGameMock,
+    updateQuizVisibility: updateQuizVisibilityMock,
   }),
 }))
 
@@ -73,6 +77,7 @@ beforeEach(() => {
 
   createGameMock.mockReset()
   authenticateGameMock.mockReset()
+  updateQuizVisibilityMock.mockReset()
 
   h.getCorrectPercentage.mockReset()
   h.getAveragePrecision.mockReset()
@@ -95,6 +100,198 @@ const HOST = {
 }
 
 describe('SummarySection', () => {
+  it.each([
+    {
+      role: 'private quiz owner as host',
+      participantId: HOST.id,
+      canRateQuiz: false,
+      canHostLiveGame: true,
+      canPublishQuiz: true,
+    },
+    {
+      role: 'private quiz owner as player',
+      participantId: 'player-1',
+      canRateQuiz: false,
+      canHostLiveGame: true,
+      canPublishQuiz: true,
+    },
+    {
+      role: 'public quiz owner',
+      participantId: HOST.id,
+      canRateQuiz: false,
+      canHostLiveGame: true,
+      canPublishQuiz: false,
+    },
+    {
+      role: 'non-owner host',
+      participantId: HOST.id,
+      canRateQuiz: true,
+      canHostLiveGame: false,
+      canPublishQuiz: false,
+    },
+    {
+      role: 'other player',
+      participantId: 'player-1',
+      canRateQuiz: true,
+      canHostLiveGame: true,
+      canPublishQuiz: false,
+    },
+    {
+      role: 'owner with legacy results',
+      participantId: HOST.id,
+      canRateQuiz: false,
+      canHostLiveGame: true,
+    },
+  ])(
+    'uses publication eligibility for $role',
+    async ({ participantId, canRateQuiz, canHostLiveGame, canPublishQuiz }) => {
+      const quiz = {
+        id: 'private-quiz',
+        canRateQuiz,
+        canHostLiveGame,
+        canPublishQuiz: canPublishQuiz === true,
+      }
+      if (canPublishQuiz === undefined) {
+        // Simulate a response from an older service without the capability.
+        Reflect.deleteProperty(quiz, 'canPublishQuiz')
+      }
+
+      render(
+        <QueryClientProvider client={new QueryClient()}>
+          <MemoryRouter>
+            <SummarySection
+              host={HOST}
+              currentParticipantId={participantId}
+              mode={GameMode.Classic}
+              quiz={quiz}
+              numberOfPlayers={0}
+              numberOfQuestions={0}
+              playerMetrics={[]}
+              questionMetrics={[]}
+              duration={123}
+              created={CREATED_DATE}
+              onRatingChange={vi.fn()}
+              onCommentChange={vi.fn()}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>,
+      )
+
+      const action = screen.queryByRole('button', {
+        name: 'Review quiz visibility',
+      })
+      if (!canPublishQuiz) {
+        expect(action).not.toBeInTheDocument()
+        expect(
+          screen.queryByText('Let others discover your quiz'),
+        ).not.toBeInTheDocument()
+        return
+      }
+
+      expect(
+        screen.getByRole('heading', { name: 'Let others discover your quiz' }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'Your quiz is private. Make it public so other people can discover it and host their own games.',
+        ),
+      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /play again/i })).toBeEnabled()
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Review quiz visibility' }),
+      )
+      const dialog = screen.getByRole('dialog', {
+        name: 'Make this quiz public?',
+      })
+      expect(
+        within(dialog).getByRole('button', { name: 'Make public' }),
+      ).toBeEnabled()
+      await userEvent.click(
+        within(dialog).getByRole('button', { name: 'Cancel' }),
+      )
+      expect(dialog).not.toBeInTheDocument()
+      expect(updateQuizVisibilityMock).not.toHaveBeenCalled()
+      expect(navigateMock).not.toHaveBeenCalled()
+    },
+  )
+
+  it('keeps the confirmation open after a save failure and can retry in place', async () => {
+    const queryClient = new QueryClient()
+    const quiz = {
+      id: 'quiz-to-publish',
+      canPublishQuiz: true,
+      canRateQuiz: false,
+      canHostLiveGame: true,
+    }
+    const resultsKey = ['game_results', 'current-game']
+    queryClient.setQueryData(resultsKey, { quiz })
+    const unrelatedKey = ['game_results', 'other-game']
+    queryClient.setQueryData(unrelatedKey, {
+      quiz: { ...quiz, id: 'another-quiz' },
+    })
+
+    const save = createDeferred<void>()
+    updateQuizVisibilityMock
+      .mockReturnValueOnce(save.promise)
+      .mockResolvedValueOnce(undefined)
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <SummarySection
+            host={HOST}
+            currentParticipantId={HOST.id}
+            mode={GameMode.Classic}
+            quiz={quiz}
+            numberOfPlayers={0}
+            numberOfQuestions={0}
+            playerMetrics={[]}
+            questionMetrics={[]}
+            duration={123}
+            created={CREATED_DATE}
+            onRatingChange={vi.fn()}
+            onCommentChange={vi.fn()}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+
+    const user = userEvent.setup()
+    await user.click(
+      screen.getByRole('button', { name: 'Review quiz visibility' }),
+    )
+    const dialog = screen.getByRole('dialog', {
+      name: 'Make this quiz public?',
+    })
+    const confirm = within(dialog).getByRole('button', { name: 'Make public' })
+    const cancel = within(dialog).getByRole('button', { name: 'Cancel' })
+    await user.click(confirm)
+    expect(confirm).toBeDisabled()
+    expect(cancel).toBeDisabled()
+    await user.keyboard('{Escape}')
+    expect(dialog).toBeInTheDocument()
+
+    save.reject(new Error('temporarily unavailable'))
+    expect(await within(dialog).findByRole('alert')).toHaveTextContent(
+      'Couldn’t make the quiz public',
+    )
+    expect(queryClient.getQueryData(resultsKey)).toEqual({ quiz })
+    await user.click(confirm)
+
+    await waitFor(() => expect(dialog).not.toBeInTheDocument())
+    expect(updateQuizVisibilityMock.mock.calls).toEqual([
+      [quiz.id, QuizVisibility.Public],
+      [quiz.id, QuizVisibility.Public],
+    ])
+    expect(queryClient.getQueryData(resultsKey)).toEqual({
+      quiz: { ...quiz, canPublishQuiz: false },
+    })
+    expect(queryClient.getQueryData(unrelatedKey)).toEqual({
+      quiz: { ...quiz, id: 'another-quiz' },
+    })
+    expect(navigateMock).not.toHaveBeenCalled()
+  })
+
   it('renders Classic summary, uses getCorrectPercentage, shows fastest and longest streak', () => {
     h.getCorrectPercentage
       .mockImplementationOnce(() => 60)
@@ -105,6 +302,9 @@ describe('SummarySection', () => {
         score: 120,
         averageResponseTime: 3.2,
         longestCorrectStreak: 5,
+        correct: 1,
+        incorrect: 1,
+        comebackRankGain: 0,
         player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
@@ -112,6 +312,9 @@ describe('SummarySection', () => {
         score: 90,
         averageResponseTime: 4.5,
         longestCorrectStreak: 7,
+        correct: 2,
+        incorrect: 0,
+        comebackRankGain: 1,
         player: { nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
@@ -124,8 +327,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: true,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={2}
           numberOfQuestions={2}
           playerMetrics={playerMetrics}
@@ -151,6 +360,8 @@ describe('SummarySection', () => {
     expect(screen.getByText('sec:3.2')).toBeInTheDocument()
     expect(screen.getByText('Longest Correct Streak')).toBeInTheDocument()
     expect(screen.getByText('7')).toBeInTheDocument()
+    expect(screen.getByText('Most Accurate Player')).toBeInTheDocument()
+    expect(screen.getByText('Biggest Comeback')).toBeInTheDocument()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
     const playersItem = within(detailsCard)
@@ -181,12 +392,16 @@ describe('SummarySection', () => {
         rank: 1,
         score: 120,
         averageResponseTime: 2.1,
+        unanswered: 1,
+        averagePrecision: 0.6,
         player: { nickname: 'Carol', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
         rank: 2,
         score: 90,
         averageResponseTime: 2.7,
+        unanswered: 0,
+        averagePrecision: 0.9,
         player: { nickname: 'Dave', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
@@ -199,8 +414,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.ZeroToOneHundred}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: false,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={2}
           numberOfQuestions={2}
           playerMetrics={playerMetrics}
@@ -219,7 +440,10 @@ describe('SummarySection', () => {
     expect(h.getCorrectPercentage).not.toHaveBeenCalled()
     expect(h.getQuizDifficultyMessage).toHaveBeenCalledWith(50)
     expect(screen.getByText('Difficulty: 50%')).toBeInTheDocument()
+    expect(screen.getByText('Fastest Overall Player')).toBeInTheDocument()
+    expect(screen.getByText('Precision Champion')).toBeInTheDocument()
     expect(screen.queryByText('Longest Correct Streak')).toBeNull()
+    expect(screen.queryByText('Biggest Comeback')).toBeNull()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
     const playersItem = within(detailsCard)
@@ -253,8 +477,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: false,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={2}
           numberOfQuestions={2}
           playerMetrics={playerMetrics}
@@ -271,6 +501,9 @@ describe('SummarySection', () => {
 
     expect(screen.queryByText('Fastest Overall Player')).toBeNull()
     expect(screen.queryByText('Longest Correct Streak')).toBeNull()
+    expect(screen.queryByText('Most Accurate Player')).toBeNull()
+    expect(screen.queryByText('Precision Champion')).toBeNull()
+    expect(screen.queryByText('Biggest Comeback')).toBeNull()
 
     expect(container).toMatchSnapshot()
   })
@@ -298,8 +531,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: true,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}
@@ -350,8 +589,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: true,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}
@@ -440,8 +685,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: false,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}
@@ -496,8 +747,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: true,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}
@@ -573,8 +830,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: false,
+            canHostLiveGame: true,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}
@@ -631,8 +894,14 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
-          quiz={{ id: 'quizId', canRateQuiz: true, canHostLiveGame: false }}
+          quiz={{
+            id: 'quizId',
+            canRateQuiz: true,
+            canHostLiveGame: false,
+            canPublishQuiz: false,
+          }}
           numberOfPlayers={1}
           numberOfQuestions={1}
           playerMetrics={playerMetrics}

@@ -308,6 +308,26 @@ export class QuizService {
   }
 
   /**
+   * Updates the visibility of an existing quiz without rewriting its content.
+   *
+   * The repository applies a partial update to visibility and the quiz's
+   * modification timestamp. Ownership is checked by the calling controller.
+   *
+   * @param quizId - The unique identifier of the quiz to update.
+   * @param visibility - The new public or private visibility.
+   * @returns The updated quiz's details.
+   * @throws QuizNotFoundException If the quiz does not exist.
+   */
+  public async updateQuizVisibility(
+    quizId: string,
+    visibility: QuizVisibility,
+  ): Promise<QuizResponseDto> {
+    return toQuizResponseDto(
+      await this.quizRepository.updateQuiz(quizId, { visibility }),
+    )
+  }
+
+  /**
    * Deletes a quiz by its ID.
    *
    * @param quizId - The unique identifier of the quiz.
