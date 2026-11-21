@@ -177,8 +177,9 @@ const SummarySection: FC<SummarySectionProps> = ({
   )
 
   const averageResponseTimeMetric = useMemo<Metric | null>(
-    () => getFastestOverallPlayerMetric(playerMetrics),
-    [playerMetrics],
+    () =>
+      getFastestOverallPlayerMetric({ mode, playerMetrics, numberOfQuestions }),
+    [mode, playerMetrics, numberOfQuestions],
   )
 
   const longestCorrectStreakMetric = useMemo<Metric | null>(
@@ -202,8 +203,9 @@ const SummarySection: FC<SummarySectionProps> = ({
   )
 
   const precisionChampion = useMemo<Metric | null>(
-    () => getPrecisionChampionMetric({ mode, playerMetrics }),
-    [mode, playerMetrics],
+    () =>
+      getPrecisionChampionMetric({ mode, playerMetrics, numberOfQuestions }),
+    [mode, playerMetrics, numberOfQuestions],
   )
 
   const comebackRankGain = useMemo<Metric | null>(
@@ -376,7 +378,7 @@ const SummarySection: FC<SummarySectionProps> = ({
           />
         )}
 
-        {mode === GameMode.Classic && longestCorrectStreakMetric && (
+        {longestCorrectStreakMetric && (
           <MetricCard
             title="Longest Correct Streak"
             value={`${longestCorrectStreakMetric.value}`}

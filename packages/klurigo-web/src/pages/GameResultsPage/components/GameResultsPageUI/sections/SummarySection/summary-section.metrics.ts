@@ -3,6 +3,7 @@ import {
   type GameResultClassicModePlayerMetricDto,
   type GameResultDto,
   type GameResultParticipantDto,
+  type GameResultPlayerMetricDto,
   type GameResultZeroToOneHundredModePlayerMetricDto,
 } from '@klurigo/common'
 
@@ -14,181 +15,202 @@ import {
  */
 export type Metric = { value: number; players: GameResultParticipantDto[] }
 
+type AwardMetricArgs = Pick<
+  GameResultDto,
+  'mode' | 'playerMetrics' | 'numberOfQuestions'
+>
+
 /**
- * Sorts participants alphabetically by nickname.
+ * Selects the best finite value and all tied players, sorted by nickname.
  *
- * Returns a new array and does not mutate the input.
- *
- * @param players - The participants to sort.
- * @returns The participants sorted by nickname.
+ * @param playerMetrics - Final performance metrics for all players.
+ * @param getValue - Returns a raw candidate value, or `undefined` for an ineligible player.
+ * @param order - Whether the highest or lowest value wins.
+ * @returns The winning value and players, or `null` if no player qualifies.
  */
-const sortPlayersByNickname = (
-  players: GameResultParticipantDto[],
-): GameResultParticipantDto[] => {
-  return [...players].sort((a, b) => a.nickname.localeCompare(b.nickname))
+const getWinningMetric = <T extends GameResultPlayerMetricDto>(
+  playerMetrics: T[],
+  getValue: (metric: T) => number | undefined,
+  order: 'highest' | 'lowest' = 'highest',
+): Metric | null => {
+  let winner: Metric | null = null
+  for (const metric of playerMetrics) {
+    const value = getValue(metric)
+    if (
+      value === undefined ||
+      !Number.isFinite(value) ||
+      typeof metric.player?.nickname !== 'string'
+    ) {
+      continue
+    }
+
+    if (
+      !winner ||
+      (order === 'highest' ? value > winner.value : value < winner.value)
+    ) {
+      winner = { value, players: [metric.player] }
+    } else if (value === winner.value) {
+      winner.players.push(metric.player)
+    }
+  }
+
+  winner?.players.sort((a, b) => a.nickname.localeCompare(b.nickname))
+  return winner
+}
+
+/**
+ * Determines whether a player submitted an answer using the mode's recorded counts.
+ *
+ * @param mode - The game mode of the completed game.
+ * @param metric - The player's final performance metrics.
+ * @param numberOfQuestions - Total number of questions in the game.
+ * @returns Whether the recorded answer count is positive.
+ */
+const hasSubmittedAnswer = (
+  mode: GameMode,
+  metric: GameResultPlayerMetricDto,
+  numberOfQuestions: number,
+): boolean => {
+  if (mode === GameMode.Classic) {
+    const { correct, incorrect } =
+      metric as GameResultClassicModePlayerMetricDto
+    return (
+      Number.isFinite(correct) &&
+      Number.isFinite(incorrect) &&
+      correct + incorrect > 0
+    )
+  }
+
+  return (
+    Number.isFinite(numberOfQuestions) &&
+    Number.isFinite(metric.unanswered) &&
+    numberOfQuestions - metric.unanswered > 0
+  )
 }
 
 /**
  * Computes the fastest overall player metric.
  *
- * Determines the lowest average response time across all players and returns
- * all players that share that value.
- *
- * @param playerMetrics - Final performance metrics for all players.
- * @returns The fastest overall player metric, or `null` if no players exist.
- */
-export const getFastestOverallPlayerMetric = (
-  playerMetrics: GameResultDto['playerMetrics'],
-): Metric | null => {
-  if (playerMetrics.length === 0) {
-    return null
-  }
-
-  const value = Math.min(...playerMetrics.map((m) => m.averageResponseTime))
-
-  const players = sortPlayersByNickname(
-    playerMetrics
-      .filter((m) => m.averageResponseTime === value)
-      .map((m) => m.player),
-  )
-
-  return { value, players }
-}
-
-/**
- * Computes the longest correct answer streak metric.
- *
- * Determines the highest number of consecutive correct answers achieved by
- * any player and returns all players that share that streak.
- *
- * @param playerMetrics - Final performance metrics for all players.
- * @returns The longest correct streak metric, or `null` if no players exist.
- */
-export const getLongestCorrectStreakMetric = (
-  playerMetrics: GameResultClassicModePlayerMetricDto[],
-): Metric | null => {
-  if (playerMetrics.length === 0) {
-    return null
-  }
-
-  const value = Math.max(...playerMetrics.map((m) => m.longestCorrectStreak))
-
-  const players = sortPlayersByNickname(
-    playerMetrics
-      .filter((m) => m.longestCorrectStreak === value)
-      .map((m) => m.player),
-  )
-
-  return { value, players }
-}
-
-/**
- * Computes the most accurate player metric for classic mode games.
- *
- * Accuracy is calculated as the ratio of correctly answered questions to the
- * total number of questions in the game. All players with the highest accuracy
- * are returned.
+ * Uses the recorded average response time and considers only players who
+ * submitted at least one answer. A recorded time of zero can qualify.
  *
  * @param args - Metric calculation arguments.
  * @param args.mode - The game mode of the completed game.
  * @param args.playerMetrics - Final performance metrics for all players.
  * @param args.numberOfQuestions - Total number of questions in the game.
- * @returns The most accurate player metric, or `null` if not applicable.
+ * @returns The fastest overall player metric, or `null` if no player qualifies.
  */
-export const getMostAccuratePlayerMetric = (args: {
-  mode: GameMode
-  playerMetrics: GameResultDto['playerMetrics']
-  numberOfQuestions: number
-}): Metric | null => {
-  const { mode, playerMetrics, numberOfQuestions } = args
-
-  if (mode !== GameMode.Classic) {
-    return null
-  }
-
-  if (playerMetrics.length === 0 || numberOfQuestions <= 0) {
-    return null
-  }
-
-  const accuracies = playerMetrics.map((metric) => ({
-    player: metric.player,
-    value:
-      (metric as GameResultClassicModePlayerMetricDto).correct /
-      numberOfQuestions,
-  }))
-
-  const bestAccuracy = Math.max(...accuracies.map((x) => x.value))
-
-  const players = sortPlayersByNickname(
-    accuracies.filter((x) => x.value === bestAccuracy).map((x) => x.player),
+export const getFastestOverallPlayerMetric = (
+  args: AwardMetricArgs,
+): Metric | null =>
+  getWinningMetric<GameResultPlayerMetricDto>(
+    args.playerMetrics,
+    (metric) =>
+      hasSubmittedAnswer(args.mode, metric, args.numberOfQuestions) &&
+      metric.averageResponseTime >= 0
+        ? metric.averageResponseTime
+        : undefined,
+    'lowest',
   )
 
-  return { value: Math.round(bestAccuracy * 100), players }
+/**
+ * Computes the longest correct answer streak metric for Classic games.
+ *
+ * Counts streaks of at least two consecutive correct answers.
+ *
+ * @param playerMetrics - Final Classic performance metrics for all players.
+ * @returns The longest correct streak metric, or `null` if no player qualifies.
+ */
+export const getLongestCorrectStreakMetric = (
+  playerMetrics: GameResultClassicModePlayerMetricDto[],
+): Metric | null =>
+  getWinningMetric(playerMetrics, ({ longestCorrectStreak }) =>
+    longestCorrectStreak >= 2 ? longestCorrectStreak : undefined,
+  )
+
+/**
+ * Computes the most accurate player metric for classic mode games.
+ *
+ * Accuracy is calculated as the ratio of correctly answered questions to the
+ * total number of questions in the game. Only players who submitted an answer
+ * and have positive accuracy qualify. Winners are selected before rounding.
+ *
+ * @param args - Metric calculation arguments.
+ * @param args.mode - The game mode of the completed game.
+ * @param args.playerMetrics - Final performance metrics for all players.
+ * @param args.numberOfQuestions - Total number of questions in the game.
+ * @returns The most accurate player metric, or `null` if no player qualifies.
+ */
+export const getMostAccuratePlayerMetric = ({
+  mode,
+  playerMetrics,
+  numberOfQuestions,
+}: AwardMetricArgs): Metric | null => {
+  if (
+    mode !== GameMode.Classic ||
+    !Number.isFinite(numberOfQuestions) ||
+    numberOfQuestions <= 0
+  ) {
+    return null
+  }
+
+  const winner = getWinningMetric(
+    playerMetrics as GameResultClassicModePlayerMetricDto[],
+    (metric) =>
+      hasSubmittedAnswer(mode, metric, numberOfQuestions) && metric.correct > 0
+        ? metric.correct / numberOfQuestions
+        : undefined,
+  )
+
+  return winner && { ...winner, value: Math.round(winner.value * 100) }
 }
 
 /**
  * Computes the precision champion metric for zero-to-one-hundred mode games.
  *
- * Precision is based on each player's average precision score, where higher
- * values indicate closer answers to the correct value.
+ * Only players who submitted an answer and have positive average precision
+ * qualify. Winners are selected before rounding.
  *
  * @param args - Metric calculation arguments.
  * @param args.mode - The game mode of the completed game.
  * @param args.playerMetrics - Final performance metrics for all players.
- * @returns The precision champion metric, or `null` if not applicable.
+ * @param args.numberOfQuestions - Total number of questions in the game.
+ * @returns The precision champion metric, or `null` if no player qualifies.
  */
-export const getPrecisionChampionMetric = (args: {
-  mode: GameMode
-  playerMetrics: GameResultDto['playerMetrics']
-}): Metric | null => {
-  const { mode, playerMetrics } = args
-
+export const getPrecisionChampionMetric = ({
+  mode,
+  playerMetrics,
+  numberOfQuestions,
+}: AwardMetricArgs): Metric | null => {
   if (mode !== GameMode.ZeroToOneHundred) {
     return null
   }
 
-  if (playerMetrics.length === 0) {
-    return null
-  }
-
-  const precisions = playerMetrics.map((metric) => ({
-    player: metric.player,
-    value: (metric as GameResultZeroToOneHundredModePlayerMetricDto)
-      .averagePrecision,
-  }))
-
-  const bestPrecision = Math.max(...precisions.map((x) => x.value))
-
-  const players = sortPlayersByNickname(
-    precisions.filter((x) => x.value === bestPrecision).map((x) => x.player),
+  const winner = getWinningMetric(
+    playerMetrics as GameResultZeroToOneHundredModePlayerMetricDto[],
+    (metric) =>
+      hasSubmittedAnswer(mode, metric, numberOfQuestions) &&
+      metric.averagePrecision > 0
+        ? metric.averagePrecision
+        : undefined,
   )
 
-  return { value: Math.round(bestPrecision * 100), players }
+  return winner && { ...winner, value: Math.round(winner.value * 100) }
 }
 
 /**
  * Builds the "best comeback" metric based on `comebackRankGain`.
  *
- * Selects the highest `comebackRankGain` value across all players and returns
- * the value along with the players who achieved it (ties included).
+ * Selects the highest positive `comebackRankGain` value across all players.
  *
  * @param playerMetrics - Final performance metrics for all players.
  * @returns The metric value and tied players, or `null` when no meaningful comeback exists.
  */
 export const getComebackRankGainMetric = (
   playerMetrics: GameResultDto['playerMetrics'],
-): Metric | null => {
-  if (playerMetrics.length === 0) {
-    return null
-  }
-
-  const value = Math.max(...playerMetrics.map((m) => m.comebackRankGain))
-
-  const players = sortPlayersByNickname(
-    playerMetrics
-      .filter((m) => m.comebackRankGain === value)
-      .map((m) => m.player),
+): Metric | null =>
+  getWinningMetric<GameResultPlayerMetricDto>(
+    playerMetrics,
+    ({ comebackRankGain }) =>
+      comebackRankGain > 0 ? comebackRankGain : undefined,
   )
-
-  return { value, players }
-}

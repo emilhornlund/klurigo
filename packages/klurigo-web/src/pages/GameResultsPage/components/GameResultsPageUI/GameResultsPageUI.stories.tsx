@@ -341,6 +341,27 @@ export const SinglePlayerWithZeroScore = {
   },
 } satisfies Story
 
+export const AllUnanswered = {
+  args: {
+    ...SinglePlayerWithZeroScore.args,
+    results: {
+      ...SinglePlayerWithZeroScore.args.results,
+      name: 'All Unanswered Classic Quiz',
+      playerMetrics: SinglePlayerWithZeroScore.args.results.playerMetrics.map(
+        (metric) => ({
+          ...metric,
+          incorrect: 0,
+          unanswered: Classic.args.results.numberOfQuestions,
+        }),
+      ),
+      questionMetrics:
+        SinglePlayerWithZeroScore.args.results.questionMetrics.map(
+          (question) => ({ ...question, incorrect: 0, unanswered: 1 }),
+        ),
+    },
+  },
+} satisfies Story
+
 export const ZeroPrecision = {
   args: {
     ...ZeroToOneHundred.args,

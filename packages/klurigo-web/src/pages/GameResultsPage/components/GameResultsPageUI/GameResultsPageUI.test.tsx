@@ -521,8 +521,61 @@ describe('GameResultsPageUI', () => {
         expect(
           recap.queryByText(/longest correct streak|recovered/i),
         ).not.toBeInTheDocument()
+        expect(screen.getByText('Fastest Overall Player')).toBeInTheDocument()
+        expect(
+          screen.queryByText(
+            /^(Most Accurate Player|Precision Champion|Biggest Comeback|Longest Correct Streak)$/,
+          ),
+        ).not.toBeInTheDocument()
       },
     )
+
+    it('keeps personal, player and question results when no award qualifies', () => {
+      const results = classicMinimal()
+      const current = {
+        ...results.playerMetrics[0],
+        correct: 0,
+        incorrect: 0,
+        unanswered: results.numberOfQuestions,
+        score: 0,
+        longestCorrectStreak: 0,
+        comebackRankGain: 0,
+      }
+      renderResults(
+        {
+          ...results,
+          numberOfPlayers: 1,
+          playerMetrics: [current],
+          questionMetrics: results.questionMetrics.map((question) => ({
+            ...question,
+            correct: 0,
+            incorrect: 0,
+            unanswered: 1,
+          })),
+        },
+        current.player.id,
+      )
+
+      expect(within(resultCard()).getByText('0 of 2')).toBeInTheDocument()
+      expect(
+        screen.queryByText(
+          /^(Fastest Overall Player|Most Accurate Player|Precision Champion|Biggest Comeback|Longest Correct Streak)$/,
+        ),
+      ).not.toBeInTheDocument()
+
+      clickSegment('Players')
+      fireEvent.click(screen.getByText(current.player.nickname))
+      expect(screen.getByText('Longest correct streak')).toBeInTheDocument()
+      expect(screen.getByText('Unanswered')).toBeInTheDocument()
+
+      clickSegment('Questions')
+      const question = screen.getByText(results.questionMetrics[0].text)
+      fireEvent.click(question)
+      expect(question).toBeInTheDocument()
+      expect(
+        screen.getAllByText('Average response time')[0],
+      ).toBeInTheDocument()
+    })
 
     it('does not call out a one-answer streak or zero-place comeback', () => {
       const results = classicMinimal()

@@ -105,6 +105,9 @@ describe('SummarySection', () => {
         score: 120,
         averageResponseTime: 3.2,
         longestCorrectStreak: 5,
+        correct: 1,
+        incorrect: 1,
+        comebackRankGain: 0,
         player: { nickname: 'Alice', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
@@ -112,6 +115,9 @@ describe('SummarySection', () => {
         score: 90,
         averageResponseTime: 4.5,
         longestCorrectStreak: 7,
+        correct: 2,
+        incorrect: 0,
+        comebackRankGain: 1,
         player: { nickname: 'Bob', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
@@ -152,6 +158,8 @@ describe('SummarySection', () => {
     expect(screen.getByText('sec:3.2')).toBeInTheDocument()
     expect(screen.getByText('Longest Correct Streak')).toBeInTheDocument()
     expect(screen.getByText('7')).toBeInTheDocument()
+    expect(screen.getByText('Most Accurate Player')).toBeInTheDocument()
+    expect(screen.getByText('Biggest Comeback')).toBeInTheDocument()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
     const playersItem = within(detailsCard)
@@ -182,12 +190,16 @@ describe('SummarySection', () => {
         rank: 1,
         score: 120,
         averageResponseTime: 2.1,
+        unanswered: 1,
+        averagePrecision: 0.6,
         player: { nickname: 'Carol', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
       {
         rank: 2,
         score: 90,
         averageResponseTime: 2.7,
+        unanswered: 0,
+        averagePrecision: 0.9,
         player: { nickname: 'Dave', avatar: DEFAULT_CRITTERS_AVATAR_V1 },
       },
     ] as unknown as GameResultDto['playerMetrics']
@@ -221,7 +233,10 @@ describe('SummarySection', () => {
     expect(h.getCorrectPercentage).not.toHaveBeenCalled()
     expect(h.getQuizDifficultyMessage).toHaveBeenCalledWith(50)
     expect(screen.getByText('Difficulty: 50%')).toBeInTheDocument()
+    expect(screen.getByText('Fastest Overall Player')).toBeInTheDocument()
+    expect(screen.getByText('Precision Champion')).toBeInTheDocument()
     expect(screen.queryByText('Longest Correct Streak')).toBeNull()
+    expect(screen.queryByText('Biggest Comeback')).toBeNull()
 
     const detailsCard = container.querySelector('.card.details') as HTMLElement
     const playersItem = within(detailsCard)
@@ -274,6 +289,9 @@ describe('SummarySection', () => {
 
     expect(screen.queryByText('Fastest Overall Player')).toBeNull()
     expect(screen.queryByText('Longest Correct Streak')).toBeNull()
+    expect(screen.queryByText('Most Accurate Player')).toBeNull()
+    expect(screen.queryByText('Precision Champion')).toBeNull()
+    expect(screen.queryByText('Biggest Comeback')).toBeNull()
 
     expect(container).toMatchSnapshot()
   })
