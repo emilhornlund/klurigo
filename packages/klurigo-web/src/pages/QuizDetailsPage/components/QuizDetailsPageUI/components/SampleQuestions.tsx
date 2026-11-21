@@ -1,8 +1,9 @@
+import { faListOl } from '@fortawesome/free-solid-svg-icons'
 import type { QuestionPreviewDto } from '@klurigo/common'
 import { type FC, useId } from 'react'
 
-import { Button, Stack, Typography } from '../../../../../components'
-import { QuestionTypeLabels } from '../../../../../models/labels'
+import { Accordion, Button, Stack, Typography } from '../../../../../components'
+import { QuestionTypeLabels } from '../../../../../models'
 
 import styles from './SampleQuestions.module.scss'
 
@@ -11,65 +12,68 @@ export type SampleQuestionsState =
   | { status: 'error'; onRetry: () => void }
   | { status: 'ready'; questions: readonly QuestionPreviewDto[] }
 
-/** Displays the quiz's opening prompts without answers or media. */
+/** Displays the quiz's opening questions without answers or media. */
 const SampleQuestions: FC<{ state: SampleQuestionsState }> = ({ state }) => {
-  const headingId = useId()
+  const retryId = useId()
+  const count = state.status === 'ready' ? state.questions.length : 0
 
   return (
-    <Stack as="section" width="full" aria-labelledby={headingId}>
-      <Typography
-        id={headingId}
-        variant="title3"
-        align="center"
-        color="inverse">
-        Sample questions
-      </Typography>
-
+    <Accordion
+      title="Sample questions"
+      icon={faListOl}
+      description={
+        count > 0
+          ? `${count} ${count === 1 ? 'question' : 'questions'} from this quiz`
+          : undefined
+      }>
       {state.status === 'loading' ? (
         <Typography
-          variant="body2"
+          variant="control"
           align="center"
           color="inverse"
           role="status">
-          Loading sample questions…
+          Hang tight — we’re rounding up the questions…
         </Typography>
       ) : state.status === 'error' ? (
         <Stack align="center" spacing="compact">
           <Typography
-            variant="body2"
+            variant="control"
             align="center"
             color="inverse"
             role="status">
-            We couldn’t load the sample questions.
+            Oops! The sample questions didn’t load.
           </Typography>
           <Button
-            id={`${headingId}-retry`}
+            id={`${retryId}-retry`}
             type="button"
             variant="primary"
             size="small"
-            value="Retry"
+            value="Try again"
             onClick={state.onRetry}
           />
         </Stack>
       ) : state.questions.length === 0 ? (
-        <Typography variant="body2" align="center" color="inverse">
-          No sample questions available.
+        <Typography variant="control" align="center" color="inverse">
+          No sample questions to peek at yet.
         </Typography>
       ) : (
-        <Stack as="ol" className={styles.list}>
+        <ol className={styles.list} role="list">
           {state.questions.map(({ type, question }, index) => (
-            <li key={index}>
-              <Typography variant="control2" bold color="inverse">
-                {QuestionTypeLabels[type]}
-              </Typography>
-              <Typography variant="body2" color="inverse">
-                {question}
-              </Typography>
+            <li key={index} className={styles.item}>
+              <span className={styles.number}>{index + 1}</span>
+              <div className={styles.prompt}>
+                <Typography variant="control2" color="subtle" bold noOpacity>
+                  {QuestionTypeLabels[type]}
+                </Typography>
+                <Typography variant="control" noOpacity>
+                  {question}
+                </Typography>
+              </div>
             </li>
           ))}
-        </Stack>
+        </ol>
       )}
-    </Stack>
+    </Accordion>
   )
 }
 

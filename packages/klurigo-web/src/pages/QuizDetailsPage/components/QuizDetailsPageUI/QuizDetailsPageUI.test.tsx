@@ -9,6 +9,7 @@ import {
   QuizVisibility,
 } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
@@ -201,7 +202,8 @@ describe('QuizDetailsPageUI', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('shows ordered sample prompts and labels after the quiz metadata and before ratings', () => {
+  it('reveals ordered sample prompts between quiz metadata and ratings when toggled', async () => {
+    const user = userEvent.setup()
     renderUI({
       quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 1, total: 1 } }),
       sampleQuestions: {
@@ -217,6 +219,15 @@ describe('QuizDetailsPageUI', () => {
     })
 
     const samples = screen.getByRole('region', { name: 'Sample questions' })
+    const toggle = within(samples).getByRole('button', {
+      name: 'Sample questions',
+      expanded: false,
+    })
+    expect(toggle).toHaveAccessibleDescription('2 questions from this quiz')
+    expect(within(samples).queryByRole('list')).not.toBeInTheDocument()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const list = within(samples).getByRole('list')
     expect(list.tagName).toBe('OL')
     const items = within(list).getAllByRole('listitem')
@@ -225,13 +236,18 @@ describe('QuizDetailsPageUI', () => {
     expect(items[1]).toHaveTextContent(
       /Puzzle.*Order these cities from north to south\./,
     )
-    expect(within(samples).queryByRole('button')).not.toBeInTheDocument()
+    expect(within(list).queryByRole('button')).not.toBeInTheDocument()
     expect(
       screen.getByText('General Knowledge').compareDocumentPosition(samples),
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(
       samples.compareDocumentPosition(screen.getByTestId('ratings-section')),
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+
+    expect(toggle).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(list).not.toBeVisible()
   })
 
   it.each(['loading', 'error'] as const)(
@@ -245,15 +261,20 @@ describe('QuizDetailsPageUI', () => {
       })
 
       const samples = screen.getByRole('region', { name: 'Sample questions' })
+      fireEvent.click(
+        within(samples).getByRole('button', { name: 'Sample questions' }),
+      )
       if (status === 'error') {
         expect(within(samples).getByRole('status')).toHaveTextContent(
-          'We couldn’t load the sample questions.',
+          'Oops! The sample questions didn’t load.',
         )
-        fireEvent.click(within(samples).getByRole('button', { name: 'Retry' }))
+        fireEvent.click(
+          within(samples).getByRole('button', { name: 'Try again' }),
+        )
         expect(onRetry).toHaveBeenCalledOnce()
       } else {
         expect(within(samples).getByRole('status')).toHaveTextContent(
-          'Loading sample questions',
+          'Hang tight — we’re rounding up the questions…',
         )
       }
       expect(onHostGame).not.toHaveBeenCalled()
@@ -264,6 +285,20 @@ describe('QuizDetailsPageUI', () => {
       expect(onHostGame).toHaveBeenCalledOnce()
     },
   )
+
+  it('does not advertise a question count when there are no samples', () => {
+    renderUI({ sampleQuestions: { status: 'ready', questions: [] } })
+
+    const samples = screen.getByRole('region', { name: 'Sample questions' })
+    const toggle = within(samples).getByRole('button', {
+      name: 'Sample questions',
+    })
+    expect(toggle).not.toHaveAccessibleDescription()
+    fireEvent.click(toggle)
+    expect(
+      within(samples).getByText('No sample questions to peek at yet.'),
+    ).toBeVisible()
+  })
 
   it('opens destructive delete confirmation only for owners and invokes deletion', () => {
     const onDeleteQuiz = vi.fn()

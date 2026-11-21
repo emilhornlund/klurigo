@@ -27,8 +27,11 @@ test('retries the sample prompts on quiz details without creating a game', async
 
   await page.goto(`/quiz/details/${quiz.id}`)
   const samples = page.getByRole('region', { name: 'Sample questions' })
+  const toggle = samples.getByRole('button', { name: 'Sample questions' })
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  await toggle.press('Enter')
   await expect(samples.getByRole('status')).toHaveText(
-    'We couldn’t load the sample questions.',
+    'Oops! The sample questions didn’t load.',
   )
   const host = page.getByRole('button', { name: 'Host Game' })
   await host.click()
@@ -36,12 +39,18 @@ test('retries the sample prompts on quiz details without creating a game', async
   await expect(dialog.getByRole('button', { name: 'Confirm' })).toBeEnabled()
   await dialog.getByRole('button', { name: 'Close', exact: true }).click()
 
-  await samples.getByRole('button', { name: 'Retry' }).click()
+  await samples.getByRole('button', { name: 'Try again' }).click()
   const items = samples.getByRole('listitem')
   await expect(items).toHaveCount(3)
   for (const [index, question] of quiz.questions.slice(0, 3).entries()) {
     await expect(items.nth(index)).toContainText(question.text)
   }
-  await expect(samples.getByRole('button')).toHaveCount(0)
+  await expect(samples.getByRole('button', { name: 'Try again' })).toHaveCount(
+    0,
+  )
+  await expect(toggle).toHaveAccessibleDescription('3 questions from this quiz')
+  await toggle.press('Space')
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  await expect(samples.getByRole('list')).toBeHidden()
   expect(gameCreationRequests).toEqual([])
 })

@@ -1,12 +1,54 @@
+@use '../../../../../styles/border-radius.tokens' as radius;
 @use '../../../../../styles/colors.semantic' as colors;
+@use '../../../../../styles/helpers' as helpers;
+@use '../../../../../styles/spacing.semantic' as spacing;
 
 .list {
   margin: 0;
-  padding-inline-start: 1.5em;
-  color: colors.$color-text-inverse;
+  padding: 0;
+  list-style: none;
+  border-radius: radius.$radius-surface-sm;
+  background: colors.$color-surface-default;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
   overflow-wrap: anywhere;
 
-  > li {
-    padding-inline-start: 0.25em;
+  @include helpers.mobile {
+    gap: spacing.$space-compact-mobile;
+    padding: spacing.$space-compact-mobile spacing.$space-stack-mobile;
   }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+    padding: spacing.$space-compact-tablet spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+    padding: spacing.$space-compact-desktop spacing.$space-stack-desktop;
+  }
+
+  & + & {
+    border-block-start: 1px solid colors.$color-border-muted;
+  }
+}
+
+.number {
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: radius.$radius-circle;
+  background: colors.$color-action-tint;
+  color: colors.$color-text-default;
+  font-weight: 700;
+}
+
+.prompt {
+  display: grid;
+  gap: spacing.$space-inline-mobile;
 }
