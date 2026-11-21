@@ -221,6 +221,9 @@ export type QuizRatingSummaryDto = {
   readonly total: number
 }
 
+/** Request to change only the visibility of an existing quiz. */
+export type QuizVisibilityRequestDto = Pick<QuizRequestBaseDto, 'visibility'>
+
 /**
  * Data transfer object for quiz responses.
  */

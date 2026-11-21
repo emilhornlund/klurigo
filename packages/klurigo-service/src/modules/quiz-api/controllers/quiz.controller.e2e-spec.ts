@@ -679,6 +679,87 @@ describe('QuizController (e2e)', () => {
     })
   })
 
+  describe('/api/quizzes/:quizId (PATCH)', () => {
+    it('lets the owner update visibility without replacing quiz content', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizModel.create(
+        createMockClassicQuiz({
+          owner: user,
+          visibility: QuizVisibility.Private,
+        }),
+      )
+      const before = await quizModel.findById(quiz._id).lean()
+
+      await supertest(app.getHttpServer())
+        .patch(`/api/quizzes/${quiz._id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .send({ visibility: QuizVisibility.Public })
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body).toMatchObject({
+            id: quiz._id,
+            visibility: QuizVisibility.Public,
+          })
+        })
+
+      expect(await quizModel.findById(quiz._id).lean()).toEqual({
+        ...before,
+        visibility: QuizVisibility.Public,
+        updated: expect.any(Date),
+      })
+    })
+
+    it.each([
+      {},
+      { visibility: 'unknown' },
+      { visibility: QuizVisibility.Public, title: 'Unexpected overwrite' },
+    ])('rejects invalid visibility updates: %j', async (body) => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizModel.create(
+        createMockClassicQuiz({
+          owner: user,
+          visibility: QuizVisibility.Private,
+        }),
+      )
+
+      await supertest(app.getHttpServer())
+        .patch(`/api/quizzes/${quiz._id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .send(body)
+        .expect(400)
+
+      expect((await quizModel.findById(quiz._id))?.visibility).toBe(
+        QuizVisibility.Private,
+      )
+    })
+
+    it.each(Object.values(QuizVisibility))(
+      'forbids non-owners from changing a %s quiz',
+      async (visibility) => {
+        const { accessToken } = await createDefaultUserAndAuthenticate(app)
+        const owner = await userModel.create(buildMockSecondaryUser())
+        const quiz = await quizModel.create(
+          createMockClassicQuiz({ owner, visibility }),
+        )
+
+        await supertest(app.getHttpServer())
+          .patch(`/api/quizzes/${quiz._id}`)
+          .set(createBearerAuthHeader(accessToken))
+          .send({
+            visibility:
+              visibility === QuizVisibility.Private
+                ? QuizVisibility.Public
+                : QuizVisibility.Private,
+          })
+          .expect(403)
+
+        expect((await quizModel.findById(quiz._id))?.visibility).toBe(
+          visibility,
+        )
+      },
+    )
+  })
+
   describe('/api/quizzes/:quizId (PUT)', () => {
     it('should succeed in updating an existing quiz', async () => {
       const { accessToken, user } = await createDefaultUserAndAuthenticate(app)

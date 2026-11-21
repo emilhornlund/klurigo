@@ -447,6 +447,45 @@ $contrast-opacity: 0.8;
       }
     }
 
+    &.publishPrompt {
+      --prompt-padding: #{spacing.$space-page-mobile};
+      --prompt-copy-gap: #{spacing.$space-inline-mobile};
+
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--prompt-padding);
+      padding: var(--prompt-padding);
+
+      @include helpers.mobile {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: start;
+      }
+
+      @include helpers.tablet {
+        --prompt-padding: #{spacing.$space-page-tablet};
+        --prompt-copy-gap: #{spacing.$space-inline-tablet};
+      }
+
+      @include helpers.desktop {
+        --prompt-padding: #{spacing.$space-page-desktop};
+        --prompt-copy-gap: #{spacing.$space-inline-desktop};
+      }
+
+      .publishPromptContent {
+        display: grid;
+        gap: var(--prompt-copy-gap);
+        text-wrap: pretty;
+      }
+
+      .publishPromptAction {
+        align-items: stretch;
+
+        > button {
+          height: auto;
+        }
+      }
+    }
+
     &.details {
       display: flex;
       flex-direction: row;

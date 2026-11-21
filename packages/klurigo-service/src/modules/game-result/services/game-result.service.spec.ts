@@ -281,8 +281,8 @@ describe(GameResultService.name, () => {
       expect(result.rating).toBeUndefined()
     })
 
-    describe('quiz canHostLiveGame flag', () => {
-      it('sets canHostLiveGame=true when participant is quiz owner', async () => {
+    describe('quiz capabilities', () => {
+      it('allows a private quiz owner who played to replay and publish it, but not to rate it', async () => {
         const doc = asGameResultDocument({
           quizVisibility: QuizVisibility.Private,
           quizOwnerParticipantId: 'owner-1',
@@ -315,10 +315,11 @@ describe(GameResultService.name, () => {
           id: doc.game.quiz._id,
           canRateQuiz: false,
           canHostLiveGame: true,
+          canPublishQuiz: true,
         })
       })
 
-      it('sets canHostLiveGame=true when quiz is public even if not owner', async () => {
+      it('allows a non-owner to rate and replay a public quiz, but not to publish it', async () => {
         const doc = asGameResultDocument({
           quizVisibility: QuizVisibility.Public,
           quizOwnerParticipantId: 'owner-1',
@@ -347,10 +348,11 @@ describe(GameResultService.name, () => {
           id: doc.game.quiz._id,
           canRateQuiz: true,
           canHostLiveGame: true,
+          canPublishQuiz: false,
         })
       })
 
-      it('sets canHostLiveGame=false when quiz is private and participant is not owner', async () => {
+      it('denies replay and publication of a private quiz to a non-owner', async () => {
         const doc = asGameResultDocument({
           quizVisibility: QuizVisibility.Private,
           quizOwnerParticipantId: 'owner-1',
@@ -379,10 +381,11 @@ describe(GameResultService.name, () => {
           id: doc.game.quiz._id,
           canRateQuiz: true,
           canHostLiveGame: false,
+          canPublishQuiz: false,
         })
       })
 
-      it('sets canHostLiveGame=true for public quiz even if quiz.owner is missing', async () => {
+      it('allows replay of a public quiz without an owner but never offers publication', async () => {
         const doc = asGameResultDocument({
           quizVisibility: QuizVisibility.Public,
           quizOwnerParticipantId: undefined,
@@ -411,6 +414,7 @@ describe(GameResultService.name, () => {
           id: doc.game.quiz._id,
           canRateQuiz: true,
           canHostLiveGame: true,
+          canPublishQuiz: false,
         })
       })
     })

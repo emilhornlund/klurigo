@@ -48,4 +48,21 @@ export class GameResultQuizResponse implements GameResultQuizDto {
   })
   @IsBoolean()
   readonly canHostLiveGame: boolean
+
+  /**
+   * Indicates whether the caller can make this private quiz public.
+   *
+   * The capability is evaluated using the current owner and visibility of the
+   * quiz, independently of the caller's role in the completed game.
+   */
+  @ApiProperty({
+    title: 'Can publish quiz',
+    description:
+      'True only when the caller currently owns the quiz and it is private, regardless of their role in the game.',
+    example: true,
+    required: true,
+    type: Boolean,
+  })
+  @IsBoolean()
+  readonly canPublishQuiz: boolean
 }

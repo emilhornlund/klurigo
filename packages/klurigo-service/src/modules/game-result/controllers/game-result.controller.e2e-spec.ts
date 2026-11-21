@@ -6,6 +6,7 @@ import {
   MediaType,
   QuestionRangeAnswerMargin,
   QuestionType,
+  QuizVisibility,
 } from '@klurigo/common'
 import { INestApplication } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
@@ -88,6 +89,57 @@ describe('GameResultController (e2e)', () => {
   })
 
   describe('/api/games/:gameID/results (GET)', () => {
+    it('uses current quiz ownership and visibility when returning historical results', async () => {
+      const host = await createDefaultUserAndAuthenticate(app)
+      const player = await createDefaultUserAndAuthenticate(
+        app,
+        buildMockTertiaryUser(),
+      )
+      const quiz = await quizModel.create(
+        createMockClassicQuiz({
+          owner: host.user,
+          visibility: QuizVisibility.Private,
+        }),
+      )
+      const game = await gameModel.create({
+        ...buildMockClassicModeGame(host.user, player.user),
+        quiz,
+      })
+      await gameResultModel.create(
+        buildMockClassicModeGameResult(game, host.user, player.user),
+      )
+
+      /**
+       * Reads publication eligibility for this historical result through the API.
+       *
+       * @param accessToken - The authenticated participant's user access token.
+       * @returns Whether the current quiz can be published by that participant.
+       */
+      const getEligibility = async (accessToken: string): Promise<boolean> => {
+        const { body } = await supertest(app.getHttpServer())
+          .get(`/api/games/${game._id}/results`)
+          .set(createBearerAuthHeader(accessToken))
+          .expect(200)
+        return body.quiz.canPublishQuiz
+      }
+
+      expect(await getEligibility(host.accessToken)).toBe(true)
+      expect(await getEligibility(player.accessToken)).toBe(false)
+
+      await quizModel.updateOne({ _id: quiz._id }, { owner: player.user._id })
+
+      expect(await getEligibility(host.accessToken)).toBe(false)
+      expect(await getEligibility(player.accessToken)).toBe(true)
+
+      await supertest(app.getHttpServer())
+        .patch(`/api/quizzes/${quiz._id}`)
+        .set(createBearerAuthHeader(player.accessToken))
+        .send({ visibility: QuizVisibility.Public })
+        .expect(200)
+
+      expect(await getEligibility(player.accessToken)).toBe(false)
+    })
+
     it.each([
       null,
       { version: 99 },
@@ -287,6 +339,7 @@ describe('GameResultController (e2e)', () => {
               id: quiz._id,
               canRateQuiz: false,
               canHostLiveGame: true,
+              canPublishQuiz: false,
             },
             host: {
               id: hostUser._id,
@@ -512,6 +565,7 @@ describe('GameResultController (e2e)', () => {
               id: quiz._id,
               canRateQuiz: true,
               canHostLiveGame: true,
+              canPublishQuiz: false,
             },
             host: {
               id: hostUser._id,
@@ -732,6 +786,7 @@ describe('GameResultController (e2e)', () => {
               id: quiz._id,
               canRateQuiz: false,
               canHostLiveGame: true,
+              canPublishQuiz: false,
             },
             host: {
               id: hostUser._id,
@@ -930,6 +985,7 @@ describe('GameResultController (e2e)', () => {
               id: quiz._id,
               canRateQuiz: true,
               canHostLiveGame: true,
+              canPublishQuiz: false,
             },
             host: {
               id: hostUser._id,

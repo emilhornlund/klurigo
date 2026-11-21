@@ -14,6 +14,7 @@ import {
   type QuizRequestDto,
   type QuizResponseDto,
   type QuizVisibility,
+  type QuizVisibilityRequestDto,
 } from '@klurigo/common'
 
 import type { ApiClientCore } from '../api-client-core'
@@ -172,6 +173,12 @@ export const createQuizResource = (
         deps.notifyError('Saving your quiz failed. Please try again.')
         throw error
       })
+
+  /** Changes only quiz visibility; the caller handles feedback in context. */
+  const updateQuizVisibility = (quizId: string, visibility: QuizVisibility) =>
+    api.apiPatch<QuizResponseDto>(`/quizzes/${quizId}`, {
+      visibility,
+    } satisfies QuizVisibilityRequestDto)
 
   /**
    * Deletes a quiz by its ID.
@@ -332,6 +339,7 @@ export const createQuizResource = (
     createQuiz,
     getQuiz,
     updateQuiz,
+    updateQuizVisibility,
     deleteQuiz,
     getQuizQuestions,
     getQuizQuestionPreviews,

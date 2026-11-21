@@ -1,9 +1,21 @@
 import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
+  type GameResultClassicModeDto,
+  LanguageCode,
   QuestionType,
+  QuizCategory,
+  type QuizResponseDto,
+  QuizVisibility,
 } from '@klurigo/common'
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
+import { useLayoutEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { withRouter } from 'storybook-addon-remix-react-router'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -43,6 +55,7 @@ export const Classic = {
         id: '9a7381e5-6c9f-42a8-b6c9-e2e42a095e12',
         canRateQuiz: true,
         canHostLiveGame: true,
+        canPublishQuiz: false,
       },
       host: {
         id: uuidv4(),
@@ -221,6 +234,7 @@ export const ZeroToOneHundred = {
         id: '9a7381e5-6c9f-42a8-b6c9-e2e42a095e12',
         canRateQuiz: false,
         canHostLiveGame: false,
+        canPublishQuiz: false,
       },
       host: {
         id: uuidv4(),
@@ -362,6 +376,154 @@ export const SinglePlayerWithZeroScore = {
       ),
     },
   },
+} satisfies Story
+
+const privateQuizResults: GameResultClassicModeDto = {
+  ...Classic.args.results,
+  id: uuidv4(),
+  name: 'True or False: Space',
+  host: {
+    ...Classic.args.results.host,
+    id: 'MOCK',
+    nickname: 'Storybook player',
+  },
+  quiz: {
+    id: uuidv4(),
+    canRateQuiz: false,
+    canHostLiveGame: true,
+    canPublishQuiz: true,
+  },
+  numberOfPlayers: 1,
+  numberOfQuestions: 1,
+  playerMetrics: [
+    {
+      ...Classic.args.results.playerMetrics[0],
+      comebackRankGain: 0,
+      correct: 1,
+      longestCorrectStreak: 1,
+      score: 950,
+    },
+  ],
+  questionMetrics: [
+    {
+      text: 'Does the Earth orbit the Sun?',
+      type: QuestionType.TrueFalse,
+      correct: 1,
+      incorrect: 0,
+      unanswered: 0,
+      averageResponseTime: 2924,
+    },
+  ],
+  duration: 60,
+}
+const PrivateQuizOwnerResults = () => {
+  const { data } = useQuery({
+    queryKey: ['game_results', privateQuizResults.id],
+    queryFn: () => Promise.resolve(privateQuizResults),
+    initialData: privateQuizResults,
+    enabled: false,
+  })
+  return <GameResultsPageUI results={data} currentParticipantId="MOCK" />
+}
+
+/** Exercises the in-place visibility change using a disposable quiz fixture. */
+const PrivateQuizOwnerScenario = ({
+  failFirst = false,
+}: {
+  failFirst?: boolean
+}) => {
+  const [ready, setReady] = useState(false)
+  const [queryClient] = useState(() => new QueryClient())
+
+  useLayoutEffect(() => {
+    const originalFetch = window.fetch
+    let shouldFail = failFirst
+    const publishedQuiz: QuizResponseDto = {
+      id: privateQuizResults.quiz.id,
+      title: privateQuizResults.name,
+      mode: GameMode.Classic,
+      visibility: QuizVisibility.Public,
+      languageCode: LanguageCode.English,
+      category: QuizCategory.Space,
+      author: {
+        id: privateQuizResults.host.id,
+        name: privateQuizResults.host.nickname,
+        avatar: privateQuizResults.host.avatar,
+      },
+      numberOfQuestions: 1,
+      gameplaySummary: {
+        count: 1,
+        totalPlayerCount: 1,
+        difficultyPercentage: 1,
+      },
+      ratingSummary: { stars: 0, comments: 0, total: 0 },
+      created: privateQuizResults.created,
+      updated: privateQuizResults.created,
+    }
+    const fetch: typeof window.fetch = async (input, init) => {
+      const { pathname } = new URL(
+        input instanceof Request ? input.url : String(input),
+        window.location.origin,
+      )
+      if (
+        init?.method === 'PATCH' &&
+        pathname.endsWith(`/quizzes/${publishedQuiz.id}`)
+      ) {
+        if (shouldFail) {
+          shouldFail = false
+          return Response.json(
+            { message: 'Could not update the quiz.' },
+            { status: 503 },
+          )
+        }
+        return Response.json(publishedQuiz)
+      }
+      return originalFetch(input, init)
+    }
+
+    window.fetch = fetch
+    setReady(true)
+    return () => {
+      if (window.fetch === fetch) window.fetch = originalFetch
+    }
+  }, [failFirst])
+
+  if (!ready) return null
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PrivateQuizOwnerResults />
+      <ToastContainer />
+    </QueryClientProvider>
+  )
+}
+
+export const PrivateQuizOwner = {
+  args: { results: privateQuizResults, currentParticipantId: 'MOCK' },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Open Review quiz visibility, then choose Cancel or Make public. Confirming removes the prompt without leaving Summary. Reload the story to reset the mock quiz.',
+      },
+    },
+  },
+  render: () => <PrivateQuizOwnerScenario />,
+} satisfies Story
+
+export const PrivateQuizOwnerRetry = {
+  ...PrivateQuizOwner,
+  parameters: {
+    ...PrivateQuizOwner.parameters,
+    docs: {
+      description: {
+        story:
+          'The first attempt fails so you can check the inline error and retry.',
+      },
+    },
+  },
+  render: () => <PrivateQuizOwnerScenario failFirst />,
 } satisfies Story
 
 export const AllUnanswered = {

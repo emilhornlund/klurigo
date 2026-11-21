@@ -5,9 +5,7 @@ import { QuestionType } from './question-type.enum'
 /**
  * Describes the quiz metadata included in a game result response.
  *
- * This payload is intentionally minimal and includes only what is required to:
- * - identify the quiz, and
- * - determine whether the caller can create a new live game based on that quiz.
+ * Identifies the quiz and describes the actions available to the caller.
  */
 export type GameResultQuizDto = {
   /**
@@ -31,6 +29,11 @@ export type GameResultQuizDto = {
    * - the quiz is publicly visible.
    */
   readonly canHostLiveGame: boolean
+
+  /**
+   * Whether the caller currently owns the quiz and its visibility is Private.
+   */
+  readonly canPublishQuiz: boolean
 }
 
 /**

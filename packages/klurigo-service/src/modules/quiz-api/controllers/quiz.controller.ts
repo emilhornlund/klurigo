@@ -6,6 +6,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Put,
   Query,
@@ -62,6 +63,7 @@ import {
   QuizClassicRequest,
   QuizRecentGameResponse,
   QuizResponse,
+  QuizVisibilityRequest,
   QuizZeroToOneHundredRequest,
 } from './models'
 import { QuestionResponseMultiChoiceExample } from './utils/question-examples.utils'
@@ -380,6 +382,41 @@ export class QuizController {
     quizRequest: QuizClassicRequest | QuizZeroToOneHundredRequest,
   ): Promise<QuizResponse> {
     return this.quizService.updateQuiz(quizId, quizRequest)
+  }
+
+  /**
+   * Changes the visibility of an existing quiz owned by the caller.
+   *
+   * Uses the quiz ownership guard and accepts only a visibility value. Quiz
+   * content and other settings are left unchanged.
+   *
+   * @param quizId - The unique identifier of the quiz to update.
+   * @param request - The validated request containing the new visibility.
+   * @returns The updated quiz details.
+   */
+  @Patch(':quizId')
+  @AuthorizedQuiz()
+  @ApiOperation({
+    summary: 'Update quiz visibility',
+    description:
+      'Changes the visibility of an existing quiz. Only the owner can make this change.',
+  })
+  @ApiQuizIdParam()
+  @ApiBody({ type: QuizVisibilityRequest })
+  @ApiBadRequestResponse({ description: 'The visibility update is invalid.' })
+  @ApiOkResponse({
+    description: 'Successfully updated quiz visibility.',
+    type: QuizResponse,
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({ description: 'The caller does not own this quiz.' })
+  @ApiNotFoundResponse({ description: 'Quiz not found.' })
+  @HttpCode(HttpStatus.OK)
+  public async updateQuizVisibility(
+    @RouteQuizIdParam() quizId: string,
+    @Body() request: QuizVisibilityRequest,
+  ): Promise<QuizResponse> {
+    return this.quizService.updateQuizVisibility(quizId, request.visibility)
   }
 
   /**

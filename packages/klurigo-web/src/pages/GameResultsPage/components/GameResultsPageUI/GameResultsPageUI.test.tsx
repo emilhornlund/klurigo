@@ -59,7 +59,12 @@ describe('GameResultsPageUI', () => {
             id: uuidv4(),
             mode: GameMode.Classic,
             name: 'Classic Quiz Debug',
-            quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
+            quiz: {
+              id: 'quizId',
+              canRateQuiz: false,
+              canHostLiveGame: true,
+              canPublishQuiz: false,
+            },
             host,
             numberOfPlayers: 3,
             numberOfQuestions: 4,
@@ -163,7 +168,12 @@ describe('GameResultsPageUI', () => {
             id: uuidv4(),
             mode: GameMode.ZeroToOneHundred,
             name: '0-100 Quiz Debug',
-            quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: false },
+            quiz: {
+              id: 'quizId',
+              canRateQuiz: false,
+              canHostLiveGame: false,
+              canPublishQuiz: false,
+            },
             host,
             numberOfPlayers: 3,
             numberOfQuestions: 4,
@@ -253,7 +263,12 @@ describe('GameResultsPageUI', () => {
     id: uuidv4(),
     mode: GameMode.Classic,
     name: 'Classic Minimal',
-    quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
+    quiz: {
+      id: 'quizId',
+      canRateQuiz: false,
+      canHostLiveGame: true,
+      canPublishQuiz: false,
+    },
     host,
     numberOfPlayers: 2,
     numberOfQuestions: 2,
@@ -315,7 +330,12 @@ describe('GameResultsPageUI', () => {
     id: uuidv4(),
     mode: GameMode.ZeroToOneHundred,
     name: '0-100 Minimal',
-    quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: false },
+    quiz: {
+      id: 'quizId',
+      canRateQuiz: false,
+      canHostLiveGame: false,
+      canPublishQuiz: false,
+    },
     host,
     numberOfPlayers: 2,
     numberOfQuestions: 2,
@@ -828,7 +848,12 @@ describe('GameResultsPageUI', () => {
     it('hydrates initial rating when results.rating is present', () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: { stars: 3, comment: 'Good quiz!' },
       }
 
@@ -851,7 +876,12 @@ describe('GameResultsPageUI', () => {
     it('shows default rating state when results.rating is absent', () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: undefined,
       }
 
@@ -872,7 +902,12 @@ describe('GameResultsPageUI', () => {
     it('preserves draft rating state when switching between tabs', async () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: undefined,
       }
 
@@ -927,7 +962,12 @@ describe('GameResultsPageUI', () => {
     it('triggers autosave when rating is changed', async () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: undefined,
       }
 
@@ -959,7 +999,12 @@ describe('GameResultsPageUI', () => {
     it('triggers debounced autosave when comment is typed', async () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: undefined,
       }
 
@@ -1014,7 +1059,12 @@ describe('GameResultsPageUI', () => {
     it('does not call autosave when canRateQuiz is false', async () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: false, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: false,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: undefined,
       }
 
@@ -1053,7 +1103,12 @@ describe('GameResultsPageUI', () => {
 
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: { stars: 4, comment: 'Existing comment' },
       }
 
@@ -1075,7 +1130,12 @@ describe('GameResultsPageUI', () => {
     it('deduplicates identical autosave requests', async () => {
       const results: GameResultDto = {
         ...classicMinimal(),
-        quiz: { id: 'quizId', canRateQuiz: true, canHostLiveGame: true },
+        quiz: {
+          id: 'quizId',
+          canRateQuiz: true,
+          canHostLiveGame: true,
+          canPublishQuiz: false,
+        },
         rating: { stars: 3, comment: 'test' },
       }
 
