@@ -3,6 +3,11 @@ import type { DiscoveryQuizCardDto } from '@klurigo/common'
 import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import {
+  GameModeLabels,
+  LanguageLabels,
+  QuizCategoryLabels,
+} from '../../models/labels'
 import colors from '../../styles/colors.tokens.module.scss'
 import { CardInfoItem, CardMetaItem, MediaInfoCard } from '../MediaInfoCard'
 import PlayerAvatar from '../PlayerAvatar'
@@ -18,11 +23,11 @@ export type QuizDiscoveryCardProps = {
 }
 
 /**
- * Renders a compact quiz card for use in discovery rails.
+ * Renders a compact quiz card for use in discovery rails and grids.
  *
- * Displays a cover image (with SVG fallback), title, author name,
- * question count, play count, and star rating. Clicking the card
- * navigates to the quiz details page.
+ * Displays a cover image (with SVG fallback), title, category, game mode,
+ * language, author name, question count, play count, and star rating.
+ * Activating the card navigates to the quiz details page.
  */
 const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
   const navigate = useNavigate()
@@ -30,6 +35,12 @@ const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
   const handleClick = (): void => {
     navigate(`/quiz/details/${quiz.id}`)
   }
+
+  const subtitle = [
+    QuizCategoryLabels[quiz.category],
+    GameModeLabels[quiz.mode],
+    LanguageLabels[quiz.languageCode],
+  ].join('\u00a0· ')
 
   const info = (
     <CardInfoItem
@@ -68,6 +79,7 @@ const QuizDiscoveryCard: FC<QuizDiscoveryCardProps> = ({ quiz }) => {
       title={quiz.title}
       imageURL={quiz.imageCoverURL}
       imageAlt={quiz.title}
+      subtitle={<span className={styles.subtitle}>{subtitle}</span>}
       info={info}
       meta={meta}
       onClick={handleClick}
