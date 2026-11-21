@@ -98,6 +98,7 @@ const GameResultsPageUI: FC<GameResultsPageUIProps> = ({
             numberOfPlayers={results.numberOfPlayers}
             numberOfQuestions={results.numberOfQuestions}
             playerMetrics={results.playerMetrics}
+            currentParticipantId={currentParticipantId}
             questionMetrics={results.questionMetrics}
             duration={results.duration}
             created={results.created}

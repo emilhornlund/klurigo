@@ -124,6 +124,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
           numberOfPlayers={2}
@@ -199,6 +200,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.ZeroToOneHundred}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
           numberOfPlayers={2}
@@ -253,6 +255,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
           numberOfPlayers={2}
@@ -298,6 +301,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
           numberOfPlayers={1}
@@ -350,6 +354,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
           numberOfPlayers={1}
@@ -440,6 +445,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: false }}
           numberOfPlayers={1}
@@ -496,6 +502,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
           numberOfPlayers={1}
@@ -573,6 +580,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: false, canHostLiveGame: true }}
           numberOfPlayers={1}
@@ -631,6 +639,7 @@ describe('SummarySection', () => {
       <MemoryRouter>
         <SummarySection
           host={HOST}
+          currentParticipantId={HOST.id}
           mode={GameMode.Classic}
           quiz={{ id: 'quizId', canRateQuiz: true, canHostLiveGame: false }}
           numberOfPlayers={1}

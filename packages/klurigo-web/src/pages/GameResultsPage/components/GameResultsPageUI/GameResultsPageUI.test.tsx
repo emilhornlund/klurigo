@@ -1,10 +1,18 @@
 import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
+  type GameResultClassicModeDto,
   type GameResultDto,
+  type GameResultZeroToOneHundredModeDto,
   QuestionType,
 } from '@klurigo/common'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -241,7 +249,7 @@ describe('GameResultsPageUI', () => {
     expect(container).toMatchSnapshot()
   })
 
-  const classicMinimal = (): GameResultDto => ({
+  const classicMinimal = (): GameResultClassicModeDto => ({
     id: uuidv4(),
     mode: GameMode.Classic,
     name: 'Classic Minimal',
@@ -303,7 +311,7 @@ describe('GameResultsPageUI', () => {
     created: CREATED_DATE,
   })
 
-  const z2hMinimal = (): GameResultDto => ({
+  const z2hMinimal = (): GameResultZeroToOneHundredModeDto => ({
     id: uuidv4(),
     mode: GameMode.ZeroToOneHundred,
     name: '0-100 Minimal',
@@ -371,6 +379,202 @@ describe('GameResultsPageUI', () => {
     const target = (el.closest('button') as HTMLElement) ?? (el as HTMLElement)
     fireEvent.click(target)
   }
+
+  describe('Your result', () => {
+    const renderResults = (
+      results: GameResultDto,
+      currentParticipantId: string,
+    ) =>
+      render(
+        <MemoryRouter>
+          <GameResultsPageUI
+            results={results}
+            currentParticipantId={currentParticipantId}
+          />
+        </MemoryRouter>,
+      )
+
+    const resultCard = () => screen.getByRole('region', { name: 'Your result' })
+
+    it('opens with the non-podium player’s API rank, recorded answer total and achievements', () => {
+      const results = classicMinimal()
+      const current = {
+        ...results.playerMetrics[0],
+        player: { ...results.playerMetrics[0].player, id: 'current-player' },
+        rank: 4,
+        score: 1375,
+        unanswered: 1,
+        comebackRankGain: 3,
+      }
+      renderResults(
+        {
+          ...results,
+          numberOfPlayers: 4,
+          playerMetrics: [
+            current,
+            ...results.playerMetrics,
+            {
+              ...results.playerMetrics[1],
+              rank: 3,
+              player: {
+                ...results.playerMetrics[1].player,
+                id: 'third-player',
+              },
+            },
+          ],
+        },
+        current.player.id,
+      )
+
+      const recap = within(resultCard())
+      expect(recap.getByText('Finished')).toBeInTheDocument()
+      expect(recap.getByText('#4')).toBeInTheDocument()
+      expect(recap.getByText('Final score')).toBeInTheDocument()
+      expect(recap.getByText('1375')).toBeInTheDocument()
+      expect(recap.getByText('Correct answers')).toBeInTheDocument()
+      expect(recap.getByText('2 of 4')).toBeInTheDocument()
+      expect(
+        recap.getByText('Longest correct streak: 2 answers'),
+      ).toBeInTheDocument()
+      expect(
+        recap.getByText('Recovered 3 places from your lowest position'),
+      ).toBeInTheDocument()
+      expect(
+        resultCard().compareDocumentPosition(
+          screen.getAllByTestId('podium-column')[0],
+        ),
+      ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+
+      clickSegment('Players')
+      expect(
+        screen.queryByRole('region', { name: 'Your result' }),
+      ).not.toBeInTheDocument()
+      clickSegment('Summary')
+      expect(within(resultCard()).getByText('#4')).toBeInTheDocument()
+    })
+
+    it('shows formatted precision and a one-place comeback for Zero to One Hundred', () => {
+      const results = z2hMinimal()
+      const current = {
+        ...results.playerMetrics[0],
+        averagePrecision: 0.814,
+        score: -40,
+      }
+      renderResults(
+        { ...results, playerMetrics: [current, results.playerMetrics[1]] },
+        current.player.id,
+      )
+
+      const recap = within(resultCard())
+      expect(recap.getByText('#1')).toBeInTheDocument()
+      expect(recap.getByText('-40')).toBeInTheDocument()
+      expect(recap.getByText('Average precision')).toBeInTheDocument()
+      expect(recap.getByText('82%')).toBeInTheDocument()
+      expect(
+        recap.getByText('Recovered 1 place from your lowest position'),
+      ).toBeInTheDocument()
+      expect(
+        recap.queryByText(/longest correct streak/i),
+      ).not.toBeInTheDocument()
+    })
+
+    it.each(Object.values(GameMode))(
+      'keeps zero statistics visible in a single-player %s game',
+      (mode) => {
+        const zeroStats = { score: 0, unanswered: 1, comebackRankGain: 0 }
+        const classic = classicMinimal()
+        const z2h = z2hMinimal()
+        const results: GameResultDto =
+          mode === GameMode.Classic
+            ? {
+                ...classic,
+                numberOfPlayers: 1,
+                playerMetrics: [
+                  {
+                    ...classic.playerMetrics[0],
+                    ...zeroStats,
+                    correct: 0,
+                    incorrect: 1,
+                    longestCorrectStreak: 0,
+                  },
+                ],
+              }
+            : {
+                ...z2h,
+                numberOfPlayers: 1,
+                playerMetrics: [
+                  {
+                    ...z2h.playerMetrics[0],
+                    ...zeroStats,
+                    averagePrecision: 0,
+                  },
+                ],
+              }
+        renderResults(results, results.playerMetrics[0].player.id)
+
+        const recap = within(resultCard())
+        expect(recap.getByText('#1')).toBeInTheDocument()
+        expect(recap.getByText('0')).toBeInTheDocument()
+        expect(
+          recap.getByText(mode === GameMode.Classic ? '0 of 2' : '0%'),
+        ).toBeInTheDocument()
+        expect(
+          recap.queryByText(/longest correct streak|recovered/i),
+        ).not.toBeInTheDocument()
+      },
+    )
+
+    it('does not call out a one-answer streak or zero-place comeback', () => {
+      const results = classicMinimal()
+      renderResults(results, results.playerMetrics[1].player.id)
+
+      const recap = within(resultCard())
+      expect(recap.getByText('1 of 3')).toBeInTheDocument()
+      expect(
+        recap.queryByText(/longest correct streak|recovered/i),
+      ).not.toBeInTheDocument()
+    })
+
+    it.each([
+      {
+        currentParticipantId: 'missing-player',
+        playerId: 'other-player',
+        rank: 2,
+      },
+      { currentParticipantId: host.id, playerId: host.id, rank: 2 },
+      {
+        currentParticipantId: 'unranked-player',
+        playerId: 'unranked-player',
+        rank: 0,
+      },
+    ])(
+      'keeps the game-wide summary for $currentParticipantId',
+      ({ currentParticipantId, playerId, rank }) => {
+        const results = classicMinimal()
+        const otherPlayer = results.playerMetrics[1]
+        renderResults(
+          {
+            ...results,
+            playerMetrics: [
+              results.playerMetrics[0],
+              {
+                ...otherPlayer,
+                rank,
+                player: { ...otherPlayer.player, id: playerId },
+              },
+            ],
+          },
+          currentParticipantId,
+        )
+
+        expect(
+          screen.queryByRole('region', { name: 'Your result' }),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('Game Mode')).toBeInTheDocument()
+        expect(screen.getAllByTestId('podium-column').length).toBeGreaterThan(0)
+      },
+    )
+  })
 
   it.each(Object.values(GameMode))(
     'renders durable host/account/guest designs across sections and reload data in %s',

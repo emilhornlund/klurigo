@@ -61,6 +61,7 @@ import {
   type Metric,
 } from './summary-section.metrics'
 import styles from './SummarySection.module.scss'
+import YourResultCard from './YourResultCard'
 
 const DetailsItem: FC<{
   title: string
@@ -109,6 +110,7 @@ export type SummarySectionProps = {
   numberOfPlayers: number
   numberOfQuestions: number
   playerMetrics: GameResultDto['playerMetrics']
+  currentParticipantId: string
   questionMetrics: GameResultDto['questionMetrics']
   duration: number
   created: Date
@@ -121,6 +123,7 @@ const SummarySection: FC<SummarySectionProps> = ({
   numberOfPlayers,
   numberOfQuestions,
   playerMetrics,
+  currentParticipantId,
   questionMetrics,
   duration,
   created,
@@ -136,6 +139,16 @@ const SummarySection: FC<SummarySectionProps> = ({
   const [showConfirmHostGameModal, setShowConfirmHostGameModal] =
     useState<boolean>(false)
   const [isHostGameLoading, setIsHostGameLoading] = useState<boolean>(false)
+
+  const currentPlayerMetric =
+    currentParticipantId !== host.id
+      ? playerMetrics.find(
+          ({ player, rank }) =>
+            player?.id === currentParticipantId &&
+            Number.isInteger(rank) &&
+            rank > 0,
+        )
+      : undefined
 
   const percentage = useMemo<number>(
     () =>
@@ -238,7 +251,19 @@ const SummarySection: FC<SummarySectionProps> = ({
   return (
     <section>
       <div className={styles.cards}>
-        <div className={styles.podiumWrapper}>
+        {currentPlayerMetric && (
+          <YourResultCard mode={mode} metric={currentPlayerMetric} />
+        )}
+        <div
+          className={classNames(
+            styles.podiumWrapper,
+            currentPlayerMetric ? styles.withResultDivider : undefined,
+          )}>
+          {currentPlayerMetric && (
+            <div className={styles.resultDivider}>
+              <PageDivider />
+            </div>
+          )}
           <Podium values={podiumValues} />
           <Leaderboard values={leaderboardValues} includePodium={false} />
           <PageDivider />

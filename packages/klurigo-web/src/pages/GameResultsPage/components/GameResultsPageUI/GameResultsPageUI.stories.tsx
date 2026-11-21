@@ -103,8 +103,8 @@ export const Classic = {
         },
         {
           player: {
-            id: uuidv4(),
-            nickname: 'TriviaTitan',
+            id: CURRENT_PARTICIPANT_ID,
+            nickname: 'TriviaTitanWithAnExtraLongNickname',
             avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
           rank: 4,
@@ -133,7 +133,7 @@ export const Classic = {
         },
         {
           player: {
-            id: CURRENT_PARTICIPANT_ID,
+            id: uuidv4(),
             nickname: 'FrostyBear',
             avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
@@ -235,7 +235,7 @@ export const ZeroToOneHundred = {
         },
         {
           player: {
-            id: uuidv4(),
+            id: CURRENT_PARTICIPANT_ID,
             nickname: 'SharpShooter',
             avatar: DEFAULT_CRITTERS_AVATAR_V1,
           },
@@ -307,5 +307,65 @@ export const ZeroToOneHundred = {
       created: new Date(),
     },
     currentParticipantId: CURRENT_PARTICIPANT_ID,
+  },
+} satisfies Story
+
+export const SinglePlayerWithZeroScore = {
+  args: {
+    ...Classic.args,
+    results: {
+      ...Classic.args.results,
+      name: 'Single Player Classic Quiz',
+      numberOfPlayers: 1,
+      playerMetrics: [
+        {
+          ...Classic.args.results.playerMetrics[3],
+          rank: 1,
+          score: 0,
+          correct: 0,
+          incorrect: 1,
+          unanswered: 3,
+          longestCorrectStreak: 0,
+          comebackRankGain: 0,
+        },
+      ],
+      questionMetrics: Classic.args.results.questionMetrics.map(
+        (question, index) => ({
+          ...question,
+          correct: 0,
+          incorrect: index === 0 ? 1 : 0,
+          unanswered: index === 0 ? 0 : 1,
+        }),
+      ),
+    },
+  },
+} satisfies Story
+
+export const ZeroPrecision = {
+  args: {
+    ...ZeroToOneHundred.args,
+    results: {
+      ...ZeroToOneHundred.args.results,
+      numberOfPlayers: 1,
+      playerMetrics: [
+        {
+          ...ZeroToOneHundred.args.results.playerMetrics[2],
+          rank: 1,
+          score: 0,
+          averagePrecision: 0,
+          comebackRankGain: 0,
+        },
+      ],
+      questionMetrics: ZeroToOneHundred.args.results.questionMetrics.map(
+        (question) => ({ ...question, averagePrecision: 0, unanswered: 0 }),
+      ),
+    },
+  },
+} satisfies Story
+
+export const MissingParticipant = {
+  args: {
+    ...Classic.args,
+    currentParticipantId: uuidv4(),
   },
 } satisfies Story
