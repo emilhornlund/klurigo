@@ -14,6 +14,7 @@ import {
   QuestionTypeAnswerDto,
   QuestionZeroToOneHundredRangeDto,
   QuizCategory,
+  QuizRecentGameDto,
   QuizRequestDto,
   QuizResponseDto,
   QuizVisibility,
@@ -24,6 +25,7 @@ import { QueryFilter } from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 
 import { structuredLog } from '../../../app/utils'
+import { GameRepository } from '../../game-core/repositories'
 import { QuizRepository } from '../../quiz-core/repositories'
 import {
   BaseQuestionDao,
@@ -67,11 +69,13 @@ export class QuizService {
    * Initializes the QuizService.
    *
    * @param quizRepository - Repository for accessing and modifying quiz documents.
+   * @param gameRepository - Repository for retrieving recent quiz game activity.
    * @param eventEmitter - Emits domain events (e.g., when a quiz is deleted).
    * @param logger - Logger instance for logging operations.
    */
   constructor(
     private readonly quizRepository: QuizRepository,
+    private readonly gameRepository: GameRepository,
     private readonly eventEmitter: EventEmitter2,
     private readonly logger: Logger = new Logger(QuizService.name),
   ) {}
@@ -127,6 +131,13 @@ export class QuizService {
   public async findQuizById(quizId: string): Promise<QuizResponseDto> {
     const quiz = await this.quizRepository.findQuizByIdOrThrow(quizId)
     return toQuizResponseDto(quiz)
+  }
+
+  /** Retrieves recent completed game summaries for an authorized quiz. */
+  public async findRecentQuizGames(
+    quizId: string,
+  ): Promise<QuizRecentGameDto[]> {
+    return this.gameRepository.findRecentQuizGames(quizId)
   }
 
   /**

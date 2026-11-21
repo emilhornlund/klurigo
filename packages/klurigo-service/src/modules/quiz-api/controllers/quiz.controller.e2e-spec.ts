@@ -1,6 +1,7 @@
 import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
+  GameStatus,
   isCrittersAvatarConfigurationV1,
   QuestionType,
   QuizCategory,
@@ -15,8 +16,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 import {
   buildMockSecondaryUser,
+  createMockClassicGameResultQuestionMetric,
   createMockClassicQuiz,
   createMockClassicQuizRequestDto,
+  createMockGameDocument,
+  createMockGameResultDocument,
+  createMockGameResultPlayerMetric,
+  createMockPodiumTaskDocument,
+  createMockZeroToOneHundredGameResultQuestionMetric,
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
 import {
@@ -25,6 +32,12 @@ import {
   createDefaultUserAndAuthenticate,
   createTestApp,
 } from '../../../../test-utils/utils'
+import { Game, GameModel } from '../../game-core/repositories/models/schemas'
+import {
+  GameResult,
+  GameResultModel,
+  QuestionMetric,
+} from '../../game-result/repositories/models/schemas'
 import { Quiz, QuizModel } from '../../quiz-core/repositories/models/schemas'
 import { User, UserModel } from '../../user/repositories'
 import { QuizService } from '../services'
@@ -977,6 +990,246 @@ describe('QuizController (e2e)', () => {
           expect(res.body).toHaveProperty('status', 403)
           expect(res.body).toHaveProperty('timestamp')
         })
+    })
+  })
+
+  describe('/api/quizzes/:quizId/questions/preview (GET)', () => {
+    it('returns only the first three prompts in stored order to a signed-in non-owner of a public quiz', async () => {
+      const owner = await userModel.create(buildMockSecondaryUser())
+      const quiz = await quizService.createQuiz(originalData, owner)
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const api = supertest(app.getHttpServer())
+      const path = `/api/quizzes/${quiz.id}/questions/preview`
+      const games = app.get<GameModel>(getModelToken(Game.name))
+      const gameFilter = { quiz: quiz.id }
+      const gameCountBefore = await games.collection.countDocuments(gameFilter)
+
+      await api
+        .get(path)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([
+          {
+            type: QuestionType.MultiChoice,
+            question: originalData.questions[0].question,
+          },
+          {
+            type: QuestionType.Range,
+            question: originalData.questions[1].question,
+          },
+          {
+            type: QuestionType.TrueFalse,
+            question: originalData.questions[2].question,
+          },
+        ])
+
+      expect(await games.collection.countDocuments(gameFilter)).toBe(
+        gameCountBefore,
+      )
+      await api.get(path).expect(401)
+      await api
+        .get(`/api/quizzes/${quiz.id}/questions`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(403)
+
+      await api
+        .get(`/api/quizzes/${quiz.id}`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect(({ body }: { body: QuizResponseDto }) => {
+          expect(body.gameplaySummary).toEqual(quiz.gameplaySummary)
+        })
+    })
+
+    it('returns prompts for type-answer, pin and puzzle without their solutions or media', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const questions = originalData.questions.slice(3)
+      const quiz = await quizService.createQuiz(
+        { ...originalData, questions },
+        user,
+      )
+
+      await supertest(app.getHttpServer())
+        .get(`/api/quizzes/${quiz.id}/questions/preview`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([
+          { type: QuestionType.TypeAnswer, question: questions[0].question },
+          { type: QuestionType.Pin, question: questions[1].question },
+          { type: QuestionType.Puzzle, question: questions[2].question },
+        ])
+    })
+
+    it('returns a shorter private 0 to 100 preview only to its owner', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(updatedData, user)
+      const otherOwner = await userModel.create(buildMockSecondaryUser())
+      const otherQuiz = await quizService.createQuiz(updatedData, otherOwner)
+      const api = supertest(app.getHttpServer())
+      const auth = createBearerAuthHeader(accessToken)
+
+      await api
+        .get(`/api/quizzes/${quiz.id}/questions/preview`)
+        .set(auth)
+        .expect(200)
+        .expect([
+          {
+            type: QuestionType.Range,
+            question: updatedData.questions[0].question,
+          },
+        ])
+      await api
+        .get(`/api/quizzes/${otherQuiz.id}/questions/preview`)
+        .set(auth)
+        .expect(403)
+      await api
+        .get(`/api/quizzes/${uuidv4()}/questions/preview`)
+        .set(auth)
+        .expect(404)
+    })
+  })
+
+  describe('/api/quizzes/:quizId/recent-games (GET)', () => {
+    const saveGame = async (
+      quiz: QuizResponseDto,
+      completed: string,
+      {
+        mode = quiz.mode,
+        status = GameStatus.Completed,
+        playerCount = 4,
+        onPodium = false,
+      } = {},
+      questions: QuestionMetric[] = [
+        createMockClassicGameResultQuestionMetric({ correct: 3, incorrect: 1 }),
+        createMockClassicGameResultQuestionMetric({
+          correct: 1,
+          unanswered: 3,
+        }),
+      ],
+    ) => {
+      const games = app.get<GameModel>(getModelToken(Game.name))
+      const results = app.get<GameResultModel>(getModelToken(GameResult.name))
+      const game = await games.create({
+        ...createMockGameDocument({
+          _id: uuidv4(),
+          status,
+          mode,
+          ...(onPodium
+            ? {
+                currentTask: createMockPodiumTaskDocument({ status: 'active' }),
+              }
+            : {}),
+        }),
+        quiz: { _id: quiz.id },
+      })
+      await results.create(
+        createMockGameResultDocument({
+          _id: uuidv4(),
+          game,
+          completed: new Date(completed),
+          players: Array.from({ length: playerCount }, () =>
+            createMockGameResultPlayerMetric({ participantId: uuidv4() }),
+          ),
+          questions,
+        }),
+      )
+    }
+
+    it('returns the latest three eligible games as aggregates to a signed-in non-owner', async () => {
+      const owner = await userModel.create(buildMockSecondaryUser())
+      const quiz = await quizService.createQuiz(originalData, owner)
+      const otherQuiz = await quizService.createQuiz(originalData, owner)
+      const { accessToken } = await createDefaultUserAndAuthenticate(app)
+      const date = (day: number) => `2026-01-1${day}T12:00:00.000Z`
+
+      await saveGame(
+        quiz,
+        date(4),
+        { status: GameStatus.Active, onPodium: true, playerCount: 3 },
+        [createMockClassicGameResultQuestionMetric({ incorrect: 3 })],
+      )
+      await saveGame(quiz, date(1))
+      await saveGame(quiz, date(5), { playerCount: 0 })
+      // A saved result does not make an active non-podium game eligible.
+      await saveGame(quiz, date(6), { status: GameStatus.Active })
+      await saveGame(quiz, date(3))
+      await saveGame(otherQuiz, date(7))
+      await saveGame(quiz, date(2), { playerCount: 1 }, [
+        createMockClassicGameResultQuestionMetric({ unanswered: 1 }),
+      ])
+      // A terminal game without a persisted result is also ineligible.
+      await app.get<GameModel>(getModelToken(Game.name)).create({
+        ...createMockGameDocument({
+          _id: uuidv4(),
+          status: GameStatus.Completed,
+        }),
+        quiz: { _id: quiz.id },
+        completedAt: new Date(date(8)),
+      })
+
+      const api = supertest(app.getHttpServer())
+      const path = `/api/quizzes/${quiz.id}/recent-games`
+      await api.get(path).expect(401)
+      await api
+        .get(path)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([
+          { completed: date(4), playerCount: 3, correctnessPercentage: 0 },
+          { completed: date(3), playerCount: 4, correctnessPercentage: 80 },
+          { completed: date(2), playerCount: 1 },
+        ])
+    })
+
+    it('restricts private quizzes to their owner and returns average precision for Zero To One Hundred games', async () => {
+      const owner = await userModel.create(buildMockSecondaryUser())
+      const privateQuiz = await quizService.createQuiz(updatedData, owner)
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const ownQuiz = await quizService.createQuiz(updatedData, user)
+      const completed = '2026-01-10T12:00:00.000Z'
+      const olderCompleted = '2026-01-09T12:00:00.000Z'
+      const questions = [
+        createMockZeroToOneHundredGameResultQuestionMetric({
+          averagePrecision: 0.92,
+        }),
+        createMockZeroToOneHundredGameResultQuestionMetric({
+          averagePrecision: 0.69,
+        }),
+      ]
+      await saveGame(privateQuiz, completed, {}, questions)
+      await saveGame(ownQuiz, completed, {}, questions)
+      await saveGame(ownQuiz, olderCompleted, {}, [])
+
+      const api = supertest(app.getHttpServer())
+      const auth = createBearerAuthHeader(accessToken)
+      await api
+        .get(`/api/quizzes/${privateQuiz.id}/recent-games`)
+        .set(auth)
+        .expect(403)
+      await api
+        .get(`/api/quizzes/${ownQuiz.id}/recent-games`)
+        .set(auth)
+        .expect(200)
+        .expect([
+          { completed, playerCount: 4, averagePrecisionPercentage: 81 },
+          { completed: olderCompleted, playerCount: 4 },
+        ])
+      await api
+        .get(`/api/quizzes/${uuidv4()}/recent-games`)
+        .set(auth)
+        .expect(404)
+    })
+
+    it('returns an empty list for a quiz without eligible games', async () => {
+      const { accessToken, user } = await createDefaultUserAndAuthenticate(app)
+      const quiz = await quizService.createQuiz(originalData, user)
+      await saveGame(quiz, '2026-01-10T12:00:00.000Z', { playerCount: 0 })
+
+      await supertest(app.getHttpServer())
+        .get(`/api/quizzes/${quiz.id}/recent-games`)
+        .set(createBearerAuthHeader(accessToken))
+        .expect(200)
+        .expect([])
     })
   })
 

@@ -18,7 +18,9 @@ export type MediaInfoCardProps = {
   readonly imageURL?: string | null
   /** Alt text for the cover image. */
   readonly imageAlt: string
-  /** Optional content rendered below the title. */
+  /** Optional content rendered immediately below the title. */
+  readonly subtitle?: ReactNode
+  /** Optional information rendered above the bottom metadata row. */
   readonly info?: ReactNode
   /** Optional metadata row rendered at the bottom of the card body. */
   readonly meta?: ReactNode
@@ -31,12 +33,13 @@ export type MediaInfoCardProps = {
 }
 
 /**
- * Renders a reusable clickable media card with cover, title, info, and meta sections.
+ * Renders a reusable clickable media card with cover, title, subtitle, info, and meta sections.
  */
 const MediaInfoCard: FC<MediaInfoCardProps> = ({
   title,
   imageURL,
   imageAlt,
+  subtitle,
   info,
   meta,
   onClick,
@@ -72,6 +75,7 @@ const MediaInfoCard: FC<MediaInfoCardProps> = ({
           {title}
         </Typography>
 
+        {subtitle}
         {info ? <div className={styles.info}>{info}</div> : null}
         {meta ? <div className={styles.meta}>{meta}</div> : null}
       </div>

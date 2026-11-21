@@ -84,3 +84,16 @@ export const LongTitle = {
     },
   },
 } satisfies Story
+
+export const LongMetadataLabels = {
+  args: {
+    quiz: {
+      ...sampleQuiz,
+      title: 'General Knowledge Challenge',
+      imageCoverURL: undefined,
+      category: QuizCategory.GeneralKnowledge,
+      mode: GameMode.ZeroToOneHundred,
+      languageCode: LanguageCode.NorwegianNynorsk,
+    },
+  },
+} satisfies Story

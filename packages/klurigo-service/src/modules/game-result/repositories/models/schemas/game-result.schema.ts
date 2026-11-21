@@ -217,6 +217,9 @@ export class GameResult {
  */
 export const GameResultSchema = SchemaFactory.createForClass(GameResult)
 
+// Supports looking up each game's latest result for the quiz details activity summary.
+GameResultSchema.index({ game: 1, completed: -1, _id: -1 })
+
 /**
  * Mongoose model type for the GameResult schema.
  */

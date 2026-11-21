@@ -59,6 +59,8 @@ vi.mock('@tanstack/react-query', () => ({
   useQuery: (args: { queryKey: readonly unknown[] }) => {
     const key = String(args.queryKey[0])
     if (key === 'quiz') return mockQuizQueryState
+    if (key === 'quiz-question-previews') return { isPending: true }
+    if (key === 'quiz-recent-games') return { isPending: true }
     if (key === 'quiz-ratings') return mockRatingsQueryState
     throw new Error(`Unexpected queryKey: ${key}`)
   },
@@ -80,6 +82,8 @@ vi.mock('../../context/auth', () => ({
 vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({
     getQuiz: vi.fn(),
+    getQuizQuestionPreviews: vi.fn(),
+    getQuizRecentGames: vi.fn(),
     getQuizRatings: vi.fn(),
     deleteQuiz: deleteQuizMock,
     createGame: createGameMock,
@@ -153,6 +157,8 @@ describe('QuizDetailsPage', () => {
 
   it('creates and authenticates a game before navigating to the game page', async () => {
     render(<QuizDetailsPage />)
+    expect(createGameMock).not.toHaveBeenCalled()
+    expect(authenticateGameMock).not.toHaveBeenCalled()
 
     act(() => {
       latestUIProps?.onHostGame()

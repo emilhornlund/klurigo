@@ -18,8 +18,15 @@ const QuizDetailsPage: FC = () => {
 
   const { user } = useAuthContext()
 
-  const { getQuiz, getQuizRatings, deleteQuiz, createGame, authenticateGame } =
-    useKlurigoServiceClient()
+  const {
+    getQuiz,
+    getQuizQuestionPreviews,
+    getQuizRecentGames,
+    getQuizRatings,
+    deleteQuiz,
+    createGame,
+    authenticateGame,
+  } = useKlurigoServiceClient()
 
   const {
     data: quiz,
@@ -29,6 +36,25 @@ const QuizDetailsPage: FC = () => {
     queryKey: ['quiz', quizId],
     queryFn: () => getQuiz(quizId as string),
     enabled: !!quizId,
+    retry: false,
+  })
+
+  const {
+    data: questions,
+    isPending: isPendingPreview,
+    isError: isErrorPreview,
+    refetch: refetchPreview,
+  } = useQuery({
+    queryKey: ['quiz-question-previews', quizId, user?.ACCESS.sub],
+    queryFn: () => getQuizQuestionPreviews(quizId as string),
+    enabled: !!quizId && !!quiz && !isErrorQuiz,
+    retry: false,
+  })
+
+  const { data: recentGames, isError: isErrorRecentGames } = useQuery({
+    queryKey: ['quiz-recent-games', quizId, user?.ACCESS.sub],
+    queryFn: () => getQuizRecentGames(quizId as string),
+    enabled: !!quizId && !!quiz && !isErrorQuiz,
     retry: false,
   })
 
@@ -114,6 +140,14 @@ const QuizDetailsPage: FC = () => {
   return (
     <QuizDetailsPageUI
       quiz={quiz}
+      sampleQuestions={
+        isErrorPreview
+          ? { status: 'error', onRetry: () => void refetchPreview() }
+          : isPendingPreview
+            ? { status: 'loading' }
+            : { status: 'ready', questions: questions ?? [] }
+      }
+      recentGames={isErrorRecentGames ? undefined : recentGames}
       ratings={isErrorRatings ? [] : ratings?.results}
       isOwner={isOwner}
       isLoadingQuiz={isLoadingQuiz}

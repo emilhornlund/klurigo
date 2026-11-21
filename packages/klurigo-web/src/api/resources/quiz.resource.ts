@@ -7,8 +7,10 @@ import {
   type PaginatedQuizRatingDto,
   type PaginatedQuizResponseDto,
   type QuestionDto,
+  type QuestionPreviewDto,
   type QuizCategory,
   type QuizRatingDto,
+  type QuizRecentGameDto,
   type QuizRequestDto,
   type QuizResponseDto,
   type QuizVisibility,
@@ -203,6 +205,16 @@ export const createQuizResource = (
       throw error
     })
 
+  /** Retrieves sample question prompts; the details page handles errors inline. */
+  const getQuizQuestionPreviews = (
+    quizId: string,
+  ): Promise<QuestionPreviewDto[]> =>
+    api.apiGet<QuestionPreviewDto[]>(`/quizzes/${quizId}/questions/preview`)
+
+  /** Retrieves the latest completed game summaries for a quiz. */
+  const getQuizRecentGames = (quizId: string): Promise<QuizRecentGameDto[]> =>
+    api.apiGet<QuizRecentGameDto[]>(`/quizzes/${quizId}/recent-games`)
+
   /**
    * Retrieves a paginated list of ratings for a specific quiz.
    *
@@ -322,6 +334,8 @@ export const createQuizResource = (
     updateQuiz,
     deleteQuiz,
     getQuizQuestions,
+    getQuizQuestionPreviews,
+    getQuizRecentGames,
     getQuizRatings,
     createOrUpdateQuizRating,
     getDiscovery,

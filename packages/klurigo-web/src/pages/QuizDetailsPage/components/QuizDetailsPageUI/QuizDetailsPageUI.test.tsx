@@ -2,15 +2,19 @@ import {
   DEFAULT_CRITTERS_AVATAR_V1,
   GameMode,
   LanguageCode,
+  QuestionType,
   QuizCategory,
   type QuizRatingDto,
   type QuizResponseDto,
   QuizVisibility,
 } from '@klurigo/common'
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
+
+import { DATE_FORMATS, formatLocalDate } from '../../../../utils/date.utils'
 
 import QuizDetailsPageUI from './QuizDetailsPageUI'
 
@@ -199,6 +203,192 @@ describe('QuizDetailsPageUI', () => {
       screen.queryByRole('dialog', { name: 'Host Game' }),
     ).not.toBeInTheDocument()
   })
+
+  it('reveals ordered sample prompts between quiz metadata and ratings when toggled', async () => {
+    const user = userEvent.setup()
+    renderUI({
+      quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 1, total: 1 } }),
+      sampleQuestions: {
+        status: 'ready',
+        questions: [
+          { type: QuestionType.Pin, question: 'Where is the Eiffel Tower?' },
+          {
+            type: QuestionType.Puzzle,
+            question: 'Order these cities from north to south.',
+          },
+        ],
+      },
+    })
+
+    const samples = screen.getByRole('region', { name: 'Sample questions' })
+    const toggle = within(samples).getByRole('button', {
+      name: 'Sample questions',
+      expanded: false,
+    })
+    expect(toggle).toHaveAccessibleDescription('2 questions from this quiz')
+    expect(within(samples).queryByRole('list')).not.toBeInTheDocument()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    const list = within(samples).getByRole('list')
+    expect(list.tagName).toBe('OL')
+    const items = within(list).getAllByRole('listitem')
+    expect(items).toHaveLength(2)
+    expect(items[0]).toHaveTextContent(/Pin.*Where is the Eiffel Tower\?/)
+    expect(items[1]).toHaveTextContent(
+      /Puzzle.*Order these cities from north to south\./,
+    )
+    expect(within(list).queryByRole('button')).not.toBeInTheDocument()
+    expect(
+      screen.getByText('General Knowledge').compareDocumentPosition(samples),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      samples.compareDocumentPosition(screen.getByTestId('ratings-section')),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+
+    expect(toggle).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(list).not.toBeVisible()
+  })
+
+  it.each(['loading', 'error'] as const)(
+    'keeps hosting available while sample questions are %s',
+    (status) => {
+      const onHostGame = vi.fn()
+      const onRetry = vi.fn()
+      renderUI({
+        sampleQuestions: status === 'error' ? { status, onRetry } : { status },
+        onHostGame,
+      })
+
+      const samples = screen.getByRole('region', { name: 'Sample questions' })
+      fireEvent.click(
+        within(samples).getByRole('button', { name: 'Sample questions' }),
+      )
+      if (status === 'error') {
+        expect(within(samples).getByRole('status')).toHaveTextContent(
+          'Oops! The sample questions didn’t load.',
+        )
+        fireEvent.click(
+          within(samples).getByRole('button', { name: 'Try again' }),
+        )
+        expect(onRetry).toHaveBeenCalledOnce()
+      } else {
+        expect(within(samples).getByRole('status')).toHaveTextContent(
+          'Hang tight — we’re rounding up the questions…',
+        )
+      }
+      expect(onHostGame).not.toHaveBeenCalled()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Host Game' }))
+      const dialog = screen.getByRole('dialog', { name: 'Host Game' })
+      fireEvent.click(within(dialog).getByRole('button', { name: /confirm/i }))
+      expect(onHostGame).toHaveBeenCalledOnce()
+    },
+  )
+
+  it('does not advertise a question count when there are no samples', () => {
+    renderUI({ sampleQuestions: { status: 'ready', questions: [] } })
+
+    const samples = screen.getByRole('region', { name: 'Sample questions' })
+    const toggle = within(samples).getByRole('button', {
+      name: 'Sample questions',
+    })
+    expect(toggle).not.toHaveAccessibleDescription()
+    fireEvent.click(toggle)
+    expect(
+      within(samples).getByText('No sample questions to peek at yet.'),
+    ).toBeVisible()
+  })
+
+  it('shows ordered recent game summaries below sample questions and above ratings', async () => {
+    const user = userEvent.setup()
+    const daysAgo = (days: number) =>
+      new Date(Date.now() - days * 86_400_000).toISOString()
+    const latest = daysAgo(1.5)
+    renderUI({
+      quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 1, total: 1 } }),
+      recentGames: [
+        { completed: latest, playerCount: 12, correctnessPercentage: 74 },
+        { completed: daysAgo(3.5), playerCount: 1, correctnessPercentage: 0 },
+        { completed: daysAgo(7.5), playerCount: 5 },
+      ],
+    })
+
+    const recent = screen.getByRole('region', { name: 'Recent games' })
+    expect(
+      screen
+        .getByRole('region', { name: 'Sample questions' })
+        .compareDocumentPosition(recent),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      recent.compareDocumentPosition(screen.getByTestId('ratings-section')),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    const toggle = within(recent).getByRole('button', {
+      name: 'Recent games',
+      expanded: false,
+    })
+    expect(toggle).toHaveAccessibleDescription('Last played 1 day ago')
+
+    await user.click(toggle)
+    const list = within(recent).getByRole('list')
+    const [first, second, third] = within(list).getAllByRole('listitem')
+    const time = within(first).getByText('1 day ago')
+    expect(time).toHaveAttribute('datetime', latest)
+    expect(time).toHaveAttribute(
+      'title',
+      `Completed ${formatLocalDate(latest, DATE_FORMATS.DATE_TIME_SECONDS)}`,
+    )
+    expect(first).toHaveTextContent('12 players')
+    expect(first).toHaveTextContent('74% correct')
+    expect(
+      within(first).getByRole('progressbar', { name: 'Correct answers' }),
+    ).toHaveValue(74)
+    expect(second).toHaveTextContent(/3 days ago.*1 player.*0% correct/)
+    expect(within(second).getByRole('progressbar')).toHaveValue(0)
+    expect(third).toHaveTextContent(/7 days ago.*5 players/)
+    expect(within(third).queryByRole('progressbar')).not.toBeInTheDocument()
+    expect(within(list).queryByRole('link')).not.toBeInTheDocument()
+    expect(within(list).queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('shows average precision for recent Zero To One Hundred games', () => {
+    renderUI({
+      quiz: makeQuiz({ mode: GameMode.ZeroToOneHundred }),
+      recentGames: [
+        {
+          completed: new Date().toISOString(),
+          playerCount: 3,
+          averagePrecisionPercentage: 81,
+        },
+      ],
+    })
+
+    const recent = screen.getByRole('region', { name: 'Recent games' })
+    fireEvent.click(
+      within(recent).getByRole('button', { name: 'Recent games' }),
+    )
+    expect(within(recent).getByText('81% precision')).toBeVisible()
+    expect(
+      within(recent).getByRole('progressbar', { name: 'Average precision' }),
+    ).toHaveValue(81)
+  })
+
+  it.each([
+    { status: 'loading', games: undefined },
+    { status: 'empty', games: [] },
+  ])(
+    'hides recent games in the $status state without blocking hosting',
+    ({ games }) => {
+      renderUI({ recentGames: games })
+
+      expect(
+        screen.queryByRole('region', { name: 'Recent games' }),
+      ).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Host Game' })).toBeEnabled()
+    },
+  )
 
   it('opens destructive delete confirmation only for owners and invokes deletion', () => {
     const onDeleteQuiz = vi.fn()

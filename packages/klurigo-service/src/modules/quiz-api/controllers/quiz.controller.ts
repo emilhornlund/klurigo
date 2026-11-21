@@ -35,11 +35,15 @@ import {
   RequiredAuthorities,
   RequiresScopes,
 } from '../../authentication/controllers/decorators'
-import { AuthorizedQuiz } from '../../quiz-core/decorators/auth'
+import {
+  AuthorizedQuiz,
+  AuthorizedQuizDocument,
+} from '../../quiz-core/decorators/auth'
 import {
   ApiQuizIdParam,
   RouteQuizIdParam,
 } from '../../quiz-core/decorators/params'
+import type { Quiz } from '../../quiz-core/repositories/models/schemas'
 import { User } from '../../user/repositories'
 import { ParseQuizRequestPipe } from '../pipes'
 import { QuizService } from '../services'
@@ -49,16 +53,20 @@ import {
   PublicQuizPageFilter,
   QuestionMultiChoice,
   QuestionPin,
+  QuestionPreviewResponse,
   QuestionPuzzle,
   QuestionRange,
   QuestionTrueFalse,
   QuestionTypeAnswer,
   QuestionZeroToOneHundredRange,
   QuizClassicRequest,
+  QuizRecentGameResponse,
   QuizResponse,
   QuizZeroToOneHundredRequest,
 } from './models'
 import { QuestionResponseMultiChoiceExample } from './utils/question-examples.utils'
+
+const QUESTION_PREVIEW_LIMIT = 3
 
 /**
  * Controller for managing quiz-related operations.
@@ -261,6 +269,63 @@ export class QuizController {
     @RouteQuizIdParam() quizId: string,
   ): Promise<QuizResponse> {
     return this.quizService.findQuizById(quizId)
+  }
+
+  @Get(':quizId/questions/preview')
+  @AuthorizedQuiz({ allowPublic: true })
+  @ApiOperation({
+    summary: 'Retrieve sample quiz questions',
+    description:
+      'Returns up to three question types and prompts in stored order.',
+  })
+  @ApiQuizIdParam()
+  @ApiExtraModels(QuestionPreviewResponse)
+  @ApiOkResponse({
+    description: 'Successfully retrieved the question previews.',
+    schema: {
+      type: 'array',
+      maxItems: QUESTION_PREVIEW_LIMIT,
+      items: { $ref: getSchemaPath(QuestionPreviewResponse) },
+    },
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({
+    description: 'The user does not have access to this quiz.',
+  })
+  @ApiNotFoundResponse({ description: 'Quiz not found.' })
+  public getQuestionPreviews(
+    @AuthorizedQuizDocument() quiz: Pick<Quiz, 'questions'>,
+  ): QuestionPreviewResponse[] {
+    return quiz.questions
+      .slice(0, QUESTION_PREVIEW_LIMIT)
+      .map(({ type, text }) => ({
+        type,
+        question: text,
+      }))
+  }
+
+  @Get(':quizId/recent-games')
+  @AuthorizedQuiz({ allowPublic: true })
+  @ApiOperation({
+    summary: 'Retrieve recent quiz games',
+    description:
+      'Returns up to three games with saved results and player participants, newest first, including games still on the podium.',
+  })
+  @ApiQuizIdParam()
+  @ApiOkResponse({
+    description: 'Successfully retrieved recent game summaries.',
+    type: QuizRecentGameResponse,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({
+    description: 'The user does not have access to this quiz.',
+  })
+  @ApiNotFoundResponse({ description: 'Quiz not found.' })
+  public async getRecentQuizGames(
+    @RouteQuizIdParam() quizId: string,
+  ): Promise<QuizRecentGameResponse[]> {
+    return this.quizService.findRecentQuizGames(quizId)
   }
 
   /**

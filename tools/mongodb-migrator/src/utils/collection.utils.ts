@@ -263,6 +263,15 @@ export function getCollectionMetadataObject(
             key: { _id: { $numberInt: '1' } },
             name: '_id_',
           },
+          {
+            v: { $numberInt: '2' },
+            key: {
+              game: { $numberInt: '1' },
+              completed: { $numberInt: '-1' },
+              _id: { $numberInt: '-1' },
+            },
+            name: 'game_1_completed_-1__id_-1',
+          },
         ],
         uuid: '97d7fe42ae18460bb9d2010de5c09482',
         collectionName,
@@ -284,6 +293,11 @@ export function getCollectionMetadataObject(
               completedAt: { $numberInt: '1' },
             },
             name: 'status_1_completedAt_1',
+          },
+          {
+            v: { $numberInt: '2' },
+            key: { quiz: { $numberInt: '1' }, status: { $numberInt: '1' } },
+            name: 'quiz_1_status_1',
           },
           {
             v: { $numberInt: '2' },

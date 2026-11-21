@@ -73,18 +73,41 @@ describe('QuizDiscoveryCard', () => {
     navigateMock.mockReset()
   })
 
-  it('renders quiz title, author, and meta info', () => {
+  it('renders the title, quiz labels, author, and statistics in order', () => {
     render(
       <MemoryRouter>
         <QuizDiscoveryCard quiz={makeQuiz()} />
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Test Quiz')).toBeInTheDocument()
-    expect(screen.getByText('Jane Doe')).toBeInTheDocument()
-    expect(screen.getByText('15')).toBeInTheDocument()
-    expect(screen.getByText('42')).toBeInTheDocument()
-    expect(screen.getByText('4.5')).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveAccessibleName(
+      /Test Quiz.*Science\s· Classic\s· English.*Jane Doe.*15.*42.*4\.5/,
+    )
+    expect(screen.getByText('Test Quiz').nextElementSibling).toBe(
+      screen.getByText('Science · Classic · English'),
+    )
+    expect(screen.getByText('Jane Doe')).toBeVisible()
+    expect(screen.getByText('15')).toBeVisible()
+    expect(screen.getByText('42')).toBeVisible()
+    expect(screen.getByText('4.5')).toBeVisible()
+  })
+
+  it('uses the display labels for the supplied category, game mode, and language', () => {
+    render(
+      <MemoryRouter>
+        <QuizDiscoveryCard
+          quiz={makeQuiz({
+            category: QuizCategory.GeneralKnowledge,
+            mode: GameMode.ZeroToOneHundred,
+            languageCode: LanguageCode.NorwegianNynorsk,
+          })}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByText('General Knowledge · 0 to 100 · Norwegian Nynorsk'),
+    ).toBeVisible()
   })
 
   it('renders cover image when imageCoverURL is provided', () => {
@@ -138,7 +161,7 @@ describe('QuizDiscoveryCard', () => {
     expect(navigateMock).toHaveBeenCalledWith('/quiz/details/quiz-1')
   })
 
-  it('navigates on Enter key press', async () => {
+  it('has one tab stop and navigates on Enter', async () => {
     const user = userEvent.setup()
 
     render(
@@ -147,9 +170,13 @@ describe('QuizDiscoveryCard', () => {
       </MemoryRouter>,
     )
 
-    screen.getByTestId('quiz-discovery-card').focus()
+    await user.tab()
+    expect(screen.getByRole('button')).toHaveFocus()
     await user.keyboard('{Enter}')
     expect(navigateMock).toHaveBeenCalledWith('/quiz/details/quiz-1')
+
+    await user.tab()
+    expect(document.body).toHaveFocus()
   })
 
   it('navigates on Space key press', async () => {
