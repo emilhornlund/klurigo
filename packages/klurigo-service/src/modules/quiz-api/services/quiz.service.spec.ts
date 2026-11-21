@@ -29,6 +29,7 @@ import {
   createMockZeroToOneHundredQuiz,
   createMockZeroToOneHundredQuizRequestDto,
 } from '../../../../test-utils/data'
+import type { GameRepository } from '../../game-core/repositories'
 import { QuizNotFoundException } from '../../quiz-core/exceptions'
 import { QuizRepository } from '../../quiz-core/repositories'
 import {
@@ -73,6 +74,7 @@ describe(QuizService.name, () => {
 
     service = new QuizService(
       quizRepository as unknown as QuizRepository,
+      {} as GameRepository,
       eventEmitter as unknown as EventEmitter2,
       logger as unknown as Logger,
     )

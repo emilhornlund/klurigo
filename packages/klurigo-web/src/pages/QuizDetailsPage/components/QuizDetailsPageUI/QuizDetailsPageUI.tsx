@@ -1,5 +1,9 @@
 import { faPen, faPlay, faTrash } from '@fortawesome/free-solid-svg-icons'
-import type { QuizRatingDto, QuizResponseDto } from '@klurigo/common'
+import type {
+  QuizRatingDto,
+  QuizRecentGameDto,
+  QuizResponseDto,
+} from '@klurigo/common'
 import type { FC } from 'react'
 import { useState } from 'react'
 
@@ -16,6 +20,7 @@ import {
 
 import QuizDetails from './components/QuizDetails'
 import RatingsSection from './components/RatingsSection'
+import RecentGames from './components/RecentGames'
 import SampleQuestions, {
   type SampleQuestionsState,
 } from './components/SampleQuestions'
@@ -24,6 +29,8 @@ import styles from './QuizDetailsPageUI.module.scss'
 export interface QuizDetailsPageUIProps {
   quiz?: QuizResponseDto
   sampleQuestions?: SampleQuestionsState
+  /** Newest-first summaries. The accordion is hidden when these are missing or empty. */
+  recentGames?: readonly QuizRecentGameDto[]
   ratings?: QuizRatingDto[]
   isOwner?: boolean
   isLoadingQuiz?: boolean
@@ -38,6 +45,7 @@ export interface QuizDetailsPageUIProps {
 const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
   quiz,
   sampleQuestions = { status: 'ready', questions: [] },
+  recentGames,
   ratings,
   isOwner = false,
   isLoadingQuiz,
@@ -131,6 +139,8 @@ const QuizDetailsPageUI: FC<QuizDetailsPageUIProps> = ({
         <QuizDetails quiz={quiz} />
 
         <SampleQuestions state={sampleQuestions} />
+
+        <RecentGames games={recentGames} />
 
         {quiz.ratingSummary.stars > 0 && (
           <>

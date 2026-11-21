@@ -140,6 +140,21 @@ export interface QuizAuthorResponseDto {
   avatar: CrittersAvatarConfigurationV1
 }
 
+/** A public-facing summary of one completed quiz game. */
+export type QuizRecentGameDto = {
+  /** Completion timestamp as an ISO 8601 string. */
+  readonly completed: string
+
+  /** Number of player participants, excluding the host. */
+  readonly playerCount: number
+
+  /** Percentage of answered attempts that were correct in a Classic game. */
+  readonly correctnessPercentage?: number
+
+  /** Average question precision as a percentage in a Zero To One Hundred game. */
+  readonly averagePrecisionPercentage?: number
+}
+
 /**
  * Aggregated gameplay statistics for a quiz across all completed games.
  *

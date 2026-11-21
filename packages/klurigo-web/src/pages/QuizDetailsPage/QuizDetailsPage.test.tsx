@@ -60,6 +60,7 @@ vi.mock('@tanstack/react-query', () => ({
     const key = String(args.queryKey[0])
     if (key === 'quiz') return mockQuizQueryState
     if (key === 'quiz-question-previews') return { isPending: true }
+    if (key === 'quiz-recent-games') return { isPending: true }
     if (key === 'quiz-ratings') return mockRatingsQueryState
     throw new Error(`Unexpected queryKey: ${key}`)
   },
@@ -82,6 +83,7 @@ vi.mock('../../api', () => ({
   useKlurigoServiceClient: () => ({
     getQuiz: vi.fn(),
     getQuizQuestionPreviews: vi.fn(),
+    getQuizRecentGames: vi.fn(),
     getQuizRatings: vi.fn(),
     deleteQuiz: deleteQuizMock,
     createGame: createGameMock,

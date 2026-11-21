@@ -60,6 +60,7 @@ import {
   QuestionTypeAnswer,
   QuestionZeroToOneHundredRange,
   QuizClassicRequest,
+  QuizRecentGameResponse,
   QuizResponse,
   QuizZeroToOneHundredRequest,
 } from './models'
@@ -301,6 +302,30 @@ export class QuizController {
         type,
         question: text,
       }))
+  }
+
+  @Get(':quizId/recent-games')
+  @AuthorizedQuiz({ allowPublic: true })
+  @ApiOperation({
+    summary: 'Retrieve recent quiz games',
+    description:
+      'Returns up to three completed games with player participants, newest first.',
+  })
+  @ApiQuizIdParam()
+  @ApiOkResponse({
+    description: 'Successfully retrieved recent game summaries.',
+    type: QuizRecentGameResponse,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse()
+  @ApiForbiddenResponse({
+    description: 'The user does not have access to this quiz.',
+  })
+  @ApiNotFoundResponse({ description: 'Quiz not found.' })
+  public async getRecentQuizGames(
+    @RouteQuizIdParam() quizId: string,
+  ): Promise<QuizRecentGameResponse[]> {
+    return this.quizService.findRecentQuizGames(quizId)
   }
 
   /**

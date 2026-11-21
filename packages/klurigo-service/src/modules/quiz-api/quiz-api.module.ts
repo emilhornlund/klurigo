@@ -1,6 +1,7 @@
 import { Logger, Module } from '@nestjs/common'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 
+import { GameCoreModule } from '../game-core'
 import { QuizCoreModule } from '../quiz-core'
 
 import { ProfileQuizController, QuizController } from './controllers'
@@ -16,6 +17,7 @@ import { QuizService } from './services'
  *
  * Imports:
  * - `QuizCoreModule` for quiz persistence and repositories.
+ * - `GameCoreModule` for recent game activity.
  * - `EventEmitterModule` for emitting domain/application events from quiz use-cases.
  *
  * Notes:
@@ -23,7 +25,7 @@ import { QuizService } from './services'
  * - Quiz rating APIs and orchestration are owned by `QuizRatingApiModule`.
  */
 @Module({
-  imports: [EventEmitterModule, QuizCoreModule],
+  imports: [EventEmitterModule, GameCoreModule, QuizCoreModule],
   controllers: [QuizController, ProfileQuizController],
   providers: [Logger, QuizService],
   exports: [QuizService],

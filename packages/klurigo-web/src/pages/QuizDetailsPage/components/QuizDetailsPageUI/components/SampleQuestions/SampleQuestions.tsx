@@ -2,8 +2,13 @@ import { faListOl } from '@fortawesome/free-solid-svg-icons'
 import type { QuestionPreviewDto } from '@klurigo/common'
 import { type FC, useId } from 'react'
 
-import { Accordion, Button, Stack, Typography } from '../../../../../components'
-import { QuestionTypeLabels } from '../../../../../models'
+import {
+  Accordion,
+  Button,
+  Stack,
+  Typography,
+} from '../../../../../../components'
+import { QuestionTypeLabels } from '../../../../../../models'
 
 import styles from './SampleQuestions.module.scss'
 

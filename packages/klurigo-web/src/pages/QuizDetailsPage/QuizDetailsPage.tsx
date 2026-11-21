@@ -21,6 +21,7 @@ const QuizDetailsPage: FC = () => {
   const {
     getQuiz,
     getQuizQuestionPreviews,
+    getQuizRecentGames,
     getQuizRatings,
     deleteQuiz,
     createGame,
@@ -46,6 +47,13 @@ const QuizDetailsPage: FC = () => {
   } = useQuery({
     queryKey: ['quiz-question-previews', quizId, user?.ACCESS.sub],
     queryFn: () => getQuizQuestionPreviews(quizId as string),
+    enabled: !!quizId && !!quiz && !isErrorQuiz,
+    retry: false,
+  })
+
+  const { data: recentGames, isError: isErrorRecentGames } = useQuery({
+    queryKey: ['quiz-recent-games', quizId, user?.ACCESS.sub],
+    queryFn: () => getQuizRecentGames(quizId as string),
     enabled: !!quizId && !!quiz && !isErrorQuiz,
     retry: false,
   })
@@ -139,6 +147,7 @@ const QuizDetailsPage: FC = () => {
             ? { status: 'loading' }
             : { status: 'ready', questions: questions ?? [] }
       }
+      recentGames={isErrorRecentGames ? undefined : recentGames}
       ratings={isErrorRatings ? [] : ratings?.results}
       isOwner={isOwner}
       isLoadingQuiz={isLoadingQuiz}

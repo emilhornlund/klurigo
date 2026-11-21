@@ -162,6 +162,9 @@ export const GameSchema = SchemaFactory.createForClass(Game)
 // a range seek on `completedAt`.
 GameSchema.index({ status: 1, completedAt: 1 })
 
+// Supports finding completed games for the quiz details activity summary.
+GameSchema.index({ quiz: 1, status: 1 })
+
 // Supports bounded terminal answer cleanup scans by status, completion marker,
 // and the stable `_id` cursor used to paginate each run.
 GameSchema.index({ status: 1, transientAnswerStateCleared: 1, _id: 1 })

@@ -14,6 +14,8 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
+import { DATE_FORMATS, formatLocalDate } from '../../../../utils/date.utils'
+
 import QuizDetailsPageUI from './QuizDetailsPageUI'
 
 const makeQuiz = (
@@ -299,6 +301,94 @@ describe('QuizDetailsPageUI', () => {
       within(samples).getByText('No sample questions to peek at yet.'),
     ).toBeVisible()
   })
+
+  it('shows ordered recent game summaries below sample questions and above ratings', async () => {
+    const user = userEvent.setup()
+    const daysAgo = (days: number) =>
+      new Date(Date.now() - days * 86_400_000).toISOString()
+    const latest = daysAgo(1.5)
+    renderUI({
+      quiz: makeQuiz({ ratingSummary: { stars: 4.5, comments: 1, total: 1 } }),
+      recentGames: [
+        { completed: latest, playerCount: 12, correctnessPercentage: 74 },
+        { completed: daysAgo(3.5), playerCount: 1, correctnessPercentage: 0 },
+        { completed: daysAgo(7.5), playerCount: 5 },
+      ],
+    })
+
+    const recent = screen.getByRole('region', { name: 'Recent games' })
+    expect(
+      screen
+        .getByRole('region', { name: 'Sample questions' })
+        .compareDocumentPosition(recent),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      recent.compareDocumentPosition(screen.getByTestId('ratings-section')),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    const toggle = within(recent).getByRole('button', {
+      name: 'Recent games',
+      expanded: false,
+    })
+    expect(toggle).toHaveAccessibleDescription('Last played 1 day ago')
+
+    await user.click(toggle)
+    const list = within(recent).getByRole('list')
+    const [first, second, third] = within(list).getAllByRole('listitem')
+    const time = within(first).getByText('1 day ago')
+    expect(time).toHaveAttribute('datetime', latest)
+    expect(time).toHaveAttribute(
+      'title',
+      `Completed ${formatLocalDate(latest, DATE_FORMATS.DATE_TIME_SECONDS)}`,
+    )
+    expect(first).toHaveTextContent('12 players')
+    expect(first).toHaveTextContent('74% correct')
+    expect(
+      within(first).getByRole('progressbar', { name: 'Correct answers' }),
+    ).toHaveValue(74)
+    expect(second).toHaveTextContent(/3 days ago.*1 player.*0% correct/)
+    expect(within(second).getByRole('progressbar')).toHaveValue(0)
+    expect(third).toHaveTextContent(/7 days ago.*5 players/)
+    expect(within(third).queryByRole('progressbar')).not.toBeInTheDocument()
+    expect(within(list).queryByRole('link')).not.toBeInTheDocument()
+    expect(within(list).queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('shows average precision for recent Zero To One Hundred games', () => {
+    renderUI({
+      quiz: makeQuiz({ mode: GameMode.ZeroToOneHundred }),
+      recentGames: [
+        {
+          completed: new Date().toISOString(),
+          playerCount: 3,
+          averagePrecisionPercentage: 81,
+        },
+      ],
+    })
+
+    const recent = screen.getByRole('region', { name: 'Recent games' })
+    fireEvent.click(
+      within(recent).getByRole('button', { name: 'Recent games' }),
+    )
+    expect(within(recent).getByText('81% precision')).toBeVisible()
+    expect(
+      within(recent).getByRole('progressbar', { name: 'Average precision' }),
+    ).toHaveValue(81)
+  })
+
+  it.each([
+    { status: 'loading', games: undefined },
+    { status: 'empty', games: [] },
+  ])(
+    'hides recent games in the $status state without blocking hosting',
+    ({ games }) => {
+      renderUI({ recentGames: games })
+
+      expect(
+        screen.queryByRole('region', { name: 'Recent games' }),
+      ).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Host Game' })).toBeEnabled()
+    },
+  )
 
   it('opens destructive delete confirmation only for owners and invokes deletion', () => {
     const onDeleteQuiz = vi.fn()

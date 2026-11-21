@@ -1,0 +1,85 @@
+@use '../../../../../../styles/border-radius.tokens' as radius;
+@use '../../../../../../styles/colors.semantic' as colors;
+@use '../../../../../../styles/helpers' as helpers;
+@use '../../../../../../styles/spacing.semantic' as spacing;
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: radius.$radius-surface-sm;
+  background: colors.$color-surface-default;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+  overflow-wrap: anywhere;
+
+  @include helpers.mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: spacing.$space-inline-mobile spacing.$space-compact-mobile;
+    padding: spacing.$space-compact-mobile spacing.$space-stack-mobile;
+  }
+
+  @include helpers.tablet {
+    gap: spacing.$space-compact-tablet;
+    padding: spacing.$space-compact-tablet spacing.$space-stack-tablet;
+  }
+
+  @include helpers.desktop {
+    gap: spacing.$space-compact-desktop;
+    padding: spacing.$space-compact-desktop spacing.$space-stack-desktop;
+  }
+
+  & + & {
+    border-block-start: 1px solid colors.$color-border-muted;
+  }
+}
+
+.players {
+  @include helpers.mobile {
+    justify-self: end;
+  }
+}
+
+.metric {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 12ch);
+  align-items: center;
+  column-gap: spacing.$space-inline-desktop;
+  font-variant-numeric: tabular-nums;
+
+  @include helpers.mobile {
+    grid-column: 1 / -1;
+  }
+}
+
+.bar {
+  appearance: none;
+  inline-size: 100%;
+  block-size: 0.5rem;
+  border: none;
+  border-radius: radius.$radius-round;
+  background: colors.$color-surface-control-muted;
+
+  &::-webkit-progress-bar {
+    border-radius: radius.$radius-round;
+    background: colors.$color-surface-control-muted;
+  }
+
+  &::-webkit-progress-value {
+    border-radius: radius.$radius-round;
+    background: colors.$color-progress-action;
+  }
+
+  &::-moz-progress-bar {
+    border-radius: radius.$radius-round;
+    background: colors.$color-progress-action;
+  }
+
+  @media (forced-colors: active) {
+    appearance: auto;
+  }
+}

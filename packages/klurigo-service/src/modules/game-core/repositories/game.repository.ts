@@ -1,4 +1,9 @@
-import { GameMode, GameParticipantType, GameStatus } from '@klurigo/common'
+import {
+  GameMode,
+  GameParticipantType,
+  GameStatus,
+  QuizRecentGameDto,
+} from '@klurigo/common'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model, QueryFilter } from 'mongoose'
@@ -37,6 +42,8 @@ export type PendingTransitionOperationFailure = {
 }
 
 class PendingTransitionOperationNotFoundError extends Error {}
+
+const RECENT_QUIZ_GAME_LIMIT = 3
 
 /**
  * Repository for interacting with the Game collection in the database.
@@ -585,6 +592,90 @@ export class GameRepository extends BaseRepository<Game> {
         },
       },
     ])
+  }
+
+  /** Returns up to three completed games with players, ordered by result completion. */
+  public async findRecentQuizGames(
+    quizId: string,
+  ): Promise<QuizRecentGameDto[]> {
+    const summaries = await this.gameModel
+      .aggregate<{
+        completed: Date
+        playerCount: number
+        mode: GameMode
+        correct: number
+        incorrect: number
+        averagePrecision: number | null
+      }>([
+        { $match: { quiz: quizId, status: GameStatus.Completed } },
+        { $project: { mode: 1 } },
+        {
+          $lookup: {
+            from: 'game_results',
+            localField: '_id',
+            foreignField: 'game',
+            pipeline: [
+              {
+                $match: {
+                  completed: { $type: 'date' },
+                  'players.0': { $exists: true },
+                },
+              },
+              { $sort: { completed: -1, _id: -1 } },
+              { $limit: 1 },
+              {
+                $project: {
+                  _id: 0,
+                  completed: 1,
+                  playerCount: { $size: '$players' },
+                  'questions.correct': 1,
+                  'questions.incorrect': 1,
+                  'questions.averagePrecision': 1,
+                },
+              },
+            ],
+            as: 'result',
+          },
+        },
+        { $unwind: '$result' },
+        { $sort: { 'result.completed': -1, _id: -1 } },
+        { $limit: RECENT_QUIZ_GAME_LIMIT },
+        {
+          $project: {
+            _id: 0,
+            completed: '$result.completed',
+            playerCount: '$result.playerCount',
+            mode: 1,
+            correct: { $sum: '$result.questions.correct' },
+            incorrect: { $sum: '$result.questions.incorrect' },
+            averagePrecision: { $avg: '$result.questions.averagePrecision' },
+          },
+        },
+      ])
+      .exec()
+
+    return summaries.map(
+      ({
+        completed,
+        playerCount,
+        mode,
+        correct,
+        incorrect,
+        averagePrecision,
+      }) => {
+        const answered = correct + incorrect
+        return {
+          completed: completed.toISOString(),
+          playerCount,
+          ...(mode === GameMode.Classic && answered > 0
+            ? { correctnessPercentage: Math.round((correct / answered) * 100) }
+            : {}),
+          ...(mode === GameMode.ZeroToOneHundred && averagePrecision !== null
+            ? { averagePrecisionPercentage: Math.round(averagePrecision * 100) }
+            : {}),
+        }
+      },
+    )
   }
 
   /**
